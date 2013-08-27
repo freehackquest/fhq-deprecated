@@ -1,0 +1,18 @@
+
+body.main
+{
+	background-color: #000000;
+	color: #a9a9a9;
+}
+
+/*цвет ссылок */
+body a:link
+{
+	color: #ffd4bd;
+}
+
+/*цвет посещенных ссылок */
+body a:visited
+{
+	color: #ffd4bd;
+}
