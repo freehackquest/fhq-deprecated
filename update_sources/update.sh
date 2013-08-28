@@ -20,8 +20,8 @@ if [ -d $1 ]; then
 fi
 
 #copy config
-CONFIG_DIR_TEMP="`pwd`/../config.fhq.temp/"
-CONFIG_DIR_OLD="$1/config/"
+CONFIG_DIR_TEMP="`pwd`/../config.fhq.temp"
+CONFIG_DIR_OLD="$1/config"
 echo "CONFIG_DIR_TEMP = $CONFIG_DIR_TEMP"
 echo "CONFIG_DIR_OLD = $CONFIG_DIR_OLD"
 
@@ -53,6 +53,6 @@ if [ -d $CONFIG_DIR_OLD ]; then
 fi
 
 #remove temporary folder
-# rm -rf $CONFIG_DIR_TEMP
+rm -rf $CONFIG_DIR_TEMP
 
 echo "completed"
