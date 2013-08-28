@@ -1,7 +1,22 @@
 #!/bin/bash
 
+# must running in root of repository folder
+
 echo "pwd = $(pwd)/$1/php/*"
 echo "1 = $1"
+
+# backup
+FILE_TAR_GZ=$(echo "`pwd`/../fhq.autobackups/fhq_php_`date +%Y-%m-%d`.tar.gz");
+echo "FILE_TAR_GZ = $FILE_TAR_GZ"
+tar -zcvf $FILE_TAR_GZ $1
+
+# copy files
+FILES_PHP=$(echo "$(pwd)/php/*");
+cp -rf $FILES_PHP $1
+
+
+
+
 
 ## removing old data
 
@@ -19,7 +34,7 @@ echo "1 = $1"
 # mkdir project_security
 
 ## coping new data
-FILE1=$(echo "$(pwd)/$1/php/*");
+# FILE1=$(echo "$(pwd)/$1/php/*");
 
 # cp -rf $FILE1 project_security
 
