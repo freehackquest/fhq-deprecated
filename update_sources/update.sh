@@ -13,7 +13,7 @@ if [ ! -d $BACKUP_DIR ]; then
   mkdir $BACKUP_DIR
 fi
 
-FILE_TAR_GZ="$BACKUP_DIR/fhq_php_`date +%Y-%m-%d`.tar.gz"
+FILE_TAR_GZ="$BACKUP_DIR/fhq_php_`date +%Y%m%d-%H%M%S`.tar.gz"
 echo "FILE_TAR_GZ = $FILE_TAR_GZ"
 
 tar -zcvf $FILE_TAR_GZ $1
