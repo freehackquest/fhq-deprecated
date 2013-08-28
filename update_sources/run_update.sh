@@ -4,10 +4,10 @@
 if [ -d fhq.github ]; then
    cd fhq.github
    git pull
-   cd ..
 else
-   git clone https://github.com/sea-kg/fhq fhq.github   
+   git clone https://github.com/sea-kg/fhq fhq.github
+   cd fhq.github
 fi
 
-chmod +x fhq.github/update_sources/update.sh
-bash fhq.github/update_sources/update.sh '/var/www/fhq'
+chmod +x update_sources/update.sh
+bash update_sources/update.sh '/var/www/fhq'
