@@ -30,7 +30,7 @@ if [ ! -d $CONFIG_DIR_TEMP ]; then
 fi
 
 if [ -d $CONFIG_DIR_OLD ]; then
-  cp -rf "$CONFIG_DIR_OLD/*" $CONFIG_DIR_TEMP
+  cp -rf $CONFIG_DIR_OLD/* $CONFIG_DIR_TEMP
 fi
 
 # remove old files 
@@ -49,7 +49,7 @@ fi
 
 #copy config comeback
 if [ -d $CONFIG_DIR_OLD ]; then
-  cp -rf "$CONFIG_DIR_TEMP/*" $CONFIG_DIR_OLD
+  cp -rf $CONFIG_DIR_TEMP/* $CONFIG_DIR_OLD
 fi
 
 #remove temporary folder
