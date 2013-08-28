@@ -19,7 +19,7 @@ echo "FILE_TAR_GZ = $FILE_TAR_GZ"
 tar -zcvf $FILE_TAR_GZ $1
 
 # copy files
-FILES_PHP="`pwd`/php/*"
+FILES_PHP="`pwd`/php/fhq/*"
 echo "FILES_PHP = $FILES_PHP"
 cp -rf $FILES_PHP $1
 echo "all"
