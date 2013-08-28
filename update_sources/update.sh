@@ -13,32 +13,46 @@ if [ ! -d $BACKUP_DIR ]; then
   mkdir $BACKUP_DIR
 fi
 
-FILE_TAR_GZ="$BACKUP_DIR/fhq_php_`date +%Y%m%d-%H%M%S`.tar.gz"
-echo "FILE_TAR_GZ = $FILE_TAR_GZ"
-
-tar -zcvf $FILE_TAR_GZ $1
+if [ -d $1 ]; then
+  FILE_TAR_GZ="$BACKUP_DIR/fhq_php_`date +%Y%m%d-%H%M%S`.tar.gz"
+  echo "FILE_TAR_GZ = $FILE_TAR_GZ"
+  tar -zcvf $FILE_TAR_GZ $1
+fi
 
 #copy config
-CONFIG_DIR="`pwd`/../fhq.configfolder"
-echo "CONFIG_DIR = $CONFIG_DIR"
-if [ ! -d $CONFIG_DIR ]; then
-  mkdir $CONFIG_DIR
-fi
-cp -rf "$1/config/*" $CONFIG_DIR
+CONFIG_DIR_TEMP="`pwd`/../fhq.configtemp"
+CONFIG_DIR_OLD="$1/config"
+echo "CONFIG_DIR_TEMP = $CONFIG_DIR_TEMP"
+echo "CONFIG_DIR_OLD = $CONFIG_DIR_OLD"
 
+if [ ! -d $CONFIG_DIR_TEMP ]; then
+  mkdir $CONFIG_DIR_TEMP
+fi
+
+if [ -d $CONFIG_DIR_OLD ]; then
+  cp -rf "$CONFIG_DIR_OLD/*" $CONFIG_DIR_TEMP
+fi
 
 # remove old files 
-rm -rf $1
+if [ -d $1 ]; then
+  rm -rf $1
+fi
 
-# replacment files
+# cp files
 FILES_PHP="`pwd`/php/fhq/*"
 echo "FILES_PHP = $FILES_PHP"
-cp -rf $FILES_PHP $1
 
-#copy config comback
-cp -rf $CONFIG_DIR "$1/config/*"
+if [ ! -d $1 ]; then
+  mkdir $1
+  cp -rf $FILES_PHP $1
+fi
+
+#copy config comeback
+if [ -d $CONFIG_DIR_OLD ]; then
+  cp -rf "$CONFIG_DIR_TEMP/*" $CONFIG_DIR_OLD
+fi
 
 #remove temporary folder
-rm -rf $CONFIG_DIR
+rm -rf $CONFIG_DIR_TEMP
 
 echo "completed"
