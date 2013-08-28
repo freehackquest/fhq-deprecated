@@ -53,6 +53,6 @@ if [ -d $CONFIG_DIR_OLD ]; then
 fi
 
 #remove temporary folder
-rm -rf $CONFIG_DIR_TEMP
+# rm -rf $CONFIG_DIR_TEMP
 
 echo "completed"
