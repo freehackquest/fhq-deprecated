@@ -64,3 +64,4 @@ cp -rf $FILES_PHP $1
 
 ## changes access to files
 # chmod 777 -R project_security/*
+
