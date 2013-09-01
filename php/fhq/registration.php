@@ -100,8 +100,8 @@ class fhq_foractivate
 			$nickname = "hacker-".substr(md5(rand().rand()), 0, 7);
 			$password = substr(md5(rand().rand()), 0, 7);
 			$password_hash =  md5($password);
+			
 			$query2 = "update user set password = '$password_hash', nick = '$nickname', score = 0 where username = '$username';";
-
 			$db->query($query2);
 
 
@@ -128,7 +128,7 @@ Now you could begin playing in this game, it here: <a href='$httpname'>$httpname
 			$headers .= 'Reply-To: noreply@fhq.keva.su'."\r\n";
 			$headers .= 'X-Mailer: PHP/'.phpversion();
 			
-			mail($email, 'Your account was activated', $message, $headers);
+			mail($login, $subject, $message, $headers);
 			
 			return 'Your account was activated.<br>Information for logon was sended to your email.';
 		}
@@ -191,7 +191,7 @@ if(isset($_GET['email']) && isset($_GET['captcha']))
 <body>
 If you was not tryed register on $httpname, just ignore this mail.<br>
 For activate your account, please visit this page:<br>
-".$httpname."registration.php?foractivate=$notactivated'
+".$httpname."registration.php?foractivate=$notactivated
 </body>
 </html>
 ";
