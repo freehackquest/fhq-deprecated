@@ -191,7 +191,7 @@ if(isset($_GET['email']) && isset($_GET['captcha']))
 <body>
 If you was not tryed register on $httpname, just ignore this mail.<br>
 For activate your account, please visit
-<a href\"".$httpname."registration.php?foractivate=$notactivated\">this page</a>
+<a href=\'".$httpname."registration.php?foractivate=$notactivated'>this page</a>
 </body>
 </html>
 ";
