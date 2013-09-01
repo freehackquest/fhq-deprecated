@@ -6,35 +6,34 @@ include "echo_shortpage.php";
 
 class fhq_registration
 {
-		function getTitle()
-		{
-			return "Registration<br><font size=2><a href='index.php'>&larr; go to main page</a></font>";
-		}
+	function getTitle()
+	{
+		return "Registration<br><font size=2><a href='index.php'>&larr; go to main page</a></font>";
+	}
 
-		function getContent()
-		{
-			 // registration.php
-			return '
-<form method="POST" action="">
-					<table>
-						<tr>
-							<td>Write your e-mail:</td>
-							<td><input name="email" id="user_email" value="" type="text"></td>
-						</tr>
-						<tr>
-							<td></td>
-							<td><img src="captcha.php" id="captcha-image"/><br>
-							<a href="javascript:void(0);" onclick="document.getElementById(\'captcha-image\').src = \'captcha.php?rid=\' + Math.random();">Refresh Capcha</a></td>
-						</tr>
-						<tr>
-							<td>Captcha</td>
-							<td><input name="captcha" id="user_captcha" value="" type="text"></td>
-						</tr>
-						<tr>
-							<td colspan = "2">
-								
-								<center>
-									<br>
+	function getContent()
+	{
+		return '
+			<form method="POST" action="">
+				<table>
+					<tr>
+						<td>Write your e-mail:</td>
+						<td><input name="email" id="user_email" value="" type="text"></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><img src="captcha.php" id="captcha-image"/><br>
+						<a href="javascript:void(0);" onclick="document.getElementById(\'captcha-image\').src = \'captcha.php?rid=\' + Math.random();">Refresh Capcha</a></td>
+					</tr>
+					<tr>
+						<td>Captcha</td>
+						<td><input name="captcha" id="user_captcha" value="" type="text"></td>
+					</tr>
+					<tr>
+						<td colspan = "2">
+							
+							<center>
+								<br>
 <script>
 function sendQuery(str)
 {
@@ -55,7 +54,6 @@ function sendQuery(str)
   xmlhttp.send();
 }
 </script>
-									<!-- <input name="registration" value="Registration" type="submit"> -->
 									<a href="javascript:void(0);" onclick="sendQuery();">Send query</a>
 									<br><br>
 									
@@ -67,9 +65,8 @@ function sendQuery(str)
 					<center>
 						<br>
 						<div id="answer"></div>
-					</center>			
-			';
-		}
+					</center>';
+	}
 };
 
 // ---------------------------------------------------------------------
@@ -113,11 +110,11 @@ class fhq_foractivate
   <title>$subject</title>
 </head>
 <body>
-Thank you!<br>
+Thank you for registration on Free-Hack-Quest!<br>
 Your login: $login<br>
 Your password: $password<br>
 Your nickname: $nickname<br>
-Now you could begin playing in this game, it here: <a href='$httpname'>$httpname</a>
+Now you could begin playing in this game, it here: $httpname</a>
 </body>
 </html>
 ";

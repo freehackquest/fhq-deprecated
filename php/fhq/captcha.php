@@ -37,7 +37,7 @@
 	$_SESSION['captcha_reg'] = $str;
 	
 	//генерируем капчу
-	$captcha = create_capcha_image($str,"fonts/font_for_captcha.ttf","images/background_captcha.jpg");
+	$captcha = create_capcha_image($str,"fonts/Bleeding_Cowboys.ttf","images/background_captcha.jpg");
 	
 	//выводим, страница это типа картинка :) очень удобно
 	header('Expires: Sat, 31 May 2008 05:00:00 GMT'); 
