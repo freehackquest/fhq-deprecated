@@ -104,24 +104,33 @@ class fhq_foractivate
 
 			$db->query($query2);
 
-			$message = "
-Thanks!
-\r\n
-Your account was activated.\r\n
-	login: $login\r\n
-	password: $password\r\n
-	nickname: $nickname\r\n
-Now you could begin playing in this game, it here: http://fhq.keva.su/ ";
+
+			$subject = "Your account was activated";
 			
-			$message = wordwrap($message, 70);
-
-			$headers = 'From: noreply@fhq.keva.su'."\r\n".
-			'Reply-To: noreply@fhq.keva.su'."\r\n".
-			'X-Mailer: PHP/'.phpversion();
-
-			mail($email, 'Activated your account', $message, $headers);
-
-			return 'Your account was activated.';
+			$message = "
+<html>
+<head>
+  <title>$subject</title>
+</head>
+<body>
+Thank you!<br>
+Your login: $login<br>
+Your password: $password<br>
+Your nickname: $nickname<br>
+Now you could begin playing in this game, it here: <a href='$httpname'>$httpname</a>
+</body>
+</html>
+";
+			
+			$headers  = 'MIME-Version: 1.0' . "\r\n";
+			$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+			$headers .= 'From: noreply@fhq.keva.su'."\r\n";
+			$headers .= 'Reply-To: noreply@fhq.keva.su'."\r\n";
+			$headers .= 'X-Mailer: PHP/'.phpversion();
+			
+			mail($email, 'Your account was activated', $message, $headers);
+			
+			return 'Your account was activated.<br>Information for logon was sended to your email.';
 		}
 		else
 		{
@@ -163,33 +172,36 @@ if(isset($_GET['email']) && isset($_GET['captcha']))
 			exit;
 		};
 		
-		
-		/* $nickname = "hacker-".substr(md5(rand().rand()), 0, 7);
-		 $password = substr(md5(rand().rand()), 0, 7);
-		 $password_hash =  md5($username.$password);
-		*/
-		
 		$notactivated = md5(rand().rand());
 
 		$query = "INSERT user( username, password, nick, role, score ) VALUES ('$username','notactivated$notactivated','$nickname','user', 0);";
 		$result = $db->query($query);
 
-		include "config/config.php";
-
 		if($result == '1')
 		{
+			include "config/config.php";
+			
+			$subject = "Activate your account";
+			
 			$message = "
-If you was not tryed register on $httpname, just ignore this mail.\r\n
-For activate your account, please visit this page:\r\n
-".$httpname."registration.php?foractivate=$notactivated";
+<html>
+<head>
+  <title>$subject</title>
+</head>
+<body>
+If you was not tryed register on $httpname, just ignore this mail.<br>
+For activate your account, please visit
+<a href\"".$httpname."registration.php?foractivate=$notactivated\">this page</a>
+</body>
+</html>
+";
+			$headers  = 'MIME-Version: 1.0' . "\r\n";
+			$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+			$headers .= 'From: noreply@fhq.keva.su'."\r\n";
+			$headers .= 'Reply-To: noreply@fhq.keva.su'."\r\n";
+			$headers .= 'X-Mailer: PHP/'.phpversion();
 
-			$message = wordwrap($message, 70);
-
-			$headers = 'From: noreply@fhq.keva.su'."\r\n".
-			'Reply-To: noreply@fhq.keva.su'."\r\n".
-			'X-Mailer: PHP/'.phpversion();
-
-			mail($email, 'Activate your account', $message, $headers);
+			mail($email, $subject, $message, $headers);
 
 			echo "Next instruction was sent letter on your e-mail.";
 			exit;
