@@ -4,7 +4,7 @@
 	{
 		function connect()
 		{
-			include "config.php";
+			include "config/config.php";
 			/*
 			echo "
 db_host = $db_host <br>

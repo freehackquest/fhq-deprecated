@@ -8,7 +8,7 @@ body.main
 {
 	background-color: #000000;
 	color: #a9a9a9;
-	font: 12pt/10pt Pompadur;
+	font: 12pt/10pt sans-serif;
 }
 
 /*цвет ссылок */

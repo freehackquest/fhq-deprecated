@@ -120,7 +120,7 @@
 					</table>
 					</form>
 					<center>
-						or <a href="http://income.keva.su">Registration</a>
+						or <a href="registration.php">Registration</a>
 					</center>
 
 					</td>

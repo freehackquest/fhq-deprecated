@@ -4,6 +4,8 @@
 	$db_userpass = "freehackquest_u";
 	$db_namedb = "freehackquest";
 	$site_name = "free-hack-quest";
+	$httpname = "http://localhost/fhq/";
+	
 	/*
 		//freehackquest.keva.su
 		$db_host = "172.16.60.27:3306";
