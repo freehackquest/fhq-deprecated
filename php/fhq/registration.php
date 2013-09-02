@@ -112,7 +112,7 @@ Thank you for registration on Free-Hack-Quest!<br>
 Your login: $login<br>
 Your password: $password<br>
 Your nickname: $nickname<br>
-Now you could begin playing in this game, it here: $httpname</a>
+Now you could begin playing in this game, it here: ".$config['httpname']."</a>
 </body>
 </html>
 ";
@@ -179,9 +179,9 @@ if(isset($_GET['email']) && isset($_GET['captcha']))
   <title>$subject</title>
 </head>
 <body>
-If you was not tryed register on $httpname, just ignore this mail.<br>
+If you was not tryed register on ".$config['httpname'].", just ignore this mail.<br>
 For activate your account, please visit this page:<br>
-".$httpname."registration.php?foractivate=$notactivated
+".$config['httpname']."registration.php?foractivate=$notactivated
 </body>
 </html>
 ";
