@@ -61,6 +61,6 @@
 		refreshTo("main.php?action=allow");
 	};
 
-	print_main_page("Free Hack Quest - ".$title, $content );
+	echo_mainpage( new simple_page($title, $content) );
 	exit;
 ?>

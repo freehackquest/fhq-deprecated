@@ -1,4 +1,5 @@
 <?
+include_once "fhq_security.php";
 
 function echo_shortpage($page)
 {	
@@ -6,8 +7,8 @@ function echo_shortpage($page)
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title> free-hack-quest - Registration </title>
-<link rel="stylesheet" type="text/css" href="styles/style.css" />
+<title> fhq - '.$page->title().' </title>
+<link rel="stylesheet" type="text/css" href="styles/body.css" />
 </head>
 <body class="main">
 <center>
@@ -18,26 +19,15 @@ function echo_shortpage($page)
 			<table>				
 				<tr>
 					<td> <img src="images/minilogo.jpg"> </td>
-					<td > <h2>free-hack-quest:<br>'.$page->getTitle().'</h2>
+					<td > <h2>free-hack-quest:<br>'.$page->title().'</h2>
 					<center>
-						'.$page->getContent().'
+						';
+	$page->echo_content();
+	echo '
 					</center>
 					</td>
 				</tr>
-				<tr>
-					<td align = "center">
-						<?
-                                                        //gd_info();	
-							//phpinfo();
-
-						?>
-					</td>
-					<td></td>
-				</tr>
 			</table>
-			
-			
-			
 		</td>
 	</tr>
 </table>
@@ -46,8 +36,6 @@ function echo_shortpage($page)
 
 </body>
 </html>';
-
-
-}
+};
 
 ?>

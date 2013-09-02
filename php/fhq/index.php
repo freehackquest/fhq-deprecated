@@ -1,19 +1,17 @@
 <?
-include "basepage.php";
-include "echo_shortpage.php";
-	
-	
+
+include_once "engine/fhq.php";
+
 class fhq_logon
 {
-
-	function getTitle()
+	function title()
 	{
 		return "</h2> quest game, the system prompts, <br>
 						receipt and delivery of jobs in computer security.
 					</h2><br><br>";
 	}
-	
-	function getContent()
+
+	function echo_content()
 	{
 		$error_msg = "";
 		if(isset($_SESSION['error_msg']))
@@ -22,7 +20,7 @@ class fhq_logon
 			$_SESSION['error_msg'] = "";
 		};
 
-		return '
+		echo '
 			<b>please, authtorization in the system:</b><br>
 <script>
 function sign_in()
@@ -75,13 +73,12 @@ function sign_in()
 	}
 };
 
-if( isset( $_POST['exit']) )
+if( isset( $_GET['exit']) )
 {
-	unset($_SESSION['iduser']);
-	unset($_SESSION['email']);
-	unset($_SESSION['nick']);
-	unset($_SESSION['score']);
-	unset($_SESSION['role']);
+	$security = new fhq_security();
+	$security->logout();
+	echo "OK";
+	exit;
 };
 
 if(isset($_SESSION['iduser']) && isset($_SESSION['email']))
@@ -89,8 +86,7 @@ if(isset($_SESSION['iduser']) && isset($_SESSION['email']))
 	refreshTo("main.php");
 };
 
-if( isset( $_GET['email']) && isset($_GET['password'])
-)
+if( isset( $_GET['email']) && isset($_GET['password']) )
 {
 	if(strlen($_GET['email']) == 0)
 	{
@@ -103,30 +99,14 @@ if( isset( $_GET['email']) && isset($_GET['password'])
 			echo "<font color=#ff0000>Password must be is not empty</font>";
 			exit;
 	}
-	
-	$username = base64_encode($_GET['email']);
-	$password = md5($_GET['password']);
-	
-	$db = new database();
-	$db->connect();
-	$query = "select * from user where username = '$username' and password = '$password';";
-	$result = $db->query($query);
-		
-	if( mysql_num_rows( $result ) == 1 )
-	{
-		$_SESSION['iduser'] = mysql_result($result, 0, 'iduser');
-		$_SESSION['email'] = mysql_result($result, 0, 'username');
-		$_SESSION['nick'] = mysql_result($result, 0, 'nick');
-		$_SESSION['score'] = mysql_result($result, 0, 'score');
-		$_SESSION['role'] = mysql_result($result, 0, 'role');
+
+	$security = new fhq_security();
+
+	if( $security->login($_GET['email'], $_GET['password']) )
 		echo "OK";
-		exit;
-	}
 	else
-	{
 		echo "<font color=#ff0000>Invalid: e-mail or/and password</font>";
-	};
-	
+
 	exit;
 };
 

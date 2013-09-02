@@ -1,17 +1,18 @@
 <?
-	session_start();
 
-	function getFromPost($name)
+session_start();
+		
+function getFromPost($name)
+{
+	$m = "";
+	if( isset( $_POST[$name] ) )
 	{
-		$m = "";
-		if( isset( $_POST[$name] ) )
-		{
-			$m = htmlspecialchars( $_POST[$name] );
-		};
-		return $m;
+		$m = htmlspecialchars( $_POST[$name] );
 	};
+	return $m;
+};
 
-	//---------------------------------------------------------------------
+//---------------------------------------------------------------------
 
 	function refreshTo($new_page)
 	{
@@ -153,187 +154,13 @@ location!</p>
 		return date(preg_replace('`(?<!\\\\)u`', $milliseconds, $format), $timestamp);
 	}
 	//---------------------------------------------------------------------
-	function print_head( $title )
-	{
-		echo "
-		<head>
-		<title> $title </title>
-		<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf8\">
-
-		<link rel='stylesheet' type='text/css' href='styles/style.css' />
-
-		<style type=\"text/css\">
-		   A.allow {
-		    background: url(images/allow.gif); /* Путь к файлу с исходным рисунком  */
-		    display: block; /* Рисунок как блочный элемент */
-		    width: 150px; /* Ширина рисунка */
-		    height: 50px; /* Высота рисунка */
-		   }
-		   A.allow:hover {
-		    background: url(images/allow_go.gif); /* Путь к файлу с заменяемым рисунком  */
-		   }
-
-		   A.process {
-		    background: url(images/process.gif); /* Путь к файлу с исходным рисунком  */
-		    display: block; /* Рисунок как блочный элемент */
-		    width: 150px; /* Ширина рисунка */
-		    height: 50px; /* Высота рисунка */
-		   }
-		   A.process:hover {
-		    background: url(images/process_go.gif); /* Путь к файлу с заменяемым рисунком  */
-		   }
-
-		   A.completed {
-		    background: url(images/completed.gif); /* Путь к файлу с исходным рисунком  */
-		    display: block; /* Рисунок как блочный элемент */
-		    width: 150px; /* Ширина рисунка */
-		    height: 50px; /* Высота рисунка */
-		   }
-		   A.completed:hover {
-		    background: url(images/completed_go.gif); /* Путь к файлу с заменяемым рисунком  */
-		   }
-
-		   A.top100 {
-		    background: url(images/top100.gif); /* Путь к файлу с исходным рисунком  */
-		    display: block; /* Рисунок как блочный элемент */
-		    width: 150px; /* Ширина рисунка */
-		    height: 50px; /* Высота рисунка */
-		   }
-		   A.top100:hover {
-		    background: url(images/top100_go.gif); /* Путь к файлу с заменяемым рисунком  */
-		   }
-
-		   A.feedback {
-		    background: url(images/feedback.gif); /* Путь к файлу с исходным рисунком  */
-		    display: block; /* Рисунок как блочный элемент */
-		    width: 150px; /* Ширина рисунка */
-		    height: 50px; /* Высота рисунка */
-		   }
-		   A.feedback:hover {
-		    background: url(images/feedback_go.gif); /* Путь к файлу с заменяемым рисунком  */
-		   }
-			textarea.full_text
-			{	
-				margin: 0pt; 
-				width: 300px; 
-				height: 200px;
-			}
-
-		</style>
-
-
-		<SCRIPT language=\"JavaScript\">
-		function view_quest(idquest) 
-		{
-			window.showModalDialog(\"quest.php?idquest=\"+idquest, \"\", \"dialogWidth:500px;dialogHeight:500px;status:no;edge:sunken;\");
-				window.location.reload(false);
-		};
-		</SCRIPT>
-		</head>
-		";
-	};
-	//---------------------------------------------------------------------
-	function print_menu()
-	{
-		$content = "<table cellspacing=0 cellpadding=10>";
-		//add admins menu 
-		if( $_SESSION['role'] == 'admin' )
-		{
-			$content .= "
-			<tr bgcolor='#760505'>
-				<td>Admin's Panel:</td>
-				<td width=30px> </td>
-				<td><a href='quest.php?action=add'> Add New Quest</a></td>
-				<td width=30px> </td>
-				<!-- td><a href='main.php?action=completed'> Users </a></td -->
-				<!-- td width=30px> </td -->
-				<td><a href='admin.php?action=feedback'>Messages</a></td>
-				<td width=30px> </td>
-				<td><a href='main.php?action=feedback'></a></td>
-				<td></td>
-				<td></td>
-			</tr>";
-		};
-
-		$content .= "
-		<tr>
-			<td><a href='main.php?action=allow' class='allow'></a></td>
-			<td width=30px> </td>
-			<td><a href='main.php?action=process' class='process' ></a></td>
-			<td width=30px> </td>
-			<td><a href='main.php?action=completed' class='completed'></a></td>
-			<td width=30px> </td>
-			<td><a href='main.php?action=top100' class='top100'></a></td>
-			<td width=30px> </td>
-			<td><a href='main.php?action=feedback_my' class='feedback'></a></td>
-		</tr>";
-
-		$content .= "</table>";
-		return $content;
-	};
-	//---------------------------------------------------------------------
-	function print_score_name()
-	{
-		return " <table width=100%>
-				<tr>
-					<td  >
-						<form method='POST' action='?action=recalc_score'> 
-							Your Score: <font size='6' color='#999999'> ".$_SESSION['score']." </font>
-							<input name = 'refresh_reit' value='recalculate score' type='submit'>
-						</form>	
-					</td>
-
-					<td align='right'>
-						<form method='POST' action='index.php'>
-
-								Your Nickname: <font size='6' >".$_SESSION['nickname']."</font>;
-							<input name = 'exit' value='Exit' type='submit'>
-						</form>
-					</td>
-
-				</tr>
-			</table>";
-	};
-	//---------------------------------------------------------------------
-	function print_main_page( $title, $content )
-	{
-		echo "<html>";
-		print_head( $title );
-
-		echo "<body class='main'>
-		<center>
-		<table width='100%' height='100%'>
-			<tr>
-				<td>
-					<img src='images/minilogo.jpg'/>
-				</td>
-				<td align='left' valign = 'top' width='100%'>
-					<hr>
-						".print_score_name()."
-					<hr>
-						".print_menu()."
-					<br>
-				</td>
-			</tr>
-			<tr>
-				<td height='100%' colspan='2' valign='top'>
-				<center>
-				".$content."
-				</center>
-				</td>
-			</tr>
-		</table>
-		</center>
-		</body>
-		</html> ";
-
-	};
-	//---------------------------------------------------------------------
+	
 	function quest_error()
 	{
 		return "404 quest not found ;)";
 	};
 	//---------------------------------------------------------------------
+	
 	class typefield_base
 	{
 	    function cl_typefield()

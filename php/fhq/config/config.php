@@ -4,7 +4,31 @@
 	$db_userpass = "freehackquest_u";
 	$db_namedb = "freehackquest";
 	$site_name = "free-hack-quest";
-	$httpname = "http://localhost/fhq/";
+	$httpname = "";
+	
+	// configure list of collections
+	$config = array();
+	$config['db'] = array();
+	$config['db']['host'] = "localhost";
+	$config['db']['username'] = "freehackquest_u";
+	$config['db']['userpass'] = "freehackquest_u";
+	$config['db']['dbname'] = "freehackquest";
+	$config['httpname'] = "http://localhost/fhq/";
+	
+	/*
+	$config['collection']["Coins"] = "collection-coins/index.php";
+	$config['collection']["My Films New"] = "collection-films2/index.php";
+	$config['collection']["My Books"] = "collection-book/index.php";
+	$config['collection']["My Films Old"] = "collection-films/index.php";
+	$config['collection']["Example"] = "example/index.php";
+*/
+	// configure for connection to database
+	
+	
+	
+	
+	
+	// other configuration
 	
 	/*
 		//freehackquest.keva.su

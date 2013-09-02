@@ -1,19 +1,19 @@
-<?
-	include_once "basepage.php";
-
-	if( !isset($_SESSION['iduser']) && !isset($_SESSION['nickname']))
+<?	
+	include_once "engine/fhq.php";
+		
+	$security = new fhq_security();
+		
+	if(!$security->isLogged())
 	{
 		refreshTo("index.php");
 		return;
 	};
-
-	$exp = $_SESSION['score'];
-	$role = $_SESSION['role'];
-	$username = $_SESSION['nickname'];
-	$userid = $_SESSION['iduser'];
 	
-	$db = new database;
-	$db->connect();
+/*  $role = $_SESSION['role'];
+	$username = $_SESSION['nickname'];
+	$userid = $_SESSION['iduser'];*/
+
+	$db = new fhq_database();
 	
 
 	$content = "";
@@ -22,68 +22,26 @@
 	if(isset($_GET['action'])) $action = $_GET['action'];
 
 	$msg_error = "404 quest not found ;)";
-	
-	$score = $_SESSION['score'];
-	
-	if( !is_numeric($score) ) 
-	{ 
-		$score = 0; 
-		$_SESSION['score'] = 0; 
-	};
-		
-	$iduser = $_SESSION['iduser'];
+	$iduser = $security->iduser();
 	//echo $iduser."<br>";
 
 	if( $action == "allow" )
-	{
-		$title = "Allow Quests";
-		$query = "SELECT
-				quest.idquest,
-				quest.name,
-				quest.score,
-				quest.short_text,
-				quest.tema
-			FROM quest
-			WHERE
-			(idquest NOT IN (SELECT idquest FROM userquest WHERE userquest.iduser = $iduser)) AND (min_score <= $score )
-			ORDER BY quest.score DESC
-			";
-
-		//$content .= print_list_quests( $db, $query, "Allow", "#032e03", "#011101" );
-		$content .= print_list_quests( $db, $query, "Allow" );
-
+	{	
+		$page = new fhq_page_listofquests('allow');
+		echo_mainpage($page);
+		exit;
 	}
 	else if( $action == "process" )
 	{
-		$title = "Process Quests";
-		$score = $_SESSION['score'];
-
-		$query = "
-		SELECT
-			quest.idquest, quest.name,
-			quest.score, quest.short_text, quest.tema
-		FROM userquest
-		INNER JOIN quest ON quest.idquest = userquest.idquest
-		WHERE (userquest.iduser = $iduser)
-		AND (userquest.stopdate = '0000-00-00 00:00:00')
-		LIMIT 0,100; ";
-
-		$content .= print_list_quests( $db, $query, "Process" );
+		$page = new fhq_page_listofquests('process');
+		echo_mainpage($page);
+		exit;
 	}
 	else if( $action == "completed" )
 	{
-		$title = "Completed Quests";
-
-		$query = "SELECT
-			quest.idquest, quest.name, 
-			quest.score, quest.short_text, quest.tema
-		FROM userquest
-		INNER JOIN quest ON quest.idquest = userquest.idquest
-		WHERE (userquest.iduser = $iduser)
-		AND (userquest.stopdate <> '0000-00-00 00:00:00')
-		LIMIT 0,100; ";
-
-		$content .= print_list_quests( $db, $query, "Completed" );
+		$page = new fhq_page_listofquests('completed');
+		echo_mainpage($page);
+		exit;
 	}
 	else if( $action == "top100" )
 	{
@@ -104,7 +62,7 @@
 			    $name = "nonick";
 			};
 			//$name = base64_decode( $name );
-			$content .= ($i+1)." $name (score: $score );";
+			$content .= ($i+1)." $name (score: ".$security->score()." );";
 			if( $role == 'admin' ) $content .= "<br><font size='2'>email: ".$email."</font><br>";
 
                         $content .= "<br>";
@@ -120,8 +78,7 @@
                 {
                    	$idquest = $_GET['id'];
 			$title = "Quest";
-			if( !is_numeric($score) ) { $score = 0; $_SESSION['score'] = 0; };
-			$query = "SELECT * FROM quest WHERE (idquest = $idquest) AND (min_score <= $score ) LIMIT 0,1";
+			$query = "SELECT * FROM quest WHERE (idquest = $idquest) AND (min_score <= ".$security->score()." ) LIMIT 0,1";
 			$result = $db->query( $query );
 			$count = $db->count( $result );
 			if( $count == 1)
@@ -204,7 +161,7 @@
                 	$content .= "take it";	
                 	$idquest = $_GET['id'];
                 	
-                	$query = "SELECT * FROM quest WHERE (idquest = $idquest) AND (min_score <= $score ) LIMIT 0,1";
+                	$query = "SELECT * FROM quest WHERE (idquest = $idquest) AND (min_score <= ".$security->score()." ) LIMIT 0,1";
 			$result = $db->query( $query );
 			$count = $db->count( $result );
                 	if($count == 1 )
@@ -231,7 +188,7 @@
                 	$idquest = $_GET['id'];
                 	$answer = base64_encode(htmlspecialchars($_POST['answer']));
                 	//echo base64_decode($_POST['answer']);
-                	$query = "SELECT idquest FROM quest WHERE (idquest = $idquest) AND (min_score <= $score ) AND (answer = '$answer') LIMIT 0,1";
+                	$query = "SELECT idquest FROM quest WHERE (idquest = $idquest) AND (min_score <= ".$security->score()." ) AND (answer = '$answer') LIMIT 0,1";
                 	//echo $query;
 			$result = $db->query( $query );
 			$count = $db->count( $result );
@@ -303,241 +260,6 @@
 		refreshTo("main.php?action=allow");
 	};
 
-	print_main_page("Free Hack Quest - ".$title, $content );
+	echo_mainpage( new simple_page($title, $content) );
 	exit;
 ?>
-
-
-
-<html>
-
-	<? print_head(  ); ?>
-
-<body class="main">
-<center>
-
-<table width='100%' height='100%'>
-	<tr>
-		<td> 
-			<img src='images/minilogo.jpg'/>
-		</td>
-		<td align='left' valign = 'top' width='100%'>
-			<hr>
-				<? print_score_name() ?>
-			<hr>
-				<? print_menu(); ?>
-			<br>
-		</td>
-	</tr>
-	<tr>
-		<td height='100%' colspan='2' valign='top'>
-		<center>
-		<?
-			//вывод задания
-			if( isset( $_GET['idquest'] ) )
-			{
-				$idquest = $_GET['idquest'];
-
-				$db = mysql_connect( $db_host, $db_username, $db_userpass);
-				mysql_select_db( $db_namedb, $db);
-
-				$query = "select * from quests where idquest = $idquest";
-				$result = mysql_query( $query );
-				
-				if( mysql_num_rows( $result ) == 1 )
-				{
-					$quest_name = mysql_result($result, 0, 'name');
-					$quest_score = mysql_result($result, 0, 'score');
-					$quest_id = mysql_result($result, 0, 'idquest');
-					$quest_stext = mysql_result($result, 0, 'short_text');
-					$quest_text = mysql_result($result, 0, 'text');
-					$quest_subjects = mysql_result($result, 0, 'tema');
-				};
-								
-				echo "
-	<table width=100%>
-		<tr>
-			<td width=15%></td>
-			<td><hr></td>
-			<td width=15%></td>
-		</tr>
-
-		<tr>
-			<td width=15%></td>
-			<td>
-	Name: $quest_name<br>
-	Short Text: $quest_stext<br>
-	Score: + $quest_score<br>
-	Subjects: $quest_subjects<br>
-
-	</td>
-		<td width=15%></td>
-	</tr>
-
-
-
-	<tr>
-		<td width=15%></td>
-		<td><hr></td>
-		<td width=15%></td>
-	</tr>
-
-	<tr>
-		<td width=15%></td>
-		<td>Text: $quest_text</td>
-		<td width=15%></td>
-	</tr>
-
-	<tr>
-		<td width=15%></td>
-		<td><hr></td>
-		<td width=15%></td>
-	</tr>
-
-	<tr>
-		<td width=15%></td>
-		<td>
-		Статистика:<br>
-		number of people have completed the task: ???<br>
-		Рейтинг квеста (для тех кто выполнил): ??? ( <a href='#'> + like</a>/ <a href='#'> - sucks</a> ) тут список кому понравилось <br>
-		</td>
-		<td width=15%></td>
-	</tr>
-
-	<tr>
-		<td width=15%></td>
-		<td><hr></td>
-		<td width=15%></td>
-	</tr>
-
-	<tr>
-		<td width=15%></td>
-		<td><form method='GET' action='main.php'> 
-				<input type='submit' name='take' value='Take'>
-				<input type='hidden' name='idquest' value='$idquest'>
-			</form></td>
-		<td width=15%></td>
-	</tr>
-<!-- 
-	<tr>
-		<td width=15%></td>
-		<td>Answer: <form> <input type='text' size=50 name='answer' value=''> <input type='submit' name='ok' value='send'></form></td>
-		<td width=15%></td>
-	</tr>
--->
-</table>
-";
-
-
-$idquest;
-			};
-
-
-			
-			
-			if( $quests == "allow" )
-			{
-				
-
-				//$query = "select * from quests where min_score <= $score LIMIT 0,50;";
-				
-				
-			}
-			else if( $quests == "process" )
-			{
-				$score = $_SESSION['score'];
-				$iduser = $_SESSION['iduser'];
-
-				$query = "SELECT
-						quests.idquest, 
-						quests.name, 
-						quests.score, 
-						quests.short_text, 
-						quests.tema
-					FROM userquest
-					INNER JOIN quests ON quests.idquest = userquest.idquest
-					WHERE (userquest.iduser = $iduser)
-					AND (userquest.stopdate = '0000-00-00 00:00:00') 
-					LIMIT 0,100; ";
-				
-				$result = $db->query( $query );
-				
-
-				$count = mysql_num_rows( $result );
-				
-				//<font color='#FF0000' >Вы не сможете ознакомитсья с текстом задания, пока не возьмете квест .</font><br><br>				
-
-				echo "
-				Process (".$count."):<br><br>
-				<table cellspacing=0 cellpadding=10 width=100%>
-				";
-
-				print_list_quests( $result , "#032e03", "#011101" );
-
-				echo "</table>";				
-			}
-			else if( $quests == "completed" )
-			{
-				$iduser = $_SESSION['iduser'];
-
-				$query = "SELECT
-						quests.idquest, 
-						quests.name, 
-						quests.score, 
-						quests.short_text, 
-						quests.tema
-					FROM userquest
-					INNER JOIN quests ON quests.idquest = userquest.idquest
-					WHERE (userquest.iduser = 1)
-					AND (userquest.stopdate <> '0000-00-00 00:00:00') 
-					LIMIT 0,100; ";
-				
-				$result = $db->query( $query );
-				
-				$count = mysql_num_rows( $result );
-				
-				//<font color='#FF0000' >Вы не сможете ознакомитсья с текстом задания, пока не возьмете квест .</font><br><br>				
-
-				echo "
-				Completed (".$count."):<br><br>
-				<table cellspacing=0 cellpadding=10 width=100%>
-				";
-
-				print_list_quests( $result , "#032e03", "#011101" );
-
-				echo "</table>";	
-			}
-			else if( $quests == "top100" )
-			{
-				$query = "SELECT score, nick FROM usersy ORDER BY score LIMIT 0,100";
-				$result = $db->query( $query );
-				$count = $db->count( $result );
-				for( $i = 0; $i < $count; $i++ )
-				{
-					$name = mysql_result( $result, $i, 'nick' );
-					$score = mysql_result( $result, $i, 'score' );
-					//$name = base64_decode( $name );
-					echo  ($i+1)." $name (score: $score ); <br>";
-				};
-			}
-			else if( $quests == "feedback" )
-			{
-				echo "Just no";
-			}
-			else
-			{
-				echo "123";
-				refreshTo("main.php?quests=allow");
-			}
-
-		?>
-		</center>
-
-		</td>
-	</tr>
-</table>
-
-</center>
-
-</body>
-</html>

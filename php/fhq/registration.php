@@ -1,19 +1,18 @@
 <?
-include "basepage.php";
-include "echo_shortpage.php";
+include_once "engine/fhq.php";
 
 // ---------------------------------------------------------------------
 
 class fhq_registration
 {
-	function getTitle()
+	function title()
 	{
-		return "Registration<br><font size=2><a href='index.php'>&larr; go to main page</a></font>";
+		return 'Registration<br><font size=2><a href="index.php">&larr; go to main page</a></font>';
 	}
 
-	function getContent()
+	function echo_content()
 	{
-		return '
+		echo '
 			<form method="POST" action="">
 				<table>
 					<tr>
@@ -73,20 +72,19 @@ function sendQuery(str)
 
 class fhq_foractivate
 {
-	function getTitle()
+	function title()
 	{
-		return "Activate account<br><font size=2><a href='index.php'>&larr; go to main page</a></font>";
+		return 'Activate account<br><font size=2><a href="index.php">&larr; go to main page</a></font>';
 	}
 	
-	function getContent()
+	function echo_content()
 	{
 		 // registration.php
 		// return ' blabla ';
 		
 		$foractivate = $_GET['foractivate'];
 		
-		$db = new database();
-		$db->connect();
+		$db = new fhq_database();
 		$query = "select * from user where password = 'notactivated$foractivate';";
 		$result = $db->query($query);
 		if( mysql_num_rows( $result ) == 1 )
@@ -127,11 +125,11 @@ Now you could begin playing in this game, it here: $httpname</a>
 			
 			mail($login, $subject, $message, $headers);
 			
-			return 'Your account was activated.<br>Information for logon was sended to your email.';
+			echo 'Your account was activated.<br>Information for logon was sended to your email.';
 		}
 		else
 		{
-			return 'It is not exists or already activated.';
+			echo 'It is not exists or already activated.';
 		}
 	}
 };
@@ -140,32 +138,27 @@ Now you could begin playing in this game, it here: $httpname</a>
 
 if(isset($_GET['email']) && isset($_GET['captcha']))
 {
-		$captcha = $_GET['captcha'];
-		
+		$captcha = $_GET['captcha'];		
 		$rem_captcha = $_SESSION['captcha_reg'];
 		if( strtoupper($captcha) != strtoupper($rem_captcha) )
 		{
-			echo "Captcha is not correct,<br> please 'Refresh captcha' and try again";
+			echo '<font color=#ff0000>Captcha is not correct,<br> please "Refresh captcha" and try again</font>';
 			exit;
 		};
-		
 		$email = $_GET['email'];
-		
-		
+
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			echo "Invalid e-mail address.";
+			echo "<font color=#ff0000>Invalid e-mail address.</font>";
 			exit;
 		}
 		
-		$username = base64_encode(strtolower($email));
-		
-		$db = new database();
-		$db->connect();
+		$username = base64_encode(strtolower($email));	
+		$db = new fhq_database();
 		$query = "select * from user where username = '$username';";
 		$result = $db->query($query);
-		if( mysql_num_rows( $result ) >= 1 )
+		if( $db->count( $result ) >= 1 )
 		{
-			echo "This e-mail was already registered.";
+			echo "<font color=#ff0000>This e-mail was already registered.</font>";
 			exit;
 		};
 		
@@ -178,7 +171,7 @@ if(isset($_GET['email']) && isset($_GET['captcha']))
 		{
 			include "config/config.php";
 			
-			$subject = "Activate your account";
+			$subject = "Your account is activated.";
 			
 			$message = "
 <html>
@@ -200,10 +193,10 @@ For activate your account, please visit this page:<br>
 
 			mail($email, $subject, $message, $headers);
 
-			echo "Next instruction was sent letter on your e-mail.";
+			echo "Information was sent on your e-mail.";
 			exit;
 		};
-		echo "Registration is denied.";		
+		echo "<font color=#ff0000>Registration is denied.</font>";
 		exit;
 };
 
@@ -211,14 +204,12 @@ For activate your account, please visit this page:<br>
 
 if(isset($_GET['foractivate']))
 {
-	$page = new fhq_foractivate();
-	echo_shortpage($page);
+	echo_shortpage(new fhq_foractivate());
 	exit;
 };
 
 // ---------------------------------------------------------------------
 
-$page = new fhq_registration();
-echo_shortpage($page);
+echo_shortpage(new fhq_registration());
 
 exit;
