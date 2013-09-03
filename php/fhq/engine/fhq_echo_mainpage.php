@@ -41,9 +41,9 @@ function echo_mainpage($page)
 			<td align="left" valign = "top" width="100%">
 				<hr>
 					';
-	echo_score();
+	// echo_score();
 	'<hr>';
-	echo_menu();
+	echo_panel();
 	
 	echo '
 				<br>
@@ -51,16 +51,16 @@ function echo_mainpage($page)
 		</tr>
 		<tr>
 			<td height="100%" colspan="2" valign="top">
-			<center>
+			<center id="content_page">
 			';
 	echo $page->echo_content();
-	echo "
+	echo '
 			</center>
 			</td>
 		</tr>
 	</table>
 	</center>
 	</body>
-	</html> ";
+	</html> ';
 }
 ?>
