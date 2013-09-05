@@ -82,7 +82,7 @@ class fhq_security
 	}
 	function nick() { 
 		return ($this->isLogged()) ? $_SESSION['user']['nick'] : ''; 
-	}
+	}	
 	function iduser() { 
 		return ($this->isLogged() && is_numeric($_SESSION['user']['iduser'])) ? $_SESSION['user']['iduser'] : ''; 
 	}

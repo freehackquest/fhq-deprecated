@@ -26,23 +26,7 @@ function echo_panel()
 
 echo '
 <script>
-function exit()
-{
-  if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
-     xmlhttp=new XMLHttpRequest();
-  };  
-  xmlhttp.onreadystatechange=function()
-  {
-    if (xmlhttp.readyState==4 && xmlhttp.status==200)
-	{
-		if(xmlhttp.responseText == "OK")
-			window.location.href = "index.php";
-	}
-  }
-  xmlhttp.open("GET","index.php?exit",true);
-  xmlhttp.send();
-}
+
 
 function dr_zoyberg()
 {
@@ -70,23 +54,22 @@ function dr_zoyberg()
 </script>
 ';
 
-
 	echo '<table width=100%>
 			<tr>
 				<td >
 					Your name are <a href="" >'.$security->nick().'</a>,
 					your score is <font size=5>'.$security->score().'</font> 
-					and you can try <a href="" >recalculate score</a>, 
+					and you can try <a href="javascript:void(0);" onclick="recalculate_score();">recalculate score</a>, 
 					also you can look your quests: 
-					<a href="" >All</a>, 
-					<a href="main.php?action=allow" >Allow</a>,
-					<a href="main.php?action=process" >Process</a>,
-					<a href="main.php?action=completed" >Completed</a>. 
-					You can to write message to <a href="main.php?action=feedback_my" >Feedback</a>.
-					Also you can to look <a href="main.php?action=top100" >"Top 100"</a>.
+					<a href="javascript:void(0);" onclick="load_content_page(\'quests_all\');">All</a>, 
+					<a href="javascript:void(0);" onclick="load_content_page(\'quests_allow\');">Allow</a>,
+					<a href="javascript:void(0);" onclick="load_content_page(\'quests_process\');">Process</a>,
+					<a href="javascript:void(0);" onclick="load_content_page(\'quests_completed\');">Completed</a>. 
+					You can to write message to <a href="javascript:void(0);" onclick="load_content_page(\'feedback_my\');">Feedback</a>.
+					Also you can to look <a href="javascript:void(0);" onclick="load_content_page(\'top100\');">"Top 100"</a>.
 					And of course you can 
 					<a href="javascript:void(0);" onclick="exit();">logout</a>.
-					And I almost forgot... You can to look at <a href="javascript:void(0);" onclick="dr_zoyberg();">Dr. Zoyberg</a>. Do it.
+					And I almost forgot... You can to look at <a href="javascript:void(0);" onclick="load_content_page(\'dr_zoyberg\');">Dr. Zoyberg</a>. Do it.
 			</tr>
 		</table>';
 };

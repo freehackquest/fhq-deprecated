@@ -1,7 +1,9 @@
 <?php 
-	include_once("classDB.php");
+	include_once "fhq_security.php";
+	include_once "fhq_database.php";
+	
 	//---------------------------------------------------------------------
-	class feedback
+	class fhq_feedback
 	{
 		function selectType( $value, $name )
 		{
@@ -11,7 +13,7 @@
 			return $arr;		
 		}
 		
-		function getForm( $action, $method )
+		function echo_insert_form( $action, $method )
 		{
 			$arr;
 			
@@ -31,25 +33,26 @@
 					
 				$options .= "\t <option value='".$arr[$i]['value']."' $checked> ".$arr[$i]['display_name']." </option> \n";
 			};
-					
 
-		
 			//if( $type == "Complaint" ) $complaint = 
 		
-			$content = "
-				<form action='$action' method='$method'>
+			$content = '
 				Send to admin:
 				<br>
-				<select width=80% name='type'>
-					$options
+				<select width=80% id="feedback_type">
+					'.$options.'
 				</select>
 				<br><br>
-				<textarea class='full_text' name='full_text'>".$this->full_text."</textarea>
+				<textarea class="full_text" id="full_text">'.$this->full_text.'</textarea>
 				<br><br>
-				<input type='submit' value='send'/>
-				</form>
-				";
-			return $content;
+				<a href="javascript:void(0);" onclick="
+					var e = document.getElementById(\'feedback_type\');
+					var feedback_type = e.options[e.selectedIndex].value;
+					var full_text = document.getElementById(\'full_text\').value;
+					load_content_page(\'feedback_add\', {\'feedback_type\' : feedback_type, \'full_text\' : full_text });
+				">send</a>
+				';
+			echo $content;
 		}
 		
 		var $full_text, $type, $username, $iduser;
@@ -57,25 +60,28 @@
 		function check()
 		{
 			$errors = "";
-			if(strlen($this->full_text) < 30) $errors .= "Length description must be > 30.<br>";
+			if(strlen($this->full_text) < 10) $errors .= "Length description must be >= 10.<br>";
 			return $errors;
 		}
 		
-		function getSubMenu()
+		function echo_menu()
 		{
-		    $table = "";
-		    $table .= "<table>";
-		    $table .= "<tr><td width='30px'/>";
-		    $table .= "<td><a href='?action=feedback_my'>My Feedbacks</a></td><td width='30px'/>";
-		    $table .= "<td><a href='?action=feedback_add'>New Feedback</a></td><td width='30px'>";
-		    $table .= "</tr>";
-		    $table .= "</table><br><br>";
-		    return $table;
+			echo '
+	<table>
+		<tr><td width="30px"/>
+		<td><a href="javascript:void(0);" onclick="load_content_page(\'feedback_my\');">My Feedbacks</a></td><td width="30px"/>
+		<td><a href="javascript:void(0);" onclick="load_content_page(\'feedback_add\');">New Feedback</a></td><td width="30px">
+		</tr>
+		</table><br><br>
+';
 		}
-		function add( &$db )
+		function add()
 		{
+			$security = new fhq_security();
+			$db = new fhq_database();
+			
 			$query = "INSERT INTO feedback( typeFB, full_text, author, dt ) 
-				VALUES(\"".strtodb($this->type)."\",\"".strtodb($this->full_text)."\", ".$this->iduser.", now() )";
+				VALUES(\"".strtodb($this->type)."\",\"".strtodb($this->full_text)."\", ".$security->iduser().", now() )";
 			//echo $query;
 			$result = $db->query($query);
 			return $result;
@@ -87,8 +93,12 @@
 		    return md5("advgf_".$var1."%^789".$var2."_______".$var3."+++++++++".$var4."***===dkjfhksdf9088".$var5);
 		}
 		
-		function getList( &$db , $admin, $userid)
+		function echo_list()
 		{
+			$security = new fhq_security();
+			$db = new fhq_database();
+			$admin = ($security->isAdmin()) ? "yes" : "no";
+
 			$cl_F = "#1e1c16";
 			$cl_S = "#0d0c09";
 			$color1 = "";
@@ -97,8 +107,9 @@
 			$where = "";
 			if( $admin != "yes" )
 			{
-			    $where = " WHERE feedback.author = $userid ";
+			    $where = ' WHERE feedback.author = '.$security->iduser();
 			}
+			
 			$query = "SELECT id, typeFB, username, full_text, dt FROM feedback INNER JOIN user ON feedback.author = user.iduser $where ORDER BY id DESC;";
 			//echo $query;
 			$result = $db->query($query);
@@ -125,8 +136,7 @@
 				<tr bgcolor='$color1' cellpadding='6' >
 					
 					<td width='100%' colspan='2'>
-					    [$author, $dt, $typeFB] 
-					    <pre>$full_text</pre><br/>
+					    <pre>[$author, $dt, $typeFB]<br><br>$full_text</pre><br/>
 					</td>
 					
 				</tr>";
@@ -145,65 +155,66 @@
 				  $author_msg = base64_decode($author_msg);
 				  $list .= "<tr> <td/> 
 				  <td bgcolor='#000000'> 
-				    [$author_msg,$dt_msg]:<br><pre>$msg</pre> </td> 
+				   <pre>[$author_msg,$dt_msg]:<br>$msg</pre> </td> 
 				  </tr>";
 				};
 				
-				$token = $this->create_token( $id, $userid, "1", "2", "3" );
+				$token = $this->create_token( $id, $security->iduser(), "1", "2", "3" );
 				
-				$list .= "<tr>
+				
+				$list .= '
+				<tr>
 				    <td/>
-				    <td bgcolor='#000000'>
-				    Answer:
-				    <form method='POST'>
-					<!-- textarea name='answer'></textarea -->
-					<input name='answer_text' type='text'/>
-					<input type='submit' value='Send'/>
-					<input type='hidden' name='feedback_id' value='$id'/>
-					<input type='hidden' name='feedback_id_token' value='$token'>
-				    </form>
+				    <td bgcolor="#000000">
+						Answer:
+						<!-- onkeydown="if (event.keyCode == 13) send_answer'.$id.'();" -->
+						<input id="answer_text" type="text"/>
+						<input type="hidden" id="feedback_id" value="'.$id.'"/>
+						<input type="hidden" id="feedback_id_token" value="'.$token.'">
+						
+						<script language="JavaScript">
+							function send_answer'.$id.'()
+							{
+								alert(\'111\');
+								// var answer_text = document.getElementById(\'answer_text\').value;
+								// load_content_page(\'feedback_add\', { \'feedback_id_token\': \''.$token.'\', \'answer_text\' : answer_text, \'feedback_id\' : \''.$id.'\'});
+							};
+						</script>
+						
+						<a href="javascript:void(0);" onclick="alert(\'112\'); alert(\'113\'); send_answer'.$id.'();">Send</a>
 				    </td>
-				</tr>
-				\n";
+				</tr>';
 			};
 			$list .= "</table></center>";
-			return $list;
+			echo $list;
 		}
 		
-		function recvAnswer(&$db, &$check, $userid)
+		function recvAnswer()
 		{
-		
-		    if( !isset($_POST['answer_text']))
-			return false;
-		
-		    $answer_text = getFromPost('answer_text');
-		    $feedback_id = getFromPost('feedback_id');
-		    $feedback_id_token = getFromPost('feedback_id_token');
-		
+		    if( !isset($_GET['answer_text']))
+				return "error feedback_2";
+
+		    $answer_text = htmlspecialchars($_GET['answer_text']);
+		    $feedback_id = $_GET['feedback_id'];
+		    $feedback_id_token = $_GET['feedback_id_token'];
+
 		    //echo $answer_text;
 		    if(strlen($answer_text) < 2 )
-		    {
-			$check .= "fuck!";
-			return true;
-		    }
+				return "It's very short answer... ";
 		    
-		    $token = $this->create_token($feedback_id, $userid, "1", "2", "3");
+		    if(!is_numeric($feedback_id))
+				return "error(feedback:3) feedback_id must be int";
+		    
+		    $security = new fhq_security();
+			$db = new fhq_database();
+			
+		    $token = $this->create_token($feedback_id, $security->iduser(), "1", "2", "3");
 		    if( $feedback_id_token != $token )
-		    {
-			$check .= "fuck2!!! userid: $userid";
-			return true;
-		    }
+				return "error(feedback:4) It is not you!!! you have id: ". $security->iduser();
 		    
-		    $query = "INSERT INTO feedback_msg(feedback_id, msg, author, dt) VALUES($feedback_id, \"$answer_text\", $userid, now())";
+		    $query = "INSERT INTO feedback_msg(feedback_id, msg, author, dt) VALUES($feedback_id, \"$answer_text\", ".$security->iduser().", now())";
 		    $result = $db->query($query);
-		    if($result != '1')
-		    {
-			echo $query;
-			return true;
-		     };
-		     
-		     return true;
-		
+		    if($result != '1') return "error(feedback:5) query is not right: ".$query;
 		}
 	};
 	//---------------------------------------------------------------------

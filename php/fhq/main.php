@@ -9,12 +9,7 @@
 		return;
 	};
 	
-/*  $role = $_SESSION['role'];
-	$username = $_SESSION['nickname'];
-	$userid = $_SESSION['iduser'];*/
-
 	$db = new fhq_database();
-	
 
 	$content = "";
 	$title = "";
@@ -257,7 +252,7 @@
 	}
 	else
 	{
-		refreshTo("main.php?action=allow");
+		// refreshTo("main.php?action=allow");
 	};
 
 	echo_mainpage( new simple_page($title, $content) );

@@ -2,6 +2,15 @@
 
 include_once "engine/fhq.php";
 
+
+$security = new fhq_security();
+		
+if($security->isLogged())
+{
+	refreshTo("main.php");
+	return;
+};
+	
 class fhq_logon
 {
 	function title()

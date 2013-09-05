@@ -31,7 +31,7 @@ function echo_mainpage($page)
 	echo "<html>";
 	echo_head( $page );
 
-	echo '<body class="main">
+	echo '<body onload="load_content_page(\'user_info\');"class="main">
 	<center>
 	<table width="100%" height="100%">
 		<tr>
@@ -51,11 +51,18 @@ function echo_mainpage($page)
 		</tr>
 		<tr>
 			<td height="100%" colspan="2" valign="top">
-			<center id="content_page">
-			';
-	echo $page->echo_content();
-	echo '
-			</center>
+				<center id="content_page">
+					<div id="content_page"/>
+				</center>
+				
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<center>
+					<font size=1>© 2011-2013 sea-kg</font>
+					<pre><div id="debug_info"/></pre>
+				</center>
 			</td>
 		</tr>
 	</table>

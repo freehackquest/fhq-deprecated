@@ -97,10 +97,11 @@ class fhq_page_listofquests
 
 		if( $count == 0) 
 		{
-			return "no quest";
+			echo "No found quests";
+			return;
 		};
 
-		$content .= "$type($count):<br>
+		echo "$type($count):<br>
 			<table cellspacing=0 cellpadding=10 width=100%>
 
 		<tr>
@@ -125,7 +126,7 @@ class fhq_page_listofquests
 
 			if( $i % 2 == 0 ) $color = $color1; else $color = $color2;
 
-			$content .= "
+			echo "
 				<tr bgcolor = ".$color.">
 					<td width=15%> </td>
 					<td><a href='main.php?action=quest&id=".$quest_id."'><b>#$quest_id</b> ".$quest_name."</a></td>
@@ -139,8 +140,7 @@ class fhq_page_listofquests
 				";
 
 		};
-		$content .= "</table>";
-		return $content;
+		echo "</table>";
 	}
 };
 ?>
