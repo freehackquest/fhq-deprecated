@@ -101,8 +101,10 @@
 		echo '<pre>
 Your name: '.$security->nick().'
 Your score: '.$security->score().'
+Role: '.$security->role().'
 Your place: place / all
 </pre>';
+
 		exit;
 	}
 	else if($content_page == "view_quest")

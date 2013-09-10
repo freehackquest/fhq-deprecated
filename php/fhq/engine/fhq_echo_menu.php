@@ -5,24 +5,7 @@ function echo_panel()
 {
 	$security = new fhq_security();
 	
-	//add admins menu 
-	/*if( $_SESSION['role'] == 'admin' )
-	{
-		echo "
-		<tr bgcolor='#760505'>
-			<td>Admin's Panel:</td>
-			<td width=30px> </td>
-			<td><a href='quest.php?action=add'> Add New Quest</a></td>
-			<td width=30px> </td>
-			<!-- td><a href='main.php?action=completed'> Users </a></td -->
-			<!-- td width=30px> </td -->
-			<td><a href='admin.php?action=feedback'>Messages</a></td>
-			<td width=30px> </td>
-			<td><a href='main.php?action=feedback'></a></td>
-			<td></td>
-			<td></td>
-		</tr>";
-	};*/
+
 
 echo '
 <script>
@@ -72,6 +55,19 @@ function dr_zoyberg()
 					And I almost forgot... You can to look at <a href="javascript:void(0);" onclick="load_content_page(\'dr_zoyberg\');">Dr. Zoyberg</a>. Do it.
 			</tr>
 		</table>';
+		
+	//add admins menu 
+	if( $security->isAdmin())
+	{
+		echo '
+		<table cellpadding="10px" >
+		<tr bgcolor="#760505">
+			<td>
+				Admin\'s Panel: <a href="quest.php?action=add">add new quest</a> , <a href="admin.php?action=feedback">messages</a>
+			</td>
+		</tr>
+		</table>';
+	};
 };
 //---------------------------------------------------------------------	
 

@@ -168,20 +168,11 @@
 				    <td bgcolor="#000000">
 						Answer:
 						<!-- onkeydown="if (event.keyCode == 13) send_answer'.$id.'();" -->
-						<input id="answer_text" type="text"/>
-						<input type="hidden" id="feedback_id" value="'.$id.'"/>
-						<input type="hidden" id="feedback_id_token" value="'.$token.'">
-						
-						<script language="JavaScript">
-							function send_answer'.$id.'()
-							{
-								alert(\'111\');
-								// var answer_text = document.getElementById(\'answer_text\').value;
-								// load_content_page(\'feedback_add\', { \'feedback_id_token\': \''.$token.'\', \'answer_text\' : answer_text, \'feedback_id\' : \''.$id.'\'});
-							};
-						</script>
-						
-						<a href="javascript:void(0);" onclick="alert(\'112\'); alert(\'113\'); send_answer'.$id.'();">Send</a>
+						<input id="answer_text_'.$id.'" type="text"/>
+						<a href="javascript:void(0);" onclick="							
+							var answer_text = document.getElementById(\'answer_text_'.$id.'\').value;
+							load_content_page(\'feedback_add\', { \'feedback_id_token\': \''.$token.'\', \'answer_text\' : answer_text, \'feedback_id\' : \''.$id.'\'});
+						">Send</a>
 				    </td>
 				</tr>';
 			};

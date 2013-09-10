@@ -5,6 +5,14 @@ include_once "engine/fhq.php";
 
 $security = new fhq_security();
 		
+if( isset( $_GET['exit']) )
+{
+	$security = new fhq_security();
+	$security->logout();
+	echo "OK";
+	exit;
+};
+
 if($security->isLogged())
 {
 	refreshTo("main.php");
@@ -82,13 +90,7 @@ function sign_in()
 	}
 };
 
-if( isset( $_GET['exit']) )
-{
-	$security = new fhq_security();
-	$security->logout();
-	echo "OK";
-	exit;
-};
+
 
 if(isset($_SESSION['iduser']) && isset($_SESSION['email']))
 {

@@ -66,16 +66,16 @@ class fhq_security
 		return ($this->isLogged()) ? $_SESSION['user']['role'] : ''; 
 	}
 	function isAdmin() { 
-		return ($this->isLogged() && $_SESSION['user']['score'] == 'admin' ); 
+		return ($this->isLogged() && $_SESSION['user']['role'] == 'admin' ); 
 	}
 	function isUser() { 
-		return ($this->isLogged() && $_SESSION['user']['score'] == 'user' ); 
+		return ($this->isLogged() && $_SESSION['user']['role'] == 'user' ); 
 	}
 	function isTester() { 
-		return ($this->isLogged() && $_SESSION['user']['score'] == 'tester' ); 
+		return ($this->isLogged() && $_SESSION['user']['role'] == 'tester' ); 
 	}
 	function isGod() { 
-		return ($this->isLogged() && $_SESSION['user']['score'] == 'god' ); 
+		return ($this->isLogged() && $_SESSION['user']['role'] == 'god' ); 
 	}
 	function score() { 
 		return ($this->isLogged() && is_numeric($_SESSION['user']['score'])) ? $_SESSION['user']['score'] : 0; 
