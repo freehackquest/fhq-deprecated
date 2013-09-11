@@ -44,18 +44,7 @@ location!</p>
 	include_once("classFeedback.php");
 
 	//---------------------------------------------------------------------
-	function recalculate_score( &$db , $iduser )
-	{
-	        // echo "123";
-		$query = "SELECT SUM(quest.score) as sum_score FROM userquest INNER JOIN quest ON quest.idquest = userquest.idquest WHERE (userquest.iduser = $iduser) AND ( userquest.stopdate <> '0000-00-00 00:00:00' );";
-		$result = $db->query( $query );
-		$new_score = mysql_result($result, 0, 'sum_score');
-		$_SESSION['score'] = $new_score;
 
-		$query = "UPDATE user SET score = $new_score WHERE iduser = $iduser";
-		$result = $db->query( $query );
-	}
-	//---------------------------------------------------------------------
 	function parse_bb_code($text)	
 	{
 		$text = preg_replace('/\[(\/?)(b|i|u|s)\s*\]/', "<$1$2>", $text);

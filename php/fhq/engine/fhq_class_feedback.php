@@ -5,6 +5,13 @@
 	//---------------------------------------------------------------------
 	class fhq_feedback
 	{
+		var $full;
+		function fhq_feedback($full)
+		{
+			$security = new fhq_security();
+			if($full && $security->isAdmin())
+				$this->full = true;
+		}
 		function selectType( $value, $name )
 		{
 			$arr;
@@ -97,7 +104,7 @@
 		{
 			$security = new fhq_security();
 			$db = new fhq_database();
-			$admin = ($security->isAdmin()) ? "yes" : "no";
+			$admin = ($security->isAdmin()) ? true : false;
 
 			$cl_F = "#1e1c16";
 			$cl_S = "#0d0c09";
@@ -105,15 +112,15 @@
 			$color2 = "";
 			$list = "\n\n<!-- list -->\n\n <center><table width=100% cellpadding='5px' border='0px' cellspacing='5px'>\n";
 			$where = "";
-			if( $admin != "yes" )
-			{
+
+			if( !$admin )
 			    $where = ' WHERE feedback.author = '.$security->iduser();
-			}
 			
-			$query = "SELECT id, typeFB, username, full_text, dt FROM feedback INNER JOIN user ON feedback.author = user.iduser $where ORDER BY id DESC;";
+			$query = "SELECT id, typeFB, nick, username, full_text, dt FROM feedback INNER JOIN user ON feedback.author = user.iduser $where ORDER BY id DESC;";
 			//echo $query;
 			$result = $db->query($query);
 			$count = $db->count($result);
+			
 			for( $i = 0; $i < $count; $i++)
 			{
 				if( $i % 2 == 0 )
@@ -128,15 +135,19 @@
 				}
 				$id = mysql_result($result, $i, 'id');
 				$author = base64_decode(mysql_result($result, $i, 'username'));
+				$nick = mysql_result($result, $i, 'nick');
 				$typeFB = mysql_result($result, $i, 'typeFB');
 				$full_text = mysql_result($result, $i, 'full_text');
 				$dt = mysql_result($result, $i, 'dt');
+				
+				if($admin) $nick .= ', '.$author;
+				
 				$list .= 
 				"\n\n<tr height='20px'><td width='50px'><td><center></center></td></tr>
 				<tr bgcolor='$color1' cellpadding='6' >
 					
 					<td width='100%' colspan='2'>
-					    <pre>[$author, $dt, $typeFB]<br><br>$full_text</pre><br/>
+					    <pre>[$nick, $dt, $typeFB]<br><br>$full_text</pre><br/>
 					</td>
 					
 				</tr>";
@@ -151,11 +162,14 @@
 				  $msg = mysql_result($result_msg, $i_m, 'msg');
 				  $author_msg = mysql_result($result_msg, $i_m, 'username');
 				  $dt_msg = mysql_result($result_msg, $i_m, 'dt');
-				
+				  $nick_msg = mysql_result($result_msg, $i_m, 'nick');
 				  $author_msg = base64_decode($author_msg);
+				  
+				  if($admin) $nick_msg .= ','.$author_msg;
+
 				  $list .= "<tr> <td/> 
 				  <td bgcolor='#000000'> 
-				   <pre>[$author_msg,$dt_msg]:<br>$msg</pre> </td> 
+				   <pre>[$nick_msg,$dt_msg]:<br>$msg</pre> </td> 
 				  </tr>";
 				};
 				

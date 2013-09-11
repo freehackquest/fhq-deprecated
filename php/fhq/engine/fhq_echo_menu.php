@@ -4,8 +4,6 @@ include_once "fhq_security.php";
 function echo_panel()
 {
 	$security = new fhq_security();
-	
-
 
 echo '
 <script>
@@ -13,25 +11,38 @@ echo '
 
 function dr_zoyberg()
 {
-  document.getElementById("content_page").innerHTML="<img width=100% src=\"http://fc03.deviantart.net/fs70/f/2012/119/b/7/zoidberg_trace_by_deepfry3-d4y0wlc.png\"/>";
-	/*
-  if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
-     xmlhttp=new XMLHttpRequest();
-  };  
-  xmlhttp.onreadystatechange=function()
-  {
-    if (xmlhttp.readyState==4 && xmlhttp.status==200)
-	{
-		if(xmlhttp.responseText == "OK")
-			window.location.href = "index.php";
+  document.getElementById("content_page").innerHTML="<img width=100% src=\"http://fc03.deviantart.net/fs70/f/2012/119/b/7/zoidberg_trace_by_deepfry3-d4y0wlc.png\"/>";	
+};
+
+var myTimer;
+
+function recalculate_score()
+{
+	if (window.XMLHttpRequest) {
+		// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	};
+	xmlhttp.onreadystatechange=function() {
+		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+			var text = xmlhttp.responseText;
+			
+			document.getElementById("view_score").innerHTML=text;
+			
+			var value = parseInt(text,10);
+			if(isNaN(value))
+			{
+				if(!myTimer) myTimer = setInterval(recalculate_score,1000);
+			}
+			else
+			{
+				clearInterval(myTimer);
+				myTimer = undefined;
+			}
+		}
 	}
-	content_page
 	
-  }
-  xmlhttp.open("GET","index.php?exit",true);
-  xmlhttp.send();
-  */
+	xmlhttp.open("GET", "content_page.php?content_page=recalculate_score",true);
+	xmlhttp.send();
 };
 
 </script>
@@ -41,7 +52,7 @@ function dr_zoyberg()
 			<tr>
 				<td >
 					Your name are <a href="" >'.$security->nick().'</a>,
-					your score is <font size=5>'.$security->score().'</font> 
+					your score is <font id="view_score" size=5>'.$security->score().'</font>
 					and you can try <a href="javascript:void(0);" onclick="recalculate_score();">recalculate score</a>, 
 					also you can look your quests: 
 					<a href="javascript:void(0);" onclick="load_content_page(\'quests_all\');">All</a>, 
@@ -61,9 +72,13 @@ function dr_zoyberg()
 	{
 		echo '
 		<table cellpadding="10px" >
-		<tr bgcolor="#760505">
+		<tr bgcolor="#007700">
 			<td>
-				Admin\'s Panel: <a href="quest.php?action=add">add new quest</a> , <a href="admin.php?action=feedback">messages</a>
+				You is admin and you can:  
+					<!-- quest.php?action=add -->
+					<a href="javascript:void(0);" onclick="load_content_page(\'add_quest\');">Add new quest</a>, 
+					<a href="javascript:void(0);" onclick="load_content_page(\'feedbacks\');">Messages</a>, 
+				     <!-- a href=""></a> , <a href="admin.php?action="></a -->
 			</td>
 		</tr>
 		</table>';

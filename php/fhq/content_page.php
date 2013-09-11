@@ -47,6 +47,12 @@
 	    $feedback->echo_list();
 		exit;
 	}
+	else if($content_page == "feedbacks")
+	{
+	    $feedback = new fhq_feedback();
+	    $feedback->echo_list();
+		exit;
+	}
 	else if($content_page == "feedback_add")
 	{
 		$feedback = new fhq_feedback();
@@ -120,6 +126,41 @@ Your place: place / all
 	else if($content_page == "pass_quest")
 	{
 		echo "not work yet";
+		exit;
+	}
+	else if($content_page == "recalculate_score")
+	{
+		if(isset($_SESSION['recalculate_score_last_time']))
+		{
+				$oldtime = $_SESSION['recalculate_score_last_time'];
+				$secs = time() - $oldtime;
+				if($secs < 60) 
+				{
+					echo 'wait '.(60 - $secs).' seconds';
+					return;
+				}
+		}
+		
+		$_SESSION['recalculate_score_last_time'] = time();
+		
+		$query = '
+			SELECT 
+				SUM(quest.score) as sum_score 
+			FROM 
+				userquest 
+			INNER JOIN quest ON quest.idquest = userquest.idquest 
+			WHERE 
+				(userquest.iduser = '.$security->iduser().') 
+				AND ( userquest.stopdate <> \'0000-00-00 00:00:00\' );
+		';
+		
+		$result = $db->query( $query );
+		$new_score = mysql_result($result, 0, 'sum_score');
+		$_SESSION['score'] = $new_score;
+		
+		$query = 'UPDATE user SET score = '.$new_score.' WHERE iduser = '.$security->iduser();
+		$result = $db->query( $query );
+		echo $new_score;
 		exit;
 	}
 	else 

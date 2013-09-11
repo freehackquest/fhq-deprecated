@@ -41,7 +41,6 @@ function echo_head($page)
 	  
 		var url = "content_page.php?content_page=" + content_page;
 		
-		
 		for(var key in other_params) {
 			url = url + "&" + key + "=" + encodeURIComponent(other_params[key]);
 		}
