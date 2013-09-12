@@ -128,6 +128,91 @@ Your place: place / all
 		echo "not work yet";
 		exit;
 	}
+	else if($content_page == "add_quest")
+	{
+		if(!$security->isAdmin())
+		{
+			echo "Forbidden";
+			exit;
+		};
+		
+		$quest =  new fhq_quest();
+		
+		$quest->setEmptyAll();
+		echo $quest->getForm();
+
+		// if($check != "" ) $check = "<font color='#FE2E64'>Uncorrect(!):<br>$check</font><br>";		
+		exit;
+	}
+	else if($content_page == "save_quest")
+	{
+		if(!$security->isAdmin())
+		{
+			echo "Forbidden";
+			exit;
+		};
+		
+		$quest =  new fhq_quest();
+		
+		$quest->fillQuestFromGet();
+		
+		$check = $quest->check();
+
+		if( strlen($check) > 0 )
+		{
+			echo $quest->getForm();
+			echo '<font color="#ff0000">'.$check.'</font>';
+			exit;
+		}
+		
+		// insert;
+		
+		$id = $quest->insert();
+		
+		if($id == 0)
+		{
+			echo $quest->getForm();
+			echo '<font color="#ff0000">could not inserted</font>';
+			exit;
+		}
+		
+		if(!$quest->select($id))
+		{
+			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
+			exit;
+		}
+		
+		$quest->echo_view_quest();
+		
+		
+		//echo "must be insert and redirect to view";
+		// 
+
+		
+		/*if( isset($_POST['save']) )
+		{
+			$quest->setQuestName($_POST['quest_name']);
+			$quest->setShortText($_POST['short_text']);
+			$quest->setFullText($_POST['full_text']);
+			$quest->setScore($_POST['score']);
+			$quest->setMinScore($_POST['min_score']);
+			$quest->setSubject($_POST['subject']);
+			$quest->setAnswer($_POST['answer']);
+			
+			
+			$check = $quest->check();
+
+			//good
+			if( strlen($check) == 0 )
+			{
+				$id = $quest->insert($db);
+				if( $id != 0 ) refreshTo("main.php?action=quest&id=$id");
+			}
+		};	*/
+
+		// if($check != "" ) $check = "<font color='#FE2E64'>Uncorrect(!):<br>$check</font><br>";		
+		exit;
+	}
 	else if($content_page == "recalculate_score")
 	{
 		if(isset($_SESSION['recalculate_score_last_time']))

@@ -116,13 +116,19 @@ class fhq_page_listofquests
 		$color = "#000000";
 		$color1 = "#003130";
 		$color2 = $color1;
+		
+		function text_decode($text)
+		{
+				return htmlspecialchars_decode(base64_decode($text));
+		}
+		
 		for( $i = 0; $i < $count; $i++ )
 		{
-			$quest_name = mysql_result( $mysql_result, $i, 'name');
+			$quest_name = text_decode(mysql_result( $mysql_result, $i, 'name'));
 			$quest_score = mysql_result( $mysql_result, $i, 'score');
 			$quest_id = mysql_result( $mysql_result, $i, 'idquest');
-			$quest_stext = mysql_result( $mysql_result, $i, 'short_text');
-			$quest_subjects = mysql_result( $mysql_result, $i, 'tema');
+			$quest_stext = text_decode(mysql_result( $mysql_result, $i, 'short_text'));
+			$quest_subjects = text_decode(mysql_result( $mysql_result, $i, 'tema'));
 
 			if( $i % 2 == 0 ) $color = $color1; else $color = $color2;
 

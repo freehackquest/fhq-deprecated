@@ -20,25 +20,7 @@
 	$iduser = $security->iduser();
 	//echo $iduser."<br>";
 
-	if( $action == "allow" )
-	{	
-		$page = new fhq_page_listofquests('allow');
-		echo_mainpage($page);
-		exit;
-	}
-	else if( $action == "process" )
-	{
-		$page = new fhq_page_listofquests('process');
-		echo_mainpage($page);
-		exit;
-	}
-	else if( $action == "completed" )
-	{
-		$page = new fhq_page_listofquests('completed');
-		echo_mainpage($page);
-		exit;
-	}
-	else if( $action == "top100" )
+	if( $action == "top100" )
 	{
 		$title = "Top100";
 

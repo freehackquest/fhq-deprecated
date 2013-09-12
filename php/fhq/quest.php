@@ -146,28 +146,6 @@
 			$content .= quest_error();
 		};
 	}
-	else if( $action == "process" )
-	{
-		$title = "Process Quests";
-		$score = $_SESSION['score'];
-				
-
-	}
-	else if( $action == "completed" )
-	{
-		$title = "Completed Quests";
-
-		$query = "SELECT
-			quests.idquest, quests.name, 
-			quests.score, quests.short_text, quests.tema
-		FROM userquest
-		INNER JOIN quests ON quests.idquest = userquest.idquest
-		WHERE (userquest.iduser = $iduser)
-		AND (userquest.stopdate <> '0000-00-00 00:00:00') 
-		LIMIT 0,100; ";
-	
-		$content .= print_list_quests( $db, $query, "Completed" );
-	}
 	else if( $action == "top100" )
 	{
 		$query = "SELECT score, username FROM usersy ORDER BY score DESC LIMIT 0,100";
@@ -180,24 +158,6 @@
 			$name = base64_decode( $name );
 			$content .= ($i+1)." $name (score: $score ); <br>";
 		};	
-	}
-	else if( $action == "feedback" )
-	{
-		$content .= "
-		Письмо админам:
-		<br>
-		<select width=80%>
-			<option>Жалоба</option>
-			<option>Недочет</option>
-			<option>Ошибка</option>
-			<option>Одобрение</option>
-			<option>Предложение</option>
-		</select>
-		<br>
-		<textarea></textarea>
-		<br>
-		<input type='submit' value='send'/>
-		";
 	}
 	else
 	{
