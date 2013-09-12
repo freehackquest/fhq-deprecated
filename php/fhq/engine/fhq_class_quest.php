@@ -233,4 +233,3 @@ class fhq_quest
 	
 };
 ?>
-	

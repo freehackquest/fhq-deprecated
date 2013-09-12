@@ -66,7 +66,9 @@ function echo_head($page)
 		if (xmlhttp.readyState==4 && xmlhttp.status==200)
 		{
 			if(xmlhttp.responseText == "OK")
-				window.location.href = "index.php";
+			{
+				window.location.href = \'index.php\';				
+			}
 		}
 	  }
 	  xmlhttp.open("GET","index.php?exit",true);
