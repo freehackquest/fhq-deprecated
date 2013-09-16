@@ -26,14 +26,14 @@ body a:visited
 #customers
 {
   font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
-  width:100%;
+  width:80%;
   border-collapse:collapse;
 }
 
 #customers td, #customers th 
 {
   font-size:1.2em;
-  border:1px solid #98bf21;
+  border:0px solid #98b000;
   padding:3px 7px 2px 7px;
 }
 

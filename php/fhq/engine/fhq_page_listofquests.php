@@ -101,6 +101,8 @@ class fhq_page_listofquests
 			return;
 		};
 
+		$type = $this->typelist;
+
 		echo "$type($count):<br>
 			<table id='customers' width=100%>
 
@@ -114,10 +116,6 @@ class fhq_page_listofquests
  		</tr>";
 
 
-		$color = "#000000";
-		$color1 = "#003130";
-		$color2 = $color1;
-		
 		function text_decode($text)
 		{
 				return htmlspecialchars_decode(base64_decode($text));
@@ -131,16 +129,18 @@ class fhq_page_listofquests
 			$quest_stext = text_decode(mysql_result( $mysql_result, $i, 'short_text'));
 			$quest_subjects = text_decode(mysql_result( $mysql_result, $i, 'tema'));
 
-			echo "
-				<tr class='alt'>
-					<td width=15% class='beginend'> </td>
-					<td><a href='main.php?action=quest&id=".$quest_id."'><b>#$quest_id</b> ".$quest_name."</a></td>
-					<td>+$quest_score</td>
-					<td>$quest_subjects</td>
-					<td>$quest_stext</td>
-          <td width=15% class='beginend'> </td>
+			echo '
+				<tr class="alt">
+					<td width=15% class="beginend"> </td>
+					<td>
+						<a href="javascript:void(0);" onclick="load_content_page(\'view_quest\', { id : '.$quest_id.'} );"><b>#'.$quest_id.'</b> '.$quest_name.'</a>
+					</td>
+					<td>+'.$quest_score.'</td>
+					<td>'.$quest_subjects.'</td>
+					<td>'.$quest_stext.'</td>
+          <td width=15% class="beginend"> </td>
 				</tr>
-				";
+				';
 
 		};
 		echo "</table>";

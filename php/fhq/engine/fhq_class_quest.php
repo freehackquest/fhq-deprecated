@@ -54,7 +54,7 @@ class fhq_quest
 		if( strlen($this->min_score) == 0 ) $check .= " 'Min Score' is empty <br>";
 		if( !is_numeric($this->min_score) ) $check .= " 'Min Score' is not numeric <br>";
 		if( strlen($this->subject) < 4 ) $check .= "length of 'Subject' must be more than 4 <br>";
-		if( strlen(base64_decode($this->answer)) < 8 ) $check .= "length of 'Answer' must be more than 8 <br>";	
+		if( strlen($this->answer) < 8 ) $check .= "length of 'Answer' must be more than 8 <br>";	
 		return $check;
 	}
 
@@ -120,7 +120,7 @@ class fhq_quest
 		if( !$db->count($result) == 1 ) return false;
 
 		$row = mysql_fetch_array($result, MYSQL_ASSOC);
-		
+		$this->idquest = $row['idquest'];
 		$this->quest_name = base64_decode($row['name']);
 		// echo "quest_name: // ".$this->quest_name."<br>";
 		$this->short_text = base64_decode($row['short_text']);

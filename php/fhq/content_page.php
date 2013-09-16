@@ -115,8 +115,24 @@ Your place: place / all
 	}
 	else if($content_page == "view_quest")
 	{
-		echo "not work yet";
-		exit;
+		if(!isset($_GET['id']))
+		{
+			echo 'not found paramenter "id"';
+			exit;	
+		};
+		
+		$id = $_GET['id'];
+		
+		$quest =  new fhq_quest();
+		
+		if(!$quest->select($id))
+		{
+			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
+			exit;
+		}
+		
+		$quest->echo_view_quest();
+		
 	}
 	else if($content_page == "take_quest")
 	{
@@ -183,7 +199,6 @@ Your place: place / all
 		}
 		
 		$quest->echo_view_quest();
-		
 		
 		//echo "must be insert and redirect to view";
 		// 
