@@ -105,11 +105,12 @@ class fhq_page_listofquests
 			<table id='customers' width=100%>
 
 		<tr class='alt'>
-			<td width=15%> </td>
+			<td width=15% class='beginend'> </td>
 			<td>#id name</td>
 			<td>Score</td>
 			<td>Subject</td>
 			<td>Short Text</td>
+  		<td width=15% class='beginend'> </td>
  		</tr>";
 
 
@@ -132,12 +133,12 @@ class fhq_page_listofquests
 
 			echo "
 				<tr class='alt'>
-					<td width=15%> </td>
+					<td width=15% class='beginend'> </td>
 					<td><a href='main.php?action=quest&id=".$quest_id."'><b>#$quest_id</b> ".$quest_name."</a></td>
 					<td>+$quest_score</td>
 					<td>$quest_subjects</td>
 					<td>$quest_stext</td>
-					<td width=15%> </td>
+          <td width=15% class='beginend'> </td>
 				</tr>
 				";
 

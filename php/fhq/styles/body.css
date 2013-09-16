@@ -47,8 +47,14 @@ body a:visited
   color:#fff;
 }
 
-#customers tr.alt td 
+#customers tr.alt td.alt
 {
   color:#000;
   background-color:#EAF2D3;
+}
+
+#customers td.beginend 
+{
+  color:#000;
+  background-color:#000;
 }
