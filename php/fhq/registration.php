@@ -124,7 +124,7 @@ Now you could begin playing in this game, it here: ".$config['httpname']."</a>
 			$headers .= 'Reply-To: noreply@fhq.keva.su'."\r\n";
 			$headers .= 'X-Mailer: PHP/'.phpversion();
 			
-			mail($login, $subject, $message, $headers);
+			mail($email, $subject, $message, $headers);
 			
 			echo 'Your account was activated.<br>Information for logon was sended to your email.';
 		}
