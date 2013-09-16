@@ -7,15 +7,15 @@ class fhq_security
 	function login($email, $password)
 	{
 		// echo 1;
-		
+
 		unset($_SESSION['user']);
-		
+
 		if(!$this->isLogged())
 		{
 			$username = base64_encode(strtoupper($email));
 			$pass_hash = $this->tokenByData([$password, $username, strtoupper($email)]);
-		
-			$db = new fhq_database();			
+
+			$db = new fhq_database();
 			$query = "select * from user where username = '$username' and password = '$pass_hash';";
 			$result = $db->query($query);
 			if( $db->count( $result ) == 1 )

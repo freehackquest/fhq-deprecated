@@ -85,6 +85,7 @@ class fhq_foractivate
 		$foractivate = $_GET['foractivate'];
 		
 		$db = new fhq_database();
+  	$security = new fhq_security();
 		$query = "select * from user where password = 'notactivated$foractivate';";
 		$result = $db->query($query);
 		if( mysql_num_rows( $result ) == 1 )
@@ -93,9 +94,9 @@ class fhq_foractivate
 			$login = base64_decode($username);
 			
 			$nickname = "hacker-".substr(md5(rand().rand()), 0, 7);
-			$password = substr(md5(rand().rand()), 0, 7);
-			$password_hash =  md5($password);
-			
+			$password = substr(md5(rand().rand()), 0, 7);		
+      $password_hash = $security->tokenByData( [$password, $username, strtoupper($login)]);
+
 			$query2 = "update user set password = '$password_hash', nick = '$nickname', score = 0 where username = '$username';";
 			$db->query($query2);
 
@@ -152,7 +153,7 @@ if(isset($_GET['email']) && isset($_GET['captcha']))
 			exit;
 		}
 		
-		$username = base64_encode(strtolower($email));	
+		$username = base64_encode(strtoupper($email));	
 		$db = new fhq_database();
 		$query = "select * from user where username = '$username';";
 		$result = $db->query($query);
