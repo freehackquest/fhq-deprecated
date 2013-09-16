@@ -1,5 +1,5 @@
 <?
-include_once "fhq_security.php";
+include_once "fhq_class_security.php";
 
 function echo_panel()
 {

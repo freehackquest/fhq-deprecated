@@ -1,6 +1,6 @@
 <?
 include_once "fhq_base.php";
-include_once "fhq_database.php";
+include_once "fhq_class_database.php";
 
 class fhq_security
 {
@@ -13,7 +13,7 @@ class fhq_security
 		if(!$this->isLogged())
 		{
 			$username = base64_encode($email);
-			$pass_hash = md5($password);
+			$pass_hash = $this->tokenByData([$password, strtoupper($username), strtoupper($email)]);
 		
 			$db = new fhq_database();			
 			$query = "select * from user where username = '$username' and password = '$pass_hash';";
@@ -86,6 +86,24 @@ class fhq_security
 	function iduser() { 
 		return ($this->isLogged() && is_numeric($_SESSION['user']['iduser'])) ? $_SESSION['user']['iduser'] : ''; 
 	}
+
+  function tokenByData($arr)
+  {
+     $data = "";
+     for($i = 0; $i < count($arr); $i++)
+     {
+       $data .= $arr[$i].$config['secrets'][$i];
+     }
+     return md5($data);
+  }
+  
+  function hashPassword($password)
+  {
+    $arr = array();
+    $arr[0] = $password;
+    $arr[1] = $config['secret_solt'];
+    return tokenByData($arr);
+  }
 
 	function generatePrivateKey($email, $password)
 	{

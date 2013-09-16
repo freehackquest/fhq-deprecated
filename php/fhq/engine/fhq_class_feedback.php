@@ -1,6 +1,6 @@
 <?php 
-	include_once "fhq_security.php";
-	include_once "fhq_database.php";
+	include_once "fhq_class_security.php";
+	include_once "fhq_class_database.php";
 	
 	//---------------------------------------------------------------------
 	class fhq_feedback
