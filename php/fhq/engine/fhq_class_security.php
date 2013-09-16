@@ -12,8 +12,8 @@ class fhq_security
 		
 		if(!$this->isLogged())
 		{
-			$username = base64_encode($email);
-			$pass_hash = $this->tokenByData([$password, strtoupper($username), strtoupper($email)]);
+			$username = base64_encode(strtoupper($email));
+			$pass_hash = $this->tokenByData([$password, $username, strtoupper($email)]);
 		
 			$db = new fhq_database();			
 			$query = "select * from user where username = '$username' and password = '$pass_hash';";
