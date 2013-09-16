@@ -15,6 +15,7 @@ class fhq_security
 			$username = base64_encode(strtoupper($email));
 			$pass_hash = $this->tokenByData([$password, $username, strtoupper($email)]);
 
+      // echo "pass_hash = $pass_hash, username = $username <br>";
 			$db = new fhq_database();
 			$query = "select * from user where username = '$username' and password = '$pass_hash';";
 			$result = $db->query($query);

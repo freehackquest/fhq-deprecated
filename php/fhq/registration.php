@@ -91,11 +91,11 @@ class fhq_foractivate
 		if( mysql_num_rows( $result ) == 1 )
 		{
 			$username = mysql_result($result, 0, 'username');
-			$login = base64_decode($username);
+			$email = base64_decode($username);
 			
 			$nickname = "hacker-".substr(md5(rand().rand()), 0, 7);
 			$password = substr(md5(rand().rand()), 0, 7);		
-      $password_hash = $security->tokenByData( [$password, $username, strtoupper($login)]);
+      $password_hash = $security->tokenByData( [$password, $username, strtoupper($email)]);
 
 			$query2 = "update user set password = '$password_hash', nick = '$nickname', score = 0 where username = '$username';";
 			$db->query($query2);
@@ -110,7 +110,7 @@ class fhq_foractivate
 </head>
 <body>
 Thank you for registration on Free-Hack-Quest!<br>
-Your login: $login<br>
+Your login: ".strtolower($email)."<br>
 Your password: $password<br>
 Your nickname: $nickname<br>
 Now you could begin playing in this game, it here: ".$config['httpname']."</a>
