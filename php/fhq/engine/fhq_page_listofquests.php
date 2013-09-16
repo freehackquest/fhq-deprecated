@@ -102,9 +102,9 @@ class fhq_page_listofquests
 		};
 
 		echo "$type($count):<br>
-			<table cellspacing=0 cellpadding=10 width=100%>
+			<table cellspacing=0 cellpadding=10 id='customers' width=100%>
 
-		<tr>
+		<tr class='alt'>
 			<td width=15%> </td>
 			<td>#id name</td>
 			<td>Score</td>
