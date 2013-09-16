@@ -130,10 +130,8 @@ class fhq_page_listofquests
 			$quest_stext = text_decode(mysql_result( $mysql_result, $i, 'short_text'));
 			$quest_subjects = text_decode(mysql_result( $mysql_result, $i, 'tema'));
 
-			if( $i % 2 == 0 ) $color = $color1; else $color = $color2;
-
 			echo "
-				<tr bgcolor = ".$color.">
+				<tr class='alt'>
 					<td width=15%> </td>
 					<td><a href='main.php?action=quest&id=".$quest_id."'><b>#$quest_id</b> ".$quest_name."</a></td>
 					<td>+$quest_score</td>
