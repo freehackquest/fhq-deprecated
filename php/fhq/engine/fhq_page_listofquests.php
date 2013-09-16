@@ -102,7 +102,7 @@ class fhq_page_listofquests
 		};
 
 		echo "$type($count):<br>
-			<table cellspacing=0 cellpadding=10 id='customers' width=100%>
+			<table id='customers' width=100%>
 
 		<tr class='alt'>
 			<td width=15%> </td>
@@ -139,8 +139,6 @@ class fhq_page_listofquests
 					<td>$quest_stext</td>
 					<td width=15%> </td>
 				</tr>
-
-				<tr> <td></td> <td> </td> <td></td> </tr>
 				";
 
 		};
