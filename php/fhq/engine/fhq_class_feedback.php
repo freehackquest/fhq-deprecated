@@ -172,9 +172,9 @@
 				   <pre>[$nick_msg,$dt_msg]:<br>$msg</pre> </td> 
 				  </tr>";
 				};
-				
-				$token = $this->create_token( $id, $security->iduser(), "1", "2", "3" );
-				
+			
+        $token = $security->tokenByData($id, $security->iduser(), "1", "2", "3");
+
 				
 				$list .= '
 				<tr>
@@ -211,9 +211,9 @@
 				return "error(feedback:3) feedback_id must be int";
 		    
 		    $security = new fhq_security();
-			$db = new fhq_database();
+			  $db = new fhq_database();
 			
-		    $token = $this->create_token($feedback_id, $security->iduser(), "1", "2", "3");
+		    $token = $security->tokenByData($feedback_id, $security->iduser(), "1", "2", "3");
 		    if( $feedback_id_token != $token )
 				return "error(feedback:4) It is not you!!! you have id: ". $security->iduser();
 		    
