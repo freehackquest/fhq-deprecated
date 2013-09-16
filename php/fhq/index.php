@@ -1,7 +1,6 @@
 <?
-
+include_once "config/config.php";
 include_once "engine/fhq.php";
-
 
 $security = new fhq_security();
 		

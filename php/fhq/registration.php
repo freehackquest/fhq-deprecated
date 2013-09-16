@@ -79,27 +79,28 @@ class fhq_foractivate
 	
 	function echo_content()
 	{
-		 // registration.php
+		// registration.php
 		// return ' blabla ';
 		
 		$foractivate = $_GET['foractivate'];
+		include "config/config.php";
 		
 		$db = new fhq_database();
-  	$security = new fhq_security();
+		$security = new fhq_security();
 		$query = "select * from user where password = 'notactivated$foractivate';";
 		$result = $db->query($query);
 		if( mysql_num_rows( $result ) == 1 )
 		{
 			$username = mysql_result($result, 0, 'username');
+			$nickname = mysql_result($result, 0, 'nick');
 			$email = base64_decode($username);
+		
+			$password = substr(md5(rand().rand()), 0, 7);
 			
-			$nickname = "hacker-".substr(md5(rand().rand()), 0, 7);
-			$password = substr(md5(rand().rand()), 0, 7);		
-      $password_hash = $security->tokenByData( [$password, $username, strtoupper($email)]);
-
-			$query2 = "update user set password = '$password_hash', nick = '$nickname', score = 0 where username = '$username';";
+      	$password_hash = $security->tokenByData( array($password, $username, strtoupper($email)));
+			
+			$query2 = "update user set password = '$password_hash', score = 0 where username = '$username';";
 			$db->query($query2);
-
 
 			$subject = "Your account was activated";
 			
@@ -164,14 +165,14 @@ if(isset($_GET['email']) && isset($_GET['captcha']))
 		};
 		
 		$notactivated = md5(rand().rand());
-
+		$nickname = "hacker-".substr(md5(rand().rand()), 0, 7);
 		$query = "INSERT user( username, password, nick, role, score ) VALUES ('$username','notactivated$notactivated','$nickname','user', 0);";
 		$result = $db->query($query);
 
 		if($result == '1')
 		{
-			include "config/config.php";
 			
+			// 355b82a
 			$subject = "Your account is activated.";
 			
 			$message = "

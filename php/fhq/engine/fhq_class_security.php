@@ -1,4 +1,5 @@
 <?
+
 include_once "fhq_base.php";
 include_once "fhq_class_database.php";
 
@@ -13,9 +14,9 @@ class fhq_security
 		if(!$this->isLogged())
 		{
 			$username = base64_encode(strtoupper($email));
-			$pass_hash = $this->tokenByData([$password, $username, strtoupper($email)]);
+			$pass_hash = $this->tokenByData(array($password, $username, strtoupper($email)));
 
-      // echo "pass_hash = $pass_hash, username = $username <br>";
+			// echo "pass_hash = $pass_hash, username = $username <br>";
 			$db = new fhq_database();
 			$query = "select * from user where username = '$username' and password = '$pass_hash';";
 			$result = $db->query($query);
@@ -88,60 +89,18 @@ class fhq_security
 		return ($this->isLogged() && is_numeric($_SESSION['user']['iduser'])) ? $_SESSION['user']['iduser'] : ''; 
 	}
 
-  function tokenByData($arr)
-  {
-     $data = "";
-     for($i = 0; $i < count($arr); $i++)
-     {
-       $data .= $arr[$i].$config['secrets'][$i];
-     }
-     return md5($data);
-  }
-  
-  function hashPassword($password)
-  {
-    $arr = array();
-    $arr[0] = $password;
-    $arr[1] = $config['secret_solt'];
-    return tokenByData($arr);
-  }
-
-	function generatePrivateKey($email, $password)
-	{
-		return md5($password.strtoupper($email));
-	}
+	function tokenByData($arr)
+	{	
+		include "config/config.php";
 	
-	function echo_form_login()
-	{
-		$comeback = $_SERVER['REQUEST_URI'];
-		
-		if(!$this->isLogged())
+		$data = "";
+		for($i = 0; $i < count($arr); $i++)
 		{
-			echo "
-			<form method='POST' action='../engine/whc_security.php?login'>
-				".EMAIL.":<br>
-				<input type='text' name='email' size='5' value=''/><br>
-				".PASSWORD.":<br>
-				<input type='password' name='password' size='5' value=''/> <br>
-				<input type='hidden' name='comeback' value='$comeback'/> 
-				<input type='submit' value='".LOGIN."'/><br>
-			</form>";
-		}	
-		else
-		{
-			echo "
-				".HELLO.", ".$_SESSION['user']['username']."!<br>
-				<br>
-				<a href='../account/index.php'>".MYACCOUNT."</a><br>
-				<br>
-				<form method='POST' action='../engine/whc_security.php?logout'>
-					<input type='submit' value='".LOGOUT."'/>
-					<input type='hidden' name='comeback' value='$comeback'/>
-				</form>					
-			";
-		};
+			$data .= $arr[$i].$config['secrets'][$i];
+		}
+		return md5($data);
 	}
-}	
+};
 
 /*
 if(isset($_GET['login']))

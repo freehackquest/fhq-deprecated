@@ -1,6 +1,5 @@
 <?
 include_once "fhq_echo_head.php";
-include_once "fhq_echo_score.php";
 include_once "fhq_echo_menu.php";
 
 class simple_page
