@@ -1,0 +1,152 @@
+
+http://www.opennet.ru/tips/info/2061.shtml
+
+Настройка NFS сервера и клиента в Debian Lenny 	[исправить]
+
+1. Input data
+
+   * NFS Server: fhq-sshtasks.example.com, IP address: 192.168.0.100
+   * NFS Client: fhq.example.com, IP address: 192.168.0.101
+
+
+2. fhq-sshtasks.example.com
+
+   root@debian# apt-get install nfs-kernel-server nfs-common portmap
+   root@debian# mkdir /home/nfs
+   root@debian# echo "/home/nfs   192.168.0.101(rw,sync,no_root_squash,no_subtree_check)" >> /etc/exports
+   root@debian# exportfs -a
+   root@debian# /etc/init.d/nfs-kernel-server restart
+
+
+3. fhq.example.com
+   root@debian# apt-get install nfs-common portmap
+   root@debian# mkdir /var/www/fhq-sshtasks
+   root@debian# mount 192.168.0.100:/root/create_users /var/www/fhq-sshtasks
+
+
+
+Монтируем:
+
+   mount 192.168.0.100:/home /mnt/nfs/home
+   mount 192.168.0.100:/var/nfs /mnt/nfs/var/nfs
+
+
+
+
+
+   
+
+fhq.example.com
+
+   
+
+3. Export catalogs
+
+  
+
+
+
+
+Для того чтобы сделать доступными для клиентов каталоги /home и /var/nfs необходимо 
+предпринять следующие нехитрые действия.
+
+Когда клиент получает доступ к общему NFS ресурсу, то обычно это случается с
+правами пользователя nobody.
+Владельцем каталога /home nobody не является (и я не рекомендую это менять), а
+поскольку мы хотим иметь
+права на чтение и запись в /home, то нам необходимо указать NFS работать с
+правами пользователя root
+(если /home будет доступен только для чтения, то в этом нет необходимости). Каталог /var/nfs не 
+существует, поэтому мы его создадим и назначим владельцем nobody и nogroup:
+
+<!-- ??? chown nobody:nogroup /var/nfs -->
+   
+
+  
+
+
+4. 
+
+
+
+# Для получения дополнительной информации, воспользуйтесь командой man 5 exports.
+
+
+
+   
+
+4. Монтируем NFS ресурс на клиенте
+
+ Создаем каталоги, куда мы будем монтировать шары NFS:
+
+   mkdir -p /mnt/nfs/home
+   mkdir -p /mnt/nfs/var/nfs
+
+Монтируем:
+
+   mount 192.168.0.100:/home /mnt/nfs/home
+   mount 192.168.0.100:/var/nfs /mnt/nfs/var/nfs
+
+Проверяем:
+
+   client:~# df -h
+   Filesystem            Size  Used Avail Use% Mounted on
+   /dev/mapper/vg0-root   19G  676M   17G   4% /
+   tmpfs                 253M     0  253M   0% /lib/init/rw
+   udev                   10M   80K   10M   1% /dev
+   tmpfs                 253M     0  253M   0% /dev/shm
+   /dev/sda1             471M   20M  427M   5% /boot
+   192.168.0.100:/home    29G  684M   27G   3% /mnt/nfs/home
+   192.168.0.100:/var/nfs 29G  684M   27G   3% /mnt/nfs/var/nfs
+
+И:
+
+   client:~# mount
+   /dev/mapper/vg0-root on / type ext3 (rw,errors=remount-ro)
+   tmpfs on /lib/init/rw type tmpfs (rw,nosuid,mode=0755)
+   proc on /proc type proc (rw,noexec,nosuid,nodev)
+   sysfs on /sys type sysfs (rw,noexec,nosuid,nodev)
+   udev on /dev type tmpfs (rw,mode=0755)
+   tmpfs on /dev/shm type tmpfs (rw,nosuid,nodev)
+   devpts on /dev/pts type devpts (rw,noexec,nosuid,gid=5,mode=620)  /dev/sda1 on /boot type ext3 (rw)
+   192.168.0.100:/home on /mnt/nfs/home type nfs (rw,addr=192.168.0.100)
+   192.168.0.100:/var/nfs on /mnt/nfs/var/nfs type nfs (rw,addr=192.168.0.100)
+
+5. Проверка
+
+На клиенте создадим несколько файлов:
+
+   touch /mnt/nfs/home/test.txt
+   touch /mnt/nfs/var/nfs/test.txt
+
+Зайдем на сервер и полюбуемся на результат:
+
+   server:~# ls -l /home/
+   total 4
+   drwxr-xr-x 2 administrator administrator 4096 2009-02-16 13:18 administrator
+   -rw-r--r-- 1 root          root             0 2009-03-12 17:08 test.txt
+
+   server:~# ls -l /var/nfs
+   total 0
+   -rw-r--r-- 1 nobody nogroup 0 2009-03-12 17:08 test.txt
+   server:~#
+
+Обратите внимание на то, что владельцы файлов различаются.
+
+6 Монтирование ресурсов NFS во время загрузки
+
+Вместо ручного монтирования шар, вы можете указать их в файле /etc/fstab для автоматического 
+монтирования во время начальной загрузки.
+
+   vi /etc/fstab
+   [...]
+   192.168.0.100:/home  /mnt/nfs/home   nfs      rw,sync,hard,intr  0     0
+   192.168.0.100:/var/nfs  /mnt/nfs/var/nfs   nfs    
+
+Вместо опций rw,sync,hard,intr вы можете использовать что-то другое, для получения дополнительной 
+информации, обратитесь к man nfs.
+
+Для проверки правильности монтирования перезагрузите систему. После этого в
+очередной раз проверим результат:
+
+  df -h
