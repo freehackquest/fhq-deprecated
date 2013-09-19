@@ -32,7 +32,9 @@ class fhq_page_listofquests
 			quest.score, quest.short_text, quest.tema
 		FROM userquest
 		INNER JOIN quest ON quest.idquest = userquest.idquest
-		WHERE (userquest.iduser = '.$security->iduser().')
+		WHERE 
+		(quest.for_person = 0 or quest.for_person = '.$security->iduser().')
+		AND (userquest.iduser = '.$security->iduser().')
 		AND (userquest.stopdate = "0000-00-00 00:00:00")
 		LIMIT 0,100; ';
 	}
@@ -47,7 +49,8 @@ class fhq_page_listofquests
 				quest.tema
 			FROM quest
 			WHERE
-			(idquest NOT IN (SELECT idquest FROM userquest WHERE userquest.iduser = '.$security->iduser().')) AND (min_score <= '.$security->score().' )
+			(quest.for_person = 0 or quest.for_person = '.$security->iduser().')
+			AND (idquest NOT IN (SELECT idquest FROM userquest WHERE userquest.iduser = '.$security->iduser().')) AND (min_score <= '.$security->score().' )
 			ORDER BY quest.score DESC';
 	}
 	
@@ -58,15 +61,25 @@ class fhq_page_listofquests
 			quest.score, quest.short_text, quest.tema
 		FROM userquest
 		INNER JOIN quest ON quest.idquest = userquest.idquest
-		WHERE (userquest.iduser = '.$security->iduser().')
+		WHERE 
+		(quest.for_person = 0 or quest.for_person = '.$security->iduser().') AND
+		(userquest.iduser = '.$security->iduser().')
 		AND (userquest.stopdate <> "0000-00-00 00:00:00")
 		LIMIT 0,100; ';
 	}
 	
 	function getQuery_All($security)
 	{
-		return ' 
-		 ';
+		return 'SELECT
+				quest.idquest,
+				quest.name,
+				quest.score,
+				quest.short_text,
+				quest.tema
+			FROM quest
+			WHERE
+				
+			ORDER BY quest.score DESC';
 	}
 	
 	function echo_content()

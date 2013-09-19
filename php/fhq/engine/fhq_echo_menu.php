@@ -54,8 +54,7 @@ function recalculate_score()
 					Your name are <a href="" >'.$security->nick().'</a>,
 					your score is <font id="view_score" size=5>'.$security->score().'</font>
 					and you can try <a href="javascript:void(0);" onclick="recalculate_score();">recalculate score</a>, 
-					also you can look your quests: 
-					<a href="javascript:void(0);" onclick="load_content_page(\'quests_all\');">All</a>, 
+					also you can look your quests:					
 					<a href="javascript:void(0);" onclick="load_content_page(\'quests_allow\');">Allow</a>,
 					<a href="javascript:void(0);" onclick="load_content_page(\'quests_process\');">Process</a>,
 					<a href="javascript:void(0);" onclick="load_content_page(\'quests_completed\');">Completed</a>. 

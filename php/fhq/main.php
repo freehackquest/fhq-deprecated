@@ -54,8 +54,18 @@
 		if( isset($_GET['id']) && is_numeric($_GET['id']) )
                 {
                    	$idquest = $_GET['id'];
-			$title = "Quest";
-			$query = "SELECT * FROM quest WHERE (idquest = $idquest) AND (min_score <= ".$security->score()." ) LIMIT 0,1";
+			$title = 'Quest';
+			
+			$query = '
+				SELECT * 
+				FROM
+					quest 
+				WHERE 
+					(quest.for_person = 0 OR quest.for_person = '.$security->iduser().')
+					AND (quest.idquest = $idquest) 
+					AND (min_score <= '.$security->score().' ) 
+				LIMIT 0,1';
+				
 			$result = $db->query( $query );
 			$count = $db->count( $result );
 			if( $count == 1)

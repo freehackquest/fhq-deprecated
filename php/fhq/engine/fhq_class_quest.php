@@ -114,7 +114,16 @@ class fhq_quest
 		// echo "id = $id<br>";
 		if( !is_numeric($id) ) return false;
 
-		$query = "SELECT * FROM quest WHERE idquest = $id LIMIT 0,1;";
+		$query = '
+			SELECT * 
+			FROM 
+				quest 
+			WHERE 
+				(quest.for_person = 0 OR quest.for_person = '.$security->iduser().')
+				AND (idquest = '.$id.')
+				AND (min_score <= '.$security->score().' ) 
+			LIMIT 0,1;
+		';
 		$result = $db->query( $query );
 		// echo $query."<br>";
 		if( !$db->count($result) == 1 ) return false;
