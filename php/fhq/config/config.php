@@ -14,5 +14,15 @@
   $config['secrets'][2] = "+++";
   $config['secrets'][3] = "---";
   $config['secrets'][4] = "===";
-//  $config['']
+  
+  $config['nfs_share'] = '/media/nfs_share';
+
+  $config['targetDate'] = array();  
+  $config['targetDate']['day'] = 7;
+  $config['targetDate']['month'] = 10;
+  $config['targetDate']['year'] = 2013;
+  $config['targetDate']['hour'] = 10;
+  $config['targetDate']['minute'] = 0;
+  $config['targetDate']['second'] = 0;
+
 ?>

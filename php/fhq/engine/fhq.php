@@ -8,6 +8,7 @@ function refreshTo($new_page)
 };
 
 include_once "fhq_base.php";
+include_once "fhq_class_income.php";
 include_once "fhq_class_security.php";
 include_once "fhq_class_feedback.php";
 include_once "fhq_class_quest.php";

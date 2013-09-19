@@ -10,6 +10,15 @@ class fhq_registration
 		return 'Registration<br><font size=2><a href="index.php">&larr; go to main page</a></font>';
 	}
 
+	function echo_head()
+	{
+		echo '';
+	}
+	
+	function echo_onBodyEnd() {
+		echo '';
+	}
+	
 	function echo_content()
 	{
 		echo '
@@ -77,6 +86,15 @@ class fhq_foractivate
 		return 'Activate account<br><font size=2><a href="index.php">&larr; go to main page</a></font>';
 	}
 	
+	function echo_head()
+	{
+		echo '';
+	}
+	
+	function echo_onBodyEnd() {
+		echo '';
+	}
+	
 	function echo_content()
 	{
 		// registration.php
@@ -97,7 +115,9 @@ class fhq_foractivate
 		
 			$password = substr(md5(rand().rand()), 0, 7);
 			
-      	$password_hash = $security->tokenByData( array($password, $username, strtoupper($email)));
+			$password_hash = $security->tokenByData( array($password, $username, strtoupper($email)));
+			
+			// echo "e-mail: $email<br> password: $password";
 			
 			$query2 = "update user set password = '$password_hash', score = 0 where username = '$username';";
 			$db->query($query2);
@@ -161,6 +181,7 @@ if(isset($_GET['email']) && isset($_GET['captcha']))
 		if( $db->count( $result ) >= 1 )
 		{
 			echo "<font color=#ff0000>This e-mail was already registered.</font>";
+			mysql_free_result($result);
 			exit;
 		};
 		

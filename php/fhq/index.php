@@ -27,6 +27,15 @@ class fhq_logon
 					</h2><br><br>";
 	}
 
+	function echo_head()
+	{
+		echo '';
+	}
+	
+	function echo_onBodyEnd() {
+		echo '';
+	}
+	
 	function echo_content()
 	{
 		$error_msg = "";

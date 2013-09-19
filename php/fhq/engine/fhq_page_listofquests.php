@@ -4,10 +4,15 @@ include_once "fhq_class_database.php";
 
 class fhq_page_listofquests
 {
-	var $typelist;
+	var $typelist;	
 	function fhq_page_listofquests($typelist)
 	{
 		$this->typelist = $typelist;
+	}
+
+	function echo_head()
+	{
+		echo '';
 	}
 
 	function title()
@@ -157,6 +162,10 @@ class fhq_page_listofquests
 
 		};
 		echo "</table>";
+	}
+	
+	function echo_onBodyEnd() {
+		echo '';
 	}
 };
 ?>
