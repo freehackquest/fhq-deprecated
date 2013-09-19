@@ -245,15 +245,36 @@ Your place: place / all
 		
 		$query = '
 			SELECT 
-				SUM(quest.score) as sum_score 
+				ifnull(SUM(quest.score),0) as sum_score 
 			FROM 
 				userquest 
-			INNER JOIN quest ON quest.idquest = userquest.idquest 
+			INNER JOIN 
+				quest ON quest.idquest = userquest.idquest 
 			WHERE 
 				(userquest.iduser = '.$security->iduser().') 
 				AND ( userquest.stopdate <> \'0000-00-00 00:00:00\' );
 		';
 		
+		/*$query = '
+			select
+				ifnull(sum(q.score),0) as sum_score
+			from 
+				quest q
+			where 
+				q.idquest = (
+					select 
+						u.idquest 
+					from 
+						userquest u  
+					where
+						u.iduser = '.$security->iduser().'
+						and 
+						u.stopdate <> \'0000-00-00 00:00:00\'
+						and 
+						u.idquest = q.idquest
+				)
+		';*/
+		// echo $query;
 		$result = $db->query( $query );
 		$new_score = mysql_result($result, 0, 'sum_score');
 		$_SESSION['score'] = $new_score;
