@@ -240,7 +240,7 @@ class fhq_quest
 			<font size=1>Score:</font> <br> +'.$this->score.' <br><br>
 			<font size=1>Subject:</font> <br> '.htmlspecialchars_decode($this->subject).' <br><br>
 			<font size=1>Short Text:</font> <br> '.htmlspecialchars_decode($this->short_text).' <br><br>
-			<font size=1>Full Text:</font> <br> '.htmlspecialchars_decode($this->full_text).'<br><br>
+			<font size=1>Full Text:</font> <br><pre>'.htmlspecialchars_decode($this->full_text).'</pre><br><br>
 		';
 				 
 				 // parse_bb_code($quest_text)
