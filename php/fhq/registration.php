@@ -157,18 +157,15 @@ Now you could begin playing in this game, it here: ".$config['httpname']."</a>
 				$create_user_script = "
 useradd -g hackers --no-user-group --home /home/$nickname -m --shell /bin/bash --password $ssh_password $nickname\n
 echo $nickname:$ssh_password | chpasswd
-cd /home/$nickname
-mkdir SecureShellFirst
-cd SecureShellFirst
+mkdir /home/$nickname/SecureShellFirst && cd /home/$nickname/SecureShellFirst
 echo \"answer:$answer1\" > answer_here
 chown root:hackers answer_here
 chmod o+r answer_here
 ";
 
 $create_user_script .= "
-cd /home/$nickname
-mkdir SecureShellSecond
-cd SecureShellSecond
+mkdir /home/$nickname/SecureShellSecond
+cd /home/$nickname/SecureShellSecond
 echo \"answer:$answer2\" > answer_here
 zip archiv.zip answer_here && rm answer_here
 zip archiv2.zip archiv.zip && rm archiv.zip && mv archiv2.zip archiv.zip
@@ -180,7 +177,7 @@ for($i = 0; $i < 100; $i++)
 $create_user_script .= "chown root:hackers archiv.zip && chmod o+r archiv.zip\n";
 
 				$nfs_share = $config['nfs_share'];
-				file_put_contents($nfs_share."/new_user_$nickname", $create_user_script);
+				file_put_contents($nfs_share."/new_user_$nickname.sh", $create_user_script);
 				
 				// create personal quests
 				{ // first
