@@ -1,11 +1,12 @@
 <?
 class fhq_quest
 {
-	private $quest_name, $short_text, $full_text, $score, $min_score, $subject, $answer, $reply_answer, $idquest;
+	private $quest_name, $short_text, $full_text, $score, $min_score, $subject, $answer, $reply_answer, $idquest, $for_person;
 	private $fields;
 	
 	function fhq_quest()
 	{
+		$this->for_person = 0;
 	   // $field['idquest'] = new field('idquest', 'idquest', new typefield_int() );
 	   // $field['quest_name'] = new field('quest_name','quest_name', new typefield_text() );
 	   //    $field['short_text'] = new field('short_text','short_text',);
@@ -29,6 +30,8 @@ class fhq_quest
 		$this->subject = "";
 		$this->answer = "";
 		$this->reply_answer = "";
+		$this->reply_answer = "";
+		$this->for_person = 0;
 	}
 
 	function setQuestName( $text ) { $this->quest_name = $text; }
@@ -38,6 +41,7 @@ class fhq_quest
 	function setMinScore( $number ) { $this->min_score = $number; }
 	function setSubject( $text ) { $this->subject = $text; }
 	function setAnswer( $text ) { $this->answer = $text; }
+	function setForPerson( $number ) { $this->for_person = $number; }
 	
 	function getQuestName() { return $this->quest_name; }
 
@@ -64,14 +68,16 @@ class fhq_quest
 		$db = new fhq_database();
 		
 		if(strlen($this->check()) != 0) return 0;
-		$query = "INSERT INTO quest( name, short_text, text, score, min_score, tema, answer )
+		$query = "INSERT INTO quest( name, short_text, text, score, min_score, tema, answer, for_person )
 			VALUES('".base64_encode($this->quest_name)."',
 				'".base64_encode($this->short_text)."',
 				'".base64_encode($this->full_text)."',
 				".$this->score.",
 				".$this->min_score.",
 				'".base64_encode($this->subject)."',
-				'".base64_encode($this->answer)."') ";
+				'".base64_encode($this->answer)."',
+				".$this->for_person."
+				) ";
 		// echo $query;
 		$result = $db->query( $query );
 		if( $result == 1 ) 

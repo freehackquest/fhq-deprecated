@@ -15,7 +15,7 @@
   $config['secrets'][3] = "---";
   $config['secrets'][4] = "===";
   
-  $config['nfs_share'] = '/media/nfs_share';
+  $config['nfs_share'] = '/var/www/test';
 
   $config['targetDate'] = array();  
   $config['targetDate']['day'] = 7;

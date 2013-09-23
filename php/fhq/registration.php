@@ -109,6 +109,7 @@ class fhq_foractivate
 		$result = $db->query($query);
 		if( mysql_num_rows( $result ) == 1 )
 		{
+			$iduser = mysql_result($result, 0, 'iduser');
 			$username = mysql_result($result, 0, 'username');
 			$nickname = mysql_result($result, 0, 'nick');
 			$email = base64_decode($username);
@@ -146,6 +147,81 @@ Now you could begin playing in this game, it here: ".$config['httpname']."</a>
 			$headers .= 'X-Mailer: PHP/'.phpversion();
 			
 			mail($email, $subject, $message, $headers);
+			
+			// create ssh user
+			if(isset($config['nfs_share']))
+			{
+				$answer1 = md5(rand().rand());
+				$answer2 = md5(rand().rand()."hhhhhh");
+				$ssh_password = substr(md5(rand().rand()), 0, 7);
+				$create_user_script = "
+useradd -g hackers --no-user-group --home /home/$nickname -m --shell /bin/bash --password $ssh_password $nickname\n
+echo $nickname:$ssh_password | chpasswd
+cd /home/$nickname
+mkdir SecureShellFirst
+cd SecureShellFirst
+echo \"answer:$answer1\" > answer_here
+chown root:hackers answer_here
+chmod o+r answer_here
+";
+
+$create_user_script .= "
+cd /home/$nickname
+mkdir SecureShellSecond
+cd SecureShellSecond
+echo \"answer:$answer2\" > answer_here
+zip archiv.zip answer_here && rm answer_here
+zip archiv2.zip archiv.zip && rm archiv.zip && mv archiv2.zip archiv.zip
+";
+
+for($i = 0; $i < 100; $i++)
+	$create_user_script .= "zip archiv2.zip archiv.zip && rm archiv.zip && mv archiv2.zip archiv.zip\n";
+
+$create_user_script .= "chown root:hackers archiv.zip && chmod o+r archiv.zip\n";
+
+				$nfs_share = $config['nfs_share'];
+				file_put_contents($nfs_share."/new_user_$nickname", $create_user_script);
+				
+				// create personal quests
+				{ // first
+					$quest = new fhq_quest();
+					$quest->setEmptyAll();
+					$quest->setQuestName( "Secure Shell First" );
+					$quest->setShortText( "Try using SSH on our's server" );
+					$quest->setFullText( "Server: ssh.keva.su
+Login: $nickname
+Password: $ssh_password
+Directory: SecureShellFirst
+");
+					$quest->setScore( 20 );
+					$quest->setMinScore( 5 );
+					$quest->setSubject( "Network:SSH" );
+					$quest->setAnswer( $answer1 );
+					$quest->setForPerson( $iduser );
+					$quest->insert();
+				}
+				
+				
+				{ // second
+					$quest = new fhq_quest();
+					$quest->setEmptyAll();
+					$quest->setQuestName( "Secure Shell Second" );
+					$quest->setShortText( "Try using SSH on our's server" );
+					$quest->setFullText( "server: ssh.keva.su
+login: $nickname
+password: $ssh_password
+Directory: SecureShellSecond
+");
+
+					$quest->setScore( 100 );
+					$quest->setMinScore( 50 );
+					$quest->setSubject( "Network:SSH" );
+					$quest->setAnswer( $answer2 );
+					$quest->setForPerson( $iduser );
+					$quest->insert();
+				}
+								
+			};
 			
 			echo 'Your account was activated.<br>Information for logon was sended to your email.';
 		}
