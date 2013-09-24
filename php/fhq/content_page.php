@@ -99,7 +99,26 @@
 	}
 	else if($content_page == "top100")
 	{
-		echo "not work yet";
+    $query = "";
+    if($security->isUser())
+      $query = "SELECT iduser, score, nick FROM user WHERE role='user' ORDER BY score DESC LIMIT 0,100";
+    else
+      $query = "SELECT iduser, score, nick, role FROM user ORDER BY score DESC LIMIT 0,100";
+
+		$result = $db->query( $query );
+    $i = 1;
+    echo "TOP 100<br>";
+    while ($row = mysql_fetch_row($result)) // Data
+    {      
+      $iduser = mysql_result( $result, $i, 'iduser' );
+      $nick = mysql_result( $result, $i, 'nick' );
+			$score = mysql_result( $result, $i, 'score' );
+      $role = (isset($row['role'])) ? $row['role'] : "";
+     
+      if($iduser == $security->iduser()) echo "<font color=#ff0000>";
+			echo ($i++)." $nick (score: $score ); $role <br>";
+      if($iduser == $security->iduser()) echo "</font>";
+    }
 		exit;
 	}
 	else if($content_page == "user_info")
