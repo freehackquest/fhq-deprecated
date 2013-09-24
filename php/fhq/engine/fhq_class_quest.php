@@ -242,6 +242,60 @@ class fhq_quest
 			<font size=1>Short Text:</font> <br> '.htmlspecialchars_decode($this->short_text).' <br><br>
 			<font size=1>Full Text:</font> <br><pre>'.htmlspecialchars_decode($this->full_text).'</pre><br><br>
 		';
+		
+		
+		$security = new fhq_security();
+		$db = new fhq_database();
+		$idquest = $this->idquest;
+		$iduser = $security->iduser();
+
+		$query = "SELECT idquest, stopdate FROM userquest WHERE (idquest = $idquest) AND (iduser = $iduser) LIMIT 0,1";
+		$result = $db->query( $query );
+		$count = $db->count( $result );	 
+		if($count == 1)
+		{
+			$stopdate = mysql_result($result, 0, 'stopdate');
+			if( $stopdate == '0000-00-00 00:00:00')
+			{
+				echo "<br>
+					
+ 				<form method='POST' action='?action=pass_quest&id=$idquest'> 
+						<input type='text' size='25' name='answer' value=''> <br>
+						
+						echo "<br>
+					<a href=''>Take Quest</a><br>
+					<br> <font size=1>Moves to the 'process'</font>";
+					
+						<input type='submit' name='take' value='Pass'> <br> <font size=1>try to pass the quest</font> 
+					</form>";
+					}
+					else
+					{
+						echo "<br> Date: '$stopdate' <br> <font size=1>Quest completed</font>";
+					};
+				}
+				else
+				{
+					
+					echo "<br>
+					<a href=''>Take Quest</a><br>
+					<br> <font size=1>Moves to the 'process'</font>";
+				}
+				//if admin
+				if( $security->isAdmin() )
+				{
+					echo "<br><br><br>Hello, admin!<br><br>
+					<form method='POST'> 
+						<input type='file' value='' name='upload_file'/> <input type='submit' value='Upload file'/>
+					</form>
+					
+					<a href='quest.php?action=edit&id=$idquest'>edit quest</a><br><br>
+					<a href='quest.php?action=delete&id=$idquest'>delete quest</a><br><br>
+					
+					
+					";
+					
+				};
 				 
 				 // parse_bb_code($quest_text)
 	}

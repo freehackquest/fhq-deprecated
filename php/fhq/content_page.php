@@ -55,7 +55,7 @@
 	}
 	else if($content_page == "feedback_add")
 	{
-		$feedback = new fhq_feedback();
+		 $feedback = new fhq_feedback();
 	    $feedback->echo_menu();
 	    
 	    
