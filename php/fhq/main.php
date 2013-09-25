@@ -33,32 +33,7 @@
 	$iduser = $security->iduser();
 	//echo $iduser."<br>";
 
-	if( $action == "top100" )
-	{
-		$title = "Top100";
-
-		$query = "SELECT score, username, nick FROM user ORDER BY score DESC LIMIT 0,100";
-		$result = $db->query( $query );
-		$count = $db->count( $result );
-		for( $i = 0; $i < $count; $i++ )
-		{
-			$name = mysql_result( $result, $i, 'nick' );
-			$score = mysql_result( $result, $i, 'score' );
-                        $email = mysql_result( $result, $i, 'username' );
-                        $email = base64_decode( $email );
-
-			if(strlen($name) == 0)
-			{
-			    $name = "nonick";
-			};
-			//$name = base64_decode( $name );
-			$content .= ($i+1)." $name (score: ".$security->score()." );";
-			if( $role == 'admin' ) $content .= "<br><font size='2'>email: ".$email."</font><br>";
-
-                        $content .= "<br>";
-		};
-	}
-	else if( $action == "quest" )
+  if( $action == "quest" )
 	{
 		$title = "View Quest";
 
@@ -152,55 +127,6 @@
 		
 		if( ! isset($_GET['id'])) $content .= $msg_error;
 
-	}
-	else if( $action == "take_quest" )
-	{
-		
-		if( isset($_GET['id']) && is_numeric($_GET['id']) )
-                {
-                	$content .= "take it";	
-                	$idquest = $_GET['id'];
-                	
-                	$query = "SELECT * FROM quest WHERE (idquest = $idquest) AND (min_score <= ".$security->score()." ) LIMIT 0,1";
-			$result = $db->query( $query );
-			$count = $db->count( $result );
-                	if($count == 1 )
-                	{
-                		$nowdate = udate("Y-m-d H:i:s");
-                		$query = "INSERT INTO userquest(idquest,iduser,startdate,stopdate) VALUES($idquest,$iduser,'$nowdate','0000-00-00 00:00:00');";
-                		$result = $db->query( $query );
-                		refreshTo("?action=quest&id=$idquest");
-                	}
-                	else
-                	{
-                		$content .= $msg_error;
-                	};
-                }
-                else
-                {
-                	$content .= $msg_error;
-                }
-	}
-	else if( $action == "pass_quest" )
-	{
-		if( isset($_GET['id']) && isset($_POST['answer']) && is_numeric($_GET['id']) )
-                {
-                	$idquest = $_GET['id'];
-                	$answer = base64_encode(htmlspecialchars($_POST['answer']));
-                	//echo base64_decode($_POST['answer']);
-                	$query = "SELECT idquest FROM quest WHERE (idquest = $idquest) AND (min_score <= ".$security->score()." ) AND (answer = '$answer') LIMIT 0,1";
-                	//echo $query;
-			$result = $db->query( $query );
-			$count = $db->count( $result );
-                	if($count == 1 )
-                	{
-                		$nowdate = udate("Y-m-d H:i:s");
-                		$query = "UPDATE userquest SET stopdate = '$nowdate' WHERE idquest = $idquest AND iduser = $iduser;";
-                		$result = $db->query( $query );
-                		recalculate_score($db, $iduser);
-                	};
-                };
-                refreshTo("?action=quest&id=$idquest");	
 	}
 	else
 	{
