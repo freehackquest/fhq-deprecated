@@ -161,12 +161,16 @@ Your place: place / all
 			exit;	
 		};
 
+    if(!is_numeric($_GET['id']))
+    {
+      echo 'don\'t needed hack me';
+			exit;	
+    }
+
     $id = $_GET['id'];
     $quest = new fhq_quest();
 
-    $quest->take_quest($id);
-
-    if(!$quest->select($id))
+    if(!$quest->take_quest($id))
 		{
 			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
 			exit;
@@ -176,7 +180,28 @@ Your place: place / all
 	}
 	else if($content_page == "pass_quest")
 	{
-		echo "not work yet";
+    if(!isset($_GET['id']))
+		{
+			echo 'not found paramenter "id"';
+			exit;	
+		};
+
+    if(!is_numeric($_GET['id']))
+    {
+      echo 'don\'t needed hack me';
+			exit;	
+    }
+
+    $id = $_GET['id'];
+    $answer = $_GET['answer'];
+    $quest = new fhq_quest();
+
+    if(!$quest->pass_quest($id, $answer))
+		{
+			echo '<font color="#ff0000">Not passed or not found quest with id = '.$id.'.</font>';
+			exit;
+		};
+    $quest->echo_view_quest();
 		exit;
 	}
 	else if($content_page == "add_quest")

@@ -7,6 +7,7 @@ class fhq_quest
 	function fhq_quest()
 	{
 		$this->for_person = 0;
+    $this->idquest = 0;
 	   // $field['idquest'] = new field('idquest', 'idquest', new typefield_int() );
 	   // $field['quest_name'] = new field('quest_name','quest_name', new typefield_text() );
 	   //    $field['short_text'] = new field('short_text','short_text',);
@@ -159,6 +160,10 @@ class fhq_quest
     $security = new fhq_security();
 		$db = new fhq_database();
 
+    if($this->idquest == 0)
+      if(!$this->select($idquest))
+        return false;
+
     $query = 'SELECT * 
       FROM 
         quest 
@@ -176,9 +181,26 @@ class fhq_quest
         VALUES('.$idquest.','.$security->iduser().',\''.$nowdate.'\',\'0000-00-00 00:00:00\');';
     $result = $db->query( $query );
 
-    if($result != '1') return false;
+    if($result != '1') return false;      
+    return true;
+	}
 
-      
+  function pass_quest( $idquest, $answer )
+	{
+    $security = new fhq_security();
+		$db = new fhq_database();
+
+    if($this->idquest == 0)
+      if(!$this->select($idquest))
+        return false;
+
+    if(md5($answer) != md5($this->answer))
+      return false;
+
+    $nowdate = date('Y-m-d H:i:s');
+    $query = 'UPDATE userquest SET stopdate = \''.$nowdate.'\' WHERE idquest = '.$idquest.' AND iduser = '.$security->iduser().';';
+    $result = $db->query( $query );
+    if($result != '1') return false;      
     return true;
 	}
 	
@@ -268,7 +290,6 @@ class fhq_quest
 			<font size=1>Score:</font> <br> +'.$this->score.' <br><br>
 			<font size=1>Subject:</font> <br> '.htmlspecialchars_decode($this->subject).' <br><br>
 			<font size=1>Short Text:</font> <br> '.htmlspecialchars_decode($this->short_text).' <br><br>
-			<font size=1>Full Text:</font> <br><pre>'.htmlspecialchars_decode($this->full_text).'</pre><br><br>
 		';
 		
 		
@@ -282,16 +303,22 @@ class fhq_quest
 		$count = $db->count( $result );	 
 		if($count == 1)
 		{
+      echo '<font size=1>Full Text:</font> <br><pre>'.htmlspecialchars_decode($this->full_text).'</pre><br><br>';
+
 			$stopdate = mysql_result($result, 0, 'stopdate');
 			if( $stopdate == '0000-00-00 00:00:00')
 			{
 				echo '
-        <a href="javascript:void(0);" onclick="load_content_page(\'pass_quest\', { id : '.$idquest.'} );">Pass Quest</a>
+        <input id="answer_for_quest" type="text"/>
+        <a href="javascript:void(0);" onclick="
+          var answer_for_quest = document.getElementById(\'answer_for_quest'\').value;
+          load_content_page(\'pass_quest\', { id : '.$idquest.', \'answer\' : answer_for_quest } );
+        ">Pass Quest</a>
         ';
       }
       else
 			{
-				echo "<br> Date: '$stopdate' <br> <font size=1>Quest completed</font>";
+				echo '<br> Date: "'.$stopdate.'" <br> <font size=1>Quest completed</font>';
 			};
 		}
 		else
@@ -302,7 +329,7 @@ class fhq_quest
 		}
 		
     
-    //todo: if admin
+    /*todo: if admin
 		if( $security->isAdmin() )
 		{
 			echo "<br><br><br>Hello, admin!<br><br>
@@ -314,7 +341,7 @@ class fhq_quest
 			<a href='quest.php?action=delete&id=$idquest'>delete quest</a><br><br>					
       ";					
     };
-				 
+		*/		 
 				 // parse_bb_code($quest_text)
 	}
 	
