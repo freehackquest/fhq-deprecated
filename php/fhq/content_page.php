@@ -110,10 +110,10 @@
     echo "TOP 100<br>";
     while ($row = mysql_fetch_row($result)) // Data
     {      
-      $iduser = mysql_result( $result, $i, 'iduser' );
-      $nick = mysql_result( $result, $i, 'nick' );
-			$score = mysql_result( $result, $i, 'score' );
-      $role = (isset($row['role'])) ? $row['role'] : "";
+      $iduser = $row['iduser'];
+      $nick = $row['nick'];
+			$score = $row['score'];
+      $role = isset($row['role']) ? $row['role'] : "";
      
       if($iduser == $security->iduser()) echo "<font color=#ff0000>";
 			echo ($i++)." $nick (score: $score ); $role <br>";
