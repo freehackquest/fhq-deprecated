@@ -157,7 +157,6 @@ class fhq_quest
 
   function take_quest( $idquest )
 	{
-  /*
     $security = new fhq_security();
 		$db = new fhq_database();
 
@@ -184,12 +183,10 @@ class fhq_quest
 
     if($result != '1') return false;      
     return true;
-    */
 	}
 
   function pass_quest( $idquest, $answer )
 	{
-  /*
     $security = new fhq_security();
 		$db = new fhq_database();
 
@@ -205,7 +202,6 @@ class fhq_quest
     $result = $db->query( $query );
     if($result != '1') return false;      
     return true;
-    */
 	}
 	
 	function fillQuestFromGet()
@@ -312,17 +308,17 @@ class fhq_quest
 			$stopdate = mysql_result($result, 0, 'stopdate');
 			if( $stopdate == '0000-00-00 00:00:00')
 			{
-				/*echo '
+				echo '
         <input id="answer_for_quest" type="text"/>
         <a href="javascript:void(0);" onclick="
-          var answer_for_quest = document.getElementById(\'answer_for_quest'\').value;
+          var answer_for_quest = document.getElementById(\'answer_for_quest\').value;
           load_content_page(\'pass_quest\', { id : '.$idquest.', \'answer\' : answer_for_quest } );
         ">Pass Quest</a>
-        ';*/
+        ';
       }
       else
 			{
-				// echo '<br> Date: "'.$stopdate.'" <br> <font size=1>Quest completed</font>';
+				echo '<br> Date: "'.$stopdate.'" <br> <font size=1>Quest completed</font>';
 			};
 		}
 		else
