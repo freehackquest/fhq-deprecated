@@ -202,59 +202,6 @@
                 };
                 refreshTo("?action=quest&id=$idquest");	
 	}
-	else if( $action == "recalc_score" )
-	{
-		recalculate_score($db, $iduser);
-		refreshTo("?action=");
-	}
-	else if( $action == "feedback_my")
-	{
-	    $title = "My Feedbacks";
-	    $check = "";
-	    $feedback = new feedback();
-	    $content .= $feedback->getSubMenu();
-	    //$content .= $feedback->getList($db, $userid);
-	    
-	    if($feedback->recvAnswer($db, $check, $userid))
-	    {
-	       if(strlen($check) > 0 )
-		    $content .= $check;
-	       else
-	       {
-		    refreshTo("?action=feedback_my");
-	       };
-	    }
-	    else
-	    {
-		$content .= $feedback->getList($db, "no", $userid);
-	    };
-	}
-	else if( $action == "feedback_add" )
-	{
-		$title = "New Feedback";
-		$check = "";
-
-		$feedback = new feedback();
-		$content .= $feedback->getSubMenu();
-		if( isset($_POST['full_text']) && isset($_POST['type']) )
-		{
-			$feedback->full_text = $_POST['full_text'];
-			$feedback->type = $_POST['type'];
-			$feedback->username = $username;
-			$feedback->iduser = $iduser;
-			
-			$check = $feedback->check();
-			if( strlen($check) == 0 )
-			{
-				$result = $feedback->add( $db );
-				//echo "$result";
-				if($result == '1') refreshTo('?action=feedback_my'); else echo "Please, stop break me!";
-			};
-		};
-		
-		$content .= $feedback->getForm("?action=feedback_add","POST");
-		$content .= $check;
-	}
 	else
 	{
 		// refreshTo("main.php?action=allow");
