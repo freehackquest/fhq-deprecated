@@ -108,7 +108,7 @@
 		$result = $db->query( $query );
     $i = 1;
     echo "TOP 100<br>";
-    while ($row = mysql_fetch_row($result), MYSQL_ASSOC) // Data
+    while ($row = mysql_fetch_row($result,MYSQL_ASSOC)) // Data
     {      
       $iduser = $row['iduser'];
       $nick = $row['nick'];
