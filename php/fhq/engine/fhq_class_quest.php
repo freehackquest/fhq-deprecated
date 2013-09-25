@@ -164,11 +164,14 @@ class fhq_quest
       if(!$this->select($idquest))
         return false;
 
+    $where = ' AND (min_score <= '.$security->score().' )';
+    if($security->isAdmin()) $where = "";
+
     $query = 'SELECT * 
       FROM 
         quest 
       WHERE 
-        (idquest = '.$idquest.') AND (min_score <= '.$security->score().' ) 
+        (idquest = '.$idquest.') '.$where.'
         AND (for_person = 0 OR for_person = '.$security->iduser().' ) LIMIT 0,1
      ';
 		$result = $db->query( $query );

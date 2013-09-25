@@ -115,9 +115,11 @@
 			$score = $row["score"];
       $role = isset($row['role']) ? $row['role'] : "";
      
-      if($iduser == $security->iduser()) echo "<font color=#ff0000>";
-			echo ($i++)." $nick (score: $score ); $role <br>";
-      if($iduser == $security->iduser()) echo "</font>";
+      $bCurrentUser = $iduser == $security->iduser();
+
+      echo ($i++);
+      echo ($bCurrentUser ? "<font size=3 color=#ff0000>" : "<font size=3>");
+			echo " $nick (score: $score);</font><br><font size=1>$role</font><br>";
     }
 		exit;
 	}
