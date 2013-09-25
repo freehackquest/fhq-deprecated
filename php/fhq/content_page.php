@@ -157,13 +157,13 @@ Your place: place / all
 	{
     if(!isset($_GET['id']))
 		{
-			echo 'not found paramenter "id"';
+			echo 'Not found paramenter "id"';
 			exit;	
 		};
 
     if(!is_numeric($_GET['id']))
     {
-      echo 'don\'t needed hack me';
+      echo 'Not needed hack me';
 			exit;	
     }
 
@@ -180,9 +180,9 @@ Your place: place / all
 	}
 	else if($content_page == "pass_quest")
 	{
-    if(!isset($_GET['id']))
+    if(!isset($_GET['id']) && !isset($_GET['answer']))
 		{
-			echo 'not found paramenter "id"';
+			echo 'Not found paramenter "id"';
 			exit;	
 		};
 
@@ -198,7 +198,7 @@ Your place: place / all
 
     if(!$quest->pass_quest($id, $answer))
 		{
-			echo '<font color="#ff0000">Not passed or not found quest with id = '.$id.'.</font>';
+			echo '<font color="#ff0000">Not passed or not found quest with id = '.$id.'</font>';
 			exit;
 		};
     $quest->echo_view_quest();
