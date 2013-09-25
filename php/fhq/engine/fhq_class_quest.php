@@ -153,6 +153,31 @@ class fhq_quest
 		$result = $db->query($query);
 		return ($result == 1);
 	}
+
+  function take_quest( $idquest )
+	{
+    $security = new fhq_security();
+		$db = new fhq_database();
+
+    $query = 'SELECT * 
+      FROM 
+        quest 
+      WHERE 
+        (idquest = '.$idquest.') AND (min_score <= '.$security->score().' ) 
+        AND (for_person = 0 OR for_person = '.$security->iduser().' ) LIMIT 0,1
+     ';
+			$result = $db->query( $query );
+			$count = $db->count( $result );
+      if($count == 1 )
+      {
+        $nowdate = udate("Y-m-d H:i:s");
+        $query = "INSERT INTO userquest(idquest,iduser,startdate,stopdate) VALUES($idquest,$iduser,'$nowdate','0000-00-00 00:00:00');";
+        $result = $db->query( $query );
+        $this->select($idquest);
+        $this->echo_view_quest();
+      }
+      echo "Not found quest";
+	}
 	
 	function fillQuestFromGet()
 	{
@@ -249,7 +274,7 @@ class fhq_quest
 		$idquest = $this->idquest;
 		$iduser = $security->iduser();
 
-		$query = "SELECT idquest, stopdate FROM userquest WHERE (idquest = $idquest) AND (iduser = $iduser) LIMIT 0,1";
+		$query = 'SELECT idquest, stopdate FROM userquest WHERE (idquest = '.$idquest.') AND (iduser = '.$iduser.') LIMIT 0,1';
 		$result = $db->query( $query );
 		$count = $db->count( $result );	 
 		if($count == 1)
@@ -257,31 +282,23 @@ class fhq_quest
 			$stopdate = mysql_result($result, 0, 'stopdate');
 			if( $stopdate == '0000-00-00 00:00:00')
 			{
-				echo "<br>
+				echo '
+        <a href="javascript:void(0);" onclick="load_content_page(\'pass_quest\', { id : '.$idquest.'} );">Pass Quest</a>
+        ';
+      }
+      else
+			{
+				echo "<br> Date: '$stopdate' <br> <font size=1>Quest completed</font>";
+			};
+		}
+		else
+		{
 					
- 				<form method='POST' action='?action=pass_quest&id=$idquest'> 
-						<input type='text' size='25' name='answer' value=''> <br>
-						
-						echo "<br>
-					<a href=''>Take Quest</a><br>
-					<br> <font size=1>Moves to the 'process'</font>";
-					
-						<input type='submit' name='take' value='Pass'> <br> <font size=1>try to pass the quest</font> 
-					</form>";
-					}
-					else
-					{
-						echo "<br> Date: '$stopdate' <br> <font size=1>Quest completed</font>";
-					};
+					echo '<br>
+          <a href="javascript:void(0);" onclick="load_content_page(\'take_quest\', { id : '.$idquest.'} );">Take Quest</a>
+					<br> <font size=1>Moves to the \'process\'</font>';
 				}
-				else
-				{
-					
-					echo "<br>
-					<a href=''>Take Quest</a><br>
-					<br> <font size=1>Moves to the 'process'</font>";
-				}
-				//if admin
+				//todo: if admin
 				if( $security->isAdmin() )
 				{
 					echo "<br><br><br>Hello, admin!<br><br>

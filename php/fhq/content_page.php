@@ -155,7 +155,14 @@ Your place: place / all
 	}
 	else if($content_page == "take_quest")
 	{
-		echo "not work yet";
+    if(!isset($_GET['id']))
+		{
+			echo 'not found paramenter "id"';
+			exit;	
+		};
+
+    $quest = new fhq_quest();
+    $quest->take_quest($id);
 		exit;
 	}
 	else if($content_page == "pass_quest")
