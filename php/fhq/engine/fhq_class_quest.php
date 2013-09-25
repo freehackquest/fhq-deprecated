@@ -166,17 +166,20 @@ class fhq_quest
         (idquest = '.$idquest.') AND (min_score <= '.$security->score().' ) 
         AND (for_person = 0 OR for_person = '.$security->iduser().' ) LIMIT 0,1
      ';
-			$result = $db->query( $query );
-			$count = $db->count( $result );
-      if($count == 1 )
-      {
-        $nowdate = udate("Y-m-d H:i:s");
-        $query = "INSERT INTO userquest(idquest,iduser,startdate,stopdate) VALUES($idquest,$iduser,'$nowdate','0000-00-00 00:00:00');";
-        $result = $db->query( $query );
-        $this->select($idquest);
-        $this->echo_view_quest();
-      }
-      echo "Not found quest";
+		$result = $db->query( $query );
+    $count = $db->count( $result );
+    if($count != 1 ) return false;
+
+      
+    $nowdate = date('Y-m-d H:i:s');
+    $query = 'INSERT INTO userquest(idquest,iduser,startdate,stopdate) 
+        VALUES('.$idquest.','.$security->iduser().',\''.$nowdate.'\',\'0000-00-00 00:00:00\');';
+    $result = $db->query( $query );
+
+    if($result != '1') return false;
+
+      
+    return true;
 	}
 	
 	function fillQuestFromGet()
@@ -292,27 +295,25 @@ class fhq_quest
 			};
 		}
 		else
+		{					
+			echo '<br>
+        <a href="javascript:void(0);" onclick="load_content_page(\'take_quest\', { id : '.$idquest.'} );">Take Quest</a>
+		    <br> <font size=1>Moves to the \'process\'</font>';
+		}
+		
+    
+    //todo: if admin
+		if( $security->isAdmin() )
 		{
+			echo "<br><br><br>Hello, admin!<br><br>
+			<form method='POST'> 
+				<input type='file' value='' name='upload_file'/> <input type='submit' value='Upload file'/>
+			</form>
 					
-					echo '<br>
-          <a href="javascript:void(0);" onclick="load_content_page(\'take_quest\', { id : '.$idquest.'} );">Take Quest</a>
-					<br> <font size=1>Moves to the \'process\'</font>';
-				}
-				//todo: if admin
-				if( $security->isAdmin() )
-				{
-					echo "<br><br><br>Hello, admin!<br><br>
-					<form method='POST'> 
-						<input type='file' value='' name='upload_file'/> <input type='submit' value='Upload file'/>
-					</form>
-					
-					<a href='quest.php?action=edit&id=$idquest'>edit quest</a><br><br>
-					<a href='quest.php?action=delete&id=$idquest'>delete quest</a><br><br>
-					
-					
-					";
-					
-				};
+			<a href='quest.php?action=edit&id=$idquest'>edit quest</a><br><br>
+			<a href='quest.php?action=delete&id=$idquest'>delete quest</a><br><br>					
+      ";					
+    };
 				 
 				 // parse_bb_code($quest_text)
 	}

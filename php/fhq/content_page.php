@@ -161,8 +161,17 @@ Your place: place / all
 			exit;	
 		};
 
+    $id = $_GET['id'];
     $quest = new fhq_quest();
+
     $quest->take_quest($id);
+
+    if(!$quest->select($id))
+		{
+			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
+			exit;
+		};
+    $quest->echo_view_quest();
 		exit;
 	}
 	else if($content_page == "pass_quest")
