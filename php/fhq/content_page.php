@@ -177,33 +177,33 @@ Your place: place / all
 			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
 			exit;
 		};
-    $quest->echo_view_quest();
+		$quest->echo_view_quest();
 		exit;
 	}
 	else if($content_page == "pass_quest")
 	{
-    if(!isset($_GET['id']) && !isset($_GET['answer']))
+		if(!isset($_GET['id']) && !isset($_GET['answer']))
 		{
 			echo 'Not found paramenter "id"';
-			exit;	
-		};
-
-    if(!is_numeric($_GET['id']))
-    {
-      echo 'don\'t needed hack me';
-			exit;	
-    }
-
-    $id = $_GET['id'];
-    $answer = $_GET['answer'];
-    $quest = new fhq_quest();
-
-    if(!$quest->pass_quest($id, $answer))
-		{
-			echo '<font color="#ff0000">Not passed or not found quest with id = '.$id.'</font>';
 			exit;
 		};
-    $quest->echo_view_quest();
+
+		if(!is_numeric($_GET['id']))
+		{
+			echo 'don\'t needed hack me';
+			exit;
+		}
+
+		$id = $_GET['id'];
+		$answer = $_GET['answer'];
+		$quest = new fhq_quest();
+
+		if(!$quest->pass_quest($id, $answer))
+		{
+			echo '<font color="#ff0000">Not passed quest #'.$id.'</font><br><br>';
+		};
+		
+		$quest->echo_view_quest();
 		exit;
 	}
 	else if($content_page == "add_quest")
@@ -292,6 +292,10 @@ Your place: place / all
 	}
 	else if($content_page == "recalculate_score")
 	{
+		$score = new fhq_score();
+		echo $score->recalculate_score();
+		exit;
+		
 		if(isset($_SESSION['recalculate_score_last_time']))
 		{
 				$oldtime = $_SESSION['recalculate_score_last_time'];

@@ -45,6 +45,25 @@ function recalculate_score()
 	xmlhttp.send();
 };
 
+
+function recalculate_score2()
+{
+	if (window.XMLHttpRequest) {
+		// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	};
+	xmlhttp.onreadystatechange=function() {
+		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+			var text = xmlhttp.responseText;
+			var value = parseInt(text,10);
+			if(!isNaN(value))
+				document.getElementById("view_score").innerHTML=text;
+		}
+	}
+	
+	xmlhttp.open("GET", "content_page.php?content_page=recalculate_score",true);
+	xmlhttp.send();
+};
 </script>
 ';
 

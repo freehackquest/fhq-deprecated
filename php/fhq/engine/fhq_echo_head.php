@@ -19,11 +19,11 @@ function echo_head($page)
 
 	</style>
 	<script language="JavaScript">
-	function view_quest(idquest) 
+	/*function view_quest(idquest) 
 	{
 		window.showModalDialog("quest.php?idquest="+idquest, "", "dialogWidth:500px;dialogHeight:500px;status:no;edge:sunken;");
 			window.location.reload(false);
-	};	
+	};*/
 	function load_content_page(content_page, other_params)
 	{
 		if (window.XMLHttpRequest) {
@@ -35,7 +35,10 @@ function echo_head($page)
 				if(xmlhttp.responseText == "")
 					document.getElementById("content_page").innerHTML = "content page don\'t found";
 				else
+				{
 					document.getElementById("content_page").innerHTML=xmlhttp.responseText;
+					document.getElementById("reload_content").onclick();
+				}
 			}
 		}
 	  

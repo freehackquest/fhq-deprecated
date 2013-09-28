@@ -24,6 +24,6 @@
 	
 	$db = new fhq_database();
 
-	echo_mainpage( new simple_page($title, $content) );
+	echo_mainpage( new simple_page("", "") );
 	exit;
 ?>

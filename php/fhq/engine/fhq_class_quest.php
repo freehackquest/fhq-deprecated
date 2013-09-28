@@ -188,23 +188,25 @@ class fhq_quest
     return true;
 	}
 
-  function pass_quest( $idquest, $answer )
+	function pass_quest( $idquest, $answer )
 	{
-    $security = new fhq_security();
+		$security = new fhq_security();
 		$db = new fhq_database();
 
-    if($this->idquest == 0)
-      if(!$this->select($idquest))
-        return false;
+		if($this->idquest == 0)
+			if(!$this->select($idquest))
+				return false;
 
-    if(md5($answer) != md5($this->answer))
-      return false;
+		if(md5($answer) != md5($this->answer))
+			return false;
 
-    $nowdate = date('Y-m-d H:i:s');
-    $query = 'UPDATE userquest SET stopdate = \''.$nowdate.'\' WHERE idquest = '.$idquest.' AND iduser = '.$security->iduser().';';
-    $result = $db->query( $query );
-    if($result != '1') return false;      
-    return true;
+		$nowdate = date('Y-m-d H:i:s');
+		$query = 'UPDATE userquest SET stopdate = \''.$nowdate.'\' WHERE idquest = '.$idquest.' AND iduser = '.$security->iduser().';';
+		$result = $db->query( $query );
+		if($result != '1') return false;
+		$score = new fhq_score();
+		$score->recalculate_score(false);
+		return true;
 	}
 	
 	function fillQuestFromGet()
@@ -288,7 +290,11 @@ class fhq_quest
 	
 	function echo_view_quest()
 	{
+		$security = new fhq_security();
 		echo ' 
+		    <a href="javascript:void(0);" id="reload_content" onclick="
+				document.getElementById(\'view_score\').innerHTML = \''.$security->score().'\';"></a>
+
 			<font size=1>Name:</font> <br> #'.$this->idquest.' '.htmlspecialchars_decode($this->quest_name).' <br><br>
 			<font size=1>Score:</font> <br> +'.$this->score.' <br><br>
 			<font size=1>Subject:</font> <br> '.htmlspecialchars_decode($this->subject).' <br><br>
@@ -296,7 +302,7 @@ class fhq_quest
 		';
 		
 		
-		$security = new fhq_security();
+		
 		$db = new fhq_database();
 		$idquest = $this->idquest;
 		$iduser = $security->iduser();
