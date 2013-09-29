@@ -39,7 +39,7 @@ class fhq_page_income
 	
 	function title()
 	{
-		return 'coming soon...<br><font size=2><a href="javascript:void(0);" onclick="exit();">logout</a></font> ';
+		return 'coming soon...<br><font size=2><a class="btn btn-small btn-info" href="javascript:void(0);" onclick="exit();">logout</a></font> ';
 	}
 
 	function echo_content()

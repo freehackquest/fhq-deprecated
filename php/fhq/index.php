@@ -77,7 +77,7 @@ function sign_in()
 					</tr>
 					<tr>
 						<td>Password</td>
-						<td><input class="input-medium" name="password" id="password" value="" type="password"  onkeydown="if (event.keyCode == 13) sign_in();"></td>
+						<td><input name="password" id="password" value="" type="password"  onkeydown="if (event.keyCode == 13) sign_in();"></td>
 					</tr>
 					<tr>
 						<td colspan = "2">

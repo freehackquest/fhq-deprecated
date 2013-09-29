@@ -33,6 +33,20 @@ if [ -d $CONFIG_DIR_OLD ]; then
   cp -rf $CONFIG_DIR_OLD/* $CONFIG_DIR_TEMP
 fi
 
+#copy folder files
+CONFIG_DIR_TEMP="`pwd`/../files.fhq.temp"
+CONFIG_DIR_OLD="$1/files"
+echo "CONFIG_DIR_TEMP = $CONFIG_DIR_TEMP"
+echo "CONFIG_DIR_OLD = $CONFIG_DIR_OLD"
+
+if [ ! -d $CONFIG_DIR_TEMP ]; then
+  mkdir $CONFIG_DIR_TEMP
+fi
+
+if [ -d $CONFIG_DIR_OLD ]; then
+  cp -rf $CONFIG_DIR_OLD/* $CONFIG_DIR_TEMP
+fi
+
 # remove old files 
 if [ -d $1 ]; then
   rm -rf $1
