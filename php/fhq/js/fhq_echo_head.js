@@ -48,6 +48,7 @@ function load_content_page(content_page, other_params, from_lp = false)
 		content_page != 'save_quest' && 
 		content_page != 'pass_quest' && 
 		content_page != 'delete_quest' && 
+		content_page != 'remove_file' && 
 		!from_lp
 	)
 		last_pages.push({ content_page: content_page, other_params: other_params, today : new Date() });
@@ -87,7 +88,11 @@ function loadPage() {
 	
 function delete_quest() {
 
-    if (!confirm("Are you sure you want to delete?")) return false;
+    if (!confirm("Are you sure you want to delete quest?")) return false;
+    else return true;
+};
+function delete_file() {
+    if (!confirm("Are you sure you want to delete file?")) return false;
     else return true;
 };
 	
@@ -119,6 +124,56 @@ function exit()
 function dr_zoyberg()
 {
   document.getElementById("content_page").innerHTML="<img width=100% src=\"http://fc03.deviantart.net/fs70/f/2012/119/b/7/zoidberg_trace_by_deepfry3-d4y0wlc.png\"/>";
+};
+
+function load_content_page_files(files, content_page, other_params) {
+		
+	if (window.XMLHttpRequest)
+	{
+		// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	};
+  
+	// alert(file);
+  
+    // Create form data
+    var formData = new FormData();
+    for(i = 0; i < files.length; i++)
+		formData.append(files[i].name, files[i]);
+
+	var url = "content_page.php?content_page=" + content_page;
+	
+	for(var key in other_params) {
+		url = url + "&" + key + "=" + encodeURIComponent(other_params[key]);
+	}
+	// Open
+	xmlhttp.open('POST', url, true);
+
+    /*
+    // Set headers
+    xmlhttp.setRequestHeader("Cache-Control", "no-cache");
+    xmlhttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+    xmlhttp.setRequestHeader("Content-Type", "multipart/form-data");
+    xmlhttp.setRequestHeader("X-File-Name", file.name);
+    xmlhttp.setRequestHeader("X-File-Size", file.size);
+    xmlhttp.setRequestHeader("X-File-Type", "application/octet-stream");
+	*/
+	
+	xmlhttp.onreadystatechange=function() {
+		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+			if(xmlhttp.responseText == "")
+				document.getElementById("content_page").innerHTML = "content page don't found";
+			else
+			{
+				echo_last_pages();
+				document.getElementById("content_page").innerHTML=xmlhttp.responseText;
+				document.getElementById("reload_content").onclick();
+			}
+		}
+	}	
+	
+	// Send
+    xmlhttp.send(formData);
 };
 
 var myTimer;

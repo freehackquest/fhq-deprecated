@@ -364,19 +364,53 @@ class fhq_quest
 		{    		
 			echo '<br>
 				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'take_quest\', { id : '.$idquest.'} );">Take Quest</a>
-				<br> <font size=1>Moves to the \'process\'</font>';
+				<br> <font size=1>It will be move to the \'process\'</font>';
 		}
 		
 		// todo: if admin
 		if( $security->isAdmin() )
 		{
-			echo '<br><br><br>Hello, admin!<br><br>
-				<form method="POST">
-				<input type="file" value="" name="upload_file"/> <input type="submit" value="Upload file"/>
-				</form>
+			echo '<br><br><br>Hello, admin!<br><br><p>';
+				
+			if ($handle = opendir('files')) {
+				$filter = "quest".$idquest;
+				// echo "<br>Directory handle: $handle\n<br>";
+				// echo "Entries:\n<br>";
+				// echo $filter."<br>";
+				/* This is the correct way to loop over the directory. */
+				while (false !== ($entry = readdir($handle))) 
+				{
+					if(substr($entry, 0, strlen($filter)) == $filter)
+					{
+						$file = 'files/'.$entry;
+						echo '<div class="alert alert-info">'.$file.'
+							<a class="btn btn-small btn-info" target="_blank" href="'.$file.'">Open</a>
+							<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+								if(delete_file())
+								{
+									load_content_page(\'remove_file\', { id : '.$idquest.', file : \''.$file.'\' } );
+								};
+							">Remove</a>
+							</div>
+						';
+					}
+				}
+				closedir($handle);
+			}
+
+			echo '</p>
+						<input name="file" id="file" size="27" type="file" required multiple />
+						
+						<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+							
+							var files = document.getElementById(\'file\').files;
+							// upload_file(files,'.$idquest.');
+							load_content_page_files(files, \'upload_files\', { id : '.$idquest.' } );
+						">Upload</a><br><br>
+					';
 
 
-				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+			echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
 				load_content_page(\'edit_quest\', { id : '.$idquest.' } );
 				">Edit Quest</a>
 

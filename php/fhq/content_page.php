@@ -192,7 +192,7 @@ Your place: place / all
     $id = $_GET['id'];
     $quest = new fhq_quest();
 
-    if(!$quest->take_quest($id))
+		if(!$quest->take_quest($id))
 		{
 			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
 			exit;
@@ -222,6 +222,96 @@ Your place: place / all
 		{
 			echo '<font color="#ff0000">Not passed quest #'.$id.'</font><br><br>';
 		};
+		
+		$quest->echo_view_quest();
+		exit;
+	}
+	else if($content_page == "remove_file")
+	{
+		if(!$security->isAdmin())
+		{
+			echo "Forbidden";
+			exit;
+		};
+		
+		if(!isset($_GET['id']) && !isset($_GET['file']))
+		{
+			echo 'Not found paramenter "id"';
+			exit;
+		};
+
+		if(!is_numeric($_GET['id']))
+		{
+			echo 'don\'t needed hack me';
+			exit;
+		}
+
+		if(file_exists($_GET['file']))
+			unlink($_GET['file']);
+		else
+			echo "File not found: '".$_GET['file']."'<br>";
+			
+		$id = $_GET['id'];
+		
+		$quest =  new fhq_quest();
+		
+		if(!$quest->select($id))
+		{
+			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
+			exit;
+		}
+		
+		$quest->echo_view_quest();
+		exit;
+	}
+	else if($content_page == "upload_files")
+	{
+		if(!$security->isAdmin())
+		{
+			echo "Forbidden";
+			exit;
+		};
+		
+		if(!isset($_GET['id']) && count($_FILES) <= 0)
+		{
+			echo 'Not found paramenter "id" or not files';
+			exit;
+		};
+
+		if(!is_numeric($_GET['id']))
+		{
+			echo 'don\'t needed hack me';
+			exit;
+		}
+
+		$id = $_GET['id'];
+		$quest =  new fhq_quest();
+		
+		if(!$quest->select($id))
+		{
+			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
+			exit;
+		}
+
+		$output_dir = 'files/';
+		$keys = array_keys($_FILES);
+		$prefix = 'quest'.$id.'_';
+		for($i = 0; $i < count($keys); $i++)
+		{
+			$filename = $keys[$i];
+			if ($_FILES[$filename]['error'] > 0)
+			{
+				echo "Error: " . $_FILES[$filename]["error"] . "<br>";
+			}
+			else
+			{
+				$full_filename = $output_dir.$prefix.$filename;
+				move_uploaded_file($_FILES[$filename]["tmp_name"],$full_filename);
+				// echo "Uploaded File: ".$full_filename."<br>";
+				if(!file_exists($full_filename))
+				  echo "$full_filename - File not exists!";
+			}
+		}
 		
 		$quest->echo_view_quest();
 		exit;
