@@ -66,6 +66,9 @@ if [ -d $FILES_DIR_OLD ]; then
   cp -rf $FILES_DIR_TEMP/* $FILES_DIR_OLD
 fi
 
+#remove temporary folder
+rm -rf $FILES_DIR_TEMP
+
 #copy config comeback
 if [ -d $CONFIG_DIR_OLD ]; then
   cp -rf $CONFIG_DIR_TEMP/* $CONFIG_DIR_OLD
