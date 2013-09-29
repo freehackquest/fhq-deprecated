@@ -22,7 +22,7 @@ class fhq_quest
 	//очищаем все переменные
 	function setEmptyAll()
 	{
-		$this->idquest = "";
+		$this->idquest = 0;
 		$this->quest_name = "";
 		$this->short_text = "";
 		$this->full_text = "";
@@ -45,6 +45,7 @@ class fhq_quest
 	function setForPerson( $number ) { $this->for_person = $number; }
 	
 	function getQuestName() { return $this->quest_name; }
+	function idquest() { return $this->idquest; }
 
 
 	function check()
@@ -88,29 +89,32 @@ class fhq_quest
 		};
 		return 0;
 	}
-
-	function update( &$db, $idquest )
+	
+	function update()
 	{
-		if( !is_numeric($idquest) ) return false;
-
-		if(strlen($this->check()) != 0) return false;
-
-		$query = "UPDATE quest SET
-			name = '".base64_encode($this->quest_name)."',
-			short_text = '".base64_encode($this->short_text)."',
-			text = '".base64_encode($this->full_text)."',
-			score = ".$this->score.",
-			min_score = ".$this->min_score.",
-			tema = '".base64_encode($this->subject)."',
-			answer = '".base64_encode($this->answer)."'
-			WHERE idquest = ".$this->idquest.";";
-
-			//echo $query;
-
+		$security = new fhq_security();
+		$db = new fhq_database();
+		if($this->idquest == 0)
+			return 0;
+		
+		if(strlen($this->check()) != 0) return 0;
+		$query = "UPDATE quest SET 
+					name = '".base64_encode($this->quest_name)."', 
+					short_text = '".base64_encode($this->short_text)."', 
+					text = '".base64_encode($this->full_text)."', 
+					score = ".$this->score.", 
+					min_score = ".$this->min_score.", 
+					tema = '".base64_encode($this->subject)."', 
+					answer = '".base64_encode($this->answer)."', 
+					for_person = ".$this->for_person."
+				WHERE 
+					idquest = ".$this->idquest;
+			
+		// echo $query;
 		$result = $db->query( $query );
-		return ( $result == 1);
-		//	if( $result == 1 ) return true;
-		// return false;
+		if( $result == 1 ) 
+			return $this->idquest;
+		return 0;
 	}
 
 	function select( $id )
@@ -148,8 +152,13 @@ class fhq_quest
 		return true;
 	}
 	
-	function delete_quest( &$db, $id )
+	function delete( $id )
 	{
+		$security = new fhq_security();
+		$db = new fhq_database();
+		
+		$query = "DELETE FROM userquest WHERE idquest=$id";
+		$result = $db->query($query);
 		$query = "DELETE FROM quest WHERE idquest=$id";
 		$result = $db->query($query);
 		return ($result == 1);
@@ -211,6 +220,11 @@ class fhq_quest
 	
 	function fillQuestFromGet()
 	{
+		if(isset($_GET['idquest']))
+			$this->idquest = htmlspecialchars($_GET['idquest']);
+		else 
+			$this->idquest = 0;
+		
 		$this->quest_name = htmlspecialchars($_GET['quest_name']);
 		$this->short_text = htmlspecialchars($_GET['quest_short_text']);
 		$this->full_text = htmlspecialchars($_GET['quest_full_text']);
@@ -222,8 +236,25 @@ class fhq_quest
 	
 	function getForm()
 	{
+		$edit_quest = '';
+		$js = ''; 
+		
+		if($this->idquest > 0)
+		{
+			$edit_quest = '
+			<tr>
+				<td>id:</td>
+				<td>
+					'.$this->idquest.'
+					<input id="idquest" type="hidden" value="'.$this->idquest.'"/>
+				</td>
+			</tr>';
+			$js = '\'idquest\' : document.getElementById(\'idquest\').value,';
+		};
+		
 		return '
 		<table>
+		'.$edit_quest.'
 		<tr>
 			<td>Name:</td>
 			<td><input type="text" id="quest_name" size=30 value="'.$this->quest_name.'"/></td>
@@ -266,6 +297,7 @@ class fhq_quest
 				var quest_answer = document.getElementById(\'quest_answer\').value;
 
 				load_content_page(\'save_quest\', {
+						'.$js.'
 						\'quest_name\' : quest_name, 
 						\'quest_short_text\' : quest_short_text, 
 						\'quest_full_text\' : quest_full_text, 
@@ -301,8 +333,6 @@ class fhq_quest
 			<font size=1>Short Text:</font> <br> '.htmlspecialchars_decode($this->short_text).' <br><br>
 		';
 		
-		
-		
 		$db = new fhq_database();
 		$idquest = $this->idquest;
 		$iduser = $security->iduser();
@@ -312,20 +342,20 @@ class fhq_quest
 		$count = $db->count( $result );	 
 		if($count == 1)
 		{
-      echo '<font size=1>Full Text:</font> <br><pre>'.htmlspecialchars_decode($this->full_text).'</pre><br><br>';
+			echo '<font size=1>Full Text:</font> <br><pre>'.htmlspecialchars_decode($this->full_text).'</pre><br><br>';
 
 			$stopdate = mysql_result($result, 0, 'stopdate');
 			if( $stopdate == '0000-00-00 00:00:00')
 			{
 				echo '
-        <input id="answer_for_quest" type="text"/>
-        <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
-          var answer_for_quest = document.getElementById(\'answer_for_quest\').value;
-          load_content_page(\'pass_quest\', { id : '.$idquest.', \'answer\' : answer_for_quest } );
-        ">Pass Quest</a>
-        ';
-      }
-      else
+				<input id="answer_for_quest" type="text"/>
+				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+				var answer_for_quest = document.getElementById(\'answer_for_quest\').value;
+				load_content_page(\'pass_quest\', { id : '.$idquest.', \'answer\' : answer_for_quest } );
+				">Pass Quest</a>
+				';
+			}
+			else
 			{
 				echo '<br> Date: "'.$stopdate.'" <br> <font size=1>Quest completed</font>';
 			};
@@ -333,26 +363,31 @@ class fhq_quest
 		else
 		{    		
 			echo '<br>
-        <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'take_quest\', { id : '.$idquest.'} );">Take Quest</a>
-		    <br> <font size=1>Moves to the \'process\'</font>';
+				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'take_quest\', { id : '.$idquest.'} );">Take Quest</a>
+				<br> <font size=1>Moves to the \'process\'</font>';
 		}
 		
-    
-    /*todo: if admin
+		// todo: if admin
 		if( $security->isAdmin() )
 		{
-			echo "<br><br><br>Hello, admin!<br><br>
-			<form method='POST'> 
-				<input type='file' value='' name='upload_file'/> <input type='submit' value='Upload file'/>
-			</form>
-					
-			<a href='quest.php?action=edit&id=$idquest'>edit quest</a><br><br>
-			<a href='quest.php?action=delete&id=$idquest'>delete quest</a><br><br>					
-      ";					
-    };
-		*/		 
-				 // parse_bb_code($quest_text)
+			echo '<br><br><br>Hello, admin!<br><br>
+				<form method="POST">
+				<input type="file" value="" name="upload_file"/> <input type="submit" value="Upload file"/>
+				</form>
+
+
+				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+				load_content_page(\'edit_quest\', { id : '.$idquest.' } );
+				">Edit Quest</a>
+
+				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+					if(delete_quest())
+					{
+						load_content_page(\'delete_quest\', { id : '.$idquest.'} );
+					}
+				">Delete Quest</a><br><br>
+			';
+		};
 	}
-	
 };
 ?>

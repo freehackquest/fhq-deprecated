@@ -25,6 +25,7 @@ function echo_last_pages()
 			"dr_zoyberg" : "Dr Zoyberg",
 			"feedbacks" : "Feedbacks",
 			"add_quest" : "Add Quest",
+			"edit_quest" : "Edit Quest",
 			"view_quest" : "View Quest"
 		};
 		
@@ -42,7 +43,13 @@ function echo_last_pages()
 
 function load_content_page(content_page, other_params, from_lp = false)
 {
-	if(content_page != 'take_quest' && content_page != 'pass_quest' && !from_lp)
+	if(
+		content_page != 'take_quest' && 
+		content_page != 'save_quest' && 
+		content_page != 'pass_quest' && 
+		content_page != 'delete_quest' && 
+		!from_lp
+	)
 		last_pages.push({ content_page: content_page, other_params: other_params, today : new Date() });
 	
 	if (window.XMLHttpRequest) {
@@ -76,6 +83,12 @@ function load_content_page(content_page, other_params, from_lp = false)
 
 function loadPage() {
 	window.status = "Страница загружена";
+};
+	
+function delete_quest() {
+
+    if (!confirm("Are you sure you want to delete?")) return false;
+    else return true;
 };
 	
 	// btn btn-large btn-primary

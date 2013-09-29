@@ -154,9 +154,30 @@ Your place: place / all
 		$quest->echo_view_quest();
 		
 	}
+	else if($content_page == "edit_quest")
+	{
+		if(!isset($_GET['id']))
+		{
+			echo 'not found paramenter "id"';
+			exit;	
+		};
+		
+		$id = $_GET['id'];
+		
+		$quest =  new fhq_quest();
+		
+		if(!$quest->select($id))
+		{
+			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
+			exit;
+		}
+		
+		echo $quest->getForm();
+		
+	}
 	else if($content_page == "take_quest")
 	{
-    if(!isset($_GET['id']))
+		if(!isset($_GET['id']))
 		{
 			echo 'Not found paramenter "id"';
 			exit;	
@@ -244,7 +265,10 @@ Your place: place / all
 		
 		// insert;
 		
-		$id = $quest->insert();
+		if($quest->idquest() == 0)
+			$id = $quest->insert();
+		else 
+			$id = $quest->update();
 		
 		if($id == 0)
 		{
@@ -256,6 +280,37 @@ Your place: place / all
 		if(!$quest->select($id))
 		{
 			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
+			exit;
+		}
+		
+		$quest->echo_view_quest();
+		exit;
+	}
+	else if($content_page == "delete_quest")
+	{
+		if(!$security->isAdmin())
+		{
+			echo "Forbidden";
+			exit;
+		};
+		
+		if(!isset($_GET['id']))
+		{
+			echo 'Not found paramenter "id"';
+			exit;
+		};
+
+		if(!is_numeric($_GET['id']))
+		{
+			echo 'don\'t needed hack me';
+			exit;
+		}
+
+		$id = $_GET['id'];
+		$quest = new fhq_quest();
+		if( $quest->delete($id) )
+		{
+			echo 'Quest was deleted!';
 			exit;
 		}
 		
