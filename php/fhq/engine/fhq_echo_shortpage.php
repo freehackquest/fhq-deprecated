@@ -8,6 +8,7 @@ function echo_shortpage($page)
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title> fhq - '.$page->title().' </title>
+		<link rel="stylesheet" type="text/css" href="styles/site.css" />
 	';
 
 $page->echo_head();
@@ -22,8 +23,8 @@ echo '
 					<td align="center" valign="middle">
 						<table>				
 							<tr>
-								<td> <img src="images/minilogo.jpg"> </td>
-								<td > <h2>free-hack-quest:<br>'.$page->title().'</h2>
+								<td> <img src="images/logo2.png"> </td>
+								<td > <font size=5>free-hack-quest:</font><br>'.$page->title().'
 								<center>
 									';
 				$page->echo_content();

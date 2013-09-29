@@ -70,27 +70,25 @@ function sign_in()
   xmlhttp.send();
 }
 </script>			
-			<form method="POST" action="">
-				<table>
+			<table cellspacing=10px cellpadding=10px>
 					<tr>
 						<td> E-mail: </td>
 						<td><input name="email" id="email" value="" type="text" onkeydown="if (event.keyCode == 13) sign_in();"></td>
 					</tr>
 					<tr>
 						<td>Password</td>
-						<td><input name="password" id="password" value="" type="password"  onkeydown="if (event.keyCode == 13) sign_in();"></td>
+						<td><input class="input-medium" name="password" id="password" value="" type="password"  onkeydown="if (event.keyCode == 13) sign_in();"></td>
 					</tr>
 					<tr>
 						<td colspan = "2">
 							<center>					
-								<a href="javascript:void(0);" onclick="sign_in();">Sign in</a>
+								<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="sign_in();">Sign in</a>
 							</center>
 						</td>
 					</tr>
 				</table>
-			</form>
 			<center>
-					or <a href="registration.php">Registration</a>
+					or <a class="btn btn-small btn-info" href="registration.php">Registration</a>
 			</center>
 			<br><br>
 			<div id="result_auth"> </div>

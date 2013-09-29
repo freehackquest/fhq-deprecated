@@ -121,19 +121,19 @@ class fhq_page_listofquests
 
 		$type = $this->typelist;
 
-		echo "$type($count):<br>
-			<table id='customers' width=100%>
+		echo "$type($count):<br><br>
+			<!-- <table width=100%>
 
 		<tr class='alt'>
-			<td width=15% class='beginend'> </td>
+			<td width=15%> </td>
 			<td>#id name</td>
 			<td>Score</td>
 			<td>Subject</td>
 			<td>Short Text</td>
-  		<td width=15% class='beginend'> </td>
- 		</tr>";
+  		<td width=15%> </td>
+ 		</tr> -->";
 
-
+		echo '<p>';
 		function text_decode($text)
 		{
 				return htmlspecialchars_decode(base64_decode($text));
@@ -148,20 +148,32 @@ class fhq_page_listofquests
 			$quest_subjects = text_decode(mysql_result( $mysql_result, $i, 'tema'));
 
 			echo '
-				<tr class="alt">
-					<td width=15% class="beginend"> </td>
+				<!-- <tr >
+					<td width=15%> </td>
 					<td>
-						<a href="javascript:void(0);" onclick="load_content_page(\'view_quest\', { id : '.$quest_id.'} );"><b>#'.$quest_id.'</b> '.$quest_name.'</a>
+						<a class="btn btn-large btn-primary" href="javascript:void(0);" onclick="load_content_page(\'view_quest\', { id : '.$quest_id.'} );"><b>#'.$quest_id.'</b> '.$quest_name.'</a>
+						
+						
+						
 					</td>
 					<td>+'.$quest_score.'</td>
 					<td>'.$quest_subjects.'</td>
 					<td>'.$quest_stext.'</td>
           <td width=15% class="beginend"> </td>
 				</tr>
+				 -->
+				<!-- div class="btn btn-large btn-primary" -->
+				<a class="btn btn-large btn-primary" href="javascript:void(0);" onclick="load_content_page(\'view_quest\', { id : '.$quest_id.'} );">
+					<font size=1>'.$quest_id.' '.$quest_name.'</font><br>
+						<font size=5>+'.$quest_score.'</font><br>
+						<font size=1> sub: '.$quest_subjects.'</font>
+						</a>
+				<!-- /div -->
+				<!-- </p> -->
 				';
 
 		};
-		echo "</table>";
+		echo "<!-- </table> -->";
 	}
 	
 	function echo_onBodyEnd() {

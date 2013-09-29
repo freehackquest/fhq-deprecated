@@ -7,7 +7,7 @@ class fhq_registration
 {
 	function title()
 	{
-		return 'Registration<br><font size=2><a href="index.php">&larr; go to main page</a></font>';
+		return 'Registration<br><font size=2><a class="btn btn-small btn-info" href="index.php">&larr; go to main page</a></font>';
 	}
 
 	function echo_head()
@@ -23,15 +23,19 @@ class fhq_registration
 	{
 		echo '
 			<form method="POST" action="">
-				<table>
+				<table cellspacing=10px cellpadding=10px>
 					<tr>
 						<td>Write your e-mail:</td>
 						<td><input name="email" id="user_email" value="" type="text"></td>
 					</tr>
 					<tr>
 						<td></td>
-						<td><img src="captcha.php" id="captcha-image"/><br>
-						<a href="javascript:void(0);" onclick="document.getElementById(\'captcha-image\').src = \'captcha.php?rid=\' + Math.random();">Refresh Capcha</a></td>
+						<td>
+							<img src="captcha.php" id="captcha-image"/><br>
+							<a class="btn" href="javascript:void(0);" onclick="document.getElementById(\'captcha-image\').src = \'captcha.php?rid=\' + Math.random();">Refresh Capcha</a>
+							<br>
+							
+						</td>
 					</tr>
 					<tr>
 						<td>Captcha</td>
@@ -62,7 +66,7 @@ function sendQuery(str)
   xmlhttp.send();
 }
 </script>
-									<a href="javascript:void(0);" onclick="sendQuery();">Send query</a>
+									<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="sendQuery();">Send query</a>
 									<br><br>
 									
 								</center>

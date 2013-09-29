@@ -4,24 +4,37 @@
 	src: url(../fonts/font_for_captcha.ttf); /* Путь к файлу со шрифтом */
 }
    
-body.main
+/*body.main
 {
 	background-color: #000000;
 	color: #a9a9a9;
 	font: 12pt/10pt Pompadur;
 }
+*/
+
+body.main
+{
+	background-color: #FFFFFF;
+	line-height:40px;
+	color:#333333;
+	font: 12pt/10pt Pompadur;
+}
+
+p {
+  line-height: 40px;
+}
 
 /*цвет ссылок */
-body a:link
+/*body a:link
 {
-	color: #ffd4bd;
-}
+	color: #333333;
+}*/
 
 /*цвет посещенных ссылок */
-body a:visited
+/*body a:visited
 {
-	color: #ffd4bd;
-}
+	color: #333333;
+}*/
 
 #customers
 {

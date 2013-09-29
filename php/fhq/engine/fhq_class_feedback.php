@@ -6,11 +6,11 @@
 	class fhq_feedback
 	{
 		var $full;
-		function fhq_feedback($full)
+		function fhq_feedback()
 		{
+			$this->full = false;
 			$security = new fhq_security();
-			if($full && $security->isAdmin())
-				$this->full = true;
+			$this->full = $security->isAdmin();
 		}
 		function selectType( $value, $name )
 		{
@@ -52,7 +52,7 @@
 				<br><br>
 				<textarea class="full_text" id="full_text">'.$this->full_text.'</textarea>
 				<br><br>
-				<a href="javascript:void(0);" onclick="
+				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
 					var e = document.getElementById(\'feedback_type\');
 					var feedback_type = e.options[e.selectedIndex].value;
 					var full_text = document.getElementById(\'full_text\').value;
@@ -76,8 +76,8 @@
 			echo '
 	<table>
 		<tr><td width="30px"/>
-		<td><a href="javascript:void(0);" onclick="load_content_page(\'feedback_my\');">My Feedbacks</a></td><td width="30px"/>
-		<td><a href="javascript:void(0);" onclick="load_content_page(\'feedback_add\');">New Feedback</a></td><td width="30px">
+		<td><a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'feedback_my\');">My Feedbacks</a></td><td width="30px"/>
+		<td><a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'feedback_add\');">New Feedback</a></td><td width="30px">
 		</tr>
 		</table><br><br>
 ';
@@ -140,11 +140,11 @@
 				$full_text = mysql_result($result, $i, 'full_text');
 				$dt = mysql_result($result, $i, 'dt');
 				
-				if($admin) $nick .= ', '.$author;
+				if($admin) $nick .= ', '.strtolower($author);
 				
 				$list .= 
 				"\n\n<tr height='20px'><td width='50px'><td><center></center></td></tr>
-				<tr bgcolor='$color1' cellpadding='6' >
+				<tr cellpadding='6' >
 					
 					<td width='100%' colspan='2'>
 					    <pre>[$nick, $dt, $typeFB]<br><br>$full_text</pre><br/>
@@ -165,11 +165,11 @@
 				  $nick_msg = mysql_result($result_msg, $i_m, 'nick');
 				  $author_msg = base64_decode($author_msg);
 				  
-				  if($admin) $nick_msg .= ','.$author_msg;
+				  if($admin) $nick_msg .= ', '.strtolower($author_msg);
 
 				  $list .= "<tr> <td/> 
-				  <td bgcolor='#000000'> 
-				   <pre>[$nick_msg,$dt_msg]:<br>$msg</pre> </td> 
+				  <td> 
+				   <pre>[$nick_msg, $dt_msg]:<br>$msg</pre> </td> 
 				  </tr>";
 				};
 			
@@ -179,11 +179,11 @@
 				$list .= '
 				<tr>
 				    <td/>
-				    <td bgcolor="#000000">
+				    <td>
 						Answer:
 						<!-- onkeydown="if (event.keyCode == 13) send_answer'.$id.'();" -->
 						<input id="answer_text_'.$id.'" type="text"/>
-						<a href="javascript:void(0);" onclick="							
+						<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="							
 							var answer_text = document.getElementById(\'answer_text_'.$id.'\').value;
 							load_content_page(\'feedback_add\', { \'feedback_id_token\': \''.$token.'\', \'answer_text\' : answer_text, \'feedback_id\' : \''.$id.'\'});
 						">Send</a>

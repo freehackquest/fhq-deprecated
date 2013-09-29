@@ -27,21 +27,19 @@ class simple_page
 function echo_mainpage($page)
 {	
 	
-	echo "<html>";
+	echo '<html>';
 	echo_head( $page );
 
 	echo '<body onload="load_content_page(\'user_info\');"class="main">
 	<center>
-	<table width="100%" height="100%">
+	<table cellspacing=10px cellpadding=10px width="100%" height="100%">
 		<tr>
 			<td>
-				<img src="images/minilogo.jpg"/>
+				<img src="images/minilogo.png"/>
 			</td>
 			<td align="left" valign = "top" width="100%">
-				<hr>
 					';
 	// echo_score();
-	'<hr>';
 	echo_panel();
 	
 	echo '
@@ -49,7 +47,13 @@ function echo_mainpage($page)
 			</td>
 		</tr>
 		<tr>
-			<td height="100%" colspan="2" valign="top">
+			<td valign="top">
+				<font size="3">
+					<div id="last_pages">
+					</div>
+				</font>
+			</td>
+			<td height="100%" valign="top">
 				<center id="content_page">
 					<div id="content_page"/>
 				</center>
@@ -60,7 +64,7 @@ function echo_mainpage($page)
 			<td colspan="2">
 				<center>
 					<font size=1>© 2011-2013 sea-kg</font>
-					<pre><div id="debug_info"/></pre>
+					<!-- pre><div id="debug_info"/></pre -->
 				</center>
 			</td>
 		</tr>

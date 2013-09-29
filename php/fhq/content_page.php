@@ -55,10 +55,9 @@
 	}
 	else if($content_page == "feedback_add")
 	{
-		 $feedback = new fhq_feedback();
-	    $feedback->echo_menu();
-	    
-	    
+		$feedback = new fhq_feedback();
+		$feedback->echo_menu();
+
 	    if( isset($_GET['full_text']) && isset($_GET['feedback_type']) )
 		{
 			$feedback->full_text = $_GET['full_text'];
@@ -89,7 +88,6 @@
 	    };
 		
 	    $feedback->echo_insert_form("?action=feedback_add","POST");
-		echo "feedback_add";
 		exit;
 	}
 	else if($content_page == "dr_zoyberg")
@@ -99,28 +97,29 @@
 	}
 	else if($content_page == "top100")
 	{
-    $query = "";
-    if($security->isUser())
-      $query = "SELECT iduser, score, nick FROM user WHERE role='user' ORDER BY score DESC LIMIT 0,100";
-    else
-      $query = "SELECT iduser, score, nick, role FROM user ORDER BY score DESC LIMIT 0,100";
+		$query = "";
+		if($security->isUser())
+			$query = "SELECT iduser, score, nick FROM user WHERE role='user' ORDER BY score DESC LIMIT 0,100";
+		else
+			$query = "SELECT iduser, score, nick, role FROM user ORDER BY score DESC LIMIT 0,100";
 
 		$result = $db->query( $query );
-    $i = 1;
-    echo "TOP 100<br>";
-    while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
-    {      
-      $iduser = $row["iduser"];
-      $nick = $row["nick"];
+		$i = 1;
+		echo "TOP 100<br><br>";
+		while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
+		{      
+			$iduser = $row["iduser"];
+			$nick = $row["nick"];
 			$score = $row["score"];
-      $role = isset($row['role']) ? $row['role'] : "";
-     
-      $bCurrentUser = $iduser == $security->iduser();
+			$role = isset($row['role']) ? $row['role'].'<br>' : "";
 
-      echo ($i++);
-      echo ($bCurrentUser ? "<font size=3 color=#ff0000>" : "<font size=3>");
-			echo " $nick (score: $score);</font><br><font size=1>$role</font><br>";
-    }
+			$bCurrentUser = $iduser == $security->iduser();
+
+			echo ($i++);
+			echo ($bCurrentUser ? "<font size=3 color=#ff0000>" : "<font size=3>");
+			echo " $nick (score: $score);</font><br><font size=1>$role</font><br>\n";
+		}
+		mysql_free_result($result);
 		exit;
 	}
 	else if($content_page == "user_info")
@@ -261,93 +260,12 @@ Your place: place / all
 		}
 		
 		$quest->echo_view_quest();
-		
-		//echo "must be insert and redirect to view";
-		// 
-
-		
-		/*if( isset($_POST['save']) )
-		{
-			$quest->setQuestName($_POST['quest_name']);
-			$quest->setShortText($_POST['short_text']);
-			$quest->setFullText($_POST['full_text']);
-			$quest->setScore($_POST['score']);
-			$quest->setMinScore($_POST['min_score']);
-			$quest->setSubject($_POST['subject']);
-			$quest->setAnswer($_POST['answer']);
-			
-			
-			$check = $quest->check();
-
-			//good
-			if( strlen($check) == 0 )
-			{
-				$id = $quest->insert($db);
-				if( $id != 0 ) refreshTo("main.php?action=quest&id=$id");
-			}
-		};	*/
-
-		// if($check != "" ) $check = "<font color='#FE2E64'>Uncorrect(!):<br>$check</font><br>";		
 		exit;
 	}
 	else if($content_page == "recalculate_score")
 	{
 		$score = new fhq_score();
 		echo $score->recalculate_score();
-		exit;
-		
-		if(isset($_SESSION['recalculate_score_last_time']))
-		{
-				$oldtime = $_SESSION['recalculate_score_last_time'];
-				$secs = time() - $oldtime;
-				if($secs < 60) 
-				{
-					echo 'wait '.(60 - $secs).' seconds';
-					return;
-				}
-		}
-		
-		$_SESSION['recalculate_score_last_time'] = time();
-		
-		$query = '
-			SELECT 
-				ifnull(SUM(quest.score),0) as sum_score 
-			FROM 
-				userquest 
-			INNER JOIN 
-				quest ON quest.idquest = userquest.idquest 
-			WHERE 
-				(userquest.iduser = '.$security->iduser().') 
-				AND ( userquest.stopdate <> \'0000-00-00 00:00:00\' );
-		';
-		
-		/*$query = '
-			select
-				ifnull(sum(q.score),0) as sum_score
-			from 
-				quest q
-			where 
-				q.idquest = (
-					select 
-						u.idquest 
-					from 
-						userquest u  
-					where
-						u.iduser = '.$security->iduser().'
-						and 
-						u.stopdate <> \'0000-00-00 00:00:00\'
-						and 
-						u.idquest = q.idquest
-				)
-		';*/
-		// echo $query;
-		$result = $db->query( $query );
-		$new_score = mysql_result($result, 0, 'sum_score');
-		$_SESSION['score'] = $new_score;
-		
-		$query = 'UPDATE user SET score = '.$new_score.' WHERE iduser = '.$security->iduser();
-		$result = $db->query( $query );
-		echo $new_score;
 		exit;
 	}
 	else 
