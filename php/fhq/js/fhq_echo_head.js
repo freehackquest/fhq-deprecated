@@ -24,23 +24,26 @@ function echo_last_pages()
 			"feedback_my" : "Feedback",
 			"dr_zoyberg" : "Dr Zoyberg",
 			"feedbacks" : "Feedbacks",
-			"add_quest" : "Add Quest"
+			"add_quest" : "Add Quest",
+			"view_quest" : "View Quest"
 		};
 		
 		var caption = map[obj.content_page];
 		
 		var content_page = "'" + obj.content_page + "'";
+		var str = "" + JSON.stringify(obj.other_params);
 		content += " <font size='1'>" + obj.today.toLocaleTimeString() + "</font>"
-			+ " <a class='btn btn-small btn-info' href='javascript:void(0);' onclick='load_content_page(" + content_page + ", " + JSON.stringify(obj.other_params) + " );'>" 
+			+ " <a class='btn btn-small btn-info' href='javascript:void(0);' onclick=\"load_content_page(" + content_page + ", " + str.replace(/"/g, "\'") + ", true );\">" 
 			+ caption + "</a><br><br>\n ";
 	};
 	document.getElementById("last_pages").innerHTML = content;
 	// myArray.splice(0, 2)
 };
 
-function load_content_page(content_page, other_params)
+function load_content_page(content_page, other_params, from_lp = false)
 {
-	last_pages.push({ content_page: content_page, other_params: other_params, today : new Date() });
+	if(content_page != 'take_quest' && content_page != 'pass_quest' && !from_lp)
+		last_pages.push({ content_page: content_page, other_params: other_params, today : new Date() });
 	
 	if (window.XMLHttpRequest) {
 		// code for IE7+, Firefox, Chrome, Opera, Safari
