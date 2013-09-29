@@ -34,17 +34,17 @@ if [ -d $CONFIG_DIR_OLD ]; then
 fi
 
 #copy folder files
-CONFIG_DIR_TEMP="`pwd`/../files.fhq.temp"
-CONFIG_DIR_OLD="$1/files"
-echo "CONFIG_DIR_TEMP = $CONFIG_DIR_TEMP"
-echo "CONFIG_DIR_OLD = $CONFIG_DIR_OLD"
+FILES_DIR_TEMP="`pwd`/../files.fhq.temp"
+FILES_DIR_OLD="$1/files"
+echo "FILES_DIR_TEMP = $FILES_DIR_TEMP"
+echo "FILES_DIR_OLD = $FILES_DIR_OLD"
 
-if [ ! -d $CONFIG_DIR_TEMP ]; then
-  mkdir $CONFIG_DIR_TEMP
+if [ ! -d $FILES_DIR_TEMP ]; then
+  mkdir $FILES_DIR_TEMP
 fi
 
-if [ -d $CONFIG_DIR_OLD ]; then
-  cp -rf $CONFIG_DIR_OLD/* $CONFIG_DIR_TEMP
+if [ -d $FILES_DIR_OLD ]; then
+  cp -rf $FILES_DIR_OLD/* $FILES_DIR_TEMP
 fi
 
 # remove old files 
@@ -59,6 +59,11 @@ echo "FILES_PHP = $FILES_PHP"
 if [ ! -d $1 ]; then
   mkdir $1
   cp -rf $FILES_PHP $1
+fi
+
+#copy files comeback
+if [ -d $FILES_DIR_OLD ]; then
+  cp -rf $FILES_DIR_TEMP/* $FILES_DIR_OLD
 fi
 
 #copy config comeback
