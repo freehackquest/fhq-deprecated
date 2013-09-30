@@ -1,7 +1,7 @@
 
 http://www.opennet.ru/tips/info/2061.shtml
 
-Настройка NFS сервера и клиента в Debian Lenny 	[исправить]
+configure NFS-server and NFS-client in Debian Lenny
 
 1. Input data
 

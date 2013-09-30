@@ -1,4 +1,7 @@
 
+# 
+mkdir /var/www/fhq
+
 config:
 /etc/apache2/sites-available/default
 
