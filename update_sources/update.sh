@@ -79,6 +79,7 @@ fi
 #copy files comeback
 if [ -d $FILES_DIR_OLD ]; then
   cp -rf $FILES_DIR_TEMP/* $FILES_DIR_OLD
+  chown www-data:ww-data -R $FILES_DIR_OLD
 fi
 
 #remove temporary folder
