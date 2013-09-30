@@ -34,10 +34,10 @@ function echo_mainpage($page)
 	<center>
 	<table cellspacing=10px cellpadding=10px width="100%" height="100%">
 		<tr>
-			<td width=30%>
+			<td width=18%>
 				<img src="images/minilogo.png"/>
 			</td>
-			<td align="left" valign = "top" width="70%">
+			<td align="left" valign = "top" width="82%">
 					';
 	// echo_score();
 	echo_panel();
