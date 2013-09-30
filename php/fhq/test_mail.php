@@ -1,6 +1,14 @@
 <?
 
+if(!isset($_GET['email']))
+{
+  echo "not found parametr ?email=";
+  exit;
+};
+
 $email = $_GET['email'];
+
+
 
 $subject = "Test Mail";
 
@@ -11,7 +19,6 @@ $message = "
 </head>
 <body>
 Test Mail from Free-Hack-Quest!<br>
-."</a>
 </body>
 </html>
 ";
@@ -23,4 +30,6 @@ Test Mail from Free-Hack-Quest!<br>
 			$headers .= 'X-Mailer: PHP/'.phpversion();
 			
 			mail($email, $subject, $message, $headers);
+
+echo "sended to $email";
 ?>
