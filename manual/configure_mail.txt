@@ -1,2 +1,2 @@
-
 root@debian# apt-get install ssmtp
+root@debian# apt-get install sendmail
