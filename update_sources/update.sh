@@ -28,7 +28,7 @@ if [ -d $1 ]; then
   echo "MYSQLDUMP_TAR_GZ = $MYSQLDUMP_TAR_GZ"
   mysqldump -ufreehackquest_u \
   -pfreehackquest_u \
-  freehackquest mysqldump \
+  freehackquest \
   > $MYSQLDUMP_SQL
   tar -zcvf $MYSQLDUMP_TAR_GZ $MYSQLDUMP_SQL
   rm $MYSQLDUMP_SQL
