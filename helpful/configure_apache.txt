@@ -1,0 +1,15 @@
+
+config:
+/etc/apache2/sites-available/default
+
+<VirtualHost *:80>
+        DocumentRoot /var/www/fhq
+        ServerName fhq.yourserver.com
+        ErrorLog /var/log/apache2/fhq-error_log
+        CustomLog /var/log/apache2/fhq-access_log common
+
+        <Directory /var/www/fhq/conf>
+                Order deny,allow
+                Deny from all
+        </Directory>
+</VirtualHost>
