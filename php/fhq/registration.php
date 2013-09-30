@@ -145,7 +145,7 @@ Now you could begin playing in this game, it here: ".$config['httpname']."</a>
 ";
 			
 			$headers  = 'MIME-Version: 1.0' . "\r\n";
-			$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+			$headers .= 'Content-type: text/html; charset=iso-UTF-8' . "\r\n";
 			$headers .= 'From: noreply@fhq.keva.su'."\r\n";
 			$headers .= 'Reply-To: noreply@fhq.keva.su'."\r\n";
 			$headers .= 'X-Mailer: PHP/'.phpversion();
@@ -279,6 +279,7 @@ if(isset($_GET['email']) && isset($_GET['captcha']))
   <title>$subject</title>
 </head>
 <body>
+Registration:<br>
 If you was not tryed register on ".$config['httpname'].", just ignore this mail.<br>
 For activate your account, please visit this page:<br>
 ".$config['httpname']."registration.php?foractivate=$notactivated
@@ -286,7 +287,7 @@ For activate your account, please visit this page:<br>
 </html>
 ";
 			$headers  = 'MIME-Version: 1.0' . "\r\n";
-			$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+			$headers .= 'Content-type: text/html; charset=iso-UTF-8' . "\r\n";
 			$headers .= 'From: noreply@fhq.keva.su'."\r\n";
 			$headers .= 'Reply-To: noreply@fhq.keva.su'."\r\n";
 			$headers .= 'X-Mailer: PHP/'.phpversion();
