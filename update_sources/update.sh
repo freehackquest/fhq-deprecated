@@ -30,7 +30,8 @@ if [ -d $1 ]; then
   -pfreehackquest_u \
   freehackquest mysqldump \
   > $MYSQLDUMP_SQL
-  tar -zcvf MYSQLDUMP_TAR_GZ $MYSQLDUMP_SQL
+  tar -zcvf $MYSQLDUMP_TAR_GZ $MYSQLDUMP_SQL
+  rm $MYSQLDUMP_SQL
 fi
 
 #copy config
