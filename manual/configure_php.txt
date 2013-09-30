@@ -1,0 +1,16 @@
+
+root@debian# mkdir /var/www/fhq
+root@debian# mkdir /var/www/fhq/config
+root@debian# mkdir /var/www/fhq/files
+root@debian# chmod +r /var/www/fhq/config
+root@debian# chmod +w /var/www/fhq/files
+
+copy file from https://github.com/sea-kg/fhq/blob/master/php/fhq/config/config.php
+to /var/www/fhq/config/config.php
+
+copy file from https://github.com/sea-kg/fhq/blob/master/update_sources/run_update.sh
+to /root/run_update.sh
+
+root@debian# chmod +x /root/run_update.sh
+root@debian# apt-get install git-core
+root@debian# ./run_update.sh

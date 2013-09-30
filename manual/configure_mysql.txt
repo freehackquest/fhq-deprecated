@@ -1,0 +1,2 @@
+
+look script ../sql/init_database_freehackquest.sql
