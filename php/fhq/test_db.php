@@ -1,4 +1,5 @@
 <?
+  exit;
 	include_once "config/config.php";
 	$db = new fhq_database();
 	$db->connect($config);

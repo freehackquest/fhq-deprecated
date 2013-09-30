@@ -1,4 +1,5 @@
 <?
+        exit;
         include_once('config/config.php');
 
         $nfs_share = $config['nfs_share'];
@@ -13,7 +14,7 @@
                 $output = "";
                 echo exec('whoami');
                 echo "\n\n";
-                echo exec('touch /mnt/create_users/4.txt', $output);
+                echo exec('touch '.$nfs_share.'/4.txt', $output);
                 print_r($output);
                 echo "\n\n";
         }
