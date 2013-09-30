@@ -11,4 +11,6 @@ else
 fi
 
 chmod +x update_sources/update.sh
+chmod +x update_sources/backup.sh
+bash update_sources/backup.sh '/var/www/fhq'
 bash update_sources/update.sh '/var/www/fhq'
