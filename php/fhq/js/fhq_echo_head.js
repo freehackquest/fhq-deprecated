@@ -41,8 +41,11 @@ function echo_last_pages()
 	// myArray.splice(0, 2)
 };
 
-function load_content_page(content_page, other_params, from_lp = false)
+function load_content_page(content_page, other_params, from_lp)
 {
+	if(other_params == 'undefined') other_params = {};
+   if(from_lp == 'undefined') from_lp = false;
+   
 	if(
 		content_page != 'take_quest' && 
 		content_page != 'save_quest' && 
