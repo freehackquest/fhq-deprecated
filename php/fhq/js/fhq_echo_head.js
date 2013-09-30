@@ -80,6 +80,7 @@ function load_content_page(content_page, other_params, from_lp)
 	}
 
 	// document.getElementById("debug_info").innerHTML=url;
+	document.getElementById("content_page").innerHTML="<img src='images/Minimap_Loading.gif'/>";
 
 	xmlhttp.open("GET", url ,true);
 	xmlhttp.send();
