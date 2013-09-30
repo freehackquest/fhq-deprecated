@@ -1,5 +1,7 @@
 <?
 
+exit;
+
 if(!isset($_GET['email']))
 {
   echo "not found parametr ?email=";
