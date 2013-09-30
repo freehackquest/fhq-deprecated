@@ -1,2 +1,7 @@
 
 look script ../sql/init_database_freehackquest.sql
+
+
+root@debian:~# git clone https://github.com/sea-kg/fhq fhq.github.temp
+root@debian:~# mysql -u root -p -h localhost < fhq.github.temp/sql/init_database_freehackquest.sql
+
