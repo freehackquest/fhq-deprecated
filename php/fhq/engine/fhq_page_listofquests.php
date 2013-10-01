@@ -140,6 +140,7 @@ class fhq_page_listofquests
 				return htmlspecialchars_decode(base64_decode($text));
 		}
 		
+		$tema = "";
 		for( $i = 0; $i < $count; $i++ )
 		{
 			$quest_name = text_decode(mysql_result( $mysql_result, $i, 'name'));
@@ -147,28 +148,21 @@ class fhq_page_listofquests
 			$quest_id = mysql_result( $mysql_result, $i, 'idquest');
 			$quest_stext = text_decode(mysql_result( $mysql_result, $i, 'short_text'));
 			$quest_subjects = text_decode(mysql_result( $mysql_result, $i, 'tema'));
-
+			
+			if( $tema != $quest_subjects)
+			{
+				$tema = $quest_subjects;
+				echo "<hr> [$tema] <br> : ";
+			}
+			
 			echo '
-				<!-- <tr >
-					<td width=15%> </td>
-					<td>
-						<a class="btn btn-large btn-primary" href="javascript:void(0);" onclick="load_content_page(\'view_quest\', { id : '.$quest_id.'} );"><b>#'.$quest_id.'</b> '.$quest_name.'</a>
-
-					</td>
-					<td>+'.$quest_score.'</td>
-					<td>'.$quest_subjects.'</td>
-					<td>'.$quest_stext.'</td>
-          <td width=15% class="beginend"> </td>
-				</tr>
-				 -->
-				<!-- div class="btn btn-large btn-primary" -->
+				
+				
 				<a class="btn btn-large btn-primary" href="javascript:void(0);" onclick="load_content_page(\'view_quest\', { id : '.$quest_id.'} );">
 					<font size=1>'.$quest_id.' '.$quest_name.'</font><br>
 						<font size=5>+'.$quest_score.'</font><br>
 						<font size=1> sub: '.$quest_subjects.'</font>
 						</a>
-				<!-- /div -->
-				<!-- </p> -->
 				';
 
 		};
