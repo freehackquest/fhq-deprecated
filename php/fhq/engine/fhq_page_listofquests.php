@@ -56,7 +56,7 @@ class fhq_page_listofquests
 			WHERE
 			(quest.for_person = 0 or quest.for_person = '.$security->iduser().')
 			AND (idquest NOT IN (SELECT idquest FROM userquest WHERE userquest.iduser = '.$security->iduser().')) AND (min_score <= '.$security->score().' )
-			ORDER BY quest.score DESC';
+			ORDER BY quest.score DESC, quest.tema';
 	}
 	
 	function getQuery_Completed($security)
@@ -70,6 +70,7 @@ class fhq_page_listofquests
 		(quest.for_person = 0 or quest.for_person = '.$security->iduser().') AND
 		(userquest.iduser = '.$security->iduser().')
 		AND (userquest.stopdate <> "0000-00-00 00:00:00")
+		ORDER BY quest.tema
 		LIMIT 0,100; ';
 	}
 	
@@ -84,7 +85,7 @@ class fhq_page_listofquests
 			FROM quest
 			WHERE
 				
-			ORDER BY quest.score DESC';
+			ORDER BY quest.score DESC, quest.tema';
 	}
 	
 	function echo_content()
@@ -152,9 +153,7 @@ class fhq_page_listofquests
 					<td width=15%> </td>
 					<td>
 						<a class="btn btn-large btn-primary" href="javascript:void(0);" onclick="load_content_page(\'view_quest\', { id : '.$quest_id.'} );"><b>#'.$quest_id.'</b> '.$quest_name.'</a>
-						
-						
-						
+
 					</td>
 					<td>+'.$quest_score.'</td>
 					<td>'.$quest_subjects.'</td>
