@@ -41,6 +41,7 @@ class fhq_page_listofquests
 		(quest.for_person = 0 or quest.for_person = '.$security->iduser().')
 		AND (userquest.iduser = '.$security->iduser().')
 		AND (userquest.stopdate = "0000-00-00 00:00:00")
+		ORDER BY quest.tema, quest.score
 		LIMIT 0,100; ';
 	}
 	
@@ -56,7 +57,7 @@ class fhq_page_listofquests
 			WHERE
 			(quest.for_person = 0 or quest.for_person = '.$security->iduser().')
 			AND (idquest NOT IN (SELECT idquest FROM userquest WHERE userquest.iduser = '.$security->iduser().')) AND (min_score <= '.$security->score().' )
-			ORDER BY quest.score DESC, quest.tema';
+			ORDER BY quest.score DESC, quest.tema, quest.score';
 	}
 	
 	function getQuery_Completed($security)
@@ -70,7 +71,7 @@ class fhq_page_listofquests
 		(quest.for_person = 0 or quest.for_person = '.$security->iduser().') AND
 		(userquest.iduser = '.$security->iduser().')
 		AND (userquest.stopdate <> "0000-00-00 00:00:00")
-		ORDER BY quest.tema
+		ORDER BY quest.tema, quest.score
 		LIMIT 0,100; ';
 	}
 	
@@ -85,7 +86,7 @@ class fhq_page_listofquests
 			FROM quest
 			WHERE
 				
-			ORDER BY quest.score DESC, quest.tema';
+			ORDER BY quest.score DESC, quest.tema, quest.score';
 	}
 	
 	function echo_content()
@@ -152,7 +153,7 @@ class fhq_page_listofquests
 			if( $tema != $quest_subjects)
 			{
 				$tema = $quest_subjects;
-				echo "<hr> [$tema] <br> : ";
+				echo "<hr> [$tema] : ";
 			}
 			
 			echo '
