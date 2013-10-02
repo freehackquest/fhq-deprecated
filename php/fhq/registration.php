@@ -49,7 +49,7 @@ class fhq_registration
 <script>
 function sendQuery(str)
 {
-  document.getElementById("answer").innerHTML="<img src=\'images/sending.gif\'>";
+  document.getElementById("answer").innerHTML="<img width=30px src=\'images/sending.gif\'>";
 
   if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -297,7 +297,7 @@ For activate your account, please visit this page:<br>
 
 			mail($email, $subject, $message, $headers);
 
-			echo "Information was sent on your e-mail.";
+			echo "Check your your e-mail (also check spam).";
 			exit;
 		};
 		echo "<font color=#ff0000>Registration is denied.</font>";
