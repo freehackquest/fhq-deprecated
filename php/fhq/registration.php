@@ -49,6 +49,8 @@ class fhq_registration
 <script>
 function sendQuery(str)
 {
+  document.getElementById("answer").innerHTML="<img src=\'images/sending.gif\'>";
+
   if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
      xmlhttp=new XMLHttpRequest();
@@ -143,6 +145,7 @@ Now you could begin playing in this game, it here: ".$config['httpname']."</a>
 </body>
 </html>
 ";
+			// document.getElementById("answer").innerHTML="<img src=\'images/sending.gif\'>";
 			
 			$headers  = 'MIME-Version: 1.0' . "\r\n";
 			$headers .= 'Content-type: text/html; charset=iso-UTF-8' . "\r\n";
