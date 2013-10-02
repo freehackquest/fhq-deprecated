@@ -49,7 +49,7 @@ class fhq_registration
 <script>
 function sendQuery(str)
 {
-  document.getElementById("answer").innerHTML="<img width=30px src=\'images/sending.gif\'>";
+  document.getElementById("answer").innerHTML="<img width=100px src=\'images/sending.gif\'>";
 
   if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -130,7 +130,7 @@ class fhq_foractivate
 			$db->query($query2);
 
 			$subject = "Your account was activated";
-			
+			echo 'Please, wait... ';
 			$message = "
 <html>
 <head>
