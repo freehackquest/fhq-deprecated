@@ -1,6 +1,6 @@
 <?
 	include_once("config/config.php");
-	// Pear Mail Library
+	
 	
 	
 	//---------------------------------------------------------------------
@@ -10,6 +10,8 @@
 		static function send($to_, $subject, $body, &$errormsg)
 		{
 			include "config/config.php";
+			
+			// Pear Mail Library
 			require_once "Mail.php";
 			
 			$to = '<'.$to_.'>';

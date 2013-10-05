@@ -167,6 +167,20 @@ Your place: place / all
 		echo_users();
 		exit;
 	}
+	else if ($content_page == "send_mail_again" && $security->isAdmin())
+	{
+		if(isset($_GET['iduser']) && isset($_GET['email']))
+		{
+			$email = $_GET['email'];
+			$registration = new fhq_registration();
+			$registration->removeEmail($email);
+			$registration->addEmailAndSendMail($email);
+		}
+
+		include_once "engine/fhq_echo_users.php";
+		echo_users();
+		exit;
+	}
 	else if($content_page == "answer_list" && ($security->isAdmin() || $security->isTester())) 
 	{
 		echo '<pre>Not work yet</pre>';

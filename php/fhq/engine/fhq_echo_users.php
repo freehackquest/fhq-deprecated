@@ -64,6 +64,15 @@ function echo_users()
 		if(substr($password , 0, 12) == 'notactivated')
 		{
 			echo '<br><br/>url for activate account: <br/><b>http://fhq.keva.su/registration.php?foractivate='.substr($password , 12, 32).'</b><br/><br/>';
+			echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+				load_content_page(\'send_mail_again\', 
+					{
+						page : '.$page.',
+						iduser : '.$iduser.',
+						email: \''.$username.'\'
+					}
+				);
+			">Send mail again</a><br>';
 		}
 		else
 		{
