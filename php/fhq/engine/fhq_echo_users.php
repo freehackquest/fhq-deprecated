@@ -6,14 +6,14 @@ function echo_users()
 {
 	$security = new fhq_security();
 	$db = new fhq_database();
-	
+
 	if(!$security->isAdmin())
 	{
 		echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
 		exit;
 	}
-		
-	$records_on_page = 20;
+
+	$records_on_page = 6;
 
 	$query = 'SELECT count(*) cnt FROM user';
 	$result = $db->query( $query );
