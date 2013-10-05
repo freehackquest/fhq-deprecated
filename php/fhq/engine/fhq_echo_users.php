@@ -57,48 +57,53 @@ function echo_users()
 		$nick = $row['nick'];
 		$score = $row['score'];
 		$role = $row['role'];
+		$password = $row['password'];
 		$idelem = 'user'.$iduser;
 
 		echo '<pre id="'.$idelem.'">ID: <b>'.$iduser.'</b>; Email: <b>'.$username.'</b>; Nick: '.$nick.'; Score: '.$score.'; Role: <b>'.$role.'</b>; ';
-		
-		echo '<br>';
-		
-		$roles;
-		$roles['admin'] = 'Administrator';
-		$roles['tester'] = 'Tester';
-		$roles['user'] = 'User';
-		$roles['god'] = 'God';
-		echo '<select id="'.$idelem.'_select_new_role">';
-
-		foreach ($roles as $roleid => $rolename) {
-			echo '<option '.($role == $roleid ? 'selected' : '').' value="'.$roleid.'">'.$rolename.'</option>';
+		if(substr($password , 0, 12) == 'notactivated')
+		{
+			echo '<br><br/>url for activate account: <br/><b>http://fhq.keva.su/registration.php?foractivate='.substr($password , 12, 32).'</b><br/><br/>';
 		}
-		echo '</select>';
+		else
+		{
+			echo '<br>';
+			$roles;
+			$roles['admin'] = 'Administrator';
+			$roles['tester'] = 'Tester';
+			$roles['user'] = 'User';
+			$roles['god'] = 'God';
+			echo '<select id="'.$idelem.'_select_new_role">';
 
-		echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
-		
-			var role = document.getElementById(\''.$idelem.'_select_new_role\').value;
-			load_content_page(\'user_set_new_role\', 
-				{ 
-					page : \''.$page.'\',
-					iduser : '.$iduser.',
-					role : document.getElementById(\''.$idelem.'_select_new_role\').value
-				}
-			);
-		">Set new role</a><br>';
-		
-		
-		echo '<input id="'.$idelem.'_edit_new_nick" type="text" value="'.$nick.'"/>';
+			foreach ($roles as $roleid => $rolename) {
+				echo '<option '.($role == $roleid ? 'selected' : '').' value="'.$roleid.'">'.$rolename.'</option>';
+			}
+			echo '</select>';
 
-		echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
-			load_content_page(\'user_set_new_nick\', 
-				{
-					page : '.$page.',
-					iduser : '.$iduser.',
-					nick : document.getElementById(\''.$idelem.'_edit_new_nick\').value
-				}
-			);
-		">Set new nick</a><br>';
+			echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+			
+				var role = document.getElementById(\''.$idelem.'_select_new_role\').value;
+				load_content_page(\'user_set_new_role\', 
+					{ 
+						page : \''.$page.'\',
+						iduser : '.$iduser.',
+						role : document.getElementById(\''.$idelem.'_select_new_role\').value
+					}
+				);
+			">Set new role</a><br>';
+			
+			echo '<input id="'.$idelem.'_edit_new_nick" type="text" value="'.$nick.'"/>';
+
+			echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+				load_content_page(\'user_set_new_nick\', 
+					{
+						page : '.$page.',
+						iduser : '.$iduser.',
+						nick : document.getElementById(\''.$idelem.'_edit_new_nick\').value
+					}
+				);
+			">Set new nick</a><br>';
+		}
 		echo '</pre>';
 	}
 	mysql_free_result($result);
