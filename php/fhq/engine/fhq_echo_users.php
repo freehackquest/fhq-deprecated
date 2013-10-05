@@ -13,7 +13,7 @@ function echo_users()
 		exit;
 	}
 		
-	$records_on_page = 4;
+	$records_on_page = 20;
 
 	$query = 'SELECT count(*) cnt FROM user';
 	$result = $db->query( $query );
