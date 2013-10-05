@@ -90,30 +90,35 @@ function echo_users()
 		}
 		else
 		{
-			echo '<br>';
-			$roles;
-			$roles['admin'] = 'Administrator';
-			$roles['tester'] = 'Tester';
-			$roles['user'] = 'User';
-			$roles['god'] = 'God';
-			echo '<select id="'.$idelem.'_select_new_role">';
+			if($iduser != $security->iduser())
+			{
+				echo '<br>';
+				$roles;
+				$roles['admin'] = 'Administrator';
+				$roles['tester'] = 'Tester';
+				$roles['user'] = 'User';
+				$roles['god'] = 'God';
+				echo '<select id="'.$idelem.'_select_new_role">';
 
-			foreach ($roles as $roleid => $rolename) {
-				echo '<option '.($role == $roleid ? 'selected' : '').' value="'.$roleid.'">'.$rolename.'</option>';
+				
+				foreach ($roles as $roleid => $rolename) {
+					echo '<option '.($role == $roleid ? 'selected' : '').' value="'.$roleid.'">'.$rolename.'</option>';
+				}
+				echo '</select>';
+
+				echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+				
+					var role = document.getElementById(\''.$idelem.'_select_new_role\').value;
+					load_content_page(\'user_set_new_role\', 
+						{ 
+							page : \''.$page.'\',
+							iduser : '.$iduser.',
+							role : document.getElementById(\''.$idelem.'_select_new_role\').value
+						}
+					);
+				">Set new role</a>';
 			}
-			echo '</select>';
-
-			echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
-			
-				var role = document.getElementById(\''.$idelem.'_select_new_role\').value;
-				load_content_page(\'user_set_new_role\', 
-					{ 
-						page : \''.$page.'\',
-						iduser : '.$iduser.',
-						role : document.getElementById(\''.$idelem.'_select_new_role\').value
-					}
-				);
-			">Set new role</a><br>';
+			echo '<br>';
 			
 			echo '<input id="'.$idelem.'_edit_new_nick" type="text" value="'.$nick.'"/>';
 
