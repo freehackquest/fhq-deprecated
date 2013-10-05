@@ -206,9 +206,14 @@ class fhq_quest
 			if(!$this->select($idquest))
 				return false;
 
+		$answer_list = new fhq_answer_list();
 		if(md5($answer) != md5($this->answer))
+		{
+			$answer_list->addTryAnswer( $security->iduser(), $this->idquest, $answer, $this->answer, 'No');
 			return false;
-
+		}
+		$answer_list->addTryAnswer( $security->iduser(), $this->idquest, $answer, $this->answer, 'Yes');
+		
 		$nowdate = date('Y-m-d H:i:s');
 		$query = 'UPDATE userquest SET stopdate = \''.$nowdate.'\' WHERE idquest = '.$idquest.' AND iduser = '.$security->iduser().';';
 		$result = $db->query( $query );

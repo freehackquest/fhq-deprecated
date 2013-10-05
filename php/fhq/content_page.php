@@ -9,6 +9,18 @@
 		return;
 	};
 	
+	$income = new fhq_income();
+	if ( 
+		!$income->isStarted() 
+		&& !$security->isAdmin()
+		&& !$security->isTester()
+		&& !$security->isGod()
+	)
+	{
+		echo "free-hack-quest not started yet";	
+		exit;
+	}
+	
 	$db = new fhq_database();
 	
 	$content_page = "";
@@ -196,7 +208,8 @@ Your place: place / all
 	}
 	else if($content_page == "answer_list" && ($security->isAdmin() || $security->isTester())) 
 	{
-		echo '<pre>Not work yet</pre>';
+		include_once "engine/fhq_echo_answer_list.php";
+		echo_answer_list();
 		exit;
 	}	
 	else if($content_page == "view_quest")

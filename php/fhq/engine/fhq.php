@@ -13,6 +13,7 @@ include_once "fhq_class_security.php";
 include_once "fhq_class_registration.php";
 include_once "fhq_class_feedback.php";
 include_once "fhq_class_score.php";
+include_once "fhq_class_answer_list.php";
 include_once "fhq_class_quest.php";
 include_once "fhq_class_mail.php";
 include_once "fhq_page_listofquests.php";

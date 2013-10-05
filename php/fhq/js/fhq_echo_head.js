@@ -26,7 +26,9 @@ function echo_last_pages()
 			"feedbacks" : "Feedbacks",
 			"add_quest" : "Add Quest",
 			"edit_quest" : "Edit Quest",
-			"view_quest" : "View Quest"
+			"view_quest" : "View Quest",
+			"users" : "Users",
+			"answer_list" : "Answer List"
 		};
 		
 		var caption = map[obj.content_page];

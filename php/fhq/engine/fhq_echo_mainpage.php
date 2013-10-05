@@ -26,11 +26,22 @@ class simple_page
 
 function echo_mainpage($page)
 {	
+	// if() view_quest
+	$onload = 'load_content_page(\'user_info\');';
+	
+	if(isset($_GET['content_page']))
+	{
+		$json = json_encode($_GET, JSON_HEX_TAG);		
+		$json = str_replace("'", "\'", $json);
+		$json = str_replace("\"", "'", $json);
+
+		$onload = 'load_content_page(\''.$_GET['content_page'].'\', '.$json.');';
+	};
 	
 	echo '<html>';
 	echo_head( $page );
 
-	echo '<body onload="load_content_page(\'user_info\');"class="main">
+	echo '<body onload="'.$onload.'"class="main">
 	<center>
 	<table cellspacing=10px cellpadding=10px width="100%" height="100%">
 		<tr>

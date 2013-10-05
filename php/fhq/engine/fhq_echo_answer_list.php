@@ -2,66 +2,110 @@
 
 include_once "fhq_class_security.php";
 
-function echo_users()
+function echo_answer_list()
 {
 	$security = new fhq_security();
 	$db = new fhq_database();
 
-	if(!$security->isAdmin())
+	if(!$security->isAdmin() && !$security->isTester())
 	{
 		echo '<font color="#ff0000">Not found page</font>';
 		exit;
 	}
 
-	$records_on_page = 6;
+	$records_on_page = 25;
 
-	$query = 'SELECT count(*) cnt FROM user';
+	$query = 'SELECT count(*) cnt FROM tryanswer';
 	$result = $db->query( $query );
-	$allusers = mysql_result($result, 0, 'cnt');
+	$allanswers = mysql_result($result, 0, 'cnt');
 	mysql_free_result($result);
 	
-	echo 'Users ( '.$allusers.' ) :<br><br>';
+	echo 'Answers ( '.$allanswers.' ) :<br><br>';
 	
 	$page = 0;
 	if(isset($_GET['page']) && is_numeric($_GET['page']))
 		$page = $_GET['page'];
-	
-	/*$find = "";
-	if(isset($_GET['find']) && is_numeric($_GET['page']))
-		$page = $_GET['find'];*/
 		
-	if($allusers / $records_on_page > 0)
+	if($allanswers / $records_on_page > 0)
 	{
-		$count_pages = $allusers / $records_on_page;
+		$count_pages = $allanswers / $records_on_page;
 		
 		for($i = 0; $i < $count_pages; $i++)
 		{
 			if($i == $page)
 				echo ' [ '.($i+1).' ] ';
 			else
-				echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'users\', { page : \''.$i.'\'} );">'.($i+1).'</a>';
+				echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'answer_list\', { page : \''.$i.'\'} );">'.($i+1).'</a>';
 		}
 	}
 	echo '<br><br>';
 	
 	$start_record = $page*$records_on_page;
 	
-	$query = 'SELECT * FROM user LIMIT '.$start_record.','.$records_on_page; //.(*$onpage).','.$onpage;
+	$query = '
+	SELECT 
+		ta.datetime_try,
+		ta.passed,
+		ta.idquest,
+		ta.iduser,
+		ta.answer_try,
+		ta.answer_real,
+		u.nick,
+		u.username,
+		q.name
+	FROM 
+		tryanswer ta
+	INNER JOIN user u ON u.iduser = ta.iduser
+	INNER JOIN quest q ON q.idquest = ta.idquest
+		
+	ORDER BY 
+		datetime_try DESC
+
+	LIMIT '.$start_record.','.$records_on_page;
 	
 	$result = $db->query( $query );
-	
-	while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
-	{      
-		$iduser = $row['iduser'];
-		$username = strtolower(base64_decode($row['username']));
-		$nick = $row['nick'];
-		$score = $row['score'];
-		$role = $row['role'];
-		$password = $row['password'];
-		$idelem = 'user'.$iduser;
 
-		echo '<pre id="'.$idelem.'">ID: <b>'.$iduser.'</b>; Email: <b>'.$username.'</b>; Nick: '.$nick.'; Score: '.$score.'; Role: <b>'.$role.'</b>; ';
-		if(substr($password , 0, 12) == 'notactivated')
+	echo '<table id="customers">
+	<tr class="alt">
+		<th>Date Time</th>
+		<th>Passed</th>
+		<th>User (id, Nick, Email)</th>
+		<th>Quest (id, Name)</th>
+		<th>Answer Try</th>
+		<th>Answer Real</th>
+		
+	</tr>';
+
+	$class = true;
+	while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
+	{   
+		$class = !$class;   
+		$iduser = $row['iduser'];
+		$nick = $row['nick'];
+		$email = strtolower(base64_decode($row['username']));
+		$idquest = $row['idquest'];
+		$name = base64_decode($row['name']);
+		$answer_try = base64_decode($row['answer_try']);
+		$answer_real = base64_decode($row['answer_real']);
+		$passed = $row['passed'];
+		$datetime_try = $row['datetime_try'];
+		
+		$strclass = ($class ? 'class="alt"' : '');
+		if($passed == 'Yes')
+			$strclass = 'class="alt2"';
+		
+		echo ' 
+			<tr '.$strclass.'>
+				<td>'.$datetime_try.'</td>
+				<td>'.$passed.'</td>
+				<td>('.$iduser.', '.$nick.', '.$email.')</td>
+				<td><a href=main.php?content_page=view_quest&id='.$idquest.'>'.$idquest.', '.$name.'</a></td>
+				<td>'.$answer_try.'</td>
+				<td>'.$answer_real.'</td>
+			</tr>';
+			
+		//echo '<pre id="'.$idelem.'">ID: <b>'.$iduser.'</b>; Email: <b>'.$username.'</b>; Nick: '.$nick.'; Score: '.$score.'; Role: <b>'.$role.'</b>; ';
+		/*if(substr($password , 0, 12) == 'notactivated')
 		{
 			echo '<br><br/>url for activate account: <br/><b>http://fhq.keva.su/registration.php?foractivate='.substr($password , 12, 32).'</b><br/><br/>';
 			echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
@@ -127,10 +171,11 @@ function echo_users()
 				);
 			">Set new nick</a><br>';
 		}
+		* */
 		echo '</pre>';
 	}
 	mysql_free_result($result);
-
+	echo '</table>';
 	exit;
 };
 

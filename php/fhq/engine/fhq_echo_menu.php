@@ -40,10 +40,10 @@ echo '
 			<td>
 				You is admin and you can:  
 					<!-- quest.php?action=add -->
-					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'add_quest\');">Add new quest</a>  
-					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'feedbacks\');">Messages</a> 
-				     <!-- a href=""></a> , <a href="admin.php?action="></a -->
-				     <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'users\');">users</a>
+					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'add_quest\');">Add new quest</a>
+					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'feedbacks\');">Messages</a>
+				    <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'users\');">users</a>
+					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'answer_list\');">Answer List</a> 
 			</td>
 		</tr>
 		</table>';
