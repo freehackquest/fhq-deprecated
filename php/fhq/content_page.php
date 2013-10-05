@@ -133,6 +133,33 @@ Your place: place / all
 
 		exit;
 	}
+	else if($content_page == "users")
+	{
+		if(!$security->isAdmin())
+		{
+			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
+			exit;
+		}
+		echo '<pre>
+not work yet
+</pre>';
+
+		exit;
+	}
+	else if($content_page == "answer_list")
+	{
+		if(!$security->isAdmin() && !$security->isTester())
+		{
+			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
+			exit;
+		}
+		
+		echo '<pre>
+not work yet
+</pre>';
+
+		exit;
+	}	
 	else if($content_page == "view_quest")
 	{
 		if(!isset($_GET['id']))
