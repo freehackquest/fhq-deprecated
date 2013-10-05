@@ -72,7 +72,21 @@ function echo_users()
 						email: \''.$username.'\'
 					}
 				);
-			">Send mail again</a><br>';
+			">Send mail again</a> ';
+			
+			echo ' <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+			
+				if(delete_user())
+				{
+					load_content_page(\'remove_user\', 
+						{
+							page : '.$page.',
+							iduser : '.$iduser.',
+							email: \''.$username.'\'
+						}
+					);
+				};
+			">Remove user</a>';
 		}
 		else
 		{
