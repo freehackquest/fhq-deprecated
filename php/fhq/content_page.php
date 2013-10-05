@@ -140,6 +140,29 @@ Your place: place / all
 			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
 			exit;
 		}
+		
+		$query = "SELECT * FROM user";
+		
+		$result = $db->query( $query );
+		$i = 1;
+		echo "<pre>Users:<br>";
+		while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
+		{      
+			$iduser = $row["iduser"];
+			$username = strtolower(base64_decode($row["username"]));
+			$nick = $row["nick"];
+			$score = $row["score"];
+			$role = $row['role'];
+
+	
+			echo $iduser.") email=".$username."; nick=".$nick."; score=".$score."; role=".$role.";";
+
+			//echo ($i++);
+			//echo ($bCurrentUser ? "<font size=3 color=#ff0000>" : "<font size=3>");
+			//echo " $nick (score: $score);</font><br><font size=1>$role</font><br>\n";
+		}
+		mysql_free_result($result);
+		
 		echo '<pre>
 not work yet
 </pre>';
