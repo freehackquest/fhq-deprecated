@@ -133,54 +133,43 @@ Your place: place / all
 
 		exit;
 	}
-	else if($content_page == "users")
+	else if($content_page == "users"  && $security->isAdmin())
 	{
-		if(!$security->isAdmin())
-		{
-			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
-			exit;
-		}
-		
-		$query = "SELECT * FROM user";
-		
-		$result = $db->query( $query );
-		$i = 1;
-		echo "<pre>Users:<br>";
-		while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
-		{      
-			$iduser = $row["iduser"];
-			$username = strtolower(base64_decode($row["username"]));
-			$nick = $row["nick"];
-			$score = $row["score"];
-			$role = $row['role'];
-
-	
-			echo $iduser.") email=".$username."; nick=".$nick."; score=".$score."; role=".$role.";";
-
-			//echo ($i++);
-			//echo ($bCurrentUser ? "<font size=3 color=#ff0000>" : "<font size=3>");
-			//echo " $nick (score: $score);</font><br><font size=1>$role</font><br>\n";
-		}
-		mysql_free_result($result);
-		
-		echo '<pre>
-not work yet
-</pre>';
-
+		include_once "engine/fhq_echo_users.php";
+		echo_users();
 		exit;
 	}
-	else if($content_page == "answer_list")
+	else if ($content_page == "user_set_new_role" && $security->isAdmin())
 	{
-		if(!$security->isAdmin() && !$security->isTester())
+		if(isset($_GET['iduser']) && isset($_GET['role']))
 		{
-			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
-			exit;
+			$iduser = $_GET['iduser'];
+			$role = $_GET['role'];
+			$query = 'UPDATE user SET role = \''.$role.'\' WHERE iduser = '.$iduser;
+			$result = $db->query( $query );
 		}
-		
-		echo '<pre>
-not work yet
-</pre>';
 
+		include_once "engine/fhq_echo_users.php";
+		echo_users();
+		exit;
+	}
+	else if ($content_page == "user_set_new_nick" && $security->isAdmin())
+	{
+		if(isset($_GET['iduser']) && isset($_GET['nick']))
+		{
+			$iduser = $_GET['iduser'];
+			$nick = mysql_real_escape_string($_GET['nick']);
+			$query = 'UPDATE user SET nick = \''.$nick.'\' WHERE iduser = '.$iduser;
+			$result = $db->query( $query );
+		}
+
+		include_once "engine/fhq_echo_users.php";
+		echo_users();
+		exit;
+	}
+	else if($content_page == "answer_list" && ($security->isAdmin() || $security->isTester())) 
+	{
+		echo '<pre>Not work yet</pre>';
 		exit;
 	}	
 	else if($content_page == "view_quest")
