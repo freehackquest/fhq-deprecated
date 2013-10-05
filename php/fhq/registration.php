@@ -132,29 +132,20 @@ class fhq_foractivate
 			$subject = "Your account was activated";
 			echo 'Please, wait... ';
 			$message = "
-<html>
-<head>
-  <title>$subject</title>
-</head>
-<body>
-Thank you for registration on Free-Hack-Quest!<br>
-Your login: ".strtolower($email)."<br>
-Your password: $password<br>
-Your nickname: $nickname<br>
-Now you could begin playing in this game, it here: ".$config['httpname']."</a>
-</body>
-</html>
+Thank you for registration on Free-Hack-Quest!
+Your login: ".strtolower($email)."
+Your password: $password
+Your nickname: $nickname
+Now you could begin playing in this game, it here: ".$config['httpname']."
 ";
-			// document.getElementById("answer").innerHTML="<img src=\'images/sending.gif\'>";
-			
-			$headers  = 'MIME-Version: 1.0' . "\r\n";
-			$headers .= 'Content-type: text/html; charset=iso-UTF-8' . "\r\n";
-			$headers .= 'From: noreply@fhq.keva.su'."\r\n";
-			$headers .= 'Reply-To: noreply@fhq.keva.su'."\r\n";
-			$headers .= 'X-Mailer: PHP/'.phpversion();
-			
-			mail($email, $subject, $message, $headers);
-			
+
+			$mail = new fhq_mail();
+			$error = "";
+			if( $mail->send($email, $subject, $message, $error) )
+				echo 'Your account was activated.<br>Information for logon was sended to your email.';
+			else
+				echo '<font color=#ff0000>Problem with sending email. '.$error.'</font>';
+		
 			// create ssh user
 			if(isset($config['nfs_share']))
 			{
@@ -226,8 +217,6 @@ Directory: SecureShellSecond
 				}
 								
 			};
-			
-			echo 'Your account was activated.<br>Information for logon was sended to your email.';
 		}
 		else
 		{
@@ -260,7 +249,7 @@ if(isset($_GET['email']) && isset($_GET['captcha']))
 		$result = $db->query($query);
 		if( $db->count( $result ) >= 1 )
 		{
-			echo "<font color=#ff0000>This e-mail was already registered.</font>";
+			echo '<font color=#ff0000>This e-mail was already registered.</font>';
 			mysql_free_result($result);
 			exit;
 		};
@@ -273,31 +262,22 @@ if(isset($_GET['email']) && isset($_GET['captcha']))
 		if($result == '1')
 		{
 			
-			// 355b82a
-			$subject = "Your account is activated.";
+			$subject = "Activation your account on FreeHackQuest.";
 			
 			$message = "
-<html>
-<head>
-  <title>$subject</title>
-</head>
-<body>
-Registration:<br>
-If you was not tryed register on ".$config['httpname'].", just ignore this mail.<br>
-For activate your account, please visit this page:<br>
+Registration:
+
+If you was not tryed register on ".$config['httpname'].", just ignore this mail.
+
+For activate your account, please visit this page:
 ".$config['httpname']."registration.php?foractivate=$notactivated
-</body>
-</html>
 ";
-			$headers  = 'MIME-Version: 1.0' . "\r\n";
-			$headers .= 'Content-type: text/html; charset=iso-UTF-8' . "\r\n";
-			$headers .= 'From: noreply@fhq.keva.su'."\r\n";
-			$headers .= 'Reply-To: noreply@fhq.keva.su'."\r\n";
-			$headers .= 'X-Mailer: PHP/'.phpversion();
-
-			mail($email, $subject, $message, $headers);
-
-			echo "Check your your e-mail (also check spam).";
+			$mail = new fhq_mail();
+			$error = "";
+			if( $mail->send($email, $subject, $message, $error) )
+				echo "Check your your e-mail (also check spam).";
+			else
+				echo '<font color=#ff0000>Problem with sending email. '.$error.'</font>';
 			exit;
 		};
 		echo "<font color=#ff0000>Registration is denied.</font>";
