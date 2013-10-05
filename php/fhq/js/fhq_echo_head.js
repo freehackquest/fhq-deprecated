@@ -52,6 +52,10 @@ function load_content_page(content_page, other_params, from_lp)
 		content_page != 'pass_quest' && 
 		content_page != 'delete_quest' && 
 		content_page != 'remove_file' && 
+		content_page != 'user_set_new_nick' && 
+		content_page != 'user_set_new_role' && 
+		content_page != 'send_mail_again' && 
+		content_page != 'remove_user' && 
 		!from_lp
 	)
 		last_pages.push({ content_page: content_page, other_params: other_params, today : new Date() });
