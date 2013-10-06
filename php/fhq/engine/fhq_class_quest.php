@@ -325,6 +325,17 @@ class fhq_quest
 		</table>';
 	}
 	
+	function export()
+	{
+	   $security = new fhq_security();
+	   if( !$security->isAdmin() )
+		{
+		   echo "Not found page";
+		   exit;
+		}
+		echo "Not yet work";
+   }
+	
 	function echo_view_quest()
 	{
 		$security = new fhq_security();
@@ -413,11 +424,12 @@ class fhq_quest
 							load_content_page_files(files, \'upload_files\', { id : '.$idquest.' } );
 						">Upload</a><br><br>
 					';
-
-
+			
 			echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
 				load_content_page(\'edit_quest\', { id : '.$idquest.' } );
 				">Edit Quest</a>
+
+            <a class="btn btn-small btn-info" href="content_page.php?content_page=export_quest&id='.$idquest.'">Export</a>
 
 				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
 					if(delete_quest())
@@ -426,6 +438,9 @@ class fhq_quest
 					}
 				">Delete Quest</a><br><br>
 			';
+			
+
+
 		};
 	}
 };

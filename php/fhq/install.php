@@ -1,5 +1,4 @@
 <?
-   exit;
    include_once "engine/fhq.php";
    $db = new fhq_database();
    $security = new fhq_security();
