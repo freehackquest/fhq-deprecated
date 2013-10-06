@@ -32,4 +32,8 @@
 	$config['mail']['auth'] = true;
 	$config['mail']['username'] = "test@gmail.com";
 	$config['mail']['password'] = "test";
+	
+	// install 
+	$config['install']['admin'] = "admin";
+	$config['install']['pass'] = "admin";
 ?>
