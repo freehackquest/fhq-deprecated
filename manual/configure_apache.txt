@@ -1,4 +1,3 @@
-
 # 
 mkdir /var/www/fhq
 
@@ -6,6 +5,7 @@ config:
 /etc/apache2/sites-available/default
 
 <VirtualHost *:80>
+        Options -Indexes
         DocumentRoot /var/www/fhq
         ServerName fhq.yourserver.com
         ErrorLog /var/log/apache2/fhq-error_log
