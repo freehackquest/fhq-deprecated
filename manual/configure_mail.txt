@@ -1,2 +1,4 @@
+I think that it is not needed now
+
 root@debian# apt-get install ssmtp
 root@debian# apt-get install sendmail
