@@ -7,7 +7,7 @@ function echo_shortpage($page)
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title> fhq - '.$page->title().' </title>
+		<title> Free-Hack-Quest </title>
 		<link rel="stylesheet" type="text/css" href="styles/site.css" />
 	';
 

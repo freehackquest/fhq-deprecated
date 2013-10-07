@@ -325,6 +325,45 @@ class fhq_quest
 		</table>';
 	}
 	
+
+/* creates a compressed zip file */
+	private function create_zip($files = array(),$destination = '',$overwrite = false) {
+		if(file_exists($destination) && !$overwrite) { return false; }
+		$valid_files = array();
+		if(is_array($files)) {
+			foreach($files as $file) {
+				if(file_exists($file)) {
+					$valid_files[] = $file;
+				}
+			}
+		}
+		if(count($valid_files)) {
+			$zip = new ZipArchive();
+			if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
+				return false;
+			}
+			foreach($valid_files as $file) {
+				$zip->addFile($file,basename($file));
+			}
+			$zip->close();
+			return file_exists($destination);
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	private function removeDirectory($dir) {
+		if ($objs = glob($dir."/*")) {
+			foreach($objs as $obj) {
+				is_dir($obj) ? $this->removeDirectory($obj) : unlink($obj);
+			}
+		}
+		rmdir($dir);
+	}
+		
+	
 	function export()
 	{
 	   $security = new fhq_security();
@@ -333,7 +372,67 @@ class fhq_quest
 		   echo "Not found page";
 		   exit;
 		}
-		echo "Not yet work";
+
+		$zipname = "files/quest".$this->idquest().".zip";
+		$overwrite = true;
+		
+		$suffix = "files/quest".$this->idquest()."_";
+		$lenSuffix = strlen($suffix);
+
+		$quest_arr['idquest'] = $this->idquest();
+		$quest_arr['quest_name'] = $this->quest_name;			
+		$quest_arr['subject'] = $this->subject;
+		$quest_arr['min_score'] = $this->min_score;
+		$quest_arr['score'] = $this->score;
+		$quest_arr['full_text'] = $this->full_text;
+		$quest_arr['short_text'] = $this->short_text;
+		$quest_arr['answer'] = $this->answer;		
+		
+		
+		$zip = new ZipArchive();
+		if($zip->open($zipname,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
+			echo "It is not possiable! (ZIP [code:1])";
+			exit;
+		}
+		$zip->addEmptyDir('files');
+
+		$nAttach = 0;
+		if ($objs = glob($suffix."*")) {
+		   foreach($objs as $obj) {
+		   	$src_filename = $obj;
+		   	$dst_filename = substr($obj, $lenSuffix,strlen($obj) - $lenSuffix);
+		      $quest_arr['source'][$nAttach] = 'files/'.$dst_filename;
+		      if(!$zip->addFile($src_filename,'files/'.$dst_filename))
+		      {
+			      $zip->close();
+			      unlink($zipname);
+			      echo "It is not possiable! (ZIP [code:2])";
+			      exit;
+		      }
+		      $nAttach++;
+			}
+			$quest_arr['source']['count'] = $nAttach;
+		}
+
+		if(!$zip->addFromString('info.json', json_encode($quest_arr)))
+		{
+			$zip->close();
+			unlink($zipname);
+			echo "It is not possiable! (ZIP [code:3])";
+			exit;
+		}
+		
+		$zip->close();
+		
+		header($_SERVER["SERVER_PROTOCOL"] . " 200 OK");
+		header("Cache-Control: public"); // needed for i.e.
+		header("Content-Type: application/zip");
+		header("Content-Transfer-Encoding: Binary");
+		header("Content-Length:".filesize($zipname));
+		header("Content-Disposition: attachment; filename=".basename($zipname));
+		readfile($zipname); 
+		unlink($zipname);
+		exit;
    }
 	
 	function echo_view_quest()

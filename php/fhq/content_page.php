@@ -235,7 +235,6 @@ Your place: place / all
 	}
 	else if($content_page == "export_quest")
 	{
-	   echo "12";
 		if(!isset($_GET['id']))
 		{
 			echo 'Not found paramenter "id"';
