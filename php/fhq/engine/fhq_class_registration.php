@@ -102,7 +102,7 @@
 				$mail = new fhq_mail();
 				$error = "";
 				if( $mail->send($email, $subject, $message, $error) )
-					echo 'Your account was activated.<br>Information for logon was sended to your email.';
+					echo 'Your account was activated.<br>Information for sign in was sended to your email.';
 				else
 					echo '<font color=#ff0000>Problem with sending email. '.$error.'</font>';
 			

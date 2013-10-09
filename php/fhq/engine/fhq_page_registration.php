@@ -4,7 +4,7 @@ class fhq_page_registration
 {
 	function title()
 	{
-		return 'Registration<br><font size=2><a class="btn btn-small btn-info" href="index.php">&larr; go to main page</a></font>';
+		return 'Create new account<br><font size=2><a class="btn btn-small btn-info" href="index.php">&larr; go to main page</a></font>';
 	}
 
 	function echo_head()

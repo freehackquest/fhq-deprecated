@@ -46,7 +46,7 @@ class fhq_logon
 		};
 
 		echo '
-			<b>please, authtorization in the system:</b><br>
+			<b>please, sign in to the system:</b><br>
 <script>
 function sign_in()
 {
@@ -88,7 +88,7 @@ function sign_in()
 					</tr>
 				</table>
 			<center>
-					or <a class="btn btn-small btn-info" href="registration.php">Registration</a>
+					or <a class="btn btn-small btn-info" href="registration.php">Create new account</a>
 			</center>
 			<br><br>
 			<div id="result_auth"> </div>
