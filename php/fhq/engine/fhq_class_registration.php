@@ -142,7 +142,7 @@
 						$quest = new fhq_quest();
 						$quest->setEmptyAll();
 						$quest->setQuestName( "Secure Shell First" );
-						$quest->setShortText( "Try using SSH on our's server" );
+						$quest->setShortText( "Try using SSH on our server" );
 						$quest->setFullText( "Server: ssh.keva.su
 	Login: $nickname
 	Password: $ssh_password
@@ -161,7 +161,7 @@
 						$quest = new fhq_quest();
 						$quest->setEmptyAll();
 						$quest->setQuestName( "Secure Shell Second" );
-						$quest->setShortText( "Try using SSH on our's server" );
+						$quest->setShortText( "Try using SSH on our server" );
 						$quest->setFullText( "server: ssh.keva.su
 	login: $nickname
 	password: $ssh_password
