@@ -23,7 +23,7 @@
 						}
 					);
 				">Set new nick</a><br>
-				<a href="javascript:void(0);" id="reload_content" onclick="document.getElementById(\'btn_user_info\').innerHTML = \''.$security->nick().'\';"></a></pre>';
+				<a href="javascript:void(0);" id="reload_content" onclick="document.getElementById(\'btn_user_info\').value = \''.$security->nick().'\';"></a></pre>';
 		}
 		
 		function setNewMyNick($nick)
@@ -32,7 +32,7 @@
 			$db = new fhq_database();
 			$security = new fhq_security();
 			$nick = mysql_real_escape_string(htmlspecialchars($nick));
-			$nick = substr($nick, 0, 20);
+			$nick = substr($nick, 0, 40);
 			$query = 'UPDATE user SET nick = \''.$nick.'\' WHERE iduser = '.$security->iduser();
 			$security->setNick($nick);
 			$result = $db->query( $query );
