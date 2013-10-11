@@ -55,6 +55,12 @@ CREATE TABLE IF NOT EXISTS `tryanswer` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `tryanswer`
+--
+
 CREATE TABLE IF NOT EXISTS `tryanswer_backup` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `iduser` int(11) NOT NULL,
@@ -63,6 +69,20 @@ CREATE TABLE IF NOT EXISTS `tryanswer_backup` (
   `answer_real` text NOT NULL,
   `passed` varchar(10) NOT NULL,
   `datetime_try` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `news`
+--
+
+CREATE TABLE IF NOT EXISTS `news` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `text` text NOT NULL,
+  `datetime_` datetime NOT NULL,
+  `author` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 

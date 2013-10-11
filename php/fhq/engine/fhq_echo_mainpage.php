@@ -40,8 +40,10 @@ function echo_mainpage($page)
 	
 	echo '<html>';
 	echo_head( $page );
-
-	echo '<body onload="'.$onload.'"class="main">
+    
+    // reload_news();
+    
+	echo '<body onload="'.$onload.'" class="main">
 	<center>
 	<table cellspacing=10px cellpadding=10px width="100%" height="100%">
 		<tr>
@@ -60,13 +62,14 @@ function echo_mainpage($page)
 		<tr>
 			<td valign="top">
 				<font size="3">
-					<div id="last_pages">
+					<div id="news">
 					</div>
 				</font>
 			</td>
 			<td height="100%" valign="top">
-				<center id="content_page">
-					<div id="content_page"/>
+				<center>
+					<div id="content_page">
+					</div>
 				</center>
 				
 			</td>

@@ -1,66 +1,36 @@
 
-// fhq_echo_head
 
-var last_pages = Array();
-
-function echo_last_pages()
+function reload_news()
 {
-	if(last_pages.length > 10)
-	{
-		last_pages.splice(0, last_pages.length-10);
+	if (window.XMLHttpRequest) {
+		// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	};  
+	xmlhttp.onreadystatechange=function() {
+		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+			if(xmlhttp.responseText == "")
+				document.getElementById("news").innerHTML = "not found";
+			else
+			{
+				document.getElementById("news").innerHTML=xmlhttp.responseText;
+			}
+		}
 	}
-	var content = "History Pages:<br><br>\n ";
-	for(var i = last_pages.length - 1; i >= 0 ; i--)
-	{
-		var obj = last_pages[i];
-		
-		var map = {
-			"quests_allow" : "Allow",
-			"quests_completed" : "Completed",
-			"quests_process" : "Process",
-			"top100" : "Top 100",
-			"user_info" : "Info",
-			"feedback_add" : "Add feedback",
-			"feedback_my" : "Feedback",
-			"dr_zoyberg" : "Dr Zoyberg",
-			"feedbacks" : "Feedbacks",
-			"add_quest" : "Add Quest",
-			"edit_quest" : "Edit Quest",
-			"view_quest" : "View Quest",
-			"users" : "Users",
-			"answer_list" : "Answer List"
-		};
-		
-		var caption = map[obj.content_page];
-		
-		var content_page = "'" + obj.content_page + "'";
-		var str = "" + JSON.stringify(obj.other_params);
-		content += " <font size='1'>" + obj.today.toLocaleTimeString() + "</font>"
-			+ " <a class='btn btn-small btn-info' href='javascript:void(0);' onclick=\"load_content_page(" + content_page + ", " + str.replace(/"/g, "\'") + ", true );\">" 
-			+ caption + "</a><br><br>\n ";
-	};
-	document.getElementById("last_pages").innerHTML = content;
-	// myArray.splice(0, 2)
+	// document.getElementById("news").innerHTML="<img src='images/ajax-loader.gif'/>";
+
+	var url = "content_page.php?content_page=news";
+	xmlhttp.open("GET", url ,true);
+	xmlhttp.send();
+  
 };
 
-function load_content_page(content_page, other_params, from_lp)
+var myTimerNews;
+if(!myTimerNews) myTimerNews = setInterval(reload_news,10000);
+
+
+function load_content_page(content_page, other_params)
 {
 	if(other_params == 'undefined') other_params = {};
-   if(from_lp == 'undefined') from_lp = false;
-   
-	if(
-		content_page != 'take_quest' && 
-		content_page != 'save_quest' && 
-		content_page != 'pass_quest' && 
-		content_page != 'delete_quest' && 
-		content_page != 'remove_file' && 
-		content_page != 'user_set_new_nick' && 
-		content_page != 'user_set_new_role' && 
-		content_page != 'send_mail_again' && 
-		content_page != 'remove_user' && 
-		!from_lp
-	)
-		last_pages.push({ content_page: content_page, other_params: other_params, today : new Date() });
 	
 	if (window.XMLHttpRequest) {
 		// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -72,9 +42,9 @@ function load_content_page(content_page, other_params, from_lp)
 				document.getElementById("content_page").innerHTML = "content page don't found";
 			else
 			{
-				echo_last_pages();
 				document.getElementById("content_page").innerHTML=xmlhttp.responseText;
 				document.getElementById("reload_content").onclick();
+				//reload_news();
 			}
 		}
 	}

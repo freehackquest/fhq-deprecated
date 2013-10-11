@@ -43,8 +43,9 @@ echo '
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'add_quest\');">Add new quest</a>
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'feedbacks\');">Messages</a>
 				    <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'users\');">users</a>
-  				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'answer_list\');">Answer List</a> 
-					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'answer_list\' , { backup : \'\' } );">Backup Answer List</a> 
+					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'answer_list\');">Answer List</a>
+					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'answer_list\' , { backup : \'\' } );">Backup Answer List</a>
+					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'add_news\');">Add News</a>
 			</td>
 		</tr>
 		</table>';
@@ -60,7 +61,8 @@ echo '
 				You is tester and you can:  
 					<!-- quest.php?action=add -->
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'answer_list\' );">Answer List</a> 
-  				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'answer_list\' , { backup : \'\' } );">Backup Answer List</a> 
+					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'answer_list\' , { backup : \'\' } );">Backup Answer List</a>
+					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'add_news\');">Add News</a>
 				     <!-- a href=""></a> , <a href="admin.php?action="></a -->
 			</td>
 		</tr>

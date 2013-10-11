@@ -149,6 +149,30 @@
 		$user_info->echo_info();
 		exit;
 	}
+	else if ($content_page == "news")
+	{
+		$news = new fhq_news();	
+		$news->echo_news();
+		exit;
+	}
+	else if ($content_page == "add_news")
+	{
+		$news = new fhq_news();
+		if(isset($_GET['text']))
+			$news->add_news($_GET['text']);
+		
+		$news->echo_insert_form();
+		exit;
+	}
+	else if ($content_page == "save_news")
+	{
+		$news = new fhq_news();
+		if(isset($_GET['text']) && isset($_GET['id']))
+			$news->save_news($_GET['id'], $_GET['text']);
+		
+		echo "saved";
+		exit;
+	}
 	else if($content_page == "users"  && $security->isAdmin())
 	{
 		include_once "engine/fhq_echo_users.php";
