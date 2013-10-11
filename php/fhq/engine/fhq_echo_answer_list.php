@@ -15,7 +15,15 @@ function echo_answer_list()
 
 	$records_on_page = 25;
 
-	$query = 'SELECT count(*) cnt FROM tryanswer';
+  $table = 'tryanswer';
+  $forjson = '';
+  if(isset($_GET['backup']))
+  {
+    $table = 'tryanswer_backup';
+    $forjson = ', backup : \'\'';
+  }
+
+	$query = 'SELECT count(*) cnt FROM '.$table;
 	$result = $db->query( $query );
 	$allanswers = mysql_result($result, 0, 'cnt');
 	mysql_free_result($result);
@@ -35,7 +43,7 @@ function echo_answer_list()
 			if($i == $page)
 				echo ' [ '.($i+1).' ] ';
 			else
-				echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'answer_list\', { page : \''.$i.'\'} );">'.($i+1).'</a>';
+				echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'answer_list\', { page : \''.$i.'\' '.$forjson.' } );">'.($i+1).'</a>';
 		}
 	}
 	echo '<br><br>';
