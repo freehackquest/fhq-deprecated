@@ -15,15 +15,16 @@
 			$result = $db->query($query);
 		}
 
-    function movedToBackup($iduser, $idquest)
-    {
-      $query = "INSERT INTO tryanswer_backup (iduser, idquest, answer_try, answer_real, passed, datetime_try) 
-                  SELECT iduser, idquest, answer_try, answer_real, passed, datetime_try FROM tryanswer WHERE iduser = $iduser, idquest = $idquest";
-  		$result = $db->query($query);
+		function movedToBackup($iduser, $idquest)
+		{
+			$db = new fhq_database();
+			$query = "INSERT INTO tryanswer_backup (iduser, idquest, answer_try, answer_real, passed, datetime_try) 
+				SELECT iduser, idquest, answer_try, answer_real, passed, datetime_try FROM tryanswer WHERE iduser = $iduser and idquest = $idquest";
+			$result = $db->query($query);
 
-      $query = "DELETE FROM tryanswer WHERE iduser = $iduser, idquest = $idquest";
-      $result = $db->query($query);
-    }
+			$query = "DELETE FROM tryanswer WHERE iduser = $iduser and idquest = $idquest";
+			$result = $db->query($query);
+		}
 	}
 	//---------------------------------------------------------------------
 ?>

@@ -62,7 +62,7 @@ function echo_answer_list()
 		u.username,
 		q.name
 	FROM 
-		tryanswer ta
+		'.$table.' ta
 	INNER JOIN user u ON u.iduser = ta.iduser
 	INNER JOIN quest q ON q.idquest = ta.idquest
 		
