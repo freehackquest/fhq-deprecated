@@ -16,6 +16,7 @@ include_once "fhq_class_score.php";
 include_once "fhq_class_answer_list.php";
 include_once "fhq_class_quest.php";
 include_once "fhq_class_mail.php";
+include_once "fhq_class_user_info.php";
 include_once "fhq_page_listofquests.php";
 include_once "fhq_page_registration.php";
 include_once "fhq_page_foractivate.php";

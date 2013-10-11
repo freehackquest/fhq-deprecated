@@ -136,13 +136,17 @@
 	}
 	else if($content_page == "user_info")
 	{
-		echo '<pre>
-Your name: '.$security->nick().'
-Your score: '.$security->score().'
-Role: '.$security->role().'
-Your place: place / all
-</pre>';
+		$user_info = new fhq_user_info();
+		$user_info->echo_info();
+		exit;
+	}
+	else if ($content_page == "user_set_new_my_nick")
+	{
+		$user_info = new fhq_user_info();
+		if(isset($_GET['nick']))
+			$user_info->setNewMyNick($_GET['nick']);
 
+		$user_info->echo_info();
 		exit;
 	}
 	else if($content_page == "users"  && $security->isAdmin())
@@ -168,7 +172,7 @@ Your place: place / all
 	else if ($content_page == "user_set_new_nick" && $security->isAdmin())
 	{
 		if(isset($_GET['iduser']) && isset($_GET['nick']))
-		{
+		{		
 			$iduser = $_GET['iduser'];
 			$nick = mysql_real_escape_string($_GET['nick']);
 			$query = 'UPDATE user SET nick = \''.$nick.'\' WHERE iduser = '.$iduser;

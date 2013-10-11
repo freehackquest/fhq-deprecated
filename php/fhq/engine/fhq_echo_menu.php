@@ -14,7 +14,7 @@ echo '
 			<tr>
 				<td >
 					<p>
-					Your name is <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'user_info\');" >'.$security->nick().'</a> ,
+					Your name is <a id="btn_user_info" class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'user_info\');" >'.$security->nick().'</a> ,
 					your score is <font id="view_score" size=5>'.$security->score().'</font>
 					and you can try <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="recalculate_score();">recalculate score</a> . 
 					also you can look your at quests: 
@@ -25,7 +25,7 @@ echo '
 					Also you can look at <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'top100\');">"Top 100"</a> .
 					And of course you can 
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="exit();">logout</a> .
-					And I almost forgot... You can look at <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'dr_zoyberg\');">Dr. Zoyberg</a> . 
+					<!-- And I almost forgot... You can look at <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'dr_zoyberg\');">Dr. Zoyberg</a> .  -->
 					Just do it!
 					</p>
 			</tr>
