@@ -16,16 +16,16 @@ echo '
 					<p>
 					Your name is <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'user_info\');" >'.$security->nick().'</a> ,
 					your score is <font id="view_score" size=5>'.$security->score().'</font>
-					and you can try <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="recalculate_score();">recalculate score</a> , 
-					also you can look your quests:					
-					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'quests_allow\');">Allow</a> , 
-					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'quests_process\');">Process</a> , 
+					and you can try <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="recalculate_score();">recalculate score</a> . 
+					also you can look your at quests: 
+					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'quests_allow\');">Open</a> , 
+					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'quests_process\');">Current</a> , 
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'quests_completed\');">Completed</a> .
-					You can to write message to <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'feedback_my\');">Feedback</a> .
-					Also you can to look <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'top100\');">"Top 100"</a> .
+					You can write <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'feedback_my\');">Feedback</a> .
+					Also you can look at <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'top100\');">"Top 100"</a> .
 					And of course you can 
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="exit();">logout</a> .
-					And I almost forgot... You can to look at <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'dr_zoyberg\');">Dr. Zoyberg</a> . 
+					And I almost forgot... You can look at <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'dr_zoyberg\');">Dr. Zoyberg</a> . 
 					Just do it!
 					</p>
 			</tr>
