@@ -92,11 +92,11 @@
 				$subject = "Your account was activated";
 				echo 'Please, wait... ';
 				$message = "
-	Thank you for registration on Free-Hack-Quest!
+	Thank you for registering on Free-Hack-Quest!
 	Your login: ".strtolower($email)."
 	Your password: $password
 	Your nickname: $nickname
-	Now you could begin playing in this game, it here: ".$config['httpname']."
+	Now you can join to game: ".$config['httpname']."
 	";
 
 				$mail = new fhq_mail();
