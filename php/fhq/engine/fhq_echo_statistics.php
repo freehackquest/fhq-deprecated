@@ -13,11 +13,6 @@ function echo_statistics()
 		exit;
 	}
 
-/*
- * 
-
- * */
-
 	$query = 'SELECT
   userquest.idquest, 
   quest.name,
@@ -46,8 +41,10 @@ ORDER BY
 		<th>No Successful Attempts</th>
 	</tr>';
 
+	$class = true;
 	while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
 	{   
+		$class = !$class;
 		$idquest = $row['idquest'];
 		$name = base64_decode($row['name']);
 		$count = $row['cnt'];
@@ -74,7 +71,7 @@ ORDER BY
 		}
 
 		echo ' 
-			<tr class="alt">
+			<tr '.($class ? 'class="alt"' : '').' >
 				<td><a href=main.php?content_page=view_quest&id='.$idquest.'>'.$idquest.', '.$name.'</a></td>
 				<td>'.$count.'</td>
 				<td>'.$plus.'</td>
