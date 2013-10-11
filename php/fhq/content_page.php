@@ -149,13 +149,20 @@
 		$user_info->echo_info();
 		exit;
 	}
+	else if($content_page == "statistics"  && ($security->isAdmin() || $security->isTester()))
+	{
+		include_once "engine/fhq_echo_statistics.php";
+		echo_statistics();
+		echo "not yet work";
+		exit;
+	}
 	else if ($content_page == "news")
 	{
 		$news = new fhq_news();	
 		$news->echo_news();
 		exit;
 	}
-	else if ($content_page == "add_news")
+	else if ($content_page == "add_news" && ($security->isAdmin() || $security->isTester()))
 	{
 		$news = new fhq_news();
 		if(isset($_GET['text']))
