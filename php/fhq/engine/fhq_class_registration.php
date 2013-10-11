@@ -38,9 +38,9 @@
 				$message = "
 	Registration:
 
-	If you was not tryed register on ".$config['httpname'].", just ignore this mail.
+	If you was not tried registering on ".$config['httpname']." just ignore this mail.
 
-	For activate your account, please visit this page:
+	To activate your account, please visit this page:
 	".$config['httpname']."registration.php?foractivate=$notactivated
 	";
 				$mail = new fhq_mail();
