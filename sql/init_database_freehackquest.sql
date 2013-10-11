@@ -55,6 +55,17 @@ CREATE TABLE IF NOT EXISTS `tryanswer` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
+CREATE TABLE IF NOT EXISTS `tryanswer_backup` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `iduser` int(11) NOT NULL,
+  `idquest` int(11) NOT NULL,
+  `answer_try` text NOT NULL,
+  `answer_real` text NOT NULL,
+  `passed` varchar(10) NOT NULL,
+  `datetime_try` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
 -- --------------------------------------------------------
 
 --
