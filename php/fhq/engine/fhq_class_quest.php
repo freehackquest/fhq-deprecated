@@ -207,7 +207,7 @@ class fhq_quest
 				return false;
 
 		$answer_list = new fhq_answer_list();
-		if(md5($answer) != md5($this->answer))
+		if(md5(strtolower($answer)) != md5(strtolower($this->answer)))
 		{
 			$answer_list->addTryAnswer( $security->iduser(), $this->idquest, $answer, $this->answer, 'No');
 			return false;
