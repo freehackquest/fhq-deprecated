@@ -53,15 +53,17 @@
 				$password = $row['password'];
 				$error = "";
 				$notact = 'notactivated';
+				$first = true;
 				if(substr($password, 0, strlen($notact)) != $notact)
-				{
+				{	
 					if($emails != '') $emails .= ', ';
-					$emails .= $email;
-					if($main_email == '') $main_email = $email;
+					$emails .= '<'.$email.'>';
 				}
 			}
-			
-			$this->send($main_email, $emails, $subject, $body, $error);
+
+			$emails = substr($emails, 1, strlen($emails) - 2);
+			echo htmlspecialchars($emails);
+			$this->send($emails, '', $subject, $body, $error);
 		}
 	}
 	//---------------------------------------------------------------------
