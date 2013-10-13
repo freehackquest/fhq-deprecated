@@ -1,6 +1,7 @@
 <?php 
 	include_once "fhq_class_security.php";
 	include_once "fhq_class_database.php";
+	include_once "fhq_class_mail.php";
 	
 	//---------------------------------------------------------------------
 	class fhq_news
@@ -25,9 +26,12 @@
 			$db = new fhq_database();
 			if( !$security->isAdmin() && !$security->isTester() && !$security->isGod())
 				exit;
-
+			
 			$query = 'insert into news (text, author, datetime_) values(\''.base64_encode($text).'\','.$security->iduser().', now())';
 			$result = $db->query( $query );
+			
+			$mail = new fhq_mail();
+			$mail->send_to_all('Free-Hack-Quest: News', $text);
 		}
 		
 		function save_news($id_news, $text)
@@ -39,6 +43,9 @@
 
 			$query = 'UPDATE news SET text = \''.base64_encode($text).'\', datetime_ = now() WHERE id = '.$id_news.';';
 			$result = $db->query( $query );
+			
+			$mail = new fhq_mail();
+			$mail->send_to_all('Free-Hack-Quest: News', $text);
 		}
 
 		function echo_news()

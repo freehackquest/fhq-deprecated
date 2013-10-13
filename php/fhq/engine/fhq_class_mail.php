@@ -35,6 +35,24 @@
 			// $errormsg = $mail->getMessage();
 			return true; // PEAR::isError($mail);
 		}
+		
+		function send_to_all($subject, $body)
+		{
+			include "config/config.php";
+			$security = new fhq_security();
+			$db = new fhq_database();
+			
+			$result = $db->query('select username, password from user');
+			while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
+			{   
+				$email = strtolower(base64_decode($row['username']));
+				$password = $row['password'];
+				$error = "";
+				$notact = 'notactivated';
+				if(substr($password, 0, strlen($notact)) != $notact)
+					$this->send($email, $subject, $body, $error);
+			}
+		}
 	}
 	//---------------------------------------------------------------------
 ?>
