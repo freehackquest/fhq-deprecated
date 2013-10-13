@@ -13,6 +13,7 @@ function echo_statistics()
 		exit;
 	}
 
+/*
 	$query = 'SELECT
   userquest.idquest, 
   quest.name,
@@ -29,17 +30,47 @@ ORDER BY
 	cnt DESC
     
 ';
-	
+*/
+
+	$query = '
+SELECT
+	idquest, 
+	name,
+	min_score,
+	score
+FROM 
+	quest
+WHERE
+	for_person = 0
+ORDER BY
+	min_score, score
+';
 	
 	$result = $db->query( $query );
 
 	echo '<table id="customers">
 	<tr class="alt">
 		<th>Quest (id, Name)</th>
-		<th>Users which passed this quest</th>
-		<th>Successful Attempts</th>
-		<th>No Successful Attempts</th>
+		<th>Score(Min Score)</th>
+		<th>Attempts(Yes)</th>
+		<th>Attempts(No)</th>
 	</tr>';
+
+	function getSpec_SQL($table, $idquest, $passed)
+	{
+		return '
+			select 
+				count(*) as cnt 
+			from 
+				'.$table.' t0
+			inner join user t1 on t0.iduser = t1.iduser
+			where 
+				t0.idquest = '.$idquest.' 
+				and t0.passed = \''.$passed.'\'
+				and t1.role = \'user\'
+				;';
+	}
+
 
 	$class = true;
 	while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
@@ -47,25 +78,27 @@ ORDER BY
 		$class = !$class;
 		$idquest = $row['idquest'];
 		$name = base64_decode($row['name']);
-		$count = $row['cnt'];
+		$min_score = $row['min_score'];
+		$score = $row['score'];
+		// $count = $row['cnt'];
 		
 		$plus = 0;
 		$minus = 0;
 		
 		{
-			$rs = $db->query( 'select count(*) as cnt from tryanswer where idquest = '.$idquest.' and passed = \'Yes\';' );
+			$rs = $db->query( getSpec_SQL('tryanswer', $idquest, 'Yes') );
 			$plus += mysql_result($rs, 0, 'cnt');
 			mysql_free_result($rs);
-			$rs = $db->query( 'select count(*) as cnt from tryanswer_backup where idquest = '.$idquest.' and passed = \'Yes\';' );
+			$rs = $db->query( getSpec_SQL('tryanswer_backup', $idquest, 'Yes') );
 			$plus += mysql_result($rs, 0, 'cnt');
 			mysql_free_result($rs);
 		}
 		
 		{
-			$rs = $db->query( 'select count(*) as cnt from tryanswer where idquest = '.$idquest.' and passed = \'No\';' );
+			$rs = $db->query( getSpec_SQL('tryanswer', $idquest, 'No') );
 			$minus += mysql_result($rs, 0, 'cnt');
 			mysql_free_result($rs);
-			$rs = $db->query( 'select count(*) as cnt from tryanswer_backup where idquest = '.$idquest.' and passed = \'No\';' );			
+			$rs = $db->query( getSpec_SQL('tryanswer_backup', $idquest, 'No') );
 			$minus += mysql_result($rs, 0, 'cnt');
 			mysql_free_result($rs);
 		}
@@ -73,7 +106,7 @@ ORDER BY
 		echo ' 
 			<tr '.($class ? 'class="alt"' : '').' >
 				<td><a href=main.php?content_page=view_quest&id='.$idquest.'>'.$idquest.', '.$name.'</a></td>
-				<td>'.$count.'</td>
+				<td>+'.$score.' ( >='.$min_score.') </td>
 				<td>'.$plus.'</td>
 				<td>'.$minus.'</td>
 			</tr>';
