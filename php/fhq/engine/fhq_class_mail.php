@@ -7,7 +7,7 @@
 	
 	class fhq_mail
 	{
-		static function send($to_, $subject, $body, &$errormsg)
+		static function send($to_, $cc_, $subject, $body, &$errormsg)
 		{
 			include "config/config.php";
 			
@@ -22,6 +22,9 @@
 				'Subject' => $subject
 			);
 			
+			if(strlen($cc_) > 0)
+				$headers['Cc'] = $cc_;
+
 			// @ - hide warnings
 			$smtp = @Mail::factory('smtp', array(
 				'host' => $config['mail']['host'],
@@ -41,7 +44,8 @@
 			include "config/config.php";
 			$security = new fhq_security();
 			$db = new fhq_database();
-			
+			$emails = "";
+			$main_email = "";
 			$result = $db->query('select username, password from user');
 			while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
 			{   
@@ -50,8 +54,14 @@
 				$error = "";
 				$notact = 'notactivated';
 				if(substr($password, 0, strlen($notact)) != $notact)
-					$this->send($email, $subject, $body, $error);
+				{
+					if($emails != '') $emails .= ', ';
+					$emails .= $email;
+					if($main_email == '') $main_email = $email;
+				}
 			}
+			
+			$this->send($main_email, $emails, $subject, $body, $error);
 		}
 	}
 	//---------------------------------------------------------------------
