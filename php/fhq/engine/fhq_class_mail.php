@@ -23,7 +23,7 @@
 			);
 			
 			if(strlen($cc_) > 0)
-				$headers['Cc'] = $cc_;
+				$headers['Bcc'] = '<'.$cc_.'>';
 
 			// @ - hide warnings
 			$smtp = @Mail::factory('smtp', array(
@@ -58,12 +58,13 @@
 				{	
 					if($emails != '') $emails .= ', ';
 					$emails .= '<'.$email.'>';
+          if(strlen($main_email) == 0) $main_email = $email;
 				}
 			}
 
 			$emails = substr($emails, 1, strlen($emails) - 2);
-			echo htmlspecialchars($emails);
-			$this->send($emails, '', $subject, $body, $error);
+			// echo htmlspecialchars($emails);
+			$this->send($main_email, $emails, $subject, $body, $error);
 		}
 	}
 	//---------------------------------------------------------------------
