@@ -154,7 +154,7 @@ Text:
 				$dt = mysql_result($result, $i, 'dt');
 				
 				if($admin) $nick .= ', '.strtolower($author);
-				
+
 				$list .= 
 				"\n\n<tr height='20px'><td width='50px'><td><center></center></td></tr>
 				<tr cellpadding='6' >
@@ -233,6 +233,45 @@ Text:
 		    $query = "INSERT INTO feedback_msg(feedback_id, msg, author, dt) VALUES($feedback_id, \"$answer_text\", ".$security->iduser().", now())";
 		    $result = $db->query($query);
 		    if($result != '1') return "error(feedback:5) query is not right: ".$query;
+
+        $query = "select t1.iduser, t1.username from feedback t0 inner join user t1 on t0.author = t1.iduser where t0.feedback_id = $feedback_id";
+        $result = $db->query($query);
+        
+        // send mail
+        /*
+        {
+          $iduser = mysql_result($result, 0, 'iduser');
+          $email = strtolower(base64_decode(mysql_result($result, 0, 'username')));
+          if($iduser == $security->iduser()) // it id send answer author
+          {
+            $mail = new fhq_mail();
+                    $msg = "
+            Added Answer Feedback
+
+            Feedback type: ".$this->type."
+            iduser: ".$security->iduser()."
+            Nick: ".$security->nick()."
+            Usermail: ".$security->email()."
+            Text:
+              ".$this->full_text."
+                  ";
+
+                    $mail->send_to_admin('Free-Hack-Quest: Feedback', $msg);            
+          }
+          else if()
+        }
+
+
+        feedback INNER JOIN user ON feedback.author = user.iduser
+        */
+//        if()
+
+        /*
+        $security = new fhq_security();
+			  $db = new fhq_database();
+
+        
+        */
 		}
 	};
 	//---------------------------------------------------------------------
