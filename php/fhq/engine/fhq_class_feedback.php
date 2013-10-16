@@ -94,6 +94,8 @@
 			$result = $db->query($query);
       $mail = new fhq_mail();
       $msg = "
+Added Feedback
+
 Feedback type: ".$this->type."
 iduser: ".$security->iduser()."
 Nick: ".$security->nick()."
@@ -101,7 +103,7 @@ Usermail: ".$security->email()."
 Text:
   ".$this->full_text."
       ";
-      $mail->send_to_admin('Free-Hack-Quest: Feedback', 'Added feedback');
+      $mail->send_to_admin('Free-Hack-Quest: Feedback', $msg);
       return $result;
 			//echo $result;
 		}
