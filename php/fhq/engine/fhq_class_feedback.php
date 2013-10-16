@@ -242,7 +242,12 @@ Text:
         {
           $iduser = mysql_result($result, 0, 'iduser');
           $email = strtolower(base64_decode(mysql_result($result, 0, 'username')));
+          echo $email;          
           $text = base64_decode(mysql_result($result, 0, 'full_text'));
+          echo $text;
+          $mail = new fhq_mail();
+
+          /*
           $msg = "
 Answer On Feedback
 Feedback Text: 
@@ -250,9 +255,8 @@ Feedback Text:
 Feedback Answer: 
   ".$answer_text."";
 
-          if($iduser == $security->iduser()) // it id send answer author
-          {
-            $mail = new fhq_mail();
+          if($iduser == $security->iduser()) // it is author's answer
+          {            
             $msg .= "
 iduser: ".$security->iduser()."
 Nick: ".$security->nick()."
@@ -261,8 +265,10 @@ Usermail: ".$security->email();
           }
           else if($security->isAdmin())
           {
-            $mail->send($email,'','Free-Hack-Quest: Answer On Feedback', $msg);
+            $error = "";
+            $mail->send($email,'','Free-Hack-Quest: Answer On Feedback', $msg, $error);
           }
+          */
         }
      }
 	};
