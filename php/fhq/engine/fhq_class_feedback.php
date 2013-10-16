@@ -1,6 +1,7 @@
 <?php 
 	include_once "fhq_class_security.php";
 	include_once "fhq_class_database.php";
+  include_once "fhq_class_mail.php";
 	
 	//---------------------------------------------------------------------
 	class fhq_feedback
@@ -91,7 +92,17 @@
 				VALUES(\"".strtodb($this->type)."\",\"".strtodb($this->full_text)."\", ".$security->iduser().", now() )";
 			//echo $query;
 			$result = $db->query($query);
-			return $result;
+      $mail = new fhq_mail();
+      $msg = "
+Feedback type: ".$this->type."
+iduser: ".$security->iduser()."
+Nick: ".$security->nick()."
+Usermail: ".$security->email()."
+Text:
+  ".$this->full_text."
+      ";
+      $mail->send_to_admin('Free-Hack-Quest: Feedback', 'Added feedback');
+      return $result;
 			//echo $result;
 		}
 		

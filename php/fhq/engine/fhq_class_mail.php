@@ -39,6 +39,24 @@
 			return true; // PEAR::isError($mail);
 		}
 		
+    function send_to_admin($subject, $body, &$errormsg)
+    {
+      include "config/config.php";
+			$security = new fhq_security();
+			$db = new fhq_database();
+      $emails = "";
+      $result = $db->query('select username, password from user where role=\'admin\'');
+      while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
+			{   
+				$email = strtolower(base64_decode($row['username']));
+				if($emails != '') $emails .= ', ';
+				$emails .= '<'.$email.'>';
+			}
+      $emails = substr($emails, 1, strlen($emails) - 2);
+      $error = "";
+      @$this->send($emails, '', $subject, $body, $error);
+    }
+
 		function send_to_all($subject, $body)
 		{
 			include "config/config.php";
@@ -50,8 +68,7 @@
 			while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
 			{   
 				$email = strtolower(base64_decode($row['username']));
-				$password = $row['password'];
-				$error = "";
+				$password = $row['password'];				
 				$notact = 'notactivated';
 				$first = true;
 				if(substr($password, 0, strlen($notact)) != $notact)
@@ -64,6 +81,7 @@
 
 			$emails = substr($emails, 1, strlen($emails) - 2);
 			// echo htmlspecialchars($emails);
+      $error = "";
 			$this->send($main_email, $emails, $subject, $body, $error);
 		}
 	}

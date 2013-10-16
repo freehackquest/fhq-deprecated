@@ -85,6 +85,10 @@ class fhq_security
 	function nick() { 
 		return ($this->isLogged()) ? $_SESSION['user']['nick'] : ''; 
 	}
+  function email() { 
+		return ($this->isLogged()) ? strtolower(base64_decode($_SESSION['user']['email'])) : ''; 
+	}
+  
 	function setNick($nick) { 
 		if($this->isLogged())
 			$_SESSION['user']['nick'] = $nick;
