@@ -234,17 +234,21 @@ Text:
 		    $query = "INSERT INTO feedback_msg(feedback_id, msg, author, dt) VALUES($feedback_id, \"$answer_text\", ".$security->iduser().", now())";
 		    $result = $db->query($query);
 		    if($result != '1') return "error(feedback:5) query is not right: ".$query;
-
-        $query = "select t1.iduser, t1.username, t0.full_text from feedback t0 inner join user t1 on t0.author = t1.iduser where t0.feedback_id = $feedback_id";
-        $result = $db->query($query);
+        mysql_free_result($result);
+        
         
         // send mail        
         {
+          $query = "select t1.iduser, t1.username, t0.full_text from feedback t0 inner join user t1 on t0.author = t1.iduser where t0.feedback_id = $feedback_id";
+          $result = $db->query($query);
+
           $iduser = mysql_result($result, 0, 'iduser');
           $email = strtolower(base64_decode(mysql_result($result, 0, 'username')));
           echo $email;          
           $text = base64_decode(mysql_result($result, 0, 'full_text'));
           echo $text;
+          mysql_free_result($result);
+          exit;
           $mail = new fhq_mail();
 
           /*
