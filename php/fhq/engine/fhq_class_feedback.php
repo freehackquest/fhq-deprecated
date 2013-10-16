@@ -83,6 +83,7 @@
 		</table><br><br>
 ';
 		}
+
 		function add()
 		{
 			$security = new fhq_security();
@@ -234,45 +235,36 @@ Text:
 		    $result = $db->query($query);
 		    if($result != '1') return "error(feedback:5) query is not right: ".$query;
 
-        $query = "select t1.iduser, t1.username from feedback t0 inner join user t1 on t0.author = t1.iduser where t0.feedback_id = $feedback_id";
+        $query = "select t1.iduser, t1.username, t0.full_text from feedback t0 inner join user t1 on t0.author = t1.iduser where t0.feedback_id = $feedback_id";
         $result = $db->query($query);
         
-        // send mail
-        /*
+        // send mail        
         {
           $iduser = mysql_result($result, 0, 'iduser');
           $email = strtolower(base64_decode(mysql_result($result, 0, 'username')));
+          $text = base64_decode(mysql_result($result, 0, 'full_text'));
+          $msg = "
+Answer On Feedback
+Feedback Text: 
+  ".$text."
+Feedback Answer: 
+  ".$answer_text."";
+
           if($iduser == $security->iduser()) // it id send answer author
           {
             $mail = new fhq_mail();
-                    $msg = "
-            Added Answer Feedback
-
-            Feedback type: ".$this->type."
-            iduser: ".$security->iduser()."
-            Nick: ".$security->nick()."
-            Usermail: ".$security->email()."
-            Text:
-              ".$this->full_text."
-                  ";
-
-                    $mail->send_to_admin('Free-Hack-Quest: Feedback', $msg);            
+            $msg .= "
+iduser: ".$security->iduser()."
+Nick: ".$security->nick()."
+Usermail: ".$security->email();
+            $mail->send_to_admin('Free-Hack-Quest: Answer On Feedback', $msg);
           }
-          else if()
+          else if($security->isAdmin())
+          {
+            $mail->send($email,'','Free-Hack-Quest: Answer On Feedback', $msg);
+          }
         }
-
-
-        feedback INNER JOIN user ON feedback.author = user.iduser
-        */
-//        if()
-
-        /*
-        $security = new fhq_security();
-			  $db = new fhq_database();
-
-        
-        */
-		}
+     }
 	};
 	//---------------------------------------------------------------------
 
