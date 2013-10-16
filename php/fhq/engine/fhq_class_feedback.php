@@ -263,7 +263,7 @@ Nick: ".$security->nick()."
 Usermail: ".$security->email();
             $mail->send_to_admin('Free-Hack-Quest: Answer On Feedback', $msg);
           }
-          else if($security->isAdmin())
+          else
           {
             $error = "";
             $mail->send($email,'','Free-Hack-Quest: Answer On Feedback', $msg, $error);
