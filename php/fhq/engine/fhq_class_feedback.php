@@ -239,19 +239,15 @@ Text:
         
         // send mail        
         {
-          $query = "select t1.iduser, t1.username, t0.full_text from feedback t0 inner join user t1 on t0.author = t1.iduser where t0.feedback_id = $feedback_id";
+          $query = "select t1.iduser, t1.username, t0.full_text from feedback t0 inner join user t1 on t0.author = t1.iduser where t0.id = $feedback_id";
           $result = $db->query($query);
 
           $iduser = mysql_result($result, 0, 'iduser');
           $email = strtolower(base64_decode(mysql_result($result, 0, 'username')));
-          echo $email;          
-          $text = base64_decode(mysql_result($result, 0, 'full_text'));
-          echo $text;
+          $text = mysql_result($result, 0, 'full_text');
           mysql_free_result($result);
-          exit;
           $mail = new fhq_mail();
 
-          /*
           $msg = "
 Answer On Feedback
 Feedback Text: 
@@ -272,7 +268,6 @@ Usermail: ".$security->email();
             $error = "";
             $mail->send($email,'','Free-Hack-Quest: Answer On Feedback', $msg, $error);
           }
-          */
         }
      }
 	};
