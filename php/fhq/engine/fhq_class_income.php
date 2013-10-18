@@ -21,7 +21,6 @@
 
 			$diffSecs = $target - $now;
 			
-			
 			$date = array();
 			$date['secs'] = $diffSecs % 60;
 			$date['mins'] = floor($diffSecs/60)%60;
@@ -54,6 +53,25 @@
 				$config['targetDate']['month'],
 				$config['targetDate']['day'],
 				$config['targetDate']['year']
+			);
+
+			$diffSecs = $target - $now;
+			
+			return ($diffSecs <= 0);
+		}
+
+    function isFinished()
+		{
+			include "config/config.php";
+			
+			$now = time();
+			$target = mktime(
+				$config['finishDate']['hour'],
+				$config['finishDate']['minute'],
+				$config['finishDate']['second'],
+				$config['finishDate']['month'],
+				$config['finishDate']['day'],
+				$config['finishDate']['year']
 			);
 
 			$diffSecs = $target - $now;

@@ -57,7 +57,7 @@
       @$this->send($emails, '', $subject, $body, $error);
     }
 
-		function send_to_all($subject, $body)
+		function send_to_all($subject, $body, $send_as_copies)
 		{
 			include "config/config.php";
 			$security = new fhq_security();
@@ -82,7 +82,10 @@
 			$emails = substr($emails, 1, strlen($emails) - 2);
 			// echo htmlspecialchars($emails);
       $error = "";
-			$this->send($main_email, $emails, $subject, $body, $error);
+      if($send_as_copies)
+        $this->send($main_email, $emails, $subject, $body, $error);
+      else
+        $this->send($emails, $emails, $subject, $body, $error);
 		}
 	}
 	//---------------------------------------------------------------------
