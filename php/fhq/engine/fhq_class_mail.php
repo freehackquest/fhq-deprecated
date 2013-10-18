@@ -68,6 +68,7 @@
 			$emails = "";
 			$main_email = "";
 			$result = $db->query('select username, password from user');
+      $count = 0;
 			while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
 			{   
 				$email = strtolower(base64_decode($row['username']));
@@ -75,13 +76,26 @@
 				$notact = 'notactivated';
 				$first = true;
 				if(substr($password, 0, strlen($notact)) != $notact)
-				{	
+				{	          
 					if($emails != '') $emails .= ', ';
 					$emails .= '<'.$email.'>';
           if(strlen($main_email) == 0) $main_email = $email;
+          $count++;
+
+          if($count > 15)
+          {
+            $count = 0;
+            $emails = substr($emails, 1, strlen($emails) - 2);
+            $error = "";
+            if($send_as_copies)
+              $this->send($main_email, $emails, '', $subject, $body, $error);
+            else
+              $this->send($main_email, '', $emails, $subject, $body, $error);
+            $emails = "";
+          }
 				}
 			}
-
+      /*
 			$emails = substr($emails, 1, strlen($emails) - 2);
 			// echo htmlspecialchars($emails);
       $error = "";
@@ -89,6 +103,7 @@
         $this->send($main_email, $emails, '', $subject, $body, $error);
       else
         $this->send($main_email, '', $emails, $subject, $body, $error);
+      */
 		}
 	}
 	//---------------------------------------------------------------------
