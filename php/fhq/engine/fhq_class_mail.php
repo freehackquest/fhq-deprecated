@@ -92,6 +92,7 @@
             else
               $this->send($main_email, '', $emails, $subject, $body, $error);
             $emails = "";
+            sleep(45);
           }
 				}
 			}
