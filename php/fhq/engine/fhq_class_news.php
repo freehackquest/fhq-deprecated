@@ -12,7 +12,7 @@
 				Add News<br><br>
 				<textarea class="full_text" id="news_text"></textarea>
 				<br>
-        <input type="checkbox" id="send_as_copies" checked="checked" />Send as copies<br>
+        <input type="checkbox" id="send_as_copies" checked="checked" />  Send as copies  <br>
 				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
 					var news_text = document.getElementById(\'news_text\').value;
           var send_as_copies = document.getElementById(\'send_as_copies\').checked;          

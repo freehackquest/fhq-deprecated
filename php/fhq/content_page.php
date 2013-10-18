@@ -20,6 +20,12 @@
 		echo "free-hack-quest not started yet";	
 		exit;
 	}
+
+  if($income->isFinished())
+  {
+    refreshTo("scoreboard.php");
+	 	exit;  
+  };
 	
 	$db = new fhq_database();
 	
