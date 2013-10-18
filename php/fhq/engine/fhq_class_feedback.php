@@ -266,7 +266,7 @@ Usermail: ".$security->email();
           else
           {
             $error = "";
-            $mail->send($email,'','Free-Hack-Quest: Answer On Feedback', $msg, $error);
+            $mail->send($email,'','','Free-Hack-Quest: Answer On Feedback', $msg, $error);
           }
         }
      }

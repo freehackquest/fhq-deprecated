@@ -45,7 +45,7 @@
 	";
 				$mail = new fhq_mail();
 				$error = "";
-				if( $mail->send($email, '', $subject, $message, $error) )
+				if( $mail->send($email, '', '', $subject, $message, $error) )
 					echo "Check your your e-mail (also check spam).";
 				else
 					echo '<font color=#ff0000>Problem with sending email. '.$error.'</font>';
@@ -101,7 +101,7 @@
 
 				$mail = new fhq_mail();
 				$error = "";
-				if( $mail->send($email, '', $subject, $message, $error) )
+				if( $mail->send($email, '', '', $subject, $message, $error) )
 					echo 'Your account was activated.<br>Information for sign in was sended to your email.';
 				else
 					echo '<font color=#ff0000>Problem with sending email. '.$error.'</font>';

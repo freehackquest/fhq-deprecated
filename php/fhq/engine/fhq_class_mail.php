@@ -7,7 +7,7 @@
 	
 	class fhq_mail
 	{
-		static function send($to_, $cc_, $subject, $body, &$errormsg)
+		static function send($to_, $cc_, $bcc_, $subject, $body, &$errormsg)
 		{
 			include "config/config.php";
 			
@@ -23,7 +23,10 @@
 			);
 			
 			if(strlen($cc_) > 0)
-				$headers['Bcc'] = '<'.$cc_.'>';
+				$headers['Cc'] = '<'.$cc_.'>';
+
+  		if(strlen($bcc_) > 0)
+				$headers['Bcc'] = '<'.$bcc_.'>';
 
 			// @ - hide warnings
 			$smtp = @Mail::factory('smtp', array(
@@ -54,7 +57,7 @@
 			}
       $emails = substr($emails, 1, strlen($emails) - 2);
       $error = "";
-      @$this->send($emails, '', $subject, $body, $error);
+      @$this->send($emails, '', '', $subject, $body, $error);
     }
 
 		function send_to_all($subject, $body, $send_as_copies)
@@ -83,9 +86,9 @@
 			// echo htmlspecialchars($emails);
       $error = "";
       if($send_as_copies)
-        $this->send($main_email, $emails, $subject, $body, $error);
+        $this->send($main_email, $emails, '', $subject, $body, $error);
       else
-        $this->send($emails, $emails, $subject, $body, $error);
+        $this->send($main_email, '', $emails, $subject, $body, $error);
 		}
 	}
 	//---------------------------------------------------------------------
