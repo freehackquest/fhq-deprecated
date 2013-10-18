@@ -82,18 +82,18 @@
           if(strlen($main_email) == 0) $main_email = $email;
           $count++;
 
-          if($count > 15)
+          /*if($count > 15)
           {
             $count = 0;
             $emails = substr($emails, 1, strlen($emails) - 2);
             $error = "";
-            /*if($send_as_copies)
+            if($send_as_copies)
               $this->send($main_email, $emails, '', $subject, $body, $error);
             else
               $this->send($main_email, '', $emails, $subject, $body, $error);
             $emails = "";
-            sleep(45);*/
-          }
+            sleep(45);
+          }*/
 				}
 			}
       
