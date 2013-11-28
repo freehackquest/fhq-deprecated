@@ -1,0 +1,104 @@
+{
+  "documents" : {
+    "user_profile" : { 
+      "caption" : "User Profile",
+      "fields" : {
+        "name": {
+          "caption" : "User Name",
+          "value" : "",
+          "type" : "textline"
+        },
+        "avatar" : {
+          "value" : "",
+          "caption" : "Image",
+          "type" : "image",
+          "image_width" : "150",
+          "image_height" : "150"
+        }
+      }
+    }, // "user_profile"
+    "team_profile" : { 
+      "caption" : "Team Profile",
+      "fields" : {
+        "Name": {
+          "caption" : "Team Name",
+          "value" : "",
+          "type" : "textline"
+        },
+        "Owner": {
+          "caption" : "Team Name",
+          "value" : "",
+          "type" : "text",
+          "type" : "linkto",
+          "linkto_id" : "",
+          "linkto_type" : "user_profile"
+        },
+        "avatar" : {
+          "value" : "",
+          "caption" : "Image",
+          "type" : "image",
+          "image_width" : "150",
+          "image_height" : "150"
+        },
+        "leaders" : {
+          "caption" : "Leaders",
+          "value" : "",
+          "type" : "multilinkto",
+          "linkto_id" : "",
+          "linkto_type" : "user_profile"
+        },
+        "members" : {
+          "caption" : "Members:",
+          "value" : "",
+          "type" : "multilinkto",
+          "linkto_id" : "",
+          "linkto_type" : "user_profile"
+        }
+      }
+    }, // "team_profile"
+    "game_profile" : {
+      "Caption" : "Game Profile",
+      "Fields" : {
+        "owner": {
+          "caption" : "Owner",
+          "value" : "",
+          "type" : "linkto"
+          "linkto_type" : "user_profile"
+        },
+        "owner_team": {
+          "caption" : "Owner Team",
+          "value" : "",
+          "type" : "linkto"
+          "linkto_type" : "team_profile"
+        },
+        "name": {
+          "caption" : "Game Name",
+          "value" : "",
+          "type" : "textline"
+        },
+        "type_game": {
+          "caption" : "Type Game",
+          "value" : "",
+          "type" : "textline",
+        },
+        "start_date": {
+          "caption" : "Owner Team",
+          "value" : "",
+          "type" : "datetime",
+        },
+        "end_date": {
+          "caption" : "Owner Team",
+          "value" : "",
+          "type" : "datetime",
+        },
+        "teams" : {
+          "caption" : "Members:",
+          "value" : "",
+          "type" : "linkto",
+          "linkto_id" : "",
+          "linkto_type" : "User"
+        }
+      }    
+    } // "game"
+  }
+}
