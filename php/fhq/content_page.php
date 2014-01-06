@@ -280,6 +280,12 @@
 	}
 	else if($content_page == "export_quest")
 	{
+		if(!$security->isAdmin())
+                {
+                        echo "Forbidden";
+                        exit;
+                };
+
 		if(!isset($_GET['id']))
 		{
 			echo 'Not found paramenter "id"';
@@ -303,6 +309,12 @@
 	}
 	else if($content_page == "edit_quest")
 	{
+		if(!$security->isAdmin())
+                {
+                        echo "Forbidden";
+                        exit;
+                };
+
 		if(!isset($_GET['id']))
 		{
 			echo 'not found paramenter "id"';
