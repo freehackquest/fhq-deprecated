@@ -12,15 +12,17 @@
 				Add News<br><br>
 				<textarea class="full_text" id="news_text"></textarea>
 				<br>
+        <input type="checkbox" id="send_as_copies" />  Send as copies  <br>
 				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
 					var news_text = document.getElementById(\'news_text\').value;
-					load_content_page(\'add_news\', { \'text\' : news_text });
+          var send_as_copies = document.getElementById(\'send_as_copies\').checked;          
+					load_content_page(\'add_news\', { \'text\' : news_text, \'send_as_copies\' : send_as_copies } );
 				">Add</a>
 				';
 			echo $content;
 		}
 
-		function add_news($text)
+		function add_news($text, $send_as_copies)
 		{
 			$security = new fhq_security();
 			$db = new fhq_database();
@@ -31,7 +33,7 @@
 			$result = $db->query( $query );
 			
 			$mail = new fhq_mail();
-			$mail->send_to_all('Free-Hack-Quest: News', $text);
+			$mail->send_to_all('Free-Hack-Quest: News', $text, $send_as_copies);
 		}
 		
 		function save_news($id_news, $text)
@@ -45,7 +47,7 @@
 			$result = $db->query( $query );
 			
 			$mail = new fhq_mail();
-			$mail->send_to_all('Free-Hack-Quest: News', $text);
+			$mail->send_to_all('Free-Hack-Quest: News', $text, true);
 		}
 
 		function echo_news()

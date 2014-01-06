@@ -25,6 +25,14 @@
 	$config['targetDate']['minute'] = 0;
 	$config['targetDate']['second'] = 0;
 
+  $config['finishDate'] = array();
+	$config['finishDate']['day'] = 18;
+	$config['finishDate']['month'] = 10;
+	$config['finishDate']['year'] = 2013;
+	$config['finishDate']['hour'] = 21;
+	$config['finishDate']['minute'] = 0;
+	$config['finishDate']['second'] = 0;
+
 	$config['mail'] = array();
 	$config['mail']['from'] = "test@gmail.com";
 	$config['mail']['host'] = "ssl://smtp.gmail.com";

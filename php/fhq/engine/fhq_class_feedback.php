@@ -1,6 +1,7 @@
 <?php 
 	include_once "fhq_class_security.php";
 	include_once "fhq_class_database.php";
+  include_once "fhq_class_mail.php";
 	
 	//---------------------------------------------------------------------
 	class fhq_feedback
@@ -82,6 +83,7 @@
 		</table><br><br>
 ';
 		}
+
 		function add()
 		{
 			$security = new fhq_security();
@@ -91,7 +93,19 @@
 				VALUES(\"".strtodb($this->type)."\",\"".strtodb($this->full_text)."\", ".$security->iduser().", now() )";
 			//echo $query;
 			$result = $db->query($query);
-			return $result;
+      $mail = new fhq_mail();
+      $msg = "
+Added Feedback
+
+Feedback type: ".$this->type."
+iduser: ".$security->iduser()."
+Nick: ".$security->nick()."
+Usermail: ".$security->email()."
+Text:
+  ".$this->full_text."
+      ";
+      $mail->send_to_admin('Free-Hack-Quest: Feedback', $msg);
+      return $result;
 			//echo $result;
 		}
 		
@@ -141,7 +155,7 @@
 				$dt = mysql_result($result, $i, 'dt');
 				
 				if($admin) $nick .= ', '.strtolower($author);
-				
+
 				$list .= 
 				"\n\n<tr height='20px'><td width='50px'><td><center></center></td></tr>
 				<tr cellpadding='6' >
@@ -220,7 +234,42 @@
 		    $query = "INSERT INTO feedback_msg(feedback_id, msg, author, dt) VALUES($feedback_id, \"$answer_text\", ".$security->iduser().", now())";
 		    $result = $db->query($query);
 		    if($result != '1') return "error(feedback:5) query is not right: ".$query;
-		}
+        mysql_free_result($result);
+        
+        
+        // send mail        
+        {
+          $query = "select t1.iduser, t1.username, t0.full_text from feedback t0 inner join user t1 on t0.author = t1.iduser where t0.id = $feedback_id";
+          $result = $db->query($query);
+
+          $iduser = mysql_result($result, 0, 'iduser');
+          $email = strtolower(base64_decode(mysql_result($result, 0, 'username')));
+          $text = mysql_result($result, 0, 'full_text');
+          mysql_free_result($result);
+          $mail = new fhq_mail();
+
+          $msg = "
+Answer On Feedback
+Feedback Text: 
+  ".$text."
+Feedback Answer: 
+  ".$answer_text."";
+
+          if($iduser == $security->iduser()) // it is author's answer
+          {            
+            $msg .= "
+iduser: ".$security->iduser()."
+Nick: ".$security->nick()."
+Usermail: ".$security->email();
+            $mail->send_to_admin('Free-Hack-Quest: Answer On Feedback', $msg);
+          }
+          else
+          {
+            $error = "";
+            $mail->send($email,'','','Free-Hack-Quest: Answer On Feedback', $msg, $error);
+          }
+        }
+     }
 	};
 	//---------------------------------------------------------------------
 

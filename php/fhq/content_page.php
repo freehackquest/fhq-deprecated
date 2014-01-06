@@ -20,6 +20,12 @@
 		echo "free-hack-quest not started yet";	
 		exit;
 	}
+
+  if($income->isFinished())
+  {
+    refreshTo("scoreboard.php");
+	 	exit;  
+  };
 	
 	$db = new fhq_database();
 	
@@ -165,9 +171,13 @@
 	else if ($content_page == "add_news" && ($security->isAdmin() || $security->isTester()))
 	{
 		$news = new fhq_news();
-		if(isset($_GET['text']))
-			$news->add_news($_GET['text']);
-		
+		if(isset($_GET['text']) && isset($_GET['send_as_copies']))
+    {
+      $send_as_copies = ($_GET['send_as_copies'] == 'true') || ($_GET['send_as_copies'] == '1');
+			$news->add_news($_GET['text'], $send_as_copies);
+      echo "sended";
+    }
+
 		$news->echo_insert_form();
 		exit;
 	}

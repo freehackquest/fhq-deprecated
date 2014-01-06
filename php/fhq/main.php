@@ -21,6 +21,12 @@
 			echo_shortpage(new fhq_page_income());			
 			exit;
 	}
+
+  if($income->isFinished())
+  {
+    refreshTo("scoreboard.php");
+	 	exit;  
+  };
 	
 	$db = new fhq_database();
 

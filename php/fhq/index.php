@@ -22,7 +22,7 @@ class fhq_logon
 {
 	function title()
 	{
-		return "</h2> quest game, the system prompts, <br>
+		return "<h2> quest game, the system prompts, <br>
 						receipt and delivery of jobs in computer security.
 					</h2><br><br>";
 	}
