@@ -109,7 +109,7 @@ namespace adjd {
 			+ "'" + dateTimeString2 + "', "
 			+ id_team_passed
 		+ ");";
-		writeToLog(cnf, "strQuery = " + strQuery);
+		// writeToLog(cnf, "strQuery = " + strQuery);
 		query.exec(strQuery);
 		return;
 	}
