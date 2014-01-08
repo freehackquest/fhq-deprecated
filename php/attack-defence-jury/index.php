@@ -29,7 +29,7 @@ setTimeout(function(){
     $color = "#F2F2F2";
     
     $result1 = mysql_query("SELECT * FROM services");
-    echo "<tr> <td>Team\Services</td> <td>Defence</td> <td>Offence</td>";
+    echo "<tr> <td>Team\Services</td> <td>Defence</td> <td>Offence</td> <td>Score</td>";
     $services[] = array();
     $i = 0;
     // headers
@@ -70,13 +70,15 @@ setTimeout(function(){
 		$result_2 = mysql_query($query_off);
 		$count_2 = mysql_fetch_array( $result_2 )['con'];
 		echo "<td align='center'>".$count_2."</td>";
+		echo "<td align='center'>".($count_1 + $count_2)."</td>";
 		 
 		for($i = 0; $i < count($services); $i++)
 		{
-			$query_status = "select id_team_passed as st, MAX(dt_end) from flags 
+			$query_status = "select id_team_passed as st from flags 
 				where 
 				id_team_owner = ".$row['id']." and
 				id_service = ".$services[$i]['id']."
+				and dt_end = (select MAX(dt_end) from flags where id_team_owner = ".$row['id']." and id_service = ".$services[$i]['id'].")
 			";
 
 			$result_3 = mysql_query($query_status);
@@ -84,7 +86,7 @@ setTimeout(function(){
 		
 			$color2 = ($st < 0) ?  "#FE642E" : "#66FF33";
 			
-			$st = ($st < 0) ? "off" : "on";
+			$st = ($st < 0) ? "corrupted" : "worked";
 			echo "<td bgcolor='".$color2."' valign='middle' align='center'>".$st."</td>";
 		}
 		echo "</tr>";
