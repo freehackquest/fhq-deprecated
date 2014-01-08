@@ -1,6 +1,6 @@
 
 #include "daemon.h"
-
+#include <unistd.h>
 #include <QString>
 #include <QFile>
 #include <QTextStream>
