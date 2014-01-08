@@ -86,7 +86,7 @@
 	if($result == 1)
 		echo "FLAG ACCEPTED";
 	else
-		die($flag_was_not_accepted." (10 - I don't now)");
+		die($flag_was_not_accepted." (10 - I don't know)");
 
 	mysql_close($dblink);
 ?>
