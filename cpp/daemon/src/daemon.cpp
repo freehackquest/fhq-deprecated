@@ -97,7 +97,7 @@ namespace adjd {
 		QDateTime dateTime = QDateTime::currentDateTime();
 		QString dateTimeString1 = dateTime.toString("yyyy-MM-dd hh:mm:ss");
 			
-		dateTime.addSecs(600); // add 10 minutes. it is live of flag
+		dateTime = dateTime.addSecs(600); // add 10 minutes. it is live of flag
 		QString dateTimeString2 = dateTime.toString("yyyy-MM-dd hh:mm:ss");
 		
 		QSqlQuery query(db);
