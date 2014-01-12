@@ -18,6 +18,7 @@
 	$team = strtoupper($_GET['your_team']);
 	$flag = strtoupper($_GET['flag']);
 	
+	// TODO: change ereg => preg_match (fix from yozik-team)
 	if (!ereg("^[A-Z0-9]*$", $team))
 		die($flag_was_not_accepted." (3 - name of team has wrong format )");
 
