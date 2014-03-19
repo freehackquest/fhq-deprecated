@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `teams` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `team_global_id` varchar(255) NOT NULL,
   `team_name` varchar(255) NOT NULL,
+  `team_logo` varchar(255) NOT NULL,
   `author_id` int(11) NOT NULL,
   `change_date` datetime NOT NULL,
   PRIMARY KEY (`id`),

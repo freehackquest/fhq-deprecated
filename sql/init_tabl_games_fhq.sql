@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `games` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `global_id` varchar(255) NOT NULL,
   `game_name` varchar(255) NOT NULL,
-  `logo` varchar(255) NOT NULL,
+  `game_logo` varchar(255) NOT NULL,
   `start_date` datetime NOT NULL,
   `end_date` datetime NOT NULL,
   `change_date` datetime NOT NULL,
