@@ -40,6 +40,7 @@ function echo_mainpage($page)
 	
 	echo '<html>';
 	echo_head( $page );
+  $games = new fhq_games();
     
     // reload_news();
     
@@ -62,8 +63,10 @@ function echo_mainpage($page)
 		<tr>
 			<td valign="top">
 				<font size="3">
-					<div id="news">
-					</div>
+          ';
+    $games->echo_games();
+     
+    echo '
 				</font>
 			</td>
 			<td height="100%" valign="top">
