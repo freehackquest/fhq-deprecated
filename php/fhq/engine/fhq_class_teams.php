@@ -4,7 +4,7 @@
 	include_once "fhq_class_mail.php";
 	
 	//---------------------------------------------------------------------
-	class fhq_games
+	class fhq_teams
 	{
 		function echo_insert_form()
 		{
@@ -23,7 +23,7 @@
 			echo $content;
 		}
 
-		function add_game($text, $send_as_copies)
+		function add_team($text, $send_as_copies)
 		{
 			$security = new fhq_security();
 			$db = new fhq_database();
@@ -37,7 +37,7 @@
 			$mail->send_to_all('Free-Hack-Quest: News', $text, $send_as_copies);*/
 		}
 		
-		function save_game($id_news, $text)
+		function save_team($id_news, $text)
 		{
 			$security = new fhq_security();
 			$db = new fhq_database();
@@ -51,7 +51,7 @@
 			$mail->send_to_all('Free-Hack-Quest: News', $text, true);*/
 		}
 
-		function echo_games()
+		function echo_teams()
 		{
 			$security = new fhq_security();
 			$db = new fhq_database();
@@ -59,15 +59,13 @@
 			
 //			$query = 'SELECT * FROM games INNER JOIN user ON news.author = user.iduser ORDER BY datetime_ DESC LIMIT 0,5;';
 //  WHERE end_date < NOW()
-  		$query = 'SELECT * FROM games INNER JOIN user ON games.author_id = user.iduser ORDER BY start_date DESC LIMIT 0,10;';
+  		$query = 'SELECT * FROM teams INNER JOIN user ON teams.author_id = user.iduser ORDER BY change_date DESC LIMIT 0,10;';
 			$result = $db->query( $query );
-			echo "<center>Games:</center><br>
+			echo "<center>Teams:</center><br>
 				<table cellspacing=2 cellpadding=10>
 					<tr>
 						<td>Logo</td>
 						<td>Name</td>
-						<td>Start Date</td>
-						<td>End Date</td>
 						<td>User</td>
 					</tr>
 			";
@@ -75,17 +73,13 @@
 			while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
 			{
 				$id_news = $row['id'];
-				$name = $row['game_name'];
-				$start_date = $row['start_date'];
-				$end_date = $row['end_date'];
-				$logo = $row['game_logo'];
+				$name = $row['team_name'];
+				$logo = $row['team_logo'];
 				$nick = $row['nick'];
-
+				
 				echo "<tr>
 					<td><img width=100px src='$logo'></td>
 					<td>$name</td>
-					<td>$start_date</td>
-					<td>$end_date</td>
 					<td>$nick</td>
 				";
 				echo "</tr>";

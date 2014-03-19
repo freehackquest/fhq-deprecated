@@ -47,9 +47,9 @@ function echo_mainpage($page)
 	echo '<body onload="'.$onload.'" class="main">
 	<center>
 	<table cellspacing=10px cellpadding=10px width="100%" height="100%">
-		<tr>
-			<td width=18%>
-				<img src="images/minilogo.png"/>
+		<tr bgcolor="#FFFFF0">
+			<td width=2% valign="top">
+				<a href="?"><img src="images/minilogo.png"/></a>
 			</td>
 			<td align="left" valign = "top" width="82%">
 					';
@@ -61,26 +61,17 @@ function echo_mainpage($page)
 			</td>
 		</tr>
 		<tr>
-			<td valign="top">
-				<font size="3">
-          ';
-    $games->echo_games();
-     
-    echo '
-				</font>
-			</td>
-			<td height="100%" valign="top">
+			<td colspan="2" height="100%" valign="top">
 				<center>
 					<div id="content_page">
 					</div>
 				</center>
-				
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<center>
-					<font size=1>© 2011-2013 sea-kg</font>
+					<font size=1>© 2011-2014 sea-kg</font>
 					<!-- pre><div id="debug_info"/></pre -->
 				</center>
 			</td>

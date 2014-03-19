@@ -23,7 +23,8 @@ echo '
 					<td align="center" valign="middle">
 						<table>				
 							<tr>
-								<td> <img src="images/logo2.png"> </td>
+								<td><center><br>
+								<img src="images/mainlogo.png"/></center></td>
 								<td > <font size=5>free-hack-quest:</font><br>'.$page->title().'
 								<center>
 									';

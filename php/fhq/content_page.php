@@ -168,6 +168,23 @@
 		$news->echo_news();
 		exit;
 	}
+	else if ($content_page == "games")
+	{
+		$news = new fhq_games();
+		$news->echo_games();
+		exit;
+	}
+	else if ($content_page == "teams")
+	{
+		$news = new fhq_teams();
+		$news->echo_teams();
+		exit;
+	}
+	else if ($content_page == "hacker_girl")
+	{
+		echo "<img src='images/logo2.png'>";
+		exit;
+	}
 	else if ($content_page == "add_news" && ($security->isAdmin() || $security->isTester()))
 	{
 		$news = new fhq_news();

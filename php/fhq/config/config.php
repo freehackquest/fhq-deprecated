@@ -28,7 +28,7 @@
   $config['finishDate'] = array();
 	$config['finishDate']['day'] = 18;
 	$config['finishDate']['month'] = 10;
-	$config['finishDate']['year'] = 2013;
+	$config['finishDate']['year'] = 2015;
 	$config['finishDate']['hour'] = 21;
 	$config['finishDate']['minute'] = 0;
 	$config['finishDate']['second'] = 0;

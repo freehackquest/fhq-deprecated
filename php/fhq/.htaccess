@@ -1,1 +1,4 @@
 Options All -Indexes
+ErrorDocument 404 all.php
+ErrorDocument 403 all.php
+ErrorDocument 401 all.php
