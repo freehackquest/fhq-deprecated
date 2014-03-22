@@ -1,5 +1,5 @@
 <?
-  // exit;
+   exit;
    if (isset($_GET['login']) && isset($_GET['pass']) && isset($_GET['role']))
    {  
 		include_once "engine/fhq.php";
