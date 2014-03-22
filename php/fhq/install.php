@@ -1,12 +1,13 @@
 <?
    exit;
    if (isset($_GET['login']) && isset($_GET['pass']) && isset($_GET['role']))
-   {  
+   {
 		include_once "engine/fhq.php";
 		$db = new fhq_database();
 		$security = new fhq_security();
 		$registration = new fhq_registration();
 		$email = $_GET['login'];
+		$nickname = $_GET['nick'];
 		// $registration->removeEmail($email);
 		$username = base64_encode(strtoupper($email));
 		$query = "select count(*) as cnt from user where username='$username'";
@@ -23,7 +24,6 @@
 					$password_hash = $security->tokenByData( array($password, $username, strtoupper($email)));
 					$query = "INSERT user( username, password, nick, role, score ) VALUES ('$username','$password_hash','$nickname','$role', 0);";
 					$result2 = $db->query($query);
-					mysql_free_result($result2);
 					echo "complited<br>";
 				}
 				else
@@ -39,6 +39,7 @@ Add user: <br>
 <form>
 	Login: <input type='text' name='login' value='admin'/> <br>
 	Pass: <input type='text' name='pass' value='admin'/> <br>
+	Nick: <input type='text' name='nick' value='admin'/> <br>
 	Role: <input type='text' name='role' value='admin'/> <br>
 	<input type='submit' name='add_user' value='insert'/> <br>
 </form>
