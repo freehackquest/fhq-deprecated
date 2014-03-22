@@ -254,6 +254,8 @@
 				if ($key != '')
 					add_index($db, $table, $info);
 			}
+			echo "\tColumn: $column<br>";
+			
 		}
 
 		echo "</pre><hr>";
