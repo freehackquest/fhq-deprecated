@@ -1,8 +1,7 @@
 <?
-	echo "Please comment 'exit;' and try again";
-	exit;
-	if (isset($_GET['login']) && isset($_GET['pass']) && isset($_GET['role']))
-	{
+   exit;
+   if (isset($_GET['login']) && isset($_GET['pass']) && isset($_GET['role']))
+   {
 		include_once "engine/fhq.php";
 		$db = new fhq_database();
 		$security = new fhq_security();
