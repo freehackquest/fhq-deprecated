@@ -48,7 +48,7 @@ function echo_mainpage($page)
 	<center>
 	<table cellspacing=10px cellpadding=10px width="100%" height="100%">
 		<tr bgcolor="#FFFFF0">
-			<td width=2% valign="top">
+			<td width=100 valign="top">
 				<a href="?"><img src="images/minilogo.png"/></a>
 			</td>
 			<td align="left" valign = "top" width="82%">

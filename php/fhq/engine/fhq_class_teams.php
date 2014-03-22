@@ -59,28 +59,37 @@
 			
 //			$query = 'SELECT * FROM games INNER JOIN user ON news.author = user.iduser ORDER BY datetime_ DESC LIMIT 0,5;';
 //  WHERE end_date < NOW()
-  		$query = 'SELECT * FROM teams INNER JOIN user ON teams.author_id = user.iduser ORDER BY change_date DESC LIMIT 0,10;';
+  		$query = 'SELECT * FROM teams INNER JOIN user ON teams.owner = user.iduser ORDER BY date_change DESC LIMIT 0,10;';
 			$result = $db->query( $query );
 			echo "<center>Teams:</center><br>
-				<table cellspacing=2 cellpadding=10>
-					<tr>
-						<td>Logo</td>
-						<td>Name</td>
-						<td>User</td>
+				<table cellspacing=2 cellpadding=10 class='alt' id='customers'>
+					<tr class='alt'>
+						<th width='100'>Logo</th>
+						<th>Name</th>
+						<th>Owner</th>
 					</tr>
 			";
 
+			$bClass = false;
 			while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
 			{
 				$id_news = $row['id'];
-				$name = $row['team_name'];
-				$logo = $row['team_logo'];
-				$nick = $row['nick'];
+				$name = $row['title'];
+				$logo = $row['logo'];
+				$owner = $row['nick'];
 				
-				echo "<tr>
+				$strclass = '';
+				if ($bClass) 
+					$strclass = " class='alt' ";
+				
+				$bClass = !$bClass;
+				
+				
+				
+				echo "<tr $strclass>
 					<td><img width=100px src='$logo'></td>
-					<td>$name</td>
-					<td>$nick</td>
+					<td><h1>$name</h1></td>
+					<td>$owner</td>
 				";
 				echo "</tr>";
 			}
