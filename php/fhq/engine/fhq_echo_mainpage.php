@@ -1,6 +1,8 @@
 <?
-include_once "fhq_echo_head.php";
-include_once "fhq_echo_menu.php";
+$curdir = dirname(__FILE__);
+
+include_once "$curdir/fhq_echo_head.php";
+include_once "$curdir/fhq_echo_menu.php";
 
 class simple_page
 {

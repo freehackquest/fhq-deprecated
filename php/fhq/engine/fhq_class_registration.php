@@ -1,7 +1,8 @@
 <?
-	include_once "config/config.php";
-	include_once "fhq_class_security.php";
-	include_once "fhq_class_database.php";
+	$rootdir = dirname(__FILE__);
+	include_once "$rootdir/../config/config.php";
+	include_once "$rootdir/fhq_class_security.php";
+	include_once "$rootdir/fhq_class_database.php";
 	
 	class fhq_registration
 	{

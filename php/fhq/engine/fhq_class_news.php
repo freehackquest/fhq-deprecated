@@ -1,7 +1,8 @@
 <?php 
-	include_once "fhq_class_security.php";
-	include_once "fhq_class_database.php";
-	include_once "fhq_class_mail.php";
+	$rootdir = dirname(__FILE__);
+	include_once "$rootdir/fhq_class_security.php";
+	include_once "$rootdir/fhq_class_database.php";
+	include_once "$rootdir/fhq_class_mail.php";
 	
 	//---------------------------------------------------------------------
 	class fhq_news

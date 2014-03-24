@@ -1,6 +1,6 @@
 <?
-
-include_once "fhq_class_security.php";
+$curdir = dirname(__FILE__);
+include_once "$curdir/fhq_class_security.php";
 
 function echo_users()
 {
@@ -48,23 +48,50 @@ function echo_users()
 	
 	$query = 'SELECT * FROM user LIMIT '.$start_record.','.$records_on_page; //.(*$onpage).','.$onpage;
 	
+	echo "<br>
+				<table cellspacing=2 cellpadding=10 class='alt' id='customers'>
+					<tr class='alt'>
+						<th width='100'>ID</th>
+						<th>E-Mail</th>
+						<th>Nick</th>
+						<th>Score</th>
+						<th>Role</th>
+						<th>Last IP</th>
+						<th>Last Date Signup</th>
+						<th>Admin Functions</th>
+					</tr>
+			";
+	$bClass = false;
+
 	$result = $db->query( $query );
 	
 	while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
-	{      
+	{  
+
 		$iduser = $row['iduser'];
 		$username = strtolower(base64_decode($row['username']));
 		$nick = $row['nick'];
 		$score = $row['score'];
 		$role = $row['role'];
 		$password = $row['password'];
+		$date_last_signup = $row['date_last_signup'];
+		$last_ip = $row['last_ip'];
 		$idelem = 'user'.$iduser;
 
-		echo '<pre id="'.$idelem.'">ID: <b>'.$iduser.'</b>; Email: <b>'.$username.'</b>; Nick: '.$nick.'; Score: '.$score.'; Role: <b>'.$role.'</b>; ';
+		
+		$strclass = ''; 
+		if ($bClass) 
+			$strclass = " class='alt' ";
+		$bClass = !$bClass;
+		
+		
+		$admin_funcs = '';
+		$admin_funcs .= '<pre id="'.$idelem.'">';
+		
 		if(substr($password , 0, 12) == 'notactivated')
 		{
-			echo '<br><br/>url for activate account: <br/><b>http://fhq.keva.su/registration.php?foractivate='.substr($password , 12, 32).'</b><br/><br/>';
-			echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+			$admin_funcs .= '<br><br/>url for activate account: <br/><b>http://fhq.keva.su/registration.php?foractivate='.substr($password , 12, 32).'</b><br/><br/>';
+			$admin_funcs .= '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
 				load_content_page(\'send_mail_again\', 
 					{
 						page : '.$page.',
@@ -74,7 +101,7 @@ function echo_users()
 				);
 			">Send mail again</a> ';
 			
-			echo ' <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+			$admin_funcs .= ' <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
 			
 				if(delete_user())
 				{
@@ -92,21 +119,21 @@ function echo_users()
 		{
 			if($iduser != $security->iduser())
 			{
-				echo '<br>';
+				$admin_funcs .= '<br>';
 				$roles;
 				$roles['admin'] = 'Administrator';
 				$roles['tester'] = 'Tester';
 				$roles['user'] = 'User';
 				$roles['god'] = 'God';
-				echo '<select id="'.$idelem.'_select_new_role">';
+				$admin_funcs .= '<select id="'.$idelem.'_select_new_role">';
 
 				
 				foreach ($roles as $roleid => $rolename) {
-					echo '<option '.($role == $roleid ? 'selected' : '').' value="'.$roleid.'">'.$rolename.'</option>';
+					$admin_funcs .= '<option '.($role == $roleid ? 'selected' : '').' value="'.$roleid.'">'.$rolename.'</option>';
 				}
-				echo '</select>';
+				$admin_funcs .= '</select>';
 
-				echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+				$admin_funcs .= '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
 				
 					var role = document.getElementById(\''.$idelem.'_select_new_role\').value;
 					load_content_page(\'user_set_new_role\', 
@@ -118,11 +145,11 @@ function echo_users()
 					);
 				">Set new role</a>';
 			}
-			echo '<br>';
+			$admin_funcs .= '<br>';
 			
-			echo '<input id="'.$idelem.'_edit_new_nick" type="text" value="'.$nick.'"/>';
+			$admin_funcs .= '<input id="'.$idelem.'_edit_new_nick" type="text" value="'.$nick.'"/>';
 
-			echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+			$admin_funcs .= '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
 				load_content_page(\'user_set_new_nick\', 
 					{
 						page : '.$page.',
@@ -132,9 +159,21 @@ function echo_users()
 				);
 			">Set new nick</a><br>';
 		}
-		echo '</pre>';
+		$admin_funcs .= '</pre>';
+		
+		echo "<tr $strclass>
+					<td>$iduser</td>
+					<td>$username</td>
+					<td>$nick</td>
+					<td>$score</td>
+					<td>$role</td>
+					<td>$last_ip</td>
+					<td>$date_last_signup</td>
+					<td>$admin_funcs</td>					
+		</tr>";
 	}
 	mysql_free_result($result);
+	echo "</table>";
 
 	exit;
 };

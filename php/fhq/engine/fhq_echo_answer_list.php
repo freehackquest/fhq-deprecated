@@ -1,6 +1,7 @@
 <?
+$curdir = dirname(__FILE__);
 
-include_once "fhq_class_security.php";
+include_once "$curdir/fhq_class_security.php";
 
 function echo_answer_list()
 {
@@ -15,13 +16,13 @@ function echo_answer_list()
 
 	$records_on_page = 25;
 
-  $table = 'tryanswer';
-  $forjson = '';
-  if(isset($_GET['backup']))
-  {
-    $table = 'tryanswer_backup';
-    $forjson = ', backup : \'\'';
-  }
+	$table = 'tryanswer';
+	$forjson = '';
+	if(isset($_GET['backup']))
+	{
+		$table = 'tryanswer_backup';
+		$forjson = ', backup : \'\'';
+	}
 
 	$query = 'SELECT count(*) cnt FROM '.$table;
 	$result = $db->query( $query );

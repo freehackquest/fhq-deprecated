@@ -1,7 +1,9 @@
 <?
 
-include_once "fhq_base.php";
-include_once "fhq_class_database.php";
+$curdir = dirname(__FILE__);
+
+include_once "$curdir/fhq_base.php";
+include_once "$curdir/fhq_class_database.php";
 
 class fhq_security
 {
@@ -28,6 +30,8 @@ class fhq_security
 				$_SESSION['user']['nick'] = mysql_result($result, 0, 'nick');
 				$_SESSION['user']['score'] = mysql_result($result, 0, 'score');
 				$_SESSION['user']['role'] = mysql_result($result, 0, 'role');
+				$last_ip = $_SERVER['REMOTE_ADDR'];
+				$db->query("update user set date_last_signup = NOW(), last_ip = '$last_ip' where username = '$username'");
 				return true;
 			}
 		}
@@ -98,7 +102,7 @@ class fhq_security
 	}
 
 	function tokenByData($arr)
-	{	
+	{
 		include "config/config.php";
 	
 		$data = "";

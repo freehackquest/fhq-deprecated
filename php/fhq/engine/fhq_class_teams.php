@@ -1,7 +1,8 @@
 <?php 
-	include_once "fhq_class_security.php";
-	include_once "fhq_class_database.php";
-	include_once "fhq_class_mail.php";
+	$curdir = dirname(__FILE__);
+	include_once "$curdir/fhq_class_security.php";
+	include_once "$curdir/fhq_class_database.php";
+	include_once "$curdir/fhq_class_mail.php";
 	
 	//---------------------------------------------------------------------
 	class fhq_teams
@@ -81,19 +82,20 @@
 				$strclass = '';
 				if ($bClass) 
 					$strclass = " class='alt' ";
-				
 				$bClass = !$bClass;
-				
-				
+
 				
 				echo "<tr $strclass>
 					<td><img width=100px src='$logo'></td>
 					<td><h1>$name</h1></td>
 					<td>$owner</td>
-				";
-				echo "</tr>";
+				</tr>";
 			}
 			echo "</table>";
+			
+			if ($security->isAdmin()) {
+
+			}
 		}
 	}
 ?>

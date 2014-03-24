@@ -2,6 +2,7 @@
 	echo "Please comment 'exit;' and try again";
 	exit;
 	
+	$curdir = dirname(__FILE__);
 	$tables = array();
 	
 	$tables['feedback'] = array();
@@ -78,11 +79,18 @@
 
 	$tables['user'] = array();
 	$tables['user']['iduser'] = array ( 'Field' => 'iduser', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
+	$tables['user']['uuid_user'] = array ( 'Field' => 'uuid_user', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => 'UNI', 'Default' => NULL, 'Extra' => '', );
 	$tables['user']['username'] = array ( 'Field' => 'username', 'Type' => 'varchar(128)', 'Null' => 'NO', 'Key' => 'UNI', 'Default' => NULL, 'Extra' => '', );
 	$tables['user']['password'] = array ( 'Field' => 'password', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['user']['score'] = array ( 'Field' => 'score', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => '0', 'Extra' => '', );
 	$tables['user']['role'] = array ( 'Field' => 'role', 'Type' => 'varchar(10)', 'Null' => 'YES', 'Key' => '', 'Default' => 'user', 'Extra' => '', );
 	$tables['user']['nick'] = array ( 'Field' => 'nick', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['user']['rating'] = array ( 'Field' => 'rating', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => '0', 'Extra' => '', );
+	$tables['user']['activation_code'] = array ( 'Field' => 'activation_code', 'Type' => 'varchar(255)', 'Null' => 'YES', 'Key' => '', 'Default' => '', 'Extra' => '', );
+	$tables['user']['date_create'] = array ( 'Field' => 'date_create', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['user']['date_activated'] = array ( 'Field' => 'date_activated', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['user']['date_last_signup'] = array ( 'Field' => 'date_last_signup', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['user']['last_ip'] = array ( 'Field' => 'last_ip', 'Type' => 'varchar(255)', 'Null' => 'YES', 'Key' => '', 'Default' => '', 'Extra' => '', );
 
 	$tables['userquest'] = array();
 	$tables['userquest']['iduser'] = array ( 'Field' => 'iduser', 'Type' => 'int(10)', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => '', );
@@ -98,7 +106,7 @@
 	
 	// $tables['userteams'] = array();
 	
-	include_once "engine/fhq.php";
+	include_once "$curdir/../engine/fhq.php";
 	$db = new fhq_database();
 	
 	echo "<a href='?'>try_update</a> | ";

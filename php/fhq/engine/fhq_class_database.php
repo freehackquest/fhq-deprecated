@@ -1,5 +1,6 @@
 <?php 
-	include_once("config/config.php");
+	$curdir = dirname(__FILE__);
+	include_once("$curdir/../config/config.php");
 	//---------------------------------------------------------------------
 	class fhq_database
 	{

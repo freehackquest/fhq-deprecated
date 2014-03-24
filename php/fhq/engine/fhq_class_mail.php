@@ -1,8 +1,6 @@
 <?
-	include_once("config/config.php");
-	
-	
-	
+	include_once("$rootdir/../config/config.php");
+
 	//---------------------------------------------------------------------
 	
 	class fhq_mail

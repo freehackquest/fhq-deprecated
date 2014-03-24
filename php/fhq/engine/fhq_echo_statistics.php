@@ -1,6 +1,7 @@
 <?
+$curdir = dirname(__FILE__);
 
-include_once "fhq_class_security.php";
+include_once "$curdir/fhq_class_security.php";
 
 function echo_statistics()
 {
