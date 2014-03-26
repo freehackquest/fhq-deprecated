@@ -33,31 +33,50 @@ echo '
 			</tr>
 		</table>';
 	*/
+	
+	$game_type = "";
+	if (isset($_SESSION['game']))
+		$game_type = $_SESSION['game']['type_game'];
+	
 	echo '<table width=100%>
 			<tr>
 				<td >
-					
 					<p>
-					<a id="btn_user_info" class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'user_info\');" >Profile: '.$security->nick().'</a> 
-					your score is <font id="view_score" size=5>'.$security->score().'</font> <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="recalculate_score();">recalculate score</a>
-					<!-- And I almost forgot... You can look at <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'dr_zoyberg\');">Dr. Zoyberg</a> .  -->
-					</p>
-					
-					<p>
-					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'quests_allow\');">Tasks Open</a>
-					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'quests_process\');">Tasks Current</a> 
-					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'quests_completed\');">Tasks Completed</a>
-					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'feedback_my\');">Feedback</a>
-					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'top100\');">"Top 100"</a>
+					<a id="btn_user_info" class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'user_info\');" >'.$security->nick().'</a> 
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'games\');">Games</a>
-					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'teams\');">Teams</a>
+					<!-- a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'teams\');">Teams</a -->
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'news\');">News</a>
+					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'feedback_my\');">Feedback</a>
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'hacker_girl\');">Hacker girl here</a>
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="exit();">logout</a>
-					</p>
-			</tr>
-		</table>';
-		
+					</p>';
+
+	if ($game_type == 'jeopardy') {
+		echo '
+				<p>
+					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'quests_allow\');">Tasks Open</a>
+					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'quests_process\');">Tasks Current</a> 
+					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'quests_completed\');">Tasks Completed</a> 
+					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'top100\');">"Top 100"</a> <br>
+					your score is <font id="view_score" size=5>'.$security->score().'</font> <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="recalculate_score();">recalculate score</a>
+				</p>
+				<!-- And I almost forgot... You can look at <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'dr_zoyberg\');">Dr. Zoyberg</a> .  -->
+			';
+	} else if ($game_type == 'attack-defence') {
+			echo '<p> 
+			hzzz
+			</p>';
+	} else {
+		echo '<p>
+			Please choose the game in menu \'games\'.
+		</p>';
+	}
+
+	echo '
+		</tr>
+	</table>';
+	
+	
 	//add admins menu 
 	if( $security->isAdmin())
 	{

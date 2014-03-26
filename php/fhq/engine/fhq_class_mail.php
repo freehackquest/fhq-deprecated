@@ -9,6 +9,9 @@
 		{
 			include "config/config.php";
 			
+			if (isset($config['mail']['allow']) && $config['mail']['allow'] != 'yes' )
+				return false;
+			
 			// Pear Mail Library
 			require_once "Mail.php";
 			
@@ -61,6 +64,10 @@
 		function send_to_all($subject, $body, $send_as_copies)
 		{
 			include "config/config.php";
+			
+			if (isset($config['mail']['allow']) && $config['mail']['allow'] != 'yes' )
+				return false;
+				
 			$security = new fhq_security();
 			$db = new fhq_database();
 			$emails = "";

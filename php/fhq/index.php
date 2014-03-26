@@ -72,7 +72,7 @@ function sign_in()
 </script>			
 			<table cellspacing=10px cellpadding=10px>
 					<tr>
-						<td> E-mail: </td>
+						<td>E-mail</td>
 						<td><input name="email" id="email" value="" type="text" onkeydown="if (event.keyCode == 13) sign_in();"></td>
 					</tr>
 					<tr>
@@ -87,9 +87,12 @@ function sign_in()
 						</td>
 					</tr>
 				</table>
-			<center>
-					or <a class="btn btn-small btn-info" href="registration.php">Create new account</a>
-			</center>
+			<center>';
+			include dirname(__FILE__)."/config/config.php";
+			if (isset($config['registration']['allow']) && $config['registration']['allow'] == 'yes')
+					echo ' or <a class="btn btn-small btn-info" href="registration.php">Create new account</a>';
+					
+		echo '</center>
 			<br><br>
 			<div id="result_auth"> </div>
 ';

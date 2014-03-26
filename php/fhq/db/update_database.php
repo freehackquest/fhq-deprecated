@@ -1,6 +1,6 @@
 <?
-	echo "Please comment 'exit;' and try again";
-	exit;
+	// echo "Please comment 'exit;' and try again";
+	// exit;
 	
 	$curdir = dirname(__FILE__);
 	$tables = array();
@@ -21,14 +21,18 @@
 
 	$tables['games'] = array();
 	$tables['games']['id'] = array ( 'Field' => 'id', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
-	$tables['games']['game_global_id'] = array ( 'Field' => 'global_id', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => 'UNI', 'Default' => NULL, 'Extra' => '', );
-	$tables['games']['game_name'] = array ( 'Field' => 'game_name', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
-	$tables['games']['game_logo'] = array ( 'Field' => 'game_logo', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
-	$tables['games']['start_date'] = array ( 'Field' => 'start_date', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
-	$tables['games']['end_date'] = array ( 'Field' => 'end_date', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
-	$tables['games']['change_date'] = array ( 'Field' => 'change_date', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
-	$tables['games']['author_id'] = array ( 'Field' => 'author_id', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
+	$tables['games']['uuid_game'] = array ( 'Field' => 'uuid_game', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => 'UNI', 'Default' => NULL, 'Extra' => '', );
+	$tables['games']['title'] = array ( 'Field' => 'title', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['games']['logo'] = array ( 'Field' => 'logo', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['games']['type_game'] = array ( 'Field' => 'type_game', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['games']['date_create'] = array ( 'Field' => 'date_create', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
+	$tables['games']['date_start'] = array ( 'Field' => 'date_start', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
+	$tables['games']['date_stop'] = array ( 'Field' => 'date_stop', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
+	$tables['games']['date_change'] = array ( 'Field' => 'date_change', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
+	$tables['quest']['rating'] = array ( 'Field' => 'rating', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['games']['json_data'] = array ( 'Field' => 'json_data', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['games']['json_security_data'] = array ( 'Field' => 'json_security_data', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['games']['owner'] = array ( 'Field' => 'owner', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
 	
 	$tables['news'] = array();
 	$tables['news']['id'] = array ( 'Field' => 'id', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
@@ -44,6 +48,7 @@
 	$tables['quest']['text'] = array ( 'Field' => 'text', 'Type' => 'varchar(4048)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['quest']['answer'] = array ( 'Field' => 'answer', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['quest']['score'] = array ( 'Field' => 'score', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['quest']['id_game'] = array ( 'Field' => 'id_game', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['quest']['min_score'] = array ( 'Field' => 'min_score', 'Type' => 'int(10)', 'Null' => 'NO', 'Key' => '', 'Default' => '0', 'Extra' => '', );
 	$tables['quest']['for_person'] = array ( 'Field' => 'for_person', 'Type' => 'bigint(20)', 'Null' => 'NO', 'Key' => '', 'Default' => '0', 'Extra' => '', );
 

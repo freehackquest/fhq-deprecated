@@ -57,7 +57,7 @@
 			$db = new fhq_database();
 			$allow_edit = $security->isAdmin() || $security->isTester() || $security->isGod();
 			
-			$query = 'SELECT * FROM news INNER JOIN user ON news.author = user.iduser ORDER BY datetime_ DESC LIMIT 0,5;';
+			$query = 'SELECT * FROM news INNER JOIN user ON news.author = user.iduser ORDER BY datetime_ DESC LIMIT 0,100;';
 			$result = $db->query( $query );
 			echo "<center>News:</center><br>";
 			while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
@@ -67,7 +67,7 @@
 				$datetime_ = $row['datetime_'];
 				$nick = $row['nick'];
 				$iduser = $row['iduser'];
-				echo "<pre><b>[$nick,<br> $datetime_]</b>:<br>$text";
+				echo "<pre><b>[$nick, $datetime_]</b>:<br><h1>$text</h1>";
 				
 				if($iduser == $security->iduser())
 				{

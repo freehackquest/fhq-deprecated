@@ -1,7 +1,14 @@
 <?
 include_once "engine/fhq.php";
+// include dirname(__FILE__)."/config/config.php";
 
 // ---------------------------------------------------------------------
+
+if (!isset($config['registration']['allow']) || 
+	(isset($config['registration']['allow']) && $config['registration']['allow'] != 'yes')) {
+	echo "<h1>registration denied</h1>";
+	exit;
+}
 
 if(isset($_GET['email']) && isset($_GET['captcha']))
 {
@@ -32,7 +39,6 @@ if(isset($_GET['foractivate']))
 };
 
 // ---------------------------------------------------------------------
-
 echo_shortpage(new fhq_page_registration());
 
 exit;

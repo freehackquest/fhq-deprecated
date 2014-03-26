@@ -42,16 +42,24 @@ function echo_mainpage($page)
 	
 	echo '<html>';
 	echo_head( $page );
-  $games = new fhq_games();
+	$games = new fhq_games();
     
     // reload_news();
-    
+    $game_info = "";
+	if (isset($_SESSION['game'])) {
+		$game_info .= "<b><font size=5>".$_SESSION['game']['title']."</font></b><br>";
+		$game_info .= $_SESSION['game']['type_game'];
+	}
+	// $game_info .= "<img width=150 src='".$_SESSION['game']['logo']."'/>";
+		
 	echo '<body onload="'.$onload.'" class="main">
 	<center>
 	<table cellspacing=10px cellpadding=10px width="100%" height="100%">
 		<tr bgcolor="#FFFFF0">
 			<td width=100 valign="top">
-				<a href="?"><img src="images/minilogo.png"/></a>
+				<a href="?"><img src="images/minilogo.png"/></a><br><br>
+				<center>'.$game_info.'<br><font size=1>change game in menu \'games\'</font>
+				</center>
 			</td>
 			<td align="left" valign = "top" width="82%">
 					';

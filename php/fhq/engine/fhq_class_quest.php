@@ -7,7 +7,7 @@ class fhq_quest
 	function fhq_quest()
 	{
 		$this->for_person = 0;
-    $this->idquest = 0;
+		$this->idquest = 0;
 	   // $field['idquest'] = new field('idquest', 'idquest', new typefield_int() );
 	   // $field['quest_name'] = new field('quest_name','quest_name', new typefield_text() );
 	   //    $field['short_text'] = new field('short_text','short_text',);
@@ -69,8 +69,12 @@ class fhq_quest
 		$security = new fhq_security();
 		$db = new fhq_database();
 		
+		$id_game = 0;
+		if (isset($_SESSION['game']))
+			$id_game = $_SESSION['game']['id'];
+
 		if(strlen($this->check()) != 0) return 0;
-		$query = "INSERT INTO quest( name, short_text, text, score, min_score, tema, answer, for_person )
+		$query = "INSERT INTO quest( name, short_text, text, score, min_score, tema, answer, for_person, id_game )
 			VALUES('".base64_encode($this->quest_name)."',
 				'".base64_encode($this->short_text)."',
 				'".base64_encode($this->full_text)."',
@@ -78,7 +82,8 @@ class fhq_quest
 				".$this->min_score.",
 				'".base64_encode($this->subject)."',
 				'".base64_encode($this->answer)."',
-				".$this->for_person."
+				".$this->for_person.",
+				".$id_game."
 				) ";
 		// echo $query;
 		$result = $db->query( $query );
@@ -124,6 +129,8 @@ class fhq_quest
 		
 		// echo "id = $id<br>";
 		if( !is_numeric($id) ) return false;
+
+		$id_game = 0;
 
 		$query = '
 			SELECT * 
@@ -258,8 +265,16 @@ class fhq_quest
 			$js = '\'idquest\' : document.getElementById(\'idquest\').value,';
 		};
 		
+		$game_title = 0;
+		if (isset($_SESSION['game']))
+			$game_title = $_SESSION['game']['title'];
+		
 		return '
 		<table>
+		<tr>
+			<td>Game:</td>
+			<td>'.$game_title.'</td>
+		</tr>
 		'.$edit_quest.'
 		<tr>
 			<td>Name:</td>
@@ -279,7 +294,7 @@ class fhq_quest
 			<td><input type="text" size=30 id="quest_score" value="'.$this->score.'"/></td>
 		</tr>
 		<tr>
-			<td>Min Score(>):</td>
+			<td>Min Score(&gt;):</td>
 			<td><input type="text" size=30 id="quest_min_score" value="'.$this->min_score.'"/></td>
 		</tr>
 		<tr>
@@ -387,8 +402,7 @@ class fhq_quest
 		$quest_arr['score'] = $this->score;
 		$quest_arr['full_text'] = $this->full_text;
 		$quest_arr['short_text'] = $this->short_text;
-		$quest_arr['answer'] = $this->answer;		
-		
+		$quest_arr['answer'] = $this->answer;
 		
 		$zip = new ZipArchive();
 		if($zip->open($zipname,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {

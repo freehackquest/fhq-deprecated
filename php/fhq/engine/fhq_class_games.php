@@ -4,6 +4,20 @@
 	include_once "$curdir/fhq_class_database.php";
 	include_once "$curdir/fhq_class_mail.php";
 	
+	if (isset($_GET['choose_game'])) {
+		$game_id = $_GET['choose_game'];
+		if (is_numeric($game_id)) {
+			$db = new fhq_database();
+			$query = 'SELECT * FROM games WHERE id = '.$game_id;
+			$result = $db->query( $query );
+			if ($row = mysql_fetch_row($result, MYSQL_ASSOC)) {
+				$_SESSION['game'] = $row;
+			}
+			mysql_free_result($result);
+		}
+		refreshTo("main.php");
+	}
+	
 	//---------------------------------------------------------------------
 	class fhq_games
 	{
@@ -60,33 +74,40 @@
 			
 //			$query = 'SELECT * FROM games INNER JOIN user ON news.author = user.iduser ORDER BY datetime_ DESC LIMIT 0,5;';
 //  WHERE end_date < NOW()
-  		$query = 'SELECT * FROM games INNER JOIN user ON games.author_id = user.iduser ORDER BY start_date DESC LIMIT 0,10;';
+			$query = 'SELECT * FROM games INNER JOIN user ON games.owner = user.iduser ORDER BY date_start DESC LIMIT 0,10;';
 			$result = $db->query( $query );
+
 			echo "<center>Games:</center><br>
-				<table cellspacing=2 cellpadding=10>
-					<tr>
-						<td>Logo</td>
-						<td>Name</td>
-						<td>Start Date</td>
-						<td>End Date</td>
-						<td>User</td>
+				<table cellspacing=2 cellpadding=10 class='alt' id='customers'>
+					<tr class='alt'>
+						<th width='100'>Logo</td>
+						<th>Name</td>
+						<th>Start Date</td>
+						<th>End Date</td>
+						<th>Owner</td>
 					</tr>
 			";
 
+			$bClass = false;
 			while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
 			{
-				$id_news = $row['id'];
-				$name = $row['game_name'];
-				$start_date = $row['start_date'];
-				$end_date = $row['end_date'];
-				$logo = $row['game_logo'];
+				$id_game = $row['id'];
+				$title = $row['title'];
+				$date_start = $row['date_start'];
+				$date_stop = $row['date_stop'];
+				$logo = $row['logo'];
 				$nick = $row['nick'];
-
-				echo "<tr>
+				
+				$strclass = '';
+				if ($bClass) 
+					$strclass = " class='alt' ";
+				$bClass = !$bClass;
+								
+				echo "<tr $strclass>
 					<td><img width=100px src='$logo'></td>
-					<td>$name</td>
-					<td>$start_date</td>
-					<td>$end_date</td>
+					<td><a href='main.php?choose_game=$id_game'>$title</a></td>
+					<td>$date_start</td>
+					<td>$date_stop</td>
 					<td>$nick</td>
 				";
 				echo "</tr>";

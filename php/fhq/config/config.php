@@ -25,7 +25,7 @@
 	$config['targetDate']['minute'] = 0;
 	$config['targetDate']['second'] = 0;
 
-  $config['finishDate'] = array();
+	$config['finishDate'] = array();
 	$config['finishDate']['day'] = 18;
 	$config['finishDate']['month'] = 10;
 	$config['finishDate']['year'] = 2015;
@@ -40,8 +40,12 @@
 	$config['mail']['auth'] = true;
 	$config['mail']['username'] = "test@gmail.com";
 	$config['mail']['password'] = "test";
+	$config['mail']['allow'] = 'yes';
 	
 	// install 
 	$config['install']['admin'] = "admin";
 	$config['install']['pass'] = "admin";
+	
+	$config['registration'] = array();
+	$config['registration']['allow'] = 'yes';
 ?>

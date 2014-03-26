@@ -47,6 +47,10 @@ class fhq_page_listofquests
 	
 	function getQuery_Allow($security)
 	{
+		$id_game = 0;
+		if (isset($_SESSION['game']))
+			$id_game = $_SESSION['game']['id'];
+			
 		return 'SELECT
 				quest.idquest,
 				quest.name,
@@ -56,20 +60,26 @@ class fhq_page_listofquests
 			FROM quest
 			WHERE
 			(quest.for_person = 0 or quest.for_person = '.$security->iduser().')
+			AND id_game = '.$id_game.'
 			AND (idquest NOT IN (SELECT idquest FROM userquest WHERE userquest.iduser = '.$security->iduser().')) AND (min_score <= '.$security->score().' )
 			ORDER BY quest.score DESC, quest.tema, quest.score';
 	}
 	
 	function getQuery_Completed($security)
 	{
+		$id_game = 0;
+		if (isset($_SESSION['game']))
+			$id_game = $_SESSION['game']['id'];
+			
 		return 'SELECT
 			quest.idquest, quest.name, 
 			quest.score, quest.short_text, quest.tema
 		FROM userquest
 		INNER JOIN quest ON quest.idquest = userquest.idquest
-		WHERE 
+		WHERE
 		(quest.for_person = 0 or quest.for_person = '.$security->iduser().') AND
 		(userquest.iduser = '.$security->iduser().')
+		AND id_game = '.$id_game.'
 		AND (userquest.stopdate <> "0000-00-00 00:00:00")
 		ORDER BY quest.tema, quest.score
 		LIMIT 0,100; ';
@@ -77,6 +87,10 @@ class fhq_page_listofquests
 	
 	function getQuery_All($security)
 	{
+		$id_game = 0;
+		if (isset($_SESSION['game']))
+			$id_game = $_SESSION['game']['id'];
+			
 		return 'SELECT
 				quest.idquest,
 				quest.name,
@@ -85,7 +99,7 @@ class fhq_page_listofquests
 				quest.tema
 			FROM quest
 			WHERE
-				
+			id_game = '.$id_game.'
 			ORDER BY quest.score DESC, quest.tema, quest.score';
 	}
 	
@@ -117,23 +131,21 @@ class fhq_page_listofquests
 
 		if( $count == 0) 
 		{
-			echo "No found quests";
+			echo "No found quests.<br>
+				Try change game.";
+			echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'games\');">Games</a>';
 			return;
 		};
 
 		$type = $this->typelist;
 
 		echo "$type($count):<br><br>
-			<!-- <table width=100%>
-
-		<tr class='alt'>
-			<td width=15%> </td>
-			<td>#id name</td>
-			<td>Score</td>
-			<td>Subject</td>
-			<td>Short Text</td>
-  		<td width=15%> </td>
- 		</tr> -->";
+		<table cellspacing=2 cellpadding=10 class='alt' id='customers'>
+					<tr class='alt'>
+						<th width=100px>Subject</th>
+						<th>Tasks</th>
+					</tr>
+		";
 
 		echo '<p>';
 		function text_decode($text)
@@ -142,6 +154,7 @@ class fhq_page_listofquests
 		}
 		
 		$tema = "";
+		$bClass = false;
 		for( $i = 0; $i < $count; $i++ )
 		{
 			$quest_name = text_decode(mysql_result( $mysql_result, $i, 'name'));
@@ -152,13 +165,19 @@ class fhq_page_listofquests
 			
 			if( $tema != $quest_subjects)
 			{
+				$strclass = '';
+				if ($bClass) 
+					$strclass = " class='alt' ";
+				$bClass = !$bClass;
+			
+				if ($tema != '') echo "</td></tr>";
 				$tema = $quest_subjects;
-				echo "<hr> [$tema] : ";
+				echo "<tr $strclass><td>$tema</td>
+				<td>
+				";
 			}
 			
 			echo '
-				
-				
 				<a class="btn btn-large btn-primary" href="javascript:void(0);" onclick="load_content_page(\'view_quest\', { id : '.$quest_id.'} );">
 					<font size=1>'.$quest_id.' '.$quest_name.'</font><br>
 						<font size=5>+'.$quest_score.'</font><br>
@@ -167,7 +186,7 @@ class fhq_page_listofquests
 				';
 
 		};
-		echo "<!-- </table> -->";
+		echo "</td><tr> </table>";
 	}
 	
 	function echo_onBodyEnd() {

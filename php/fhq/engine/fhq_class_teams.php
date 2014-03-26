@@ -58,9 +58,9 @@
 			$db = new fhq_database();
 			// $allow_edit = $security->isAdmin() || $security->isTester() || $security->isGod();
 			
-//			$query = 'SELECT * FROM games INNER JOIN user ON news.author = user.iduser ORDER BY datetime_ DESC LIMIT 0,5;';
-//  WHERE end_date < NOW()
-  		$query = 'SELECT * FROM teams INNER JOIN user ON teams.owner = user.iduser ORDER BY date_change DESC LIMIT 0,10;';
+			// $query = 'SELECT * FROM games INNER JOIN user ON news.author = user.iduser ORDER BY datetime_ DESC LIMIT 0,5;';
+			// WHERE end_date < NOW()
+			$query = 'SELECT * FROM teams INNER JOIN user ON teams.owner = user.iduser ORDER BY date_change DESC LIMIT 0,10;';
 			$result = $db->query( $query );
 			echo "<center>Teams:</center><br>
 				<table cellspacing=2 cellpadding=10 class='alt' id='customers'>

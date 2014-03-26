@@ -22,15 +22,14 @@
 		{
 			$db = new fhq_database();
 			$query = "SELECT iduser, score, nick FROM user WHERE role='user' ORDER BY score DESC";
-
 			$result = $db->query( $query );
 			$i = 1;
-			echo "<br>";
+			echo "<br><br>";
 			while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
 			{      
 				$nick = $row["nick"];
 				$score = $row["score"];
-				echo ($i++)."<font size=3> $nick (score: $score);</font><br>\n";
+				echo ($i++)."<font size=5> $nick </font>(score: $score);<br><br>\n";
 			}
 			mysql_free_result($result);
 		}
