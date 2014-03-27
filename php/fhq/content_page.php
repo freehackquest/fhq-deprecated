@@ -58,6 +58,10 @@
 		$page->echo_content($number_of_page);
 		exit;
 	}
+	else if($content_page == "update_db" && $security->isAdmin()) {
+		include dirname(__FILE__)."/db/update_database.php";
+		exit;
+	}
 	else if($content_page == "feedback_my")
 	{
 	    $feedback = new fhq_feedback();

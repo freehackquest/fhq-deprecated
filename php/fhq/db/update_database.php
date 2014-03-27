@@ -1,6 +1,6 @@
 <?
-	// echo "Please comment 'exit;' and try again";
-	// exit;
+	echo "Please comment 'exit;' in db/update_database.php";
+	exit;
 	
 	$curdir = dirname(__FILE__);
 	$tables = array();

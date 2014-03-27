@@ -92,7 +92,8 @@ echo '
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'answer_list\');">Answer List</a>
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'answer_list\' , { backup : \'\' } );">Backup Answer List</a>
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'add_news\');">Add News</a>
-					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'statistics\');">Statistics</a>
+					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'statistics\');">Statistics</a> <br>
+					System:	<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'update_db\');">Update DB</a>
 			</td>
 		</tr>
 		</table>';
