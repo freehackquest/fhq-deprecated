@@ -74,7 +74,14 @@
 			
 //			$query = 'SELECT * FROM games INNER JOIN user ON news.author = user.iduser ORDER BY datetime_ DESC LIMIT 0,5;';
 //  WHERE end_date < NOW()
-			$query = 'SELECT * FROM games INNER JOIN user ON games.owner = user.iduser ORDER BY date_start DESC LIMIT 0,10;';
+			$query = 'SELECT 
+				games.id,
+				games.title,
+				games.date_start,
+				games.date_stop,
+				games.logo,
+				user.nick
+			FROM games INNER JOIN user ON games.owner = user.iduser ORDER BY date_start DESC LIMIT 0,10;';
 			$result = $db->query( $query );
 
 			echo "<center>Games:</center><br>

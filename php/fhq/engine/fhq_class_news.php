@@ -77,7 +77,7 @@
 					load_content_page(\'save_news\', { \'id\' : '.$id_news.', \'text\' : news_text });
 				">Save</a>';
 				};
-				
+
 				echo "<br></pre>";	
 			}
 		}

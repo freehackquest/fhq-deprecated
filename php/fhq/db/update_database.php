@@ -1,6 +1,15 @@
 <?
-	echo "Please comment 'exit;' in db/update_database.php";
-	exit;
+	
+	if (!isset($config)) {
+		echo "NO!!!!";
+		exit;
+	}
+	
+	$security = new fhq_security();
+	if (!$security->isAdmin()) {
+		echo "You are not admin!!!";
+		exit;
+	}
 	
 	$curdir = dirname(__FILE__);
 	$tables = array();
@@ -29,7 +38,7 @@
 	$tables['games']['date_start'] = array ( 'Field' => 'date_start', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
 	$tables['games']['date_stop'] = array ( 'Field' => 'date_stop', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
 	$tables['games']['date_change'] = array ( 'Field' => 'date_change', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
-	$tables['quest']['rating'] = array ( 'Field' => 'rating', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['games']['rating'] = array ( 'Field' => 'rating', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['games']['json_data'] = array ( 'Field' => 'json_data', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['games']['json_security_data'] = array ( 'Field' => 'json_security_data', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['games']['owner'] = array ( 'Field' => 'owner', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
@@ -87,6 +96,7 @@
 	$tables['user']['uuid_user'] = array ( 'Field' => 'uuid_user', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => 'UNI', 'Default' => NULL, 'Extra' => '', );
 	$tables['user']['username'] = array ( 'Field' => 'username', 'Type' => 'varchar(128)', 'Null' => 'NO', 'Key' => 'UNI', 'Default' => NULL, 'Extra' => '', );
 	$tables['user']['password'] = array ( 'Field' => 'password', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['user']['logo'] = array ( 'Field' => 'logo', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['user']['score'] = array ( 'Field' => 'score', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => '0', 'Extra' => '', );
 	$tables['user']['role'] = array ( 'Field' => 'role', 'Type' => 'varchar(10)', 'Null' => 'YES', 'Key' => '', 'Default' => 'user', 'Extra' => '', );
 	$tables['user']['nick'] = array ( 'Field' => 'nick', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
@@ -109,14 +119,29 @@
 	$tables['userteams']['date_begin'] = array ( 'Field' => 'date_begin', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['userteams']['date_end'] = array ( 'Field' => 'date_end', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	
-	// $tables['userteams'] = array();
+	$tables['flags'] = array();
+	$tables['flags']['id'] = array ( 'Field' => 'id', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
+	$tables['flags']['idservice'] = array ( 'Field' => 'idservice', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['flags']['owner'] = array ( 'Field' => 'owner', 'Type' => 'varchar(300)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['flags']['date_start'] = array ( 'Field' => 'date_start', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['flags']['date_end'] = array ( 'Field' => 'date_end', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['flags']['team_passed'] = array ( 'Field' => 'team_passed', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	
-	include_once "$curdir/../engine/fhq.php";
+	$tables['services'] = array();
+	$tables['services']['id'] = array ( 'Field' => 'id', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
+	$tables['services']['idgame'] = array ( 'Field' => 'idgame', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['services']['name'] = array ( 'Field' => 'name', 'Type' => 'varchar(300)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['services']['scriptpath'] = array ( 'Field' => 'scriptpath', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['services']['comment'] = array ( 'Field' => 'comment', 'Type' => 'varchar(4048)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	
+	// $tables['userteams'] = array();
+
 	$db = new fhq_database();
 	
 	echo "<a href='?'>try_update</a> | ";
-	echo "<a href='?gen_code'>Generate info about tables</a><br>";
-	
+	echo "<a class='btn btn-small btn-info' href='javascript:void(0);' onclick=\"load_content_page('update_db_gen_code');\">Generate info about tables</a>
+	<br>";
+
 	
 	function update_info($db)
 	{

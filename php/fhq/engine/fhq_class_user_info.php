@@ -11,8 +11,6 @@
 			$db = new fhq_database();
 			$security = new fhq_security();
 
-			
-
 			echo '<pre>
 				<a href="javascript:void(0);" id="reload_content" onclick="
 					document.getElementById(\'btn_user_info\').innerHTML = \''.mysql_real_escape_string(htmlspecialchars($security->nick())).'\';
@@ -70,6 +68,17 @@
 				$place .= " / ".mysql_result($result, 0, 'cnt');
 			}
 			return $place;
+		}
+		
+		function echo_insert_form()
+		{
+			echo "Add user: <br>
+				Login: <input type='text' name='login' value='admin'/> <br>
+				Pass: <input type='text' name='pass' value='admin'/> <br>
+				Nick: <input type='text' name='nick' value='admin'/> <br>
+				Role: <input type='text' name='role' value='admin'/> <br>
+				<input type='submit' name='add_user' value='insert'/> <br>
+			";
 		}
 	}
 	//---------------------------------------------------------------------

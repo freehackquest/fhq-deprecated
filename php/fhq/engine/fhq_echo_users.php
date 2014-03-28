@@ -46,12 +46,13 @@ function echo_users()
 	
 	$start_record = $page*$records_on_page;
 	
-	$query = 'SELECT * FROM user LIMIT '.$start_record.','.$records_on_page; //.(*$onpage).','.$onpage;
+	$query = 'SELECT * FROM user ORDER BY date_last_signup desc LIMIT '.$start_record.','.$records_on_page; //.(*$onpage).','.$onpage;
 	
 	echo "<br>
 				<table cellspacing=2 cellpadding=10 class='alt' id='customers'>
 					<tr class='alt'>
-						<th width='100'>ID</th>
+						<th>ID</th>
+						<th width='100'>Logo</th>
 						<th>E-Mail</th>
 						<th>Nick</th>
 						<th>Score</th>
@@ -73,6 +74,7 @@ function echo_users()
 		$nick = $row['nick'];
 		$score = $row['score'];
 		$role = $row['role'];
+		$logo = $row['logo'];
 		$password = $row['password'];
 		$date_last_signup = $row['date_last_signup'];
 		$last_ip = $row['last_ip'];
@@ -84,10 +86,9 @@ function echo_users()
 			$strclass = " class='alt' ";
 		$bClass = !$bClass;
 		
-		
 		$admin_funcs = '';
 		$admin_funcs .= '<pre id="'.$idelem.'">';
-		
+
 		if(substr($password , 0, 12) == 'notactivated')
 		{
 			$admin_funcs .= '<br><br/>url for activate account: <br/><b>http://fhq.keva.su/registration.php?foractivate='.substr($password , 12, 32).'</b><br/><br/>';
@@ -161,8 +162,11 @@ function echo_users()
 		}
 		$admin_funcs .= '</pre>';
 		
+		if ($logo != '')
+			$logo = "<img src='$logo' width=100px/>";
 		echo "<tr $strclass>
 					<td>$iduser</td>
+					<td>$logo</td>
 					<td>$username</td>
 					<td>$nick</td>
 					<td>$score</td>
