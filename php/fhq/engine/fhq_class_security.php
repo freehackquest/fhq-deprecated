@@ -22,7 +22,7 @@ class fhq_security
 			$db = new fhq_database();
 			$query = "select * from user where username = '$username' and password = '$pass_hash';";
 			$result = $db->query($query);
-			if( $db->count( $result ) == 1 )
+			if ($db->count( $result ) == 1)
 			{
 				$_SESSION['user'] = array();
 				$_SESSION['user']['iduser'] = mysql_result($result, 0, 'iduser');

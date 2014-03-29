@@ -11,22 +11,80 @@
 			$db = new fhq_database();
 			$security = new fhq_security();
 
-			echo '<pre>
-				<a href="javascript:void(0);" id="reload_content" onclick="
+			echo '<pre><a href="javascript:void(0);" id="reload_content" onclick="
 					document.getElementById(\'btn_user_info\').innerHTML = \''.mysql_real_escape_string(htmlspecialchars($security->nick())).'\';
-				"></a>
-				Your name: '.$security->nick().'
-				Your score: '.$security->score().'
-				Role: '.$security->role().'
-				Your place: '.$this->getPlace().' or look <a href=\'scoreboard.php\'>Scoreboard</a><br>
-				<input id="edit_new_nick" type="text" value="'.$security->nick().'"/>';
-				echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
-					load_content_page(\'user_set_new_my_nick\', 
-						{
-							nick : document.getElementById(\'edit_new_nick\').value
-						}
-					);
-				">Set new nick</a><br></pre>';
+				"></a><table cellpadding=5 cellspacing=10>
+					<tr>
+						<td colspan=2 align="center">---------------</td>
+					</tr>
+					<tr>
+						<td align="right">Your name:</td>
+						<td>'.$security->nick().'</td>
+					</tr>
+					<tr>
+						<td align="right">Your score:</td>
+						<td>'.$security->score().'</td>
+					</tr>
+					<tr>
+						<td align="right">Your role:</td>
+						<td>'.$security->role().'</td>
+					</tr>
+					<tr>
+						<td align="right">Your place:</td>
+						<td>'.$this->getPlace().' or look <a href=\'scoreboard.php\'>Scoreboard</a></td>
+					</tr>
+					<tr>
+						<td colspan=2 align="center">---------------</td>
+					</tr>
+					<tr>
+						<td align="right">Set your name to:</td>
+						<td><input id="edit_new_nick" type="text" value="'.$security->nick().'"/></td>
+					</tr>
+					<tr>
+						<td align="right"></td>
+						<td>
+							<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+							load_content_page(\'user_set_new_my_nick\', 
+								{
+									nick : document.getElementById(\'edit_new_nick\').value
+								}
+							);
+						">Set new nick</a>	
+						</td>
+					</tr>
+					<tr>
+						<td colspan=2 align="center">---------------</td>
+					</tr>
+					<tr>
+						<td align="right">Old password:</td>
+						<td><input id="old_password" type="password" value=""/></td>
+					</tr>
+					<tr>
+						<td align="right">New password:</td>
+						<td><input id="new_password" type="password" value=""/></td>
+					</tr>
+					<tr>
+						<td align="right">New password(confirm):</td>
+						<td><input id="new_password_confirm" type="password" value=""/></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+						<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+							load_content_page(\'user_set_new_password\', 
+								{
+									old_password : document.getElementById(\'old_password\').value,
+									new_password : document.getElementById(\'new_password\').value,
+									new_password_confirm : document.getElementById(\'new_password_confirm\').value
+								}
+							);
+						">Change password</a>
+						</td>
+					</tr>
+					<tr>
+						<td colspan=2 align="center">---------------</td>
+					</tr>
+				</table></pre>';
 		}
 		
 		function setNewMyNick($nick)
@@ -70,6 +128,39 @@
 			return $place;
 		}
 		
+		function setNewPassword($old_password, $new_password, $new_password_confirm) {
+			$db = new fhq_database();
+			$security = new fhq_security();
+			
+			if ($new_password != $new_password_confirm) {
+				echo "new password is not confirmed";
+				return;
+			}
+			
+			if (strlen($new_password) < 6) {
+				echo "new password could not be less then 6 simbols";
+				return;
+			}
+
+			$email = $security->email();
+			$username = base64_encode(strtoupper($email));
+			
+			$old_password_hash = $security->tokenByData( array($old_password, $username, strtoupper($email)));
+			$new_password_hash = $security->tokenByData( array($new_password, $username, strtoupper($email)));
+
+			$query = "select count(*) as cnt from user where username='$username' and password='$old_password_hash'";
+			$result = $db->query($query);
+			$row = mysql_fetch_row($result, MYSQL_ASSOC); // Data
+			if ($row['cnt'] != "1") {
+				echo "old password incorrect";
+				mysql_free_result($result);
+				return;
+			}
+			$query = "update user set password = '$new_password_hash' where username='$username' and password='$old_password_hash'";
+			$db->query($query);
+			echo "New password was set";
+		}
+
 		function echo_insert_form()
 		{
 			// $defs = new fhq_object();

@@ -159,6 +159,14 @@
 		$user_info->echo_info();
 		exit;
 	}
+	else if ($content_page == "user_set_new_password")
+	{
+		$user_info = new fhq_user_info();
+		if(isset($_GET['old_password']) && isset($_GET['new_password']) && isset($_GET['new_password_confirm']))
+			$user_info->setNewPassword($_GET['old_password'], $_GET['new_password'], $_GET['new_password_confirm']);
+		$user_info->echo_info();
+		exit;
+	}
 	else if($content_page == "statistics"  && ($security->isAdmin() || $security->isTester()))
 	{
 		include_once "engine/fhq_echo_statistics.php";

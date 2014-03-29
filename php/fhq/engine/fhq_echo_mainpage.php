@@ -81,7 +81,7 @@ function echo_mainpage($page)
 		<tr>
 			<td colspan="2">
 				<center>
-					<font size=1>© 2011-2014 sea-kg</font>
+					<font size=1>© 2011-2014 sea-kg, logo disign by StarOsta</font>
 					<!-- pre><div id="debug_info"/></pre -->
 				</center>
 			</td>
