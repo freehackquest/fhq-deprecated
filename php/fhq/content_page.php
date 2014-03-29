@@ -119,37 +119,23 @@
 		echo '<img src="images/dr_zoyberg.gif"/>';
 		exit;
 	}
-	else if($content_page == "top100")
-	{
-		$query = "";
-		if($security->isUser())
-			$query = "SELECT iduser, score, nick FROM user WHERE role='user' ORDER BY score DESC LIMIT 0,100";
-		else
-			$query = "SELECT iduser, score, nick, role FROM user ORDER BY score DESC LIMIT 0,100";
-
-		$result = $db->query( $query );
-		$i = 1;
-		echo "TOP 100<br><br>";
-		while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
-		{      
-			$iduser = $row["iduser"];
-			$nick = $row["nick"];
-			$score = $row["score"];
-			$role = isset($row['role']) ? $row['role'].'<br>' : "";
-
-			$bCurrentUser = $iduser == $security->iduser();
-
-			echo ($i++);
-			echo ($bCurrentUser ? "<font size=3 color=#ff0000>" : "<font size=3>");
-			echo " $nick (score: $score);</font><br><font size=1>$role</font><br>\n";
-		}
-		mysql_free_result($result);
-		exit;
-	}
 	else if($content_page == "user_info")
 	{
 		$user_info = new fhq_user_info();
 		$user_info->echo_info();
+		exit;
+	}
+	else if($content_page == "scoreboard")
+	{
+		$score = new fhq_score();
+		echo '<h6><a href="scoreboard.php" target="_blank">auto refresh scoreboard here</a></h6>';
+		$score->echo_scoreboard();
+		exit;
+	}
+	else if($content_page == "init_scoreboard")
+	{
+		$score = new fhq_score();
+		$score->init_scoreboard();
 		exit;
 	}
 	else if ($content_page == "user_set_new_my_nick")
@@ -188,8 +174,8 @@
 	}
 	else if ($content_page == "adviser_set_mark" && ($security->isAdmin() || $security->isTester())) {
 		$adviser = new fhq_adviser();
-		if (isset($_GET['adviser_mark']) && isset($_GET['id_adviser'])) {
-			$adviser->setNewMark($_GET['id_adviser'], $_GET['adviser_mark']);
+		if (isset($_GET['adviser_mark']) && isset($_GET['id_adviser']) && isset($_GET['iduser']) && isset($_GET['idgame'])) {
+			$adviser->setNewMark($_GET['id_adviser'], $_GET['adviser_mark'], $_GET['iduser'], $_GET['idgame']);
 		}
 		$adviser->echo_insert_form();
 		$adviser->echo_advisers($number_of_page);

@@ -59,7 +59,7 @@ echo '
 							<tr>
 								<td > 
 								<center>
-									<font size=5>free-hack-quest:</font><br>'.$page->title().'
+									<font size=5>free-hack-quest</font><br>'.$page->title().'
 									';
 				$page->echo_content();
 				echo '

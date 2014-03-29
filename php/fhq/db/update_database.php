@@ -141,7 +141,15 @@
 	$tables['advisers']['owner'] = array ( 'Field' => 'owner', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
 	$tables['advisers']['text'] = array ( 'Field' => 'text', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['advisers']['mark'] = array ( 'Field' => 'mark', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => '', 'Default' => '0', 'Extra' => '', );
+	$tables['advisers']['idgame'] = array ( 'Field' => 'idgame', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => '', 'Default' => '0', 'Extra' => '', );
 	$tables['advisers']['checked'] = array ( 'Field' => 'checked', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => '', 'Default' => '0', 'Extra' => '', );
+	
+	$tables['scoreboard'] = array();
+	$tables['scoreboard']['id'] = array ( 'Field' => 'id', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
+	$tables['scoreboard']['idgame'] = array ( 'Field' => 'idgame', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['scoreboard']['name'] = array ( 'Field' => 'name', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['scoreboard']['owner'] = array ( 'Field' => 'owner', 'Type' => 'varchar(300)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['scoreboard']['score'] = array ( 'Field' => 'score', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	
 	// $tables['userteams'] = array();
 
@@ -150,7 +158,6 @@
 	echo "<a href='?'>try_update</a> | ";
 	echo "<a class='btn btn-small btn-info' href='javascript:void(0);' onclick=\"load_content_page('update_db_gen_code');\">Generate info about tables</a>
 	<br>";
-
 	
 	function update_info($db)
 	{

@@ -39,29 +39,48 @@
 			$security = new fhq_security();
 			$db = new fhq_database();
 			
+			$idgame = 0;
+			if (isset($_SESSION['game']))
+				$idgame = $_SESSION['game']['id'];
+			
 			$query = 'insert into 
-				advisers (title, text, owner, date_change, checked, mark)
+				advisers (title, text, owner, date_change, checked, mark, idgame)
 				values(
 					\''.mysql_real_escape_string($title).'\',
 					\''.mysql_real_escape_string($text).'\',
 					'.$security->iduser().',
 					now(),
 					0,
-					0
+					0,
+					'.$idgame.'
 				)';
-				
 			$result = $db->query( $query );
 		}
 		
-		function setNewMark($id_adviser, $mark)
+		function setNewMark($id_adviser, $mark, $iduser, $idgame)
 		{
 			$security = new fhq_security();
 			$db = new fhq_database();
 			if( !$security->isAdmin() && !$security->isTester() && !$security->isGod())
 				return;
 
-			$query = 'UPDATE advisers SET mark = '.$mark.', checked = 1, date_change = now() WHERE id = '.$id_adviser.';';
-			$result = $db->query( $query );
+			$query = 'UPDATE advisers SET mark = '.$mark.', checked = 1, date_change = now() 
+				WHERE 
+					id = '.$id_adviser.' 
+					and owner = '.$iduser.'
+					and idgame = '.$idgame.'
+				;
+			';
+			$db->query( $query );
+			
+			// recalculate score for advisers
+			$query = 'select SUM(mark) as sm from advisers where idgame = '.$idgame.' and owner = '.$iduser.';';
+			$result = $db->query($query);
+			$newscore = mysql_result($result, 0, 'sm');
+			mysql_free_result($result);
+			echo $newscore;
+			$score = new fhq_score();
+			$score->update_score('Advisers', $idgame, $iduser, $newscore);
 		}
 
 		function echo_advisers($number_page)
@@ -70,13 +89,15 @@
 			$db = new fhq_database();
 			$isAdmin = $security->isAdmin() || $security->isTester();
 			
-			
-			
-			$where = (!$isAdmin ? ' WHERE owner = '.$security->iduser().' ' : '');
+			$idgame = 0;
+			if (isset($_SESSION['game']))
+				$idgame = $_SESSION['game']['id'];
+				
+			$where = (!$isAdmin ? ' AND owner = '.$security->iduser().' ' : '');
 
 			$records_on_page = 6;
 			
-			$query = 'FROM advisers INNER JOIN user ON advisers.owner = user.iduser '.$where.'ORDER BY checked, date_change DESC';
+			$query = 'FROM advisers INNER JOIN user ON advisers.owner = user.iduser WHERE idgame = '.$idgame.' '.$where.' ORDER BY checked, date_change DESC';
 			
 			$result = $db->query( 'SELECT count(id) as cnt '.$query );
 			$alladvisers = mysql_result($result, 0, 'cnt');
@@ -122,6 +143,7 @@
 			{
 				$id_adviser = $row['id'];
 				$title = $row['title'];
+				$iduser = $row['iduser'];
 				$text = $row['text'];
 				$logo = $row['logo'];
 				$owner = $row['nick'];
@@ -141,12 +163,17 @@
 					$form_change = '<input type="text" id="adviser_mark_'.$id_adviser.'" value="'.$mark.'"/>
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
 								var adviser_mark = document.getElementById(\'adviser_mark_'.$id_adviser.'\').value;
-								
-								load_content_page(\'adviser_set_mark\', { \'adviser_mark\' : adviser_mark, \'id_adviser\' : '.$id_adviser.', \'number_of_page\' : '.$number_page.' } );
+								load_content_page(\'adviser_set_mark\', { 
+									\'adviser_mark\' : adviser_mark, 
+									\'id_adviser\' : '.$id_adviser.',
+									\'number_of_page\' : '.$number_page.',
+									\'iduser\' : '.$iduser.',
+									\'idgame\' : '.$idgame.' } 
+								);
 							">Set</a>
 					';
 				}
-				
+
 				echo "<tr $strclass>
 					<td width=100px><img width=100px src='$logo'><br><center>".htmlspecialchars($owner)."</center></td>
 					<td>Title: <pre>".htmlspecialchars($title)."</pre><br>Text:<pre>".htmlspecialchars($text)."</pre></td>

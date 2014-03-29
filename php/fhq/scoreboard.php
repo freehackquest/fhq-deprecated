@@ -6,7 +6,7 @@
 	{
 		function title()
 		{
-			return 'Scoreboard';
+			return '';
 		}
 
 		function echo_head()
@@ -25,19 +25,12 @@
 		function echo_content()
 		{
 			$db = new fhq_database();
-			$query = "SELECT iduser, logo, score, nick FROM user WHERE role='user' ORDER BY score DESC";
-			$result = $db->query( $query );
-			$i = 1;
-			echo "<br><br>";
-			while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
-			{      
-				$nick = $row["nick"];
-				$score = $row["score"];
-				$logo = $row["logo"];
-				if ($logo != "") $logo = "<img src='$logo'>";
-				echo ($i++)." $logo <font size=5> $nick </font>(score: $score);<br><br>\n";
+			$score = new fhq_score();
+			if (isset($_SESSION['game'])) {
+				echo '<br><font size=6>'.$_SESSION['game']['title'].'</font><br>
+				'.$_SESSION['game']['type_game'].'';
 			}
-			mysql_free_result($result);
+			$score->echo_scoreboard(true);
 		}
 	};
 

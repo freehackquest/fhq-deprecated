@@ -56,7 +56,7 @@ echo '
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'quests_allow\');">Tasks Open</a>
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'quests_process\');">Tasks Current</a> 
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'quests_completed\');">Tasks Completed</a> 
-					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'top100\');">"Top 100"</a> <br>
+					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page2(\'scoreboard\');">Scoreboard</a><br>
 					your score is <font id="view_score" size=5>'.$security->score().'</font> <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="recalculate_score();">recalculate score</a>
 				</p>
 				<!-- And I almost forgot... You can look at <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'dr_zoyberg\');">Dr. Zoyberg</a> .  -->
@@ -64,6 +64,7 @@ echo '
 	} else if ($game_type == 'attack-defence') {
 			echo '<p> 
 				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page2(\'advisers\');">Advisers</a>
+				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page2(\'scoreboard\');">Scoreboard</a>
 			</p>';
 	} else {
 		echo '<p>
@@ -94,6 +95,8 @@ echo '
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'add_news\');">Add News</a>
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'add_user\');">Add user</a><br><br>
 					System:	<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'update_db\');">Update DB</a>
+					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page2(\'init_scoreboard\');">init scoreboard</a>
+					
 			</td>
 		</tr>
 		</table>';
