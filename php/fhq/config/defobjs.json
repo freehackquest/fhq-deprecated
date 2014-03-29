@@ -1,0 +1,35 @@
+{
+	"news" : {
+		"fields" : {
+			"id" : "identificator",
+			"text" : "base64_text",
+			"datetime_" : "datetime",
+			"owner" : "int"
+		},
+		"table_name" : "NEWS",
+		"table" : {
+			"id" : "ID",
+			"text" : "TEXT",
+			"datetime_" : "datetime_",
+			"author" : "AUTHOR"
+		}
+	},
+	"user" : {
+		"fields" : {
+			"iduser" : "identificator",
+			"username" : "base64_text",
+			"password" : "md5",
+			"owner" : "int"
+		},
+		"table_name" : "USER",
+		"table" : {
+			"id" : "ID",
+			"text" : "TEXT",
+			"datetime_" : "datetime_",
+			"author" : "AUTHOR"
+		},
+		"insert_form" : {
+			
+		}
+	}
+}

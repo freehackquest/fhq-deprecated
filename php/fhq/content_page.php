@@ -209,13 +209,12 @@
 		echo "saved";
 		exit;
 	}
-	else if ($content_page == "add_user" && ($security->isAdmin() || $security->isTester()))
+	else if ($content_page == "add_user" && $security->isAdmin())
 	{
 		$user = new fhq_user_info();
-		if(isset($_GET['']) && isset($_GET['send_as_copies'])) {
-			$send_as_copies = ($_GET['send_as_copies'] == 'true') || ($_GET['send_as_copies'] == '1');
-			$news->add_news($_GET['text'], $send_as_copies);
-			echo "sended";
+		if(isset($_GET['login']) && isset($_GET['pass']) && isset($_GET['nick']) && isset($_GET['role']) && isset($_GET['logo'])) {
+			$user->add_user($_GET['login'], $_GET['pass'], $_GET['nick'], $_GET['role'], $_GET['logo']);
+			// echo "added";
 		}
 
 		$user->echo_insert_form();
