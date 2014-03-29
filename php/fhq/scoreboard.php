@@ -11,7 +11,11 @@
 
 		function echo_head()
 		{
-			echo '';
+			echo '
+			<script>
+				var expo = setTimeout(function() {location.reload();}, 5000);
+			</script>
+			';
 		}
 		
 		function echo_onBodyEnd() {
@@ -21,7 +25,7 @@
 		function echo_content()
 		{
 			$db = new fhq_database();
-			$query = "SELECT iduser, score, nick FROM user WHERE role='user' ORDER BY score DESC";
+			$query = "SELECT iduser, logo, score, nick FROM user WHERE role='user' ORDER BY score DESC";
 			$result = $db->query( $query );
 			$i = 1;
 			echo "<br><br>";
@@ -29,7 +33,9 @@
 			{      
 				$nick = $row["nick"];
 				$score = $row["score"];
-				echo ($i++)."<font size=5> $nick </font>(score: $score);<br><br>\n";
+				$logo = $row["logo"];
+				if ($logo != "") $logo = "<img src='$logo'>";
+				echo ($i++)." $logo <font size=5> $nick </font>(score: $score);<br><br>\n";
 			}
 			mysql_free_result($result);
 		}
