@@ -40,27 +40,7 @@ class fhq_score
 				(userquest.iduser = '.$security->iduser().') 
 				AND ( userquest.stopdate <> \'0000-00-00 00:00:00\' );
 		';
-		
-		/*$query = '
-			select
-				ifnull(sum(q.score),0) as sum_score
-			from 
-				quest q
-			where 
-				q.idquest = (
-					select 
-						u.idquest 
-					from 
-						userquest u  
-					where
-						u.iduser = '.$security->iduser().'
-						and 
-						u.stopdate <> \'0000-00-00 00:00:00\'
-						and 
-						u.idquest = q.idquest
-				)
-		';*/
-		// echo $query;
+
 		$result = $db->query( $query );
 		$new_score = mysql_result($result, 0, 'sum_score');
 		$_SESSION['user']['score'] = $new_score;
@@ -80,7 +60,7 @@ class fhq_score
 		$security = new fhq_security();
 		$db = new fhq_database();
 		
-		$query = 'select ifnull(sum(score),0) as sm from scoreboard where name <> "Summary" idgame = '.$idgame.' and owner = '.$owner.';';
+		$query = 'select ifnull(sum(score),0) as sm from scoreboard where name <> "Summary" and idgame = '.$idgame.' and owner = '.$owner.';';
 		$result = $db->query($query);
 		$row = mysql_fetch_array( $result, MYSQL_ASSOC);
 		$summ = $row['sm'];
@@ -97,10 +77,10 @@ class fhq_score
 		$result = $db->query($query);
 		$row = mysql_fetch_array( $result, MYSQL_ASSOC);
 		if ($row['cnt'] == 0) {
-			$query = "insert into scoreboard(idgame, name, owner, score) values($idgame,'$name',$owner,$score);";
+			$query = "insert into scoreboard(idgame, name, owner, score, date_change) values($idgame,'$name',$owner,$score,NOW());";
 			$db->query($query);
 		} else {
-			$query = "update scoreboard set score = $score where idgame = $idgame and name = '$name' and owner = $owner;";
+			$query = "update scoreboard set score = $score, date_change = NOW() where idgame = $idgame and name = '$name' and owner = $owner;";
 			$db->query($query);
 		}
 		if ($name != 'Summary')
@@ -125,14 +105,39 @@ class fhq_score
 		$db = new fhq_database();
 		
 		$idgame = 0;
-		if (isset($_SESSION['game']))
+		$type_game = 0;
+		if (isset($_SESSION['game'])) {
 			$idgame = $_SESSION['game']['id'];
+			$type_game = $_SESSION['game']['type_game'];
+		}
 
 		$result = $db->query("SELECT iduser FROM user");
 		while($row = mysql_fetch_array( $result, MYSQL_ASSOC)) {
 			$owner = $row['iduser'];
-			$this->update_sum_score($idgame, $owner);
+			
+			if ($type_game == 'jeopardy') {
+				$query = '
+				SELECT 
+					ifnull(SUM(quest.score),0) as sum_score 
+				FROM 
+					userquest 
+				INNER JOIN 
+					quest ON quest.idquest = userquest.idquest 
+				WHERE 
+					(userquest.iduser = '.$owner.') 
+					AND ( userquest.stopdate <> \'0000-00-00 00:00:00\' );
+				';
+				$result2 = $db->query($query);
+				$new_score = mysql_result($result2, 0, 'sum_score');
+				mysql_free_result($result2);
+				$this->update_score('Quests', $idgame, $owner, $new_score);
+			}
+			else 
+			{
+				$this->update_sum_score($idgame, $owner);
+			}
 		}
+		mysql_free_result($result);
 		echo "updated!";
 	}
 	
