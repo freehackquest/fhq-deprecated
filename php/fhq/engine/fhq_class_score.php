@@ -80,7 +80,7 @@ class fhq_score
 		$security = new fhq_security();
 		$db = new fhq_database();
 		
-		$query = 'select ifnull(sum(score),0) as sm from scoreboard where idgame = '.$idgame.' and owner = '.$owner.';';
+		$query = 'select ifnull(sum(score),0) as sm from scoreboard where name <> "Summary" idgame = '.$idgame.' and owner = '.$owner.';';
 		$result = $db->query($query);
 		$row = mysql_fetch_array( $result, MYSQL_ASSOC);
 		$summ = $row['sm'];
@@ -163,7 +163,7 @@ class fhq_score
 		$i = 0;
 			
 		if ($game_type == 'jeopardy') {
-			$scores[$i++] = 'Tasks';
+			$scores[$i++] = 'Quests';
 		}
 		
 		if ($game_type == 'attack-defence') {
