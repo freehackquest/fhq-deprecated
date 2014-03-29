@@ -65,7 +65,6 @@ class fhq_score
 		$row = mysql_fetch_array( $result, MYSQL_ASSOC);
 		$summ = $row['sm'];
 		mysql_free_result($result);
-		
 		$this->update_score('Summary', $idgame, $owner, $summ);
 	}
 	
@@ -116,6 +115,7 @@ class fhq_score
 			$owner = $row['iduser'];
 			
 			if ($type_game == 'jeopardy') {
+				// in feature must be deprecated
 				$query = '
 				SELECT 
 					ifnull(SUM(quest.score),0) as sum_score 
@@ -245,7 +245,7 @@ class fhq_score
 			echo '
 			<tr '.$strclass.'>
 				<td width=50px><h1>'.(++$i).'</h1></td>
-				<td>'.$logo.'<br><center>'.htmlspecialchars($nick).'</center></td>
+				<td><center>'.$logo.'<h4>'.htmlspecialchars($nick).'</h4></center></td>
 				'.$rows.'
 			</tr>';
 		}
