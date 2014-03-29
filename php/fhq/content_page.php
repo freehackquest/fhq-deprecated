@@ -32,7 +32,9 @@
 	$content_page = "";
 	$number_of_page = 0;
 	if(isset($_GET['content_page'])) $content_page = $_GET['content_page'];
+	if(isset($_POST['content_page'])) $content_page = $_POST['content_page'];
 	if(isset($_GET['number_of_page'])) $number_of_page = $_GET['number_of_page'];
+	if(isset($_POST['number_of_page'])) $number_of_page = $_POST['number_of_page'];
 	
 	if($content_page == "quests_all")
 	{
@@ -172,6 +174,25 @@
 		include_once "engine/fhq_echo_statistics.php";
 		echo_statistics();
 		echo "not yet work";
+		exit;
+	}
+	else if ($content_page == "advisers")
+	{
+		$adviser = new fhq_adviser();
+		if (isset($_POST['adviser_text']) && isset($_POST['adviser_title'])) {
+			$adviser->add_adviser($_POST['adviser_title'], $_POST['adviser_text']);
+		}
+		$adviser->echo_insert_form();
+		$adviser->echo_advisers($number_of_page);
+		exit;
+	}
+	else if ($content_page == "adviser_set_mark" && ($security->isAdmin() || $security->isTester())) {
+		$adviser = new fhq_adviser();
+		if (isset($_GET['adviser_mark']) && isset($_GET['id_adviser'])) {
+			$adviser->setNewMark($_GET['id_adviser'], $_GET['adviser_mark']);
+		}
+		$adviser->echo_insert_form();
+		$adviser->echo_advisers($number_of_page);
 		exit;
 	}
 	else if ($content_page == "news")

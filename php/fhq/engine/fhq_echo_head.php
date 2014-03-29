@@ -18,7 +18,7 @@ function echo_head($page)
 		textarea.full_text
 		{	
 			margin: 0pt; 
-			width: 300px; 
+			width: 80%;
 			height: 200px;
 		}
 

@@ -11,7 +11,6 @@ echo '
 <script>
 </script>
 ';
-
 	/* echo '<table width=100%>
 			<tr>
 				<td >
@@ -64,7 +63,7 @@ echo '
 			';
 	} else if ($game_type == 'attack-defence') {
 			echo '<p> 
-			hzzz
+				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page2(\'advisers\');">Advisers</a>
 			</p>';
 	} else {
 		echo '<p>
