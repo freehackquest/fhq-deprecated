@@ -118,22 +118,32 @@
 	// $tables['userteams']['id_team'] = array ( 'Field' => 'id_team', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
 	$tables['userteams']['date_begin'] = array ( 'Field' => 'date_begin', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['userteams']['date_end'] = array ( 'Field' => 'date_end', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
-	
+
 	$tables['flags'] = array();
 	$tables['flags']['id'] = array ( 'Field' => 'id', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
 	$tables['flags']['idservice'] = array ( 'Field' => 'idservice', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['flags']['flag'] = array ( 'Field' => 'flag', 'Type' => 'varchar(50)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['flags']['owner'] = array ( 'Field' => 'owner', 'Type' => 'varchar(300)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['flags']['date_start'] = array ( 'Field' => 'date_start', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['flags']['date_end'] = array ( 'Field' => 'date_end', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
-	$tables['flags']['team_passed'] = array ( 'Field' => 'team_passed', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
-	
+	$tables['flags']['user_passed'] = array ( 'Field' => 'user_passed', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+
+	$tables['flags_live'] = array();
+	$tables['flags_live']['id'] = array ( 'Field' => 'id', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
+	$tables['flags_live']['idservice'] = array ( 'Field' => 'idservice', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['flags_live']['owner'] = array ( 'Field' => 'owner', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['flags_live']['flag'] = array ( 'Field' => 'flag', 'Type' => 'varchar(50)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['flags_live']['date_start'] = array ( 'Field' => 'date_start', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['flags_live']['date_end'] = array ( 'Field' => 'date_end', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['flags_live']['user_passed'] = array ( 'Field' => 'user_passed', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+
 	$tables['services'] = array();
 	$tables['services']['id'] = array ( 'Field' => 'id', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
 	$tables['services']['idgame'] = array ( 'Field' => 'idgame', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['services']['name'] = array ( 'Field' => 'name', 'Type' => 'varchar(300)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['services']['scriptpath'] = array ( 'Field' => 'scriptpath', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['services']['comment'] = array ( 'Field' => 'comment', 'Type' => 'varchar(4048)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
-	
+
 	$tables['advisers'] = array();
 	$tables['advisers']['id'] = array ( 'Field' => 'id', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );	
 	$tables['advisers']['title'] = array ( 'Field' => 'title', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );

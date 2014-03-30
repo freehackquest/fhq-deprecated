@@ -6,7 +6,7 @@
 	{
 		function connect($config)
 		{
-			$db = mysql_connect( 
+			$this->db = mysql_connect( 
 				$config['db']['host'], 
 				$config['db']['username'], 
 				$config['db']['userpass']
@@ -15,7 +15,7 @@
 					.$config['db']['host'].'@'.$config['db']['username'].'"'
 			);
 
-			mysql_select_db( $config['db']['dbname'], $db) 
+			mysql_select_db( $config['db']['dbname'], $this->db) 
 			or die('could not select database: "'.$config['db']['dbname'].'"');
 
 			mysql_set_charset("utf8");
@@ -35,6 +35,11 @@
 		{
 			$count = mysql_num_rows( $mysql_result );
 			return $count;
+		}
+		
+		function close()
+		{
+			mysql_close($this->db);
 		}
 
 		var $db;

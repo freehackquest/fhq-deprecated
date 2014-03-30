@@ -65,6 +65,7 @@ echo '
 	} else if ($game_type == 'attack-defence') {
 			echo '<p> 
 				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page2(\'advisers\');">Advisers</a>
+				<a class="btn btn-small btn-info" href="send_flag.php" target="_blank">Send Flag</a>
 				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page2(\'scoreboard\');">Scoreboard</a>
 			</p>';
 	} else {

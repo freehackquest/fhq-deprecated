@@ -29,7 +29,6 @@ GROUP BY
 	userquest.idquest
 ORDER BY 
 	cnt DESC
-    
 ';
 */
 
