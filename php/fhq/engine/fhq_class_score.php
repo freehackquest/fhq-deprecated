@@ -11,14 +11,10 @@ class fhq_score
 	function recalculate_score($bSec = true)
 	{
 		$security = new fhq_security();
-		
 		if(!$security->isLogged())
 			return;
 		
 		$db = new fhq_database();
-	
-		// echo 1;
-
 		if($bSec && isset($_SESSION['recalculate_score_last_time']))
 		{
 				$oldtime = $_SESSION['recalculate_score_last_time'];

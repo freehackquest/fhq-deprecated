@@ -138,6 +138,11 @@
 		$score->init_scoreboard();
 		exit;
 	}
+	else if($content_page == "rules")
+	{
+		include_once(dirname(__FILE__)."/config/rules.html");
+		exit;
+	}
 	else if ($content_page == "user_set_new_my_nick")
 	{
 		$user_info = new fhq_user_info();

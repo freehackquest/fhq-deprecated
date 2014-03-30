@@ -47,6 +47,7 @@ echo '
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'news\');">News</a>
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'feedback_my\');">Feedback</a>
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'hacker_girl\');">Hacker girl here</a>
+					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page2(\'rules\');">Rules</a>
 					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="exit();">logout</a>
 					</p>';
 
