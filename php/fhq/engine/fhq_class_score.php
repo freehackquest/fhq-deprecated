@@ -244,7 +244,7 @@ class fhq_score
 					$color = '#FF0000';
 				}
 				if ($status == 1)
-					$status = '<img src="images/work.png/>';
+					$status = '<img src="images/work.png" />';
 				
 				$rows .= '<td><font size=3 color='.$color.'>'.$status.'</font></td>';
 			}
