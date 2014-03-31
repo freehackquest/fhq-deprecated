@@ -72,10 +72,10 @@ class fhq_score
 		$result = $db->query($query);
 		$row = mysql_fetch_array( $result, MYSQL_ASSOC);
 		if ($row['cnt'] == 0) {
-			$query = "insert into scoreboard(idgame, name, owner, score, date_change) values($idgame,'$name',$owner,$score,NOW());";
+			$query = "insert into scoreboard(idgame, name, owner, score, date_change) values($idgame,'".mysql_real_escape_string($name)."',$owner,$score,NOW());";
 			$db->query($query);
 		} else {
-			$query = "update scoreboard set score = $score, date_change = NOW() where idgame = $idgame and name = '$name' and owner = $owner;";
+			$query = "update scoreboard set score = $score, date_change = NOW() where idgame = $idgame and name = '".mysql_real_escape_string($name)."' and owner = $owner;";
 			$db->query($query);
 		}
 		if ($name != 'Summary')
@@ -130,6 +130,21 @@ class fhq_score
 			}
 			else 
 			{
+				$result2 = $db->query("SELECT name FROM services WHERE idgame = $idgame");
+				while($row2 = mysql_fetch_array( $result2, MYSQL_ASSOC)) {
+					$name = $row2["name"];
+					$this->update_score($name, $idgame, $owner, 0);
+				}
+				$this->update_score("Defence", $idgame, $owner, 0);
+				$db->query("update scoreboard set date_change = NOW(), score = (select count(*) from flags where owner = $owner and user_passed = 0)  where owner = $owner and name = 'Defence' and idgame = $idgame;");
+				
+				$this->update_score("Offence", $idgame, $owner, 0);
+				$db->query("update scoreboard set date_change = NOW(), score = (select count(*) from flags where owner <> $owner and user_passed = $owner)  where owner = $owner and name = 'Offence' and idgame = $idgame;");
+				
+				$this->update_score("Advisers", $idgame, $owner, 0);
+				$db->query("update scoreboard set date_change = NOW(), score = (select SUM(mark) as sm from advisers where idgame = $idgame and owner = $owner)  where owner = $owner and name = 'Advisers' and idgame = $idgame;");
+				
+				mysql_free_result($result2);
 				$this->update_sum_score($idgame, $owner);
 			}
 		}

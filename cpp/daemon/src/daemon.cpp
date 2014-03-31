@@ -265,8 +265,8 @@ namespace adjd {
 		}
 
 		while(1) {
-			adjd::writeToLog(db_cnf, "wait 5 minutes");
-			SleepSimulator().sleep(30000);
+			adjd::writeToLog(db_cnf, "wait 2 minutes");
+			SleepSimulator().sleep(120000);
 			adjd::writeToLog(db_cnf, "end");
 		}
 		return 0;

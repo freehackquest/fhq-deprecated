@@ -132,8 +132,8 @@
 	$tables['flags_live'] = array();
 	$tables['flags_live']['id'] = array ( 'Field' => 'id', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
 	$tables['flags_live']['idservice'] = array ( 'Field' => 'idservice', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
-	$tables['flags_live']['owner'] = array ( 'Field' => 'owner', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['flags_live']['flag'] = array ( 'Field' => 'flag', 'Type' => 'varchar(50)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['flags_live']['owner'] = array ( 'Field' => 'owner', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['flags_live']['date_start'] = array ( 'Field' => 'date_start', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['flags_live']['date_end'] = array ( 'Field' => 'date_end', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['flags_live']['user_passed'] = array ( 'Field' => 'user_passed', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );

@@ -18,6 +18,7 @@ class ServiceCheckerThread : public QThread
 	private:
 		adjd::srvc_conf srvs_cnf;
 		adjd::db_conf db_cnf;
+		void updateFlags(QString flag, bool bWorked);
 	public:
 		void run();
 };
