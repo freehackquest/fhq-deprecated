@@ -116,7 +116,7 @@ void ServiceCheckerThread::updateFlags(QString flag, bool bWorked)
 	db.setUserName(db_cnf.db_user);
 	db.setPassword(db_cnf.db_pass);
 	if (!db.open()){
-		adjd::writeToLog(db_cnf, db.lastError().text());		
+		adjd::writeToLog(db_cnf, db.lastError().text());
 		adjd::writeToLog(db_cnf, "Failed to connect.");
 		return;
 	}
@@ -164,22 +164,21 @@ void ServiceCheckerThread::updateFlags(QString flag, bool bWorked)
 		+ " and name = \"" + srvs_cnf.strServiceName + "\" "
 		+ " and owner = " + QString::number(srvs_cnf.userID) + ""
 		+ ";";
-		adjd::writeToLog(db_cnf, strQuery);
 		QSqlQuery query(db);
-		query.exec(strQuery);
-		adjd::writeToLog(db_cnf, "OK");
+		if(!query.exec(strQuery))
+			adjd::writeToLog(db_cnf, "Query failed: " + strQuery + " \n\n" + db.lastError().text());
 	}
 
 	// moving from flags_live to flags
 	{
 		QString strQuery = "select id from flags_live where "
 			" owner = " + QString::number(srvs_cnf.userID) + " "
-			" and idservice = \"" + QString::number(srvs_cnf.serviceID) + "\" "
+			" and idservice = " + QString::number(srvs_cnf.serviceID) + " "
 			" and (date_end < NOW() or user_passed > 0)";
 		QSqlQuery query(db);
-		adjd::writeToLog(db_cnf, strQuery);
-		query.exec(strQuery);
-		adjd::writeToLog(db_cnf, "OK");
+		if(!query.exec(strQuery))
+			adjd::writeToLog(db_cnf, "Query failed: " + strQuery + " \n\n" + db.lastError().text());
+		
 		while(query.next()) {
 			QSqlRecord record = query.record();
 			int id = record.value("id").toInt();
@@ -189,13 +188,15 @@ void ServiceCheckerThread::updateFlags(QString flag, bool bWorked)
 			
 			QSqlQuery query_insert(db);
 			// adjd::writeToLog(db_cnf, strQueryInsert);
-			query_insert.exec(strQueryInsert);
+			if(!query_insert.exec(strQueryInsert))
+				adjd::writeToLog(db_cnf, "Query failed: " + strQueryInsert + " \n\n" + db.lastError().text());
 			// adjd::writeToLog(db_cnf, "OK");
 			
 			QSqlQuery query_delete(db);
 			QString strQueryDelete = "DELETE FROM flags_live WHERE id = " + QString::number(id);
 			// adjd::writeToLog(db_cnf, strQueryDelete);
-			query_delete.exec(strQueryDelete);
+			if(!query_delete.exec(strQueryDelete)) 
+				adjd::writeToLog(db_cnf, "Query failed: " + strQueryDelete + " \n\n" + db.lastError().text());
 			// adjd::writeToLog(db_cnf, "OK");
 		}
 	}
@@ -206,7 +207,8 @@ void ServiceCheckerThread::updateFlags(QString flag, bool bWorked)
 			QString strId = QString::number(srvs_cnf.userID);
 			QString strQuery = "update scoreboard set date_change = NOW(), score = (select count(*) from flags where owner = " + strId + " and user_passed = 0)  where owner = " + strId + " and name = 'Defence';";
 			QSqlQuery query(db);
-			query.exec(strQuery);
+			if(!query.exec(strQuery))
+				adjd::writeToLog(db_cnf, "Query failed: " + strQuery + " \n\n" + db.lastError().text());
 		}
 
 		// update scoreboard offence
@@ -214,7 +216,8 @@ void ServiceCheckerThread::updateFlags(QString flag, bool bWorked)
 			QString strId = QString::number(srvs_cnf.userID);
 			QString strQuery = "update scoreboard set date_change = NOW(), score = (select count(*) from flags where owner <> " + strId + " and user_passed = " + strId + ")  where owner = " + strId + " and name = 'Offence';";
 			QSqlQuery query(db);
-			query.exec(strQuery);
+			if(!query.exec(strQuery))
+				adjd::writeToLog(db_cnf, "Query failed: " + strQuery + " \n\n" + db.lastError().text());
 		}
 
 		// update summary
@@ -224,7 +227,9 @@ void ServiceCheckerThread::updateFlags(QString flag, bool bWorked)
 			
 			QString strQuerySelect = "select ifnull(sum(score),0) as sm from scoreboard where (name == 'Defence' or name = 'Offence' or name = 'Advisers') and idgame = " + strGameId + " and owner = " + strUserId + " ";
 			QSqlQuery query_select(db);
-			query_select.exec(strQuerySelect);
+			if(!query_select.exec(strQuerySelect))
+				adjd::writeToLog(db_cnf, "Query failed: " + strQuerySelect + " \n\n" + db.lastError().text());
+			
 			int score = 0;
 			if (query_select.next()) {
 				QSqlRecord record = query_select.record();
@@ -233,7 +238,8 @@ void ServiceCheckerThread::updateFlags(QString flag, bool bWorked)
 
 			QString strQueryUpdate = "update scoreboard set date_change = NOW(), score = " + QString::number(score) + " where owner = " + strUserId + " and name = 'Summary' and idgame = " + strGameId;
 			QSqlQuery query_update(db);
-			query_update.exec(strQueryUpdate);
+			if(!query_update.exec(strQueryUpdate))
+				adjd::writeToLog(db_cnf, "Query failed: " + strQueryUpdate + " \n\n" + db.lastError().text());
 		}
 	}
 	db.close();
