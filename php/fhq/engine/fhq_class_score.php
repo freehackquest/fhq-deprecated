@@ -171,7 +171,7 @@ class fhq_score
 		$i = 0;
 		while($row = mysql_fetch_array( $result, MYSQL_ASSOC)) {
 			$services[$i++] = $row;
-			$columns .= '<th>(s) '.$row['name'].'</th>';
+			$columns .= '<th><h2>'.$row['name'].'</h2></th>';
 		}
 		mysql_free_result($result);
 		
@@ -179,14 +179,14 @@ class fhq_score
 		$i = 0;
 			
 		if ($game_type == 'jeopardy') {
-			$scores[$i++] = 'Quests';
+			$scores[$i++] = '<h2>Quests</h2>';
 		}
 		
 		if ($game_type == 'attack-defence') {
-			$scores[$i++] = 'Defence';
-			$scores[$i++] = 'Offence';
-			$scores[$i++] = 'Advisers';
-			$scores[$i++] = 'Summary';
+			$scores[$i++] = '<h2>Defence</h2>';
+			$scores[$i++] = '<h2>Offence</h2>';
+			$scores[$i++] = '<h2>Advisers</h2>';
+			$scores[$i++] = '<h2>Summary</h2>';
 		}
 		
 		foreach($scores as $key => $value) {
@@ -240,11 +240,11 @@ class fhq_score
 				$status = (isset($db_scores[$value['name']]) ? $db_scores[$value['name']] : 0);
 				$color = '#000000';
 				if ($status == 0) {
-					$status = 'down or<br>corrupt';
+					$status = '<img src="images/corrupt.png"/>';
 					$color = '#FF0000';
 				}
 				if ($status == 1)
-					$status = 'work';
+					$status = '<img src="images/work.png/>';
 				
 				$rows .= '<td><font size=3 color='.$color.'>'.$status.'</font></td>';
 			}

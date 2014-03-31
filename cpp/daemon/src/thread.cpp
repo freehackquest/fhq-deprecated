@@ -222,7 +222,7 @@ void ServiceCheckerThread::updateFlags(QString flag, bool bWorked)
 			QString strUserId = QString::number(srvs_cnf.userID);
 			QString strGameId = QString::number(srvs_cnf.gameID);
 			
-			QString strQuerySelect = "select ifnull(sum(score),0) as sm from scoreboard where name <> 'Summary' and idgame = " + strGameId + " and owner = " + strUserId + " ";
+			QString strQuerySelect = "select ifnull(sum(score),0) as sm from scoreboard where (name == 'Defence' or name = 'Offence' or name = 'Advisers') and idgame = " + strGameId + " and owner = " + strUserId + " ";
 			QSqlQuery query_select(db);
 			query_select.exec(strQuerySelect);
 			int score = 0;
