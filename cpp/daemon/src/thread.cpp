@@ -187,17 +187,13 @@ void ServiceCheckerThread::updateFlags(QString flag, bool bWorked)
 				" FROM flags_live WHERE id = " + QString::number(id);
 			
 			QSqlQuery query_insert(db);
-			// adjd::writeToLog(db_cnf, strQueryInsert);
 			if(!query_insert.exec(strQueryInsert))
 				adjd::writeToLog(db_cnf, "Query failed: " + strQueryInsert + " \n\n" + db.lastError().text());
-			// adjd::writeToLog(db_cnf, "OK");
 			
 			QSqlQuery query_delete(db);
 			QString strQueryDelete = "DELETE FROM flags_live WHERE id = " + QString::number(id);
-			// adjd::writeToLog(db_cnf, strQueryDelete);
 			if(!query_delete.exec(strQueryDelete)) 
 				adjd::writeToLog(db_cnf, "Query failed: " + strQueryDelete + " \n\n" + db.lastError().text());
-			// adjd::writeToLog(db_cnf, "OK");
 		}
 	}
 	

@@ -142,7 +142,7 @@ class fhq_score
 				$db->query("update scoreboard set date_change = NOW(), score = (select count(*) from flags where owner <> $owner and user_passed = $owner)  where owner = $owner and name = 'Offence' and idgame = $idgame;");
 				
 				$this->update_score("Advisers", $idgame, $owner, 0);
-				$db->query("update scoreboard set date_change = NOW(), score = (select SUM(mark) as sm from advisers where idgame = $idgame and owner = $owner)  where owner = $owner and name = 'Advisers' and idgame = $idgame;");
+				$db->query("update scoreboard set date_change = NOW(), score = (select ifnull(SUM(mark),0) as sm from advisers where idgame = $idgame and owner = $owner)  where owner = $owner and name = 'Advisers' and idgame = $idgame;");
 				
 				mysql_free_result($result2);
 				$this->update_sum_score($idgame, $owner);
