@@ -106,6 +106,7 @@
 	$tables['user']['date_activated'] = array ( 'Field' => 'date_activated', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['user']['date_last_signup'] = array ( 'Field' => 'date_last_signup', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['user']['last_ip'] = array ( 'Field' => 'last_ip', 'Type' => 'varchar(255)', 'Null' => 'YES', 'Key' => '', 'Default' => '', 'Extra' => '', );
+	$tables['user']['ipserver'] = array ( 'Field' => 'ipserver', 'Type' => 'varchar(255)', 'Null' => 'YES', 'Key' => '', 'Default' => '', 'Extra' => '', );
 
 	$tables['userquest'] = array();
 	$tables['userquest']['iduser'] = array ( 'Field' => 'iduser', 'Type' => 'int(10)', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => '', );
