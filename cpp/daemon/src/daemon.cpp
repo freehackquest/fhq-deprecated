@@ -15,10 +15,11 @@
 #include <QProcess>
 #include <QUuid>
 #include <QRegExp>
+#include "thread.h"
 
 namespace adjd {
 	
-	void insertToFlags(adjd::config &cnf, QString id_service, QString id_team_owner, QString flag, QString id_team_passed)
+	void insertToFlags(adjd::db_conf &cnf, QString id_service, QString id_team_owner, QString flag, QString id_team_passed)
 	{
 		QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
 		db.setHostName("localhost");
@@ -26,8 +27,8 @@ namespace adjd {
 		db.setUserName(cnf.db_user);
 		db.setPassword(cnf.db_pass);
 		if (!db.open()){
-			writeToLog(cnf, db.lastError().text());		
-			writeToLog(cnf, "Failed to connect.");
+			adjd::writeToLog(cnf, db.lastError().text());		
+			adjd::writeToLog(cnf, "Failed to connect.");
 			return;
 		}
 
@@ -51,27 +52,13 @@ namespace adjd {
 		db.close();
 		return;
 	}
-	
-	void writeToLog(adjd::config &cnf, QString strMsg)
-	{
-		QFile file(cnf.strLogFile);
-		if ( file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append))
-        {
-			QDateTime dateTime = QDateTime::currentDateTime();
-			QString dateTimeString = dateTime.toString("[yyyy-MMM-dd hh:mm:ss] ");
 
-            QTextStream stream( &file );
-            stream << dateTimeString << strMsg << endl;
-            file.close();
-        }
-	}
-	
 	struct tables_ {
 		QList<QMap<QString,QString> > services;
 		QList<QMap<QString,QString> > teams;
 	};
 
-	bool getInfoTeamsAndServices(adjd::config &cnf, adjd::tables_ &tabl)
+	bool getInfoTeamsAndServices(adjd::db_conf &cnf, adjd::tables_ &tabl)
 	{
 		QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
 		db.setHostName("localhost");
@@ -79,8 +66,8 @@ namespace adjd {
 		db.setUserName(cnf.db_user);
 		db.setPassword(cnf.db_pass);
 		if (!db.open()){
-			writeToLog(cnf, db.lastError().text());		
-			writeToLog(cnf, "Failed to connect.");
+			adjd::writeToLog(cnf, db.lastError().text());		
+			adjd::writeToLog(cnf, "Failed to connect.");
 			return false;
 		}
 
@@ -123,7 +110,7 @@ namespace adjd {
 			RunChecker() {};
 			
 			RunChecker(
-				adjd::config &cnf, 
+				adjd::db_conf &cnf, 
 				QString service_scriptpath, 
 				QString team_ip,
 				QString team_id,
@@ -184,7 +171,7 @@ namespace adjd {
 						
 				if(p_stderr.length() > 0)
 				{
-					writeToLog(m_cnf, "[" + QString::number(time) + " secs] " + m_str_service_name + ":" + m_str_team_name + " Error in call checker: '" + m_str_service_scriptpath + "' p_stderr = " + p_stderr);
+					adjd::writeToLog(m_cnf, "[" + QString::number(time) + " secs] " + m_str_service_name + ":" + m_str_team_name + " Error in call checker: '" + m_str_service_scriptpath + "' p_stderr = " + p_stderr);
 				}
 				else
 				{
@@ -195,16 +182,16 @@ namespace adjd {
 					if(rx_work.lastIndexIn(p_output) != -1)
 					{
 						insertToFlags(m_cnf, m_str_service_id, m_str_team_id, m_str_flag, "0");
-						// writeToLog(cnf, service_name + ":" + team_name + " => service is work");
+						// adjd::writeToLog(cnf, service_name + ":" + team_name + " => service is work");
 					}
 					else if (rx_corrupt.lastIndexIn(p_output) != -1)
 					{
 						insertToFlags(m_cnf, m_str_service_id, m_str_team_id, m_str_flag, "-1");
-						// writeToLog(cnf, service_name + ":" + team_name + " => service is corrupt");
+						// adjd::writeToLog(cnf, service_name + ":" + team_name + " => service is corrupt");
 					}
 					else
 					{
-						writeToLog(m_cnf, "[" + QString::number(time) + " secs] " + m_str_service_name + ":" + m_str_team_name + " => (not found [service is work] or [service is corrupt] and you have only 3 sec),\np_stdout =\n" + p_stdout);
+						adjd::writeToLog(m_cnf, "[" + QString::number(time) + " secs] " + m_str_service_name + ":" + m_str_team_name + " => (not found [service is work] or [service is corrupt] and you have only 3 sec),\np_stdout =\n" + p_stdout);
 					}
 				}
 			}
@@ -212,7 +199,7 @@ namespace adjd {
 		private:
 		    QTime m_startStamp;
 			QTime m_endStamp;
-			adjd::config m_cnf;
+			adjd::db_conf m_cnf;
 			
 			QThread *m_pThread;
 			QProcess *m_pProcess;
@@ -225,10 +212,66 @@ namespace adjd {
 			QString m_str_service_scriptpath;
 	};
 	
-	int attackDefenceJuryDaemon(adjd::config &cnf)
+	int attackDefenceJuryDaemon(adjd::db_conf &db_cnf)
 	{
-		QVector<RunChecker *> checkers;
+		QList<adjd::srvc_conf> user_services;
 		
+		// get list of user - service
+		QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+		db.setHostName("localhost");
+		db.setDatabaseName(db_cnf.db_name);
+		db.setUserName(db_cnf.db_user);
+		db.setPassword(db_cnf.db_pass);
+		if (!db.open()){
+			adjd::writeToLog(db_cnf, db.lastError().text());		
+			adjd::writeToLog(db_cnf, "Failed to connect.");
+			return false;
+		}
+
+		// services
+		{
+			QSqlQuery query(db);
+			QString strQuery = "select iduser, ipserver, id as idservice, idgame, name, scriptpath from user, services where role='user'";
+			query.exec(strQuery);
+			while (query.next()) {
+				QSqlRecord record = query.record();
+				adjd::srvc_conf new_cnf;
+				new_cnf.userID = record.value("iduser").toInt();
+				new_cnf.serviceID = record.value("idservice").toInt();
+				new_cnf.gameID = record.value("idgame").toInt();
+				new_cnf.strUserIP = record.value("ipserver").toString();
+				new_cnf.strServiceName = record.value("name").toString();
+				new_cnf.strServiceScript = record.value("scriptpath").toString();
+				user_services << new_cnf;
+			}
+		}
+		db.close();
+		QVector<ServiceCheckerThread *> threads;
+		
+		for(int i = 0; i < user_services.count(); i++)
+		{
+			adjd::srvc_conf srvs_cnf = user_services[i];
+			QString strLog = "Start thread for: \n";
+			strLog += "\tuserID: " + QString::number(srvs_cnf.userID) + ";\n";
+			strLog += "\tserviceID: " + QString::number(srvs_cnf.serviceID) + ";\n";
+			strLog += "\tgameID: " + QString::number(srvs_cnf.gameID) + ";\n";
+			strLog += "\tstrUserIP: " + srvs_cnf.strUserIP + ";\n";
+			strLog += "\tstrServiceName: " + srvs_cnf.strServiceName + ";\n";
+			strLog += "\tstrServiceScript: " + srvs_cnf.strServiceScript + ";\n";			
+			adjd::writeToLog(db_cnf, strLog);
+			ServiceCheckerThread *thr = new ServiceCheckerThread(db_cnf, srvs_cnf);
+			thr->start();
+			threads.push_back(thr);
+		}
+
+		while(1) {
+			adjd::writeToLog(db_cnf, "wait 5 minutes");
+			SleepSimulator().sleep(30000);
+			adjd::writeToLog(db_cnf, "end");
+		}
+		return 0;
+/*
+		QVector<RunChecker *> checkers;
 		while(1) {
 			for(int i = 0; i < 20; i++) 
 			{
@@ -249,7 +292,7 @@ namespace adjd {
 					checkers.push_back(checkers2[chi]);
 				checkers2.clear();
 				
-				writeToLog(cnf, "run checkers");
+				adjd::writeToLog(cnf, "run checkers");
 				adjd::tables_ tabl;
 				if( getInfoTeamsAndServices(cnf, tabl) )
 				{
@@ -264,7 +307,6 @@ namespace adjd {
 							QString service_id = tabl.services[si]["id"];
 							QString service_name = tabl.services[si]["name"];
 							QString service_scriptpath = tabl.services[si]["scriptpath"];
-							
 
 							if(QFile(service_scriptpath).exists())
 							{
@@ -279,7 +321,7 @@ namespace adjd {
 								checkers.push_back(checker);
 								
 								// checkers
-								
+								*/
 								/*
 								QStringList args;
 								args << team_ip << "store" << flag;
@@ -292,7 +334,7 @@ namespace adjd {
 								
 								if(p_stderr.length() > 0)
 								{
-									writeToLog(cnf, "Error in call checker: '" + service_scriptpath + "' p_stderr = " + p_stderr);
+									adjd::writeToLog(cnf, "Error in call checker: '" + service_scriptpath + "' p_stderr = " + p_stderr);
 								}
 								else
 								{
@@ -303,35 +345,35 @@ namespace adjd {
 									if(rx_work.lastIndexIn(p_output) != -1)
 									{
 										insertToFlags(cnf, service_id, team_id, flag, "0");
-										// writeToLog(cnf, service_name + ":" + team_name + " => service is work");
+										// adjd::writeToLog(cnf, service_name + ":" + team_name + " => service is work");
 									}
 									else if (rx_corrupt.lastIndexIn(p_output) != -1)
 									{
 										insertToFlags(cnf, service_id, team_id, flag, "-1");
-										// writeToLog(cnf, service_name + ":" + team_name + " => service is corrupt");
+										// adjd::writeToLog(cnf, service_name + ":" + team_name + " => service is corrupt");
 									}
 									else
 									{
-										writeToLog(cnf, service_name + ":" + team_name + " => (not found [service is work] or [service is corrupt] and you have only 3 sec),\np_stdout =\n" + p_stdout);
+										adjd::writeToLog(cnf, service_name + ":" + team_name + " => (not found [service is work] or [service is corrupt] and you have only 3 sec),\np_stdout =\n" + p_stdout);
 									}
 								}
-								* */
+								* *//*
 							}
 							else
 							{
-								writeToLog(cnf, "team " + team_name + " (ip : " + team_ip + ") for service '" + service_name + "' script not found, script path: " + service_scriptpath);
+								adjd::writeToLog(cnf, "team " + team_name + " (ip : " + team_ip + ") for service '" + service_name + "' script not found, script path: " + service_scriptpath);
 							}
 						}
 					};
 				};
-				writeToLog(cnf, "wait 30 second");
+				adjd::writeToLog(cnf, "wait 30 second");
 				sleep(30);//wait 30 second
 			}
-			writeToLog(cnf, "wait 5 minutes");
+			adjd::writeToLog(cnf, "wait 5 minutes");
 			sleep(300);//wait 5 minutes
 			
 		}
 		return 0;
-		
+	*/	
 	}
 }

@@ -1,0 +1,3 @@
+attack-defence-jury-daemon
+*.o
+Makefile

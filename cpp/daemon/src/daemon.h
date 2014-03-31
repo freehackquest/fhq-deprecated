@@ -3,18 +3,11 @@
 
 #include <QtCore>
 #include <QString>
-namespace adjd {
-	struct config
-	{
-		public:
-			QString strLogFile;
-			QString db_name;
-			QString db_user;
-			QString db_pass;
-	};
+#include "config.h"
 
-	void writeToLog(adjd::config &cnf, QString strMsg);
-	int attackDefenceJuryDaemon(config &cnf);
+namespace adjd {
+
+	int attackDefenceJuryDaemon(db_conf &cnf);
 	
 }; // namespace adjd
 

@@ -12,9 +12,10 @@
 #include <syslog.h>
 #include <QtCore>
 #include <QString>
+#include "thread.h"
 #include "daemon.h"
 
-adjd::config cnf;
+adjd::db_conf cnf;
  
 /**
   a signal handler for the Linux signals sent to daemon process,
@@ -25,10 +26,10 @@ void signal_handler(int sig)
 {
 	switch(sig) {
 		case SIGHUP:
-			writeToLog(cnf, "hangup signal catched");
+			adjd::writeToLog(cnf, "hangup signal catched");
 		break;
 		case SIGTERM:
-			writeToLog(cnf, "terminate signal catched");
+			adjd::writeToLog(cnf, "terminate signal catched");
 		break;
 	}
 }
@@ -88,11 +89,11 @@ int main(int argc, char* argv[]) {
 	}
 
 	cnf.strLogFile = QString(argv[1]);
-	cnf.db_name = "jury";
-	cnf.db_user = "jury";
-	cnf.db_pass = "jury";
+	cnf.db_name = "freehackquest";
+	cnf.db_user = "freehackquest_u";
+	cnf.db_pass = "freehackquest_u";
 
-	writeToLog(cnf, "Daemon Start");
+	adjd::writeToLog(cnf, "Daemon Start");
 
     pid_t parpid, sid;
     
