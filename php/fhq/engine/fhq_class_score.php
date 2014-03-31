@@ -179,18 +179,18 @@ class fhq_score
 		$i = 0;
 			
 		if ($game_type == 'jeopardy') {
-			$scores[$i++] = '<h2>Quests</h2>';
+			$scores[$i++] = 'Quests';
 		}
 		
 		if ($game_type == 'attack-defence') {
-			$scores[$i++] = '<h2>Defence</h2>';
-			$scores[$i++] = '<h2>Offence</h2>';
-			$scores[$i++] = '<h2>Advisers</h2>';
-			$scores[$i++] = '<h2>Summary</h2>';
+			$scores[$i++] = 'Defence';
+			$scores[$i++] = 'Offence';
+			$scores[$i++] = 'Advisers';
+			$scores[$i++] = 'Summary';
 		}
 		
 		foreach($scores as $key => $value) {
-			$columns .= '<th>'.$value.'</th>';
+			$columns .= '<th><h2>'.$value.'</h2></th>';
 		}
 
 		echo '<center>Scoreboard</center>
@@ -248,7 +248,6 @@ class fhq_score
 				
 				$rows .= '<td><font size=3 color='.$color.'>'.$status.'</font></td>';
 			}
-			
 			foreach($scores as $key => $value) {
 				$rows .= '<td><h1>'.(isset($db_scores[$value]) ? $db_scores[$value] : 0).'</h1></td>';
 			}
