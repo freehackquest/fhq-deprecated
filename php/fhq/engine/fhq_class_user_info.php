@@ -219,16 +219,14 @@
 					// print_r($row);
 					// echo "[cnt = $cnt]";
 					if ($cnt == 0) {
-						$password = $_GET['pass'];
-						$role = $_GET['role'];
-						$password_hash = $security->tokenByData( array($password, $username, strtoupper($email)));
+						$password_hash = $security->tokenByData( array($pass, $username, strtoupper($email)));
 						$query = "INSERT user( username, password, nick, role, score, logo) VALUES ('$username','$password_hash','$nickname','$role', 0, '$logo');";
 						$result2 = $db->query($query);
-						echo "complited<br>";
+						echo "User registered<br>";
 					}
 					else
 					{
-						echo "user already exists<br>";
+						echo "<font color=#ff0000>user already exists</font><br>";
 					}
 			}
 			mysql_free_result($result);

@@ -48,6 +48,7 @@
 	
 	$config['registration'] = array();
 	$config['registration']['allow'] = 'yes';
+	$config['registration']['type'] = 'simple';
 	
-	$config['profile']['change_nick'] = 'no';
+	$config['profile']['change_nick'] = 'yes';
 ?>

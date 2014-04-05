@@ -89,9 +89,17 @@ function sign_in()
 				</table>
 			<center>';
 			include dirname(__FILE__)."/config/config.php";
-			if (isset($config['registration']['allow']) && $config['registration']['allow'] == 'yes')
+			if (isset($config['registration']['allow']) && $config['registration']['allow'] == 'yes') {
+				$type = isset($config['registration']['allow']) ? $config['registration']['type'] : 'email';
+				if ($type == 'email')
 					echo ' or <a class="btn btn-small btn-info" href="registration.php">Create new account</a>';
-					
+				else if ($type == 'simple')
+					echo ' or <a class="btn btn-small btn-info" href="registration2.php">Create new account</a>';
+				else
+					echo ' or unknown type of registration';
+			}
+			
+			
 		echo '</center>
 			<br><br>
 			<div id="result_auth"> </div>
