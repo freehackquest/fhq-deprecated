@@ -190,15 +190,18 @@ class fhq_score
 		}
 		
 		foreach($scores as $key => $value) {
-			$columns .= '<th><h2>'.$value.'</h2></th>';
+			if ($value != 'Quests')
+				$columns .= '<th><h2>'.$value.'</h2></th>';
+			else
+				$columns .= '<th><h2>Score</h2></th>';
 		}
 
 		echo '<center>Scoreboard</center>
 			<br>
 			<table cellspacing=2 cellpadding=10 class="alt" id="customers">
 				<tr class="alt">
-					<td>Place</td>
-					<td width="100">Team</td>
+					<td><h2>Place</h2></td>
+					<td width="100"><h2>User</h2></td>
 					'.$columns.'
 				</tr>
 		';

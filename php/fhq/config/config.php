@@ -48,4 +48,6 @@
 	
 	$config['registration'] = array();
 	$config['registration']['allow'] = 'yes';
+	
+	$config['profile']['change_nick'] = 'no';
 ?>

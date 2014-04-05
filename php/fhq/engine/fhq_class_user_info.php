@@ -10,6 +10,7 @@
 		{
 			$db = new fhq_database();
 			$security = new fhq_security();
+			include dirname(__FILE__)."/../config/config.php";
 
 			echo '<pre><a href="javascript:void(0);" id="reload_content" onclick="
 					document.getElementById(\'btn_user_info\').innerHTML = \''.mysql_real_escape_string(htmlspecialchars($security->nick())).'\';
@@ -32,27 +33,32 @@
 					<tr>
 						<td align="right">Your place:</td>
 						<td>'.$this->getPlace().' or look <a href=\'scoreboard.php\'>Scoreboard</a></td>
-					</tr>
-					<tr>
-						<td colspan=2 align="center">---------------</td>
-					</tr>
-					<tr>
-						<td align="right">Set your name to:</td>
-						<td><input id="edit_new_nick" type="text" value="'.$security->nick().'"/></td>
-					</tr>
-					<tr>
-						<td align="right"></td>
-						<td>
-							<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
-							load_content_page(\'user_set_new_my_nick\', 
-								{
-									nick : document.getElementById(\'edit_new_nick\').value
-								}
-							);
-						">Set new nick</a>	
-						</td>
-					</tr>
-					<tr>
+					</tr>';
+					
+					if (isset($config['profile']) && isset($config['profile']['change_nick']) && $config['profile']['change_nick'] == 'yes') {
+						echo '
+						<tr>
+							<td colspan=2 align="center">---------------</td>
+						</tr>
+						<tr>
+							<td align="right">Set your name to:</td>
+							<td><input id="edit_new_nick" type="text" value="'.$security->nick().'"/></td>
+						</tr>
+						<tr>
+							<td align="right"></td>
+							<td>
+								<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+								load_content_page(\'user_set_new_my_nick\', 
+									{
+										nick : document.getElementById(\'edit_new_nick\').value
+									}
+								);
+							">Set new nick</a>	
+							</td>
+						</tr>';
+					}
+					
+					echo '<tr>
 						<td colspan=2 align="center">---------------</td>
 					</tr>
 					<tr>
@@ -89,6 +95,11 @@
 		
 		function setNewMyNick($nick)
 		{
+			include dirname(__FILE__)."/../config/config.php";
+			if (isset($config['profile']) && isset($config['profile']['change_nick']) && $config['profile']['change_nick'] == 'no') {
+				return;
+			}
+			
 			// pass: 672f88b
 			$db = new fhq_database();
 			$security = new fhq_security();
