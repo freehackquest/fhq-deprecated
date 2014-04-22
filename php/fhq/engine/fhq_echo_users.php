@@ -65,6 +65,10 @@ function echo_users()
 	$bClass = false;
 
 	$result = $db->query( $query );
+		
+	include_once(dirname(__FILE__)."/SxGeo.php");
+	$SxGeo = new SxGeo(dirname(__FILE__).'/SxGeoCity.dat', SXGEO_BATCH | SXGEO_MEMORY);
+	
 	
 	while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
 	{  
@@ -171,7 +175,7 @@ function echo_users()
 					<td>$nick</td>
 					<td>$score</td>
 					<td>$role</td>
-					<td>$last_ip</td>
+					<td>$last_ip (".$SxGeo->get($last_ip).")</td>
 					<td>$date_last_signup</td>
 					<td>$admin_funcs</td>					
 		</tr>";
