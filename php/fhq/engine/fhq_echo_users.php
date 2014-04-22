@@ -165,7 +165,14 @@ function echo_users()
 			">Set new nick</a><br>';
 		}
 		$admin_funcs .= '</pre>';
-		
+
+		$cc = "";
+		$o = $SxGeo->get($last_ip);
+		if ($o) {
+			$cc = '('.$o['country'].'-'.$o['city'].')';
+		}
+	
+		print_r($SxGeo->get($last_ip));
 		if ($logo != '')
 			$logo = "<img src='$logo' width=100px/>";
 		echo "<tr $strclass>
@@ -175,14 +182,14 @@ function echo_users()
 					<td>$nick</td>
 					<td>$score</td>
 					<td>$role</td>
-					<td>$last_ip (".$SxGeo->get($last_ip).")</td>
+					<td>$last_ip $cc</td>
 					<td>$date_last_signup</td>
 					<td>$admin_funcs</td>					
 		</tr>";
 	}
 	mysql_free_result($result);
 	echo "</table>";
-
+	unset($SxGeo);
 	exit;
 };
 
