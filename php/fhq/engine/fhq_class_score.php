@@ -219,8 +219,9 @@ class fhq_score
 				idgame = '.$idgame.' 
 				and name = "Summary"
 				'.$role.'
-			ORDER BY scoreboard.score DESC
+			ORDER BY score2 DESC
 		';
+		// echo $query;
 		$result = $db->query($query);
 		$bClass = false;
 		$i = 0;
