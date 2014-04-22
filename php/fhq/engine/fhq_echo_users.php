@@ -172,7 +172,7 @@ function echo_users()
 			$cc = '('.$o['country'].'-'.$o['city'].')';
 		}
 	
-		print_r($SxGeo->get($last_ip));
+		// print_r($SxGeo->get($last_ip));
 		if ($logo != '')
 			$logo = "<img src='$logo' width=100px/>";
 		echo "<tr $strclass>
