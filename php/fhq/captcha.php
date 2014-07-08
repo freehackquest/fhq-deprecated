@@ -1,4 +1,4 @@
-﻿<?
+<?
   /*
     sea-kg: if not working: try for debian "sudo apt-get install php5-gd" and than restart apache
   */
@@ -12,8 +12,7 @@
 		$y_pos = 40;
 		for ( $i = 0; $i < strlen($str); $i++ )
 		{
-      echo "3.4";
-			$angle = mt_rand(-25, 25); // поворачива¤ еЄ на случайное количество градусов
+			$angle = mt_rand(-25, 25); // поворачивает на случайное количество градусов
 			imagettftext($img, $font_size, $angle, $x_pos, $y_pos, $color, $font_name, $str[$i]);
 			$x_pos = $x_pos + 35; // каждую следующую букву двигаем
 		}
@@ -41,7 +40,7 @@
 	//генерируем капчу
 	$captcha = create_capcha_image($str,"fonts/Bleeding_Cowboys.ttf","images/background_captcha.jpg");
 	//выводим, страница это типа картинка :) очень удобно
-//	header('Expires: Sat, 31 May 2008 05:00:00 GMT'); 
+	header('Expires: Sat, 31 May 2008 05:00:00 GMT'); 
 	header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 	header('Cache-Control: no-store, no-cache, must-revalidate'); 
 	header('Cache-Control: post-check=0, pre-check=0', FALSE); 
