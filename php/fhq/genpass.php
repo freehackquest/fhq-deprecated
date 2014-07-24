@@ -11,7 +11,8 @@
 		$registration = new fhq_registration();
 		$email = $_GET['login'];
 		$username = base64_encode(strtoupper($email));
-
+		$password = $_GET['pass'];
+		
 		$password_hash = $security->tokenByData( array($password, $username, strtoupper($email)));
 		
 		echo "New password: ".$password_hash." <br>";
