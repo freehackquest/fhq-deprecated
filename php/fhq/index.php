@@ -103,6 +103,9 @@ function sign_in()
 		echo '</center>
 			<br><br>
 			<div id="result_auth"> </div>
+			 <br><font size=1>see us in <a href="http://vk.com/freehackquest"> VK</a>
+               also you can write email on mrseakg(at)gmai1(d0t)c0m</font>
+
 ';
 	}
 };
