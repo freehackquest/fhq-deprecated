@@ -235,7 +235,7 @@ Text:
 		    $query = "INSERT INTO feedback_msg(feedback_id, msg, author, dt) VALUES($feedback_id, \"$answer_text\", ".$security->iduser().", now())";
 		    $result = $db->query($query);
 		    if($result != '1') return "error(feedback:5) query is not right: ".$query;
-        mysql_free_result($result);
+			// mysql_free_result($result);
         
         
         // send mail        
@@ -262,7 +262,8 @@ Feedback Answer:
 iduser: ".$security->iduser()."
 Nick: ".$security->nick()."
 Usermail: ".$security->email();
-            $mail->send_to_admin('Free-Hack-Quest: Answer On Feedback', $msg);
+			$error = "";
+            $mail->send_to_admin('Free-Hack-Quest: Answer On Feedback', $msg, $error);
           }
           else
           {

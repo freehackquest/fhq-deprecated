@@ -1,4 +1,5 @@
 <?
+	$rootdir = dirname(__FILE__);
 	include_once("$rootdir/../config/config.php");
 
 	//---------------------------------------------------------------------
@@ -9,8 +10,8 @@
 		{
 			include "config/config.php";
 			
-			if (isset($config['mail']['allow']) && $config['mail']['allow'] != 'yes' )
-				return false;
+			/*if (isset($config['mail']['allow']) && $config['mail']['allow'] != 'yes' )
+				return false;*/
 			
 			// Pear Mail Library
 			require_once "Mail.php";

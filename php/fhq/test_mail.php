@@ -2,36 +2,28 @@
 
 exit;
 
+include_once "config/config.php";
+include_once "engine/fhq_class_security.php";
+include_once "engine/fhq_class_database.php";
+include_once "engine/fhq_class_mail.php";
+
 if(!isset($_GET['email']))
 {
   echo "not found parametr ?email=";
   exit;
 };
 
+
 $email = $_GET['email'];
+echo "send to mail: ".$email."<br>";
+$security = new fhq_security();
+$db = new fhq_database();
+$mail = new fhq_mail();
+echo "mail created <br>";
 
-
-
-$subject = "Test Mail";
-
-$message = "
-<html>
-<head>
-  <title>$subject</title>
-</head>
-<body>
-Test Mail from Free-Hack-Quest!<br>
-</body>
-</html>
-";
-			
-			$headers  = 'MIME-Version: 1.0' . "\r\n";
-			$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-			$headers .= 'From: noreply@fhq.keva.su'."\r\n";
-			$headers .= 'Reply-To: noreply@fhq.keva.su'."\r\n";
-			$headers .= 'X-Mailer: PHP/'.phpversion();
-			
-			mail($email, $subject, $message, $headers);
-
-echo "sended to $email";
+$error = "";
+echo "try send email<br>";
+$mail->send($email,'','','Test Mail', 'Test messages', $error);
+echo "sended";
+echo $error;
 ?>

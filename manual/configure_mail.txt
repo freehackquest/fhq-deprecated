@@ -1,4 +1,9 @@
 I think that it is not needed now
 
+; root@debian# apt-get install php-pear
+; root@debian# pear install Mail-1.2.0
+; root@debian# pear install Net_SMTP
+
+
 root@debian# apt-get install ssmtp
 root@debian# apt-get install sendmail
