@@ -1,7 +1,7 @@
 <?
 
 if (!file_exists("config/config.php")) {
-	header ("Location: install/install_step1.php");
+	header ("Location: install/install_step01.php");
 	exit;
 };
 
