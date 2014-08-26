@@ -23,14 +23,15 @@ if($security->isLogged())
 	refreshTo("main.php");
 	return;
 };
-	
+
+
+
+
 class fhq_logon
 {
 	function title()
 	{
-		return "<h2> quest game, the system prompts, <br>
-						receipt and delivery of jobs in computer security.
-					</h2><br><br>";
+		return "";
 	}
 
 	function echo_head()
@@ -52,29 +53,24 @@ class fhq_logon
 		};
 
 		echo '
+			<div>
+				<a class="indextabulation" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/sign_in.html\');">sign in</a>
+				<a class="indextabulation" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/registration.html\');">registration</a>
+				<a class="indextabulation" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/about.html\');">what is it?</a>
+				<a class="indextabulation" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/contacts.html\');">contacts</a>
+				<a class="indextabulation" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/restore.html\');">restore</a>
+			</div>
+			<br>
+			<div class="indexcontent" id="indexcontent">
+				Hi man!
+			</div>
+			<br>
+';
+/*
+		echo '
 			<b>please, sign in to the system:</b><br>
 <script>
-function sign_in()
-{
-  if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
-     xmlhttp=new XMLHttpRequest();
-  };  
-  xmlhttp.onreadystatechange=function()
-  {
-    if (xmlhttp.readyState==4 && xmlhttp.status==200)
-	{
-		if(xmlhttp.responseText == "OK")
-			window.location.href = "main.php";
-		else
-			document.getElementById("result_auth").innerHTML=xmlhttp.responseText;
-	}
-  }
-  var email = document.getElementById(\'email\').value;
-  var password = document.getElementById(\'password\').value;
-  xmlhttp.open("GET","index.php?email="+email + "&password=" + password,true);
-  xmlhttp.send();
-}
+
 </script>			
 			<table cellspacing=10px cellpadding=10px>
 					<tr>
@@ -109,10 +105,8 @@ function sign_in()
 		echo '</center>
 			<br><br>
 			<div id="result_auth"> </div>
-			 <br><font size=1>see us in <a href="http://vk.com/freehackquest"> VK</a>
-               also you can write email on mrseakg(at)gmai1(d0t)c0m</font>
-
 ';
+* */
 	}
 };
 

@@ -67,3 +67,28 @@ p {
 	color:#000;
 	background-color:#f5f500;
 }
+
+.indextabulation {
+	display: inline;
+	padding: 10px;
+	color:#000000;
+	background-color:#FFFFF0;
+	font-family: "Courier New", Times, serif;
+	font-style: normal;
+	font-weight: bold;
+}
+
+.indextabulation:hover {
+	background: #786b59; /* Цвет фона под ссылкой */ 
+	color: #ffe; /* Цвет ссылки */ 
+} 
+
+.indexcontent {
+	display: block;
+	padding: 10px;
+	height: 200px;
+	color:#000000;
+	font-family: "Courier New", Times, serif;
+	font-style: normal;
+	font-weight: normal;
+}

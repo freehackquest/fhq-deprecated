@@ -103,7 +103,8 @@ class fhq_security
 
 	function tokenByData($arr)
 	{
-		include "config/config.php";
+		$curdir = dirname(__FILE__);
+		include $curdir."/../config/config.php";
 	
 		$data = "";
 		for($i = 0; $i < count($arr); $i++)
