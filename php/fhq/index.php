@@ -43,6 +43,10 @@ class fhq_logon
 		echo '';
 	}
 	
+	function get_onloadbody() {
+		return 'load_content_html(\'indexcontent\', \'pages/index/sign_in.html\');';
+	}
+	
 	function echo_content()
 	{
 		$error_msg = "";

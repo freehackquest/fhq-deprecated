@@ -18,9 +18,15 @@ $page->echo_head();
 
 echo '
 		<link rel="stylesheet" type="text/css" href="styles/body.css" />
-	</head>
-	<body class="main">
-		<center>
+	</head>';
+	
+if (method_exists($page, 'get_onloadbody')) {
+	echo '<body class="main" onload="'.$page->get_onloadbody().'">';
+} else {
+	echo '<body class="main">';
+}
+
+echo ' <center>
 			<table width="100%" height="100%">
 				<tr>
 					<td align="center" valign="middle">

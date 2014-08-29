@@ -35,7 +35,7 @@
 			{
 				
 				$subject = "Activation your account on FreeHackQuest.";
-				
+
 				$message = "
 	Registration:
 
@@ -139,7 +139,7 @@
 					file_put_contents($nfs_share."/new_user_$nickname.sh", $create_user_script);
 					
 					// create personal quests
-					{ // first
+					/*{ // first
 						$quest = new fhq_quest();
 						$quest->setEmptyAll();
 						$quest->setQuestName( "Secure Shell First" );
@@ -175,7 +175,7 @@
 						$quest->setAnswer( $answer2 );
 						$quest->setForPerson( $iduser );
 						$quest->insert();
-					}
+					}*/
 									
 				};
 			}

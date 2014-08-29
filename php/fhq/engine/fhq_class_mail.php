@@ -8,7 +8,7 @@
 	{
 		static function send($to_, $cc_, $bcc_, $subject, $body, &$errormsg)
 		{
-			include "config/config.php";
+			include dirname(__FILE__)."/../config/config.php";
 			
 			/*if (isset($config['mail']['allow']) && $config['mail']['allow'] != 'yes' )
 				return false;*/
@@ -46,7 +46,7 @@
 		
     function send_to_admin($subject, $body, &$errormsg)
     {
-      include "config/config.php";
+      include dirname(__FILE__)."/../config/config.php";
 			$security = new fhq_security();
 			$db = new fhq_database();
       $emails = "";
@@ -64,7 +64,7 @@
 
 		function send_to_all($subject, $body, $send_as_copies)
 		{
-			include "config/config.php";
+			include dirname(__FILE__)."/../config/config.php";
 			
 			if (isset($config['mail']['allow']) && $config['mail']['allow'] != 'yes' )
 				return false;

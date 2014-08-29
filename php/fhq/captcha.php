@@ -19,11 +19,11 @@
 		return $img;
 	};
 	
-	//генераци¤ случайной строки
+	//generate random string
 	function rc($count)
 	{
 		$chars="QWERTYUPASDFGHJKZXCVBNM"; //допустимые символы
-		$str = "";		
+		$str = "";
 		for ( $i = 0; $i < $count; $i++ )
 		{
 			$str = $str.$chars[rand(0, (strlen($chars)-1))];

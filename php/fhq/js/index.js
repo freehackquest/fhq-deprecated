@@ -32,7 +32,7 @@ function send_request(url, callbackf) {
 
 function sign_in()
 {
-	document.getElementById("error_message").innerHTML
+	document.getElementById("error_message").innerHTML = "";
 	
 	var email = document.getElementById('email').value;
 	var password = document.getElementById('password').value;
@@ -48,3 +48,29 @@ function sign_in()
 		}
 	);
 }
+
+function restore()
+{
+	document.getElementById("error_message").innerHTML = "";
+	document.getElementById("info_message").innerHTML = "Please wait...";
+	
+	var email = document.getElementById('email').value;
+	var captcha = document.getElementById('captcha').value;
+	
+	send_request(
+		"api/index/restore.php?email="+email + "&captcha=" + captcha,
+		function(obj) {
+			if (obj.result == "fail") {
+				document.getElementById("error_message").innerHTML = "<b>" + obj.error.message + "</b>";
+				document.getElementById("info_message").innerHTML = "";
+			} else {
+				document.getElementById("info_message").innerHTML = "<b>" + obj.data.message + "</b>";
+				document.getElementById("captcha").value = "";
+				document.getElementById("email").value = "";
+			}
+		}
+	);
+}
+
+
+
