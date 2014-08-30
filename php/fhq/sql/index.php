@@ -1,1 +1,3 @@
-What are you do? We have nothing...
+<?
+	header ("Location: ../");
+	exit;
