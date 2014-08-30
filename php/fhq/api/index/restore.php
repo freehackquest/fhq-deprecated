@@ -15,10 +15,11 @@ if (isset($_GET['email']) && isset($_GET['captcha'])) {
 	$captcha = $_GET['captcha'];
 
 	$orig_captcha = $_SESSION['captcha_reg'];
-	
+	$_SESSION['captcha_reg'] = md5(rand().rand());
+
 	if( strtoupper($captcha) == strtoupper($orig_captcha) ) {
 		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			$username = base64_encode(strtoupper($email));	
+			$username = base64_encode(strtoupper($email));
 			$db = new fhq_database();
 			$qresult = $db->query("select * from user where username = '$username';");
 			if( $db->count( $qresult ) == 1 )

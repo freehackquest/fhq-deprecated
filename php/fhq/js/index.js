@@ -68,6 +68,7 @@ function restore()
 				document.getElementById("captcha").value = "";
 				document.getElementById("email").value = "";
 			}
+			document.getElementById('captcha_image').src = 'captcha.php?rid=' + Math.random();
 		}
 	);
 }
