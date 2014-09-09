@@ -48,8 +48,6 @@ if (isset($_GET['email']) && isset($_GET['captcha'])) {
 						$result['error']['code'] = '107';
 						$result['error']['message'] = 'Error 107: Problem with sending email. '.$error;
 					}
-					/*$result['result'] = 'ok';
-					$result['data']['message'] = 'Check your your e-mail (also check spam). '.$password;*/
 				} else {
 					$result['error']['code'] = '106';
 					$result['error']['message'] = 'Error 106: Registration is denied.';
