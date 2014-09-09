@@ -8,7 +8,8 @@
 	{
 		function addEmailAndSendMail($email)
 		{
-			include "config/config.php";
+			$rootdir2 = dirname(__FILE__);
+			include "$rootdir2/../config/config.php";
 			
 			if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 				echo "<font color=#ff0000>Invalid e-mail address.</font>";

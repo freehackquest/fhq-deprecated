@@ -73,5 +73,29 @@ function restore()
 	);
 }
 
+function registration()
+{
+	document.getElementById("error_message").innerHTML = "";
+	document.getElementById("info_message").innerHTML = "Please wait...";
+	
+	var email = document.getElementById('email').value;
+	var captcha = document.getElementById('captcha').value;
+	
+	send_request(
+		"api/index/registration.php?email="+email + "&captcha=" + captcha,
+		function(obj) {
+			if (obj.result == "fail") {
+				document.getElementById("error_message").innerHTML = "<b>" + obj.error.message + "</b>";
+				document.getElementById("info_message").innerHTML = "";
+			} else {
+				document.getElementById("info_message").innerHTML = "<b>" + obj.data.message + "</b>";
+				document.getElementById("captcha").value = "";
+				document.getElementById("email").value = "";
+			}
+			document.getElementById('captcha_image').src = 'captcha.php?rid=' + Math.random();
+		}
+	);
+}
+
 
 

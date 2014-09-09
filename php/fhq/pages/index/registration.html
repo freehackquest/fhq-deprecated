@@ -1,56 +1,32 @@
-registration <a href="registration.php">here</a>
-
-<!-- 
+<!-- registration <a href="registration.php">here</a> -->
+<center>
+<b>create new account</b>
 <table cellspacing=10px cellpadding=10px>
-					<tr>
-						<td>Write your e-mail:</td>
-						<td><input name="email" id="user_email" value="" type="text"></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td>
-							<img src="captcha.php" id="captcha-image"/><br>
-							<a class="btn" href="javascript:void(0);" onclick="document.getElementById('captcha-image').src = 'captcha.php?rid=' + Math.random();">Refresh Capcha</a>
-							<br>
-							
-						</td>
-					</tr>
-					<tr>
-						<td>Captcha</td>
-						<td><input name="captcha" id="user_captcha" value="" type="text"></td>
-					</tr>
-					<tr>
-						<td colspan = "2">
-							
-							<center>
-								<br>
-<script>
-function sendQuery(str)
-{
-  document.getElementById("answer").innerHTML="<img width=100px src='images/sending.gif'>";
-
-  if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
-     xmlhttp=new XMLHttpRequest();
-  };  
-  xmlhttp.onreadystatechange=function()
-  {
-    if (xmlhttp.readyState==4 && xmlhttp.status==200)
-	{
-	  document.getElementById("answer").innerHTML=xmlhttp.responseText;
-	}
-  }
-  var email = document.getElementById('user_email').value;
-  var captcha = document.getElementById('user_captcha').value;
-  xmlhttp.open("GET","registration.php?email="+email + "&captcha=" + captcha,true);
-  xmlhttp.send();
-}
-</script>
-									<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="sendQuery();">Send query</a>
-									<br><br>
-									
-								</center>
-							</td>
-						</tr>
-					</table>
---> 
+	<tr>
+		<td>E-mail</td>
+		<td><input name="email" id="email" value="" type="text" onkeydown="if (event.keyCode == 13) restore();"></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<img src="captcha.php" id="captcha_image"/><br>
+			<a href="javascript:void(0);" onclick="document.getElementById('captcha_image').src = 'captcha.php?rid=' + Math.random();">Refresh Capcha</a>
+			<br>
+			
+		</td>
+	</tr>
+	<tr>
+		<td>Captcha</td>
+		<td><input name="captcha" id="captcha" value="" type="text" onkeydown="if (event.keyCode == 13) restore();"></td>
+	</tr>
+	<tr>
+		<td colspan=2>
+			<center>
+				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="registration();">ok</a>
+			</center>
+		</td>
+	</tr>
+</table>
+</center>
+<font id="info_message"></font>
+<font id="error_message" color='#ff0000'></font>
