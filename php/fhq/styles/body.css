@@ -81,7 +81,19 @@ p {
 .indextabulation:hover {
 	background: #786b59; /* Цвет фона под ссылкой */ 
 	color: #ffe; /* Цвет ссылки */ 
-} 
+}
+
+.index_menu {
+	outline: none;
+	display: inline;
+	padding: 10px;
+}
+
+.index_menu:focus {
+	outline: none;
+	display: inline;
+	padding: 10px;
+}
 
 .indexcontent {
 	display: block;

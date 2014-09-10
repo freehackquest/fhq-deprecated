@@ -57,12 +57,12 @@ class fhq_logon
 		};
 
 		echo '
-			<div>
-				<a class="indextabulation" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/sign_in.html\');">sign in</a>
-				<a class="indextabulation" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/registration.html\');">registration</a>
-				<a class="indextabulation" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/about.html\');">what is it?</a>
-				<a class="indextabulation" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/contacts.html\');">contacts</a>
-				<a class="indextabulation" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/restore.html\');">restore</a>
+			<div class="index_menu">
+				<a class="index_menu" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/sign_in.html\');"><img src="images/index/signin.png"/></a>
+				<a class="index_menu" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/registration.html\');"><img src="images/index/registration.png"/></a>
+				<a class="index_menu" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/about.html\');"><img src="images/index/about.png"/></a>
+				<a class="index_menu" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/contacts.html\');"><img src="images/index/contacts.png"/></a>
+				<a class="index_menu" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/restore.html\');"><img src="images/index/restore.png"/></a>
 			</div>
 			<br>
 			<div class="indexcontent" id="indexcontent">
@@ -70,47 +70,6 @@ class fhq_logon
 			</div>
 			<br>
 ';
-/*
-		echo '
-			<b>please, sign in to the system:</b><br>
-<script>
-
-</script>			
-			<table cellspacing=10px cellpadding=10px>
-					<tr>
-						<td>E-mail</td>
-						<td><input name="email" id="email" value="" type="text" onkeydown="if (event.keyCode == 13) sign_in();"></td>
-					</tr>
-					<tr>
-						<td>Password</td>
-						<td><input name="password" id="password" value="" type="password"  onkeydown="if (event.keyCode == 13) sign_in();"></td>
-					</tr>
-					<tr>
-						<td colspan = "2">
-							<center>					
-								<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="sign_in();">Sign in</a>
-							</center>
-						</td>
-					</tr>
-				</table>
-			<center>';
-			include dirname(__FILE__)."/config/config.php";
-			if (isset($config['registration']['allow']) && $config['registration']['allow'] == 'yes') {
-				$type = isset($config['registration']['allow']) ? $config['registration']['type'] : 'email';
-				if ($type == 'email')
-					echo ' or <a class="btn btn-small btn-info" href="registration.php">Create new account</a>';
-				else if ($type == 'simple')
-					echo ' or <a class="btn btn-small btn-info" href="registration2.php">Create new account</a>';
-				else
-					echo ' or unknown type of registration';
-			}
-			
-			
-		echo '</center>
-			<br><br>
-			<div id="result_auth"> </div>
-';
-* */
 	}
 };
 
@@ -119,30 +78,6 @@ class fhq_logon
 if(isset($_SESSION['iduser']) && isset($_SESSION['email']))
 {
 	refreshTo("main.php");
-};
-
-if( isset( $_GET['email']) && isset($_GET['password']) )
-{
-	if(strlen($_GET['email']) == 0)
-	{
-			echo "<font color=#ff0000>E-mail must be is not empty</font>";
-			exit;
-	}
-	
-	if(strlen($_GET['password']) == 0)
-	{
-			echo "<font color=#ff0000>Password must be is not empty</font>";
-			exit;
-	}
-
-	$security = new fhq_security();
-
-	if( $security->login($_GET['email'], $_GET['password']) )
-		echo "OK";
-	else
-		echo "<font color=#ff0000>Invalid: e-mail or/and password</font>";
-
-	exit;
 };
 
 $logon = new fhq_logon();
