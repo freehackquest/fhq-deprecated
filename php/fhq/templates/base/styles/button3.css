@@ -1,5 +1,5 @@
 .button3 {
-	# display: inline-block;
+	display: inline-block;
 	font-family: Tempus Sans ITC;
 	background: #606060;
 	padding: 3px;
@@ -17,6 +17,7 @@
 }
 
 .button3-menu {
+	display: inline;
 	padding:8px 20px 8px 20px;
 }
 
