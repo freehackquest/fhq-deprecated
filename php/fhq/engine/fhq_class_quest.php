@@ -308,7 +308,7 @@ class fhq_quest
 		<tr>
 			<td></td>
 			<td><br>
-			<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+			<a class="button3" href="javascript:void(0);" onclick="
 				var quest_name = document.getElementById(\'quest_name\').value;
 				var quest_short_text = document.getElementById(\'quest_short_text\').value;
 				var quest_full_text = document.getElementById(\'quest_full_text\').value;
@@ -479,7 +479,7 @@ class fhq_quest
 			{
 				echo '
 				<input id="answer_for_quest" type="text"/>
-				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+				<a class="button3" href="javascript:void(0);" onclick="
 				var answer_for_quest = document.getElementById(\'answer_for_quest\').value;
 				load_content_page(\'pass_quest\', { id : '.$idquest.', \'answer\' : answer_for_quest } );
 				">Pass Quest</a>
@@ -493,7 +493,7 @@ class fhq_quest
 		else
 		{    		
 			echo '<br>
-				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'take_quest\', { id : '.$idquest.'} );">Take Quest</a>
+				<a class="button3" href="javascript:void(0);" onclick="load_content_page(\'take_quest\', { id : '.$idquest.'} );">Take Quest</a>
 				<br> <font size=1>It will be move to the \'process\'</font>';
 		}
 		
@@ -514,8 +514,8 @@ class fhq_quest
 					{
 						$file = 'files/'.$entry;
 						echo '<div class="alert alert-info">'.$file.'
-							<a class="btn btn-small btn-info" target="_blank" href="'.$file.'">Open</a>
-							<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+							<a class="button3" target="_blank" href="'.$file.'">Open</a>
+							<a class="button3" href="javascript:void(0);" onclick="
 								if(delete_file())
 								{
 									load_content_page(\'remove_file\', { id : '.$idquest.', file : \''.$file.'\' } );
@@ -531,7 +531,7 @@ class fhq_quest
 			echo '</p>
 						<input name="file" id="file" size="27" type="file" required multiple />
 						
-						<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+						<a class="button3" href="javascript:void(0);" onclick="
 							
 							var files = document.getElementById(\'file\').files;
 							// upload_file(files,'.$idquest.');
@@ -539,13 +539,13 @@ class fhq_quest
 						">Upload</a><br><br>
 					';
 			
-			echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+			echo '<a class="button3" href="javascript:void(0);" onclick="
 				load_content_page(\'edit_quest\', { id : '.$idquest.' } );
 				">Edit Quest</a>
 
-            <a class="btn btn-small btn-info" href="content_page.php?content_page=export_quest&id='.$idquest.'">Export</a>
+            <a class="button3" href="content_page.php?content_page=export_quest&id='.$idquest.'">Export</a>
 
-				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+				<a class="button3" href="javascript:void(0);" onclick="
 					if(delete_quest())
 					{
 						load_content_page(\'delete_quest\', { id : '.$idquest.'} );

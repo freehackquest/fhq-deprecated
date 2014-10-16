@@ -14,7 +14,7 @@
 				<textarea class="full_text" id="news_text"></textarea>
 				<br>
         <input type="checkbox" id="send_as_copies" />  Send as copies  <br>
-				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+				<a class="button3" href="javascript:void(0);" onclick="
 					var news_text = document.getElementById(\'news_text\').value;
           var send_as_copies = document.getElementById(\'send_as_copies\').checked;          
 					load_content_page(\'add_news\', { \'text\' : news_text, \'send_as_copies\' : send_as_copies } );
@@ -72,7 +72,7 @@
 				if($iduser == $security->iduser())
 				{
 					echo '<hr><textarea id="news_text_'.$id_news.'">'.htmlspecialchars($text).'</textarea>
-					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+					<a class="button3" href="javascript:void(0);" onclick="
 					var news_text = document.getElementById(\'news_text_'.$id_news.'\').value;
 					load_content_page(\'save_news\', { \'id\' : '.$id_news.', \'text\' : news_text });
 				">Save</a>';

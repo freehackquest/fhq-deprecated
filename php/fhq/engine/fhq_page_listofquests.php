@@ -133,7 +133,7 @@ class fhq_page_listofquests
 		{
 			echo "No found quests.<br>
 				Try change game.";
-			echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'games\');">Games</a>';
+			echo '<a class="button3" href="javascript:void(0);" onclick="load_content_page(\'games\');">Games</a>';
 			return;
 		};
 

@@ -4,7 +4,7 @@ class fhq_page_registration2
 {
 	function title()
 	{
-		return 'Create new account<br><font size=2><a class="btn btn-small btn-info" href="index.php">&larr; go to main page</a></font>';
+		return 'Create new account<br><font size=2><a class="button3" href="index.php">&larr; go to main page</a></font>';
 	}
 
 	function echo_head()
@@ -86,7 +86,7 @@ function sendQuery(str)
   xmlhttp.send();
 }
 </script>
-									<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="sendQuery();">Send query</a>
+									<a class="button3" href="javascript:void(0);" onclick="sendQuery();">Send query</a>
 									<br><br>
 									
 								</center>

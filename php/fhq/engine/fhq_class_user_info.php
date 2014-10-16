@@ -47,7 +47,7 @@
 						<tr>
 							<td align="right"></td>
 							<td>
-								<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+								<a class="button3" href="javascript:void(0);" onclick="
 								load_content_page(\'user_set_new_my_nick\', 
 									{
 										nick : document.getElementById(\'edit_new_nick\').value
@@ -76,7 +76,7 @@
 					<tr>
 						<td></td>
 						<td>
-						<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+						<a class="button3" href="javascript:void(0);" onclick="
 							load_content_page(\'user_set_new_password\', 
 								{
 									old_password : document.getElementById(\'old_password\').value,
@@ -191,7 +191,7 @@
 				
 				Logo: <input type="text" id="logo" name="logo" value=""/> <br>
 				<br>
-				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+				<a class="button3" href="javascript:void(0);" onclick="
 					var login = document.getElementById(\'login\').value;
 					var pass = document.getElementById(\'pass\').value;
 					var nick = document.getElementById(\'nick\').value;

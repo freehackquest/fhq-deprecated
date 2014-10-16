@@ -10,7 +10,7 @@ class fhq_security
 	function login($email, $password)
 	{
 		// echo 1;
-
+	
 		unset($_SESSION['user']);
 
 		if(!$this->isLogged())

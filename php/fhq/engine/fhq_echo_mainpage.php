@@ -55,9 +55,9 @@ function echo_mainpage($page)
 	echo '<body onload="'.$onload.'" class="main">
 	<center>
 	<table cellspacing=10px cellpadding=10px width="100%" height="100%">
-		<tr bgcolor="#FFFFF0">
+		<tr bgcolor="#e4e4e4">
 			<td width=100 valign="top">
-				<a href="?"><img src="images/minilogo.png"/></a><br><br>
+				<a href="?"><img src="templates/base/images/minilogo.png"/></a><br><br>
 				<center>'.$game_info.'<br><font size=1>change game in menu \'games\'</font>
 				</center>
 			</td>
@@ -81,7 +81,7 @@ function echo_mainpage($page)
 		<tr>
 			<td colspan="2">
 				<center>
-					<font size=1>© 2011-2014 sea-kg, logo disign by StarOsta</font>
+					<font size=1>Copyright © 2011-2014 sea-kg. Design by Taisiya Lebedeva.</font>
 					<!-- pre><div id="debug_info"/></pre -->
 				</center>
 			</td>

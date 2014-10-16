@@ -23,7 +23,7 @@
 					<tr>
 						<td align="right"></td>
 						<td>
-							<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+							<a class="button3" href="javascript:void(0);" onclick="
 								var adviser_title = document.getElementById(\'adviser_title\').value;
 								var adviser_text = document.getElementById(\'advisers_text\').value;
 								load_content_page2(\'advisers\', { \'adviser_text\' : adviser_text, \'adviser_title\' : adviser_title } );
@@ -114,7 +114,7 @@
 					if($i == $number_page)
 						echo ' [ '.($i+1).' ] ';
 					else
-						echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page2(\'advisers\', { number_of_page : \''.$i.'\'} );">'.($i+1).'</a>';
+						echo '<a class="button3" href="javascript:void(0);" onclick="load_content_page2(\'advisers\', { number_of_page : \''.$i.'\'} );">'.($i+1).'</a>';
 				}
 			}
 			echo '<br><br>';
@@ -161,7 +161,7 @@
 				
 				if ($isAdmin) {
 					$form_change = '<input type="text" id="adviser_mark_'.$id_adviser.'" value="'.$mark.'"/>
-					<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+					<a class="button3" href="javascript:void(0);" onclick="
 								var adviser_mark = document.getElementById(\'adviser_mark_'.$id_adviser.'\').value;
 								load_content_page(\'adviser_set_mark\', { 
 									\'adviser_mark\' : adviser_mark, 

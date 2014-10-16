@@ -12,7 +12,7 @@ class fhq_page_income
 		<script language="Javascript" type="text/javascript" src="js/jquery-1.4.1.js"></script>
 		<script language="Javascript" type="text/javascript" src="js/jquery.lwtCountdown-1.0.js"></script>
 		<script language="Javascript" type="text/javascript" src="js/misc.js"></script>
-		<link rel="Stylesheet" type="text/css" href="styles/precour.css"></link>
+		<link rel="Stylesheet" type="text/css" href="templates/base/styles/precour.css"></link>
 		<script>
 			function exit()
 			{
@@ -39,7 +39,7 @@ class fhq_page_income
 	
 	function title()
 	{
-		return 'coming soon...<br><font size=2><a class="btn btn-small btn-info" href="javascript:void(0);" onclick="exit();">logout</a></font> ';
+		return 'coming soon...<br><font size=2><a class="button3" href="javascript:void(0);" onclick="exit();">logout</a></font> ';
 	}
 
 	function echo_content()

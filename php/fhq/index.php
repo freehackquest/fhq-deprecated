@@ -58,11 +58,11 @@ class fhq_logon
 
 		echo '
 			<div class="index_menu">
-				<a class="index_menu" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/sign_in.html\');"><img src="images/index/signin.png"/></a>
-				<a class="index_menu" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/registration.html\');"><img src="images/index/registration.png"/></a>
-				<a class="index_menu" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/about.html\');"><img src="images/index/about.png"/></a>
-				<a class="index_menu" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/contacts.html\');"><img src="images/index/contacts.png"/></a>
-				<a class="index_menu" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/restore.html\');"><img src="images/index/restore.png"/></a>
+				<a class="index_menu" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/sign_in.html\');"><img src="templates/base/images/index/signin.png"/></a>
+				<a class="index_menu" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/registration.html\');"><img src="templates/base/images/index/registration.png"/></a>
+				<a class="index_menu" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/about.html\');"><img src="templates/base/images/index/about.png"/></a>
+				<a class="index_menu" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/contacts.html\');"><img src="templates/base/images/index/contacts.png"/></a>
+				<a class="index_menu" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/restore.html\');"><img src="templates/base/images/index/restore.png"/></a>
 			</div>
 			<br>
 			<div class="indexcontent" id="indexcontent">

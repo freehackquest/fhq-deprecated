@@ -10,14 +10,14 @@ function echo_shortpage($page)
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title> Free-Hack-Quest </title>
-		<link rel="stylesheet" type="text/css" href="styles/site.css" />
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css" />
 		<script type="text/javascript" src="js/index.js"></script>
 	';
 
 $page->echo_head();
 
 echo '
-		<link rel="stylesheet" type="text/css" href="styles/body.css" />
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css" />
 	</head>';
 	
 if (method_exists($page, 'get_onloadbody')) {
@@ -33,7 +33,7 @@ echo ' <center>
 						<table>				
 							<tr>
 								<td><center><br>
-								<img src="images/mainlogo.png"/></center></td>
+								<img src="templates/base/images/mainlogo.png"/></center></td>
 							</tr>
 							<tr>
 								<td > 
@@ -51,7 +51,7 @@ echo ' <center>
 				<tr>
 					<td>
 						<center>
-							<font face="Arial" >Copyright © 2012-2014 sea-kg. Logo designed by Таисия Лебедева.</font>
+							<font face="Arial" >Copyright © 2011-2014 sea-kg. Design by Taisiya Lebedeva.</font>
 						</center>
 					</td>
 				</tr>

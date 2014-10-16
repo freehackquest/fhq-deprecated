@@ -54,7 +54,7 @@
 				<br><br>
 				<textarea class="full_text" id="full_text">'.$this->full_text.'</textarea>
 				<br><br>
-				<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+				<a class="button3" href="javascript:void(0);" onclick="
 					var e = document.getElementById(\'feedback_type\');
 					var feedback_type = e.options[e.selectedIndex].value;
 					var full_text = document.getElementById(\'full_text\').value;
@@ -78,8 +78,8 @@
 			echo '
 	<table>
 		<tr><td width="30px"/>
-		<td><a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'feedback_my\');">My Feedbacks</a></td><td width="30px"/>
-		<td><a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'feedback_add\');">New Feedback</a></td><td width="30px">
+		<td><a class="button3" href="javascript:void(0);" onclick="load_content_page(\'feedback_my\');">My Feedbacks</a></td><td width="30px"/>
+		<td><a class="button3" href="javascript:void(0);" onclick="load_content_page(\'feedback_add\');">New Feedback</a></td><td width="30px">
 		</tr>
 		</table><br><br>
 ';
@@ -198,7 +198,7 @@ Text:
 						Answer:
 						<!-- onkeydown="if (event.keyCode == 13) send_answer'.$id.'();" -->
 						<input id="answer_text_'.$id.'" type="text"/>
-						<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="							
+						<a class="button3" href="javascript:void(0);" onclick="							
 							var answer_text = document.getElementById(\'answer_text_'.$id.'\').value;
 							load_content_page(\'feedback_add\', { \'feedback_id_token\': \''.$token.'\', \'answer_text\' : answer_text, \'feedback_id\' : \''.$id.'\'});
 						">Send</a>

@@ -1,0 +1,115 @@
+
+@font-face {
+	font-family: Pompadur; /* Гарнитура шрифта */
+	src: url(../fonts/font_for_captcha.ttf); /* Путь к файлу со шрифтом */
+}
+
+@font-face {
+	font-family: Tempus Sans ITC; 
+	src: url(../fonts/TEMPSITC.ttf); /* Путь к файлу со шрифтом */
+}
+
+
+
+   
+/*body.main
+{
+	background-color: #000000;
+	color: #a9a9a9;
+	font: 12pt/10pt Pompadur;
+}
+*/
+
+body.main
+{
+	background-color: #FFFFFF;
+	line-height:40px;
+	color:#333333;
+	font: 12pt/10pt Pompadur;
+	
+}
+
+p {
+  line-height: 40px;
+}
+
+/*цвет ссылок */
+/*body a:link
+{
+	color: #333333;
+}*/
+
+/*цвет посещенных ссылок */
+/*body a:visited
+{
+	color: #333333;
+}*/
+
+#customers
+{
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	width:100%;
+	border-collapse:collapse;
+}
+#customers td, #customers th 
+{
+	font-size:13px;
+	border:1px solid #f5f5f5;
+	padding:3px 7px 2px 7px;
+}
+#customers th 
+{
+	font-size:13px;
+	text-align:left;
+	padding-top:5px;
+	padding-bottom:4px;
+	background-color:#f5f5f5;
+	color:#000;
+}
+#customers tr.alt td 
+{
+	color:#000;
+	background-color:#f5f5f5;
+}
+#customers tr.alt2 td 
+{
+	color:#000;
+	background-color:#f5f500;
+}
+
+.indextabulation {
+	display: inline;
+	padding: 10px;
+	color:#000000;
+	background-color:#FFFFF0;
+	font-family: "Courier New", Times, serif;
+	font-style: normal;
+	font-weight: bold;
+}
+
+.indextabulation:hover {
+	background: #786b59; /* Цвет фона под ссылкой */ 
+	color: #ffe; /* Цвет ссылки */ 
+}
+
+.index_menu {
+	outline: none;
+	display: inline;
+	padding: 10px;
+}
+
+.index_menu:focus {
+	outline: none;
+	display: inline;
+	padding: 10px;
+}
+
+.indexcontent {
+	display: block;
+	padding: 10px;
+	height: 200px;
+	color:#000000;
+	font-family: "Courier New", Times, serif;
+	font-style: normal;
+	font-weight: normal;
+}

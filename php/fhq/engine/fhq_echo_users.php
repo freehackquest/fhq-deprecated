@@ -39,7 +39,7 @@ function echo_users()
 			if($i == $page)
 				echo ' [ '.($i+1).' ] ';
 			else
-				echo '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="load_content_page(\'users\', { page : \''.$i.'\'} );">'.($i+1).'</a>';
+				echo '<a class="button3" href="javascript:void(0);" onclick="load_content_page(\'users\', { page : \''.$i.'\'} );">'.($i+1).'</a>';
 		}
 	}
 	echo '<br><br>';
@@ -96,7 +96,7 @@ function echo_users()
 		if(substr($password , 0, 12) == 'notactivated')
 		{
 			$admin_funcs .= '<br><br/>url for activate account: <br/><b>http://fhq.keva.su/registration.php?foractivate='.substr($password , 12, 32).'</b><br/><br/>';
-			$admin_funcs .= '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+			$admin_funcs .= '<a class="button3" href="javascript:void(0);" onclick="
 				load_content_page(\'send_mail_again\', 
 					{
 						page : '.$page.',
@@ -106,7 +106,7 @@ function echo_users()
 				);
 			">Send mail again</a> ';
 			
-			$admin_funcs .= ' <a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+			$admin_funcs .= ' <a class="button3" href="javascript:void(0);" onclick="
 			
 				if(delete_user())
 				{
@@ -138,7 +138,7 @@ function echo_users()
 				}
 				$admin_funcs .= '</select>';
 
-				$admin_funcs .= '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+				$admin_funcs .= '<a class="button3" href="javascript:void(0);" onclick="
 				
 					var role = document.getElementById(\''.$idelem.'_select_new_role\').value;
 					load_content_page(\'user_set_new_role\', 
@@ -154,7 +154,7 @@ function echo_users()
 			
 			$admin_funcs .= '<input id="'.$idelem.'_edit_new_nick" type="text" value="'.$nick.'"/>';
 
-			$admin_funcs .= '<a class="btn btn-small btn-info" href="javascript:void(0);" onclick="
+			$admin_funcs .= '<a class="button3" href="javascript:void(0);" onclick="
 				load_content_page(\'user_set_new_nick\', 
 					{
 						page : '.$page.',
