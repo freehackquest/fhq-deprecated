@@ -1,0 +1,8 @@
+you must download 
+framework yii-1.1.14 to folder "framework"
+from this:
+https://github.com/yiisoft/yii/tree/1.1.14/framework
+
+see example script in doqnload-yii.sh
+
+
