@@ -1,0 +1,15 @@
+\section{Не авторизованный запрос}
+\par
+Если вы обратились к апи системы
+и вы не были авторизованы или ваш сессия была анулированна то
+вы получите следующее сообщение об ошибке:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": "200",
+        "message": "Error 200: not authorized request"
+    }
+}
+\end{Verbatim}

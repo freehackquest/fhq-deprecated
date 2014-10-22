@@ -1,0 +1,41 @@
+\subsection{user.list}
+Возвращает список пользователей с краткой информацией о них
+
+Используется пагинация \\
+Список зарегистрированных пользователей.
+
+Входные параметры:
+\begin{itemize}
+  \item \textbf{нет}
+\end{itemize}
+
+\subsubsection{Example 1}
+\begin{Verbatim}[frame=single]
+https://api.example.com/method/user.list?access_token={token}
+\end{Verbatim}
+
+\subsubsection{Example 2}
+\begin{Verbatim}[frame=single]
+https://api.example.com/method/user.list?page=0
+\end{Verbatim}
+
+\subsection{user.list - modify}
+
+\par
+Хотелось бы также сортировку по:
+\begin{itemize}
+  \item \textbf{nick} - Никнейм пользователя
+  \item \textbf{last\_activity} - Дата последней активности
+\end{itemize}
+
+\par
+Хотелось бы также мочь фильтровать по:
+\begin{itemize}
+  \item \textbf{nick} - Никнейм пользователя
+  \item \textbf{last\_activity\_begin} - Дата последней активности начиная с такой то даты
+  \item \textbf{last\_activity\_end} - Дата последней активности до такой то даты
+  \item \textbf{country} - страна (собранная инфа по ip адресам)
+  \item \textbf{city} - город (собранная инфа по ip адресам)
+  \item \textbf{team} - по текущей команде
+  \item \textbf{activation} - По статусу активации
+\end{itemize}
