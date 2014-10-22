@@ -2,14 +2,16 @@
 
 function echo_head($page)
 {
+	$template = isset($_SESSION['user']['template']) ? $_SESSION['user']['template'] : 'base';
+	
 	echo '
 <head>
 	<title> Free-Hack-Quests </title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf8">
 
-	<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css" />
-	<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css" />
-	<link rel="stylesheet" type="text/css" href="templates/base/styles/button3.css" />
+	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/body.css" />
+	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/site.css" />
+	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/button3.css" />
 	<!-- script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script -->
 	<!-- script src="http://malsup.github.com/jquery.form.js"></script -->	
 	<script type="text/javascript" src="js/fhq_echo_head.js"></script>

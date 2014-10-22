@@ -160,6 +160,14 @@
 		$user_info->echo_info();
 		exit;
 	}
+	else if ($content_page == "user_set_template")
+	{
+		$user_info = new fhq_user_info();
+		if(isset($_GET['template']) && file_exists('templates/'.$_GET['template']))
+			$_SESSION['user']['template'] = $_GET['template'];
+		$user_info->echo_info();
+		exit;
+	}
 	else if($content_page == "statistics"  && ($security->isAdmin() || $security->isTester()))
 	{
 		include_once "engine/fhq_echo_statistics.php";

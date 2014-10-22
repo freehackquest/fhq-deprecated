@@ -90,6 +90,23 @@
 					<tr>
 						<td colspan=2 align="center">---------------</td>
 					</tr>
+					<tr>
+						<td><select id="template">
+							<option selected value="base">base</option>
+							<option value="dark">dark</option>
+						</select><br>
+						current style: '.$_SESSION['user']['template'].'
+						</td>
+						<td>
+						<a class="button3" href="javascript:void(0);" onclick="
+							load_content_page(\'user_set_template\', 
+								{
+									template : document.getElementById(\'template\').value
+								}
+							);
+						">Set new style</a>
+						</td>
+					</tr>
 				</table></pre>';
 		}
 		

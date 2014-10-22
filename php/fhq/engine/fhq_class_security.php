@@ -30,6 +30,7 @@ class fhq_security
 				$_SESSION['user']['nick'] = mysql_result($result, 0, 'nick');
 				$_SESSION['user']['score'] = mysql_result($result, 0, 'score');
 				$_SESSION['user']['role'] = mysql_result($result, 0, 'role');
+				$_SESSION['user']['template'] = 'base';
 				$last_ip = $_SERVER['REMOTE_ADDR'];
 				$db->query("update user set date_last_signup = NOW(), last_ip = '$last_ip' where username = '$username'");
 				return true;
