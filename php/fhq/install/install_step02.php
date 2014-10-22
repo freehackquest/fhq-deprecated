@@ -120,6 +120,8 @@
 			  `id_game` int(10) unsigned DEFAULT NULL,
 			  `min_score` int(10) DEFAULT '0',
 			  `for_person` bigint(20) DEFAULT '0',
+			  `idauthor` bigint(20) DEFAULT '0',
+			  `author` varchar(50) DEFAULT NULL,
 			  PRIMARY KEY (`idquest`)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
 		$conn->query($table_quest);

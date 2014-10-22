@@ -622,6 +622,21 @@
 		echo $score->recalculate_score();
 		exit;
 	}
+	else if ($content_page == "profile")
+	{
+		if (!isset($_GET['user_id']))
+		{
+			echo "User doesn't found";
+			exit;
+		}
+		else
+		{
+			$user_id = intval($_GET['user_id']);
+			$profile = new fhq_profile();
+			echo $profile->get_user_profile($user_id);
+			exit;
+		}
+	}
 	else 
 	{
 		// echo "404 page not found ;)";

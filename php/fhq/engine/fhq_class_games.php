@@ -80,6 +80,7 @@
 				games.date_start,
 				games.date_stop,
 				games.logo,
+				games.owner,
 				user.nick
 			FROM games INNER JOIN user ON games.owner = user.iduser ORDER BY date_start DESC LIMIT 0,10;';
 			$result = $db->query( $query );
@@ -104,7 +105,8 @@
 				$date_stop = $row['date_stop'];
 				$logo = $row['logo'];
 				$nick = $row['nick'];
-				
+				$owner = $row['owner'];
+
 				$strclass = '';
 				if ($bClass) 
 					$strclass = " class='alt' ";
@@ -114,8 +116,10 @@
 					<td><img width=100px src='$logo'></td>
 					<td><a href='main.php?choose_game=$id_game'>$title</a></td>
 					<td>$date_start</td>
-					<td>$date_stop</td>
-					<td>$nick</td>
+					<td>$date_stop</td>					
+					<td>
+						<a href='javascript:void(0);' onclick='load_content_page(\"profile\",{user_id:\"$owner\"});'>$nick</a>
+					</td>
 				";
 				echo "</tr>";
 			}

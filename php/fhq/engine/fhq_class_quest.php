@@ -1,7 +1,7 @@
 <?
 class fhq_quest
 {
-	private $quest_name, $short_text, $full_text, $score, $min_score, $subject, $answer, $reply_answer, $idquest, $for_person;
+	private $quest_name, $short_text, $full_text, $score, $min_score, $subject, $answer, $reply_answer, $idquest, $for_person, $idauthor, $author;
 	private $fields;
 	
 	function fhq_quest()
@@ -33,6 +33,8 @@ class fhq_quest
 		$this->reply_answer = "";
 		$this->reply_answer = "";
 		$this->for_person = 0;
+		$this->idauthor = 0;
+		$this->author = "";
 	}
 
 	function setQuestName( $text ) { $this->quest_name = $text; }
@@ -43,6 +45,8 @@ class fhq_quest
 	function setSubject( $text ) { $this->subject = $text; }
 	function setAnswer( $text ) { $this->answer = $text; }
 	function setForPerson( $number ) { $this->for_person = $number; }
+	function setIdAuthor( $number ) { $this->idauthor = $number; }
+	function setAuthor( $text ) { $this->author = $text; }
 	
 	function getQuestName() { return $this->quest_name; }
 	function idquest() { return $this->idquest; }
@@ -74,7 +78,7 @@ class fhq_quest
 			$id_game = $_SESSION['game']['id'];
 
 		if(strlen($this->check()) != 0) return 0;
-		$query = "INSERT INTO quest( name, short_text, text, score, min_score, tema, answer, for_person, id_game )
+		$query = "INSERT INTO quest( name, short_text, text, score, min_score, tema, answer, for_person, id_game, idauthor, author )
 			VALUES('".base64_encode($this->quest_name)."',
 				'".base64_encode($this->short_text)."',
 				'".base64_encode($this->full_text)."',
@@ -83,7 +87,9 @@ class fhq_quest
 				'".base64_encode($this->subject)."',
 				'".base64_encode($this->answer)."',
 				".$this->for_person.",
-				".$id_game."
+				".$id_game.",
+				".$this->idauthor.",
+				'".base64_encode($this->author)."'
 				) ";
 		// echo $query;
 		$result = $db->query( $query );
@@ -110,8 +116,10 @@ class fhq_quest
 					score = ".$this->score.", 
 					min_score = ".$this->min_score.", 
 					tema = '".base64_encode($this->subject)."', 
-					answer = '".base64_encode($this->answer)."', 
-					for_person = ".$this->for_person."
+					answer = '".base64_encode($this->answer)."',
+					for_person = ".$this->for_person.",
+					idauthor = ".$this->idauthor.",
+					author = '".base64_encode($this->author)."' 
 				WHERE 
 					idquest = ".$this->idquest;
 			
@@ -156,6 +164,8 @@ class fhq_quest
 		$this->min_score = $row['min_score'];
 		$this->subject = base64_decode($row['tema']);
 		$this->answer = base64_decode($row['answer']);
+		$this->author = base64_decode($row['author']);
+		$this->idauthor = $row['idauthor'];
 		return true;
 	}
 	
@@ -244,7 +254,10 @@ class fhq_quest
 		$this->score = $_GET['quest_score'];
 		$this->min_score = $_GET['quest_min_score'];
 		$this->subject = htmlspecialchars($_GET['quest_subject']);
+		$this->idauthor = $_GET['quest_idauthor'];
+		$this->author = htmlspecialchars($_GET['quest_author']);
 		$this->answer = htmlspecialchars($_GET['quest_answer']);
+		
 	}
 	
 	function getForm()
@@ -302,6 +315,14 @@ class fhq_quest
 			<td><input type="text" size=30 id="quest_subject" value="'.$this->subject.'"/></td>
 		</tr>
 		<tr>
+			<td>Id Author:</td>
+			<td><input type="text" size=30 id="quest_idauthor" value="'.$this->idauthor.'"/></td>
+		</tr>
+		<tr>
+			<td>Author:</td>
+			<td><input type="text" size=30 id="quest_author" value="'.$this->author.'"/></td>
+		</tr>
+		<tr>
 			<td>Answer:</td>
 			<td><input type="text" size=30 id="quest_answer" value="'.$this->answer.'"/></td>
 		</tr>
@@ -315,6 +336,8 @@ class fhq_quest
 				var quest_score = document.getElementById(\'quest_score\').value;
 				var quest_min_score = document.getElementById(\'quest_min_score\').value;
 				var quest_subject = document.getElementById(\'quest_subject\').value;
+				var quest_idauthor = document.getElementById(\'quest_idauthor\').value;
+				var quest_author = document.getElementById(\'quest_author\').value;
 				var quest_answer = document.getElementById(\'quest_answer\').value;
 
 				load_content_page(\'save_quest\', {
@@ -326,7 +349,9 @@ class fhq_quest
 						\'quest_min_score\' : quest_min_score, 
 						\'quest_subject\' : quest_subject, 
 						\'quest_answer\' : quest_answer, 
-						\'quest_name\' : quest_name
+						\'quest_name\' : quest_name,
+						\'quest_author\' : quest_author,
+						\'quest_idauthor\' : quest_idauthor
 					});
 			">
 			Save quest
@@ -403,6 +428,8 @@ class fhq_quest
 		$quest_arr['full_text'] = $this->full_text;
 		$quest_arr['short_text'] = $this->short_text;
 		$quest_arr['answer'] = $this->answer;
+		$quest_arr['author'] = $this->auhtor;
+		$quest_arr['idauthor'] = $this->idauhtor;
 		
 		$zip = new ZipArchive();
 		if($zip->open($zipname,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
@@ -453,6 +480,12 @@ class fhq_quest
 	function echo_view_quest()
 	{
 		$security = new fhq_security();
+		
+		if (intval($this->idauthor) && $this->idauthor > 0)
+			$author = '<a href="javascript:void(0);" onclick="load_content_page(\'profile\',{user_id:\''.$this->idauthor.'\'});">'.$this->author.'</a>';
+		else 
+			$author = $this->author == '' ? 'Unknown' : $this->author;
+		
 		echo ' 
 		    <a href="javascript:void(0);" id="reload_content" onclick="
 				document.getElementById(\'view_score\').innerHTML = \''.$security->score().'\';"></a>
@@ -461,6 +494,7 @@ class fhq_quest
 			<font size=1>Score:</font> <br> +'.$this->score.' <br><br>
 			<font size=1>Subject:</font> <br> '.htmlspecialchars_decode($this->subject).' <br><br>
 			<font size=1>Short Text:</font> <br> '.htmlspecialchars_decode($this->short_text).' <br><br>
+			<font size=1>Author:</font> <br> '.$author.' <br><br>
 		';
 		
 		$db = new fhq_database();

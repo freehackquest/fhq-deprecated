@@ -229,6 +229,8 @@ class fhq_score
 			$owner = $row['iduser'];
 			$logo = $row['logo'];
 			$nick = $row['nick'];
+			$owner = $row['owner'];
+			
 			$score2 = $row['score2'];
 			if ($logo != "") $logo = '<img width=110px src="'.$logo.'"/>';
 			
@@ -255,14 +257,16 @@ class fhq_score
 			foreach($scores as $key => $value) {
 				$rows .= '<td><h1>'.(isset($db_scores[$value]) ? $db_scores[$value] : 0).'</h1></td>';
 			}
-			
+
 			echo '
 			<tr '.$strclass.'>
 				<td width=50px><h1>'.(++$i).'</h1></td>
-				<td><center>'.$logo.'<h4>'.htmlspecialchars($nick).'</h4></center></td>
+				<td><center>'.$logo.'<h4>
+				  <a href="javascript:void(0);" onclick="load_content_page(\'profile\',{user_id:\''.$owner.'\'});">'.htmlspecialchars($nick).'</a></h4></center></td>
 				'.$rows.'
 			</tr>';
 		}
+		// echo 'Username: <br>';
 		echo '</table>';
 	}
 };

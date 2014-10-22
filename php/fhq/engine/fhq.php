@@ -29,4 +29,5 @@ include_once "$curdir/fhq_page_registration2.php";
 include_once "$curdir/fhq_page_foractivate.php";
 include_once "$curdir/fhq_echo_shortpage.php";
 include_once "$curdir/fhq_echo_mainpage.php";
+include_once "$curdir/fhq_class_profile.php";
 ?>
