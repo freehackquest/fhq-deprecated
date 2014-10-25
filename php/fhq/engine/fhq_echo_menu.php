@@ -59,8 +59,8 @@ echo '
 					<a class="button3 button3-menu" href="javascript:void(0);" onclick="load_content_page(\'quests_allow\');">Tasks Open</a>
 					<a class="button3 button3-menu" href="javascript:void(0);" onclick="load_content_page(\'quests_process\');">Tasks Current</a> 
 					<a class="button3 button3-menu" href="javascript:void(0);" onclick="load_content_page(\'quests_completed\');">Tasks Completed</a> 
-					<a class="button3 button3-menu" href="javascript:void(0);" onclick="load_content_page2(\'scoreboard\');">Scoreboard</a><br>
-					your score is <font id="view_score" size=5>'.$security->score().'</font> <a class="button3" href="javascript:void(0);" onclick="recalculate_score();">recalculate score</a>
+					<a class="button3 button3-menu" href="javascript:void(0);" onclick="load_content_page2(\'scoreboard\');">Scoreboard</a>
+					your score is <font id="view_score" size=5>'.$security->score().'</font> <a class="button3 button3-menu" href="javascript:void(0);" onclick="recalculate_score();">recalculate score</a>
 				</p>
 				<!-- And I almost forgot... You can look at <a class="button3" href="javascript:void(0);" onclick="load_content_page(\'dr_zoyberg\');">Dr. Zoyberg</a> .  -->
 			';
@@ -86,20 +86,20 @@ echo '
 	{
 		echo '
 		<table cellpadding="10px">
-		<tr class="alert alert-info">
+		<tr>
 			<td>
 				Admin:
 					<!-- quest.php?action=add -->
-					<a class="button3" href="javascript:void(0);" onclick="load_content_page(\'feedbacks\');">Messages</a>
-				    <a class="button3" href="javascript:void(0);" onclick="load_content_page(\'users\');">Users</a>
-					<a class="button3" href="javascript:void(0);" onclick="load_content_page(\'answer_list\');">Answer List</a>
-					<a class="button3" href="javascript:void(0);" onclick="load_content_page(\'answer_list\' , { backup : \'\' } );">Backup Answer List</a>
-					<a class="button3" href="javascript:void(0);" onclick="load_content_page(\'statistics\');">Statistics</a><br>
-					<a class="button3" href="javascript:void(0);" onclick="load_content_page(\'add_quest\');">Add new quest</a>
-					<a class="button3" href="javascript:void(0);" onclick="load_content_page(\'add_news\');">Add News</a>
-					<a class="button3" href="javascript:void(0);" onclick="load_content_page(\'add_user\');">Add user</a><br><br>
-					System:	<a class="button3" href="javascript:void(0);" onclick="load_content_page(\'update_db\');">Update DB</a>
-					<a class="button3" href="javascript:void(0);" onclick="load_content_page2(\'init_scoreboard\');">init scoreboard</a>
+					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'feedbacks\');">Messages</a>
+				    <a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'users\');">Users</a>
+					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'answer_list\');">Answer List</a>
+					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'answer_list\' , { backup : \'\' } );">Backup Answer List</a>
+					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'statistics\');">Statistics</a>
+					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'add_quest\');">Add new quest</a>
+					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'add_news\');">Add News</a>
+					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'add_user\');">Add user</a><br><br>
+					System:	<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'update_db\');">Update DB</a>
+					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page2(\'init_scoreboard\');">init scoreboard</a>
 					
 			</td>
 		</tr>
@@ -111,14 +111,14 @@ echo '
 	{
 		echo '
 		<table cellpadding="10px" >
-		<tr class="alert alert-info">
+		<tr>
 			<td>
 				You is tester and you can:  
 					<!-- quest.php?action=add -->
-					<a class="button3" href="javascript:void(0);" onclick="load_content_page(\'answer_list\' );">Answer List</a> 
-					<a class="button3" href="javascript:void(0);" onclick="load_content_page(\'answer_list\' , { backup : \'\' } );">Backup Answer List</a>
-					<a class="button3" href="javascript:void(0);" onclick="load_content_page(\'add_news\');">Add News</a>
-					<a class="button3" href="javascript:void(0);" onclick="load_content_page(\'statistics\');">Statistics</a>
+					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'answer_list\' );">Answer List</a> 
+					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'answer_list\' , { backup : \'\' } );">Backup Answer List</a>
+					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'add_news\');">Add News</a>
+					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'statistics\');">Statistics</a>
 				     <!-- a href=""></a> , <a href="admin.php?action="></a -->
 			</td>
 		</tr>
