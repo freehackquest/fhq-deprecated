@@ -12,71 +12,75 @@
 			$security = new fhq_security();
 			include dirname(__FILE__)."/../config/config.php";
 
-			echo '<pre><a href="javascript:void(0);" id="reload_content" onclick="
-					document.getElementById(\'btn_user_info\').innerHTML = \''.mysql_real_escape_string(htmlspecialchars($security->nick())).'\';
-				"></a><table cellpadding=5 cellspacing=10>
-					<tr>
-						<td colspan=2 align="center">---------------</td>
-					</tr>
-					<tr>
-						<td align="right">Your name:</td>
-						<td>'.$security->nick().'</td>
-					</tr>
-					<tr>
-						<td align="right">Your score:</td>
-						<td>'.$security->score().'</td>
-					</tr>
-					<tr>
-						<td align="right">Your role:</td>
-						<td>'.$security->role().'</td>
-					</tr>
-					<tr>
-						<td align="right">Your place:</td>
-						<td>'.$this->getPlace().' or look <a href=\'scoreboard.php\'>Scoreboard</a></td>
-					</tr>';
-					
+			echo '
+				<div class="user_info_table">
+					<div class="user_info_row user_info_row_top">
+						<div class="user_info_param">Your name:</div>
+						<div class="user_info_value">'.$security->nick().'</div>
+					</div>
+					<div class="user_info_row user_info_row_middle">
+						<div class="user_info_param">Your role:</div>
+						<div class="user_info_value">'.$security->role().'</div>
+					</div>
+					<div class="user_info_row user_info_row_middle">
+						<div class="user_info_param">Your score:</div>
+						<div class="user_info_value">'.$security->score().'</div>
+					</div>
+					<div class="user_info_row user_info_row_bottom">
+						<div class="user_info_param">Your place:</div>
+						<div class="user_info_value">'.$this->getPlace().' or look <a class="button3 ad" href=\'scoreboard.php\'>Scoreboard</a></div>
+					</div>
+					<div class="user_info_row_skip">
+					</div>
+					';
+
 					if (isset($config['profile']) && isset($config['profile']['change_nick']) && $config['profile']['change_nick'] == 'yes') {
 						echo '
-						<tr>
-							<td colspan=2 align="center">---------------</td>
-						</tr>
-						<tr>
-							<td align="right">Set your name to:</td>
-							<td><input id="edit_new_nick" type="text" value="'.$security->nick().'"/></td>
-						</tr>
-						<tr>
-							<td align="right"></td>
-							<td>
-								<a class="button3" href="javascript:void(0);" onclick="
+						<div class="user_info_row user_info_row_top">
+							<div class="user_info_param">Set your name to:</div>
+							<div class="user_info_value">
+								<input id="edit_new_nick" type="text" value="'.$security->nick().'"/>
+							</div>
+						</div>
+						<div class="user_info_row user_info_row_bottom">
+							<div class="user_info_param"></div>
+							<div class="user_info_value">
+								<a class="button3 ad" href="javascript:void(0);" onclick="
 								load_content_page(\'user_set_new_my_nick\', 
 									{
 										nick : document.getElementById(\'edit_new_nick\').value
 									}
 								);
-							">Set new nick</a>	
-							</td>
-						</tr>';
+							">Set new nick</a>
+							</div>
+						</div>
+						<div class="user_info_row_skip">
+						</div>
+						';
 					}
 					
-					echo '<tr>
-						<td colspan=2 align="center">---------------</td>
-					</tr>
-					<tr>
-						<td align="right">Old password:</td>
-						<td><input id="old_password" type="password" value=""/></td>
-					</tr>
-					<tr>
-						<td align="right">New password:</td>
-						<td><input id="new_password" type="password" value=""/></td>
-					</tr>
-					<tr>
-						<td align="right">New password(confirm):</td>
-						<td><input id="new_password_confirm" type="password" value=""/></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td>
-						<a class="button3" href="javascript:void(0);" onclick="
+					echo '
+					<div class="user_info_row user_info_row_top">
+						<div class="user_info_param">Old password:</div>
+						<div class="user_info_value">
+							<input id="old_password" type="password" value=""/>
+						</div>
+					</div>
+					<div class="user_info_row user_info_row_middle">
+						<div class="user_info_param">New password:</div>
+						<div class="user_info_value">
+							<input id="new_password" type="password" value=""/>
+						</div>
+					</div>
+					<div class="user_info_row user_info_row_middle">
+						<div class="user_info_param">New password(confirm):</div>
+						<div class="user_info_value">
+							<input id="new_password_confirm" type="password" value=""/>
+						</div>
+					</div>					
+					<div class="user_info_row user_info_row_bottom">
+						<div class="user_info_param"></div>
+						<div class="user_info_value"><a class="button3 ad" href="javascript:void(0);" onclick="
 							load_content_page(\'user_set_new_password\', 
 								{
 									old_password : document.getElementById(\'old_password\').value,
@@ -84,30 +88,36 @@
 									new_password_confirm : document.getElementById(\'new_password_confirm\').value
 								}
 							);
-						">Change password</a>
-						</td>
-					</tr>
-					<tr>
-						<td colspan=2 align="center">---------------</td>
-					</tr>
-					<tr>
-						<td><select id="template">
-							<option selected value="base">base</option>
-							<option value="dark">dark</option>
-						</select><br>
-						current style: '.$_SESSION['user']['template'].'
-						</td>
-						<td>
-						<a class="button3" href="javascript:void(0);" onclick="
+						">Change password</a></div>
+					</div>
+					<div class="user_info_row_skip">
+					</div>
+					<div class="user_info_row">
+						<div class="user_info_param">Style</div>
+						<div class="user_info_value">
+							current style: '.$_SESSION['user']['template'].'<br>
+							<select id="template">
+								<option selected value="base">base</option>
+								<option value="dark">dark</option>
+							</select><br>
+							<a class="button3 ad" href="javascript:void(0);" onclick="
 							load_content_page(\'user_set_template\', 
 								{
 									template : document.getElementById(\'template\').value
 								}
 							);
 						">Set new style</a>
-						</td>
-					</tr>
-				</table></pre>';
+						</div>
+					</div>
+					';
+			echo'
+				</div>
+			';
+
+			echo '
+				<a href="javascript:void(0);" id="reload_content" onclick="
+					document.getElementById(\'btn_user_info\').innerHTML = \''.mysql_real_escape_string(htmlspecialchars($security->nick())).'\';
+				"></a>';								
 		}
 		
 		function setNewMyNick($nick)
@@ -116,8 +126,7 @@
 			if (isset($config['profile']) && isset($config['profile']['change_nick']) && $config['profile']['change_nick'] == 'no') {
 				return;
 			}
-			
-			// pass: 672f88b
+
 			$db = new fhq_database();
 			$security = new fhq_security();
 			$nick = htmlspecialchars($nick);

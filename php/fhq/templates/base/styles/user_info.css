@@ -1,0 +1,50 @@
+.user_info_table {
+	display: table;
+}
+
+.user_info_row {
+	display: table-row;
+	font-family: Tempus Sans ITC;
+	padding: 3px;
+	text-decoration: none;
+	color: #000000;
+	margin:3px 3px 3px 3px;
+	border-right: 1px solid black;
+	border-left: 1px solid black;
+	border-bottom: 1px solid black;
+	border-top: 1px solid black;
+	border-top-left-radius: 10px;
+}
+
+
+.user_info_row_skip {
+	display: table-row;
+	background: inherit;
+	height: 10px;
+}
+
+.user_info_row_top {
+	border-bottom: inherit;
+}
+
+.user_info_row_middle {
+	border-bottom: inherit;
+	border-top: inherit;
+}
+
+.user_info_row_bottom {
+	border-top: inherit;
+}
+
+.user_info_param {
+	display: table-cell;
+	padding: 8px 20px 8px 20px;
+	background: #cccccc;
+	text-align: right;
+}
+
+.user_info_value {
+	display: table-cell;
+	background: #e4e4e4;
+	padding:8px 20px 8px 20px;
+}

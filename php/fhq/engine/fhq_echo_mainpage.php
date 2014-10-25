@@ -55,7 +55,7 @@ function echo_mainpage($page)
 	echo '<body onload="'.$onload.'" class="main">
 	<center>
 	<table cellspacing=10px cellpadding=10px width="100%" height="100%">
-		<tr bgcolor="#e4e4e4">
+		<tr class="menucolor">
 			<td width=100 valign="top">
 				<a href="?"><img src="templates/base/images/minilogo.png"/></a><br><br>
 				<center>'.$game_info.'<br><font size=1>change game in menu \'games\'</font>
