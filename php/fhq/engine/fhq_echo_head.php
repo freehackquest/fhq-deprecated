@@ -13,6 +13,7 @@ function echo_head($page)
 	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/site.css" />
 	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/button3.css" />
 	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/user_info.css" />
+  <link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/quest_info.css" />
 	<!-- script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script -->
 	<!-- script src="http://malsup.github.com/jquery.form.js"></script -->	
 	<script type="text/javascript" src="js/fhq_echo_head.js"></script>

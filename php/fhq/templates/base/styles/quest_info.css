@@ -1,0 +1,32 @@
+.quest_info_table {
+	display: table;
+}
+
+.quest_info_row {
+	display: table-row;
+	font-family: Tempus Sans ITC;
+	padding: 3px;
+	text-decoration: none;
+	margin:3px 3px 3px 3px;
+}
+
+.quest_info_row_admin {
+  background: #cccccc;
+}
+
+.quest_info_row_skip {
+	display: table-row;
+	background: inherit;
+	height: 10px;
+}
+
+.quest_info_param {
+	display: table-cell;
+	padding: 8px 20px 8px 20px;
+	text-align: right;
+}
+
+.quest_info_value {
+	display: table-cell;	
+	padding:8px 20px 8px 20px;
+}

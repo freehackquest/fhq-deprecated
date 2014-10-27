@@ -259,7 +259,7 @@ class fhq_quest
 		$this->answer = htmlspecialchars($_GET['quest_answer']);
 		
 	}
-	
+
 	function getForm()
 	{
 		$edit_quest = '';
@@ -268,102 +268,146 @@ class fhq_quest
 		if($this->idquest > 0)
 		{
 			$edit_quest = '
-			<tr>
-				<td>id:</td>
-				<td>
+			<div class="quest_info_row">
+				<div class="quest_info_param">Quest ID:</div>
+				<div class="quest_info_value">
 					'.$this->idquest.'
 					<input id="idquest" type="hidden" value="'.$this->idquest.'"/>
-				</td>
-			</tr>';
+				</div>
+			</div>';
 			$js = '\'idquest\' : document.getElementById(\'idquest\').value,';
 		};
 		
 		$game_title = 0;
 		if (isset($_SESSION['game']))
 			$game_title = $_SESSION['game']['title'];
-		
+
 		return '
-		<table>
-		<tr>
-			<td>Game:</td>
-			<td>'.$game_title.'</td>
-		</tr>
-		'.$edit_quest.'
-		<tr>
-			<td>Name:</td>
-			<td><input type="text" id="quest_name" size=30 value="'.$this->quest_name.'"/></td>
-		</tr>
-		<tr>
-			<td>Short Text:</td>
-			<td><input type="text" size=30 id="quest_short_text" value="'.$this->short_text.'"/></td>
-		</tr>
-		<tr>
-			<td>Full Text:</td>
-			<td><textarea class="full_text" id="quest_full_text">'.$this->full_text.'</textarea></td>
-		</tr>
+			<div class="quest_info_table">
+				<div class="quest_info_row">
+					<div class="quest_info_param">Game:</div>
+					<div class="quest_info_value">'.$game_title.'</div>
+				</div>
+				'.$edit_quest.'
+				<div class="quest_info_row">
+					<div class="quest_info_param">Name:</div>
+					<div class="quest_info_value">
+						<input type="text" id="quest_name" size=30 value="'.$this->quest_name.'"/>
+					</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param">Short Text:</div>
+					<div class="quest_info_value">
+						<input type="text" size=30 id="quest_short_text" value="'.$this->short_text.'"/>
+					</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param">Short Text:</div>
+					<div class="quest_info_value">
+						<input type="text" size=30 id="quest_short_text" value="'.$this->short_text.'"/>
+					</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param">Full Text:</div>
+					<div class="quest_info_value">
+						<textarea class="full_text" id="quest_full_text">'.$this->full_text.'</textarea>
+					</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param">Score(+):</div>
+					<div class="quest_info_value">
+						<input type="text" size=30 id="quest_score" value="'.$this->score.'"/>
+					</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param">Min Score(&gt;):</div>
+					<div class="quest_info_value">
+					</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param"></div>
+					<div class="quest_info_value">
+						<input type="text" size=30 id="quest_min_score" value="'.$this->min_score.'"/>
+					</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param">Subject:</div>
+					<div class="quest_info_value">
+						<input type="text" size=30 id="quest_subject" value="'.$this->subject.'"/>
+					</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param"></div>
+					<div class="quest_info_value">
+					</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param"></div>
+					<div class="quest_info_value">
+					</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param"></div>
+					<div class="quest_info_value">
+					</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param">Id Author:</div>
+					<div class="quest_info_value">
+						<input type="text" size=30 id="quest_idauthor" value="'.$this->idauthor.'"/>
+					</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param">Author:</div>
+					<div class="quest_info_value">
+						<input type="text" size=30 id="quest_author" value="'.$this->author.'"/>
+					</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param">Answer:</div>
+					<div class="quest_info_value">
+						<input type="text" size=30 id="quest_answer" value="'.$this->answer.'"/>
+					</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param"></div>
+					<div class="quest_info_value">
+						<a class="button3" href="javascript:void(0);" onclick="
+							var quest_name = document.getElementById(\'quest_name\').value;
+							var quest_short_text = document.getElementById(\'quest_short_text\').value;
+							var quest_full_text = document.getElementById(\'quest_full_text\').value;
+							var quest_score = document.getElementById(\'quest_score\').value;
+							var quest_min_score = document.getElementById(\'quest_min_score\').value;
+							var quest_subject = document.getElementById(\'quest_subject\').value;
+							var quest_idauthor = document.getElementById(\'quest_idauthor\').value;
+							var quest_author = document.getElementById(\'quest_author\').value;
+							var quest_answer = document.getElementById(\'quest_answer\').value;
 
-		<tr>
-			<td>Score(+):</td>
-			<td><input type="text" size=30 id="quest_score" value="'.$this->score.'"/></td>
-		</tr>
-		<tr>
-			<td>Min Score(&gt;):</td>
-			<td><input type="text" size=30 id="quest_min_score" value="'.$this->min_score.'"/></td>
-		</tr>
-		<tr>
-			<td>Subject:</td>
-			<td><input type="text" size=30 id="quest_subject" value="'.$this->subject.'"/></td>
-		</tr>
-		<tr>
-			<td>Id Author:</td>
-			<td><input type="text" size=30 id="quest_idauthor" value="'.$this->idauthor.'"/></td>
-		</tr>
-		<tr>
-			<td>Author:</td>
-			<td><input type="text" size=30 id="quest_author" value="'.$this->author.'"/></td>
-		</tr>
-		<tr>
-			<td>Answer:</td>
-			<td><input type="text" size=30 id="quest_answer" value="'.$this->answer.'"/></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><br>
-			<a class="button3" href="javascript:void(0);" onclick="
-				var quest_name = document.getElementById(\'quest_name\').value;
-				var quest_short_text = document.getElementById(\'quest_short_text\').value;
-				var quest_full_text = document.getElementById(\'quest_full_text\').value;
-				var quest_score = document.getElementById(\'quest_score\').value;
-				var quest_min_score = document.getElementById(\'quest_min_score\').value;
-				var quest_subject = document.getElementById(\'quest_subject\').value;
-				var quest_idauthor = document.getElementById(\'quest_idauthor\').value;
-				var quest_author = document.getElementById(\'quest_author\').value;
-				var quest_answer = document.getElementById(\'quest_answer\').value;
-
-				load_content_page(\'save_quest\', {
-						'.$js.'
-						\'quest_name\' : quest_name, 
-						\'quest_short_text\' : quest_short_text, 
-						\'quest_full_text\' : quest_full_text, 
-						\'quest_score\' : quest_score, 
-						\'quest_min_score\' : quest_min_score, 
-						\'quest_subject\' : quest_subject, 
-						\'quest_answer\' : quest_answer, 
-						\'quest_name\' : quest_name,
-						\'quest_author\' : quest_author,
-						\'quest_idauthor\' : quest_idauthor
-					});
-			">
-			Save quest
-			</a>
-				
-			</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><div id="quest_error"></div></td>
-		</tr>
-		</table>';
+							load_content_page(\'save_quest\', {
+									'.$js.'
+									\'quest_name\' : quest_name, 
+									\'quest_short_text\' : quest_short_text, 
+									\'quest_full_text\' : quest_full_text, 
+									\'quest_score\' : quest_score, 
+									\'quest_min_score\' : quest_min_score, 
+									\'quest_subject\' : quest_subject, 
+									\'quest_answer\' : quest_answer, 
+									\'quest_name\' : quest_name,
+									\'quest_author\' : quest_author,
+									\'quest_idauthor\' : quest_idauthor
+								});
+						">
+						Save quest
+						</a>
+					</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param"></div>
+					<div class="quest_info_value">
+						<div id="quest_error"></div>
+					</div>
+				</div>
+			</div>';
 	}
 	
 
@@ -489,12 +533,34 @@ class fhq_quest
 		echo ' 
 		    <a href="javascript:void(0);" id="reload_content" onclick="
 				document.getElementById(\'view_score\').innerHTML = \''.$security->score().'\';"></a>
-
-			<font size=1>Name:</font> <br> #'.$this->idquest.' '.htmlspecialchars_decode($this->quest_name).' <br><br>
-			<font size=1>Score:</font> <br> +'.$this->score.' <br><br>
-			<font size=1>Subject:</font> <br> '.htmlspecialchars_decode($this->subject).' <br><br>
-			<font size=1>Short Text:</font> <br> '.htmlspecialchars_decode($this->short_text).' <br><br>
-			<font size=1>Author:</font> <br> '.$author.' <br><br>
+			<div class="quest_info_table">
+				<div class="quest_info_row">
+					<div class="quest_info_param">Quest ID:</div>
+					<div class="quest_info_value">'.$this->idquest.'</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param">Name:</div>
+					<div class="quest_info_value">'.htmlspecialchars_decode($this->quest_name).'</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param">Score:</div>
+					<div class="quest_info_value">+'.$this->score.'</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param">Subject:</div>
+					<div class="quest_info_value">'.htmlspecialchars_decode($this->subject).'</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param">Short Text:</div>
+					<div class="quest_info_value">'.htmlspecialchars_decode($this->short_text).'</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param">Author:</div>
+					<div class="quest_info_value">'.$author.'</div>
+				</div>
+				<div class="quest_info_skip">
+				</div>
+			</div>
 		';
 		
 		$db = new fhq_database();
@@ -512,29 +578,62 @@ class fhq_quest
 			if( $stopdate == '0000-00-00 00:00:00')
 			{
 				echo '
-				<input id="answer_for_quest" type="text"/>
-				<a class="button3" href="javascript:void(0);" onclick="
-				var answer_for_quest = document.getElementById(\'answer_for_quest\').value;
-				load_content_page(\'pass_quest\', { id : '.$idquest.', \'answer\' : answer_for_quest } );
-				">Pass Quest</a>
+				<div class="quest_info_row">
+					<div class="quest_info_param"></div>
+					<div class="quest_info_value">
+						<input id="answer_for_quest" type="text"/>
+					</div>
+				</div>
+				<div class="quest_info_row">
+					<div class="quest_info_param"></div>
+					<div class="quest_info_value">
+						<a class="button3 ad" href="javascript:void(0);" onclick="
+								var answer_for_quest = document.getElementById(\'answer_for_quest\').value;
+								load_content_page(\'pass_quest\', { id : '.$idquest.', \'answer\' : answer_for_quest } );
+							">Pass Quest</a>
+					</div>
+				</div>
+				<div class="quest_info_skip">
+				</div>
 				';
 			}
 			else
 			{
-				echo '<br> Date: "'.$stopdate.'" <br> <font size=1>Quest completed</font>';
+				echo '
+				<div class="quest_info_row">
+					<div class="quest_info_param">Quest completed. Date: </div>
+					<div class="quest_info_value">'.$stopdate.'</div>
+				</div>
+				<div class="quest_info_skip">
+				</div>
+				';
 			};
 		}
 		else
 		{    		
-			echo '<br>
-				<a class="button3" href="javascript:void(0);" onclick="load_content_page(\'take_quest\', { id : '.$idquest.'} );">Take Quest</a>
-				<br> <font size=1>It will be move to the \'process\'</font>';
+			echo '
+				<div class="quest_info_row">
+					<div class="quest_info_param"></div>
+					<div class="quest_info_value">
+						<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'take_quest\', { id : '.$idquest.'} );">Take Quest</a>
+						<br> <font size=1>It will be move to the \'process\'</font>
+					</div>
+				</div>
+				<div class="quest_info_skip">
+				</div>
+				';
 		}
 		
 		// todo: if admin
 		if( $security->isAdmin() )
 		{
-			echo '<br><br><br>Hello, admin!<br><br><p>';
+			echo '
+				<div class="quest_info_skip">
+				</div>
+				<div class="quest_info_skip quest_info_row_admin">
+					Admin panel:
+				</div>
+			';
 				
 			if ($handle = opendir('files')) {
 				$filter = "quest".$idquest;
@@ -547,48 +646,83 @@ class fhq_quest
 					if(substr($entry, 0, strlen($filter)) == $filter)
 					{
 						$file = 'files/'.$entry;
-						echo '<div class="alert alert-info">'.$file.'
-							<a class="button3" target="_blank" href="'.$file.'">Open</a>
-							<a class="button3" href="javascript:void(0);" onclick="
-								if(delete_file())
-								{
-									load_content_page(\'remove_file\', { id : '.$idquest.', file : \''.$file.'\' } );
-								};
-							">Remove</a>
+						echo '
+						
+						<div class="quest_info_row quest_info_row_admin">
+							<div class="quest_info_param">File: '.$file.'</div>
+							<div class="quest_info_value">
+								<a class="button3 ad" target="_blank" href="'.$file.'">Open</a>
+								<a class="button3 ad" href="javascript:void(0);" onclick="
+									if(delete_file())
+									{
+										load_content_page(\'remove_file\', { id : '.$idquest.', file : \''.$file.'\' } );
+									};
+								">Remove</a>
+							
 							</div>
+						</div>
 						';
 					}
 				}
 				closedir($handle);
 			}
 
-			echo '</p>
-						<input name="file" id="file" size="27" type="file" required multiple />
+			echo '
+						<div class="quest_info_row quest_info_row_admin">
+							<div class="quest_info_param">Select files:</div>
+							<div class="quest_info_value">
+								<input name="file" id="file" size="27" type="file" required multiple />
+							</div>
+						</div>
 						
-						<a class="button3" href="javascript:void(0);" onclick="
-							
-							var files = document.getElementById(\'file\').files;
-							// upload_file(files,'.$idquest.');
-							load_content_page_files(files, \'upload_files\', { id : '.$idquest.' } );
-						">Upload</a><br><br>
+						<div class="quest_info_row quest_info_row_admin">
+							<div class="quest_info_param"></div>
+							<div class="quest_info_value">
+								<a class="button3" href="javascript:void(0);" onclick="
+									var files = document.getElementById(\'file\').files;
+									// upload_file(files,'.$idquest.');
+									load_content_page_files(files, \'upload_files\', { id : '.$idquest.' } );
+								">Upload</a>
+							</div>
+						</div>
+						<div class="quest_info_skip">
+						</div>
 					';
 			
-			echo '<a class="button3" href="javascript:void(0);" onclick="
-				load_content_page(\'edit_quest\', { id : '.$idquest.' } );
-				">Edit Quest</a>
-
-            <a class="button3" href="content_page.php?content_page=export_quest&id='.$idquest.'">Export</a>
-
-				<a class="button3" href="javascript:void(0);" onclick="
-					if(delete_quest())
-					{
-						load_content_page(\'delete_quest\', { id : '.$idquest.'} );
-					}
-				">Delete Quest</a><br><br>
+			echo '
+						<div class="quest_info_row quest_info_row_admin">
+							<div class="quest_info_param"></div>
+							<div class="quest_info_value">
+								<a class="button3" href="javascript:void(0);" onclick="
+									load_content_page(\'edit_quest\', { id : '.$idquest.' } );
+								">Edit Quest</a>
+							</div>
+						</div>
+						<div class="quest_info_row quest_info_row_admin">
+							<div class="quest_info_param"></div>
+							<div class="quest_info_value">
+								<a class="button3" href="content_page.php?content_page=export_quest&id='.$idquest.'">Export</a>
+							</div>
+						</div>
+						<div class="quest_info_row quest_info_row_admin">
+							<div class="quest_info_param"></div>
+							<div class="quest_info_value">
+								<a class="button3" href="content_page.php?content_page=export_quest&id='.$idquest.'">Export</a>
+							</div>
+						</div>
+						<div class="quest_info_row quest_info_row_admin">
+							<div class="quest_info_param"></div>
+							<div class="quest_info_value">
+								<a class="button3" href="javascript:void(0);" onclick="
+									if(delete_quest())
+									{
+										load_content_page(\'delete_quest\', { id : '.$idquest.'} );
+									}
+								">Delete Quest</a>
+							</div>
+						</div>
 			';
-			
-
-
+			echo '</div>'; // quest_info_table
 		};
 	}
 };
