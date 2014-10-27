@@ -12,12 +12,14 @@
 
 .quest_info_row_admin {
   background: #cccccc;
+  font-family: Tempus Sans ITC;
 }
 
 .quest_info_row_skip {
 	display: table-row;
 	background: inherit;
-	height: 10px;
+	height: 20px;
+	font-family: Tempus Sans ITC;
 }
 
 .quest_info_param {

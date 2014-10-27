@@ -302,12 +302,6 @@ class fhq_quest
 					</div>
 				</div>
 				<div class="quest_info_row">
-					<div class="quest_info_param">Short Text:</div>
-					<div class="quest_info_value">
-						<input type="text" size=30 id="quest_short_text" value="'.$this->short_text.'"/>
-					</div>
-				</div>
-				<div class="quest_info_row">
 					<div class="quest_info_param">Full Text:</div>
 					<div class="quest_info_value">
 						<textarea class="full_text" id="quest_full_text">'.$this->full_text.'</textarea>
@@ -321,11 +315,6 @@ class fhq_quest
 				</div>
 				<div class="quest_info_row">
 					<div class="quest_info_param">Min Score(&gt;):</div>
-					<div class="quest_info_value">
-					</div>
-				</div>
-				<div class="quest_info_row">
-					<div class="quest_info_param"></div>
 					<div class="quest_info_value">
 						<input type="text" size=30 id="quest_min_score" value="'.$this->min_score.'"/>
 					</div>
@@ -372,7 +361,7 @@ class fhq_quest
 				<div class="quest_info_row">
 					<div class="quest_info_param"></div>
 					<div class="quest_info_value">
-						<a class="button3" href="javascript:void(0);" onclick="
+						<a class="button3 ad" href="javascript:void(0);" onclick="
 							var quest_name = document.getElementById(\'quest_name\').value;
 							var quest_short_text = document.getElementById(\'quest_short_text\').value;
 							var quest_full_text = document.getElementById(\'quest_full_text\').value;
@@ -399,6 +388,13 @@ class fhq_quest
 						">
 						Save quest
 						</a>
+						'.($this->idquest > 0 ? '
+				
+						<a class="button3 ad" href="javascript:void(0);"
+							onclick="load_content_page(\'view_quest\', { id: '.$this->idquest.'} );">
+							Cancel
+						</a>
+						' : '').'
 					</div>
 				</div>
 				<div class="quest_info_row">
@@ -560,7 +556,6 @@ class fhq_quest
 				</div>
 				<div class="quest_info_skip">
 				</div>
-			</div>
 		';
 		
 		$db = new fhq_database();
@@ -572,7 +567,13 @@ class fhq_quest
 		$count = $db->count( $result );	 
 		if($count == 1)
 		{
-			echo '<font size=1>Full Text:</font> <br><pre>'.htmlspecialchars_decode($this->full_text).'</pre><br><br>';
+			echo '
+				<div class="quest_info_row">
+					<div class="quest_info_param">Full Text:</div>
+					<div class="quest_info_value">
+						<pre>'.htmlspecialchars_decode($this->full_text).'</pre>
+					</div>
+				</div>';
 
 			$stopdate = mysql_result($result, 0, 'stopdate');
 			if( $stopdate == '0000-00-00 00:00:00')
@@ -630,8 +631,14 @@ class fhq_quest
 			echo '
 				<div class="quest_info_skip">
 				</div>
-				<div class="quest_info_skip quest_info_row_admin">
-					Admin panel:
+				<div class="quest_info_skip">
+				</div>
+				<div class="quest_info_skip">
+				</div>
+				<div class="quest_info_row quest_info_row_admin">
+					<div class="quest_info_param">Admin panel:</div>
+					<div class="quest_info_value">
+					</div>
 				</div>
 			';
 				
@@ -672,13 +679,7 @@ class fhq_quest
 							<div class="quest_info_param">Select files:</div>
 							<div class="quest_info_value">
 								<input name="file" id="file" size="27" type="file" required multiple />
-							</div>
-						</div>
-						
-						<div class="quest_info_row quest_info_row_admin">
-							<div class="quest_info_param"></div>
-							<div class="quest_info_value">
-								<a class="button3" href="javascript:void(0);" onclick="
+								<a class="button3 ad" href="javascript:void(0);" onclick="
 									var files = document.getElementById(\'file\').files;
 									// upload_file(files,'.$idquest.');
 									load_content_page_files(files, \'upload_files\', { id : '.$idquest.' } );
@@ -693,27 +694,11 @@ class fhq_quest
 						<div class="quest_info_row quest_info_row_admin">
 							<div class="quest_info_param"></div>
 							<div class="quest_info_value">
-								<a class="button3" href="javascript:void(0);" onclick="
+								<a class="button3 ad" href="javascript:void(0);" onclick="
 									load_content_page(\'edit_quest\', { id : '.$idquest.' } );
 								">Edit Quest</a>
-							</div>
-						</div>
-						<div class="quest_info_row quest_info_row_admin">
-							<div class="quest_info_param"></div>
-							<div class="quest_info_value">
-								<a class="button3" href="content_page.php?content_page=export_quest&id='.$idquest.'">Export</a>
-							</div>
-						</div>
-						<div class="quest_info_row quest_info_row_admin">
-							<div class="quest_info_param"></div>
-							<div class="quest_info_value">
-								<a class="button3" href="content_page.php?content_page=export_quest&id='.$idquest.'">Export</a>
-							</div>
-						</div>
-						<div class="quest_info_row quest_info_row_admin">
-							<div class="quest_info_param"></div>
-							<div class="quest_info_value">
-								<a class="button3" href="javascript:void(0);" onclick="
+								<a class="button3 ad" href="content_page.php?content_page=export_quest&id='.$idquest.'">Export</a>
+								<a class="button3 ad" href="javascript:void(0);" onclick="
 									if(delete_quest())
 									{
 										load_content_page(\'delete_quest\', { id : '.$idquest.'} );
