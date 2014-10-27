@@ -14,19 +14,27 @@
 
 			echo '
 				<div class="user_info_table">
-					<div class="user_info_row user_info_row_top">
+					<div class="user_info_row">
+						<div class="user_info_param">Your ID:</div>
+						<div class="user_info_value">'.$security->userid().'</div>
+					</div>
+					<div class="user_info_row">
 						<div class="user_info_param">Your name:</div>
 						<div class="user_info_value">'.$security->nick().'</div>
 					</div>
-					<div class="user_info_row user_info_row_middle">
+					<div class="user_info_row">
+						<div class="user_info_param">Your name:</div>
+						<div class="user_info_value">'.$security->nick().'</div>
+					</div>
+					<div class="user_info_row">
 						<div class="user_info_param">Your role:</div>
 						<div class="user_info_value">'.$security->role().'</div>
 					</div>
-					<div class="user_info_row user_info_row_middle">
+					<div class="user_info_row">
 						<div class="user_info_param">Your score:</div>
 						<div class="user_info_value">'.$security->score().'</div>
 					</div>
-					<div class="user_info_row user_info_row_bottom">
+					<div class="user_info_row">
 						<div class="user_info_param">Your place:</div>
 						<div class="user_info_value">'.$this->getPlace().' or look <a class="button3 ad" href=\'scoreboard.php\'>Scoreboard</a></div>
 					</div>
@@ -36,13 +44,13 @@
 
 					if (isset($config['profile']) && isset($config['profile']['change_nick']) && $config['profile']['change_nick'] == 'yes') {
 						echo '
-						<div class="user_info_row user_info_row_top">
+						<div class="user_info_row">
 							<div class="user_info_param">Set your name to:</div>
 							<div class="user_info_value">
 								<input id="edit_new_nick" type="text" value="'.$security->nick().'"/>
 							</div>
 						</div>
-						<div class="user_info_row user_info_row_bottom">
+						<div class="user_info_row">
 							<div class="user_info_param"></div>
 							<div class="user_info_value">
 								<a class="button3 ad" href="javascript:void(0);" onclick="
@@ -60,25 +68,25 @@
 					}
 					
 					echo '
-					<div class="user_info_row user_info_row_top">
+					<div class="user_info_row">
 						<div class="user_info_param">Old password:</div>
 						<div class="user_info_value">
 							<input id="old_password" type="password" value=""/>
 						</div>
 					</div>
-					<div class="user_info_row user_info_row_middle">
+					<div class="user_info_row">
 						<div class="user_info_param">New password:</div>
 						<div class="user_info_value">
 							<input id="new_password" type="password" value=""/>
 						</div>
 					</div>
-					<div class="user_info_row user_info_row_middle">
+					<div class="user_info_row">
 						<div class="user_info_param">New password(confirm):</div>
 						<div class="user_info_value">
 							<input id="new_password_confirm" type="password" value=""/>
 						</div>
 					</div>					
-					<div class="user_info_row user_info_row_bottom">
+					<div class="user_info_row">
 						<div class="user_info_param"></div>
 						<div class="user_info_value"><a class="button3 ad" href="javascript:void(0);" onclick="
 							load_content_page(\'user_set_new_password\', 

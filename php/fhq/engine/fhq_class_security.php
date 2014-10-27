@@ -101,6 +101,9 @@ class fhq_security
 	function iduser() { 
 		return ($this->isLogged() && is_numeric($_SESSION['user']['iduser'])) ? $_SESSION['user']['iduser'] : ''; 
 	}
+	function userid() { 
+		return ($this->isLogged() && is_numeric($_SESSION['user']['iduser'])) ? $_SESSION['user']['iduser'] : ''; 
+	}
 
 	function tokenByData($arr)
 	{
