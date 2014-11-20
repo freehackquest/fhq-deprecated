@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=visuallinecoding
+Comment=visual of line coding
+Exec=http://localhost/fhq/
+Icon=visuallinecoding
+Terminal=false
+Type=Application
+Categories=GNOME;GTK;
+StartupNotify=true
+Comment[ru]=free-hack-quest
