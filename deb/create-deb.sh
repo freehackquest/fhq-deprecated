@@ -84,20 +84,25 @@ echo "/etc/fhq/init.conf" > DEBIAN/conffiles
 echo "/etc/fhq/actions.conf" >> DEBIAN/conffiles
 
 # control
-echo "Package: $name" > DEBIAN/control
-echo "Version: $version" >> DEBIAN/control
 # todo section ???
-echo "Section: unknown" >> DEBIAN/control
-echo "Priority: optional" >> DEBIAN/control
-# echo "Architecture: i386" >> DEBIAN/control
-echo "Architecture: all" >> DEBIAN/control
-echo "Depends: libc6 (>= 2.2.4-4), sed (>= 3.02-8)" >> DEBIAN/control
+
 size=($(du -s ./))
 size=${size[0]}
-echo "Installed-Size: $size" >> DEBIAN/control
-echo "Homepage: http://fhq.keva.su" >> DEBIAN/control
-echo "Maintainer: Evgenii Sopov <mrseakg@gmail.com>" >> DEBIAN/control
-echo "Description: Engine for running CTF-games" >> DEBIAN/control
+echo "Source: $name
+Section: web
+Priority: optional
+Maintainer: Evgenii Sopov <mrseakg@gmail.com>
+Depends: apache2 (>= 2.2), mysql-server (>= 5.5)
+Version: $version
+Installed-Size: $size
+Homepage: https://github.com/sea-kg/fhq
+Package: $name
+Architecture: all
+Description: Engine for running CTF-games
+ fhq contains web module (front end)
+ also daemon for attack defence
+" > DEBIAN/control
+
 
 # create md5sums
 echo -n "" > DEBIAN/md5sums
