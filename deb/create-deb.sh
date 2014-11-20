@@ -1,15 +1,18 @@
 version="0.3.`git rev-list HEAD --count`"
 name="fhq"
 
-rm *.deb
+# remove old deb package
+find ./ -name *.deb  | while read f; do  rm "$f"; done
+
+# clear old lintian log
+echo "" > "lintian.log"
+
 rm -rf deb-pkg_create
 mkdir deb-pkg_create
 # cp -R source/visuallinecoding deb-pkg/usr/bin/
 cp -R deb-pkg/* deb-pkg_create/
 
-
 cd deb-pkg_create
-rm -rf usr/share/applications/fhq.desktop
 
 find -type f | grep -re ~$ | while read f; do rm -rf "$f"; done
 
@@ -39,8 +42,13 @@ cp ../../LICENSE usr/share/doc/fhq/copyright
 # php-files
 mkdir usr/share/fhq
 # must be uncommented:
-# cp -R ../../php/fhq/* usr/share/fhq/
+cp -R ../../php/fhq/* usr/share/fhq/
 
+find usr/share/fhq/ -name *~  | while read f; do  rm "$f"; done
+find usr/share/fhq/ -name .gitignore  | while read f; do  rm "$f"; done
+
+rm usr/share/fhq/api/download-yii.sh
+rm usr/share/applications/fhq.desktop
 rm usr/share/fhq/quests/fuzzing-50/fuzz_50
 
 # change log
@@ -106,6 +114,8 @@ find etc -type d | while read d; do  chmod 755 "$d"; done
 find DEBIAN -type d | while read d; do  chmod 755 "$d"; done
 
 # chmod 755 usr/bin/attackdefence
+# chmod +x usr/share/fhq/api/framework/yiic
+# chmod +x usr/share/fhq/api/framework/cli/views/webapp/protected/yiic
 
 find usr -type f | while read f; do md5sum "$f"; done > DEBIAN/md5sums
 find etc -type f | while read f; do md5sum "$f"; done >> DEBIAN/md5sums
@@ -117,8 +127,10 @@ echo "from deb-pkg_create"
 #build
 fakeroot dpkg-deb --build deb-pkg_create ./
 
-#check
-lintian *.deb > log
-
 # todo uncommneted:
-# rm -rf deb-pkg_create
+rm -rf deb-pkg_create
+
+#check
+lintian *.deb > lintian.log
+
+
