@@ -24,9 +24,6 @@ if($security->isLogged())
 	return;
 };
 
-
-
-
 class fhq_logon
 {
 	function title()
@@ -44,7 +41,8 @@ class fhq_logon
 	}
 	
 	function get_onloadbody() {
-		return 'load_content_html(\'indexcontent\', \'pages/index/sign_in.html\');';
+		return 'show_index_element(\'indexcontent_sign_in\');';
+		// return 'load_content_html(\'indexcontent\', \'pages/index/sign_in.html\');';
 	}
 	
 	function echo_content()
@@ -56,24 +54,152 @@ class fhq_logon
 			$_SESSION['error_msg'] = "";
 		};
 
-		echo '
+		?>
 			<div class="index_menu">
-				<a class="index_menu" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/sign_in.html\');"><img src="templates/base/images/index/signin.png"/></a>
-				<a class="index_menu" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/registration.html\');"><img src="templates/base/images/index/registration.png"/></a>
-				<a class="index_menu" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/about.html\');"><img src="templates/base/images/index/about.png"/></a>
-				<a class="index_menu" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/contacts.html\');"><img src="templates/base/images/index/contacts.png"/></a>
-				<a class="index_menu" href="javascript:void(0);" onclick="load_content_html(\'indexcontent\', \'pages/index/restore.html\');"><img src="templates/base/images/index/restore.png"/></a>
+				<div
+					class="index_menu"
+					onclick="show_index_element('indexcontent_sign_in');"
+				>
+					<img src="templates/base/images/index/signin.png"/>
+				</div>
+				<div
+					class="index_menu"
+					onclick="show_index_element('indexcontent_registration');"
+				>
+					<img src="templates/base/images/index/registration.png"/>
+				</div>
+				
+				<div
+					class="index_menu"
+					onclick="show_index_element('indexcontent_about');"
+				>
+					<img src="templates/base/images/index/about.png"/>
+				</div>
+				
+				<div
+					class="index_menu"
+					onclick="show_index_element('indexcontent_contacts');"
+				>
+					<img src="templates/base/images/index/contacts.png"/>
+				</div>
+				<div
+					class="index_menu"
+					onclick="show_index_element('indexcontent_restore');"
+				>
+					<img src="templates/base/images/index/restore.png"/>
+				</div>
 			</div>
 			<br>
-			<div class="indexcontent" id="indexcontent">
+			<!-- div class="indexcontent" id="indexcontent">
 				Hi man!
-			</div>
+			</div -->
 			<br>
-';
+			
+			<div class="indexcontent" id="indexcontent_sign_in">
+				<center>
+					<table cellspacing=10px cellpadding=10px>
+						<tr>
+							<td>E-mail</td>
+							<td><input name="email" id="email" value="" type="text" onkeydown="if (event.keyCode == 13) sign_in();"></td>
+						</tr>
+						<tr>
+							<td>Password</td>
+							<td><input name="password" id="password" value="" type="password"  onkeydown="if (event.keyCode == 13) sign_in();"></td>
+						</tr>
+						<tr>
+							<td colspan=2>
+								<center>
+									<a class="button3" href="javascript:void(0);" onclick="sign_in();">sign in</a>
+								</center>
+							</td>
+						</tr>
+					</table>
+				</center>
+				<font id="error_message" color='#ff0000'></font>
+			</div>
+
+			<div class="indexcontent" id="indexcontent_registration">
+				<!-- registration <a href="registration.php">here</a> -->
+				<center>
+				<b>create new account</b>
+				<table cellspacing=10px cellpadding=10px>
+					<tr>
+						<td>E-mail</td>
+						<td><input name="email" id="email" value="" type="text" onkeydown="if (event.keyCode == 13) restore();"></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							<img src="captcha.php" id="captcha_image"/><br>
+							<a href="javascript:void(0);" onclick="document.getElementById('captcha_image').src = 'captcha.php?rid=' + Math.random();">Refresh Capcha</a>
+							<br>
+							
+						</td>
+					</tr>
+					<tr>
+						<td>Captcha</td>
+						<td><input name="captcha" id="captcha" value="" type="text" onkeydown="if (event.keyCode == 13) restore();"></td>
+					</tr>
+					<tr>
+						<td colspan=2>
+							<center>
+								<a class="button3" href="javascript:void(0);" onclick="registration();">ok</a>
+							</center>
+						</td>
+					</tr>
+				</table>
+				</center>
+				<font id="info_message"></font>
+				<font id="error_message" color='#ff0000'></font>
+			</div>
+			<div class="indexcontent" id="indexcontent_restore">
+				<center>
+				<b>restore password</b>
+				<table cellspacing=10px cellpadding=10px>
+					<tr>
+						<td>E-mail</td>
+						<td><input name="email" id="email" value="" type="text" onkeydown="if (event.keyCode == 13) restore();"></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							<img src="captcha.php" id="captcha_image"/><br>
+							<a href="javascript:void(0);" onclick="document.getElementById('captcha_image').src = 'captcha.php?rid=' + Math.random();">Refresh Capcha</a>
+							<br>
+							
+						</td>
+					</tr>
+					<tr>
+						<td>Captcha</td>
+						<td><input name="captcha" id="captcha" value="" type="text" onkeydown="if (event.keyCode == 13) restore();"></td>
+					</tr>
+					<tr>
+						<td colspan=2>
+							<center>
+								<a class="button3" href="javascript:void(0);" onclick="restore();">restore password</a>
+							</center>
+						</td>
+					</tr>
+				</table>
+				</center>
+				<font id="info_message"></font>
+				<font id="error_message" color='#ff0000'></font>
+			</div>
+			<div class="indexcontent" id="indexcontent_about">
+				<h1>free-hack-quest</h1>
+				quests and games of computer security.<br>
+				Developers: Evgenii Sopov, Dmitrii Mukovkin<br>
+				Designer: Taisiya Lebedeva<br>
+				Thanks for: Alexander Menschikov<br>
+			</div>
+			<div class="indexcontent" id="indexcontent_contacts">
+				see us in <a href="http://vk.com/freehackquest">VK</a><br>
+				also you can write email on freehackquest(at)gmai1(d0t)c0m
+			</div>
+			<?
+
 	}
 };
-
-
 
 if(isset($_SESSION['iduser']) && isset($_SESSION['email']))
 {

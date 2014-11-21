@@ -98,6 +98,8 @@ p {
 	outline: none;
 	display: inline;
 	padding: 10px;
+	cursor: pointer;
+	/* todo: added tringulation */
 }
 
 .index_menu:focus {

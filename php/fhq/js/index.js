@@ -13,6 +13,21 @@ function load_content_html(idelem, url) {
 	xmlhttp.send();
 }
 
+function show_index_element(idelem) {
+	var index_elems = [
+		'indexcontent_sign_in',
+		'indexcontent_about',
+		'indexcontent_registration',
+		'indexcontent_contacts',
+		'indexcontent_restore'
+	];
+
+	for (var i = 0; i < index_elems.length; i++) {
+		document.getElementById(index_elems[i]).style.display = 'none';
+	}
+	document.getElementById(idelem).style.display = 'block';
+} 
+
 function send_request(url, callbackf) {
 	if (window.XMLHttpRequest)
 	{
