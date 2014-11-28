@@ -10,6 +10,7 @@ function echo_head($page)
 	<meta http-equiv="Content-Type" content="text/html; charset=utf8">
 
 	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/body.css" />
+	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/menu.css" />
 	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/site.css" />
 	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/button3.css" />
 	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/user_info.css" />

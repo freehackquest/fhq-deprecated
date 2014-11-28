@@ -212,9 +212,9 @@
 		$news->echo_teams();
 		exit;
 	}
-	else if ($content_page == "hacker_girl")
+	else if ($content_page == 'hacker_girl')
 	{
-		echo "<img src='images/logo2.png'>";
+		echo '<img src="files/orig/hacker_girl.png">';
 		exit;
 	}
 	else if ($content_page == "add_news" && ($security->isAdmin() || $security->isTester()))

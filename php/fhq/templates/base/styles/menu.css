@@ -1,0 +1,24 @@
+
+.fhq_btn_menu {
+	padding: 5px;
+	display: inline-block;
+	transition: all 1s ease 0s;
+	cursor: pointer;
+	text-align: center;
+	background-color: #ffffff;
+	border-radius: 10px;
+	font: 12pt sans-serif;
+}
+
+.fhq_btn_menu_user_panel {
+	position: relative;
+	float: right;
+	padding: 5px;
+	text-align: center;
+	display: inline-block;
+	transition: all 1s ease 0s;
+	cursor: pointer;
+	font: 12pt sans-serif;
+	background-color: #ffffff;
+	border-radius: 10px;
+}

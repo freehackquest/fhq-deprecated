@@ -6,6 +6,7 @@ include_once "$curdir/fhq_class_security.php";
 function echo_panel()
 {
 	$security = new fhq_security();
+	$template = isset($_SESSION['user']['template']) ? $_SESSION['user']['template'] : 'base';
 
 echo '
 <script>
@@ -40,18 +41,46 @@ echo '
 	echo '<table width=100%>
 			<tr>
 				<td >
-					<p>
-					<a class="button3 button3-menu" id="btn_user_info" href="javascript:void(0);" onclick="load_content_page(\'user_info\');" >'.$security->nick().'</a> 
-					<a class="button3 button3-menu" href="javascript:void(0);" onclick="load_content_page(\'games\');">Games</a>
-					<!-- a class="button3 button3-menu" href="javascript:void(0);" onclick="load_content_page(\'teams\');">Teams</a -->
-					<a class="button3 button3-menu" href="javascript:void(0);" onclick="load_content_page(\'news\');">News</a>
-					<a class="button3 button3-menu" href="javascript:void(0);" onclick="load_content_page(\'feedback_my\');">Feedback</a>
-					<a class="button3 button3-menu" href="javascript:void(0);" onclick="load_content_page(\'hacker_girl\');">Hacker girl here</a>
-					<a class="button3 button3-menu" href="javascript:void(0);" onclick="load_content_page2(\'rules\');">Rules</a>
-					<a class="button3 button3-menu" href="javascript:void(0);" onclick="exit();">logout</a>
-					<!-- a class="button3" href="javascript:void(0);" onclick="">||||||</a -->
+					<div class="fhq_btn_menu"  onclick="load_content_page(\'user_info\');">
+						<img width="50px" src="templates/'.$template.'/images/menu_btn_default_logo_user.png"/><br>
+						<div id="btn_user_info">'.$security->nick().'</div>
+					</div>
 					
-					</p>';
+					<div class="fhq_btn_menu" onclick="load_content_page(\'games\');">
+						<img width="50px" src="templates/'.$template.'/images/menu_btn_games.png"/><br>
+						Games
+					</div>
+					
+					<!-- div class="fhq_btn_menu" onclick="load_content_page(\'teams\');">
+						<img width="50px" src="templates/'.$template.'/images/menu_btn_default.png"/><br>
+						Teams
+					</div -->
+					
+					<div class="fhq_btn_menu" onclick="load_content_page(\'news\');">
+						<img width="50px" src="templates/'.$template.'/images/menu_btn_default.png"/><br>
+						News
+					</div>
+					
+					<div class="fhq_btn_menu" onclick="load_content_page(\'feedback_my\');">
+						<img width="50px" src="templates/'.$template.'/images/menu_btn_default.png"/><br>
+						Feedback
+					</div>
+					
+					<div class="fhq_btn_menu" onclick="load_content_page(\'hacker_girl\');">
+						<img width="50px" src="templates/'.$template.'/images/menu_btn_default.png"/><br>
+						Hacker girl here
+					</div>
+					
+					<div class="fhq_btn_menu" onclick="load_content_page(\'rules\');">
+						<img width="50px" src="templates/'.$template.'/images/menu_btn_default.png"/><br>
+						Rules
+					</div>
+					
+					<div class="fhq_btn_menu" onclick="exit();">
+						<img width="50px" src="templates/'.$template.'/images/menu_btn_default.png"/><br>
+						Logout
+					</div>
+					';
 
 	if ($game_type == 'jeopardy') {
 		echo '
