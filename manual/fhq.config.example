@@ -1,0 +1,20 @@
+<VirtualHost *:80>
+        Options -Indexes FollowSymLinks MultiViews
+        DocumentRoot /var/www/fhq/
+        ServerName fhq.keva.su
+        ErrorLog /var/log/apache2/fhq.keva.su-error_log
+        CustomLog /var/log/apache2/fhq.keva.su-access_log common
+
+        <Directory "/var/www/fhq/files">
+                AllowOverride None
+                Options -Indexes
+                Order allow,deny
+                Allow from all
+        </Directory>
+
+        <Directory /var/www/fhq/config>
+                Order deny,allow
+                Deny from all
+        </Directory>
+</VirtualHost>
+

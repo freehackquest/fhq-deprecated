@@ -1,3 +1,4 @@
 *.sql~
 *.*~
 config.php
+php/fhq/files/*

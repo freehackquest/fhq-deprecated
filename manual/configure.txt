@@ -1,0 +1,169 @@
+
+
+
+**************************** MYSQL ********************************
+look script ../sql/init_database_freehackquest.sql
+
+root@debian:~# git clone https://github.com/sea-kg/fhq fhq.github.temp
+root@debian:~# mysql -u root -p -h localhost < fhq.github.temp/sql/init_database_freehackquest.sql
+
+
+**************************** FIREWALL (CentOS 7 + firewalld) *****************************
+CentOS & MariaDB & Network
+Некоторые настройки.
+
+CentOS 7 + firewalld:
+# firewall-cmd --zone=public --add-port=3306/tcp --permanent
+# firewall-cmd --reload
+
+
+**************************** FIREWALL (iptables) *****************************
+Добавляем в фаервол разрешение для сервера (если он не на локальной машине)
+# iptables -A INPUT -p tcp -s 0/0 --sport 1024:65535 -d 172.16.53.102 --dport 3306 -m state --state NEW,ESTABLISHED -j ACCEPT
+# iptables -A OUTPUT -p tcp -s 172.16.53.102 --sport 3306 -d 0/0 --dport 1024:65535 -m state --state ESTABLISHED -j ACCEPT
+# iptables-save
+
+Проверяем что записи появились
+# iptables -L INPUT -n -v --line-numbers
+# iptables -L OUTPUT -n -v --line-numbers
+
+Что бы удалить запись:
+находим номер
+# iptables -L INPUT -n -v --line-numbers
+И удаляем
+# iptables -D INPUT номер_вашей_записи
+
+И конечно же сохраняем
+# iptables-save
+
+**************************** APACHE *******************************
+Настройка доменного имени.
+
+Добавить в /etc/apache2/sites-available/default следующии строки
+
+<VirtualHost *:80>
+        Options -Indexes FollowSymLinks MultiViews
+        DocumentRoot /var/www/fhq/
+        ServerName fhq.keva.su
+        ErrorLog /var/log/apache2/fhq.keva.su-error_log
+        CustomLog /var/log/apache2/fhq.keva.su-access_log common
+
+        <Directory "/var/www/fhq/files">
+                AllowOverride None
+                Options -Indexes
+                Order allow,deny
+                Allow from all
+        </Directory>
+
+        <Directory /var/www/fhq/config>
+                Order deny,allow
+                Deny from all
+        </Directory>
+</VirtualHost>
+
+ИЛИ вы можете скопировать файл fhq.config.example в
+/etc/apache2/sites-available/fhq.config
+
+
+**************************** PHP *******************************
+Устанавливаем и настраиваем
+root@debian# apt-get install php5
+
+Если не работает captcha:
+root@debian# apt-get install php5-gd
+
+Для работы с отправкой почтовых сообщений:
+root@debian# apt-get install php-pear
+root@debian# pear install Mail-1.2.0
+root@debian# pear install Net_SMTP
+
+
+Установка сайта:
+устанавливаем git
+root@debian# apt-get install git-core
+
+лучше всего создать отдельного пользователя:
+root@debian# adduser fhq
+далее следуем иструкциям
+
+Заходим под ним
+root@debian# su fhq
+
+Переходим в домашнюю директорию
+fhq@debian$ cd ~/
+
+клонируем репозиторий
+fhq@debian$ git clone https://github.com/sea-kg/fhq.git fhq.git
+
+Заходим внутрь
+fhq@debian$ cd fhq.git
+
+Далее просто делаем линк:
+fhq@debian$ sudo ln -s "`pwd`/php/fhq" "/var/www/fhq"
+
+Далее копируем и настраиваем:
+fhq@debian$ cp /var/www/fhq/config.php.inc /var/www/fhq/config.php
+
+
+			Дальнейшие действия устарели по настройке php устарели.
+			root@debian# mkdir /var/www/fhq
+			root@debian# mkdir /var/www/fhq/config
+			root@debian# mkdir /var/www/fhq/files
+			root@debian# chmod +r /var/www/fhq/config
+			root@debian# chown 777 /var/www/fhq/files
+			root@debian# chmod 777 /var/www/fhq/files
+
+			copy file from https://github.com/sea-kg/fhq/blob/master/php/fhq/config/config.php
+			to /var/www/fhq/config/config.php
+
+			copy file from https://github.com/sea-kg/fhq/blob/master/update_sources/run_update.sh
+			to /root/run_update.sh
+
+			root@debian# chmod +x /root/run_update.sh
+
+			root@debian# ./run_update.sh
+
+
+**************************** NFS *******************************
+http://www.opennet.ru/tips/info/2061.shtml
+
+configure NFS-server and NFS-client in Debian Lenny
+
+1. Input data
+
+   * NFS Server: fhq-sshtasks.example.com, IP address: 192.168.0.100
+   * NFS Client: fhq.example.com, IP address: 192.168.0.101
+
+
+2. fhq-sshtasks.example.com
+
+   root@debian# apt-get install nfs-kernel-server nfs-common portmap
+   root@debian# mkdir /home/nfs
+   root@debian# chown www-data:www-data /home/nfs
+   root@debian# addgroup hackers
+   root@debian# echo "/home/nfs   192.168.0.101(rw,sync,no_root_squash,no_subtree_check)" >> /etc/exports
+   root@debian# exportfs -a
+   root@debian# /etc/init.d/nfs-kernel-server restart
+   root@debian# touch create_user.sh
+   edir 'create_user.sh':
+
+cd /home/nfs/
+find . -type f -name "*.sh" -printf "chmod +x %p && sh %p && rm %p \n" | sh
+
+   root@debian# crontab -e      
+   add string:
+
+*/1 * * * * cd /root && ./create_users.sh
+
+3. fhq.example.com
+   root@debian# apt-get install nfs-common portmap
+   root@debian# mkdir /mnt/create_users
+   root@debian# mount 192.168.0.100:/home/nfs /mnt/create_users
+   changing file :
+   /var/www/fhq/config/config.php:
+
+   $config['nfs_share'] = "/mnt/create_users";
+
+   nano /etc/fstab
+   [...]
+   192.168.0.100:/home/nfs  /mnt/create_users   nfs      rw,sync,hard,intr  0     0
