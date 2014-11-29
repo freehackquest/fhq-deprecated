@@ -57,27 +57,27 @@ echo '
 					</div -->
 					
 					<div class="fhq_btn_menu" onclick="load_content_page(\'news\');">
-						<img width="50px" src="templates/'.$template.'/images/menu_btn_default.png"/><br>
+						<img width="50px" src="templates/'.$template.'/images/menu_btn_news.png"/><br>
 						News
 					</div>
 					
 					<div class="fhq_btn_menu" onclick="load_content_page(\'feedback_my\');">
-						<img width="50px" src="templates/'.$template.'/images/menu_btn_default.png"/><br>
+						<img width="50px" src="templates/'.$template.'/images/menu_btn_feedback.png"/><br>
 						Feedback
 					</div>
 					
 					<div class="fhq_btn_menu" onclick="load_content_page(\'hacker_girl\');">
-						<img width="50px" src="templates/'.$template.'/images/menu_btn_default.png"/><br>
-						Hacker girl here
+						<img width="50px" src="templates/'.$template.'/images/menu_btn_hacker_girl.png"/><br>
+						Hacker girl
 					</div>
 					
 					<div class="fhq_btn_menu" onclick="load_content_page(\'rules\');">
-						<img width="50px" src="templates/'.$template.'/images/menu_btn_default.png"/><br>
+						<img width="50px" src="templates/'.$template.'/images/menu_btn_rules.png"/><br>
 						Rules
 					</div>
 					
 					<div class="fhq_btn_menu" onclick="exit();">
-						<img width="50px" src="templates/'.$template.'/images/menu_btn_default.png"/><br>
+						<img width="50px" src="templates/'.$template.'/images/menu_btn_logout.png"/><br>
 						Logout
 					</div>
 					';

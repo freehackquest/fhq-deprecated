@@ -53,6 +53,25 @@ function echo_mainpage($page)
 	// $game_info .= "<img width=150 src='".$_SESSION['game']['logo']."'/>";
 		
 	echo '<body onload="'.$onload.'" class="main">
+
+	<div id="modal_dialog" class="overlay">
+		<div class="overlay_table">
+			<div class="overlay_cell">
+				<div class="overlay_content">
+					<div id="modal_dialog_content">
+						Текст посередине DIV
+					</div>
+					<br>
+					
+					<a class="button3 ad" href="javascript:void(0);" onclick="closeModalDialog();">
+						Close
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
 	<center>
 	<table cellspacing=10px cellpadding=10px width="100%" height="100%">
 		<tr class="menucolor">
