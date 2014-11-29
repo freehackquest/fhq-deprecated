@@ -6,7 +6,8 @@
 	text-decoration: none;
 	position:relative;
     color: #000000;
-    margin:3px 3px 3px 3px;  
+    margin:3px 3px 3px 3px;
+    cursor: pointer;
 }
 
 .button3-menu {
@@ -42,6 +43,7 @@
 	background: #ccc;
 	padding: 8px;
 	text-shadow: 0px;
+	border-radius: 5px;
 }
 
 .ad:hover {

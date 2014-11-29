@@ -189,7 +189,7 @@ class fhq_logon
 				<h1>free-hack-quest</h1>
 				quests and games of computer security.<br>
 				Developers: Evgenii Sopov, Dmitrii Mukovkin<br>
-				Designer: Taisiya Lebedeva<br>
+				Designer: Evgenii Sopov, Taisiya Lebedeva<br>
 				Thanks for: Alexander Menschikov<br>
 			</div>
 			<div class="indexcontent" id="indexcontent_contacts">

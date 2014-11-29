@@ -21,7 +21,6 @@ function reload_news()
 	var url = "content_page.php?content_page=news";
 	xmlhttp.open("GET", url ,true);
 	xmlhttp.send();
-  
 };
 
 // var myTimerNews;
