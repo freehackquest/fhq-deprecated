@@ -49,9 +49,9 @@ echo '
 						<img width="50px" src="templates/'.$template.'/images/menu_btn_games.png"/><br>
 					</div>
 					
-					<!-- div class="fhq_btn_menu hint--bottom" data-hint="Teams" onclick="load_content_page(\'teams\');">
-						<img width="50px" src="templates/'.$template.'/images/menu_btn_default.png"/><br>
-					</div -->
+					<div class="fhq_btn_menu hint--bottom" data-hint="Teams" onclick="load_content_page(\'teams\');">
+						<img width="50px" src="templates/'.$template.'/images/menu_btn_teams.png"/><br>
+					</div>
 					
 					<div class="fhq_btn_menu hint--bottom" data-hint="News" onclick="load_content_page(\'news\');">
 						<img width="50px" src="templates/'.$template.'/images/menu_btn_news.png"/><br>
