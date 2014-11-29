@@ -1,7 +1,7 @@
 
 .overlay {
-	/*visibility: hidden;*/
-	visibility: visible;
+	visibility: hidden;
+	/*visibility: visible;*/
 	position: absolute;
 	z-index: 1000;
 	background: rgba(0, 0, 0, 0.8);

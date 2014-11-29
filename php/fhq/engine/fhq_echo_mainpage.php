@@ -77,7 +77,8 @@ function echo_mainpage($page)
 		<tr class="menucolor">
 			<td width=100 valign="top">
 				<a href="?"><img src="templates/base/images/minilogo.png"/></a><br><br>
-				<center>'.$game_info.'<br><font size=1>change game in menu \'games\'</font>
+				<center>'.$game_info.'<br>
+				<div class="button3 ad" onclick="changeGame();">change game</div>
 				</center>
 			</td>
 			<td align="left" valign = "top" width="82%">

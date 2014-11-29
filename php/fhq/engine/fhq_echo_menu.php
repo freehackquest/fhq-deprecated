@@ -41,44 +41,36 @@ echo '
 	echo '<table width=100%>
 			<tr>
 				<td >
-					<div class="fhq_btn_menu"  onclick="load_content_page(\'user_info\');">
-						<img width="50px" src="templates/'.$template.'/images/menu_btn_default_logo_user.png"/><br>
-						<div id="btn_user_info">'.$security->nick().'</div>
+					<div class="fhq_btn_menu hint--bottom" data-hint="User profile"  onclick="load_content_page(\'user_info\');">
+						<img width="50px" src="templates/'.$template.'/images/menu_btn_default_logo_user.png"/> <div style="display: inline-block;" id="btn_user_info">'.$security->nick().'</div>
 					</div>
 					
-					<div class="fhq_btn_menu" onclick="load_content_page(\'games\');">
+					<div class="fhq_btn_menu hint--bottom" data-hint="Games" onclick="load_content_page(\'games\');">
 						<img width="50px" src="templates/'.$template.'/images/menu_btn_games.png"/><br>
-						Games
 					</div>
 					
-					<!-- div class="fhq_btn_menu" onclick="load_content_page(\'teams\');">
+					<!-- div class="fhq_btn_menu hint--bottom" data-hint="Teams" onclick="load_content_page(\'teams\');">
 						<img width="50px" src="templates/'.$template.'/images/menu_btn_default.png"/><br>
-						Teams
 					</div -->
 					
-					<div class="fhq_btn_menu" onclick="load_content_page(\'news\');">
+					<div class="fhq_btn_menu hint--bottom" data-hint="News" onclick="load_content_page(\'news\');">
 						<img width="50px" src="templates/'.$template.'/images/menu_btn_news.png"/><br>
-						News
 					</div>
 					
-					<div class="fhq_btn_menu" onclick="load_content_page(\'feedback_my\');">
+					<div class="fhq_btn_menu hint--bottom" data-hint="Feedback" onclick="load_content_page(\'feedback_my\');">
 						<img width="50px" src="templates/'.$template.'/images/menu_btn_feedback.png"/><br>
-						Feedback
 					</div>
 					
-					<div class="fhq_btn_menu" onclick="load_content_page(\'hacker_girl\');">
+					<div class="fhq_btn_menu hint--bottom" data-hint="Hacker girl here" onclick="load_content_page(\'hacker_girl\');">
 						<img width="50px" src="templates/'.$template.'/images/menu_btn_hacker_girl.png"/><br>
-						Hacker girl
 					</div>
 					
-					<div class="fhq_btn_menu" onclick="load_content_page(\'rules\');">
+					<div class="fhq_btn_menu" data-hint="Rules" onclick="load_content_page(\'rules\');">
 						<img width="50px" src="templates/'.$template.'/images/menu_btn_rules.png"/><br>
-						Rules
 					</div>
 					
-					<div class="fhq_btn_menu" onclick="exit();">
+					<div class="fhq_btn_menu hint--bottom" data-hint="Logout" onclick="exit();">
 						<img width="50px" src="templates/'.$template.'/images/menu_btn_logout.png"/><br>
-						Logout
 					</div>
 					';
 
@@ -100,9 +92,6 @@ echo '
 				<a class="button3 button3-menu" href="javascript:void(0);" onclick="load_content_page2(\'scoreboard\');">Scoreboard</a>
 			</p>';
 	} else {
-		echo '<p>
-			Please choose the game in menu \'games\'.
-		</p>';
 	}
 
 	echo '
