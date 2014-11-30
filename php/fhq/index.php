@@ -115,7 +115,6 @@ class fhq_logon
 						</tr>
 					</table>
 				</center>
-				<font id="error_message" color='#ff0000'></font>
 			</div>
 
 			<div class="indexcontent" id="indexcontent_registration">
