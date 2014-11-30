@@ -5,7 +5,7 @@
 	transition: all 1s ease 0s;
 	cursor: pointer;
 	text-align: center;
-	min-height: 50px;
+	min-height: 49px;
 	background-color: #ffffff;
 	border-radius: 10px;
 	margin-bottom: 5px;
@@ -14,8 +14,17 @@
 	font-family: Tempus Sans ITC;
 }
 
+.fhq_btn_menu:hover {
+	background: #606060;
+	color: #fff;
+}
+
 .fhq_btn_menu_color_none {
 	background-color: inherit;
+}
+
+.fhq_btn_menu_color_none:hover {
+	background: inherit;
 }
 
 .fhq_btn_menu_splitter {
@@ -35,7 +44,7 @@
 	display: inline-block;
 	vertical-align: middle;
 	white-space: nowrap;
-	height: 50px;
+	height: 51px;
 }
 
 .fhq_btn_menu_user_panel {

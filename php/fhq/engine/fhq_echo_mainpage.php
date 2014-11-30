@@ -81,7 +81,6 @@ function echo_mainpage($page)
 	echo_panel();
 	
 	echo '
-				<br>
 			</td>
 		</tr>
 		<tr>

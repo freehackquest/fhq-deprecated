@@ -160,7 +160,15 @@ echo '
 		'show' => true,
 	);
 	
-	
+	$arrmenu[] = array(
+		'name' => 'system_menu',
+		'html' => '
+			<div class="fhq_btn_menu hint--bottom" data-hint="System Menu" onclick="showSystemMenu();">
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_system.png"/>
+			</div>
+		',
+		'show' => $security->isAdmin(),
+	);
 	
 	$arrmenu[] = array(
 		'name' => 'games',
@@ -241,7 +249,91 @@ echo '
 		',
 		'show' => true,
 	);
-
+	
+	// system menu
+	
+	$arrsystemmenu = array();
+	
+	$arrsystemmenu[] = array(
+		'name' => 'feedbacks',
+		'html' => '
+			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'feedbacks\');">Messages</div>
+		',
+		'show' => $security->isAdmin(),
+	);
+	
+	$arrsystemmenu[] = array(
+		'name' => 'users',
+		'html' => '
+			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'users\');">Users</div>
+		',
+		'show' => $security->isAdmin(),
+	);
+	
+	$arrsystemmenu[] = array(
+		'name' => 'answer_list',
+		'html' => '
+			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'answer_list\');">Answer List</div>
+		',
+		'show' => $security->isAdmin() || $security->isTester(),
+	);
+	
+	$arrsystemmenu[] = array(
+		'name' => 'answer_list_backups',
+		'html' => '
+			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'answer_list\' , { backup : \'\' } );">Backup Answer List</div>
+		',
+		'show' => $security->isAdmin() || $security->isTester(),
+	);
+	
+	$arrsystemmenu[] = array(
+		'name' => 'statistics',
+		'html' => '
+			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'statistics\');">Statistics</div>
+		',
+		'show' => $security->isAdmin() || $security->isTester(),
+	);
+	
+	$arrsystemmenu[] = array(
+		'name' => 'add_quest',
+		'html' => '
+			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'add_quest\');">Add new quest</div>
+		',
+		'show' => $security->isAdmin(),
+	);
+	
+	$arrsystemmenu[] = array(
+		'name' => 'add_news',
+		'html' => '
+			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'add_news\');">Add News</div>
+		',
+		'show' => $security->isAdmin() || $security->isTester(),
+	);
+	
+	$arrsystemmenu[] = array(
+		'name' => 'add_user',
+		'html' => '
+			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'add_user\');">Add user</div>
+		',
+		'show' => $security->isAdmin(),
+	);
+	
+	$arrsystemmenu[] = array(
+		'name' => 'update_db',
+		'html' => '
+			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'update_db\');">Update DB</div>
+		',
+		'show' => $security->isAdmin(),
+	);
+	$arrsystemmenu[] = array(
+		'name' => 'init_scoreboard',
+		'html' => '
+			<div class="button3 ad" onclick="load_content_page2(\'init_scoreboard\');">init scoreboard</div>
+		',
+		'show' => $security->isAdmin(),
+	);
+	
+	// echo menu
 
 	foreach ($arrmenu as $menu) {
 		if ($menu['show']) {
@@ -249,49 +341,12 @@ echo '
 		}
 	}
 	
-	//add admins menu 
-	if( $security->isAdmin())
-	{
-		echo '
-		<table cellpadding="10px">
-		<tr>
-			<td>
-				Admin:
-					<!-- quest.php?action=add -->
-					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'feedbacks\');">Messages</a>
-				    <a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'users\');">Users</a>
-					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'answer_list\');">Answer List</a>
-					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'answer_list\' , { backup : \'\' } );">Backup Answer List</a>
-					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'statistics\');">Statistics</a>
-					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'add_quest\');">Add new quest</a>
-					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'add_news\');">Add News</a>
-					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'add_user\');">Add user</a><br><br>
-					System:	<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'update_db\');">Update DB</a>
-					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page2(\'init_scoreboard\');">init scoreboard</a>
-			</td>
-		</tr>
-		</table>';
-	};
-	
-	//add admins menu 
-	if( $security->isTester())
-	{
-		echo '
-		<table cellpadding="10px" >
-		<tr>
-			<td>
-				You is tester and you can:  
-					<!-- quest.php?action=add -->
-					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'answer_list\' );">Answer List</a> 
-					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'answer_list\' , { backup : \'\' } );">Backup Answer List</a>
-					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'add_news\');">Add News</a>
-					<a class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'statistics\');">Statistics</a>
-				     <!-- a href=""></a> , <a href="admin.php?action="></a -->
-			</td>
-		</tr>
-		</table>';
-	};
+	echo '<div id="system_menu" style="display: none;">';
+	foreach ($arrsystemmenu as $menu) {
+		if ($menu['show']) {
+			echo $menu['html'];
+		}
+	}
+	echo '</div>';
 };
 //---------------------------------------------------------------------	
-
-?>
