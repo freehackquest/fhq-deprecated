@@ -14,9 +14,11 @@ if (isset($_GET['email']) && isset($_GET['captcha'])) {
 	$email = $_GET['email'];
 	$captcha = $_GET['captcha'];
 
-	$orig_captcha = $_SESSION['captcha_reg'];
-	$_SESSION['captcha_reg'] = md5(rand().rand());
+	$orig_captcha = (string)$_SESSION['captcha_reg'];
 
+	$result['error']['captcha_expected'] = strtoupper($captcha);
+	$result['error']['captcha'] = strtoupper($orig_captcha);
+	
 	if( strtoupper($captcha) == strtoupper($orig_captcha) ) {
 		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			$username = base64_encode(strtoupper($email));

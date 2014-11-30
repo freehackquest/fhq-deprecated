@@ -191,6 +191,7 @@ class fhq_logon
 				see us in <a href="http://vk.com/freehackquest">VK</a><br>
 				also you can write email on freehackquest(at)gmai1(d0t)c0m
 			</div>
+			<br><br>
 			<font id="info_message"></font>
 			<font id="error_message" color='#ff0000'></font>
 			<?
