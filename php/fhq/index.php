@@ -149,8 +149,6 @@ class fhq_logon
 					</tr>
 				</table>
 				</center>
-				<font id="info_message"></font>
-				<font id="error_message" color='#ff0000'></font>
 			</div>
 			<div class="indexcontent" id="indexcontent_restore">
 				<center>
@@ -182,8 +180,6 @@ class fhq_logon
 					</tr>
 				</table>
 				</center>
-				<font id="info_message"></font>
-				<font id="error_message" color='#ff0000'></font>
 			</div>
 			<div class="indexcontent" id="indexcontent_about">
 				<h1>free-hack-quest</h1>
@@ -196,6 +192,8 @@ class fhq_logon
 				see us in <a href="http://vk.com/freehackquest">VK</a><br>
 				also you can write email on freehackquest(at)gmai1(d0t)c0m
 			</div>
+			<font id="info_message"></font>
+			<font id="error_message" color='#ff0000'></font>
 			<?
 
 	}

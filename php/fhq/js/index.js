@@ -48,6 +48,7 @@ function send_request(url, callbackf) {
 function sign_in()
 {
 	document.getElementById("error_message").innerHTML = "";
+	document.getElementById("info_message").innerHTML = "Please wait...";
 	
 	var email = document.getElementById('email').value;
 	var password = document.getElementById('password').value;
