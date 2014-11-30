@@ -66,8 +66,8 @@ content: attr(data-hint);
 background: #383838;
 color: white;
 padding: 8px 10px;
-font-size: 12px;
-line-height: 12px;
+/*font-size: 12px;
+line-height: 12px;*/
 white-space: nowrap; }
 /**
 * source: hint-position.scss

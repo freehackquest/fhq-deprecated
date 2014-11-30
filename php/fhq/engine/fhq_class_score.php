@@ -262,7 +262,7 @@ class fhq_score
 			<tr '.$strclass.'>
 				<td width=50px><h1>'.(++$i).'</h1></td>
 				<td><center>'.$logo.'<h4>
-				  <a href="javascript:void(0);" onclick="load_content_page(\'profile\',{user_id:\''.$owner.'\'});">'.htmlspecialchars($nick).'</a></h4></center></td>
+				  <a href="javascript:void(0);" onclick="showUserProfile(\''.$owner.'\');">'.htmlspecialchars($nick).'</a></h4></center></td>
 				'.$rows.'
 			</tr>';
 		}

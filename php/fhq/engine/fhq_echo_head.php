@@ -23,6 +23,8 @@ function echo_head($page)
 	<script type="text/javascript" src="js/fhq_echo_head.js"></script>
 	<script type="text/javascript" src="js/fhq_modal_dialog.js"></script>
 	<script type="text/javascript" src="js/fhq_games.js"></script>
+	<script type="text/javascript" src="js/fhq_users.js"></script>
+	<script type="text/javascript" src="js/fhq_menu.js"></script>
 	
 	<style>
 		textarea.full_text
