@@ -70,7 +70,7 @@ function restore()
 	document.getElementById("info_message").innerHTML = "Please wait...";
 	
 	var email = document.getElementById('email').value;
-	var captcha = document.getElementById('captcha').value;
+	var captcha = document.getElementById('captcha_reg').value;
 	
 	send_request(
 		"api/index/restore.php?email="+email + "&captcha=" + captcha,
@@ -80,10 +80,10 @@ function restore()
 				document.getElementById("info_message").innerHTML = "";
 			} else {
 				document.getElementById("info_message").innerHTML = "<b>" + obj.data.message + "</b>";
-				document.getElementById("captcha").value = "";
+				document.getElementById("captcha_reg").value = "";
 				document.getElementById("email").value = "";
 			}
-			document.getElementById('captcha_image').src = 'captcha.php?rid=' + Math.random();
+			document.getElementById('captcha_image_restore').src = 'captcha.php?rid=' + Math.random();
 		}
 	);
 }
@@ -94,7 +94,7 @@ function registration()
 	document.getElementById("info_message").innerHTML = "Please wait...";
 	
 	var email = document.getElementById('email').value;
-	var captcha = document.getElementById('captcha').value;
+	var captcha = document.getElementById('captcha_reg').value;
 	
 	send_request(
 		"api/index/registration.php?email="+email + "&captcha=" + captcha,
@@ -104,10 +104,10 @@ function registration()
 				document.getElementById("info_message").innerHTML = "";
 			} else {
 				document.getElementById("info_message").innerHTML = "<b>" + obj.data.message + "</b>";
-				document.getElementById("captcha").value = "";
+				document.getElementById("captcha_reg").value = "";
 				document.getElementById("email").value = "";
 			}
-			document.getElementById('captcha_image').src = 'captcha.php?rid=' + Math.random();
+			document.getElementById('captcha_image_reg').src = 'captcha.php?rid=' + Math.random();
 		}
 	);
 }

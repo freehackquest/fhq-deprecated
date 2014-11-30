@@ -130,15 +130,15 @@ class fhq_logon
 					<tr>
 						<td></td>
 						<td>
-							<img src="captcha.php" id="captcha_image"/><br>
-							<a href="javascript:void(0);" onclick="document.getElementById('captcha_image').src = 'captcha.php?rid=' + Math.random();">Refresh Capcha</a>
+							<img src="captcha.php" id="captcha_image_reg"/><br>
+							<a href="javascript:void(0);" onclick="document.getElementById('captcha_image_reg').src = 'captcha.php?rid=' + Math.random();">Refresh Capcha</a>
 							<br>
 							
 						</td>
 					</tr>
 					<tr>
 						<td>Captcha</td>
-						<td><input name="captcha" id="captcha" value="" type="text" onkeydown="if (event.keyCode == 13) restore();"></td>
+						<td><input name="captcha" id="captcha_reg" value="" type="text" onkeydown="if (event.keyCode == 13) restore();"></td>
 					</tr>
 					<tr>
 						<td colspan=2>
@@ -163,15 +163,15 @@ class fhq_logon
 					<tr>
 						<td></td>
 						<td>
-							<img src="captcha.php" id="captcha_image"/><br>
-							<a href="javascript:void(0);" onclick="document.getElementById('captcha_image').src = 'captcha.php?rid=' + Math.random();">Refresh Capcha</a>
+							<img src="captcha.php" id="captcha_image_restore"/><br>
+							<a href="javascript:void(0);" onclick="document.getElementById('captcha_image_restore').src = 'captcha.php?rid=' + Math.random();">Refresh Capcha</a>
 							<br>
 							
 						</td>
 					</tr>
 					<tr>
 						<td>Captcha</td>
-						<td><input name="captcha" id="captcha" value="" type="text" onkeydown="if (event.keyCode == 13) restore();"></td>
+						<td><input name="captcha" id="captcha_restore" value="" type="text" onkeydown="if (event.keyCode == 13) restore();"></td>
 					</tr>
 					<tr>
 						<td colspan=2>
