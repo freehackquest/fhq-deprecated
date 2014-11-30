@@ -2,14 +2,15 @@
 .overlay {
 	visibility: hidden;
 	/*visibility: visible;*/
-	position: absolute;
+	/*position: absolute;*/
+	position: fixed;
 	z-index: 1000;
 	background: rgba(0, 0, 0, 0.8);
 	width: 100%;
 	height: 100%;
 	text-align: center;
-	left: 0px;
-	top: 0px;
+	/*left: 0px;
+	top: 0px;*/
 	vertical-align: middle;
 }
 
