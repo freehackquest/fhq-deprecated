@@ -62,8 +62,8 @@ class fhq_security
 	}
 	*/
 	
-	function logout() { 
-		if($this->isLogged()) { unset($_SESSION['user']); } 
+	function logout() {
+		if($this->isLogged()) { unset($_SESSION['user']); unset($_SESSION['game']); }
 	}
 	function isLogged() { 
 		return (isset($_SESSION['user'])); 

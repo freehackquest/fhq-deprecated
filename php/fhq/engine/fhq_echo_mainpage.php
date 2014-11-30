@@ -75,12 +75,6 @@ function echo_mainpage($page)
 	<center>
 	<table cellspacing=10px cellpadding=10px width="100%" height="100%">
 		<tr class="menucolor">
-			<td width=100 valign="top">
-				<a href="?"><img src="templates/base/images/minilogo.png"/></a><br><br>
-				<center>'.$game_info.'<br>
-				<div class="button3 ad" onclick="changeGame();">change game</div>
-				</center>
-			</td>
 			<td align="left" valign = "top" width="82%">
 					';
 	// echo_score();
@@ -91,7 +85,7 @@ function echo_mainpage($page)
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2" height="100%" valign="top">
+			<td height="100%" valign="top">
 				<center>
 					<div id="content_page">
 					</div>

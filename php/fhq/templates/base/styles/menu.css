@@ -5,11 +5,37 @@
 	transition: all 1s ease 0s;
 	cursor: pointer;
 	text-align: center;
+	min-height: 50px;
 	background-color: #ffffff;
 	border-radius: 10px;
 	margin-bottom: 5px;
 	padding: 5px;
+	vertical-align:middle;
 	font-family: Tempus Sans ITC;
+}
+
+.fhq_btn_menu_color_none {
+	background-color: inherit;
+}
+
+.fhq_btn_menu_splitter {
+	padding: 5px;
+	display: inline-block;
+	min-height: 50px;
+	background-color: #ffffff;
+	border-radius: 10px;
+	margin-bottom: 5px;
+	padding: 5px;
+	vertical-align:middle;
+	font-family: Tempus Sans ITC;
+	background: rgba(255, 255, 255, 0.5);
+}
+
+.fhq_btn_menu_img {
+	display: inline-block;
+	vertical-align: middle;
+	white-space: nowrap;
+	height: 50px;
 }
 
 .fhq_btn_menu_user_panel {
@@ -24,3 +50,5 @@
 	background-color: #ffffff;
 	border-radius: 10px;
 }
+
+/*img{max-width:100%;width:auto\9;height:auto;vertical-align:middle;border:0;-ms-interpolation-mode:bicubic;}*/s
