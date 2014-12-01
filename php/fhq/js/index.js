@@ -26,6 +26,13 @@ function show_index_element(idelem) {
 		document.getElementById(index_elems[i]).style.display = 'none';
 	}
 	document.getElementById(idelem).style.display = 'block';
+
+  // refresh captcha
+  if (idelem == 'indexcontent_restore')
+    document.getElementById('captcha_image_restore').src = 'captcha.php?rid=' + Math.random();
+       
+  if (idelem == 'indexcontent_registration') 
+    document.getElementById('captcha_image_reg').src = 'captcha.php?rid=' + Math.random();
 } 
 
 function send_request(url, callbackf) {
