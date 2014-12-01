@@ -124,7 +124,7 @@ class fhq_logon
 				<table cellspacing=10px cellpadding=10px>
 					<tr>
 						<td>E-mail</td>
-						<td><input name="email" id="email" value="" type="text" onkeydown="if (event.keyCode == 13) registration();"></td>
+						<td><input name="email" id="email_reg" value="" type="text" onkeydown="if (event.keyCode == 13) registration();"></td>
 					</tr>
 					<tr>
 						<td></td>
@@ -155,7 +155,7 @@ class fhq_logon
 				<table cellspacing=10px cellpadding=10px>
 					<tr>
 						<td>E-mail</td>
-						<td><input name="email" id="email" value="" type="text" onkeydown="if (event.keyCode == 13) restore();"></td>
+						<td><input name="email" id="email_restore" value="" type="text" onkeydown="if (event.keyCode == 13) restore();"></td>
 					</tr>
 					<tr>
 						<td></td>
@@ -163,7 +163,6 @@ class fhq_logon
 							<img src="captcha.php" id="captcha_image_restore"/><br>
 							<a href="javascript:void(0);" onclick="document.getElementById('captcha_image_restore').src = 'captcha.php?rid=' + Math.random();">Refresh Capcha</a>
 							<br>
-							
 						</td>
 					</tr>
 					<tr>
