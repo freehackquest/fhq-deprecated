@@ -115,7 +115,6 @@ class fhq_logon
 						</tr>
 					</table>
 				</center>
-				<font id="error_message" color='#ff0000'></font>
 			</div>
 
 			<div class="indexcontent" id="indexcontent_registration">
@@ -130,15 +129,15 @@ class fhq_logon
 					<tr>
 						<td></td>
 						<td>
-							<img src="captcha.php" id="captcha_image"/><br>
-							<a href="javascript:void(0);" onclick="document.getElementById('captcha_image').src = 'captcha.php?rid=' + Math.random();">Refresh Capcha</a>
+							<img src="captcha.php" id="captcha_image_reg"/><br>
+							<a href="javascript:void(0);" onclick="document.getElementById('captcha_image_reg').src = 'captcha.php?rid=' + Math.random();">Refresh Capcha</a>
 							<br>
 							
 						</td>
 					</tr>
 					<tr>
 						<td>Captcha</td>
-						<td><input name="captcha" id="captcha" value="" type="text" onkeydown="if (event.keyCode == 13) restore();"></td>
+						<td><input name="captcha" id="captcha_reg" value="" type="text" onkeydown="if (event.keyCode == 13) restore();"></td>
 					</tr>
 					<tr>
 						<td colspan=2>
@@ -149,8 +148,6 @@ class fhq_logon
 					</tr>
 				</table>
 				</center>
-				<font id="info_message"></font>
-				<font id="error_message" color='#ff0000'></font>
 			</div>
 			<div class="indexcontent" id="indexcontent_restore">
 				<center>
@@ -163,15 +160,15 @@ class fhq_logon
 					<tr>
 						<td></td>
 						<td>
-							<img src="captcha.php" id="captcha_image"/><br>
-							<a href="javascript:void(0);" onclick="document.getElementById('captcha_image').src = 'captcha.php?rid=' + Math.random();">Refresh Capcha</a>
+							<img src="captcha.php" id="captcha_image_restore"/><br>
+							<a href="javascript:void(0);" onclick="document.getElementById('captcha_image_restore').src = 'captcha.php?rid=' + Math.random();">Refresh Capcha</a>
 							<br>
 							
 						</td>
 					</tr>
 					<tr>
 						<td>Captcha</td>
-						<td><input name="captcha" id="captcha" value="" type="text" onkeydown="if (event.keyCode == 13) restore();"></td>
+						<td><input name="captcha" id="captcha_restore" value="" type="text" onkeydown="if (event.keyCode == 13) restore();"></td>
 					</tr>
 					<tr>
 						<td colspan=2>
@@ -182,8 +179,6 @@ class fhq_logon
 					</tr>
 				</table>
 				</center>
-				<font id="info_message"></font>
-				<font id="error_message" color='#ff0000'></font>
 			</div>
 			<div class="indexcontent" id="indexcontent_about">
 				<h1>free-hack-quest</h1>
@@ -196,6 +191,9 @@ class fhq_logon
 				see us in <a href="http://vk.com/freehackquest">VK</a><br>
 				also you can write email on freehackquest(at)gmai1(d0t)c0m
 			</div>
+			<br><br>
+			<font id="info_message"></font>
+			<font id="error_message" color='#ff0000'></font>
 			<?
 
 	}
