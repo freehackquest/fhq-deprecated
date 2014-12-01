@@ -124,7 +124,7 @@ class fhq_logon
 				<table cellspacing=10px cellpadding=10px>
 					<tr>
 						<td>E-mail</td>
-						<td><input name="email" id="email" value="" type="text" onkeydown="if (event.keyCode == 13) restore();"></td>
+						<td><input name="email" id="email" value="" type="text" onkeydown="if (event.keyCode == 13) registration();"></td>
 					</tr>
 					<tr>
 						<td></td>
@@ -137,7 +137,7 @@ class fhq_logon
 					</tr>
 					<tr>
 						<td>Captcha</td>
-						<td><input name="captcha" id="captcha_reg" value="" type="text" onkeydown="if (event.keyCode == 13) restore();"></td>
+						<td><input name="captcha" id="captcha_reg" value="" type="text" onkeydown="if (event.keyCode == 13) registration();"></td>
 					</tr>
 					<tr>
 						<td colspan=2>
