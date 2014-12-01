@@ -43,7 +43,7 @@ echo '
 	}
 	
 	$arrmenu = array();
-	
+
 	/*<a href="?"><img src="templates/base/images/minilogo.png"/></a><br><br>
 				<center>'.$game_info.'<br>
 				<div class="button3 ad" onclick="">change game</div>

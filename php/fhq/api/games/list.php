@@ -1,9 +1,8 @@
 <?php
 $curdir = dirname(__FILE__);
+include ($curdir."/../api.lib/api.helpers.php");
 include ($curdir."/../../config/config.php");
 include ($curdir."/../../engine/fhq.php");
-include ($curdir."/../api.helpers.php");
-
 
 $security = new fhq_security();
 checkAuth($security);
@@ -12,67 +11,46 @@ $result = array(
 	'result' => 'fail',
 	'data' => array(),
 );
-/*
-if (isset($_GET['email']) && isset($_GET['captcha'])) {
-	$email = $_GET['email'];
-	$captcha = $_GET['captcha'];
 
-	$orig_captcha = (string)$_SESSION['captcha_reg'];
+$conn = createConnection($config);
 
-	$result['error']['captcha_expected'] = strtoupper($captcha);
-	$result['error']['captcha'] = strtoupper($orig_captcha);
+try {
+	$where = ' WHERE games.date_start < NOW() ';
+	if($security->isAdmin() || $security->isTester())
+		$where = ' ';
 	
-	if( strtoupper($captcha) == strtoupper($orig_captcha) ) {
-		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			$username = base64_encode(strtoupper($email));
-			$db = new fhq_database();
-			$qresult = $db->query("select * from user where username = '$username';");
-			if( $db->count( $qresult ) == 1 )
-			{
-				$password = substr(md5(rand().rand()), 0, 7);
-				$password_hash = $security->tokenByData( array($password, $username, strtoupper($email)));
+	$query = 'SELECT 
+				games.id,
+				games.title,
+				games.date_start,
+				games.date_stop,
+				games.logo,
+				games.owner,
+				user.nick
+			FROM
+				games
+			INNER JOIN user ON games.owner = user.iduser
+			'.$where.'
+			ORDER BY games.date_start
+			DESC LIMIT 0,10;';
 
-				$query = "UPDATE user SET password = '$password_hash' where username = '$username';";
-				$qresult2 = $db->query($query);
-				if($qresult2 == '1')
-				{
-					$subject = 'Restore password to your account on FreeHackQuest.';
-					$message = '
-	Restore:
+	$columns = array('id', 'title', 'date_start', 'date_stop', 'logo', 'owner', 'nick');
 
-	Somebody (may be you) reseted your password on '.$config['httpname'].'
-	Your new password: '.$password.'
-	'.$config['httpname'].'index.php
-	';
-					$mail = new fhq_mail();
-					$error = "";
-					if( $mail->send($email, '', '', $subject, $message, $error) ) {
-						$result['result'] = 'ok';
-						$result['data']['message'] = 'Check your your e-mail (also check spam).';
-					} else {
-						$result['error']['code'] = '107';
-						$result['error']['message'] = 'Error 107[restore]: Problem with sending email. '.$error;
-					}
-				} else {
-					$result['error']['code'] = '106';
-					$result['error']['message'] = 'Error 106[restore]: Restore is denied.';
-				}
-			} else {
-				$result['error']['code'] = '105';
-				$result['error']['message'] = 'Error 105[restore]: This e-mail was not registered.';
-			}
-			mysql_free_result($qresult);
-		} else {
-			$result['error']['code'] = '104';
-			$result['error']['message'] = 'Error 104[restore]: Invalid e-mail address.';
-		}		
-	} else {
-		$result['error']['code'] = '103';
-		$result['error']['message'] = 'Error 103[restore]: Captcha is not correct,<br> please "Refresh captcha" and try again';
+	$stmt = $conn->prepare($query);
+	$stmt->execute();
+	$i = 0;
+	while($row = $stmt->fetch())
+	{
+		$id = $row['date_start'];
+		$result['data'][$id] = array();
+		foreach ( $columns as $k) {
+			$result['data'][$id][$k] = $row[$k];
+		}
 	}
-} else {
-	$result['error']['code'] = '108';
-	$result['error']['message'] = 'Error 108[restore]: Incorrect input parameters email or captcha';
+	$result['current_game'] = isset($_SESSION['game']) ? $_SESSION['game']['id'] : 0;		
+	$result['result'] = 'ok';
+} catch(PDOException $e) {
+	showerror(702, 'Error 702: ' + $e->getMessage());
 }
-*/
+
 echo json_encode($result);

@@ -5,7 +5,7 @@
 }
 
 @font-face {
-	font-family: Tempus Sans ITC; 
+	font-family: Tempus Sans ITC;
 	src: url(../fonts/TEMPSITC.ttf); /* Путь к файлу со шрифтом */
 }
 
@@ -27,8 +27,7 @@ body.main
 	background-color: #FFFFFF;
 	line-height:40px;
 	color:#333333;
-	font: 12pt/10pt Pompadur;
-	
+	font: 12pt/10pt "Tempus Sans ITC";
 }
 
 p {
@@ -49,7 +48,7 @@ p {
 
 #customers
 {
-	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 	width:100%;
 	border-collapse:collapse;
 }
