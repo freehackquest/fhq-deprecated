@@ -4,20 +4,6 @@
 	include_once "$curdir/fhq_class_database.php";
 	include_once "$curdir/fhq_class_mail.php";
 	
-	if (isset($_GET['choose_game'])) {
-		$game_id = $_GET['choose_game'];
-		if (is_numeric($game_id)) {
-			$db = new fhq_database();
-			$query = 'SELECT * FROM games WHERE id = '.$game_id;
-			$result = $db->query( $query );
-			if ($row = mysql_fetch_row($result, MYSQL_ASSOC)) {
-				$_SESSION['game'] = $row;
-			}
-			mysql_free_result($result);
-		}
-		refreshTo("main.php");
-	}
-	
 	//---------------------------------------------------------------------
 	class fhq_games
 	{
@@ -114,11 +100,11 @@
 								
 				echo "<tr $strclass>
 					<td><img width=100px src='$logo'></td>
-					<td><a href='main.php?choose_game=$id_game'>$title</a></td>
+					<td><div class='button3 ad' onclick='chooseGame($id_game);'>$title</div></td>
 					<td>$date_start</td>
 					<td>$date_stop</td>					
 					<td>
-						<a href='javascript:void(0);' onclick='load_content_page(\"profile\",{user_id:\"$owner\"});'>$nick</a>
+						<div class='button3 ad' onclick='showUserProfile($owner);'>$nick</div>
 					</td>
 				";
 				echo "</tr>";

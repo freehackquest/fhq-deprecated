@@ -62,7 +62,7 @@ function echo_mainpage($page)
 						Текст посередине DIV
 					</div>
 					<br>
-					
+					<hr>
 					<a class="button3 ad" href="javascript:void(0);" onclick="closeModalDialog();">
 						Close
 					</a>
