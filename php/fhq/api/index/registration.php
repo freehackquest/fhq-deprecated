@@ -28,21 +28,21 @@ if (isset($_GET['email']) && isset($_GET['captcha'])) {
 			else 
 			{
 				$result['error']['code'] = '110';
-				$result['error']['message'] = 'Error 110: Problem with registration. '.$error;
+				$result['error']['message'] = 'Error 110[registration]: Problem with registration. '.$error;
 			};
 		}
 		else
 		{
 			$result['error']['code'] = '111';
-			$result['error']['message'] = 'Error 111: Invalid e-mail address.';
+			$result['error']['message'] = 'Error 111[registration]: Invalid e-mail address.';
 		}		
 	} else {
 		$result['error']['code'] = '112';
-		$result['error']['message'] = 'Error 112: Captcha is not correct,<br> please "Refresh captcha" and try again';
+		$result['error']['message'] = 'Error 112[registration]: Captcha is not correct,<br> please "Refresh captcha" and try again';
 	}
 } else {
 	$result['error']['code'] = '113';
-	$result['error']['message'] = 'Error 113: it was not found login';
+	$result['error']['message'] = 'Error 113[registration]: Incorrect input parameters email or captcha';
 }
 
 echo json_encode($result);
