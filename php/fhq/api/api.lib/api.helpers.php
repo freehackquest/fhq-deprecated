@@ -36,3 +36,12 @@ function createConnection($config)
 {
 	return new PDO('mysql:host='.$config['db']['host'].';dbname='.$config['db']['dbname'].';charset=utf8', $config['db']['username'], $config['db']['userpass']);
 }
+
+
+function issetParam($name) {
+  return isset($_GET[$name]) || isset($_POST[$name]);
+}
+
+function getParam($name, $defaultValue = "") {
+  return isset($_GET[$name]) ? $_GET[$name] : (isset($_POST[$name]) ? $_POST[$name] : $defaultValue);
+}

@@ -14,8 +14,8 @@ $result = array(
 
 $conn = createConnection($config);
 
-if (isset($_GET['id']) || isset($_POST['id'])) {
-	$game_id = isset($_GET['id']) ? $_GET['id'] : (isset($_POST['id']) ? $_POST['id'] : 0);
+if (issetParam('id')) {
+	$game_id = getParam('id', 0);
 
 	if (!is_numeric($game_id))
 		showerror(715, 'Error 715: incorrect id');
