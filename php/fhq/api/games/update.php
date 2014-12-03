@@ -15,7 +15,7 @@ $result = array(
 $conn = createConnection($config);
 
 if($security->isAdmin())
-  showerror(746, 'Error 746: access denie. you must be admin.');
+  showerror(756, 'Error 756: access denie. you must be admin.');
 
 $columns = array(
   'global_id' => 'none',
@@ -27,34 +27,45 @@ $columns = array(
   'author_id' => $security->userId(),
 );
 
+if (!issetParam('id'))
+  showerror(759, 'Error 759: not found parameter "id"');
+
+$game_id = getParam('id', 0);
+
+if (!is_numeric($game_id))
+	showerror(754, 'Error 754: incorrect "id"');
+
+$game_id = intval($game_id);
+
 $param_values = array(); 
 $values_q = array();
 
 foreach ( $columns as $k => $v) {
-  $values_q[] = '?';
+  $values_q[] = $k.' = ?';
   if (issetParam($k))
     $param_values[$k] = getParam($k, $v);
   else
-    showerror(748, 'Error 748: not found parameter "'.$k.'"');
+    showerror(758, 'Error 758: not found parameter "'.$k.'"');
 }
 
 if (!is_numeric($param_values['author_id']))
-	showerror(745, 'Error 745: incorrect author_id');
+	showerror(755, 'Error 755: incorrect author_id');
 
 $param_values['author_id'] = intval($param_values['author_id']);
 
-$query = 'INSERT INTO games('.implode(',', array_keys($param_values)).', change_date) 
-  VALUES('.implode(',', $values_q).', NOW());';
+$query = 'UPDATE games SET '.implode(',', $values_q).', change_date = NOW()
+  WHERE id = ?';
 
 $values = array_values($param_values);
+$values[] = $game_id; 
 
 try {
 	$stmt = $conn->prepare($query);
-	$stmt->execute($values);    
-  $result['data']['game']['id'] = $conn->lastInsertId();
+	$stmt->execute($values);
   $result['result'] = 'ok';
 } catch(PDOException $e) {
   showerror(747, 'Error 747: ' + $e->getMessage());
 }
+
 
 echo json_encode($result);
