@@ -39,7 +39,6 @@ if (issetParam('id')) {
 		{
 			$result['data'] = array();
 			foreach ( $columns as $k) {
-				$_SESSION['game'][$k] = $row[$k];
 				$result['data'][$k] = $row[$k];
 			}
 		}
