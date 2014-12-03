@@ -1,0 +1,26 @@
+\section{Получение access\_token}
+\par
+Для получения access\_token необходимо передать на специальный адрес GET запрос вида. \\
+
+
+\begin{Verbatim}[frame=single]
+https://api.example.com/token/?client_id=web&username=root&password=123456
+\end{Verbatim}
+
+Для получения логина и пароля необходимо зарегистрироваться, используя метод auth.signup.
+
+В ответ сервер вернет ответ типа:
+\begin{Verbatim}[frame=single]
+{
+    "access_token": "62947380b6bacd6b6ca49c6b8e90dc3f79dae1f1dd6af695e046453d4550c12b",
+    "user_id": "234",
+    "expires_in": 1401646393
+}
+\end{Verbatim}
+
+В случае неудачи:
+
+
+\begin{Verbatim}[frame=single]
+???
+\end{Verbatim}
