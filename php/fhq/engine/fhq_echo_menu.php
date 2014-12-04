@@ -7,6 +7,9 @@ function echo_panel()
 {
 	$security = new fhq_security();
 	$template = isset($_SESSION['user']['template']) ? $_SESSION['user']['template'] : 'base';
+	
+	// TODO: images must be get another
+	$template = 'base';
 
 echo '
 <script>

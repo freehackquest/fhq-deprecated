@@ -74,7 +74,7 @@ function echo_mainpage($page)
 	
 	<center>
 	<table cellspacing=10px cellpadding=10px width="100%" height="100%">
-		<tr class="menucolor">
+		<tr class="fhq_menucolor">
 			<td align="left" valign = "top" width="82%">
 					';
 	// echo_score();

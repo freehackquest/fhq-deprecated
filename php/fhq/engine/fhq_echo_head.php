@@ -9,14 +9,25 @@ function echo_head($page)
 	<title> Free-Hack-Quests </title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf8">
 
-	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/body.css" />
+	<!-- link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/body.css" />
 	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/menu.css" />
 	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/site.css" />
 	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/button3.css" />
 	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/user_info.css" />
 	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/quest_info.css" />
 	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/overlay.css" />
-	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/hint.css" />
+	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/hint.css" / -->
+	
+	<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css" />
+	<link rel="stylesheet" type="text/css" href="templates/base/styles/menu.css" />
+	<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css" />
+	<link rel="stylesheet" type="text/css" href="templates/base/styles/button3.css" />
+	<link rel="stylesheet" type="text/css" href="templates/base/styles/user_info.css" />
+	<link rel="stylesheet" type="text/css" href="templates/base/styles/quest_info.css" />
+	<link rel="stylesheet" type="text/css" href="templates/base/styles/overlay.css" />
+	<link rel="stylesheet" type="text/css" href="templates/base/styles/hint.css">
+
+	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/colors.css" />
 
 	<!-- script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script -->
 	<!-- script src="http://malsup.github.com/jquery.form.js"></script -->	
