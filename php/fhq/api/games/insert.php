@@ -14,7 +14,7 @@ $result = array(
 
 $conn = createConnection($config);
 
-if($security->isAdmin())
+if(!$security->isAdmin())
   showerror(746, 'Error 746: access denie. you must be admin.');
 
 $columns = array(

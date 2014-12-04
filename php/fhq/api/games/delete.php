@@ -14,7 +14,7 @@ $result = array(
 
 $conn = createConnection($config);
 
-if($security->isAdmin())
+if(!$security->isAdmin())
   showerror(786, 'Error 786: access denie. you must be admin.');
 
 if (issetParam('id'))
