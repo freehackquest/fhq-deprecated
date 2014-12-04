@@ -1,5 +1,5 @@
 @ECHO OFF
-
+cd tex
 ECHO delete temporary files
 DEL /S/Q *.~* 
 DEL /S/Q *.log

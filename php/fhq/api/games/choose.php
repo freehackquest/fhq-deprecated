@@ -43,8 +43,13 @@ if (issetParam('id')) {
 				$_SESSION['game'][$k] = $row[$k];
 				$result['data'][$k] = $row[$k];
 			}
+			$result['result'] = 'ok';
 		}
-		$result['result'] = 'ok';
+		else
+		{
+			showerror(702, 'Error 702: Game with id='.$game_id.' are not exists');
+		}
+		
 	} catch(PDOException $e) {
 		showerror(712, 'Error 712: ' + $e->getMessage());
 	}
