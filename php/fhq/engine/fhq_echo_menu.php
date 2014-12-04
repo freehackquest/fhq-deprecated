@@ -7,6 +7,9 @@ function echo_panel()
 {
 	$security = new fhq_security();
 	$template = isset($_SESSION['user']['template']) ? $_SESSION['user']['template'] : 'base';
+	
+	// TODO: images must be get another
+	$template = 'base';
 
 echo '
 <script>
@@ -230,11 +233,22 @@ echo '
 		'show' => true,
 	);
 	
+	
 	$arrmenu[] = array(
 		'name' => 'user_info',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="User profile"  onclick="load_content_page(\'user_info\');">
 				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_default_logo_user.png"/> <div style="display: inline-block;" id="btn_user_info">'.$security->nick().'</div>
+			</div>
+		',
+		'show' => true,
+	);
+	
+	$arrmenu[] = array(
+		'name' => 'about',
+		'html' => '
+			<div class="fhq_btn_menu" data-hint="About" onclick="load_content_page(\'about\');">
+				<img width="50px" src="templates/'.$template.'/images/menu_btn_about.png"/><br>
 			</div>
 		',
 		'show' => true,

@@ -8,12 +8,7 @@
 	font-family: Tempus Sans ITC;
 	src: url(../fonts/TEMPSITC.ttf); /* Путь к файлу со шрифтом */
 }
-
-
-.menucolor {
-	background: #e4e4e4;
-}
-   
+  
 /*body.main
 {
 	background-color: #000000;
@@ -26,8 +21,8 @@ body.main
 {
 	background-color: #FFFFFF;
 	line-height:40px;
-	color:#333333;
-	font: 12pt/10pt "Tempus Sans ITC";
+	font: 12pt/10pt Pompadur;
+	color: #333333;
 }
 
 p {
@@ -110,7 +105,7 @@ p {
 .indexcontent {
 	display: block;
 	padding: 10px;
-	height: 200px;
+	min-height: 200px;
 	color:#000000;
 	font-family: "Courier New", Times, serif;
 	font-style: normal;

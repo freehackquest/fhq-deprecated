@@ -49,16 +49,16 @@ echo ' <center>
 					</td>
 				</tr>
 				<tr>
-					<td>
-						<center>
-							<font face="Arial" >Copyright © 2011-2014 sea-kg. Design by Taisiya Lebedeva.</font>
-						</center>
+					<td>';
+				
+				include('copyright.php');
+					
+		echo '	
 					</td>
 				</tr>
 			</table>
 		</center>
 		';
-
 $page->echo_onBodyEnd();		
 echo '
 	</body>
