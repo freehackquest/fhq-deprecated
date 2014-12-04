@@ -75,13 +75,6 @@ class fhq_logon
 				>
 					<img src="templates/base/images/index/about.png"/>
 				</div>
-				
-				<div
-					class="index_menu"
-					onclick="show_index_element('indexcontent_contacts');"
-				>
-					<img src="templates/base/images/index/contacts.png"/>
-				</div>
 				<div
 					class="index_menu"
 					onclick="show_index_element('indexcontent_restore');"
@@ -183,10 +176,6 @@ class fhq_logon
 				<?
 					include("about.php");
 				?>
-			</div>
-			<div class="indexcontent" id="indexcontent_contacts">
-				see us in <a href="http://vk.com/freehackquest">VK</a><br>
-				also you can write email on freehackquest(at)gmai1(d0t)c0m
 			</div>
 			<br><br>
 			<font id="info_message"></font>
