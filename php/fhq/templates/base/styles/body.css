@@ -110,7 +110,7 @@ p {
 .indexcontent {
 	display: block;
 	padding: 10px;
-	height: 200px;
+	min-height: 200px;
 	color:#000000;
 	font-family: "Courier New", Times, serif;
 	font-style: normal;

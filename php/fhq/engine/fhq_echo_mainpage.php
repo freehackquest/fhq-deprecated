@@ -92,11 +92,11 @@ function echo_mainpage($page)
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
-				<center>
-					<font size=1>Copyright © 2011-2014 sea-kg. Design by Taisiya Lebedeva.</font>
-					<!-- pre><div id="debug_info"/></pre -->
-				</center>
+			<td colspan="2">';
+			
+	include('copyright.php');
+		
+	echo '		
 			</td>
 		</tr>
 	</table>
