@@ -61,11 +61,11 @@ function echo_mainpage($page)
 					<div id="modal_dialog_content">
 						Текст посередине DIV
 					</div>
-					<br>
-					<hr>
-					<a class="button3 ad" href="javascript:void(0);" onclick="closeModalDialog();">
-						Close
-					</a>
+					<div class="overlay_close">
+						<a class="button3 ad" href="javascript:void(0);" onclick="closeModalDialog();">
+							Close
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>

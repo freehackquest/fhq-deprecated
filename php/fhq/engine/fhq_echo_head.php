@@ -23,6 +23,7 @@ function echo_head($page)
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css" />
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/button3.css" />
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/user_info.css" />
+	<link rel="stylesheet" type="text/css" href="templates/base/styles/games.css" />
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/quest_info.css" />
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/overlay.css" />
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/hint.css">
