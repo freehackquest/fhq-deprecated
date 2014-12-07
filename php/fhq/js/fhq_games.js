@@ -79,6 +79,11 @@ function loadGames() {
 			var current_game = obj.current_game;
 
 			el.innerHTML = '';
+			
+			var perms = obj['permissions'];
+			if (perms['insert'] == true)
+				el.innerHTML += '<div class="fhq_game_info"><div class="button3 ad" onclick="createGame();">Create new Game</div></div><br>';
+				
 			for (var k in obj.data) {
 				var content = '<div class="fhq_game_info">' 
 				
@@ -91,10 +96,23 @@ function loadGames() {
 					content += createDivRowGame('Date Start:', obj.data[k]['date_start'].trim());
 					content += createDivRowGame('Date Stop:', obj.data[k]['date_stop'].trim());
 					content += createDivRowGame('Owner:', obj.data[k]['nick'].trim());
+					
+					var btns = '';
+					
 					if (current_game != obj.data[k]['id'])
-						content += createDivRowGame('', '<div class="button3 ad" onclick="chooseGame(\'' + obj.data[k]['id'] + '\');">Choose</div>');
+						btns += '<div class="button3 ad" onclick="chooseGame(\'' + obj.data[k]['id'] + '\');">Choose</div> ';
 					else
-						content += createDivRowGame(' ', 'Current Game');
+						btns += 'Current Game';
+
+					var perms = obj.data[k]['permissions'];
+					
+					if (perms['delete'] == true)
+						btns += '<div class="button3 ad" onclick="deleteGame(\'' + obj.data[k]['id'] + '\');">Delete</div>';
+						
+					if (perms['update'] == true)
+						btns += '<div class="button3 ad" onclick="editGame(\'' + obj.data[k]['id'] + '\');">Edit</div>';
+
+					content += createDivRowGame(' ', btns);
 				}
 				content += '\n';
 				content += '<div class="user_info_row_skip">';
@@ -103,8 +121,23 @@ function loadGames() {
 				content += '</div>\n'; // game_info
 				el.innerHTML += content;
 			}
+
 			el.innerHTML += '';
 		}
 	);	
+};
+
+function deleteGame(id)
+{
+	alert('TODO: deleteGame ' + id);
 }
 
+function editGame(id)
+{
+	alert('TODO: editGame ' + id);
+}
+
+function createGame() 
+{
+	alert('TODO: createGame ');
+}

@@ -16,6 +16,7 @@ $conn = createConnection($config);
 
 try {
 	$where = ' WHERE games.date_start < NOW() ';
+	
 	if($security->isAdmin() || $security->isTester())
 		$where = ' ';
 	
@@ -47,8 +48,14 @@ try {
 		foreach ( $columns as $k) {
 			$result['data'][$id][$k] = $row[$k];
 		}
+
+		$bAllows = $security->isAdmin() || $security->isTester();
+		$result['data'][$id]['permissions']['delete'] = $bAllows;
+		$result['data'][$id]['permissions']['update'] = $bAllows;
 	}
-	$result['current_game'] = isset($_SESSION['game']) ? $_SESSION['game']['id'] : 0;		
+	$result['current_game'] = isset($_SESSION['game']) ? $_SESSION['game']['id'] : 0;
+	
+	$result['permissions']['insert'] = $security->isAdmin() || $security->isTester();
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
 	showerror(702, 'Error 702: ' + $e->getMessage());
