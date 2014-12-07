@@ -60,3 +60,84 @@ function chooseGame(id) {
 		}
 	);
 }
+
+function createDivRowGame(name, value) {
+	return '<div class="user_info_row"> \n'
+		+ '\t<div class="user_info_param">' + name + '</div>\n'
+		+ '\t<div class="user_info_value">' + value + '</div>\n'
+		+ '</div>\n';
+}
+
+function loadGames() {
+	var el = document.getElementById("content_page");
+	el.innerHTML = "Please wait...";
+	
+	send_request_post(
+		'api/games/list.php',
+		'',
+		function (obj) {
+			var current_game = obj.current_game;
+
+			el.innerHTML = '';
+			
+			var perms = obj['permissions'];
+			if (perms['insert'] == true)
+				el.innerHTML += '<div class="fhq_game_info"><div class="button3 ad" onclick="createGame();">Create new Game</div></div><br>';
+				
+			for (var k in obj.data) {
+				var content = '<div class="fhq_game_info">' 
+				
+				content += '<div class="fhq_game_info_table">\n';
+				
+				if (obj.data.hasOwnProperty(k)) {
+					content += createDivRowGame('Logo:', '<img class="fhq_game_img" src="' + obj.data[k]['logo'] + '"/>');
+					content += createDivRowGame('Name:', obj.data[k]['title'].trim());
+					content += createDivRowGame('Type:', obj.data[k]['type_game'].trim());
+					content += createDivRowGame('Date Start:', obj.data[k]['date_start'].trim());
+					content += createDivRowGame('Date Stop:', obj.data[k]['date_stop'].trim());
+					content += createDivRowGame('Owner:', obj.data[k]['nick'].trim());
+					
+					var btns = '';
+					
+					if (current_game != obj.data[k]['id'])
+						btns += '<div class="button3 ad" onclick="chooseGame(\'' + obj.data[k]['id'] + '\');">Choose</div> ';
+					else
+						btns += 'Current Game';
+
+					var perms = obj.data[k]['permissions'];
+					
+					if (perms['delete'] == true)
+						btns += '<div class="button3 ad" onclick="deleteGame(\'' + obj.data[k]['id'] + '\');">Delete</div>';
+						
+					if (perms['update'] == true)
+						btns += '<div class="button3 ad" onclick="editGame(\'' + obj.data[k]['id'] + '\');">Edit</div>';
+
+					content += createDivRowGame(' ', btns);
+				}
+				content += '\n';
+				content += '<div class="user_info_row_skip">';
+				
+				content += '</div>'; // game_info_table
+				content += '</div>\n'; // game_info
+				el.innerHTML += content;
+			}
+
+			el.innerHTML += '';
+		}
+	);	
+};
+
+function deleteGame(id)
+{
+	alert('TODO: deleteGame ' + id);
+}
+
+function editGame(id)
+{
+	alert('TODO: editGame ' + id);
+}
+
+function createGame() 
+{
+	alert('TODO: createGame ');
+}

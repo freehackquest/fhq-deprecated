@@ -176,7 +176,7 @@ echo '
 	$arrmenu[] = array(
 		'name' => 'games',
 		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Games" onclick="load_content_page(\'games\');">
+			<div class="fhq_btn_menu hint--bottom" data-hint="Games" onclick="loadGames();">
 				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_games.png"/>
 			</div>
 		',
