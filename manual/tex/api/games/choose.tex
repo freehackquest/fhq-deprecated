@@ -1,0 +1,80 @@
+\subsection{choose}
+\par
+
+URL:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/games/choose.php
+\end{Verbatim}
+
+Input parameters (GET or POST):
+\begin{itemize}
+  \item \textbf{id} - identificator of game (integer)
+\end{itemize}
+
+Successfully response:  \\
+\begin{Verbatim}[frame=single]
+{
+    "result": "ok",
+    "data": {
+        "id": "5",
+        "type_game": "jeopardy",
+        "title": "SibirCTF 2014 J",
+        "date_start": "2014-03-27 00:00:00",
+        "date_stop": "2015-03-28 00:00:00",
+        "logo": "logo_2014-03-14_starosta.png",
+        "owner": "46"
+    }
+}
+\end{Verbatim}
+
+\\
+Request:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/games/choose.php?id=5s
+\end{Verbatim}
+Fail response:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": 705,
+        "message": "Error 705: incorrect id"
+    }
+}
+\end{Verbatim}
+\\
+Request:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/games/choose.php
+\end{Verbatim}
+Fail response:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": 713,
+        "message": "Error 713: not found parameter id"
+    }
+}
+\end{Verbatim}
+
+\\
+Request:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/games/choose.php?id=77
+\end{Verbatim}
+Fail response:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": 702,
+        "message": "Error 702: Game with id=77 are not exists"
+    }
+}
+\end{Verbatim}
+
+

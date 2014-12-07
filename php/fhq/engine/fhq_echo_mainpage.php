@@ -61,11 +61,11 @@ function echo_mainpage($page)
 					<div id="modal_dialog_content">
 						Текст посередине DIV
 					</div>
-					<br>
-					<hr>
-					<a class="button3 ad" href="javascript:void(0);" onclick="closeModalDialog();">
-						Close
-					</a>
+					<div class="overlay_close">
+						<a class="button3 ad" href="javascript:void(0);" onclick="closeModalDialog();">
+							Close
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -74,7 +74,7 @@ function echo_mainpage($page)
 	
 	<center>
 	<table cellspacing=10px cellpadding=10px width="100%" height="100%">
-		<tr class="menucolor">
+		<tr class="fhq_menucolor">
 			<td align="left" valign = "top" width="82%">
 					';
 	// echo_score();
@@ -92,11 +92,11 @@ function echo_mainpage($page)
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
-				<center>
-					<font size=1>Copyright © 2011-2014 sea-kg. Design by Taisiya Lebedeva.</font>
-					<!-- pre><div id="debug_info"/></pre -->
-				</center>
+			<td colspan="2">';
+			
+	include('copyright.php');
+		
+	echo '		
 			</td>
 		</tr>
 	</table>

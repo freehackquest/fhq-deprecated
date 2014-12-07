@@ -14,8 +14,8 @@ $result = array(
 
 $conn = createConnection($config);
 
-if (isset($_GET['id']) || isset($_POST['id'])) {
-	$game_id = isset($_GET['id']) ? $_GET['id'] : (isset($_POST['id']) ? $_POST['id'] : 0);
+if (issetParam('id')) {
+	$game_id = getParam('id', 0);
 
 	if (!is_numeric($game_id))
 		showerror(705, 'Error 705: incorrect id');
@@ -43,8 +43,13 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 				$_SESSION['game'][$k] = $row[$k];
 				$result['data'][$k] = $row[$k];
 			}
+			$result['result'] = 'ok';
 		}
-		$result['result'] = 'ok';
+		else
+		{
+			showerror(702, 'Error 702: Game with id='.$game_id.' are not exists');
+		}
+		
 	} catch(PDOException $e) {
 		showerror(712, 'Error 712: ' + $e->getMessage());
 	}

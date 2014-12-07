@@ -1,0 +1,17 @@
+ƒобавл€ем в фаервол разрешение дл€ сервера (если он не на локальной машине)
+# iptables -A INPUT -p tcp -s 0/0 --sport 1024:65535 -d 172.16.53.102 --dport 3306 -m state --state NEW,ESTABLISHED -j ACCEPT
+# iptables -A OUTPUT -p tcp -s 172.16.53.102 --sport 3306 -d 0/0 --dport 1024:65535 -m state --state ESTABLISHED -j ACCEPT
+# iptables-save
+
+ѕровер€ем что записи по€вились
+# iptables -L INPUT -n -v --line-numbers
+# iptables -L OUTPUT -n -v --line-numbers
+
+„то бы удалить запись:
+находим номер
+# iptables -L INPUT -n -v --line-numbers
+» удал€ем
+# iptables -D INPUT номер_вашей_записи
+
+» конечно же сохран€ем
+# iptables-save

@@ -77,6 +77,11 @@
 	    $feedback->echo_list();
 		exit;
 	}
+	else if($content_page == "about")
+	{
+	    include("about.php");
+		exit;
+	}
 	else if($content_page == "feedback_add")
 	{
 		$feedback = new fhq_feedback();

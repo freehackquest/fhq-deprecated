@@ -33,14 +33,13 @@ function changeGame() {
 				if (obj.data.hasOwnProperty(k)) {
 					if (current_game != obj.data[k]['id']) {
 						
-						content += '<div style="vertical-align: middle;">';
-						// content += '<img width=50px src="' + obj.data[k]['logo'] + '"/>'
-						content += '<div class="button3 ad hint--bottom" data-hint="'
-						 + obj.data[k]['date_start'].trim() + ' - ' + obj.data[k]['date_stop'].trim()
+						content += '<div class="fhq_game_line" onclick="chooseGame(\'' + obj.data[k]['id'] + '\');">\n';
+						content += '\t<img class="fhq_game_img" src="' + obj.data[k]['logo'] + '" /> '
+						content += '\t<div class="fhq_game_text">\n';
 						// content += ' ( ' + obj.data[k]['nick'].trim() + ') ';
-						content += '" onclick="chooseGame(\'' + obj.data[k]['id'] + '\');">'
-							+ obj.data[k]['title'].trim() ;
-						content += '</div>';
+						content += obj.data[k]['title'].trim() + ' (' + obj.data[k]['type_game'] + ')';
+						content += '\t</div>\n';
+						content += '<br><div class="fhq_game_text">' + obj.data[k]['date_start'].trim() + ' - ' + obj.data[k]['date_stop'].trim() + '</div><br>\n';
 						content += '</div>\n';
 					}
 				}

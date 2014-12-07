@@ -27,6 +27,14 @@
     z-index: 1001;
 }
 
+.overlay_close {
+	display: block;
+	text-align: right;
+	border-top: 1px solid #000000;
+	/* bottom: 0px; */
+    /*vertical-align: bottom;*/
+}
+
 .overlay_content {
 	display: inline-block;
 	color: #000000;

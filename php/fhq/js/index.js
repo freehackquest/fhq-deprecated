@@ -18,7 +18,6 @@ function show_index_element(idelem) {
 		'indexcontent_sign_in',
 		'indexcontent_about',
 		'indexcontent_registration',
-		'indexcontent_contacts',
 		'indexcontent_restore'
 	];
 
