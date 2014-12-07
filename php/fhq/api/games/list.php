@@ -49,13 +49,13 @@ try {
 			$result['data'][$id][$k] = $row[$k];
 		}
 
-		$bAllows = $security->isAdmin() || $security->isTester();
+		$bAllows = $security->isAdmin();
 		$result['data'][$id]['permissions']['delete'] = $bAllows;
 		$result['data'][$id]['permissions']['update'] = $bAllows;
 	}
 	$result['current_game'] = isset($_SESSION['game']) ? $_SESSION['game']['id'] : 0;
 	
-	$result['permissions']['insert'] = $security->isAdmin() || $security->isTester();
+	$result['permissions']['insert'] = $security->isAdmin();
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
 	showerror(702, 'Error 702: ' + $e->getMessage());
