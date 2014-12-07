@@ -31,3 +31,15 @@
 	margin-left: 10px;
 	color: #606060;
 }
+
+.fhq_game_info {
+	display: inline-block;
+	margin: 10px;
+	vertical-align: top;
+	/*background-color: #000fff;*/
+}
+
+.fhq_game_info_table {
+	display: table;
+	/*background-color: #000000;*/
+}

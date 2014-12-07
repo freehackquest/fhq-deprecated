@@ -42,8 +42,6 @@ function echo_mainpage($page)
 	
 	echo '<html>';
 	echo_head( $page );
-	$games = new fhq_games();
-    
     // reload_news();
     $game_info = "";
 	if (isset($_SESSION['game'])) {
