@@ -5,6 +5,7 @@
 	float: left;
 	vertical-align: middle;
 	margin-right: 10px;
+	
 }
 
 .fhq_game_line {
@@ -14,8 +15,13 @@
 	/*background-color: #fff000;*/
 	text-align: left;
 	/*white-space: pre;*/	
-	border-bottom: 1px solid #000000;
+	border-bottom: 1px solid #CCC;
 	font-family: monospace;
+	cursor: pointer;
+}
+
+.fhq_game_line:hover {
+	background-color: #CCC;
 }
 
 .fhq_game_text {
