@@ -22,6 +22,7 @@ try {
 	$query = 'SELECT 
 				games.id,
 				games.title,
+				games.type_game,
 				games.date_start,
 				games.date_stop,
 				games.logo,
@@ -34,7 +35,7 @@ try {
 			ORDER BY games.date_start
 			DESC LIMIT 0,10;';
 
-	$columns = array('id', 'title', 'date_start', 'date_stop', 'logo', 'owner', 'nick');
+	$columns = array('id', 'title', 'type_game', 'date_start', 'date_stop', 'logo', 'owner', 'nick');
 
 	$stmt = $conn->prepare($query);
 	$stmt->execute();
