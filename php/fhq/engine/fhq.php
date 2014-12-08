@@ -10,7 +10,7 @@ function refreshTo($new_page)
 };
 
 function checkGameDates($security, &$message) {
-	
+
 	if (!isset($_SESSION['game'])) {
 		$message = 'Select game please';
 		return false;

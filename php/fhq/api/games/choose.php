@@ -12,6 +12,11 @@ $result = array(
 	'data' => array(),
 );
 
+/*$errmsg = "";
+if (!checkGameDates($security, &$message))
+	showerror(709, 'Error 709: '.$errmsg);*/
+
+
 $conn = createConnection($config);
 
 if (issetParam('id')) {
