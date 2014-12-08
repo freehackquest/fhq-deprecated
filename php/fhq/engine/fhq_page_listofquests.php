@@ -50,7 +50,7 @@ class fhq_page_listofquests
 		$id_game = 0;
 		if (isset($_SESSION['game']))
 			$id_game = $_SESSION['game']['id'];
-			
+
 		return 'SELECT
 				quest.idquest,
 				quest.name,
@@ -105,6 +105,18 @@ class fhq_page_listofquests
 	
 	function echo_content()
 	{
+		if (!isset($_SESSION['game']))
+		{
+			echo 'Please choose the game<br><a class="button3 ad" href="javascript:void(0);" onclick="loadGames();">Games</a>';
+			exit;
+		}
+		$security = new fhq_security();
+		$errmsg = "";
+		if (!checkGameDates($security, $errmsg)) {
+			echo $errmsg;
+			exit;
+		}
+
 		$query = "";
 		$security = new fhq_security();
 		

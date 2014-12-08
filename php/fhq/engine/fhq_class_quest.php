@@ -134,6 +134,12 @@ class fhq_quest
 	{
 		$security = new fhq_security();
 		$db = new fhq_database();
+
+		$errmsg = "";
+		if (!checkGameDates($security, $errmsg)) {
+			echo $errmsg;
+			exit;
+		}
 		
 		// echo "id = $id<br>";
 		if( !is_numeric($id) ) return false;

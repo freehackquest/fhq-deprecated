@@ -9,7 +9,7 @@ function changeGame() {
 			for (var k in obj.data) {
 				if (obj.data.hasOwnProperty(k)) {
 					if (current_game != obj.data[k]['id']) {
-						
+
 						content += '<div class="fhq_game_line" onclick="chooseGame(\'' + obj.data[k]['id'] + '\');">\n';
 						content += '\t<img class="fhq_game_img" src="' + obj.data[k]['logo'] + '" /> '
 						content += '\t<div class="fhq_game_text">\n';
@@ -127,9 +127,6 @@ function deleteGame(id)
 
 function formDeleteGame(id)
 {
-	If you are sure that you want to delete the game with id=7
-
-
 	var content = '<b>If are you sure that you want to delete game with id=' + id + '.<br> Please fill in the captcha below.</b><br><br><br>';
 	content += '<input type="text" id="captcha_delete_game"/><br><br>';
 	content += '<img src="captcha.php" id="captcha_delete_game_img"/><br>';
