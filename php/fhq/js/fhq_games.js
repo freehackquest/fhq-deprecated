@@ -1,27 +1,4 @@
 
-function changeGame2() {
-
-	if (window.XMLHttpRequest) {
-		// code for IE7+, Firefox, Chrome, Opera, Safari
-		xmlhttp=new XMLHttpRequest();
-	};  
-	xmlhttp.onreadystatechange=function() {
-		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-			if(xmlhttp.responseText == "")
-				document.getElementById("content_page").innerHTML = "content page don't found";
-			else
-			{
-				showModalDialog(xmlhttp.responseText);
-			}
-		}
-	}
-
-	var url = "content_page.php?content_page=games";
-	xmlhttp.open("GET", url ,true);
-	xmlhttp.send();	
-}
-
-
 function changeGame() {
 	send_request_post(
 		'api/games/list.php',
@@ -82,7 +59,7 @@ function loadGames() {
 			
 			var perms = obj['permissions'];
 			if (perms['insert'] == true)
-				el.innerHTML += '<div class="fhq_game_info"><div class="button3 ad" onclick="createGame();">Create new Game</div></div><br>';
+				el.innerHTML += '<div class="fhq_game_info"><div class="button3 ad" onclick="formCreateGame();">Create Game</div></div><br>';
 				
 			for (var k in obj.data) {
 				var content = '<div class="fhq_game_info">' 
@@ -107,10 +84,10 @@ function loadGames() {
 					var perms = obj.data[k]['permissions'];
 					
 					if (perms['delete'] == true)
-						btns += '<div class="button3 ad" onclick="deleteGame(\'' + obj.data[k]['id'] + '\');">Delete</div>';
+						btns += '<div class="button3 ad" onclick="formDeleteGame(\'' + obj.data[k]['id'] + '\');">Delete</div>';
 						
 					if (perms['update'] == true)
-						btns += '<div class="button3 ad" onclick="editGame(\'' + obj.data[k]['id'] + '\');">Edit</div>';
+						btns += '<div class="button3 ad" onclick="formEditGame(\'' + obj.data[k]['id'] + '\');">Edit</div>';
 
 					content += createDivRowGame(' ', btns);
 				}
@@ -129,15 +106,81 @@ function loadGames() {
 
 function deleteGame(id)
 {
-	alert('TODO: deleteGame ' + id);
-}
+	var params = {};
+	params["id"] = id;
+	params["captcha"] = document.getElementById("captcha_delete_game").value;
+	
+	send_request_post(
+		'api/games/delete.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "ok") {
+				closeModalDialog();
+				loadGames();
+			} else {
+				alert(obj.error.message);
+				document.getElementById('captcha_delete_game_img').src = 'captcha.php?rid=' + Math.random();
+			}
+		}
+	);
+};
 
-function editGame(id)
+function formDeleteGame(id)
 {
-	alert('TODO: editGame ' + id);
-}
+	var content = '<b>If you sure that want delete game with id=' + id + '.<br> Please fill captcha.</b><br><br><br>';
+	content += '<input type="text" id="captcha_delete_game"/><br><br>';
+	content += '<img src="captcha.php" id="captcha_delete_game_img"/><br>';
+	content += '<a href="javascript:void(0);" onclick="document.getElementById(\'captcha_delete_game_img\').src = \'captcha.php?rid=\' + Math.random();">Refresh Capcha</a><br><br>';
+	content += '<div class="button3 ad" onclick="deleteGame(\'' + id + '\');">Delete</div><br>';
+	showModalDialog(content);
+};
+
+function formEditGame(id)
+{
+	var content = 'TODO: editGame ' + id;
+	showModalDialog(content);
+};
 
 function createGame() 
 {
-	alert('TODO: createGame ');
+	var params = {};
+	params["uuid_game"] = document.getElementById("newgame_uuid_game").value;
+	params["logo"] = document.getElementById("newgame_logo").value;
+	params["title"] = document.getElementById("newgame_title").value;
+	params["type_game"] = document.getElementById("newgame_type").value;
+	params["date_start"] = document.getElementById("newgame_date_start").value;
+	params["date_stop"] = document.getElementById("newgame_date_stop").value;
+	// params["author_id"] = document.getElementById("newgame_author_id").value;
+	
+	// alert(createUrlFromObj(params));
+	
+	send_request_post(
+		'api/games/insert.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "ok") {
+				closeModalDialog();
+				loadGames();
+			} else {
+				alert(obj.error.message);
+			}
+		}
+	);
+};
+
+function formCreateGame() 
+{
+	var content = '<div class="fhq_game_info">';
+	content += '<div class="fhq_game_info_table">\n';
+	content += createDivRowGame('UUID Game:', '<input type="text" id="newgame_uuid_game" value="' + guid() + '"/>');
+	content += createDivRowGame('Logo:', '<input type="text" id="newgame_logo" value="http://fhq.keva.su/templates/base/images/minilogo.png"/>');
+	content += createDivRowGame('Name:', '<input type="text" id="newgame_title"/>');
+	content += createDivRowGame('Type:', '<select id="newgame_type"> <option value="jeopardy">Jeopardy</option><option value="attack-defence">Attack-Defence</option></select>');
+	content += createDivRowGame('Date Start:', '<input type="text" id="newgame_date_start" value="0000-00-00 00:00:00"/>');
+	content += createDivRowGame('Date Stop:', '<input type="text" id="newgame_date_stop" value="0000-00-00 00:00:00"/>');
+	// content += createDivRowGame('Author ID:', '<input type="text" id="newgame_author_id" value=""/>');
+	content += createDivRowGame('', '<div class="button3 ad" onclick="createGame();">Create</div>');
+	content += '</div>'; // game_info_table
+	content += '</div>\n'; // game_info
+	showModalDialog(content);
 }
