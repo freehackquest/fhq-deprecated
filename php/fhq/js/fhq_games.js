@@ -135,10 +135,60 @@ function formDeleteGame(id)
 	showModalDialog(content);
 };
 
+function updateGame(id) {
+	// alert(id);
+	var params = {};
+	params["logo"] = document.getElementById("editgame_logo").value;
+	params["title"] = document.getElementById("editgame_title").value;
+	params["type_game"] = document.getElementById("editgame_type_game").value;
+	params["date_start"] = document.getElementById("editgame_date_start").value;
+	params["date_stop"] = document.getElementById("editgame_date_stop").value;
+	params["id"] = id;
+	
+	// alert(createUrlFromObj(params));
+
+	send_request_post(
+		'api/games/update.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "ok") {
+				closeModalDialog();
+				loadGames();
+			} else {
+				alert(obj.error.message);
+			}
+		}
+	);
+}
+
+
 function formEditGame(id)
 {
-	var content = 'TODO: editGame ' + id;
-	showModalDialog(content);
+	var params = {};
+	params["id"] = id;
+	
+	send_request_post(
+		'api/games/get.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "ok") {
+				var content = '<div class="fhq_game_info">';
+				content += '<div class="fhq_game_info_table">\n';
+				content += createDivRowGame('Logo:', '<input type="text" id="editgame_logo" value="' + obj.data.logo + '"/>');
+				content += createDivRowGame('Name:', '<input type="text" id="editgame_title" value="' + obj.data.title + '"/>');
+				content += createDivRowGame('Type:', '<input type="text" id="editgame_type_game" value="' + obj.data.type_game + '"/>');
+				content += createDivRowGame('Date Start:', '<input type="text" id="editgame_date_start" value="' + obj.data.date_start + '"/>');
+				content += createDivRowGame('Date Stop:', '<input type="text" id="editgame_date_stop" value="' + obj.data.date_stop + '"/>');
+				// content += createDivRowGame('Author ID:', '<input type="text" id="newgame_author_id" value=""/>');
+				content += createDivRowGame('', '<div class="button3 ad" onclick="updateGame(\'' + id + '\');">Update</div>');
+				content += '</div>'; // game_info_table
+				content += '</div>\n'; // game_info
+				showModalDialog(content);
+			} else {
+				alert(obj.error.message);
+			}
+		}
+	);
 };
 
 function createGame() 
