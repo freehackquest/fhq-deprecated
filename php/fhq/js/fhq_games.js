@@ -9,7 +9,7 @@ function changeGame() {
 			for (var k in obj.data) {
 				if (obj.data.hasOwnProperty(k)) {
 					if (current_game != obj.data[k]['id']) {
-						
+
 						content += '<div class="fhq_game_line" onclick="chooseGame(\'' + obj.data[k]['id'] + '\');">\n';
 						content += '\t<img class="fhq_game_img" src="' + obj.data[k]['logo'] + '" /> '
 						content += '\t<div class="fhq_game_text">\n';
@@ -127,10 +127,10 @@ function deleteGame(id)
 
 function formDeleteGame(id)
 {
-	var content = '<b>If you sure that want delete game with id=' + id + '.<br> Please fill captcha.</b><br><br><br>';
+	var content = '<b>If are you sure that you want to delete game with id=' + id + '.<br> Please fill in the captcha below.</b><br><br><br>';
 	content += '<input type="text" id="captcha_delete_game"/><br><br>';
 	content += '<img src="captcha.php" id="captcha_delete_game_img"/><br>';
-	content += '<a href="javascript:void(0);" onclick="document.getElementById(\'captcha_delete_game_img\').src = \'captcha.php?rid=\' + Math.random();">Refresh Capcha</a><br><br>';
+	content += '<a href="javascript:void(0);" onclick="document.getElementById(\'captcha_delete_game_img\').src = \'captcha.php?rid=\' + Math.random();">Refresh captcha</a><br><br>';
 	content += '<div class="button3 ad" onclick="deleteGame(\'' + id + '\');">Delete</div><br>';
 	showModalDialog(content);
 };
@@ -201,9 +201,8 @@ function createGame()
 	params["date_start"] = document.getElementById("newgame_date_start").value;
 	params["date_stop"] = document.getElementById("newgame_date_stop").value;
 	// params["author_id"] = document.getElementById("newgame_author_id").value;
-	
 	// alert(createUrlFromObj(params));
-	
+
 	send_request_post(
 		'api/games/insert.php',
 		createUrlFromObj(params),

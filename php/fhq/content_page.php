@@ -38,24 +38,48 @@
 	
 	if($content_page == "quests_all")
 	{
+		$errmsg = "";
+		if (!checkGameDates($security, $errmsg)) {
+			echo $errmsg;
+			exit;
+		}
+		
 		$page = new fhq_page_listofquests('all');
 		$page->echo_content($number_of_page);
 		exit;
 	}
 	else if($content_page == "quests_allow")
-	{	
+	{
+		$errmsg = "";
+		if (!checkGameDates($security, $errmsg)) {
+			echo $errmsg;
+			exit;
+		}
+		
 		$page = new fhq_page_listofquests('allow');
 		$page->echo_content($number_of_page);
 		exit;
 	}
 	else if($content_page == "quests_process")
 	{
+		$errmsg = "";
+		if (!checkGameDates($security, $errmsg)) {
+			echo $errmsg;
+			exit;
+		}
+		
 		$page = new fhq_page_listofquests('process');
 		$page->echo_content($number_of_page);
 		exit;
 	}
 	else if($content_page == "quests_completed")
 	{
+		$errmsg = "";
+		if (!checkGameDates($security, $errmsg)) {
+			echo $errmsg;
+			exit;
+		}
+		
 		$page = new fhq_page_listofquests('completed');
 		$page->echo_content($number_of_page);
 		exit;
@@ -132,6 +156,12 @@
 	}
 	else if($content_page == "scoreboard")
 	{
+		$errmsg = "";
+		if (!checkGameDates($security, $errmsg)) {
+			echo $errmsg;
+			exit;
+		}
+		
 		$score = new fhq_score();
 		echo '<h6><a href="scoreboard.php" target="_blank">auto refresh scoreboard here</a></h6>';
 		$score->echo_scoreboard();
@@ -182,6 +212,12 @@
 	}
 	else if ($content_page == "advisers")
 	{
+		$errmsg = "";
+		if (!checkGameDates($security, $errmsg)) {
+			echo $errmsg;
+			exit;
+		}
+		
 		$adviser = new fhq_adviser();
 		if (isset($_POST['adviser_text']) && isset($_POST['adviser_title'])) {
 			$adviser->add_adviser($_POST['adviser_title'], $_POST['adviser_text']);
@@ -316,6 +352,12 @@
 	}	
 	else if($content_page == "view_quest")
 	{
+		$errmsg = "";
+		if (!checkGameDates($security, $errmsg)) {
+			echo $errmsg;
+			exit;
+		}
+		
 		if(!isset($_GET['id']))
 		{
 			echo 'not found paramenter "id"';
@@ -338,10 +380,10 @@
 	else if($content_page == "export_quest")
 	{
 		if(!$security->isAdmin())
-                {
-                        echo "Forbidden";
-                        exit;
-                };
+		{
+				echo "Forbidden";
+				exit;
+		};
 
 		if(!isset($_GET['id']))
 		{
@@ -367,10 +409,10 @@
 	else if($content_page == "edit_quest")
 	{
 		if(!$security->isAdmin())
-                {
-                        echo "Forbidden";
-                        exit;
-                };
+		{
+				echo "Forbidden";
+				exit;
+		};
 
 		if(!isset($_GET['id']))
 		{
@@ -393,20 +435,26 @@
 	}
 	else if($content_page == "take_quest")
 	{
+		$errmsg = "";
+		if (!checkGameDates($security, $errmsg)) {
+			echo $errmsg;
+			exit;
+		}
+		
 		if(!isset($_GET['id']))
 		{
 			echo 'Not found paramenter "id"';
 			exit;	
 		};
 
-    if(!is_numeric($_GET['id']))
-    {
-      echo 'Not needed hack me';
-			exit;	
-    }
+		if(!is_numeric($_GET['id']))
+		{
+		  echo 'Not needed hack me';
+				exit;	
+		}
 
-    $id = $_GET['id'];
-    $quest = new fhq_quest();
+		$id = $_GET['id'];
+		$quest = new fhq_quest();
 
 		if(!$quest->take_quest($id))
 		{
@@ -418,6 +466,12 @@
 	}
 	else if($content_page == "pass_quest")
 	{
+		$errmsg = "";
+		if (!checkGameDates($security, $errmsg)) {
+			echo $errmsg;
+			exit;
+		}
+		
 		if(!isset($_GET['id']) && !isset($_GET['answer']))
 		{
 			echo 'Not found paramenter "id"';
@@ -625,6 +679,12 @@
 	}
 	else if($content_page == "recalculate_score")
 	{
+		$errmsg = "";
+		if (!checkGameDates($security, $errmsg)) {
+			echo $errmsg;
+			exit;
+		}
+		
 		$score = new fhq_score();
 		echo $score->recalculate_score();
 		exit;
