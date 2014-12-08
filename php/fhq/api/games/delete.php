@@ -17,8 +17,18 @@ $conn = createConnection($config);
 if(!$security->isAdmin())
   showerror(786, 'Error 786: access denie. you must be admin.');
 
-if (issetParam('id'))
+if (!issetParam('id'))
   showerror(789, 'Error 789: not found parameter "id"');
+
+if (!issetParam('captcha'))
+  showerror(786, 'Error 786: not found parameter "captcha"');
+
+$captcha = getParam('captcha', '');
+$orig_captcha = $_SESSION['captcha_reg'];
+$_SESSION['captcha_reg'] = md5(rand().rand());
+
+if( strtoupper($captcha) != strtoupper($orig_captcha))
+	showerror(787, 'Error 787: captcha incorrect '.$orig_captcha.'  '.$captcha);
 
 $game_id = getParam('id', 0);
 

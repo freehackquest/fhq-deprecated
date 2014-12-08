@@ -18,13 +18,11 @@ if(!$security->isAdmin())
   showerror(756, 'Error 756: access denie. you must be admin.');
 
 $columns = array(
-  'global_id' => 'none',
-  'game_name' => 'Unknown',
-  'game_logo' => '',  
-  'game_type' => 'jeopardy',
-  'start_date' => '0000-00-00 00:00:00',
-  'end_date' => '0000-00-00 00:00:00',
-  'author_id' => $security->userId(),
+  'title' => 'Unknown',
+  'logo' => '',  
+  'type_game' => 'jeopardy',
+  'date_start' => '0000-00-00 00:00:00',
+  'date_stop' => '0000-00-00 00:00:00'
 );
 
 if (!issetParam('id'))
@@ -41,30 +39,29 @@ $param_values = array();
 $values_q = array();
 
 foreach ( $columns as $k => $v) {
-  $values_q[] = $k.' = ?';
+  $values_q[] = ' '.$k.' = ?';
   if (issetParam($k))
     $param_values[$k] = getParam($k, $v);
   else
     showerror(758, 'Error 758: not found parameter "'.$k.'"');
 }
 
-if (!is_numeric($param_values['author_id']))
-	showerror(755, 'Error 755: incorrect author_id');
-
-$param_values['author_id'] = intval($param_values['author_id']);
-
-$query = 'UPDATE games SET '.implode(',', $values_q).', change_date = NOW()
+$query = 'UPDATE games SET '.implode(',', $values_q).', date_change = NOW()
   WHERE id = ?';
 
 $values = array_values($param_values);
 $values[] = $game_id; 
 
+// $result['query'] = $query;
+// $result['values'] = $values;
+
+
 try {
 	$stmt = $conn->prepare($query);
 	$stmt->execute($values);
-  $result['result'] = 'ok';
+	$result['result'] = 'ok';
 } catch(PDOException $e) {
-  showerror(747, 'Error 747: ' + $e->getMessage());
+	showerror(747, 'Error 747: ' + $e->getMessage());
 }
 
 

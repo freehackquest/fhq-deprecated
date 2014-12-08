@@ -125,7 +125,6 @@ class fhq_logon
 							<img src="captcha.php" id="captcha_image_reg"/><br>
 							<a href="javascript:void(0);" onclick="document.getElementById('captcha_image_reg').src = 'captcha.php?rid=' + Math.random();">Refresh Capcha</a>
 							<br>
-							
 						</td>
 					</tr>
 					<tr>
