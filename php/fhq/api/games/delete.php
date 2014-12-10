@@ -21,7 +21,7 @@ if (!issetParam('id'))
   showerror(789, 'Error 789: not found parameter "id"');
 
 if (!issetParam('captcha'))
-  showerror(786, 'Error 786: not found parameter "captcha"');
+  showerror(788, 'Error 788: not found parameter "captcha"');
 
 $captcha = getParam('captcha', '');
 $orig_captcha = $_SESSION['captcha_reg'];

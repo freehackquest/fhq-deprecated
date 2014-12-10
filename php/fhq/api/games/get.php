@@ -31,7 +31,7 @@ if (issetParam('id')) {
 				games
 			WHERE id = ? '.$where.' ';
 
-		$columns = array('id', 'type_game', 'title', 'date_start', 'date_stop', 'logo', 'owner');
+		$columns = array('id', 'type_game', 'title', 'date_start', 'date_stop', 'date_restart', 'description', 'logo', 'owner');
 
 		$stmt = $conn->prepare($query);
 		$stmt->execute(array(intval($game_id)));

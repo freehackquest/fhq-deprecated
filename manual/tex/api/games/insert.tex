@@ -1,2 +1,35 @@
 \subsection{insert}
 \par
+
+This function access only for admin.
+
+URL:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/games/insert.php
+\end{Verbatim}
+
+Input parameters (GET or POST):
+\begin{itemize}
+  \item \textbf{uuid_game} - global identificator of the game (text)
+  \item \textbf{title} - name of the game (text)
+  \item \textbf{logo} - link to image (text)
+  \item \textbf{type_game} - type of the game (text) possible values: "jeopardy" or "attack-defence"
+  \item \textbf{date_start} - start date of the game (datetime, format:  '0000-00-00 00:00:00')
+  \item \textbf{date_stop} - stop date of the game (datetime, format:  '0000-00-00 00:00:00')
+  \item \textbf{date_restart} - restart date of the game (datetime, format:  '0000-00-00 00:00:00')
+  \item \textbf{description} - description of the game
+\end{itemize}
+
+Successfully response:  \\
+\begin{Verbatim}[frame=single]
+{
+    "result": "ok",
+    "data" : {
+      "game" : {
+        "id" : 2
+      }
+    }
+}
+\end{Verbatim}
+
+Also look ~\nameref{sec:code_errors_games}
