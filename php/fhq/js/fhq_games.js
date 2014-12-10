@@ -72,8 +72,8 @@ function loadGames() {
 					content += createDivRowGame('Type:', obj.data[k]['type_game'].trim());
 					content += createDivRowGame('Date Start:', obj.data[k]['date_start'].trim());
 					content += createDivRowGame('Date Stop:', obj.data[k]['date_stop'].trim());
-  				content += createDivRowGame('Date Restart:', obj.data[k]['date_restart'].trim());
-  				content += createDivRowGame('Description:', obj.data[k]['description'].trim());
+					content += createDivRowGame('Date Restart:', (obj.data[k]['date_restart'] + '').trim());
+					content += createDivRowGame('Description:', (obj.data[k]['description'] + '').trim());
 					content += createDivRowGame('Owner:', obj.data[k]['nick'].trim());
 					
 					var btns = '';

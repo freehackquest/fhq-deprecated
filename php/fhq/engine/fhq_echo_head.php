@@ -27,6 +27,7 @@ function echo_head($page)
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/quest_info.css" />
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/overlay.css" />
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/hint.css">
+	<link rel="stylesheet" type="text/css" href="templates/base/styles/timer.css">
 
 	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/colors.css" />
 
@@ -38,6 +39,7 @@ function echo_head($page)
 	<script type="text/javascript" src="js/fhq_games.js"></script>
 	<script type="text/javascript" src="js/fhq_users.js"></script>
 	<script type="text/javascript" src="js/fhq_menu.js"></script>
+	<script type="text/javascript" src="js/fhq_timer.js"></script>
 	
 	<style>
 		textarea.full_text

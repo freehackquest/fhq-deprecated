@@ -26,15 +26,11 @@ if (issetParam('id')) {
 		showerror(705, 'Error 705: incorrect id');
 		
 	try {
-		$where = ' AND games.date_start < NOW() ';
-		if($security->isAdmin() || $security->isTester())
-			$where = ' ';
-
 		$query = '
 			SELECT *
 			FROM
 				games
-			WHERE id = ? '.$where.' ';
+			WHERE id = ?';
 
 		$columns = array('id', 'type_game', 'title', 'date_start', 'date_stop', 'date_restart', 'description', 'logo', 'owner');
 
