@@ -60,7 +60,7 @@ function sign_in()
 	var password = document.getElementById('password').value;
 	
 	send_request(
-		"api/index/sign_in.php?email="+email + "&password=" + password,
+		"api/auth/sign_in.php?email="+email + "&password=" + password,
 		function(obj) {
 			if (obj.result == "fail") {
 				document.getElementById("error_message").innerHTML = "<b>" + obj.error.message + "</b>";
@@ -80,7 +80,7 @@ function restore()
 	var captcha = document.getElementById('captcha_restore').value;
 	
 	send_request(
-		"api/index/restore.php?email="+email + "&captcha=" + captcha,
+		"api/auth/restore.php?email="+email + "&captcha=" + captcha,
 		function(obj) {
 			if (obj.result == "fail") {
 				document.getElementById("error_message").innerHTML = "<b>" + obj.error.message + "</b>";
@@ -104,7 +104,7 @@ function registration()
 	var captcha = document.getElementById('captcha_reg').value;
 	
 	send_request(
-		"api/index/registration.php?email="+email + "&captcha=" + captcha,
+		"api/auth/registration.php?email="+email + "&captcha=" + captcha,
 		function(obj) {
 			if (obj.result == "fail") {
 				document.getElementById("error_message").innerHTML = "<b>" + obj.error.message + "</b>";
