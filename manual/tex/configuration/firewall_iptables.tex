@@ -1,17 +1,40 @@
-ƒобавл€ем в фаервол разрешение дл€ сервера (если он не на локальной машине)
-# iptables -A INPUT -p tcp -s 0/0 --sport 1024:65535 -d 172.16.53.102 --dport 3306 -m state --state NEW,ESTABLISHED -j ACCEPT
-# iptables -A OUTPUT -p tcp -s 172.16.53.102 --sport 3306 -d 0/0 --dport 1024:65535 -m state --state ESTABLISHED -j ACCEPT
-# iptables-save
+\section{iptables}
+\par
+Some settings. \\
+Linux and iptables.
 
-ѕровер€ем что записи по€вились
+\par
+Add to the firewall permission for the server (if it is not on the local machine)
+\begin{Verbatim}[frame=single]
+# iptables -A INPUT -p tcp -s 0/0 --sport 1024:65535 -d 172.16.53.102 \
+  --dport 3306 -m state --state NEW,ESTABLISHED -j ACCEPT
+# iptables -A OUTPUT -p tcp -s 172.16.53.102 --sport 3306 -d 0/0 \
+  --dport 1024:65535 -m state --state ESTABLISHED -j ACCEPT
+# iptables-save
+\end{Verbatim}
+
+
+\par
+Check that the records were
+\begin{Verbatim}[frame=single]
 # iptables -L INPUT -n -v --line-numbers
 # iptables -L OUTPUT -n -v --line-numbers
+\end{Verbatim}
 
-„то бы удалить запись:
-находим номер
+\par
+To delete an record:
+1. find a number
+\begin{Verbatim}[frame=single]
 # iptables -L INPUT -n -v --line-numbers
-» удал€ем
-# iptables -D INPUT номер_вашей_записи
+\end{Verbatim}
+2. and delete
+\begin{Verbatim}[frame=single]
+# iptables -D INPUT number_of_your_entry
+\end{Verbatim}
 
-» конечно же сохран€ем
+
+\par
+And of course, keep
+\begin{Verbatim}[frame=single]
 # iptables-save
+\end{Verbatim}

@@ -22,7 +22,9 @@ $columns = array(
   'logo' => '',  
   'type_game' => 'jeopardy',
   'date_start' => '0000-00-00 00:00:00',
-  'date_stop' => '0000-00-00 00:00:00'
+  'date_stop' => '0000-00-00 00:00:00',
+  'date_restart' => '0000-00-00 00:00:00',
+  'description' => ''
 );
 
 if (!issetParam('id'))
@@ -54,7 +56,6 @@ $values[] = $game_id;
 
 // $result['query'] = $query;
 // $result['values'] = $values;
-
 
 try {
 	$stmt = $conn->prepare($query);

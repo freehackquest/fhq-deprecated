@@ -1,2 +1,30 @@
 \subsection{update}
 \par
+
+This function access only for admin.
+
+URL:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/games/update.php
+\end{Verbatim}
+
+Input parameters (GET or POST):
+\begin{itemize}
+  \item \textbf{id} - identificator of the game (text)
+  \item \textbf{title} - name of the game (text)
+  \item \textbf{logo} - link to image (text)
+  \item \textbf{type\_game} - type of the game (text) possible values: "jeopardy" or "attack-defence"
+  \item \textbf{date\_start} - start date of the game (datetime, format:  '0000-00-00 00:00:00')
+  \item \textbf{date\_stop} - stop date of the game (datetime, format:  '0000-00-00 00:00:00')
+  \item \textbf{date\_restart} - restart date of the game (datetime, format:  '0000-00-00 00:00:00')
+  \item \textbf{description} - description of the game
+\end{itemize}
+
+Successfully response:  \\
+\begin{Verbatim}[frame=single]
+{
+    "result": "ok"
+}
+\end{Verbatim}
+
+Also look ~\nameref{sec:code_errors_games}
