@@ -20,7 +20,23 @@
 	$tables['feedback']['full_text'] = array ( 'Field' => 'full_text', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['feedback']['author'] = array ( 'Field' => 'author', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['feedback']['dt'] = array ( 'Field' => 'dt', 'Type' => 'datetime', 'Null' => 'YES', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
-            
+
+/*  $tables['users_options'] = array();
+	$tables['users_options']['id'] = array ( 'Field' => 'id', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
+	$tables['feedback']['typeFB'] = array ( 'Field' => 'typeFB', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['feedback']['full_text'] = array ( 'Field' => 'full_text', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['feedback']['author'] = array ( 'Field' => 'author', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['feedback']['dt'] = array ( 'Field' => 'dt', 'Type' => 'datetime', 'Null' => 'YES', 'Key' => '', 'Default' => NULL, 'Extra' => '', );*/
+
+  // TODO: 
+  $tables['users_ips'] = array();
+	$tables['users_ips']['id'] = array ( 'Field' => 'id', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
+  $tables['users_ips']['userid'] = array ( 'Field' => 'userid', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['users_ips']['ip'] = array ( 'Field' => 'ip', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
+	$tables['users_ips']['country'] = array ( 'Field' => 'country', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
+  $tables['users_ips']['city'] = array ( 'Field' => 'city', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
+	$tables['users_ips']['date_of_a_sing_in'] = array ( 'Field' => 'date_of_a_sing_in', 'Type' => 'datetime', 'Null' => 'YES', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+          
 	$tables['feedback_msg'] = array();
 	$tables['feedback_msg']['id'] = array ( 'Field' => 'id', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
 	$tables['feedback_msg']['feedback_id'] = array ( 'Field' => 'feedback_id', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
