@@ -12,7 +12,7 @@ $result = array(
 	'data' => array(),
 );
 
-$conn = createConnection($config);
+$conn = FHQHelpers::createConnection($config);
 
 if (issetParam('id')) {
 	$game_id = getParam('id', 0);

@@ -13,7 +13,7 @@ $result = array(
 );
 
 /*
-$conn = createConnection($config);
+$conn = FHQHelpers::createConnection($config);
 
 try {
 	$where = ' WHERE games.date_start < NOW() ';

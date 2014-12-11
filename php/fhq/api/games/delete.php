@@ -12,7 +12,7 @@ $result = array(
 	'data' => array(),
 );
 
-$conn = createConnection($config);
+$conn = FHQHelpers::createConnection($config);
 
 if(!$security->isAdmin())
   showerror(786, 'Error 786: access denie. you must be admin.');

@@ -17,14 +17,14 @@ if (!checkGameDates($security, &$message))
 	showerror(709, 'Error 709: '.$errmsg);*/
 
 
-$conn = createConnection($config);
+$conn = FHQHelpers::createConnection($config);
 
 if (issetParam('id')) {
 	$game_id = getParam('id', 0);
 
 	if (!is_numeric($game_id))
 		showerror(705, 'Error 705: incorrect id');
-		
+
 	try {
 		$query = '
 			SELECT *
