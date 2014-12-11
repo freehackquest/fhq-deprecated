@@ -55,8 +55,17 @@ class FHQSecurity {
 	
 	static function insertLastIp($conn) { 
 		try {
-			$query = 'INSERT INTO users_ips(userid, ip, country, city, date_of_a_sing_in) VALUES(?,?,?,?,NOW())';
-			$params = array(FHQSecurity::iduser(),$_SERVER['REMOTE_ADDR'], '', '');
+			$query = 'INSERT INTO users_ips(userid, ip, country, city, date_sign_in) VALUES(?,?,?,?,NOW())';
+			$ip = $_SERVER['REMOTE_ADDR'];
+			$country = '';
+			$city = '';
+			if ($ip == '127.0.0.1')
+			{
+				$country = 'home';
+				$city = 'localhost';
+			}
+
+			$params = array(FHQSecurity::iduser(),$_SERVER['REMOTE_ADDR'], $country, $city);
 			$stmt = $conn->prepare($query);
 			$stmt->execute($params);
 		} catch(PDOException $e) {

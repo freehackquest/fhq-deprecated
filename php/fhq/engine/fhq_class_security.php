@@ -9,8 +9,6 @@ class fhq_security
 {
 	function login($email, $password)
 	{
-		// echo 1;
-	
 		unset($_SESSION['user']);
 
 		if(!$this->isLogged())
@@ -36,29 +34,6 @@ class fhq_security
 		}
 		return false;
 	}
-	
-	/*function checkUser($privateKey)
-	{
-		$query = "select * from whc_users where private_key='$privateKey'";
-		$result = mysql_query( $query );
-		//  or die("incorrect sql query");
-		$rows = mysql_num_rows($result);
-		return ($rows == 1);
-	}
-	
-	function checkCurrentUser($privateKey)
-	{
-		if(!$this->isLogged())
-			return false;
-		$id = $_SESSION['user']['id'];
-		
-		$query = "select * from whc_users where private_key='$privateKey' and id = $id";
-		$result = mysql_query( $query );
-		//  or die("incorrect sql query");
-		$rows = mysql_num_rows($result);
-		return ($rows == 1);
-	}
-	*/
 	
 	function logout() {
 		if($this->isLogged()) { unset($_SESSION['user']); unset($_SESSION['game']); }
