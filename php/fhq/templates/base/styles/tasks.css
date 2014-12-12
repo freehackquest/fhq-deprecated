@@ -8,22 +8,27 @@
 	border-radius: 10px;
 	margin: 12px;
 	font-family: arial;
-	background: #606060;
 	padding: 10px;
 	text-align: center;
-	position:relative;
+	position: relative;
 	min-width: 100px;
-	background-color:#eee;
+	background-color: #eee;
 	cursor: pointer;
-	border:2px solid #eee;
 }
 
 .fhq_task_info:hover{
-	background-color:#e4e4e4;
-	border:2px solid #ccc;
+	background-color: #e4e4e4;
 }
 
 font.fhq_task {
 	display: block;
 	color: #333;
+}
+
+.fhq_task_filters {
+	display: inline-block;
+	font-family: arial;
+	padding: 10px;
+	background-color: #eee;
+	border-radius: 10px;
 }

@@ -1,9 +1,17 @@
 
 function createTaskFilters() {
-	return '<div class="fhq_task_filters"> Filter by status: '
-	+ '<input type="checkbox" onclick="reloadTasks();" checked/> Tasks open '
-	+ '<input type="checkbox" onclick="reloadTasks();" checked/> Tasks current '
-	+ '<input type="checkbox" onclick="reloadTasks();"/> Tasks completed '
+	return '<div class="fhq_task_filters"> Filter by status:  '
+	+ '<input type="checkbox" onclick="reloadTasks();" checked/> Tasks open (0) '
+	+ '<input type="checkbox" onclick="reloadTasks();" checked/> Tasks current (1) '
+	+ '<input type="checkbox" onclick="reloadTasks();"/> Tasks completed (2) '
+	+ '<br><br>'
+	+ 'Filter by subject:  '
+	+ '<input type="checkbox" onclick="reloadTasks();" checked/> Web '
+	+ '<input type="checkbox" onclick="reloadTasks();" checked/> Recon '
+	+ '<input type="checkbox" onclick="reloadTasks();"/> Crypto'
+	+ '<br><br>'
+	+ 'Search:  '
+	+ '<input type="text" onkeyup="reloadTasks();" />'
 	+ '<br>'
 	+ '</div>'
 	+ '<div id="tasks"></div>';
@@ -27,7 +35,6 @@ function reloadTasks()
 			if (perms['insert'] == true)
 				tasks.innerHTML += '<div class="fhq_game_info"><div class="button3 ad" onclick="formCreateTask();">Create Task</div></div><br>';
 
-			
 			for (var k in obj.data) {
 				var questid = obj.data[k]['questid'];
 				var name = obj.data[k]['name'];
