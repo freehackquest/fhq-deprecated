@@ -78,7 +78,7 @@ class FHQHelpers {
 		);
 		
 		$result['error']['code'] = $code;
-		$result['error']['message'] = 'Error '.$code.':'.$message;
+		$result['error']['message'] = 'Error '.$code.': '.$message;
 		echo json_encode($result);
 		exit;
 	}

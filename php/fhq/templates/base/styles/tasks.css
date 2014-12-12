@@ -3,37 +3,27 @@
   do nothing
 */
 
-.tasks{ 
-border-radius: 10px;
-margin: 12px;
-font-family: arial;
-background: #606060;
-padding:10px 20px 10px 20px;
-text-decoration: none;
-text-align: center;
- position:relative;
-    width:50%;
-    background-color:#eee;
+.fhq_task_info{
+	display: inline-block;
+	border-radius: 10px;
+	margin: 12px;
+	font-family: arial;
+	background: #606060;
+	padding: 10px;
+	text-align: center;
+	position:relative;
+	min-width: 100px;
+	background-color:#eee;
+	cursor: pointer;
+	border:2px solid #eee;
 }
 
-.tasks:hover{
-padding:8px 18px 8px 18px;
-    background-color:#e4e4e4;
+.fhq_task_info:hover{
+	background-color:#e4e4e4;
 	border:2px solid #ccc;
 }
 
-font.task{
-font-weight: bold;
-	color: #989898/* 6a6a6a */;
+font.fhq_task {
+	display: block;
+	color: #333;
 }
-/* 
-вот что стало с html:
-<td>
-				<div class="tasks">
-				<a  href="javascript:void(0);" onclick="load_content_page('view_quest', { id : 474} );">
-					<font class="task" size="2">474 Nyam nyam</font><br>
-						<font class="task" size="5">+200</font><br>
-						<font class="task" size="1"> sub: stego</font>
-						</a></div>
-				</td></tr><tr class="alt"><td>webhack</td>
-				<td> */

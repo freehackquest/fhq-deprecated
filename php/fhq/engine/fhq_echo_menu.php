@@ -122,6 +122,17 @@ echo '
 		'show' => ($game_type == 'attack-defence'),
 	);
 
+
+	$arrmenu[] = array(
+		'name' => 'tasks',
+		'html' => '
+			<div class="fhq_btn_menu hint--bottom" data-hint="Tasks" onclick="loadTasks();">
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_tasks.png"/>
+			</div>
+		',
+		'show' => ($game_type == 'jeopardy'),
+	);
+
 	$arrmenu[] = array(
 		'name' => 'quests_allow',
 		'html' => '
