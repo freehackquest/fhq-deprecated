@@ -8,6 +8,7 @@ class FHQUser {
 			$defaults['template'] = 'base';
 			$defaults['country'] = '?';
 			$defaults['city'] = '?';
+			$defaults['university'] = '?';
 			$defaults['game'] = '0';
 
 			$query = 'SELECT * FROM users_profile WHERE userid = ?';

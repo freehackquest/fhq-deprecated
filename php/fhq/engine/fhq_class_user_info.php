@@ -69,17 +69,23 @@
 					
 					echo '
 					<div class="user_info_row">
-						<div class="user_info_param">Set your country:</div>
+						<div class="user_info_param">Country:</div>
 						<div class="user_info_value">
 							<input id="edit_user_country" type="text" value="'.htmlspecialchars($_SESSION['user']['profile']['country']).'"/>
 						</div>
 					</div>
 					<div class="user_info_row">
-						<div class="user_info_param">Set your city:</div>
+						<div class="user_info_param">City:</div>
 						<div class="user_info_value">
 							<input id="edit_user_city" type="text" value="'.htmlspecialchars($_SESSION['user']['profile']['city']).'"/>
 						</div>
-					</div>						
+					</div>
+					<div class="user_info_row">
+						<div class="user_info_param">University:</div>
+						<div class="user_info_value">
+							<input id="edit_user_university" type="text" value="'.htmlspecialchars($_SESSION['user']['profile']['university']).'"/>
+						</div>
+					</div>
 					<div class="user_info_row">
 						<div class="user_info_param"></div>
 						<div class="user_info_value">

@@ -26,6 +26,7 @@ function update_profile_location() {
 	var params = {};
 	params.country = document.getElementById('edit_user_country').value;
 	params.city = document.getElementById('edit_user_city').value;
+	params.university = document.getElementById('edit_user_university').value;
 	var url = createUrlFromObj(params);
 	send_request_post(
 		'api/users/update_location.php',
