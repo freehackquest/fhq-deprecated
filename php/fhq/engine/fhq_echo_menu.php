@@ -6,11 +6,9 @@ include_once "$curdir/fhq_class_security.php";
 function echo_panel()
 {
 	$security = new fhq_security();
-	$template = isset($_SESSION['user']['template']) ? $_SESSION['user']['template'] : 'base';
-	
-	// TODO: images must be get another
+	$template = isset($_SESSION['user']['profile']['template']) ? $_SESSION['user']['profile']['template'] : 'base';
+	// TODO : image must be loaded from another folder
 	$template = 'base';
-
 echo '
 <script>
 </script>

@@ -70,6 +70,6 @@ class FHQSecurity {
 			$stmt->execute($params);
 		} catch(PDOException $e) {
 			showerror(103, 'Error 103: ' + $e->getMessage());
-		}	
+		}
 	}	
 }

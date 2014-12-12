@@ -1,0 +1,39 @@
+/*
+  base/styles/colors.css
+  do nothing
+*/
+
+.tasks{ 
+border-radius: 10px;
+margin: 12px;
+font-family: arial;
+background: #606060;
+padding:10px 20px 10px 20px;
+text-decoration: none;
+text-align: center;
+ position:relative;
+    width:50%;
+    background-color:#eee;
+}
+
+.tasks:hover{
+padding:8px 18px 8px 18px;
+    background-color:#e4e4e4;
+	border:2px solid #ccc;
+}
+
+font.task{
+font-weight: bold;
+	color: #989898/* 6a6a6a */;
+}
+/* 
+вот что стало с html:
+<td>
+				<div class="tasks">
+				<a  href="javascript:void(0);" onclick="load_content_page('view_quest', { id : 474} );">
+					<font class="task" size="2">474 Nyam nyam</font><br>
+						<font class="task" size="5">+200</font><br>
+						<font class="task" size="1"> sub: stego</font>
+						</a></div>
+				</td></tr><tr class="alt"><td>webhack</td>
+				<td> */

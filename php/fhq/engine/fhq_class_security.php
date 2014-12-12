@@ -28,7 +28,6 @@ class fhq_security
 				$_SESSION['user']['nick'] = mysql_result($result, 0, 'nick');
 				$_SESSION['user']['score'] = mysql_result($result, 0, 'score');
 				$_SESSION['user']['role'] = mysql_result($result, 0, 'role');
-				$_SESSION['user']['template'] = 'base';
 				return true;
 			}
 		}

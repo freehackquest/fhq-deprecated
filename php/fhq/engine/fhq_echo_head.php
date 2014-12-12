@@ -2,21 +2,12 @@
 
 function echo_head($page)
 {
-	$template = isset($_SESSION['user']['template']) ? $_SESSION['user']['template'] : 'base';
-	
+	$template = isset($_SESSION['user']['profile']['template']) ? $_SESSION['user']['profile']['template'] : 'base';
+	$template = htmlspecialchars($template);
 	echo '
 <head>
 	<title> Free-Hack-Quests </title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf8">
-
-	<!-- link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/body.css" />
-	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/menu.css" />
-	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/site.css" />
-	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/button3.css" />
-	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/user_info.css" />
-	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/quest_info.css" />
-	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/overlay.css" />
-	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/hint.css" / -->
 	
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css" />
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/menu.css" />

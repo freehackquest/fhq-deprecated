@@ -69,6 +69,42 @@
 					
 					echo '
 					<div class="user_info_row">
+						<div class="user_info_param">Set your country:</div>
+						<div class="user_info_value">
+							<input id="edit_user_country" type="text" value="'.htmlspecialchars($_SESSION['user']['profile']['country']).'"/>
+						</div>
+					</div>
+					<div class="user_info_row">
+						<div class="user_info_param">Set your city:</div>
+						<div class="user_info_value">
+							<input id="edit_user_city" type="text" value="'.htmlspecialchars($_SESSION['user']['profile']['city']).'"/>
+						</div>
+					</div>						
+					<div class="user_info_row">
+						<div class="user_info_param"></div>
+						<div class="user_info_value">
+							<div class="button3 ad" onclick="update_profile_location();">Update</div>
+						</div>
+					</div>
+					<div class="user_info_row_skip">
+					</div>
+					<div class="user_info_row">
+						<div class="user_info_param">Style</div>
+						<div class="user_info_value">
+							current style: '.htmlspecialchars($_SESSION['user']['profile']['template']).'<br>
+							<select id="edit_style">
+								<option selected value="base">base</option>
+								<option value="dark">dark</option>
+							</select><br>
+							<div class="button3 ad" onclick="update_profile_style()">Save</div>
+						</div>
+					</div>
+					';
+						
+					echo '
+					<div class="user_info_row_skip">
+					</div>
+					<div class="user_info_row">
 						<div class="user_info_param">Old password:</div>
 						<div class="user_info_value">
 							<input id="old_password" type="password" value=""/>
@@ -98,25 +134,7 @@
 							);
 						">Change password</a></div>
 					</div>
-					<div class="user_info_row_skip">
-					</div>
-					<div class="user_info_row">
-						<div class="user_info_param">Style</div>
-						<div class="user_info_value">
-							current style: '.$_SESSION['user']['template'].'<br>
-							<select id="template">
-								<option selected value="base">base</option>
-								<option value="dark">dark</option>
-							</select><br>
-							<a class="button3 ad" href="javascript:void(0);" onclick="
-							load_content_page(\'user_set_template\', 
-								{
-									template : document.getElementById(\'template\').value
-								}
-							);
-						">Set new style</a>
-						</div>
-					</div>
+					
 					';
 			echo'
 				</div>

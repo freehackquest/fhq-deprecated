@@ -42,7 +42,7 @@
 	background-color: #ffffff;
 	border: 5px solid #606060;
 	border-radius: 10px;
-	min-height: 250px;
+	min-height: 50px;
     min-width: 400px;
 	-moz-border-radius: 10px;  /* для firefox */
 	-webkit-border-radius: 10px;  /* для Safari и Chrome */	
