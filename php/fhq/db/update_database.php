@@ -41,6 +41,7 @@
 	$tables['users_ips']['ip'] = array ( 'Field' => 'ip', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
 	$tables['users_ips']['country'] = array ( 'Field' => 'country', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
 	$tables['users_ips']['city'] = array ( 'Field' => 'city', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
+	$tables['users_ips']['client'] = array ( 'Field' => 'client', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
 	$tables['users_ips']['date_sign_in'] = array ( 'Field' => 'date_sign_in', 'Type' => 'datetime', 'Null' => 'YES', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
           
 	$tables['feedback_msg'] = array();

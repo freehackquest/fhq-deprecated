@@ -1,9 +1,9 @@
 <?php
 $curdir = dirname(__FILE__);
-include ($curdir."/../api.lib/api.helpers.php");
+include_once ($curdir."/../api.lib/api.helpers.php");
+include_once ($curdir."/../api.lib/api.security.php");
 include ($curdir."/../../config/config.php");
 include ($curdir."/../../engine/fhq.php");
-include ($curdir."/../api.lib/api.security.php");
 // include ($curdir."/../api.lib/api.user.php");
 
 $security = new fhq_security();
@@ -13,11 +13,11 @@ $result = array(
 	'data' => array(),
 );
 
-if (isset($_GET['email']) && isset($_GET['password'])) {
-	$email = $_GET['email'];
-	$password = $_GET['password'];
+if (FHQHelpers::issetParam('email') && FHQHelpers::issetParam('password')) {
+	$email = FHQHelpers::getParam('email');
+	$password = FHQHelpers::getParam('password');
 	
-	if( $security->login($_GET['email'], $_GET['password']) ) {
+	if( $security->login($email, $password) ) {
 		$result['result'] = 'ok';
 
 		// FHQUser::loadUserProfile($conn);
@@ -33,7 +33,7 @@ if (isset($_GET['email']) && isset($_GET['password'])) {
 
 if ($result['result'] == 'ok') {
 	$conn = FHQHelpers::createConnection($config);
-	FHQSecurity::insertLastIp($conn);
+	FHQSecurity::insertLastIp($conn, FHQHelpers::getParam('client', 'none'));
 }
 
 echo json_encode($result);

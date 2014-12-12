@@ -53,9 +53,9 @@ class FHQSecurity {
 		return (FHQSecurity::isLogged() && is_numeric($_SESSION['user']['iduser'])) ? $_SESSION['user']['iduser'] : ''; 
 	}
 	
-	static function insertLastIp($conn) { 
+	static function insertLastIp($conn, $client) { 
 		try {
-			$query = 'INSERT INTO users_ips(userid, ip, country, city, date_sign_in) VALUES(?,?,?,?,NOW())';
+			$query = 'INSERT INTO users_ips(userid, ip, country, city, client, date_sign_in) VALUES(?,?,?,?,?,NOW())';
 			$ip = $_SERVER['REMOTE_ADDR'];
 			$country = '';
 			$city = '';
@@ -65,7 +65,7 @@ class FHQSecurity {
 				$city = 'localhost';
 			}
 
-			$params = array(FHQSecurity::iduser(),$_SERVER['REMOTE_ADDR'], $country, $city);
+			$params = array(FHQSecurity::iduser(),$_SERVER['REMOTE_ADDR'], $country, $city, $client);
 			$stmt = $conn->prepare($query);
 			$stmt->execute($params);
 		} catch(PDOException $e) {

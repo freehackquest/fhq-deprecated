@@ -60,7 +60,7 @@ function sign_in()
 	var password = document.getElementById('password').value;
 	
 	send_request(
-		"api/auth/sign_in.php?email="+email + "&password=" + password,
+		"api/auth/sign_in.php?email=" + email + "&password=" + password + "&client=web-fhq2014",
 		function(obj) {
 			if (obj.result == "fail") {
 				document.getElementById("error_message").innerHTML = "<b>" + obj.error.message + "</b>";
