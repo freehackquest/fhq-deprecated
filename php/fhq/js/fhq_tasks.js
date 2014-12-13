@@ -1,9 +1,9 @@
 
 function createTaskFilters() {
-	return '<div class="fhq_task_filters"> Filter by status:  '
-	+ '<input type="checkbox" onclick="reloadTasks();" checked/> Tasks open (0) '
-	+ '<input type="checkbox" onclick="reloadTasks();" checked/> Tasks current (1) '
-	+ '<input type="checkbox" onclick="reloadTasks();"/> Tasks completed (2) '
+	return '<div class="fhq_task_filters"> Filter by status tasks:  '
+	+ '<input id="filter_open" type="checkbox" onclick="reloadTasks();" checked/> open (<font id="filter_open_count"></font>) '
+	+ '<input id="filter_current" type="checkbox" onclick="reloadTasks();" checked/> current (<font id="filter_current_count"></font>) '
+	+ '<input id="filter_completed" type="checkbox" onclick="reloadTasks();"/> completed (<font id="filter_completed_count"></font>) '
 	+ '<br><br>'
 	+ 'Filter by subject:  '
 	+ '<input type="checkbox" onclick="reloadTasks();" checked/> Web '
@@ -23,13 +23,19 @@ function reloadTasks()
 	tasks.innerHTML = "Please wait...";
 	
 	var params = {};
-	// params.open_tasks = 
+	params.filter_open = document.getElementById("filter_open").checked;
+	params.filter_current = document.getElementById("filter_current").checked;
+	params.filter_completed = document.getElementById("filter_completed").checked;
 	
 	send_request_post(
 		'api/tasks/list.php',
-		'',
+		createUrlFromObj(params),
 		function (obj) {
 			// var current_game = obj.current_game;
+			document.getElementById("filter_open_count").innerHTML = obj.status.open;
+			document.getElementById("filter_current_count").innerHTML = obj.status.current;
+			document.getElementById("filter_completed_count").innerHTML = obj.status.completed;
+
 			tasks.innerHTML = '';
 			var perms = obj['permissions'];
 			if (perms['insert'] == true)
@@ -42,7 +48,7 @@ function reloadTasks()
 				var short_text = obj.data[k]['short_text'];
 				var subject = obj.data[k]['subject'];
 				var status = obj.data[k]['status'];
-				
+
 				var content = '\n\n<div class="fhq_task_info" onclick="load_content_page(\'view_quest\', { id : ' + questid + '} );">\n';
 				content += '<font class="fhq_task" size="2">' + questid + ' ' + name + '</font>\n';
 				content += '<font class="fhq_task" size="5">+' + score + '</font>\n';
