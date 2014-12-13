@@ -101,6 +101,8 @@
 							<select id="edit_style">
 								<option selected value="base">base</option>
 								<option value="dark">dark</option>
+								<option value="yellow">yellow (not completed)</option>
+								<option value="red">red (not completed)</option>
 							</select><br>
 							<div class="button3 ad" onclick="update_profile_style()">Save</div>
 						</div>

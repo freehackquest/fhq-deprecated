@@ -1,20 +1,16 @@
 
 function createTaskFilters() {
-	return '<div class="fhq_task_filters"> Filter by status tasks:  '
-	+ '<input id="filter_open" type="checkbox" onclick="reloadTasks();" checked/> open (<font id="filter_open_count"></font>) '
-	+ '<input id="filter_current" type="checkbox" onclick="reloadTasks();" checked/> current (<font id="filter_current_count"></font>) '
-	+ '<input id="filter_completed" type="checkbox" onclick="reloadTasks();"/> completed (<font id="filter_completed_count"></font>) '
-	+ '<br><br>'
-	+ 'Filter by subject:  '
-	+ '<input type="checkbox" onclick="reloadTasks();" checked/> Web '
-	+ '<input type="checkbox" onclick="reloadTasks();" checked/> Recon '
-	+ '<input type="checkbox" onclick="reloadTasks();"/> Crypto'
-	+ '<br><br>'
-	+ 'Search:  '
-	+ '<input type="text" onkeyup="reloadTasks();" />'
-	+ '<br>'
-	+ '</div>'
-	+ '<div id="tasks"></div>';
+	return '\n\n<div class="fhq_task_filters"> <div>Filter by status tasks: \n'
+	+ '<input id="filter_open" class="fhq_task_checkbox" type="checkbox" onclick="reloadTasks();" checked />\n'
+	+ '<label class="fhq_task_label lite_green_check" for="filter_open">open (<font id="filter_open_count"></font>) </label> \n'
+	+ '<input id="filter_current" class="fhq_task_checkbox" type="checkbox" onclick="reloadTasks();" checked/> \n'
+	+ '<label class="fhq_task_label lite_green_check" for="filter_current">current (<font id="filter_current_count"></font>) </label> \n'
+	+ '<input id="filter_completed" class="fhq_task_checkbox" type="checkbox" onclick="reloadTasks();" />\n'
+	+ '<label class="fhq_task_label lite_green_check" for="filter_completed">completed (<font id="filter_completed_count"></font>) </label> \n'
+	+ '</div>\n'
+	+ '<div id="filter_by_subject"></div> \n'
+	+ '</div> \n'
+	+ '<div id="tasks"></div> \n';
 }
 
 function reloadTasks()
@@ -26,7 +22,17 @@ function reloadTasks()
 	params.filter_open = document.getElementById("filter_open").checked;
 	params.filter_current = document.getElementById("filter_current").checked;
 	params.filter_completed = document.getElementById("filter_completed").checked;
+
+	// filter
+	var arr = []
+	var elems = document.getElementsByName("filter_subjects");
+	for (var i = 0; i < elems.length; i++) {
+		if (elems[i].checked)
+			arr.push(elems[i].getAttribute("subject"));
+	}
+	params.filter_subjects = arr.join(",");
 	
+	// alert(createUrlFromObj(params));
 	send_request_post(
 		'api/tasks/list.php',
 		createUrlFromObj(params),
@@ -35,6 +41,15 @@ function reloadTasks()
 			document.getElementById("filter_open_count").innerHTML = obj.status.open;
 			document.getElementById("filter_current_count").innerHTML = obj.status.current;
 			document.getElementById("filter_completed_count").innerHTML = obj.status.completed;
+			var filter_by_subject = document.getElementById('filter_by_subject');
+			if (filter_by_subject.innerHTML == "")
+			{
+				filter_by_subject.innerHTML = 'Filter by subject: \n';
+				for (var k in obj.subjects) {
+					filter_by_subject.innerHTML += '<input name="filter_subjects" subject="' + k + '" id="filter_subject_' + k + '" type="checkbox" class="fhq_task_checkbox" onclick="reloadTasks();" checked/>'
+					+ '<label class="fhq_task_label lite_green_check" for="filter_subject_' + k + '">' + k + ' (' + obj.subjects[k] + ') </label> \n'
+				}
+			}
 
 			tasks.innerHTML = '';
 			var perms = obj['permissions'];

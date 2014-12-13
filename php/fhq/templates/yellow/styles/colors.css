@@ -4,23 +4,23 @@
 
 body.main
 {
-	background-color: #303030;
-	color: #C8C8C8;
+	background-color: #D7CB58;
+	color: #000000;
 }
 
 .button3 {
 	background: #303030;
 	color: #C8C8C8;
-	background: #383838;
+	background: #FFF380;
 }
 
 /* menu */
 .fhq_btn_menu {
-	background-color: #303030;
+	background-color: #2633A6;
 }
 
 .fhq_btn_menu:hover {
-	background: #606060;
+	background: #A59926;
 	color: #C8C8C8;
 }
 
@@ -36,7 +36,7 @@ body.main
 }
 
 .fhq_menucolor {
-	background: #3e3e3e;
+	background: #9926A6;
 }
 
 /* modal dialog */
