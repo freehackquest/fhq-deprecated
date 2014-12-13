@@ -145,8 +145,8 @@ function updateGame(id) {
 	params["type_game"] = document.getElementById("editgame_type_game").value;
 	params["date_start"] = document.getElementById("editgame_date_start").value;
 	params["date_stop"] = document.getElementById("editgame_date_stop").value;
-  params["date_restart"] = document.getElementById("editgame_date_restart").value;
-  params["description"] = document.getElementById("editgame_description").value; // TODO may be innerHTML
+	params["date_restart"] = document.getElementById("editgame_date_restart").value;
+	params["description"] = document.getElementById("editgame_description").value; // TODO may be innerHTML
 	params["id"] = id;
 	
 	// alert(createUrlFromObj(params));
@@ -206,8 +206,8 @@ function createGame()
 	params["type_game"] = document.getElementById("newgame_type").value;
 	params["date_start"] = document.getElementById("newgame_date_start").value;
 	params["date_stop"] = document.getElementById("newgame_date_stop").value;
-  params["date_stop"] = document.getElementById("newgame_date_stop").value;
-  params["description"] = document.getElementById("newgame_description").value;
+	params["date_restart"] = document.getElementById("newgame_date_restart").value;
+	params["description"] = document.getElementById("newgame_description").value;
 	// params["author_id"] = document.getElementById("newgame_author_id").value;
 	// alert(createUrlFromObj(params));
 
