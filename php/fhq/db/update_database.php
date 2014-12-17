@@ -87,6 +87,26 @@
 	$tables['quest']['for_person'] = array ( 'Field' => 'for_person', 'Type' => 'bigint(20)', 'Null' => 'NO', 'Key' => '', 'Default' => '0', 'Extra' => '', );
 	$tables['quest']['idauthor'] = array ( 'Field' => 'idauthor', 'Type' => 'bigint(20)', 'Null' => 'NO', 'Key' => '', 'Default' => '0', 'Extra' => '', );
 	$tables['quest']['author'] = array ( 'Field' => 'author', 'Type' => 'varchar(50)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['quest']['state'] = array ( 'Field' => 'state', 'Type' => 'varchar(50)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['quest']['description_state'] = array ( 'Field' => 'description_state', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+
+/*
+	$tables['tasks'] = array();
+	$tables['tasks']['taskid'] = array ( 'Field' => 'taskid', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
+	$tables['tasks']['tema'] = array ( 'Field' => 'tema', 'Type' => 'varchar(128)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['tasks']['name'] = array ( 'Field' => 'name', 'Type' => 'varchar(300)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['tasks']['short_description'] = array ( 'Field' => 'short_description', 'Type' => 'varchar(128)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['tasks']['description'] = array ( 'Field' => 'description', 'Type' => 'varchar(4048)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['tasks']['answer'] = array ( 'Field' => 'answer', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['tasks']['score'] = array ( 'Field' => 'score', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['tasks']['min_score'] = array ( 'Field' => 'min_score', 'Type' => 'int(10)', 'Null' => 'NO', 'Key' => '', 'Default' => '0', 'Extra' => '', );
+	$tables['tasks']['gameid'] = array ( 'Field' => 'id_game', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['tasks']['personal_userid'] = array ( 'Field' => 'personal_userid', 'Type' => 'bigint(20)', 'Null' => 'NO', 'Key' => '', 'Default' => '0', 'Extra' => '', );
+	$tables['tasks']['authorid'] = array ( 'Field' => 'authorid', 'Type' => 'bigint(20)', 'Null' => 'NO', 'Key' => '', 'Default' => '0', 'Extra' => '', );
+	$tables['tasks']['author'] = array ( 'Field' => 'author', 'Type' => 'varchar(50)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['tasks']['status'] = array ( 'Field' => 'status', 'Type' => 'varchar(50)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['tasks']['description_status'] = array ( 'Field' => 'description_status', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+*/
 
 	$tables['teams'] = array();
 	$tables['teams']['id'] = array ( 'Field' => 'id', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );

@@ -133,7 +133,7 @@ echo '
 		'show' => ($game_type == 'jeopardy'),
 	);
 
-	$arrmenu[] = array(
+	/*$arrmenu[] = array(
 		'name' => 'quests_allow',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="Tasks Open" onclick="load_content_page(\'quests_allow\');">
@@ -161,7 +161,7 @@ echo '
 			</div>
 		',
 		'show' => ($game_type == 'jeopardy'),
-	);
+	);*/
 	
 	$arrmenu[] = array(
 		'name' => 'splitter',
@@ -348,6 +348,15 @@ echo '
 		',
 		'show' => $security->isAdmin(),
 	);
+	
+	$arrsystemmenu[] = array(
+		'name' => 'query_db',
+		'html' => '
+			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'query_db\');">Query DB</div>
+		',
+		'show' => $security->isAdmin(),
+	);
+	
 	$arrsystemmenu[] = array(
 		'name' => 'init_scoreboard',
 		'html' => '

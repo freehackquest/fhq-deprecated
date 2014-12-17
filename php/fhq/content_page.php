@@ -36,7 +36,7 @@
 	if(isset($_GET['number_of_page'])) $number_of_page = $_GET['number_of_page'];
 	if(isset($_POST['number_of_page'])) $number_of_page = $_POST['number_of_page'];
 	
-	if($content_page == "quests_all")
+	/*if($content_page == "quests_all")
 	{
 		$errmsg = "";
 		if (!checkGameDates($security, $errmsg)) {
@@ -84,8 +84,13 @@
 		$page->echo_content($number_of_page);
 		exit;
 	}
-	else if($content_page == "update_db" && $security->isAdmin()) {
+	else */
+	if($content_page == "update_db" && $security->isAdmin()) {
 		include dirname(__FILE__)."/db/update_database.php";
+		exit;
+	}
+	else if($content_page == "query_db" && $security->isAdmin()) {
+		include dirname(__FILE__)."/db/query_database.php";
 		exit;
 	}
 	else if($content_page == "feedback_my")

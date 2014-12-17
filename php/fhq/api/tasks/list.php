@@ -45,6 +45,7 @@ try {
 				quest
 			WHERE
 				id_game = ?
+				AND quest.state = "open"
 				AND (quest.for_person = 0 OR quest.for_person = ?)
 			
 	');
@@ -65,6 +66,7 @@ try {
 			LEFT JOIN userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
 			WHERE
 				id_game = ?
+				AND quest.state = "open"
 				AND (quest.for_person = 0 OR quest.for_person = ?)
 				AND isnull(userquest.stopdate)
 				AND isnull(userquest.startdate)
@@ -89,6 +91,7 @@ try {
 				userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
 			WHERE
 				id_game = ?
+				AND quest.state = "open"
 				AND (quest.for_person = 0 OR quest.for_person = ?)
 				AND userquest.startdate <> \'0000-00-00 00:00:00\'
 				AND userquest.stopdate = \'0000-00-00 00:00:00\'
@@ -111,6 +114,7 @@ try {
 				userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
 			WHERE
 				id_game = ?
+				AND quest.state = "open"
 				AND (quest.for_person = 0 OR quest.for_person = ?)
 				AND userquest.startdate <> \'0000-00-00 00:00:00\'
 				AND userquest.stopdate <> \'0000-00-00 00:00:00\' 
@@ -133,6 +137,7 @@ try {
 			WHERE
 				(quest.for_person = 0 OR quest.for_person = ?)
 				AND id_game = ?
+				AND quest.state = "open"
 			GROUP BY
 				quest.tema
 	');
@@ -194,6 +199,7 @@ $query = '
 				userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
 			WHERE
 				quest.id_game = ?
+				AND quest.state = "open"
 				'.$where_status.'
 			ORDER BY
 				quest.score ASC, quest.tema, quest.score

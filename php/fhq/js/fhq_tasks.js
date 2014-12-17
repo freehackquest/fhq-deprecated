@@ -64,7 +64,7 @@ function reloadTasks()
 				var subject = obj.data[k]['subject'];
 				var status = obj.data[k]['status'];
 
-				var content = '\n\n<div class="fhq_task_info" onclick="load_content_page(\'view_quest\', { id : ' + questid + '} );">\n';
+				var content = '\n\n<div class="fhq_task_info" onclick="showTask(' + questid + ');">\n';
 				content += '<font class="fhq_task" size="2">' + questid + ' ' + name + '</font>\n';
 				content += '<font class="fhq_task" size="5">+' + score + '</font>\n';
 				content += '<font class="fhq_task" size="1">Subject: ' + subject + '</font>\n';
@@ -81,6 +81,17 @@ function loadTasks()
 	var el = document.getElementById("content_page");
 	el.innerHTML = createTaskFilters();
 	reloadTasks();
+}
+
+function showTask(id)
+{
+	alert(id);
+	
+	/*
+	 * var el = document.getElementById("content_page");
+	el.innerHTML = createTaskFilters();
+	reloadTasks(); 
+	* */
 }
 
 /*
