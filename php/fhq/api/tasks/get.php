@@ -36,10 +36,6 @@ $result['filter']['completed'] = filter_var($result['filter']['completed'], FILT
 $result['gameid'] = FHQGame::id(); 
 $result['userid'] = FHQSecurity::userid();
 
-$filter_by_state = FHQSecurity::isAdmin() ? '' : ' AND quest.state = "open" ';
-
-$filter_by_score = FHQSecurity::isAdmin() ? '' : ' AND quest.min_score <= '.FHQSecurity::score().' ';
-
 // calculate count summary
 try {
 	$stmt = $conn->prepare('
@@ -49,8 +45,6 @@ try {
 				quest
 			WHERE
 				id_game = ?
-				'.$filter_by_state.'
-				'.$filter_by_score.'
 				AND (quest.for_person = 0 OR quest.for_person = ?)
 			
 	');
@@ -71,11 +65,10 @@ try {
 			LEFT JOIN userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
 			WHERE
 				id_game = ?
-				'.$filter_by_state.'
-				'.$filter_by_score.'
 				AND (quest.for_person = 0 OR quest.for_person = ?)
 				AND isnull(userquest.stopdate)
 				AND isnull(userquest.startdate)
+				AND quest.state = "open"
 	';
 	// $result['query_open'] = $query;
 	$stmt1 = $conn->prepare($query);
@@ -97,11 +90,10 @@ try {
 				userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
 			WHERE
 				id_game = ?
-				'.$filter_by_state.'
-				'.$filter_by_score.'
 				AND (quest.for_person = 0 OR quest.for_person = ?)
 				AND userquest.startdate <> \'0000-00-00 00:00:00\'
 				AND userquest.stopdate = \'0000-00-00 00:00:00\'
+				AND quest.state = "open"
 	');
 	$stmt->execute(array(FHQSecurity::userid(),FHQGame::id(),FHQSecurity::userid()));
 	if($row = $stmt->fetch())
@@ -121,11 +113,10 @@ try {
 				userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
 			WHERE
 				id_game = ?
-				'.$filter_by_state.'
-				'.$filter_by_score.'
 				AND (quest.for_person = 0 OR quest.for_person = ?)
 				AND userquest.startdate <> \'0000-00-00 00:00:00\'
-				AND userquest.stopdate <> \'0000-00-00 00:00:00\' 
+				AND userquest.stopdate <> \'0000-00-00 00:00:00\'
+				AND quest.state = "open"
 	');
 	$stmt->execute(array(FHQSecurity::userid(),FHQGame::id(), FHQSecurity::userid()));
 	if($row = $stmt->fetch())
@@ -145,8 +136,7 @@ try {
 			WHERE
 				(quest.for_person = 0 OR quest.for_person = ?)
 				AND id_game = ?
-				'.$filter_by_state.'
-				'.$filter_by_score.'
+				AND quest.state = "open"
 			GROUP BY
 				quest.tema
 	');
@@ -200,7 +190,6 @@ $query = '
 				quest.score,
 				quest.short_text,
 				quest.tema,
-				quest.state,
 				userquest.startdate,
 				userquest.stopdate
 			FROM 
@@ -209,8 +198,6 @@ $query = '
 				userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
 			WHERE
 				quest.id_game = ?
-				'.$filter_by_state.'
-				'.$filter_by_score.'
 				'.$where_status.'
 			ORDER BY
 				quest.score ASC, quest.tema, quest.score
@@ -242,7 +229,6 @@ try {
 			'subject' => base64_decode($row['tema']),
 			'date_start' => $row['startdate'],
 			'date_stop' => $row['stopdate'],
-			'state' => $row['state'],
 			'status' => $status,
 		);
 	}
