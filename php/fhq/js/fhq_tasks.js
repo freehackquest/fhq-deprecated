@@ -4,7 +4,7 @@ function createTaskFilters() {
 	+ '<input id="filter_open" class="fhq_task_checkbox" type="checkbox" onclick="reloadTasks();" checked />\n'
 	+ '<label class="fhq_task_label lite_green_check" for="filter_open">open (<font id="filter_open_count">0</font>) </label> \n'
 	+ '<input id="filter_current" class="fhq_task_checkbox" type="checkbox" onclick="reloadTasks();" checked/> \n'
-	+ '<label class="fhq_task_label lite_green_check" for="filter_current">current (<font id="filter_current_count">0</font>) </label> \n'
+	+ '<label class="fhq_task_label lite_green_check" for="filter_current">in progress (<font id="filter_current_count">0</font>) </label> \n'
 	+ '<input id="filter_completed" class="fhq_task_checkbox" type="checkbox" onclick="reloadTasks();" />\n'
 	+ '<label class="fhq_task_label lite_green_check" for="filter_completed">completed (<font id="filter_completed_count">0</font>) </label> \n'
 	+ '</div>\n'
@@ -63,7 +63,7 @@ function reloadTasks()
 				tasks.innerHTML += '<div class="fhq_game_info"><div class="button3 ad" onclick="formCreateTask();">Create Task</div></div><br>';
 
 			if (params.filter_current && obj.status.current > 0)
-				tasks.innerHTML += '<hr>Current Tasks:<br><div id="current_tasks"></div>';
+				tasks.innerHTML += '<hr>In progress:<br><div id="current_tasks"></div>';
 
 			if (params.filter_open && obj.status.open > 0)
 				tasks.innerHTML += '<hr>Open Tasks:<br><div id="open_tasks"></div>'
@@ -111,9 +111,100 @@ function loadTasks()
 	reloadTasks();
 }
 
+function createQuestRow(name, value)
+{
+	return '<div class="quest_info_row">\n'
+	+ '\t<div class="quest_info_param">' + name + '</div>\n'
+	+ '\t<div class="quest_info_value">' + value + '</div>\n'
+	+ '</div>\n';
+}
+
+function takeQuest(id)
+{
+	alert('takeQuest: todo');
+}
+
+function passQuest(id)
+{
+	alert('passQuest: todo');
+}
+
 function showTask(id)
 {
-	alert(id);
+	var params = {};
+	params.taskid = id;
+	send_request_post(
+		'api/tasks/get.php',
+		createUrlFromObj(params),
+		function (obj) {
+			var content = '\n';
+
+			if (!obj.quest) {
+				showModalDialog("error");
+				return;
+			}
+			content += '<div class="quest_info_table">\n';
+			
+			content += createQuestRow('Quest ID: ', obj.quest);
+				
+			if (obj.data.game_title)
+				content += createQuestRow('Game: ', obj.data.game_title);
+
+			if (obj.data.name)
+				content += createQuestRow('Name: ', obj.data.name);
+				
+			if (obj.data.subject)
+				content += createQuestRow('Subject: ', obj.data.subject);
+
+			if (obj.data.score)
+				content += createQuestRow('Score: ', '+' + obj.data.score + ' (>' + obj.data.min_score + ')');
+				
+			if (obj.data.short_text)
+				content += createQuestRow('Short Text: ', obj.data.short_text);
+			
+			if (obj.data.date_start == null && obj.data.date_stop == null) {
+				content += createQuestRow('', '<div class="button3 ad" onclick="takeQuest(' + obj.quest + ');">Take quest</div>');
+			} else if (obj.data.date_stop == null) {
+				if (obj.data.text)
+					content += createQuestRow('Text: ', obj.data.text);
+				if (obj.data.date_start)
+					content += createQuestRow('Date Start: ', obj.data.date_start);
+				content += createQuestRow('', '<input id="quest_answer" type="text"/><div class="button3 ad" onclick="passQuest(' + obj.quest + ');">Pass quest</div>');
+			} else {
+				if (obj.data.text)
+					content += createQuestRow('Text: ', obj.data.text);
+				if (obj.data.date_start)
+					content += createQuestRow('Date Start: ', obj.data.date_start);
+				if (obj.data.date_stop)
+					content += createQuestRow('Date Stop: ', obj.data.date_stop);
+			}
+
+
+			content += '</div>';
+
+			// for (var k in obj.data) {
+				// content += ' ' + obj.data[k] + ' \n';
+
+				/*if (obj.data.hasOwnProperty(k)) {
+					if (current_game != obj.data[k]['id']) {
+
+						
+						
+						content += '\t<div class="fhq_game_text">\n';
+						// content += ' ( ' + obj.data[k]['nick'].trim() + ') ';
+						content += obj.data[k]['title'].trim() + ' (' + obj.data[k]['type_game'] + ')';
+						content += '\t</div>\n';
+						content += '<br><div class="fhq_game_text">' + obj.data[k]['date_start'].trim() + ' - ' + obj.data[k]['date_stop'].trim() + '</div><br>\n';
+						content += '</div>\n';
+					}
+				}*/
+			// }
+			content += '\n';
+			showModalDialog(content);
+		}
+	);
+	
+	// alert(id);
 	
 	/*
 	 * var el = document.getElementById("content_page");

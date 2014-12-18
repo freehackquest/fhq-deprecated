@@ -9,7 +9,6 @@ function changeGame() {
 			for (var k in obj.data) {
 				if (obj.data.hasOwnProperty(k)) {
 					if (current_game != obj.data[k]['id']) {
-
 						content += '<div class="fhq_game_line" onclick="chooseGame(\'' + obj.data[k]['id'] + '\');">\n';
 						content += '\t<img class="fhq_game_img" src="' + obj.data[k]['logo'] + '" /> '
 						content += '\t<div class="fhq_game_text">\n';

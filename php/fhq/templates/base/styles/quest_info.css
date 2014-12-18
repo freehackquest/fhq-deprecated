@@ -24,11 +24,12 @@
 
 .quest_info_param {
 	display: table-cell;
-	padding: 8px 20px 8px 20px;
+	padding: 8px;
 	text-align: right;
 }
 
 .quest_info_value {
 	display: table-cell;	
-	padding:8px 20px 8px 20px;
+	padding:8px;
+	text-align: left;
 }

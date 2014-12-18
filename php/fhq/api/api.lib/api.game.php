@@ -32,7 +32,7 @@ class FHQGame {
 			$label = $bWillBeStarted ? 'Game will be started after: ' : 'Game will be restarted after: ';
 			$di = $bWillBeStarted ? $di_start : $di_restart;
 
-			echo $label.'<br>
+			$message = $label.'<br>
 				<div class="fhq_timer" id="days">'.$di->d.'</div> day(s) 
 				<div class="fhq_timer" id="hours">'.$di->h.'</div> hour(s) 
 				<div class="fhq_timer" id="minutes">'.$di->i.'</div> minute(s)
