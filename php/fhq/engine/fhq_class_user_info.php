@@ -172,7 +172,8 @@
 		
 		function getPlace()
 		{
-			$db = new fhq_database();
+			
+			/*$db = new fhq_database();
 			$security = new fhq_security();
 
 			$place = "";
@@ -197,6 +198,8 @@
 				$place .= " / ".mysql_result($result, 0, 'cnt');
 			}
 			return $place;
+			* */
+			return 1;
 		}
 		
 		function setNewPassword($old_password, $new_password, $new_password_confirm) {

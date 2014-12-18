@@ -26,7 +26,6 @@ class fhq_security
 				$_SESSION['user']['iduser'] = mysql_result($result, 0, 'iduser');
 				$_SESSION['user']['email'] = mysql_result($result, 0, 'username');
 				$_SESSION['user']['nick'] = mysql_result($result, 0, 'nick');
-				$_SESSION['user']['score'] = mysql_result($result, 0, 'score');
 				$_SESSION['user']['role'] = mysql_result($result, 0, 'role');
 				return true;
 			}
@@ -57,7 +56,7 @@ class fhq_security
 		return ($this->isLogged() && $_SESSION['user']['role'] == 'god' ); 
 	}
 	function score() { 
-		return ($this->isLogged() && is_numeric($_SESSION['user']['score'])) ? $_SESSION['user']['score'] : 0; 
+		return ($this->isLogged() && isset($_SESSION['user']['score']) && is_numeric($_SESSION['user']['score'])) ? $_SESSION['user']['score'] : 0; 
 	}
 	function nick() { 
 		return ($this->isLogged()) ? $_SESSION['user']['nick'] : ''; 

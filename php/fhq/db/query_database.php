@@ -10,7 +10,7 @@
 		echo 'You are not admin!!!';
 		exit;
 	}
-	
+
 	$curdir = dirname(__FILE__);
 	
 	$arrqueries = array();
@@ -18,7 +18,8 @@
 	$arrqueries[] = 'UPDATE quest SET description_state = "" WHERE ISNULL(description_state);';
 	$arrqueries[] = 'ALTER TABLE `quest` DROP COLUMN `status`;';
 	$arrqueries[] = 'ALTER TABLE `quest` DROP COLUMN `description_status`;';
-	
+	$arrqueries[] = 'ALTER TABLE `user` DROP COLUMN `score`;';
+
 	
 	$queryid = -1;
 	if (isset($_GET['queryid']))

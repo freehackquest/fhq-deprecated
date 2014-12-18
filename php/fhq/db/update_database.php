@@ -144,7 +144,6 @@
 	$tables['user']['username'] = array ( 'Field' => 'username', 'Type' => 'varchar(128)', 'Null' => 'NO', 'Key' => 'UNI', 'Default' => NULL, 'Extra' => '', );
 	$tables['user']['password'] = array ( 'Field' => 'password', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['user']['logo'] = array ( 'Field' => 'logo', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
-	$tables['user']['score'] = array ( 'Field' => 'score', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => '0', 'Extra' => '', );
 	$tables['user']['role'] = array ( 'Field' => 'role', 'Type' => 'varchar(10)', 'Null' => 'YES', 'Key' => '', 'Default' => 'user', 'Extra' => '', );
 	$tables['user']['nick'] = array ( 'Field' => 'nick', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['user']['rating'] = array ( 'Field' => 'rating', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => '0', 'Extra' => '', );
