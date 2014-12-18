@@ -14,8 +14,8 @@
 	$curdir = dirname(__FILE__);
 	
 	$arrqueries = array();
-	$arrqueries[] = 'UPDATE quest SET state = "open";';
-	$arrqueries[] = 'UPDATE quest SET description_state = "";';
+	$arrqueries[] = 'UPDATE quest SET state = "open" WHERE ISNULL(state);';
+	$arrqueries[] = 'UPDATE quest SET description_state = "" WHERE ISNULL(description_state);';
 	$arrqueries[] = 'ALTER TABLE `quest` DROP COLUMN `status`;';
 	$arrqueries[] = 'ALTER TABLE `quest` DROP COLUMN `description_status`;';
 	

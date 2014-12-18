@@ -18,6 +18,9 @@ $result = array(
 
 $result['result'] = 'ok';
 
+if (FHQGame::id() == 0)
+	FHQHelpers::showerror(926, "Game was not selected.");
+
 // TODO: must be added filters
 $conn = FHQHelpers::createConnection($config);
 
@@ -33,7 +36,7 @@ $result['filter']['open'] = filter_var($result['filter']['open'], FILTER_VALIDAT
 $result['filter']['current'] = filter_var($result['filter']['current'], FILTER_VALIDATE_BOOLEAN);
 $result['filter']['completed'] = filter_var($result['filter']['completed'], FILTER_VALIDATE_BOOLEAN);
 
-$result['gameid'] = FHQGame::id(); 
+$result['gameid'] = FHQGame::id();
 $result['userid'] = FHQSecurity::userid();
 
 $filter_by_state = FHQSecurity::isAdmin() ? '' : ' AND quest.state = "open" ';

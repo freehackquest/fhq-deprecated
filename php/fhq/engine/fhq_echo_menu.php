@@ -92,7 +92,7 @@ echo '
 		'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
 	);
 	
-	$arrmenu[] = array(
+	/*$arrmenu[] = array(
 		'name' => 'recalculate_score',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="Recalculate Score" onclick="recalculate_score();">
@@ -100,7 +100,7 @@ echo '
 			</div>
 		',
 		'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
-	);
+	);*/
 	
 	$arrmenu[] = array(
 		'name' => 'advisers',

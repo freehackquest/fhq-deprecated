@@ -2,11 +2,11 @@
 function createTaskFilters() {
 	return '\n\n<div class="fhq_task_filters"> <div>Filter by status tasks: \n'
 	+ '<input id="filter_open" class="fhq_task_checkbox" type="checkbox" onclick="reloadTasks();" checked />\n'
-	+ '<label class="fhq_task_label lite_green_check" for="filter_open">open (<font id="filter_open_count"></font>) </label> \n'
+	+ '<label class="fhq_task_label lite_green_check" for="filter_open">open (<font id="filter_open_count">0</font>) </label> \n'
 	+ '<input id="filter_current" class="fhq_task_checkbox" type="checkbox" onclick="reloadTasks();" checked/> \n'
-	+ '<label class="fhq_task_label lite_green_check" for="filter_current">current (<font id="filter_current_count"></font>) </label> \n'
+	+ '<label class="fhq_task_label lite_green_check" for="filter_current">current (<font id="filter_current_count">0</font>) </label> \n'
 	+ '<input id="filter_completed" class="fhq_task_checkbox" type="checkbox" onclick="reloadTasks();" />\n'
-	+ '<label class="fhq_task_label lite_green_check" for="filter_completed">completed (<font id="filter_completed_count"></font>) </label> \n'
+	+ '<label class="fhq_task_label lite_green_check" for="filter_completed">completed (<font id="filter_completed_count">0</font>) </label> \n'
 	+ '</div>\n'
 	+ '<div id="filter_by_subject"></div> \n'
 	+ '</div> \n'
@@ -37,6 +37,12 @@ function reloadTasks()
 		'api/tasks/list.php',
 		createUrlFromObj(params),
 		function (obj) {
+			if (obj.result == 'fail')
+			{
+				tasks.innerHTML = obj.error.message;
+				return;
+			}
+			
 			// var current_game = obj.current_game;
 			document.getElementById("filter_open_count").innerHTML = obj.status.open;
 			document.getElementById("filter_current_count").innerHTML = obj.status.current;
@@ -56,6 +62,19 @@ function reloadTasks()
 			if (perms['insert'] == true)
 				tasks.innerHTML += '<div class="fhq_game_info"><div class="button3 ad" onclick="formCreateTask();">Create Task</div></div><br>';
 
+			if (params.filter_current && obj.status.current > 0)
+				tasks.innerHTML += '<hr>Current Tasks:<br><div id="current_tasks"></div>';
+
+			if (params.filter_open && obj.status.open > 0)
+				tasks.innerHTML += '<hr>Open Tasks:<br><div id="open_tasks"></div>'
+
+			if (params.filter_completed && obj.status.completed > 0)
+				tasks.innerHTML += '<hr>Completed Tasks:<br><div id="completed_tasks"></div>';
+
+			var open_tasks = document.getElementById("open_tasks");
+			var current_tasks = document.getElementById("current_tasks");
+			var completed_tasks = document.getElementById("completed_tasks");
+			
 			for (var k in obj.data) {
 				var questid = obj.data[k]['questid'];
 				var name = obj.data[k]['name'];
@@ -66,11 +85,20 @@ function reloadTasks()
 
 				var content = '\n\n<div class="fhq_task_info" onclick="showTask(' + questid + ');">\n';
 				content += '<font class="fhq_task" size="2">' + questid + ' ' + name + '</font>\n';
-				content += '<font class="fhq_task" size="5">+' + score + '</font>\n';
-				content += '<font class="fhq_task" size="1">Subject: ' + subject + '</font>\n';
-				content += '<font class="fhq_task" size="1">Status: ' + status + '</font>\n';
+				content += '<font class="fhq_task" size="5">' + subject + ' +' + score + '</font>\n';
+				// content += '<font class="fhq_task" size="1">Status: ' + status + '</font>\n';
 				content += '</div>\n';
-				tasks.innerHTML += content;
+				
+				if (status == 'current')
+					current_tasks.innerHTML += content;
+
+				if (status == 'open')
+					open_tasks.innerHTML += content;
+
+				if (status == 'completed')
+					completed_tasks.innerHTML += content;
+				
+				// tasks.innerHTML += content;
 			}
 		}
 	);	

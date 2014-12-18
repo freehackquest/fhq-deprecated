@@ -47,6 +47,10 @@ class FHQGame {
 	}
 	
 	static function id() {
-		return $_SESSION['game']['id'];
+		return (isset($_SESSION['game']) && isset($_SESSION['game']['id'])) ? $_SESSION['game']['id'] : 0;
+	}
+	
+	static function score() {
+		return (isset($_SESSION['user']) && isset($_SESSION['user']['score'])) ? $_SESSION['user']['score'] : 0;
 	}
 }
