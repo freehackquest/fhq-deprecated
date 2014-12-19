@@ -77,18 +77,28 @@
 	$tables['quest'] = array();
 	$tables['quest']['idquest'] = array ( 'Field' => 'idquest', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
 	$tables['quest']['tema'] = array ( 'Field' => 'tema', 'Type' => 'varchar(128)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['quest']['subject'] = array ( 'Field' => 'subject', 'Type' => 'varchar(128)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['quest']['name'] = array ( 'Field' => 'name', 'Type' => 'varchar(300)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['quest']['short_text'] = array ( 'Field' => 'short_text', 'Type' => 'varchar(128)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['quest']['short_text_copy'] = array ( 'Field' => 'short_text_copy', 'Type' => 'varchar(128)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['quest']['text'] = array ( 'Field' => 'text', 'Type' => 'varchar(4048)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['quest']['text_copy'] = array ( 'Field' => 'text_copy', 'Type' => 'varchar(4048)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['quest']['answer'] = array ( 'Field' => 'answer', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['quest']['answer_copy'] = array ( 'Field' => 'answer_copy', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['quest']['answer_upper_md5'] = array ( 'Field' => 'answer_upper_md5', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['quest']['score'] = array ( 'Field' => 'score', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['quest']['id_game'] = array ( 'Field' => 'id_game', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['quest']['gameid'] = array ( 'Field' => 'gameid', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['quest']['min_score'] = array ( 'Field' => 'min_score', 'Type' => 'int(10)', 'Null' => 'NO', 'Key' => '', 'Default' => '0', 'Extra' => '', );
 	$tables['quest']['for_person'] = array ( 'Field' => 'for_person', 'Type' => 'bigint(20)', 'Null' => 'NO', 'Key' => '', 'Default' => '0', 'Extra' => '', );
 	$tables['quest']['idauthor'] = array ( 'Field' => 'idauthor', 'Type' => 'bigint(20)', 'Null' => 'NO', 'Key' => '', 'Default' => '0', 'Extra' => '', );
 	$tables['quest']['author'] = array ( 'Field' => 'author', 'Type' => 'varchar(50)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['quest']['state'] = array ( 'Field' => 'state', 'Type' => 'varchar(50)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
-	$tables['quest']['description_state'] = array ( 'Field' => 'description_state', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['quest']['description_state'] = array ( 'Field' => 'description_state', 'Type' => 'varchar(4048)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['quest']['quest_uuid'] = array ( 'Field' => 'quest_uuid', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['quest']['date_change'] = array ( 'Field' => 'date_change', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['quest']['date_create'] = array ( 'Field' => 'date_create', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['quest']['userid'] = array ( 'Field' => 'userid', 'Type' => 'bigint(20)', 'Null' => 'NO', 'Key' => '', 'Default' => '0', 'Extra' => '', );
 
 /*
 	$tables['tasks'] = array();

@@ -60,7 +60,7 @@ function reloadTasks()
 			tasks.innerHTML = '';
 			var perms = obj['permissions'];
 			if (perms['insert'] == true)
-				tasks.innerHTML += '<div class="fhq_game_info"><div class="button3 ad" onclick="formCreateTask();">Create Task</div></div><br>';
+				tasks.innerHTML += '<div class="fhq_game_info"><div class="button3 ad" onclick="formCreateQuest();">Create Quest</div></div><br>';
 
 			if (params.filter_current && obj.status.current > 0)
 				tasks.innerHTML += '<hr>In progress:<br><div id="current_tasks"></div>';
@@ -129,6 +129,16 @@ function passQuest(id)
 	alert('passQuest: todo');
 }
 
+function deleteQuest(id)
+{
+	alert('deleteQuest: todo');
+}
+
+function formEditQuest(id)
+{
+	alert('formEditQuest: todo');
+}
+
 function showTask(id)
 {
 	var params = {};
@@ -178,39 +188,72 @@ function showTask(id)
 				if (obj.data.date_stop)
 					content += createQuestRow('Date Stop: ', obj.data.date_stop);
 			}
-
+			
+			if (obj.permissions.edit == true && obj.permissions['delete'] == true)
+			{
+				content += createQuestRow('',
+					'<div class="button3 ad" onclick="formEditQuest(' + obj.quest + ');">Edit</div>'
+					+ '<div class="button3 ad" onclick="deleteQuest(' + obj.quest + ');">Delete</div>'
+				);
+			}
 
 			content += '</div>';
-
-			// for (var k in obj.data) {
-				// content += ' ' + obj.data[k] + ' \n';
-
-				/*if (obj.data.hasOwnProperty(k)) {
-					if (current_game != obj.data[k]['id']) {
-
-						
-						
-						content += '\t<div class="fhq_game_text">\n';
-						// content += ' ( ' + obj.data[k]['nick'].trim() + ') ';
-						content += obj.data[k]['title'].trim() + ' (' + obj.data[k]['type_game'] + ')';
-						content += '\t</div>\n';
-						content += '<br><div class="fhq_game_text">' + obj.data[k]['date_start'].trim() + ' - ' + obj.data[k]['date_stop'].trim() + '</div><br>\n';
-						content += '</div>\n';
-					}
-				}*/
-			// }
 			content += '\n';
 			showModalDialog(content);
 		}
 	);
-	
-	// alert(id);
-	
-	/*
-	 * var el = document.getElementById("content_page");
-	el.innerHTML = createTaskFilters();
-	reloadTasks(); 
-	* */
+}
+
+function createQuest() 
+{
+	var params = {};
+	params["quest_uuid"] = document.getElementById("newquest_quest_uuid").value;
+	params["name"] = document.getElementById("newquest_name").value;
+	params["short_text"] = document.getElementById("newquest_short_text").value;
+	params["text"] = document.getElementById("newquest_text").innerHTML;
+	params["score"] = document.getElementById("newquest_score").value;
+	params["min_score"] = document.getElementById("newquest_min_score").value;
+	params["subject"] = document.getElementById("newquest_subject").value;
+	params["idauthor"] = document.getElementById("newquest_author_id").value;
+	params["author"] = document.getElementById("newquest_author").value;
+	params["answer"] = document.getElementById("newquest_answer").value;
+	params["state"] = document.getElementById("newquest_state").value;
+	params["description_state"] = document.getElementById("newquest_description_state").innerHTML;
+
+	// alert(createUrlFromObj(params));
+	send_request_post(
+		'api/tasks/insert.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "ok") {
+				closeModalDialog();
+				loadTasks();
+			} else {
+				alert(obj.error.message);
+			}
+		}
+	);
+};
+
+function formCreateQuest() 
+{
+	var content = '';
+	content += '<div class="quest_info_table">\n';
+	content += createQuestRow('Quest UUID:', '<input type="text" id="newquest_quest_uuid" value="' + guid() + '"/>');
+	content += createQuestRow('Name:', '<input type="text" id="newquest_name" value=""/>');
+	content += createQuestRow('Short Text:', '<input type="text" id="newquest_short_text"/>');
+	content += createQuestRow('Text:', '<textarea id="newquest_text"></textarea>');
+	content += createQuestRow('Score(+):', '<input type="text" id="newquest_score" value="100"/>');
+	content += createQuestRow('Min Score(>):', '<input type="text" id="newquest_min_score" value="0"/>');
+	content += createQuestRow('Subject:', '<input type="text" id="newquest_subject" value="enjoy"/>');
+	content += createQuestRow('Author Id:', '<input type="text" id="newquest_author_id" value=""/>');
+	content += createQuestRow('Author:', '<input type="text" id="newquest_author" value=""/>');
+	content += createQuestRow('Answer:', '<input type="text" id="newquest_answer" value=""/>');
+	content += createQuestRow('State:', '<input type="text" id="newquest_state" value="open"/>');
+	content += createQuestRow('Description State:', '<textarea id="newquest_description_state"></textarea>');
+	content += createQuestRow('', '<div class="button3 ad" onclick="createQuest();">Create</div>');
+	content += '</div>'; // quest_info_table
+	showModalDialog(content);
 }
 
 /*
