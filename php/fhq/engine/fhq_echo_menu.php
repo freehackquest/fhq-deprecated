@@ -37,10 +37,12 @@ echo '
 	
 	$game_type = "";
 	$game_title = "";
+	$gameid = 0;
 	if (isset($_SESSION['game']))
 	{
 		$game_type = $_SESSION['game']['type_game'];
 		$game_title = $_SESSION['game']['title'];
+		$gameid = $_SESSION['game']['id'];
 	}
 	
 	$arrmenu = array();
@@ -85,7 +87,7 @@ echo '
 	$arrmenu[] = array(
 		'name' => 'scoreboard',
 		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Scoreboard" onclick="load_content_page2(\'scoreboard\');">
+			<div class="fhq_btn_menu hint--bottom" data-hint="Scoreboard" onclick="loadScoreboard('.$gameid.');">
 				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_scoreboard.png"/>  <div style="display: inline-block;" id="view_score">'.$security->score().'</div>
 			</div>
 		',

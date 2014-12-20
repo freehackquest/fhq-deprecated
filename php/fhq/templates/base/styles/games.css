@@ -43,3 +43,33 @@
 	display: table;
 	/*background-color: #000000;*/
 }
+
+.fhq_scoreboard_table {
+	display: display: table;
+	margin: 10px;
+	vertical-align: top;
+}
+
+.fhq_scoreboard_table {
+	display: display: table;
+	margin: 10px;
+	vertical-align: top;
+}
+
+.fhq_scoreboard_row {
+	display: table-row;
+	font-family: Arial;
+	padding: 10px;
+	text-decoration: none;
+	color: #000000;
+	margin:3px 3px 3px 3px;
+	border-bottom: 1px solid #E4E4E4;
+}
+
+.fhq_scoreboard_cell {
+	display: table-cell;
+	padding: 10px;
+	margin: 10px;
+	text-align: left;
+	border-left: 1px solid #E4E4E4;
+}
