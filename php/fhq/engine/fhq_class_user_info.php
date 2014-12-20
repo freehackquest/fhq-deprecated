@@ -32,7 +32,7 @@
 					</div>
 					<div class="user_info_row">
 						<div class="user_info_param">Your score:</div>
-						<div class="user_info_value">'.$security->score().'</div>
+						<div class="user_info_value"><font id="user_score">'.$security->score().'</font> <div class="button3 ad" onclick="updateScore();">Update score</div></div>
 					</div>
 					<div class="user_info_row">
 						<div class="user_info_param">Your place:</div>
