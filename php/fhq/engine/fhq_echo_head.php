@@ -4,7 +4,7 @@ function echo_head($page)
 {
 	$template = isset($_SESSION['user']['profile']['template']) ? $_SESSION['user']['profile']['template'] : 'base';
 	$template = htmlspecialchars($template);
-	$versioncontent = '201412201905';
+	$versioncontent = '2014122101040';
 	echo '
 <head>
 	<title> Free-Hack-Quests </title>

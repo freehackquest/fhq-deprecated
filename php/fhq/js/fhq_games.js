@@ -259,3 +259,40 @@ function formCreateGame()
 	content += '</div>\n'; // game_info
 	showModalDialog(content);
 }
+
+function loadScoreboard(gameid) {
+	var params = {};
+	params["gameid"] = gameid;
+	
+	// document.getElementById("gameid").value;
+	
+	send_request_post(
+		'api/games/scoreboard.php',
+		createUrlFromObj(params),
+		function (obj) {
+			
+			var el = document.getElementById("content_page");
+			el.innerHTML = '<div id="scoreboard_table" class="fhq_scoreboard_table"></div>';
+			var tbl = document.getElementById("scoreboard_table");
+
+			var content = '';
+			for (var k in obj.data) {
+				content = '<div class="fhq_scoreboard_row">';
+				if (obj.data.hasOwnProperty(k)) {
+					var place = obj.data[k];
+					content += '<div class="fhq_scoreboard_cell">' + k + '</div>';
+					var arr = [];
+					for (var k2 in place) {
+						arr.push(place[k2].nick);
+					}
+					content += '<div class="fhq_scoreboard_cell">' + place[0].score + '</div>';
+					content += '<div class="fhq_scoreboard_cell">' + arr.join(',') + '</div>';
+					content += '</div>';
+				}
+				content += '</div>'; // row
+				tbl.innerHTML += content;
+			}
+			content = '';
+		}
+	);
+}
