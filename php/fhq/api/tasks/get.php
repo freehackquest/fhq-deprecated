@@ -102,7 +102,7 @@ try {
 	$result['permissions']['delete'] = FHQSecurity::isAdmin();
 	
 } catch(PDOException $e) {
-	showerror(822, 'Error 822: ' + $e->getMessage());
+	FHQHelpers::showerror(822, $e->getMessage());
 }
 
 echo json_encode($result);
