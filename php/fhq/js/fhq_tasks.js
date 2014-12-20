@@ -342,7 +342,7 @@ function createQuest()
 	params["quest_uuid"] = document.getElementById("newquest_quest_uuid").value;
 	params["name"] = document.getElementById("newquest_name").value;
 	params["short_text"] = document.getElementById("newquest_short_text").value;
-	params["text"] = document.getElementById("newquest_text").innerHTML;
+	params["text"] = document.getElementById("newquest_text").value;
 	params["score"] = document.getElementById("newquest_score").value;
 	params["min_score"] = document.getElementById("newquest_min_score").value;
 	params["subject"] = document.getElementById("newquest_subject").value;
@@ -350,7 +350,7 @@ function createQuest()
 	params["author"] = document.getElementById("newquest_author").value;
 	params["answer"] = document.getElementById("newquest_answer").value;
 	params["state"] = document.getElementById("newquest_state").value;
-	params["description_state"] = document.getElementById("newquest_description_state").innerHTML;
+	params["description_state"] = document.getElementById("newquest_description_state").value;
 
 	// alert(createUrlFromObj(params));
 	send_request_post(
