@@ -121,12 +121,46 @@ function createQuestRow(name, value)
 
 function takeQuest(id)
 {
-	alert('takeQuest: todo');
+	var params = {};
+	params.questid = id;
+	document.getElementById("quest_error").innerHTML = "";
+	send_request_post(
+		'api/tasks/take.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "ok") {
+				closeModalDialog();
+				reloadTasks();
+				showTask(id);
+			} else {
+				document.getElementById("quest_error").innerHTML = obj.error.message;
+			}
+		}
+	);
 }
 
 function passQuest(id)
 {
-	alert('passQuest: todo');
+	var params = {};
+	params.questid = id;
+	params.answer = document.getElementById('quest_answer').value;
+	document.getElementById("quest_error").innerHTML = "";
+	send_request_post(
+		'api/tasks/pass.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "ok") {
+				closeModalDialog();
+				reloadTasks();
+				if (obj.new_user_score) {
+					document.getElementById('view_score').innerHTML = obj.new_user_score;
+				}
+				showTask(id);
+			} else {
+				document.getElementById("quest_error").innerHTML = obj.error.message;
+			}
+		}
+	);
 }
 
 function deleteQuest(id)
@@ -134,6 +168,7 @@ function deleteQuest(id)
 	if (!confirm("Are you sure that wand remove this quest?"))
 		return;
 
+	document.getElementById("quest_error").innerHTML = "";
 	var params = {};
 	params.questid = id;
 	send_request_post(
@@ -144,7 +179,7 @@ function deleteQuest(id)
 				closeModalDialog();
 				loadTasks();
 			} else {
-				alert(obj.error.message);
+				document.getElementById("quest_error").innerHTML = obj.error.message;
 			}
 		}
 	);
@@ -190,7 +225,7 @@ function showTask(id)
 			
 			if (obj.data.date_start == null && obj.data.date_stop == null) {
 				content += createQuestRow('', '<div class="button3 ad" onclick="takeQuest(' + obj.quest + ');">Take quest</div>');
-			} else if (obj.data.date_stop == null) {
+			} else if (obj.data.date_stop == null || obj.data.date_stop == '0000-00-00 00:00:00') {
 				if (obj.data.text)
 					content += createQuestRow('Text: ', obj.data.text);
 				if (obj.data.date_start)
@@ -212,8 +247,8 @@ function showTask(id)
 					+ '<div class="button3 ad" onclick="deleteQuest(' + obj.quest + ');">Delete</div>'
 				);
 			}
-
 			content += '</div>';
+			content += '<div id="quest_error"><div>';
 			content += '\n';
 			showModalDialog(content);
 		}

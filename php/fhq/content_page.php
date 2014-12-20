@@ -347,33 +347,6 @@
 		echo_answer_list();
 		exit;
 	}	
-	else if($content_page == "view_quest")
-	{
-		$errmsg = "";
-		if (!checkGameDates($security, $errmsg)) {
-			echo $errmsg;
-			exit;
-		}
-		
-		if(!isset($_GET['id']))
-		{
-			echo 'not found paramenter "id"';
-			exit;	
-		};
-		
-		$id = $_GET['id'];
-		
-		$quest =  new fhq_quest();
-		
-		if(!$quest->select($id))
-		{
-			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
-			exit;
-		}
-		
-		$quest->echo_view_quest();
-		exit;
-	}
 	else if($content_page == "export_quest")
 	{
 		if(!$security->isAdmin())
@@ -403,7 +376,7 @@
 		$quest->export();
 		exit;
 	}
-	else if($content_page == "edit_quest")
+	/*else if($content_page == "edit_quest")
 	{
 		if(!$security->isAdmin())
 		{
@@ -426,7 +399,6 @@
 			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
 			exit;
 		}
-		
 		echo $quest->getForm();
 		
 	}
@@ -492,7 +464,7 @@
 		
 		$quest->echo_view_quest();
 		exit;
-	}
+	}*/
 	else if($content_page == "remove_file")
 	{
 		if(!$security->isAdmin())
@@ -583,7 +555,7 @@
 		$quest->echo_view_quest();
 		exit;
 	}
-	else if($content_page == "add_quest")
+	/*else if($content_page == "add_quest")
 	{
 		if(!$security->isAdmin())
 		{
@@ -673,7 +645,7 @@
 		
 		$quest->echo_view_quest();
 		exit;
-	}
+	}*/
 	else if($content_page == "recalculate_score")
 	{
 		$errmsg = "";

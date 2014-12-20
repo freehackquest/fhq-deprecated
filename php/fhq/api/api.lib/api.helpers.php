@@ -34,7 +34,6 @@ function checkAuth($security)
 	}
 }
 
-
 function issetParam($name) {
   return isset($_GET[$name]) || isset($_POST[$name]);
 }
@@ -82,4 +81,27 @@ class FHQHelpers {
 		echo json_encode($result);
 		exit;
 	}
+	
+	static function calculateScore($conn)
+	{
+		// calculate score
+		$query = '
+			SELECT 
+				ifnull(SUM(quest.score),0) as sum_score 
+			FROM 
+				userquest 
+			INNER JOIN 
+				quest ON quest.idquest = userquest.idquest AND quest.id_game = ?
+			WHERE 
+				(userquest.iduser = ?) 
+				AND ( userquest.stopdate <> \'0000-00-00 00:00:00\' );
+		';
+		$score = 0;
+		$stmt = $conn->prepare($query);
+		$stmt->execute(array(FHQGame::id(), FHQSecurity::userid()));
+		if($row = $stmt->fetch())
+			$score = $row['sum_score'];
+		return $score;
+	}
 }
+
