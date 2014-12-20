@@ -49,6 +49,8 @@ $query = '
 				quest.text,
 				quest.state,
 				quest.tema,
+				quest.idauthor,
+				quest.author,
 				userquest.startdate,
 				userquest.stopdate
 			FROM 
@@ -85,10 +87,12 @@ try {
 			'date_start' => $row['startdate'],
 			'date_stop' => $row['stopdate'],
 			'state' => $row['state'],
+			'author' => base64_decode($row['author']),
+			'idauthor' => base64_decode($row['idauthor']),
 			'status' => $status,
 		);
 		$result['quest'] = $row['idquest'];
-		
+
 		if ($status == 'current' || $status == 'completed')
 		{
 			$result['data']['text'] = base64_decode($row['text']);

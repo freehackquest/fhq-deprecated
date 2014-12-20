@@ -4,7 +4,7 @@ function echo_head($page)
 {
 	$template = isset($_SESSION['user']['profile']['template']) ? $_SESSION['user']['profile']['template'] : 'base';
 	$template = htmlspecialchars($template);
-	$versioncontent = '201412170023';
+	$versioncontent = '201412201905';
 	echo '
 <head>
 	<title> Free-Hack-Quests </title>
@@ -26,6 +26,7 @@ function echo_head($page)
 
 	<!-- script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js?ver='.$versioncontent.'"></script -->
 	<!-- script src="http://malsup.github.com/jquery.form.js?ver='.$versioncontent.'"></script -->	
+	<!-- script type="text/javascript" src="js/encoder.js?ver='.$versioncontent.'"></script -->
 	<script type="text/javascript" src="js/fhq_send_request.js?ver='.$versioncontent.'"></script>
 	<script type="text/javascript" src="js/fhq_echo_head.js?ver='.$versioncontent.'"></script>
 	<script type="text/javascript" src="js/fhq_modal_dialog.js?ver='.$versioncontent.'"></script>

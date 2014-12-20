@@ -185,9 +185,89 @@ function deleteQuest(id)
 	);
 }
 
+function updateQuest(id)
+{
+	var params = {};
+	params["questid"] = id;
+	params["name"] = document.getElementById("editquest_name").value;
+	params["short_text"] = document.getElementById("editquest_short_text").value;
+	params["text"] = document.getElementById("editquest_text").value;
+	params["score"] = document.getElementById("editquest_score").value;
+	params["min_score"] = document.getElementById("editquest_min_score").value;
+	params["subject"] = document.getElementById("editquest_subject").value;
+	params["idauthor"] = document.getElementById("editquest_authorid").value;
+	params["author"] = document.getElementById("editquest_author").value;
+	params["answer"] = document.getElementById("editquest_answer").value;
+	params["state"] = document.getElementById("editquest_state").value;
+	params["description_state"] = document.getElementById("editquest_description_state").value;
+
+	// alert(createUrlFromObj(params));
+
+	send_request_post(
+		'api/tasks/update.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "ok") {
+				closeModalDialog();
+				reloadTasks();
+				showTask(id);
+			} else {
+				alert(obj.error.message);
+			}
+		}
+	);
+}
+
 function formEditQuest(id)
 {
-	alert('formEditQuest: todo');
+	closeModalDialog();
+	var params = {};
+	params.questid = id;
+	send_request_post(
+		'api/tasks/get_all.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "fail") {
+				showModalDialog(obj.error.message);
+				return;
+			}
+			
+			var content = '\n';
+
+			/*content += createQuestRow('Quest UUID:', '<input type="text" id="newquest_quest_uuid" value="' + guid() + '"/>');
+			// 
+			
+			content += createQuestRow('', '<div class="button3 ad" onclick="createQuest();">Create</div>');*/
+			
+			if (!obj.quest) {
+				showModalDialog("error");
+				return;
+			}
+			content += '<div class="quest_info_table">\n';
+			
+			content += createQuestRow('Quest ID: ', obj.quest);
+			content += createQuestRow('Game: ', obj.data.game_title);
+			content += createQuestRow('Name:', '<input type="text" id="editquest_name" value="' + obj.data.name + '"/>');
+			content += createQuestRow('Short Text:', '<input type="text" id="editquest_short_text" value="' + obj.data.short_text + '"/>');
+			content += createQuestRow('Text:', '<textarea id="editquest_text">' + obj.data.text + '</textarea>');
+			content += createQuestRow('Score(+):', '<input type="text" id="editquest_score" value="' + obj.data.score + '"/>');
+			content += createQuestRow('Min Score(>):', '<input type="text" id="editquest_min_score" value="' + obj.data.min_score + '"/>');
+			content += createQuestRow('Subject:', '<input type="text" id="editquest_subject" value="' + obj.data.subject + '"/>');
+			content += createQuestRow('Author Id:', '<input type="text" id="editquest_authorid" value="' + obj.data.authorid + '"/>');
+			content += createQuestRow('Author:', '<input type="text" id="editquest_author" value="' + obj.data.author + '"/>');
+			content += createQuestRow('Answer:', '<input type="text" id="editquest_answer" value="' + obj.data.answer + '"/>');
+			content += createQuestRow('State:', '<input type="text" id="editquest_state" value="' + obj.data.state + '"/>');
+			content += createQuestRow('Description State:', '<textarea id="editquest_description_state">' + obj.data.description_state + '</textarea>');
+			content += createQuestRow('', '<div class="button3 ad" onclick="updateQuest(' + obj.quest + ');">Update</div>'
+				+ '<div class="button3 ad" onclick="showTask(' + obj.quest + ');">Cancel</div>'
+			);
+
+			content += '</div>';
+			content += '<div id="quest_error"><div>';
+			content += '\n';
+			showModalDialog(content);
+		}
+	);
 }
 
 function showTask(id)
@@ -207,10 +287,9 @@ function showTask(id)
 			content += '<div class="quest_info_table">\n';
 			
 			content += createQuestRow('Quest ID: ', obj.quest);
-				
 			if (obj.data.game_title)
 				content += createQuestRow('Game: ', obj.data.game_title);
-
+	
 			if (obj.data.name)
 				content += createQuestRow('Name: ', obj.data.name);
 				
@@ -223,6 +302,9 @@ function showTask(id)
 			if (obj.data.short_text)
 				content += createQuestRow('Short Text: ', obj.data.short_text);
 			
+			if (obj.data.author)
+				content += createQuestRow('Author: ', obj.data.author);
+
 			if (obj.data.date_start == null && obj.data.date_stop == null) {
 				content += createQuestRow('', '<div class="button3 ad" onclick="takeQuest(' + obj.quest + ');">Take quest</div>');
 			} else if (obj.data.date_stop == null || obj.data.date_stop == '0000-00-00 00:00:00') {
@@ -233,15 +315,14 @@ function showTask(id)
 				content += createQuestRow('', '<input id="quest_answer" type="text"/><div class="button3 ad" onclick="passQuest(' + obj.quest + ');">Pass quest</div>');
 			} else {
 				if (obj.data.text)
-					content += createQuestRow('Text: ', obj.data.text);
+					content += createQuestRow('Text: ', '<pre>' + obj.data.text + '</pre>');
 				if (obj.data.date_start)
 					content += createQuestRow('Date Start: ', obj.data.date_start);
 				if (obj.data.date_stop)
 					content += createQuestRow('Date Stop: ', obj.data.date_stop);
 			}
 			
-			if (obj.permissions.edit == true && obj.permissions['delete'] == true)
-			{
+			if (obj.permissions.edit == true && obj.permissions['delete'] == true) {
 				content += createQuestRow('',
 					'<div class="button3 ad" onclick="formEditQuest(' + obj.quest + ');">Edit</div>'
 					+ '<div class="button3 ad" onclick="deleteQuest(' + obj.quest + ');">Delete</div>'

@@ -37,6 +37,23 @@ function chooseGame(id) {
 	);
 }
 
+function updateScore() {
+	send_request_post(
+		'api/games/update_score.php',
+		'',
+		function (obj) {
+			if(obj.result == "ok") {
+				var el1 = document.getElementById('view_score');
+				var el2 = document.getElementById('user_score');
+				if (el1)
+					el1.innerHTML = obj.user.score;
+				if (el2)
+					el2.innerHTML = obj.user.score;
+			}
+		}
+	);
+}
+
 function createDivRowGame(name, value) {
 	return '<div class="user_info_row"> \n'
 		+ '\t<div class="user_info_param">' + name + '</div>\n'
