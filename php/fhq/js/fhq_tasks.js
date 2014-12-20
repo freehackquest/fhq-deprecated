@@ -309,7 +309,7 @@ function showTask(id)
 				content += createQuestRow('', '<div class="button3 ad" onclick="takeQuest(' + obj.quest + ');">Take quest</div>');
 			} else if (obj.data.date_stop == null || obj.data.date_stop == '0000-00-00 00:00:00') {
 				if (obj.data.text)
-					content += createQuestRow('Text: ', obj.data.text);
+					content += createQuestRow('Text: ', '<pre>' + obj.data.text + '</pre>');
 				if (obj.data.date_start)
 					content += createQuestRow('Date Start: ', obj.data.date_start);
 				content += createQuestRow('', '<input id="quest_answer" type="text"/><div class="button3 ad" onclick="passQuest(' + obj.quest + ');">Pass quest</div>');

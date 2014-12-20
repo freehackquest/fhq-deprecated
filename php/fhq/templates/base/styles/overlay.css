@@ -11,6 +11,7 @@
 	text-align: center;
 	/*left: 0px;
 	top: 0px;*/
+	overflow: auto;
 	vertical-align: middle;
 }
 
@@ -44,6 +45,9 @@
 	border-radius: 10px;
 	min-height: 50px;
     min-width: 400px;
+    max-height: 100%;
+    max-width: 100%;
+    overflow: auto;
 	-moz-border-radius: 10px;  /* для firefox */
 	-webkit-border-radius: 10px;  /* для Safari и Chrome */	
 }
