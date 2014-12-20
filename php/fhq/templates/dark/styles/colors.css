@@ -108,3 +108,26 @@ pre {
 code, pre {
     color: #C8C8C8;
 }
+
+.fhq_task_filters {
+    background-color: #3E3E3E;
+    color: #C8C8C8;
+}
+
+.fhq_task_info {
+    background-color: #494949;
+    color: #C8C8C8;
+}
+
+.fhq_task_info:hover{
+	background-color: #4f4f4f;
+}
+
+font.fhq_task {
+    color: #C8C8C8;
+}
+
+
+.quest_info_row_admin {
+    background-color: #494949;
+}

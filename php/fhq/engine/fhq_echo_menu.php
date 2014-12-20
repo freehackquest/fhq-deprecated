@@ -6,11 +6,9 @@ include_once "$curdir/fhq_class_security.php";
 function echo_panel()
 {
 	$security = new fhq_security();
-	$template = isset($_SESSION['user']['template']) ? $_SESSION['user']['template'] : 'base';
-	
-	// TODO: images must be get another
+	$template = isset($_SESSION['user']['profile']['template']) ? $_SESSION['user']['profile']['template'] : 'base';
+	// TODO : image must be loaded from another folder
 	$template = 'base';
-
 echo '
 <script>
 </script>
@@ -94,7 +92,7 @@ echo '
 		'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
 	);
 	
-	$arrmenu[] = array(
+	/*$arrmenu[] = array(
 		'name' => 'recalculate_score',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="Recalculate Score" onclick="recalculate_score();">
@@ -102,7 +100,7 @@ echo '
 			</div>
 		',
 		'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
-	);
+	);*/
 	
 	$arrmenu[] = array(
 		'name' => 'advisers',
@@ -124,7 +122,18 @@ echo '
 		'show' => ($game_type == 'attack-defence'),
 	);
 
+
 	$arrmenu[] = array(
+		'name' => 'tasks',
+		'html' => '
+			<div class="fhq_btn_menu hint--bottom" data-hint="Tasks" onclick="loadTasks();">
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_tasks.png"/>
+			</div>
+		',
+		'show' => ($game_type == 'jeopardy'),
+	);
+
+	/*$arrmenu[] = array(
 		'name' => 'quests_allow',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="Tasks Open" onclick="load_content_page(\'quests_allow\');">
@@ -152,7 +161,7 @@ echo '
 			</div>
 		',
 		'show' => ($game_type == 'jeopardy'),
-	);
+	);*/
 	
 	$arrmenu[] = array(
 		'name' => 'splitter',
@@ -339,6 +348,15 @@ echo '
 		',
 		'show' => $security->isAdmin(),
 	);
+	
+	$arrsystemmenu[] = array(
+		'name' => 'query_db',
+		'html' => '
+			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'query_db\');">Query DB</div>
+		',
+		'show' => $security->isAdmin(),
+	);
+	
 	$arrsystemmenu[] = array(
 		'name' => 'init_scoreboard',
 		'html' => '

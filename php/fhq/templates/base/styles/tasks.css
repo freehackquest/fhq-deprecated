@@ -1,0 +1,68 @@
+/*
+  base/styles/colors.css
+  do nothing
+*/
+
+.fhq_task_info{
+	display: inline-block;
+	border-radius: 10px;
+	margin: 12px;
+	font-family: arial;
+	padding: 10px;
+	text-align: center;
+	position: relative;
+	min-width: 100px;
+	background-color: #eee;
+	cursor: pointer;
+}
+
+.fhq_task_info:hover{
+	background-color: #e4e4e4;
+}
+
+font.fhq_task {
+	display: block;
+	color: #333;
+}
+
+.fhq_task_filters {
+	display: inline-block;
+	font-family: arial;
+	padding: 10px;
+	background-color: #eee;
+	border-radius: 10px;
+}
+
+input.fhq_task_checkbox[type="checkbox"] {
+    position: absolute;
+    overflow: hidden;
+    clip: rect(0px, 0px, 0px, 0px);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0px;
+    border: 0px none;
+}
+
+
+input.fhq_task_checkbox[type="checkbox"]:checked + label.fhq_task_label {
+    background-position: 0px -15px;
+}
+
+input.fhq_task_checkbox[type="checkbox"] + label.fhq_task_label {
+    padding-left: 20px;
+    height: 15px;
+    display: inline-block;
+    line-height: 15px;
+    background-repeat: no-repeat;
+    background-position: 0px 0px;
+    font-size: 15px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+.lite_green_check {
+    background-image: url('../images/checkbox.png');
+}
+label {
+    -moz-user-select: none;
+}

@@ -9,8 +9,6 @@ class fhq_security
 {
 	function login($email, $password)
 	{
-		// echo 1;
-	
 		unset($_SESSION['user']);
 
 		if(!$this->isLogged())
@@ -28,39 +26,12 @@ class fhq_security
 				$_SESSION['user']['iduser'] = mysql_result($result, 0, 'iduser');
 				$_SESSION['user']['email'] = mysql_result($result, 0, 'username');
 				$_SESSION['user']['nick'] = mysql_result($result, 0, 'nick');
-				$_SESSION['user']['score'] = mysql_result($result, 0, 'score');
 				$_SESSION['user']['role'] = mysql_result($result, 0, 'role');
-				$_SESSION['user']['template'] = 'base';
-				$last_ip = $_SERVER['REMOTE_ADDR'];
-				$db->query("update user set date_last_signup = NOW(), last_ip = '$last_ip' where username = '$username'");
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	/*function checkUser($privateKey)
-	{
-		$query = "select * from whc_users where private_key='$privateKey'";
-		$result = mysql_query( $query );
-		//  or die("incorrect sql query");
-		$rows = mysql_num_rows($result);
-		return ($rows == 1);
-	}
-	
-	function checkCurrentUser($privateKey)
-	{
-		if(!$this->isLogged())
-			return false;
-		$id = $_SESSION['user']['id'];
-		
-		$query = "select * from whc_users where private_key='$privateKey' and id = $id";
-		$result = mysql_query( $query );
-		//  or die("incorrect sql query");
-		$rows = mysql_num_rows($result);
-		return ($rows == 1);
-	}
-	*/
 	
 	function logout() {
 		if($this->isLogged()) { unset($_SESSION['user']); unset($_SESSION['game']); }
@@ -85,7 +56,7 @@ class fhq_security
 		return ($this->isLogged() && $_SESSION['user']['role'] == 'god' ); 
 	}
 	function score() { 
-		return ($this->isLogged() && is_numeric($_SESSION['user']['score'])) ? $_SESSION['user']['score'] : 0; 
+		return ($this->isLogged() && isset($_SESSION['user']['score']) && is_numeric($_SESSION['user']['score'])) ? $_SESSION['user']['score'] : 0; 
 	}
 	function nick() { 
 		return ($this->isLogged()) ? $_SESSION['user']['nick'] : ''; 

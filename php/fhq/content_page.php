@@ -36,7 +36,7 @@
 	if(isset($_GET['number_of_page'])) $number_of_page = $_GET['number_of_page'];
 	if(isset($_POST['number_of_page'])) $number_of_page = $_POST['number_of_page'];
 	
-	if($content_page == "quests_all")
+	/*if($content_page == "quests_all")
 	{
 		$errmsg = "";
 		if (!checkGameDates($security, $errmsg)) {
@@ -84,8 +84,13 @@
 		$page->echo_content($number_of_page);
 		exit;
 	}
-	else if($content_page == "update_db" && $security->isAdmin()) {
+	else */
+	if($content_page == "update_db" && $security->isAdmin()) {
 		include dirname(__FILE__)."/db/update_database.php";
+		exit;
+	}
+	else if($content_page == "query_db" && $security->isAdmin()) {
+		include dirname(__FILE__)."/db/query_database.php";
 		exit;
 	}
 	else if($content_page == "feedback_my")
@@ -192,14 +197,6 @@
 		$user_info = new fhq_user_info();
 		if(isset($_GET['old_password']) && isset($_GET['new_password']) && isset($_GET['new_password_confirm']))
 			$user_info->setNewPassword($_GET['old_password'], $_GET['new_password'], $_GET['new_password_confirm']);
-		$user_info->echo_info();
-		exit;
-	}
-	else if ($content_page == "user_set_template")
-	{
-		$user_info = new fhq_user_info();
-		if(isset($_GET['template']) && file_exists('templates/'.$_GET['template']))
-			$_SESSION['user']['template'] = $_GET['template'];
 		$user_info->echo_info();
 		exit;
 	}
@@ -350,33 +347,6 @@
 		echo_answer_list();
 		exit;
 	}	
-	else if($content_page == "view_quest")
-	{
-		$errmsg = "";
-		if (!checkGameDates($security, $errmsg)) {
-			echo $errmsg;
-			exit;
-		}
-		
-		if(!isset($_GET['id']))
-		{
-			echo 'not found paramenter "id"';
-			exit;	
-		};
-		
-		$id = $_GET['id'];
-		
-		$quest =  new fhq_quest();
-		
-		if(!$quest->select($id))
-		{
-			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
-			exit;
-		}
-		
-		$quest->echo_view_quest();
-		exit;
-	}
 	else if($content_page == "export_quest")
 	{
 		if(!$security->isAdmin())
@@ -406,7 +376,7 @@
 		$quest->export();
 		exit;
 	}
-	else if($content_page == "edit_quest")
+	/*else if($content_page == "edit_quest")
 	{
 		if(!$security->isAdmin())
 		{
@@ -429,7 +399,6 @@
 			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
 			exit;
 		}
-		
 		echo $quest->getForm();
 		
 	}
@@ -495,7 +464,7 @@
 		
 		$quest->echo_view_quest();
 		exit;
-	}
+	}*/
 	else if($content_page == "remove_file")
 	{
 		if(!$security->isAdmin())
@@ -586,7 +555,7 @@
 		$quest->echo_view_quest();
 		exit;
 	}
-	else if($content_page == "add_quest")
+	/*else if($content_page == "add_quest")
 	{
 		if(!$security->isAdmin())
 		{
@@ -676,7 +645,7 @@
 		
 		$quest->echo_view_quest();
 		exit;
-	}
+	}*/
 	else if($content_page == "recalculate_score")
 	{
 		$errmsg = "";

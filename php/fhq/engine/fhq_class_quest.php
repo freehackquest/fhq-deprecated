@@ -209,7 +209,6 @@ class fhq_quest
 		$result = $db->query( $query );
     $count = $db->count( $result );
     if($count != 1 ) return false;
-
       
     $nowdate = date('Y-m-d H:i:s');
     $query = 'INSERT INTO userquest(idquest,iduser,startdate,stopdate) 

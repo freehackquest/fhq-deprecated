@@ -12,7 +12,7 @@ $result = array(
 	'data' => array(),
 );
 
-$conn = createConnection($config);
+$conn = FHQHelpers::createConnection($config);
 
 if (!issetParam('id')) {
   showerror(823, 'Error 823: not found parameter id');

@@ -29,7 +29,8 @@ class simple_page
 function echo_mainpage($page)
 {	
 	// if() view_quest
-	$onload = 'load_content_page(\'quests_allow\');';
+	// $onload = 'load_content_page(\'quests_allow\');';
+	$onload = 'loadTasks();';
 	
 	if(isset($_GET['content_page']))
 	{

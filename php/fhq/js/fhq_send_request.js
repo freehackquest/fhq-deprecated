@@ -10,24 +10,26 @@ function createUrlFromObj(obj) {
 
 function send_request_post(page, url, callbackf)
 {
+	var tmpXMLhttp = null;
 	if (window.XMLHttpRequest) {
 		// code for IE7+, Firefox, Chrome, Opera, Safari
-		xmlhttp=new XMLHttpRequest();
+		tmpXMLhttp=new XMLHttpRequest();
 	};  
-	xmlhttp.onreadystatechange=function() {
-		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-			if(xmlhttp.responseText == "")
+	tmpXMLhttp.onreadystatechange=function() {
+		if (tmpXMLhttp.readyState==4 && tmpXMLhttp.status==200) {
+			if(tmpXMLhttp.responseText == "")
 				alert("error");
 			else
 			{
-				var obj = JSON.parse(xmlhttp.responseText);
+				var obj = JSON.parse(tmpXMLhttp.responseText);
 				callbackf(obj);
+				tmpXMLhttp = null;
 			}
 		}
 	}
-	xmlhttp.open("POST", page, true);
-	xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	xmlhttp.send(url);
+	tmpXMLhttp.open("POST", page, true);
+	tmpXMLhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	tmpXMLhttp.send(url);
 };
 
 

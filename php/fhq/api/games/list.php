@@ -12,7 +12,7 @@ $result = array(
 	'data' => array(),
 );
 
-$conn = createConnection($config);
+$conn = FHQHelpers::createConnection($config);
 
 try {
   // TODO paging

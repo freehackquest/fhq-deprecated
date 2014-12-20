@@ -9,7 +9,6 @@ function changeGame() {
 			for (var k in obj.data) {
 				if (obj.data.hasOwnProperty(k)) {
 					if (current_game != obj.data[k]['id']) {
-
 						content += '<div class="fhq_game_line" onclick="chooseGame(\'' + obj.data[k]['id'] + '\');">\n';
 						content += '\t<img class="fhq_game_img" src="' + obj.data[k]['logo'] + '" /> '
 						content += '\t<div class="fhq_game_text">\n';
@@ -34,6 +33,23 @@ function chooseGame(id) {
 		'id=' + id,
 		function (obj) {
 			window.location.href = "index.php";
+		}
+	);
+}
+
+function updateScore() {
+	send_request_post(
+		'api/games/update_score.php',
+		'',
+		function (obj) {
+			if(obj.result == "ok") {
+				var el1 = document.getElementById('view_score');
+				var el2 = document.getElementById('user_score');
+				if (el1)
+					el1.innerHTML = obj.user.score;
+				if (el2)
+					el2.innerHTML = obj.user.score;
+			}
 		}
 	);
 }
@@ -145,8 +161,8 @@ function updateGame(id) {
 	params["type_game"] = document.getElementById("editgame_type_game").value;
 	params["date_start"] = document.getElementById("editgame_date_start").value;
 	params["date_stop"] = document.getElementById("editgame_date_stop").value;
-  params["date_restart"] = document.getElementById("editgame_date_restart").value;
-  params["description"] = document.getElementById("editgame_description").value; // TODO may be innerHTML
+	params["date_restart"] = document.getElementById("editgame_date_restart").value;
+	params["description"] = document.getElementById("editgame_description").value; // TODO may be innerHTML
 	params["id"] = id;
 	
 	// alert(createUrlFromObj(params));
@@ -206,8 +222,8 @@ function createGame()
 	params["type_game"] = document.getElementById("newgame_type").value;
 	params["date_start"] = document.getElementById("newgame_date_start").value;
 	params["date_stop"] = document.getElementById("newgame_date_stop").value;
-  params["date_stop"] = document.getElementById("newgame_date_stop").value;
-  params["description"] = document.getElementById("newgame_description").value;
+	params["date_restart"] = document.getElementById("newgame_date_restart").value;
+	params["description"] = document.getElementById("newgame_description").value;
 	// params["author_id"] = document.getElementById("newgame_author_id").value;
 	// alert(createUrlFromObj(params));
 

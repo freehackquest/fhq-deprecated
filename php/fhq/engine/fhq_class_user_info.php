@@ -32,7 +32,7 @@
 					</div>
 					<div class="user_info_row">
 						<div class="user_info_param">Your score:</div>
-						<div class="user_info_value">'.$security->score().'</div>
+						<div class="user_info_value"><font id="user_score">'.$security->score().'</font> <div class="button3 ad" onclick="updateScore();">Update score</div></div>
 					</div>
 					<div class="user_info_row">
 						<div class="user_info_param">Your place:</div>
@@ -69,6 +69,50 @@
 					
 					echo '
 					<div class="user_info_row">
+						<div class="user_info_param">Country:</div>
+						<div class="user_info_value">
+							<input id="edit_user_country" type="text" value="'.htmlspecialchars($_SESSION['user']['profile']['country']).'"/>
+						</div>
+					</div>
+					<div class="user_info_row">
+						<div class="user_info_param">City:</div>
+						<div class="user_info_value">
+							<input id="edit_user_city" type="text" value="'.htmlspecialchars($_SESSION['user']['profile']['city']).'"/>
+						</div>
+					</div>
+					<div class="user_info_row">
+						<div class="user_info_param">University:</div>
+						<div class="user_info_value">
+							<input id="edit_user_university" type="text" value="'.htmlspecialchars($_SESSION['user']['profile']['university']).'"/>
+						</div>
+					</div>
+					<div class="user_info_row">
+						<div class="user_info_param"></div>
+						<div class="user_info_value">
+							<div class="button3 ad" onclick="update_profile_location();">Update</div>
+						</div>
+					</div>
+					<div class="user_info_row_skip">
+					</div>
+					<div class="user_info_row">
+						<div class="user_info_param">Style</div>
+						<div class="user_info_value">
+							current style: '.htmlspecialchars($_SESSION['user']['profile']['template']).'<br>
+							<select id="edit_style">
+								<option selected value="base">base</option>
+								<option value="dark">dark</option>
+								<option value="yellow">yellow (not completed)</option>
+								<option value="red">red (not completed)</option>
+							</select><br>
+							<div class="button3 ad" onclick="update_profile_style()">Save</div>
+						</div>
+					</div>
+					';
+						
+					echo '
+					<div class="user_info_row_skip">
+					</div>
+					<div class="user_info_row">
 						<div class="user_info_param">Old password:</div>
 						<div class="user_info_value">
 							<input id="old_password" type="password" value=""/>
@@ -98,25 +142,7 @@
 							);
 						">Change password</a></div>
 					</div>
-					<div class="user_info_row_skip">
-					</div>
-					<div class="user_info_row">
-						<div class="user_info_param">Style</div>
-						<div class="user_info_value">
-							current style: '.$_SESSION['user']['template'].'<br>
-							<select id="template">
-								<option selected value="base">base</option>
-								<option value="dark">dark</option>
-							</select><br>
-							<a class="button3 ad" href="javascript:void(0);" onclick="
-							load_content_page(\'user_set_template\', 
-								{
-									template : document.getElementById(\'template\').value
-								}
-							);
-						">Set new style</a>
-						</div>
-					</div>
+					
 					';
 			echo'
 				</div>
@@ -146,7 +172,8 @@
 		
 		function getPlace()
 		{
-			$db = new fhq_database();
+			
+			/*$db = new fhq_database();
 			$security = new fhq_security();
 
 			$place = "";
@@ -171,6 +198,8 @@
 				$place .= " / ".mysql_result($result, 0, 'cnt');
 			}
 			return $place;
+			* */
+			return 1;
 		}
 		
 		function setNewPassword($old_password, $new_password, $new_password_confirm) {
