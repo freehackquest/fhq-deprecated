@@ -131,7 +131,23 @@ function passQuest(id)
 
 function deleteQuest(id)
 {
-	alert('deleteQuest: todo');
+	if (!confirm("Are you sure that wand remove this quest?"))
+		return;
+
+	var params = {};
+	params.questid = id;
+	send_request_post(
+		'api/tasks/delete.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "ok") {
+				closeModalDialog();
+				loadTasks();
+			} else {
+				alert(obj.error.message);
+			}
+		}
+	);
 }
 
 function formEditQuest(id)
