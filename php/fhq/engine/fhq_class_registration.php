@@ -13,7 +13,8 @@
 			
 			if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 				echo "<font color=#ff0000>Invalid e-mail address.</font>";
-				exit;
+				return false;
+				// exit;
 			}
 			
 			$username = base64_encode(strtoupper($email));	
@@ -22,14 +23,14 @@
 			$result = $db->query($query);
 			if( $db->count( $result ) >= 1 )
 			{
-				echo '<font color=#ff0000>This e-mail was already registered.</font>';
+				// echo '<font color=#ff0000>This e-mail was already registered.</font>';
 				mysql_free_result($result);
 				return false;
 			};
 			
 			$notactivated = md5(rand().rand());
 			$nickname = "hacker-".substr(md5(rand().rand()), 0, 7);
-			$query = "INSERT user( username, password, nick, role, score ) VALUES ('$username','notactivated$notactivated','$nickname','user', 0);";
+			$query = "INSERT user( username, password, nick, role ) VALUES ('$username','notactivated$notactivated','$nickname','user');";
 			$result = $db->query($query);
 
 			if($result == '1')
@@ -48,13 +49,15 @@
 				$mail = new fhq_mail();
 				$error = "";
 				if( $mail->send($email, '', '', $subject, $message, $error) )
-					echo "Check your your e-mail (also check spam).";
-				else
-					echo '<font color=#ff0000>Problem with sending email. '.$error.'</font>';
-				exit;
+					return false;
+					// echo "Check your your e-mail (also check spam).";
+				//else
+					// echo '<font color=#ff0000>Problem with sending email. '.$error.'</font>';
+				return true;
 			};
-			echo "<font color=#ff0000>Registration is denied.</font>";
-			exit;
+			return false;
+			// echo "<font color=#ff0000>Registration is denied.</font>";
+			// exit;
 		}
 		
 		function removeEmail($email)
@@ -88,7 +91,7 @@
 				
 				// echo "e-mail: $email<br> password: $password";
 				
-				$query2 = "update user set password = '$password_hash', score = 0 where username = '$username';";
+				$query2 = "update user set password = '$password_hash' where username = '$username';";
 				$db->query($query2);
 
 				$subject = "Your account was activated";
