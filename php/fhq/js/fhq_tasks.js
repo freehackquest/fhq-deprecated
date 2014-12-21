@@ -312,7 +312,11 @@ function showTask(id)
 					content += createQuestRow('Text: ', '<pre>' + obj.data.text + '</pre>');
 				if (obj.data.date_start)
 					content += createQuestRow('Date Start: ', obj.data.date_start);
-				content += createQuestRow('', '<input id="quest_answer" type="text"/><div class="button3 ad" onclick="passQuest(' + obj.quest + ');">Pass quest</div>');
+				content += createQuestRow('', '<input id="quest_answer" type="text" onkeydown="if (event.keyCode == 13) passQuest(' + obj.quest + ');"/>'
+					+ '<div class="button3 ad" onclick="passQuest(' + obj.quest + ');">Pass quest</div>'
+					/*+ '<div class="button3 ad" onclick="passQuest(' + obj.quest + ');">Show/Hide my answers</div>'
+					+ '<div id="my_answers"></div>'*/
+					);
 			} else {
 				if (obj.data.text)
 					content += createQuestRow('Text: ', '<pre>' + obj.data.text + '</pre>');
