@@ -283,7 +283,7 @@
 					// echo "[cnt = $cnt]";
 					if ($cnt == 0) {
 						$password_hash = $security->tokenByData( array($pass, $username, strtoupper($email)));
-						$query = "INSERT user( username, password, nick, role, score, logo) VALUES ('$username','$password_hash','$nickname','$role', 0, '$logo');";
+						$query = "INSERT user( username, password, nick, role, logo) VALUES ('$username','$password_hash','$nickname','$role', '$logo');";
 						$result2 = $db->query($query);
 						echo "User registered<br>";
 					}

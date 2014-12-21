@@ -59,13 +59,20 @@ try {
 	while($row = $stmt->fetch())
 	{
 		$user_score = $row['score'];
+		if ($i == 1 && $score == 0)
+			$score = $row['score'];
+
+		if ($score != $user_score)
+		{
+			$score = $user_score;
+			$i++;
+		}
+		
 		$result['data'][$i][] = array(
 			'nick' => $row['nick'],
 			'score' => $row['score'],
 			// 'role' => $row['role'],
 		);
-		if ($user_score != $score)
-			$i++;
 	}
 	
 } catch(PDOException $e) {

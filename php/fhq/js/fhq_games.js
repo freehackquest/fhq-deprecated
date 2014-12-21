@@ -286,7 +286,7 @@ function loadScoreboard(gameid) {
 						arr.push(place[k2].nick);
 					}
 					content += '<div class="fhq_scoreboard_cell">' + place[0].score + '</div>';
-					content += '<div class="fhq_scoreboard_cell">' + arr.join(',') + '</div>';
+					content += '<div class="fhq_scoreboard_cell"><div>' + arr.join('</div><div>') + '</div></div>';
 					content += '</div>';
 				}
 				content += '</div>'; // row

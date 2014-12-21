@@ -49,7 +49,7 @@
 				$mail = new fhq_mail();
 				$error = "";
 				if( $mail->send($email, '', '', $subject, $message, $error) )
-					return false;
+					return true;
 					// echo "Check your your e-mail (also check spam).";
 				//else
 					// echo '<font color=#ff0000>Problem with sending email. '.$error.'</font>';

@@ -44,10 +44,10 @@
 	border: 5px solid #606060;
 	border-radius: 10px;
 	min-height: 50px;
-    min-width: 400px;
-    max-height: 100%;
-    max-width: 100%;
-    overflow: auto;
+	min-width: 400px;
+	max-height: 100%;
+	max-width: 100%;
+	/*overflow: auto;*/
 	-moz-border-radius: 10px;  /* для firefox */
 	-webkit-border-radius: 10px;  /* для Safari и Chrome */	
 }
