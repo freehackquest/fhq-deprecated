@@ -1,27 +1,8 @@
-
-@font-face {
-	font-family: Pompadur; /* Гарнитура шрифта */
-	src: url(../fonts/font_for_captcha.ttf); /* Путь к файлу со шрифтом */
-}
-
-@font-face {
-	font-family: Tempus Sans ITC;
-	src: url(../fonts/TEMPSITC.ttf); /* Путь к файлу со шрифтом */
-}
-  
-/*body.main
-{
-	background-color: #000000;
-	color: #a9a9a9;
-	font: 12pt/10pt Pompadur;
-}
-*/
-
 body.main
 {
 	background-color: #FFFFFF;
 	line-height:40px;
-	font: 12pt/10pt Tempus Sans ITC;
+	font: 12pt/10pt Arial;
 	color: #333333;
 }
 

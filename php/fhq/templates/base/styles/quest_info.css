@@ -4,7 +4,6 @@
 
 .quest_info_row {
 	display: table-row;
-	font-family: Tempus Sans ITC;
 	padding: 3px;
 	text-decoration: none;
 	margin:3px 3px 3px 3px;
@@ -12,14 +11,12 @@
 
 .quest_info_row_admin {
   background: #cccccc;
-  font-family: Tempus Sans ITC;
 }
 
 .quest_info_row_skip {
 	display: table-row;
 	background: inherit;
 	height: 20px;
-	font-family: Tempus Sans ITC;
 }
 
 .quest_info_param {
