@@ -44,20 +44,20 @@
 		include_once("install_gotonextstep.php");
 	}
 ?>
-<h1> Install (step <? echo $current_step; ?>) </h1>
+<h1> Install (step <?php echo $current_step; ?>) </h1>
 
 Add First Game: <br>
 <form>
 	<br>
 	Uuid Game: <input size=50 type='text' name='uuid_game'
-		value='<? echo isset($_GET['uuid_game']) ? $_GET['uuid_game'] : '7ea13d6b-1eea-4010-b2ad-60dfd8d48b52'; ?>'/> <br>
+		value='<?php echo isset($_GET['uuid_game']) ? $_GET['uuid_game'] : '7ea13d6b-1eea-4010-b2ad-60dfd8d48b52'; ?>'/> <br>
 
 	Title: <input type='text' name='title'
-		value='<? echo isset($_GET['title']) ? $_GET['title'] : 'My First Game'; ?>'/> <br>
+		value='<?php echo isset($_GET['title']) ? $_GET['title'] : 'My First Game'; ?>'/> <br>
 	
 	Type Of Game: <select name="type_game">
-		<option <? echo isset($_GET['type_game']) ? ($_GET['type_game'] == 'jeopardy' ? 'selected="selected"' : '') : 'selected="selected"'; ?> value="jeopardy">jeopardy</option>
-		<option <? echo isset($_GET['type_game']) ? ($_GET['type_game'] == 'attack-defence' ? 'selected="selected"' : '') : ''; ?> value="attack-defence">attack-defence</option>
+		<option <?php echo isset($_GET['type_game']) ? ($_GET['type_game'] == 'jeopardy' ? 'selected="selected"' : '') : 'selected="selected"'; ?> value="jeopardy">jeopardy</option>
+		<option <?php echo isset($_GET['type_game']) ? ($_GET['type_game'] == 'attack-defence' ? 'selected="selected"' : '') : ''; ?> value="attack-defence">attack-defence</option>
 	</select><br>
 
 	<input type='submit' name='' value='Save & go to next step'/>

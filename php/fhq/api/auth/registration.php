@@ -1,4 +1,5 @@
 <?php
+
 $curdir = dirname(__FILE__);
 include ($curdir."/../../config/config.php");
 include ($curdir."/../../engine/fhq.php");
@@ -18,7 +19,7 @@ if (isset($_GET['email']) && isset($_GET['captcha'])) {
 	$_SESSION['captcha_reg'] = md5(rand().rand());
 
 	if( strtoupper($captcha) == strtoupper($orig_captcha) ) {
-		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {		
+		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			$registration = new fhq_registration();
 			if($registration->addEmailAndSendMail($email))
 			{

@@ -30,34 +30,34 @@
 		include_once("install_gotonextstep.php");	
 	}
 ?>
-<h1> Install (Step <? echo $current_step; ?>) </h1>
+<h1> Install (Step <?php echo $current_step; ?>) </h1>
 
 Configure mail (google): <br>
 <form>
 	E-mail: <input type='text' name='username'
-		value='<? echo isset($_GET['username']) ? $_GET['username'] : 'test@gmail.com'; ?>'/> <br>
+		value='<?php echo isset($_GET['username']) ? $_GET['username'] : 'test@gmail.com'; ?>'/> <br>
 
 	Password: <input type='text' name='password'
-		value='<? echo isset($_GET['password']) ? $_GET['password'] : 'test'; ?>'/> <br>
+		value='<?php echo isset($_GET['password']) ? $_GET['password'] : 'test'; ?>'/> <br>
 		
 	Host: <input type='text' name='host'
-		value='<? echo isset($_GET['host']) ? $_GET['host'] : 'ssl://smtp.gmail.com'; ?>'/> <br>
+		value='<?php echo isset($_GET['host']) ? $_GET['host'] : 'ssl://smtp.gmail.com'; ?>'/> <br>
 
 	Port: <input type='text' name='port'
-		value='<? echo isset($_GET['port']) ? $_GET['port'] : '465'; ?>'/> <br>
+		value='<?php echo isset($_GET['port']) ? $_GET['port'] : '465'; ?>'/> <br>
 		
 	From: <input type='text' name='from'
-		value='<? echo isset($_GET['from']) ? $_GET['from'] : 'test@gmail.com'; ?>'/> <br>
+		value='<?php echo isset($_GET['from']) ? $_GET['from'] : 'test@gmail.com'; ?>'/> <br>
 
 	Auth: <select name="auth">
-		<option <? echo isset($_GET['auth']) ? ($_GET['auth'] == 'yes' ? 'selected="selected"' : '') : 'selected="selected"'; ?> value="yes">Yes</option>
-		<option <? echo isset($_GET['auth']) ? ($_GET['auth'] == 'no' ? 'selected="selected"' : '') : ''; ?> value="no">No</option>
+		<option <?php echo isset($_GET['auth']) ? ($_GET['auth'] == 'yes' ? 'selected="selected"' : '') : 'selected="selected"'; ?> value="yes">Yes</option>
+		<option <?php echo isset($_GET['auth']) ? ($_GET['auth'] == 'no' ? 'selected="selected"' : '') : ''; ?> value="no">No</option>
 	</select>
 	<br>
 
 	Allow: <select name="allow">
-		<option <? echo isset($_GET['allow']) ? ($_GET['allow'] == 'yes' ? 'selected="selected"' : '') : 'selected="selected"'; ?> value="yes">Yes</option>
-		<option <? echo isset($_GET['allow']) ? ($_GET['allow'] == 'no' ? 'selected="selected"' : '') : ''; ?> value="no">No</option>
+		<option <?php echo isset($_GET['allow']) ? ($_GET['allow'] == 'yes' ? 'selected="selected"' : '') : 'selected="selected"'; ?> value="yes">Yes</option>
+		<option <?php echo isset($_GET['allow']) ? ($_GET['allow'] == 'no' ? 'selected="selected"' : '') : ''; ?> value="no">No</option>
 	</select>
 	<br/>
 
