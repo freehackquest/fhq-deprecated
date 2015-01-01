@@ -1,4 +1,4 @@
-<?
+<?php
 include_once "fhq_class_security.php";
 include_once "fhq_class_database.php";
 

@@ -1,4 +1,4 @@
-<?
+<?php
 
 	// configure for connection to database
 	$config = array();

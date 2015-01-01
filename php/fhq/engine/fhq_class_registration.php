@@ -1,4 +1,4 @@
-<?
+<?php
 	$rootdir = dirname(__FILE__);
 	include_once "$rootdir/../config/config.php";
 	include_once "$rootdir/fhq_class_security.php";

@@ -1,4 +1,4 @@
-<?
+<?php
 $curdir = dirname(__FILE__);
 
 include_once "$curdir/fhq_echo_head.php";

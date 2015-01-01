@@ -1,4 +1,4 @@
-<?
+<?php
 session_start();
 $curdir = dirname(__FILE__);
 include_once ($curdir."/api.security.php");

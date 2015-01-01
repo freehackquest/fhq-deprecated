@@ -1,4 +1,4 @@
-<?
+<?php
 	include_once "engine/fhq.php";
 
 	$security = new fhq_security();

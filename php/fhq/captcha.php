@@ -1,4 +1,4 @@
-<?
+<?php
   /*
     sea-kg: if not working: try for debian "sudo apt-get install php5-gd" and than restart apache
   */

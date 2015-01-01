@@ -1,4 +1,4 @@
-<?
+<?php
 	echo "Please uncomment 'exit'";
 	exit;
 

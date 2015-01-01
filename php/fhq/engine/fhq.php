@@ -1,4 +1,4 @@
-<?
+<?php
 session_start();
 
 $curdir = dirname(__FILE__);

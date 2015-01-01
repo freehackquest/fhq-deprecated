@@ -1,4 +1,4 @@
-<?
+<?php
 
 function echo_head($page)
 {

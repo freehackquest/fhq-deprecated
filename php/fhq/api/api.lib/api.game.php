@@ -1,5 +1,4 @@
-<?
-
+<?php
 class FHQGame {
 
 	static function checkGameDates(&$message) {

@@ -1,4 +1,4 @@
-<?
+<?php
 	
 	if (!isset($config)) {
 		echo "NO!!!!";

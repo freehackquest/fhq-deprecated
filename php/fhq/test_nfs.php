@@ -1,4 +1,4 @@
-<?
+<?php
         exit;
         include_once('config/config.php');
 
