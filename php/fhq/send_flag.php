@@ -1,4 +1,4 @@
-<?
+<?php
 	if (!isset($_GET['flag']) || !isset($_GET['idteam']))
 	{
 		echo '

@@ -204,8 +204,10 @@ $query = '
 				quest.short_text,
 				quest.tema,
 				quest.state,
+				quest.count_user_solved,
 				userquest.startdate,
 				userquest.stopdate
+				
 			FROM 
 				quest
 			LEFT JOIN 
@@ -216,7 +218,7 @@ $query = '
 				'.$filter_by_score.'
 				'.$where_status.'
 			ORDER BY
-				quest.score ASC, quest.tema, quest.score
+				quest.tema, quest.score ASC, quest.score
 		';
 
 // $result['where_status'] = $where_status;
@@ -246,6 +248,7 @@ try {
 			'date_start' => $row['startdate'],
 			'date_stop' => $row['stopdate'],
 			'state' => $row['state'],
+			'count_user_solved' => $row['count_user_solved'],
 			'status' => $status,
 		);
 	}

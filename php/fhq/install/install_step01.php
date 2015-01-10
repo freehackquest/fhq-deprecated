@@ -1,11 +1,11 @@
-<?
+<?php
 	if (file_exists("../config/config.php")) {
 		echo "If you want reinstall please rename config/config.php";
 		exit;
 	}
 
 	if (!file_exists("config.php")) {
-		file_put_contents('config.php', '<? $config = array( installation => array()); ?>');
+		file_put_contents('config.php', '<?php $config = array( "installation" => array()); ?>');
 		if (!file_exists('config.php')) {
 			echo 'you have access problem with create files';
 			exit;
@@ -65,16 +65,16 @@
 Configure connection to database: <br>
 <form>
 	Database Host: <input type='text' name='host_db'
-		value='<? echo isset($_GET['host_db']) ? $_GET['host_db'] : ''; ?>'/> <br>
+		value='<?php echo isset($_GET['host_db']) ? $_GET['host_db'] : ''; ?>'/> <br>
 		
 	Database Name: <input type='text' name='name_db' 
-		value='<? echo isset($_GET['name_db']) ? $_GET['name_db'] : ''; ?>'/> <br>
+		value='<?php echo isset($_GET['name_db']) ? $_GET['name_db'] : ''; ?>'/> <br>
 		
 	Database User: <input type='text' name='user_db' 
-		value='<? echo isset($_GET['user_db']) ? $_GET['user_db'] : ''; ?>'/> <br>
+		value='<?php echo isset($_GET['user_db']) ? $_GET['user_db'] : ''; ?>'/> <br>
 		
 	Database Pass: <input type='text' name='pass_db'
-		value='<? echo isset($_GET['pass_db']) ? $_GET['pass_db'] : ''; ?>'/> <br>
+		value='<?php echo isset($_GET['pass_db']) ? $_GET['pass_db'] : ''; ?>'/> <br>
 
 	<input type='submit' name='' value='Check & go to next step'/>
 </form>

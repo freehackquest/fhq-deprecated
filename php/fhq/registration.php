@@ -1,4 +1,4 @@
-<?
+<?php
 include_once "engine/fhq.php";
 // include dirname(__FILE__)."/config/config.php";
 

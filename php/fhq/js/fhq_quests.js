@@ -1,22 +1,53 @@
 
-function createTaskFilters() {
-	return '\n\n<div class="fhq_task_filters"> <div>Filter by status tasks: \n'
-	+ '<input id="filter_open" class="fhq_task_checkbox" type="checkbox" onclick="reloadTasks();" checked />\n'
+function createQuestFilters() {
+	return '\n\n<div class="fhq_task_filters"> <div>Filter by status quests: \n'
+	+ '<input id="filter_open" class="fhq_task_checkbox" type="checkbox" onclick="reloadQuests();" checked />\n'
 	+ '<label class="fhq_task_label lite_green_check" for="filter_open">open (<font id="filter_open_count">0</font>) </label> \n'
-	+ '<input id="filter_current" class="fhq_task_checkbox" type="checkbox" onclick="reloadTasks();" checked/> \n'
+	+ '<input id="filter_current" class="fhq_task_checkbox" type="checkbox" onclick="reloadQuests();" checked/> \n'
 	+ '<label class="fhq_task_label lite_green_check" for="filter_current">in progress (<font id="filter_current_count">0</font>) </label> \n'
-	+ '<input id="filter_completed" class="fhq_task_checkbox" type="checkbox" onclick="reloadTasks();" />\n'
+	+ '<input id="filter_completed" class="fhq_task_checkbox" type="checkbox" onclick="reloadQuests();" />\n'
 	+ '<label class="fhq_task_label lite_green_check" for="filter_completed">completed (<font id="filter_completed_count">0</font>) </label> \n'
 	+ '</div>\n'
 	+ '<div id="filter_by_subject"></div> \n'
 	+ '</div> \n'
-	+ '<div id="tasks"></div> \n';
+	+ '<div id="quests"></div> \n';
 }
 
-function reloadTasks()
+
+function createQuestInfo(quest) {
+
+	var questid = quest.questid;
+	var name = quest.name
+	var score = quest.score;
+	// var short_text = quest.short_text;
+	var subject = quest.subject;
+	var status = quest.status;
+	var solved = quest.count_user_solved;
+	solved = solved == null ? "?" : solved;
+
+	var content = '\n\n<div class="fhq_quest_info" onclick="showQuest(' + questid + ');"><div class="fhq_quest_info_row">\n';
+	content += '<div class="fhq_quest_info_cell_img">';
+	content += '<img  width="100px" src="templates/base/images/quest_icons/' + subject + '.png">';
+	content += '</div>';
+	
+	content += '<div class="fhq_quest_info_cell_content">';
+	content += '<div class="fhq_quest_caption">' + questid + ' ' + name + '</div>';
+	content += '<div class="fhq_quest_score">' + subject + ' +' + score + '</div>';
+	content += '<div class="fhq_quest_caption">solved: ' + solved + '</div>';
+	
+	/*if (status == 'open')
+		content += '<div class="fhq_quest_score">take quest</div>';*/
+					
+	// content += '<font class="fhq_task" size="1">Status: ' + status + '</font>\n';
+	content += '</div>';
+	content += '</div></div>\n';
+	return content;
+}
+
+function reloadQuests()
 {
-	var tasks = document.getElementById("tasks");
-	tasks.innerHTML = "Please wait...";
+	var quests = document.getElementById("quests");
+	quests.innerHTML = "Please wait...";
 	
 	var params = {};
 	params.filter_open = document.getElementById("filter_open").checked;
@@ -34,12 +65,12 @@ function reloadTasks()
 	
 	// alert(createUrlFromObj(params));
 	send_request_post(
-		'api/tasks/list.php',
+		'api/quests/list.php',
 		createUrlFromObj(params),
 		function (obj) {
 			if (obj.result == 'fail')
 			{
-				tasks.innerHTML = obj.error.message;
+				quests.innerHTML = obj.error.message;
 				return;
 			}
 			
@@ -52,63 +83,64 @@ function reloadTasks()
 			{
 				filter_by_subject.innerHTML = 'Filter by subject: \n';
 				for (var k in obj.subjects) {
-					filter_by_subject.innerHTML += '<input name="filter_subjects" subject="' + k + '" id="filter_subject_' + k + '" type="checkbox" class="fhq_task_checkbox" onclick="reloadTasks();" checked/>'
+					filter_by_subject.innerHTML += '<input name="filter_subjects" subject="' + k + '" id="filter_subject_' + k + '" type="checkbox" class="fhq_task_checkbox" onclick="reloadQuests();" checked/>'
 					+ '<label class="fhq_task_label lite_green_check" for="filter_subject_' + k + '">' + k + ' (' + obj.subjects[k] + ') </label> \n'
 				}
 			}
 
-			tasks.innerHTML = '';
+			quests.innerHTML = '';
 			var perms = obj['permissions'];
 			if (perms['insert'] == true)
-				tasks.innerHTML += '<div class="fhq_game_info"><div class="button3 ad" onclick="formCreateQuest();">Create Quest</div></div><br>';
+				quests.innerHTML += '<div class="fhq_game_info"><div class="button3 ad" onclick="formCreateQuest();">Create Quest</div></div><br>';
 
 			if (params.filter_current && obj.status.current > 0)
-				tasks.innerHTML += '<hr>In progress:<br><div id="current_tasks"></div>';
+				quests.innerHTML += '<hr>In progress:<br><div id="current_quests"></div>';
 
 			if (params.filter_open && obj.status.open > 0)
-				tasks.innerHTML += '<hr>Open Tasks:<br><div id="open_tasks"></div>'
+				quests.innerHTML += '<hr>Open Quests:<br><div id="open_quests"></div>'
 
 			if (params.filter_completed && obj.status.completed > 0)
-				tasks.innerHTML += '<hr>Completed Tasks:<br><div id="completed_tasks"></div>';
+				quests.innerHTML += '<hr>Completed Quests:<br><div id="completed_quests"></div>';
 
-			var open_tasks = document.getElementById("open_tasks");
-			var current_tasks = document.getElementById("current_tasks");
-			var completed_tasks = document.getElementById("completed_tasks");
+			var open_quests = document.getElementById("open_quests");
+			var current_quests = document.getElementById("current_quests");
+			var completed_quests = document.getElementById("completed_quests");
 			
 			for (var k in obj.data) {
-				var questid = obj.data[k]['questid'];
-				var name = obj.data[k]['name'];
-				var score = obj.data[k]['score'];
-				var short_text = obj.data[k]['short_text'];
-				var subject = obj.data[k]['subject'];
+				// var questid = obj.data[k]['questid'];
+				// var name = obj.data[k]['name'];
+				// var score = obj.data[k]['score'];
+				// var short_text = obj.data[k]['short_text'];
+				// var subject = obj.data[k]['subject'];
 				var status = obj.data[k]['status'];
 
-				var content = '\n\n<div class="fhq_task_info" onclick="showTask(' + questid + ');">\n';
+				var content = createQuestInfo(obj.data[k]);
+				/*'\n\n<div class="fhq_task_info" onclick="showQuest(' + questid + ');">\n';
 				content += '<font class="fhq_task" size="2">' + questid + ' ' + name + '</font>\n';
 				content += '<font class="fhq_task" size="5">' + subject + ' +' + score + '</font>\n';
 				// content += '<font class="fhq_task" size="1">Status: ' + status + '</font>\n';
-				content += '</div>\n';
+				content += '</div>\n';*/
 				
 				if (status == 'current')
-					current_tasks.innerHTML += content;
+					current_quests.innerHTML += content;
 
 				if (status == 'open')
-					open_tasks.innerHTML += content;
+					open_quests.innerHTML += content;
 
 				if (status == 'completed')
-					completed_tasks.innerHTML += content;
+					completed_quests.innerHTML += content;
 				
-				// tasks.innerHTML += content;
+				// quests.innerHTML += content;
 			}
 		}
 	);	
 }
 
-function loadTasks()
+function loadQuests()
 {
 	var el = document.getElementById("content_page");
-	el.innerHTML = createTaskFilters();
-	reloadTasks();
+	el.innerHTML = createQuestFilters();
+	reloadQuests();
 }
 
 function createQuestRow(name, value)
@@ -125,13 +157,13 @@ function takeQuest(id)
 	params.questid = id;
 	document.getElementById("quest_error").innerHTML = "";
 	send_request_post(
-		'api/tasks/take.php',
+		'api/quests/take.php',
 		createUrlFromObj(params),
 		function (obj) {
 			if (obj.result == "ok") {
 				closeModalDialog();
-				reloadTasks();
-				showTask(id);
+				reloadQuests();
+				showQuest(id);
 			} else {
 				document.getElementById("quest_error").innerHTML = obj.error.message;
 			}
@@ -152,17 +184,19 @@ function passQuest(id)
 	params.answer = document.getElementById('quest_answer').value;
 	document.getElementById("quest_error").innerHTML = "";
 	send_request_post(
-		'api/tasks/pass.php',
+		'api/quests/pass.php',
 		createUrlFromObj(params),
 		function (obj) {
 			if (obj.result == "ok") {
 				closeModalDialog();
-				reloadTasks();
+				reloadQuests();
 				if (obj.new_user_score) {
 					document.getElementById('view_score').innerHTML = obj.new_user_score;
 				}
-				showTask(id);
+				showQuest(id);
 			} else {
+				if (isShowMyAnswers())
+					updateMyAnswers(id);
 				document.getElementById("quest_error").innerHTML = obj.error.message;
 			}
 		}
@@ -178,12 +212,12 @@ function deleteQuest(id)
 	var params = {};
 	params.questid = id;
 	send_request_post(
-		'api/tasks/delete.php',
+		'api/quests/delete.php',
 		createUrlFromObj(params),
 		function (obj) {
 			if (obj.result == "ok") {
 				closeModalDialog();
-				loadTasks();
+				loadQuests();
 			} else {
 				document.getElementById("quest_error").innerHTML = obj.error.message;
 			}
@@ -210,13 +244,13 @@ function updateQuest(id)
 	// alert(createUrlFromObj(params));
 
 	send_request_post(
-		'api/tasks/update.php',
+		'api/quests/update.php',
 		createUrlFromObj(params),
 		function (obj) {
 			if (obj.result == "ok") {
 				closeModalDialog();
-				reloadTasks();
-				showTask(id);
+				reloadQuests();
+				showQuest(id);
 			} else {
 				alert(obj.error.message);
 			}
@@ -230,7 +264,7 @@ function formEditQuest(id)
 	var params = {};
 	params.questid = id;
 	send_request_post(
-		'api/tasks/get_all.php',
+		'api/quests/get_all.php',
 		createUrlFromObj(params),
 		function (obj) {
 			if (obj.result == "fail") {
@@ -265,7 +299,7 @@ function formEditQuest(id)
 			content += createQuestRow('State:', '<input type="text" id="editquest_state" value="' + obj.data.state + '"/>');
 			content += createQuestRow('Description State:', '<textarea id="editquest_description_state">' + obj.data.description_state + '</textarea>');
 			content += createQuestRow('', '<div class="button3 ad" onclick="updateQuest(' + obj.quest + ');">Update</div>'
-				+ '<div class="button3 ad" onclick="showTask(' + obj.quest + ');">Cancel</div>'
+				+ '<div class="button3 ad" onclick="showQuest(' + obj.quest + ');">Cancel</div>'
 			);
 
 			content += '</div>';
@@ -276,12 +310,12 @@ function formEditQuest(id)
 	);
 }
 
-function showTask(id)
+function showQuest(id)
 {
 	var params = {};
 	params.taskid = id;
 	send_request_post(
-		'api/tasks/get.php',
+		'api/quests/get.php',
 		createUrlFromObj(params),
 		function (obj) {
 			var content = '\n';
@@ -365,12 +399,12 @@ function createQuest()
 
 	// alert(createUrlFromObj(params));
 	send_request_post(
-		'api/tasks/insert.php',
+		'api/quests/insert.php',
 		createUrlFromObj(params),
 		function (obj) {
 			if (obj.result == "ok") {
 				closeModalDialog();
-				loadTasks();
+				loadQuests();
 			} else {
 				alert(obj.error.message);
 			}
@@ -399,24 +433,24 @@ function formCreateQuest()
 	showModalDialog(content);
 }
 
-function showMyAnswers(id)
-{
+function isShowMyAnswers() {
 	var el = document.getElementById('user_answers');
-	
-	if (el.innerHTML.length != 0) {
-		el.innerHTML = "";
-		return;
-	}
-	
+	return (el.innerHTML.length != 0);
+}
+
+function updateMyAnswers(id)
+{
 	var params = {};
 	params["questid"] = id;
 
 	// alert(createUrlFromObj(params));
 	send_request_post(
-		'api/tasks/user_answers.php',
+		'api/quests/user_answers.php',
 		createUrlFromObj(params),
 		function (obj) {
 			if (obj.result == "ok") {
+				var el = document.getElementById('user_answers');
+				el.innerHTML = " Answers: <br>";
 				for (var i = 0; i < obj.data.length; ++i) {
 					el.innerHTML += '<div class="fhq_task_tryanswer">[' + obj.data[i].datetime_try + '] ' + obj.data[i].answer_try + '</div>';
 				}
@@ -427,4 +461,18 @@ function showMyAnswers(id)
 	);
 }
 
+function hideMyAnswers()
+{
+	var el = document.getElementById('user_answers');
+	el.innerHTML = "";
+}
 
+function showMyAnswers(id)
+{
+	if (isShowMyAnswers()) {
+		hideMyAnswers();
+		return;
+	}
+
+	updateMyAnswers(id);
+}

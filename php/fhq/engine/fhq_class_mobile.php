@@ -1,4 +1,4 @@
-<?
+<?php
 	class fhq_mobile()
 	{
 		function isMobile()

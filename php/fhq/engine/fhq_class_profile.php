@@ -1,4 +1,4 @@
-<?
+<?php
 class fhq_profile
 {
 	private $quest_name, $short_text, $full_text, $score, $min_score, $subject, $answer, $reply_answer, $idquest, $for_person;

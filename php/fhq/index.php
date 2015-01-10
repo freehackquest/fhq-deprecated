@@ -1,4 +1,4 @@
-<?
+<?php
 
 if (!file_exists("config/config.php")) {
 	header ("Location: install/install_step01.php");
@@ -9,8 +9,8 @@ include_once "config/config.php";
 include_once "engine/fhq.php";
 
 $security = new fhq_security();
-		
-if( isset( $_GET['exit']) )
+
+if (isset( $_GET['exit']) )
 {
 	$security = new fhq_security();
 	$security->logout();
@@ -18,7 +18,7 @@ if( isset( $_GET['exit']) )
 	exit;
 };
 
-if($security->isLogged())
+if ($security->isLogged())
 {
 	refreshTo("main.php");
 	return;
@@ -35,16 +35,16 @@ class fhq_logon
 	{
 		echo '';
 	}
-	
+
 	function echo_onBodyEnd() {
 		echo '';
 	}
-	
+
 	function get_onloadbody() {
 		return 'show_index_element(\'indexcontent_sign_in\');';
 		// return 'load_content_html(\'indexcontent\', \'pages/index/sign_in.html\');';
 	}
-	
+
 	function echo_content()
 	{
 		$error_msg = "";
@@ -172,19 +172,19 @@ class fhq_logon
 				</center>
 			</div>
 			<div class="indexcontent" id="indexcontent_about">
-				<?
+				<?php
 					include("about.php");
 				?>
 			</div>
 			<br><br>
 			<font id="info_message"></font>
 			<font id="error_message" color='#ff0000'></font>
-			<?
+			<?php
 
 	}
 };
 
-if(isset($_SESSION['iduser']) && isset($_SESSION['email']))
+if (isset($_SESSION['iduser']) && isset($_SESSION['email']))
 {
 	refreshTo("main.php");
 };
@@ -192,5 +192,4 @@ if(isset($_SESSION['iduser']) && isset($_SESSION['email']))
 $logon = new fhq_logon();
 echo_shortpage($logon);
 
-exit;	
-?>
+exit;

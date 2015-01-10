@@ -1,4 +1,4 @@
-<?
+<?php
 	if (file_exists("../config/config.php")) {
 		echo "If you want reinstall please rename config/config.php";
 		exit;
@@ -56,13 +56,13 @@ Configure admin user: <br>
 <form>
 	<br>
 	Login: <input type='text' name='login'
-		value='<? echo isset($_GET['login']) ? $_GET['login'] : 'admin'; ?>'/> <br>
+		value='<?php echo isset($_GET['login']) ? $_GET['login'] : 'admin'; ?>'/> <br>
 		
 	Password: <input type='text' name='password'
-		value='<? echo isset($_GET['password']) ? $_GET['password'] : 'admin'; ?>'/> <br>
+		value='<?php echo isset($_GET['password']) ? $_GET['password'] : 'admin'; ?>'/> <br>
 		
 	Nickname: <input type='text' name='nickname'
-		value='<? echo isset($_GET['nickname']) ? $_GET['nickname'] : 'admin'; ?>'/> <br>
+		value='<?php echo isset($_GET['nickname']) ? $_GET['nickname'] : 'admin'; ?>'/> <br>
 
 	<br>
 	<input type='submit' name='' value='Save & go to next step'/>

@@ -1,4 +1,4 @@
-<?
+<?php
 
 class fhq_page_registration2
 {

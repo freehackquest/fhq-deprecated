@@ -1,4 +1,4 @@
-<?
+<?php
 
 $curdir = dirname(__FILE__);
 

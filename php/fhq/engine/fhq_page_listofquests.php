@@ -1,4 +1,4 @@
-<?
+<?php
 include_once "fhq_class_security.php";
 include_once "fhq_class_database.php";
 
@@ -155,7 +155,7 @@ class fhq_page_listofquests
 		<table cellspacing=2 cellpadding=10 class='alt' id='customers'>
 					<tr class='alt'>
 						<th width=100px>Subject</th>
-						<th>Tasks</th>
+						<th>Quests</th>
 					</tr>
 		";
 

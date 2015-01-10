@@ -1,4 +1,4 @@
-<?
+<?php
 	if (file_exists("../config/config.php")) {
 		echo "If you want reinstall please rename config/config.php";
 		exit;
@@ -20,7 +20,7 @@
 Configure host name: <br>
 <form>
 	Your host name: <input type='text' name='httpname'
-		value='<? echo isset($_GET['httpname']) ? $_GET['httpname'] : 'http://localhost/'; ?>'/> <br>
+		value='<?php echo isset($_GET['httpname']) ? $_GET['httpname'] : 'http://localhost/'; ?>'/> <br>
 
 	<input type='submit' name='' value='Check & go to next step'/>
 </form>

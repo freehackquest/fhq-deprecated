@@ -1,4 +1,4 @@
-<?
+<?php
 	if (file_exists("../config/config.php")) {
 		echo "If you want reinstall please rename config/config.php";
 		exit;
@@ -26,14 +26,14 @@ Configure registration: <br>
 <form>
 	<br>
 	Allow: <select name="allow">
-		<option <? echo isset($_GET['allow']) ? ($_GET['allow'] == 'yes' ? 'selected="selected"' : '') : 'selected="selected"'; ?> value="yes">Yes</option>
-		<option <? echo isset($_GET['allow']) ? ($_GET['allow'] == 'no' ? 'selected="selected"' : '') : ''; ?> value="no">No</option>
+		<option <?php echo isset($_GET['allow']) ? ($_GET['allow'] == 'yes' ? 'selected="selected"' : '') : 'selected="selected"'; ?> value="yes">Yes</option>
+		<option <?php echo isset($_GET['allow']) ? ($_GET['allow'] == 'no' ? 'selected="selected"' : '') : ''; ?> value="no">No</option>
 	</select>
 	<br>
 	
 	Type registration: <select name="type">
-		<option <? echo isset($_GET['type']) ? ($_GET['type'] == 'email' ? 'selected="selected"' : '') : 'selected="selected"'; ?> value="email">E-mail (confirm by email)</option>
-		<option <? echo isset($_GET['type']) ? ($_GET['type'] == 'simple' ? 'selected="selected"' : '') : ''; ?> value="simple">Simple (without confirm)</option>
+		<option <?php echo isset($_GET['type']) ? ($_GET['type'] == 'email' ? 'selected="selected"' : '') : 'selected="selected"'; ?> value="email">E-mail (confirm by email)</option>
+		<option <?php echo isset($_GET['type']) ? ($_GET['type'] == 'simple' ? 'selected="selected"' : '') : ''; ?> value="simple">Simple (without confirm)</option>
 	</select>
 	<br>
 

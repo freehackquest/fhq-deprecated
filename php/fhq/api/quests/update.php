@@ -2,6 +2,7 @@
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");
+include_once ($curdir."/../api.lib/api.quest.php");
 include_once ($curdir."/../../config/config.php");
 
 FHQHelpers::checkAuth();
@@ -87,6 +88,7 @@ $values[] = $questid;
 	$stmt = $conn->prepare($query);
 	if($stmt->execute(array_values($values))) {
 		$result['result'] = 'ok';
+		FHQQuest::updateCountUserSolved($conn, $questid);
 	} else {
 		$result['error']['pdo'] = $conn->errorInfo();
 		$result['error']['code'] = 304;

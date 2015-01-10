@@ -1,4 +1,4 @@
-<?
+<?php
 class FHQSecurity {
 	static function isLogged() {
 		return isset($_SESSION['user']); 

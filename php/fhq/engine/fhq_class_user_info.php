@@ -1,4 +1,4 @@
-<?
+<?php
 	$curdir = dirname(__FILE__);
 	include_once "$curdir/../config/config.php";
 	include_once "$curdir/fhq_class_security.php";

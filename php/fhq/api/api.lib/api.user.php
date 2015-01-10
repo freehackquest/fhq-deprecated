@@ -1,4 +1,4 @@
-<?
+<?php
 class FHQUser {
 	static function loadUserProfile($conn) {
 		try {

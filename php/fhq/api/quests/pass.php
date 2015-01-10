@@ -3,6 +3,7 @@ $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../api.lib/api.answerlist.php");
+include_once ($curdir."/../api.lib/api.quest.php");
 include_once ($curdir."/../../config/config.php");
 
 FHQHelpers::checkAuth();
@@ -100,9 +101,11 @@ try {
 					$stmt2 = $conn->prepare($query2);
 					$stmt2->execute(array(intval($new_user_score), FHQSecurity::userid(), FHQGame::id()));
 				}
+				FHQQuest::updateCountUserSolved($conn, $questid);
 
 				FHQAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, 'Yes');
 				FHQAnswerList::movedToBackup($conn, $questid);
+				
 			} else {
 				FHQAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, 'No');
 				FHQHelpers::showerror(340, 'answer incorrect "'.htmlspecialchars($answer).'"');

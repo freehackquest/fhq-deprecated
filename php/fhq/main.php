@@ -1,4 +1,4 @@
-<?	
+<?php	
 	include_once "engine/fhq.php";
 		
 	$security = new fhq_security();
@@ -9,7 +9,7 @@
 		return;
 	};
 
-	$income = new fhq_income();
+/*	$income = new fhq_income();
 	if ( 
 		!$income->isStarted() 
 		&& !$security->isAdmin()
@@ -18,7 +18,7 @@
 	)
 	{
 			include_once "engine/fhq_page_income.php";
-			echo_shortpage(new fhq_page_income());			
+			echo_shortpage(new fhq_page_income());
 			exit;
 	}
 
@@ -27,7 +27,7 @@
     refreshTo("scoreboard.php");
 	 	exit;  
   };
-	
+*/
 	$db = new fhq_database();
 
 	echo_mainpage( new simple_page("", "") );

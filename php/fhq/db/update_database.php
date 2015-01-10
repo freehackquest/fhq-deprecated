@@ -1,4 +1,4 @@
-<?
+<?php
 	
 	if (!isset($config)) {
 		echo "NO!!!!";
@@ -99,6 +99,7 @@
 	$tables['quest']['date_change'] = array ( 'Field' => 'date_change', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['quest']['date_create'] = array ( 'Field' => 'date_create', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['quest']['userid'] = array ( 'Field' => 'userid', 'Type' => 'bigint(20)', 'Null' => 'NO', 'Key' => '', 'Default' => '0', 'Extra' => '', );
+	$tables['quest']['count_user_solved'] = array ( 'Field' => 'count_user_solved', 'Type' => 'bigint(20)', 'Null' => 'NO', 'Key' => '', 'Default' => '0', 'Extra' => '', );
 
 /*
 	$tables['tasks'] = array();

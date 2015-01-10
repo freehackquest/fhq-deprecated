@@ -1,4 +1,4 @@
-<?
+<?php
 	if (file_exists("../config/config.php")) {
 		echo "If you want reinstall please rename config/config.php";
 		exit;
@@ -31,7 +31,7 @@
 		$config['finishDate']['second'] = 0;
 		
 		
-		file_put_contents('../config/config.php', '<? $config = '.var_export($config, true).'; ?>');
+		file_put_contents('../config/config.php', '<?php $config = '.var_export($config, true).'; ?>');
 		if (file_exists('../config/config.php')) {
 			unlink('config.php');
 			header ('Location: ../index.php');
@@ -41,7 +41,7 @@
 		exit;
 	}
 ?>
-<h1> Install (step <? echo $current_step; ?>) </h1>
+<h1> Install (step <?php echo $current_step; ?>) </h1>
 
 Finish: <br>
 <form>

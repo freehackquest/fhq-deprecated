@@ -1,4 +1,4 @@
-<?
+<?php
 	if (file_exists("../config/config.php")) {
 		echo "If you want reinstall please rename config/config.php";
 		exit;
@@ -46,19 +46,19 @@
 Configure secrets: <br>
 <form>
 	Secret 0: <input type='text' name='secret0'
-		value='<? echo $secret0; ?>'/> <br>
+		value='<?php echo $secret0; ?>'/> <br>
 
 	Secret 1: <input type='text' name='secret1'
-		value='<? echo $secret1; ?>'/> <br>
+		value='<?php echo $secret1; ?>'/> <br>
 		
 	Secret 2: <input type='text' name='secret2'
-		value='<? echo $secret2; ?>'/> <br>
+		value='<?php echo $secret2; ?>'/> <br>
 		
 	Secret 3: <input type='text' name='secret3'
-		value='<? echo $secret3; ?>'/> <br>
+		value='<?php echo $secret3; ?>'/> <br>
 
 	Secret 4: <input type='text' name='secret4'
-		value='<? echo $secret4; ?>'/> <br>
+		value='<?php echo $secret4; ?>'/> <br>
 
 	<input type='submit' name='' value='Save & go to next step'/>
 </form>
