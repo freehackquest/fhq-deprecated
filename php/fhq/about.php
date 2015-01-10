@@ -21,7 +21,13 @@ Evgenii Sopov, Dmitrii Mukovkin, Igor Polyakov<br>
 <h2>designers</h2>
 Evgenii Sopov<br>
 <h2>thanks for</h2>
-Team Keva, Alexey Gulyaev, Alexander Menschikov, Ilya Bokov, Taisiya Lebedeva<br>
+Team Keva,
+Alexey Gulyaev,
+Alexander Menschikov,
+Ilya Bokov, 
+Maxim Samoilov,
+Extrim Code,
+Taisiya Lebedeva<br>
 
 <h1>contacts</h1>
 see us in <a href="http://vk.com/freehackquest">VKontakte</a><br>
