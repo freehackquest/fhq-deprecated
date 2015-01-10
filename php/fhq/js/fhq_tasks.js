@@ -163,6 +163,8 @@ function passQuest(id)
 				}
 				showTask(id);
 			} else {
+				if (isShowMyAnswers())
+					updateMyAnswers(id);
 				document.getElementById("quest_error").innerHTML = obj.error.message;
 			}
 		}
@@ -399,15 +401,13 @@ function formCreateQuest()
 	showModalDialog(content);
 }
 
-function showMyAnswers(id)
-{
+function isShowMyAnswers() {
 	var el = document.getElementById('user_answers');
-	
-	if (el.innerHTML.length != 0) {
-		el.innerHTML = "";
-		return;
-	}
-	
+	return (el.innerHTML.length != 0);
+}
+
+function updateMyAnswers(id)
+{
 	var params = {};
 	params["questid"] = id;
 
@@ -417,6 +417,8 @@ function showMyAnswers(id)
 		createUrlFromObj(params),
 		function (obj) {
 			if (obj.result == "ok") {
+				var el = document.getElementById('user_answers');
+				el.innerHTML = " Answers: <br>";
 				for (var i = 0; i < obj.data.length; ++i) {
 					el.innerHTML += '<div class="fhq_task_tryanswer">[' + obj.data[i].datetime_try + '] ' + obj.data[i].answer_try + '</div>';
 				}
@@ -427,4 +429,18 @@ function showMyAnswers(id)
 	);
 }
 
+function hideMyAnswers()
+{
+	var el = document.getElementById('user_answers');
+	el.innerHTML = "";
+}
 
+function showMyAnswers(id)
+{
+	if (isShowMyAnswers()) {
+		hideMyAnswers();
+		return;
+	}
+
+	updateMyAnswers(id);
+}
