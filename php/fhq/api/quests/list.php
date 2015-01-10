@@ -204,8 +204,10 @@ $query = '
 				quest.short_text,
 				quest.tema,
 				quest.state,
+				quest.count_user_solved,
 				userquest.startdate,
 				userquest.stopdate
+				
 			FROM 
 				quest
 			LEFT JOIN 
@@ -246,6 +248,7 @@ try {
 			'date_start' => $row['startdate'],
 			'date_stop' => $row['stopdate'],
 			'state' => $row['state'],
+			'count_user_solved' => $row['count_user_solved'],
 			'status' => $status,
 		);
 	}

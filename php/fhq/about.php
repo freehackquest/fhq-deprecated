@@ -9,7 +9,7 @@ Copyright (c) 2011-2015 sea-kg.<br>
 if you wish public your task please send me email with 7z archiv to mrseakg@gmail.com with structure:
 
 topic/score/other/ - files for creating task and for script with solution
-topic/score/files/ - files for tasks
+topic/score/files/ - files for quests
 topic/score/solve_files/ - files for solve
 topic/score/task - description and name
 topic/score/answer - answer for task

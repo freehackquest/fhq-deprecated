@@ -30,7 +30,7 @@ function echo_mainpage($page)
 {	
 	// if() view_quest
 	// $onload = 'load_content_page(\'quests_allow\');';
-	$onload = 'loadTasks();';
+	$onload = 'loadQuests();';
 	
 	if(isset($_GET['content_page']))
 	{
