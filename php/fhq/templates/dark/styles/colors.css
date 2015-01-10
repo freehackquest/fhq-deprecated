@@ -114,6 +114,15 @@ code, pre {
     color: #C8C8C8;
 }
 
+.fhq_quest_info {
+    background-color: #494949;
+    color: #C8C8C8;
+}
+
+.fhq_quest_info:hover{
+	background-color: #4f4f4f;
+}
+
 .fhq_task_info {
     background-color: #494949;
     color: #C8C8C8;
