@@ -216,7 +216,7 @@ $query = '
 				'.$filter_by_score.'
 				'.$where_status.'
 			ORDER BY
-				quest.score ASC, quest.tema, quest.score
+				quest.tema, quest.score ASC, quest.score
 		';
 
 // $result['where_status'] = $where_status;

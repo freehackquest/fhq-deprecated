@@ -126,10 +126,10 @@ echo '
 
 
 	$arrmenu[] = array(
-		'name' => 'tasks',
+		'name' => 'quests',
 		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Tasks" onclick="loadTasks();">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_tasks.png"/>
+			<div class="fhq_btn_menu hint--bottom" data-hint="Quests" onclick="loadQuests();">
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_quests.png"/>
 			</div>
 		',
 		'show' => ($game_type == 'jeopardy'),
