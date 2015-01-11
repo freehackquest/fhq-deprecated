@@ -21,6 +21,7 @@ function echo_head($page)
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/hint.css?ver='.$versioncontent.'">
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/timer.css?ver='.$versioncontent.'">
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/quests.css?ver='.$versioncontent.'">
+	<link rel="stylesheet" type="text/css" href="templates/base/styles/users.css?ver='.$versioncontent.'">
 
 	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/colors.css?ver='.$versioncontent.'" />
 

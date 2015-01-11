@@ -1,56 +1,90 @@
 <?php
 $curdir = dirname(__FILE__);
-include ($curdir."/../api.lib/api.helpers.php");
-include ($curdir."/../../config/config.php");
-include ($curdir."/../../engine/fhq.php");
+include_once ($curdir."/../api.lib/api.base.php");
+include_once ($curdir."/../api.lib/api.game.php");
+include_once ($curdir."/../../config/config.php");
 
-$security = new fhq_security();
-checkAuth($security);
+FHQHelpers::checkAuth();
 
 $result = array(
 	'result' => 'fail',
 	'data' => array(),
+	'profile' => array(),
 );
 
 $conn = FHQHelpers::createConnection($config);
 
-if (!issetParam('id')) {
-  showerror(823, 'Error 823: not found parameter id');
+if (!FHQHelpers::issetParam('userid'))
+  showerror(823, 'Error 823: not found parameter userid');
 
-$user_id = getParam('id', 0);
+$userid = FHQHelpers::getParam('userid', 0);
 
-if (!is_numeric($user_id))
+if (!is_numeric($userid))
 	showerror(825, 'Error 825: incorrect id');
 
-$user_id = intval($user_id);
+$userid = intval($userid);
 
-// todo: team
-$columns = array('iduser', 'score', 'nick');
+$bAllow = FHQSecurity::isAdmin() || FHQSecurity::isTester() || FHQSecurity::userid() == $userid;
 
-if($security->isAdmin() || $security->isTester() || $security->userId() == $user_id)
-  $columns = array('iduser', 'username', 'score', 'role', 'nick');
+$columns = array('iduser', 'email', 'password', 'role', 'nick');
 
 $query = '
-		SELECT '.implode(',', $columns).' FROM
+		SELECT '.implode(', ', $columns).' FROM
 			user
 		WHERE iduser = ?
 ';
 
+$result['userid'] = $userid;
+// $result['query'] = $query;
+
 try {
 	$stmt = $conn->prepare($query);
-	$stmt->execute(array(intval($game_id)));
-	if($row = $stmt->fetch())
+	$stmt->execute(array($userid));
+	if ($row = $stmt->fetch())
 	{
-		$result['data'] = array();
-		foreach ( $columns as $k) {
-			$result['data'][$k] = $row[$k];
+		$result['data']['userid'] = $row['iduser'];
+		$result['data']['nick'] = $row['nick'];
+		
+		if ($bAllow) {
+			 $result['data']['email'] = $row['email'];
+			 $result['data']['role'] = $row['role'];
+			 $result['data']['status'] = 'activated';
+			 
+			 if (strpos($row['password'], 'notactivated') !== FALSE)
+				$result['data']['status'] = 'notactivated';
 		}
 	}
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
 	showerror(822, 'Error 822: ' + $e->getMessage());
 }
-    
-// TODO: added more information about user
-		
+
+// users_profile
+try {
+	$stmt = $conn->prepare('SELECT * FROM users_profile WHERE userid = ?');
+	$stmt->execute(array($userid));
+	while ($row = $stmt->fetch())
+	{
+		$result['profile'][$row['name']] = $row['value'];
+	}
+} catch(PDOException $e) {
+	showerror(822, 'Error 822: ' + $e->getMessage());
+}
+
+// users_games
+try {
+	$stmt = $conn->prepare('SELECT games.title, games.type_game, users_games.score FROM users_games INNER JOIN games ON users_games.gameid = games.id WHERE users_games.userid = ?');
+	$stmt->execute(array($userid));
+	while ($row = $stmt->fetch())
+	{
+		$result['games'][] = array(
+			'title' => $row['title'],
+			'type_game' => $row['type_game'],
+			'score' => $row['score'],
+		);
+	}
+} catch(PDOException $e) {
+	showerror(822, 'Error 822: ' + $e->getMessage());
+}
+
 echo json_encode($result);
