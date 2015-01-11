@@ -360,6 +360,14 @@ echo '
 	);
 	
 	$arrsystemmenu[] = array(
+		'name' => 'install_updates',
+		'html' => '
+			<div class="button3 ad" href="javascript:void(0);" onclick="installUpdates();">Install Updates</div>
+		',
+		'show' => $security->isAdmin(),
+	);
+
+	$arrsystemmenu[] = array(
 		'name' => 'init_scoreboard',
 		'html' => '
 			<div class="button3 ad" onclick="load_content_page2(\'init_scoreboard\');">init scoreboard</div>

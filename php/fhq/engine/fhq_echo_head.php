@@ -35,6 +35,7 @@ function echo_head($page)
 	<script type="text/javascript" src="js/fhq_users.js?ver='.$versioncontent.'"></script>
 	<script type="text/javascript" src="js/fhq_menu.js?ver='.$versioncontent.'"></script>
 	<script type="text/javascript" src="js/fhq_timer.js?ver='.$versioncontent.'"></script>
+	<script type="text/javascript" src="js/fhq_updates.js?ver='.$versioncontent.'"></script>
 
 	<style>
 		textarea.full_text
