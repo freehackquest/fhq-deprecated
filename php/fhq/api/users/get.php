@@ -26,7 +26,7 @@ $userid = intval($userid);
 
 $bAllow = FHQSecurity::isAdmin() || FHQSecurity::isTester() || FHQSecurity::userid() == $userid;
 
-$columns = array('iduser', 'email', 'password', 'role', 'nick');
+$columns = array('iduser', 'email', 'password', 'role', 'nick', 'logo');
 
 $query = '
 		SELECT '.implode(', ', $columns).' FROM
@@ -44,6 +44,7 @@ try {
 	{
 		$result['data']['userid'] = $row['iduser'];
 		$result['data']['nick'] = $row['nick'];
+		$result['data']['logo'] = $row['logo'];
 		
 		if ($bAllow) {
 			 $result['data']['email'] = $row['email'];

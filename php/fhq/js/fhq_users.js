@@ -97,6 +97,7 @@ function viewInfoUser(id) {
 			}
 			var ui = document.getElementById('user_info');
 			var content = '<div class="user_info_table">';
+			content += createUserInfoRow('Logo:', '<img src="'+ obj.data.logo + '"/>');
 			content += createUserInfoRow('ID:', obj.data.userid);
 			content += createUserInfoRow('E-mail:', obj.data.email);
 			content += createUserInfoRow('Role:', obj.data.role);
