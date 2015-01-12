@@ -3,6 +3,7 @@
 $curdir = dirname(__FILE__);
 include ($curdir."/../../config/config.php");
 include ($curdir."/../../engine/fhq.php");
+header("Access-Control-Allow-Origin: *");
 
 $security = new fhq_security();
 

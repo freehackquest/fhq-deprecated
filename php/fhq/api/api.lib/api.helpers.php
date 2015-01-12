@@ -10,6 +10,7 @@ function showerror($code, $message) {
 	
  	$result['error']['code'] = $code;
 	$result['error']['message'] = $message;
+  header("Access-Control-Allow-Origin: *");
 	echo json_encode($result);
 	exit;
 }
@@ -29,6 +30,7 @@ function checkAuth($security)
 		);
 		$result['error']['code'] = 403;
 		$result['error']['message'] = 'Error 403: Not authorized request';
+    header("Access-Control-Allow-Origin: *");
 		echo json_encode($result);
 		exit;
 	}
@@ -52,6 +54,7 @@ class FHQHelpers {
 			);
 			$result['error']['code'] = 403;
 			$result['error']['message'] = 'Error 403: Not authorized request';
+      header("Access-Control-Allow-Origin: *");
 			echo json_encode($result);
 			exit;
 		}
@@ -78,6 +81,7 @@ class FHQHelpers {
 		
 		$result['error']['code'] = $code;
 		$result['error']['message'] = 'Error '.$code.': '.$message;
+    header("Access-Control-Allow-Origin: *");
 		echo json_encode($result);
 		exit;
 	}
