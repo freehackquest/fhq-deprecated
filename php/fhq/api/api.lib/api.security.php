@@ -55,7 +55,7 @@ class FHQSecurity {
 	
 	static function insertLastIp($conn, $client) { 
 		try {
-			$query = 'INSERT INTO users_ips(userid, ip, country, city, client, date_sign_in) VALUES(?,?,?,?,?,NOW())';
+			$query = 'INSERT INTO users_ips (userid, ip, country, city, browser, client, date_sign_in) VALUES(?,?,?,?,?,?,NOW())';
 			$ip = $_SERVER['REMOTE_ADDR'];
 			$country = '';
 			$city = '';
@@ -65,11 +65,21 @@ class FHQSecurity {
 				$city = 'localhost';
 			}
 
-			$params = array(FHQSecurity::iduser(),$_SERVER['REMOTE_ADDR'], $country, $city, $client);
+			$params = array(
+				FHQSecurity::iduser(),
+				$_SERVER['REMOTE_ADDR'],
+				$country,
+				$city,
+				$_SERVER['HTTP_USER_AGENT'],
+				$client,
+			);
 			$stmt = $conn->prepare($query);
 			$stmt->execute($params);
+
+			$stmt_dls = $conn->prepare('UPDATE user SET date_last_signup = NOW() WHERE iduser = ?');
+			$stmt_dls->execute(array(FHQSecurity::iduser()));
 		} catch(PDOException $e) {
-			showerror(103, 'Error 103: ' + $e->getMessage());
+			showerror(103, $e->getMessage());
 		}
 	}	
 }

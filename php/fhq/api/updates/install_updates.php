@@ -30,6 +30,8 @@ include_once ($curdir."/updates/0_0_0_0.php");
 include_once ($curdir."/updates/0_0_0_1.php");
 include_once ($curdir."/updates/0_0_0_2.php");
 include_once ($curdir."/updates/0_0_0_3.php");
+include_once ($curdir."/updates/0_0_0_4.php");
+include_once ($curdir."/updates/0_0_0_5.php");
 
 while (isset($updates[$version])) {
 	$function_update = 'update_'.$version;

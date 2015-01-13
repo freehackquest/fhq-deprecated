@@ -136,10 +136,9 @@ function viewInfoUser(id) {
 			// .innerHTML = JSON.stringify(obj);
 
 			var content = '<pre>';
-			
-			
+
 			for (var k in obj.data) {
-				content += obj.data[k].date + '\t'+ obj.data[k].ip + ' (' + obj.data[k].country + ', ' + obj.data[k].city + ')\n';
+				content += obj.data[k].date + '\t'+ obj.data[k].ip + ' (' + obj.data[k].country + ', ' + obj.data[k].city + ') \t' + obj.data[k].browser + '\n';
 			}
 			
 			// content += JSON.stringify(obj);
@@ -197,9 +196,11 @@ function updateUsers() {
 			content += '	<div class="users_cell">Logo</div>';
 			content += '	<div class="users_cell">ID</div>';
 			content += '	<div class="users_cell">e-mail</div>';
-			content += '	<div class="users_cell">nickname</div>';
-			content += '	<div class="users_cell">role</div>';
-			content += '	<div class="users_cell">status</div>';
+			content += '	<div class="users_cell">Nick</div>';
+			content += '	<div class="users_cell">Last Sign in</div>';
+			content += '	<div class="users_cell">Role</div>';
+			content += '	<div class="users_cell">Status</div>';
+			
 			content += '</div>'; // users_row
 			
 			for (var k in obj.data) {
@@ -217,24 +218,28 @@ function updateUsers() {
 				content += '<div class="users_cell">' + k + '</div>';
 
 				// email
-				content += '<div class="users_cell">' + obj.data[k]['email'] + ' ';
-				content += '	<div class="button3 ad" onclick="formRemoveUser(' + k + ');">Remove</div>'; // only check captcha
-				content += '	<div class="button3 ad" onclick="viewInfoUser(' + k + ');">View Info</div>';
+				content += '<div class="users_cell"> ';
+				content += '	<div class="button3 ad" onclick="viewInfoUser(' + k + ');">' + obj.data[k]['email'] + '</div>';
 				content += '</div>';
 
 				// nick
 				// TODO: must be edit
 				content += '<div class="users_cell">' + obj.data[k]['nick'] + '</div>';
 
+				// date_last_signup
+				content += '<div class="users_cell">' + obj.data[k].date_last_signup + '</div>';
+
 				// role
 				// TODO: must be edit
 				content += '<div class="users_cell">' + obj.data[k]['role'] + '</div>';
 
 				// status
-				// TODO: if not activated can allow edit email and send mail again
-				content += '<div class="users_cell">' + obj.data[k]['status'] + ' ';
+				// TODO: if not activated can allow edit email and send mail again 
+				content += '<div class="users_cell">' + obj.data[k].status + ' ';
 				content += '	<div class="button3 ad" onclick="formBlockUser(' + k + ');">Block</div>';
 				content += '</div>';
+
+				
 
 				content += '</div>'; // users_row
 			}

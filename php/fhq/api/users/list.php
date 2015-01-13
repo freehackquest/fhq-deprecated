@@ -59,11 +59,14 @@ try {
 	$stmt2 = $conn->prepare('
 			SELECT
 				iduser, email, role,
-				nick, logo, password
+				nick, logo, password,
+				date_last_signup
 			FROM
 				user
 			WHERE 
 				email LIKE ? OR nick LIKE ? OR role LIKE ?
+			ORDER BY
+				date_last_signup DESC
 			LIMIT '.$start.','.$onpage.'
 	');
 	$stmt2->execute(array($search,$search,$search));
@@ -75,6 +78,7 @@ try {
 			'role' => $row2['role'],
 			'nick' => $row2['nick'],
 			'logo' => $row2['logo'],
+			'date_last_signup' => $row2['date_last_signup'],
 			'status' => (strpos($row2['password'], 'notactivated') !== FALSE) ? 'notactivated' : 'activated',
 		);
 	}

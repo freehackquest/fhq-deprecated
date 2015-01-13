@@ -60,7 +60,7 @@ try {
 			'country' => $country,
 			'city' => $city,
 			'date' => $row['date_sign_in'],
-      'browser' => $browser,
+			'browser' => $browser,
 		);
 	}
 	$result['result'] = 'ok';
