@@ -47,7 +47,7 @@ try {
 
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
-	showerror(911, 'Error 911: ' + $e->getMessage());
+	FHQHelpers::showerror(911, $e->getMessage());
 }
 
 echo json_encode($result);

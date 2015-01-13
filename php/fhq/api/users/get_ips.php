@@ -33,7 +33,7 @@ include_once(dirname(__FILE__).'/../api.lib/SxGeo.php');
 $SxGeo = new SxGeo(dirname(__FILE__).'/../api.lib/SxGeoCity.dat', SXGEO_BATCH | SXGEO_MEMORY);
 
 $userid = intval($userid);
-$query = 'SELECT id, ip, country, city, date_sign_in FROM users_ips WHERE userid = ? ORDER BY id DESC LIMIT 0,25';
+$query = 'SELECT id, ip, country, city, browser, date_sign_in FROM users_ips WHERE userid = ? ORDER BY id DESC LIMIT 0,25';
 try {
 	$stmt = $conn->prepare($query);
 	$stmt->execute(array(intval($userid)));
@@ -43,7 +43,7 @@ try {
 		$city = $row['city'];
 		$id = $row['id'];
 		$ip = $row['ip'];
-		
+		$browser = $row['browser'];
 		if (strlen($country) == 0 && strlen($city) == 0) {
 			$o = $SxGeo->get($ip);
 			if ($o) {
@@ -60,6 +60,7 @@ try {
 			'country' => $country,
 			'city' => $city,
 			'date' => $row['date_sign_in'],
+      'browser' => $browser,
 		);
 	}
 	$result['result'] = 'ok';
