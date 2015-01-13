@@ -12,13 +12,19 @@ Input parameters (GET or POST):
 \begin{itemize}
   \item \textbf{email} - identificator of user
   \item \textbf{password} - password of user
+  \item \textbf{client} - indentifier for client (fhq-web or other frontends)
 \end{itemize}
 
 Successfully response:  \\
 \begin{Verbatim}[frame=single]
 {
-    "result": "ok"
+    "result": "ok",
+    "token" : "76558894-0AA9-11E4-09F0-D353D3CF86D5"
 }
 \end{Verbatim}
 
-Also look ~\nameref{sec:code_errors_auth}
+Code errors (10*):
+\begin{itemize}
+  \item {\color{red} Error \textbf{1001} - parameters was not found email or password}
+  \item {\color{red} Error \textbf{1002} - email or password was not found in system}
+\end{itemize}
