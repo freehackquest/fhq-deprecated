@@ -2,6 +2,9 @@
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.helpers.php");
 include_once ($curdir."/../api.lib/api.security.php");
