@@ -1,0 +1,302 @@
+\subsection{Errors code }
+\label{sec:code_errors}
+\par
+
+\begin{center}
+%  \begin{tabular}{ request | Code Error | Text  }
+%    \hline
+%    http://fhq.keva.su/api/games/get.php?id=77 & 715 & 3 \\ \hline
+%    4 & 5 & 6 \\ \hline
+%    7 & 8 & 9 \\
+%    \hline
+%  \end{tabular}
+\end{center}
+
+
+% choose
+
+Request:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/quests/insert.php
+\end{Verbatim}
+Fail response:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": 304,
+        "message": "Error 304: Could not insert"
+    }
+}
+\end{Verbatim}
+
+Request:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/quests/update.php
+\end{Verbatim}
+Fail response:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": 304,
+        "message": "Error 304: Could not insert"
+    }
+}
+\end{Verbatim}
+
+
+Request:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/auth/sign_in.php
+\end{Verbatim}
+Fail response:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": 102,
+        "message": "Error 102: it was not found login or password"
+    }
+}
+\end{Verbatim}
+
+% delete 
+
+
+Request:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/auth/sign_in.php
+\end{Verbatim}
+Fail response:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": 101,
+        "message": "Error 101: it was not found login or password"
+    }
+}
+\end{Verbatim}
+
+Request:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/auth/restore.php
+\end{Verbatim}
+Fail response:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": 103,
+        "message": "Error 103[restore]: Captcha is not correct, please "Refresh captcha" and try again"
+    }
+}
+\end{Verbatim}
+
+Request:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/auth/restore.php
+\end{Verbatim}
+Fail response:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": 104,
+        "message": "Error 104[restore]: Invalid e-mail address."
+    }
+}
+\end{Verbatim}
+
+Request:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/auth/restore.php
+\end{Verbatim}
+Fail response:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": 105,
+        "Error 105[restore]: This e-mail was not registered."
+    }
+}
+\end{Verbatim}
+
+Request:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/auth/restore.php
+\end{Verbatim}
+
+Fail response:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": 106,
+        "message": "Error 106[restore]: Restore is denied."
+    }
+}
+\end{Verbatim}
+
+Request:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/auth/restore.php
+\end{Verbatim}
+
+Fail response:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": 106,
+        "message": "Error 107[restore]: Problem with sending email."
+    }
+}
+\end{Verbatim}
+
+Request:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/auth/restore.php
+\end{Verbatim}
+
+Fail response:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": 106,
+        "message": "Error 108[restore]: Incorrect input parameters email or captcha"
+    }
+}
+\end{Verbatim}
+
+Request:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/auth/registration.php
+\end{Verbatim}
+
+Fail response:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": 110,
+        "message": "Error 110[registration]: Problem with registration. '.$error"
+    }
+}
+\end{Verbatim}
+
+Request:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/auth/registration.php
+\end{Verbatim}
+
+Fail response:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": 111,
+        "message": "Error 111[registration]: Invalid e-mail address."
+    }
+}
+\end{Verbatim}
+
+Request:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/auth/registration.php
+\end{Verbatim}
+
+Fail response:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": 112,
+        "message": "Error 112[registration]: Captcha is not correct, please "Refresh captcha" and try again"
+    }
+}
+\end{Verbatim}
+
+Request:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/auth/registration.php
+\end{Verbatim}
+
+Fail response:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": 113,
+        "message": "Error 113[registration]: Incorrect input parameters email or captcha"
+    }
+}
+\end{Verbatim}
+
+Request:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/auth/registration.php
+\end{Verbatim}
+
+Fail response:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": 789,
+        "message": "Error 789: not found parameter "id""
+    }
+}
+\end{Verbatim}
+
+Request:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/auth/registration.php
+\end{Verbatim}
+
+Fail response:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": 789,
+        "message": "Error 789: not found parameter "id""
+    }
+}
+\end{Verbatim}
+
+Request:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/api.lib/api.helpers.php
+\end{Verbatim}
+
+Fail response:
+\begin{Verbatim}[frame=single]
+{
+    "result": "fail",
+    "data": [],
+    "error": {
+        "code": 403,
+        "message": "Error 403: Not authorized request"
+    }
+}
+\end{Verbatim}
