@@ -156,11 +156,14 @@ function updateUsers() {
 	var params = {};
 	params.search = document.getElementById('user_search').value;
 	params.page = document.getElementById('user_page').value;
-	
-	var url = createUrlFromObj(params);
+	params.role = document.getElementById('user_role').value;
+	params.status = document.getElementById('user_status').value;
+	params.onpage = document.getElementById('user_onpage').value;
+
+	// alert(createUrlFromObj(params));
 	send_request_post(
 		'api/users/list.php',
-		url,
+		createUrlFromObj(params),
 		function (obj) {
 			if (obj.result == "fail") {
 				document.getElementById('error_search').innerHTML = obj.error.message;
@@ -175,7 +178,7 @@ function updateUsers() {
 
 			var onpage = parseInt(obj.onpage, 10);
 			var page = parseInt(obj.page, 10);
-			
+
 			var pages = Math.ceil(found / onpage);
 			
 			var pagesHtml = [];
@@ -189,13 +192,12 @@ function updateUsers() {
 			}
 			
 			lu.innerHTML += pagesHtml.join(' ');
-			
-			
+
 			var content = '<div class="users_table">';
 			content += '<div class="users_row">';
 			content += '	<div class="users_cell">Logo</div>';
 			content += '	<div class="users_cell">ID</div>';
-			content += '	<div class="users_cell">e-mail</div>';
+			content += '	<div class="users_cell">E-mail</div>';
 			content += '	<div class="users_cell">Nick</div>';
 			content += '	<div class="users_cell">Last Sign in</div>';
 			content += '	<div class="users_cell">Role</div>';
@@ -257,12 +259,49 @@ function formCreateUser() {
 function createPageUsers() {
 	var cp = document.getElementById('content_page');
 	cp.innerHTML = '';
-	cp.innerHTML += '<div class="button3 ad" onclick="formCreateUser();"> * Create User</div><br>';
-	cp.innerHTML += '<div><input type="text" id="user_search" value="" onkeydown="if (event.keyCode == 13) {resetUsersPage(); updateUsers();};"/> <div class="button3 ad" onclick="resetUsersPage(); updateUsers();">Search</div> <input type="hidden" id="user_page" value="0"/> </div>';
-	// cp.innerHTML += '<div>Page: <input type="text" value=""/></div>';
-	cp.innerHTML += '<div>Found: <font id="search_found">0</font></div>';
-	cp.innerHTML += '';
+
+	var content = '<div class="user_info_table">';
+	content += createUserInfoRow('', '<div class="button3 ad" onclick="formCreateUser();"> * Create User</div>');
+	content += createUserInfoRow_Skip();
+	
+	content += createUserInfoRow('E-mail or Nick:', '<input type="text" id="user_search" value="" onkeydown="if (event.keyCode == 13) {resetUsersPage(); updateUsers();};"/>');
+	
+	var user_role = ' <select id="user_role">';
+	user_role += '	<option value="">*</option>';
+	user_role += '	<option value="user">User</option>';
+	user_role += '	<option value="tester">Tester</option>';
+	user_role += '	<option value="admin">Admin</option>';
+	user_role += '</select> ';
+	content += createUserInfoRow('Role:', user_role);
+	
+	var user_status = ' <select id="user_status">';
+	user_status += '	<option value="">*</option>';
+	user_status += '	<option value="blocked">Blocked</option>';
+	user_status += '	<option value="activated">Activated</option>';
+	user_status += '	<option value="notactivated">Not Activated</option>';
+	user_status += '</select> ';
+	content += createUserInfoRow('Status:', user_status);
+	
+	var user_onpage = ' <select id="user_onpage">';
+	user_onpage += '	<option value="5">5</option>';
+	user_onpage += '	<option value="10">10</option>';
+	user_onpage += '	<option value="15">15</option>';
+	user_onpage += '	<option value="20">20</option>';
+	user_onpage += '	<option value="30">30</option>';
+	user_onpage += '	<option value="50">50</option>';
+	user_onpage += '</select> ';
+	content += createUserInfoRow('On Page:', user_onpage);
+	
+	
+	content += createUserInfoRow('', '<div class="button3 ad" onclick="resetUsersPage(); updateUsers();">Search</div>');
+	content += createUserInfoRow_Skip();
+	content += createUserInfoRow('Found:', '<font id="search_found">0</font>');
+	
+	content += '</div>'; // user_info_table
+	content += '<input type="hidden" id="user_page" value="0"/>'	
+	cp.innerHTML += content;
 	cp.innerHTML += '<div id="error_search"></div>';
+	cp.innerHTML += '<hr/>';
 	cp.innerHTML += '<div id="listUsers"></div>';
 }
 

@@ -30,12 +30,17 @@ $page = FHQHelpers::getParam('page', 0);
 $page = intval($page);
 $result['page'] = $page;
 
-$onpage = FHQHelpers::getParam('onpage', 15);
+$onpage = FHQHelpers::getParam('onpage', 5);
 $onpage = intval($onpage);
 $result['onpage'] = $onpage;
 
 $start = $page * $onpage;
 
+$role = FHQHelpers::getParam('role', '');
+$status = FHQHelpers::getParam('status', '');
+
+$role = '%'.$role.'%';
+$status = '%'.$status.'%';
 
 // calculate count users
 try {
@@ -45,9 +50,11 @@ try {
 			FROM
 				user
 			WHERE 
-				email LIKE ? OR nick LIKE ? OR role LIKE ?
+				(email LIKE ? OR nick LIKE ?)
+				AND (role LIKE ?)
+				AND (status LIKE ?)
 	');
-	$stmt->execute(array($search,$search,$search));
+	$stmt->execute(array($search, $search, $role, $status));
 	if ($row = $stmt->fetch()) {
 		$result['found'] = $row['cnt'];
 	}
@@ -64,12 +71,14 @@ try {
 			FROM
 				user
 			WHERE 
-				email LIKE ? OR nick LIKE ? OR role LIKE ?
+				(email LIKE ? OR nick LIKE ?)
+				AND (role LIKE ?)
+				AND (status LIKE ?)
 			ORDER BY
 				date_last_signup DESC
 			LIMIT '.$start.','.$onpage.'
 	');
-	$stmt2->execute(array($search,$search,$search));
+	$stmt2->execute(array($search, $search, $role, $status));
 	while ($row2 = $stmt2->fetch()) {
 		$userid = $row2['iduser'];
 		$result['data'][$userid] = array(
