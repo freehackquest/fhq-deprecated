@@ -1,6 +1,6 @@
 <?php
-$curdir = dirname(__FILE__);
-include_once ($curdir."/api.security.php");
+$curdir_helpers = dirname(__FILE__);
+include_once ($curdir_helpers."/api.security.php");
 
 function showerror($code, $message) {
 	$result = array(
@@ -10,19 +10,13 @@ function showerror($code, $message) {
 	
  	$result['error']['code'] = $code;
 	$result['error']['message'] = $message;
-  header("Access-Control-Allow-Origin: *");
+	header("Access-Control-Allow-Origin: *");
 	echo json_encode($result);
 	exit;
 }
 
 function checkAuth($security)
 {
-	/*if(!$security->isLogged())
-	{
-		refreshTo("index.php");
-		return;
-	};*/
-
 	if(!$security->isLogged()) {
 		$result = array(
 			'result' => 'fail',
@@ -30,7 +24,6 @@ function checkAuth($security)
 		);
 		$result['error']['code'] = 403;
 		$result['error']['message'] = 'Error 403: Not authorized request';
-    header("Access-Control-Allow-Origin: *");
 		echo json_encode($result);
 		exit;
 	}
@@ -48,15 +41,7 @@ class FHQHelpers {
 	static function checkAuth()
 	{
 		if(!FHQSecurity::isLogged()) {
-			$result = array(
-				'result' => 'fail',
-				'data' => array(),
-			);
-			$result['error']['code'] = 403;
-			$result['error']['message'] = 'Error 403: Not authorized request';
-      header("Access-Control-Allow-Origin: *");
-			echo json_encode($result);
-			exit;
+			FHQHelpers::showerror(4001, 'Not authorized request');
 		}
 	}
 	
@@ -81,7 +66,6 @@ class FHQHelpers {
 		
 		$result['error']['code'] = $code;
 		$result['error']['message'] = 'Error '.$code.': '.$message;
-    header("Access-Control-Allow-Origin: *");
 		echo json_encode($result);
 		exit;
 	}

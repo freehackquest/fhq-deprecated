@@ -1,9 +1,6 @@
 <?php
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
-
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Credentials: true");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.helpers.php");
@@ -27,7 +24,6 @@ if (FHQHelpers::issetParam('email') && FHQHelpers::issetParam('password')) {
 	if( $security->login($email, $password) ) {
 		$result['result'] = 'ok';
 		$result['token'] = FHQHelpers::gen_guid();
-		$_COOKIE['token'] = $result['token'];
 	} else {
 		FHQHelpers::showerror(1002, 'email or password was not found in system');
 	}
@@ -40,6 +36,7 @@ if ($result['result'] == 'ok') {
 	FHQSecurity::insertLastIp($conn, FHQHelpers::getParam('client', FHQHelpers::getParam('client', 'none')));
 	FHQUser::loadUserProfile($conn);
 	// FHQUser::loadUserScore($conn);
+	FHQSecurity::saveByToken($conn, $result['token']);
 }
 
 echo json_encode($result);

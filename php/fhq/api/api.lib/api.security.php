@@ -81,5 +81,64 @@ class FHQSecurity {
 		} catch(PDOException $e) {
 			showerror(103, $e->getMessage());
 		}
-	}	
+	}
+	
+	static function saveByToken($conn, $token) { 
+		try {
+			$query = 'INSERT INTO users_tokens (userid, token, status, data, start_date, end_date) VALUES(?, ?, ?, ?, NOW(), NOW() + INTERVAL 1 DAY)';
+			$params = array(
+				FHQSecurity::userid(),
+				$token,
+				'active',
+				json_encode($_SESSION)
+			);
+			$stmt = $conn->prepare($query);
+			$stmt->execute($params);
+		} catch(PDOException $e) {
+			showerror(103, $e->getMessage());
+		}
+	}
+
+	static function loadByToken($conn, $token) { 
+		try {
+			$query = 'SELECT data FROM users_tokens WHERE token = ? AND status = ? AND end_date > NOW()';
+			$params = array(
+				$token,
+				'active'
+			);
+			$stmt = $conn->prepare($query);
+			$stmt->execute($params);
+			if ($row = $stmt->fetch())
+				$_SESSION = json_decode($row['data'],true);
+		} catch(PDOException $e) {
+			FHQHelpers::showerror(103, $e->getMessage());
+		}
+	}
+	
+	static function updateByToken($conn, $token) { 
+		try {
+			$query = 'UDPATE users_tokens SET data = ? AND end_date = NOW() + INTERVAL 1 DAY WHERE token = ?';
+			$params = array(
+				json_encode($_SESSION),
+				$token,
+			);
+			$stmt = $conn->prepare($query);
+			$stmt->execute($params);
+		} catch(PDOException $e) {
+			showerror(103, $e->getMessage());
+		}
+	}
+	
+	static function removeByToken($conn, $token) { 
+		try {
+			$query = 'DELETE FROM users_tokens WHERE token = ?';
+			$params = array(
+				$token,
+			);
+			$stmt = $conn->prepare($query);
+			$stmt->execute($params);
+		} catch(PDOException $e) {
+			showerror(103, $e->getMessage());
+		}
+	}
 }

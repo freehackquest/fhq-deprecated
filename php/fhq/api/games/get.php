@@ -2,50 +2,54 @@
 header("Access-Control-Allow-Origin: *");
 
 $curdir = dirname(__FILE__);
-include ($curdir."/../api.lib/api.helpers.php");
-include ($curdir."/../../config/config.php");
-include ($curdir."/../../engine/fhq.php");
+include_once ($curdir."/../api.lib/api.base.php");
+include_once ($curdir."/../api.lib/api.security.php");
+include_once ($curdir."/../api.lib/api.helpers.php");
+include_once ($curdir."/../../config/config.php");
 
-$security = new fhq_security();
-checkAuth($security);
+include_once ($curdir."/../api.lib/loadtoken.php");
+
+FHQHelpers::checkAuth();
 
 $result = array(
 	'result' => 'fail',
 	'data' => array(),
 );
 
-$conn = FHQHelpers::createConnection($config);
+if ($conn == null)
+	$conn = FHQHelpers::createConnection($config);
 
-if (issetParam('id')) {
-	$game_id = getParam('id', 0);
+if (!FHQHelpers::issetParam('id'))
+	FHQHelpers::showerror(723, 'not found parameter id');
 
-	if (!is_numeric($game_id))
-		showerror(715, 'Error 715: incorrect id');
-		
-	try {
+$game_id = FHQHelpers::getParam('id', 0);
 
-		$query = '
-			SELECT *
-			FROM
-				games
-			WHERE id = ?';
+if (!is_numeric($game_id))
+	FHQHelpers::showerror(715, 'incorrect id');
+	
+try {
 
-		$columns = array('id', 'type_game', 'title', 'date_start', 'date_stop', 'date_restart', 'description', 'logo', 'owner');
+	$query = '
+		SELECT *
+		FROM
+			games
+		WHERE id = ?';
 
-		$stmt = $conn->prepare($query);
-		$stmt->execute(array(intval($game_id)));
-		if($row = $stmt->fetch())
-		{
-			$result['data'] = array();
-			foreach ( $columns as $k) {
-				$result['data'][$k] = $row[$k];
-			}
+	$columns = array('id', 'type_game', 'title', 'date_start', 'date_stop', 'date_restart', 'description', 'logo', 'owner');
+
+	$stmt = $conn->prepare($query);
+	$stmt->execute(array(intval($game_id)));
+	if($row = $stmt->fetch())
+	{
+		$result['data'] = array();
+		foreach ( $columns as $k) {
+			$result['data'][$k] = $row[$k];
 		}
-		$result['result'] = 'ok';
-	} catch(PDOException $e) {
-		showerror(722, 'Error 722: ' + $e->getMessage());
 	}
-} else {
-	showerror(723, 'Error 723: not found parameter id');
+	$result['result'] = 'ok';
+} catch(PDOException $e) {
+	FHQHelpers::showerror(722, $e->getMessage());
 }
+
+include_once ($curdir."/../api.lib/savetoken.php");
 echo json_encode($result);
