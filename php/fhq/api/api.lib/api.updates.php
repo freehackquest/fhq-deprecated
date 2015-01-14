@@ -2,7 +2,7 @@
 
 class FHQUpdates {
 	static function getVersion($conn) {
-		$version = '0_0_0_0';
+		$version = 'u0000';
 		$id = NULL;
 		try {
 			$stmt = $conn->prepare('

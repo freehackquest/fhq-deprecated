@@ -1,12 +1,12 @@
 <?php
 
-$updates['0_0_0_1'] = array(
-	'to_version' => '0_0_0_2',
+$updates['u0001'] = array(
+	'to_version' => 'u0002',
 	'name' => 'emails',
 	'description' => 'unpack mails from user.username to user.email',
 );
 
-function update_0_0_0_1($conn) {
+function update_u0001($conn) {
 	$stmt = $conn->prepare('
 			SELECT iduser, username FROM user
 	');

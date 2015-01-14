@@ -26,16 +26,16 @@ $result['version'] = $version;
 $updates = array();
 
 $curdir = dirname(__FILE__);
-include_once ($curdir."/updates/0_0_0_0.php");
-include_once ($curdir."/updates/0_0_0_1.php");
-include_once ($curdir."/updates/0_0_0_2.php");
-include_once ($curdir."/updates/0_0_0_3.php");
-include_once ($curdir."/updates/0_0_0_4.php");
-include_once ($curdir."/updates/0_0_0_5.php");
-include_once ($curdir."/updates/0_0_0_6.php");
+$filename = $curdir.'/updates/'.$version.'.php';
 
-while (isset($updates[$version])) {
+while (file_exists($filename)) {
+	include_once ($filename);
 	$function_update = 'update_'.$version;
+	if (!function_exists($function_update)) {
+		$result['data'][$version] = 'Not found function '.$function_update;
+		break;
+	}
+
 	if ($function_update($conn)) {
 		FHQUpdates::insertUpdateInfo($conn,
 			$version,
@@ -54,6 +54,7 @@ while (isset($updates[$version])) {
 		break;
 	$version = $new_version;
 	$result['version'] = $version;
+	$filename = $curdir.'/updates/'.$version.'.php';
 }
 
 echo json_encode($result);

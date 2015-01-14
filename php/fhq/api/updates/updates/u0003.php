@@ -1,12 +1,12 @@
 <?php
 
-$updates['0_0_0_3'] = array(
-	'to_version' => '0_0_0_4',
+$updates['u0003'] = array(
+	'to_version' => 'u0004',
 	'name' => 'drop user.score',
 	'description' => 'drop column score from user ',
 );
 
-function update_0_0_0_3($conn) {
+function update_u0003($conn) {
 	$stmt = $conn->prepare('ALTER TABLE `user` DROP COLUMN `score`;');
 
 	return true;

@@ -1,12 +1,12 @@
 <?php
 
-$updates['0_0_0_2'] = array(
-	'to_version' => '0_0_0_3',
+$updates['u0002'] = array(
+	'to_version' => 'u0003',
 	'name' => 'update table quest',
 	'description' => 'state and description_state to "" if null',
 );
 
-function update_0_0_0_2($conn) {
+function update_u0002($conn) {
 	$stmt = $conn->prepare('UPDATE quest SET state = "open" WHERE ISNULL(state);');
 	if ($stmt->execute() != 1) return false;
 	
