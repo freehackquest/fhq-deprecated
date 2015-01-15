@@ -6,6 +6,8 @@ include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../../config/config.php");
 
+include_once ($curdir."/../api.lib/loadtoken.php");
+
 FHQHelpers::checkAuth();
 
 $message = '';
@@ -260,5 +262,6 @@ try {
 } catch(PDOException $e) {
 	showerror(822, 'Error 822: ' + $e->getMessage());
 }
-unset($SxGeo);
+
+include_once ($curdir."/../api.lib/savetoken.php");
 echo json_encode($result);
