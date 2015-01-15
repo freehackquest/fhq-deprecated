@@ -233,7 +233,7 @@
 		include_once("install_gotonextstep.php");
 	}
 ?>
-<h1> Install (Step <? echo $current_step; ?>) </h1>
+<h1> Install (Step <?php echo $current_step; ?>) </h1>
 
 Create tables: <br>
 <form>
