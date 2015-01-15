@@ -1,0 +1,41 @@
+\subsection{Scoreboard}
+\par
+
+This function access for all.
+
+URL:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/games/scoreboard.php
+\end{Verbatim}
+
+// TODO paging
+Input parameters (GET or POST):
+\begin{itemize}
+  \item \textbf{gameid} - identificator of game (integer)
+\end{itemize}
+
+Successfully response:  \\
+\begin{Verbatim}[frame=single]
+{
+    "result": "ok",
+    "data": {
+        "1": [{
+            "nick": "sea-kg",
+            "score": "1161"
+        }],
+        "2": [{
+            "nick": "user",
+            "score": "111"
+        }, {
+            "nick": "user1",
+            "score": "111"
+        }]
+    },
+    "gameid": "7"
+}
+\end{Verbatim}
+
+
+
+Also look ~\nameref{sec:code_errors_games}
+

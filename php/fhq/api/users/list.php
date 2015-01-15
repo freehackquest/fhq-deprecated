@@ -1,57 +1,98 @@
 <?php
-$curdir = dirname(__FILE__);
-include ($curdir."/../api.lib/api.helpers.php");
-include ($curdir."/../../config/config.php");
-include ($curdir."/../../engine/fhq.php");
+header("Access-Control-Allow-Origin: *");
 
-$security = new fhq_security();
-checkAuth($security);
+$curdir = dirname(__FILE__);
+include_once ($curdir."/../api.lib/api.base.php");
+include_once ($curdir."/../api.lib/api.game.php");
+include_once ($curdir."/../../config/config.php");
+
+FHQHelpers::checkAuth();
+
+$message = '';
+
+if (!FHQSecurity::isAdmin())
+	FHQHelpers::showerror(927, "This function allowed only for admin");
 
 $result = array(
 	'result' => 'fail',
 	'data' => array(),
 );
 
-/*
+$result['result'] = 'ok';
+
 $conn = FHQHelpers::createConnection($config);
 
+$search = FHQHelpers::getParam('search', '');
+$result['search'] = $search;
+$search = '%'.$search.'%';
+
+$page = FHQHelpers::getParam('page', 0);
+$page = intval($page);
+$result['page'] = $page;
+
+$onpage = FHQHelpers::getParam('onpage', 5);
+$onpage = intval($onpage);
+$result['onpage'] = $onpage;
+
+$start = $page * $onpage;
+
+$role = FHQHelpers::getParam('role', '');
+$status = FHQHelpers::getParam('status', '');
+
+$role = '%'.$role.'%';
+$status = '%'.$status.'%';
+
+// calculate count users
 try {
-	$where = ' WHERE games.date_start < NOW() ';
-	if($security->isAdmin() || $security->isTester())
-		$where = ' ';
-	
-	$query = 'SELECT 
-				games.id,
-				games.title,
-				games.date_start,
-				games.date_stop,
-				games.logo,
-				games.owner,
-				user.nick
+	$stmt = $conn->prepare('
+			SELECT
+				COUNT(iduser) as cnt
 			FROM
-				games
-			INNER JOIN user ON games.owner = user.iduser
-			'.$where.'
-			ORDER BY games.date_start
-			DESC LIMIT 0,10;';
-
-	$columns = array('id', 'title', 'date_start', 'date_stop', 'logo', 'owner', 'nick');
-
-	$stmt = $conn->prepare($query);
-	$stmt->execute();
-	$i = 0;
-	while($row = $stmt->fetch())
-	{
-		$id = $row['date_start'];
-		$result['data'][$id] = array();
-		foreach ( $columns as $k) {
-			$result['data'][$id][$k] = $row[$k];
-		}
+				user
+			WHERE 
+				(email LIKE ? OR nick LIKE ?)
+				AND (role LIKE ?)
+				AND (status LIKE ?)
+	');
+	$stmt->execute(array($search, $search, $role, $status));
+	if ($row = $stmt->fetch()) {
+		$result['found'] = $row['cnt'];
 	}
-	$result['current_game'] = isset($_SESSION['game']) ? $_SESSION['game']['id'] : 0;		
-	$result['result'] = 'ok';
 } catch(PDOException $e) {
-	showerror(702, 'Error 702: ' + $e->getMessage());
+	FHQHelpers::showerror(922, $e->getMessage());
 }
-*/
+
+try {
+	$stmt2 = $conn->prepare('
+			SELECT
+				iduser, email, role,
+				nick, logo, password,
+				date_last_signup
+			FROM
+				user
+			WHERE 
+				(email LIKE ? OR nick LIKE ?)
+				AND (role LIKE ?)
+				AND (status LIKE ?)
+			ORDER BY
+				date_last_signup DESC
+			LIMIT '.$start.','.$onpage.'
+	');
+	$stmt2->execute(array($search, $search, $role, $status));
+	while ($row2 = $stmt2->fetch()) {
+		$userid = $row2['iduser'];
+		$result['data'][$userid] = array(
+			'userid' => $userid,
+			'email' => $row2['email'],
+			'role' => $row2['role'],
+			'nick' => $row2['nick'],
+			'logo' => $row2['logo'],
+			'date_last_signup' => $row2['date_last_signup'],
+			'status' => (strpos($row2['password'], 'notactivated') !== FALSE) ? 'notactivated' : 'activated',
+		);
+	}
+} catch(PDOException $e) {
+	FHQHelpers::showerror(922, $e->getMessage());
+}
+
 echo json_encode($result);

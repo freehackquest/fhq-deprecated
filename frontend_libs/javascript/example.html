@@ -1,0 +1,54 @@
+<html>
+	<head>
+		<title> FrontEnd Example </title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+		<script type="text/javascript" src="fhq.frontend.lib.js"></script>
+		
+		<script type="text/javascript">
+			
+			var fhq = new FHQFrontEndLib();
+			fhq.baseUrl = "http://localhost/fhq/";
+			fhq.client = "Example javascript";
+			
+			function testing() {
+				
+				// authorized
+				var res = fhq.auth.sign_in(this.email.value,this.password.value);
+				
+				if (!res)
+				{
+					this.log.innerHTML += "Could not authoirized\n";
+					return;
+				}
+				this.log.innerHTML += "Authoirized!\n";
+				
+				
+				this.log.innerHTML += "==================\n";
+				this.log.innerHTML += "test games.list\n";
+				
+				// test first list of games
+				this.log.innerHTML += JSON.stringify(fhq.games.list()) + "\n";
+				this.log.innerHTML += JSON.stringify(fhq.games.list()) + "\n";
+				this.log.innerHTML += JSON.stringify(fhq.games.get(7)) + "\n";
+				this.log.innerHTML += JSON.stringify(fhq.games.choose(7)) + "\n";
+				fhq.auth.sign_out();
+			}
+			
+			function clear_log() {
+				this.log.innerHTML = "";
+			}
+				
+		</script>
+	</head>
+	<body onload="test();">
+		<div id="error"></div>
+		<div id="login_form">
+			<input type="text" id="email" value=""/><br>
+			<input type="password" id="password" value=""/><br>
+			<a href="javascript:void(0);" onclick="testing();">Testing</a> 
+			<a href="javascript:void(0);" onclick="clear_log();">Clear Log</a>
+			<div id="login_result"></div>
+		</div>
+		<pre id="log"></pre>
+	</body>
+</html>

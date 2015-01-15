@@ -1,6 +1,6 @@
 <?php
-$curdir = dirname(__FILE__);
-include_once ($curdir."/api.security.php");
+$curdir_helpers = dirname(__FILE__);
+include_once ($curdir_helpers."/api.security.php");
 
 function showerror($code, $message) {
 	$result = array(
@@ -10,18 +10,13 @@ function showerror($code, $message) {
 	
  	$result['error']['code'] = $code;
 	$result['error']['message'] = $message;
+	header("Access-Control-Allow-Origin: *");
 	echo json_encode($result);
 	exit;
 }
 
 function checkAuth($security)
 {
-	/*if(!$security->isLogged())
-	{
-		refreshTo("index.php");
-		return;
-	};*/
-
 	if(!$security->isLogged()) {
 		$result = array(
 			'result' => 'fail',
@@ -46,14 +41,7 @@ class FHQHelpers {
 	static function checkAuth()
 	{
 		if(!FHQSecurity::isLogged()) {
-			$result = array(
-				'result' => 'fail',
-				'data' => array(),
-			);
-			$result['error']['code'] = 403;
-			$result['error']['message'] = 'Error 403: Not authorized request';
-			echo json_encode($result);
-			exit;
+			FHQHelpers::showerror(4001, 'Not authorized request');
 		}
 	}
 	
@@ -102,6 +90,18 @@ class FHQHelpers {
 		if($row = $stmt->fetch())
 			$score = $row['sum_score'];
 		return $score;
+	}
+	
+	static function gen_guid() {
+		mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
+		$charid = strtoupper(md5(uniqid(rand(), true)));
+		$hyphen = chr(45);// "-"
+		$uuid = substr($charid, 0, 8).$hyphen
+				.substr($charid, 8, 4).$hyphen
+				.substr($charid,12, 4).$hyphen
+				.substr($charid,16, 4).$hyphen
+				.substr($charid,20,12);
+		return $uuid;	
 	}
 }
 

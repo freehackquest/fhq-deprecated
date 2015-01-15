@@ -144,3 +144,13 @@ font.fhq_task {
 .fhq_scoreboard_row {
 	color: #C8C8C8;
 }
+
+.users_cell {
+	color: #C8C8C8;
+	background-color: #494949;
+}
+
+.selected_user_page {
+	color: #C8C8C8;
+	background-color: #494949;
+}

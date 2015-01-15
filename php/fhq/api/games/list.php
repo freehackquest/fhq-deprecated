@@ -1,18 +1,23 @@
 <?php
-$curdir = dirname(__FILE__);
-include ($curdir."/../api.lib/api.helpers.php");
-include ($curdir."/../../config/config.php");
-include ($curdir."/../../engine/fhq.php");
+header("Access-Control-Allow-Origin: *");
 
-$security = new fhq_security();
-checkAuth($security);
+$curdir = dirname(__FILE__);
+include_once ($curdir."/../api.lib/api.base.php");
+include_once ($curdir."/../api.lib/api.security.php");
+include_once ($curdir."/../api.lib/api.helpers.php");
+include_once ($curdir."/../../config/config.php");
+
+include_once ($curdir."/../api.lib/loadtoken.php");
+
+FHQHelpers::checkAuth();
 
 $result = array(
 	'result' => 'fail',
 	'data' => array(),
 );
 
-$conn = FHQHelpers::createConnection($config);
+if ($conn == null)
+	$conn = FHQHelpers::createConnection($config);
 
 try {
   // TODO paging
@@ -46,16 +51,18 @@ try {
 			$result['data'][$id][$k] = $row[$k];
 		}
 
-		$bAllows = $security->isAdmin();
+		$bAllows = FHQSecurity::isAdmin();
 		$result['data'][$id]['permissions']['delete'] = $bAllows;
 		$result['data'][$id]['permissions']['update'] = $bAllows;
 	}
 	$result['current_game'] = isset($_SESSION['game']) ? $_SESSION['game']['id'] : 0;
 	
-	$result['permissions']['insert'] = $security->isAdmin();
+	$result['permissions']['insert'] = FHQSecurity::isAdmin();
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
-	showerror(702, 'Error 702: ' + $e->getMessage());
+	FHQHelpers::showerror(702, $e->getMessage());
 }
+
+include_once ($curdir."/../api.lib/savetoken.php");
 
 echo json_encode($result);

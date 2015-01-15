@@ -30,7 +30,8 @@
 			
 			$notactivated = md5(rand().rand());
 			$nickname = "hacker-".substr(md5(rand().rand()), 0, 7);
-			$query = "INSERT user( username, password, nick, role ) VALUES ('$username','notactivated$notactivated','$nickname','user');";
+			$email = strtolower($email);
+			$query = "INSERT user( username, password, email, nick, role ) VALUES ('$username','notactivated$notactivated', $email, '$nickname','user');";
 			$result = $db->query($query);
 
 			if($result == '1')

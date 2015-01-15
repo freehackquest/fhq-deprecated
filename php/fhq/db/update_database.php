@@ -140,6 +140,16 @@
 	$tables['tryanswer']['passed'] = array ( 'Field' => 'passed', 'Type' => 'varchar(10)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['tryanswer']['datetime_try'] = array ( 'Field' => 'datetime_try', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 
+	$tables['updates'] = array();
+	$tables['updates']['id'] = array ( 'Field' => 'id', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
+	$tables['updates']['from_version'] = array ( 'Field' => 'from_version', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['updates']['version'] = array ( 'Field' => 'version', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['updates']['name'] = array ( 'Field' => 'name', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['updates']['description'] = array ( 'Field' => 'description', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['updates']['result'] = array ( 'Field' => 'result', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['updates']['userid'] = array ( 'Field' => 'userid', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+	$tables['updates']['datetime_update'] = array ( 'Field' => 'datetime_update', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
+
 	$tables['tryanswer_backup'] = array();
 	$tables['tryanswer_backup']['id'] = array ( 'Field' => 'id', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
 	$tables['tryanswer_backup']['iduser'] = array ( 'Field' => 'iduser', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
@@ -153,6 +163,7 @@
 	$tables['user']['iduser'] = array ( 'Field' => 'iduser', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
 	$tables['user']['uuid_user'] = array ( 'Field' => 'uuid_user', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => 'UNI', 'Default' => NULL, 'Extra' => '', );
 	$tables['user']['username'] = array ( 'Field' => 'username', 'Type' => 'varchar(128)', 'Null' => 'NO', 'Key' => 'UNI', 'Default' => NULL, 'Extra' => '', );
+	$tables['user']['email'] = array ( 'Field' => 'email', 'Type' => 'varchar(128)', 'Null' => 'NO', 'Key' => 'UNI', 'Default' => NULL, 'Extra' => '', );
 	$tables['user']['password'] = array ( 'Field' => 'password', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['user']['logo'] = array ( 'Field' => 'logo', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['user']['role'] = array ( 'Field' => 'role', 'Type' => 'varchar(10)', 'Null' => 'YES', 'Key' => '', 'Default' => 'user', 'Extra' => '', );

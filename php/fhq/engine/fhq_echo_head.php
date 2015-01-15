@@ -21,6 +21,7 @@ function echo_head($page)
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/hint.css?ver='.$versioncontent.'">
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/timer.css?ver='.$versioncontent.'">
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/quests.css?ver='.$versioncontent.'">
+	<link rel="stylesheet" type="text/css" href="templates/base/styles/users.css?ver='.$versioncontent.'">
 
 	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/colors.css?ver='.$versioncontent.'" />
 
@@ -35,6 +36,7 @@ function echo_head($page)
 	<script type="text/javascript" src="js/fhq_users.js?ver='.$versioncontent.'"></script>
 	<script type="text/javascript" src="js/fhq_menu.js?ver='.$versioncontent.'"></script>
 	<script type="text/javascript" src="js/fhq_timer.js?ver='.$versioncontent.'"></script>
+	<script type="text/javascript" src="js/fhq_updates.js?ver='.$versioncontent.'"></script>
 
 	<style>
 		textarea.full_text

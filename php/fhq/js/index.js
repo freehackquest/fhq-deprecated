@@ -65,6 +65,8 @@ function sign_in()
 			if (obj.result == "fail") {
 				document.getElementById("error_message").innerHTML = "<b>" + obj.error.message + "</b>";
 			} else {
+				var date = new Date( new Date().getTime() + 60*1000 ); // cookie on hour
+				document.cookie = "token=" + encodeURIComponent(obj.token) + "; path=/; expires="+date.toUTCString();
 				window.location.href = "main.php";
 			}
 		}

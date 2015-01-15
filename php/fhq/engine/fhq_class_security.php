@@ -90,21 +90,4 @@ class fhq_security
 	}
 };
 
-/*
-if(isset($_GET['login']))
-{
-	$security = new fhq_security();
-	$security->login();
-	if(isset($_POST['comeback']))
-		refreshTo($_POST['comeback']);
-};
-
-if(isset($_GET['logout']))
-{
-	$security = new whc_security();
-	$security->logout();
-	if(isset($_POST['comeback']))
-		refreshTo($_POST['comeback']);
-};
-*/
 ?>

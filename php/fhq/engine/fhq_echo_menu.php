@@ -290,7 +290,7 @@ echo '
 	$arrsystemmenu[] = array(
 		'name' => 'users',
 		'html' => '
-			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'users\');">Users</div>
+			<div class="button3 ad" href="javascript:void(0);" onclick="createPageUsers(); updateUsers();">Users</div>
 		',
 		'show' => $security->isAdmin(),
 	);
@@ -319,13 +319,13 @@ echo '
 		'show' => $security->isAdmin() || $security->isTester(),
 	);
 	
-	$arrsystemmenu[] = array(
+	/* $arrsystemmenu[] = array(
 		'name' => 'add_quest',
 		'html' => '
 			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'add_quest\');">Add new quest</div>
 		',
 		'show' => $security->isAdmin(),
-	);
+	);*/
 	
 	$arrsystemmenu[] = array(
 		'name' => 'add_news',
@@ -335,6 +335,7 @@ echo '
 		'show' => $security->isAdmin() || $security->isTester(),
 	);
 	
+	// TODO: must be moved to fhq_users.js
 	$arrsystemmenu[] = array(
 		'name' => 'add_user',
 		'html' => '
@@ -352,13 +353,13 @@ echo '
 	);
 	
 	$arrsystemmenu[] = array(
-		'name' => 'query_db',
+		'name' => 'install_updates',
 		'html' => '
-			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'query_db\');">Query DB</div>
+			<div class="button3 ad" href="javascript:void(0);" onclick="installUpdates();">Install Updates</div>
 		',
 		'show' => $security->isAdmin(),
 	);
-	
+
 	$arrsystemmenu[] = array(
 		'name' => 'init_scoreboard',
 		'html' => '

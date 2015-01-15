@@ -280,12 +280,6 @@
 		$user->echo_insert_form();
 		exit;
 	}
-	else if($content_page == "users"  && $security->isAdmin())
-	{
-		include_once "engine/fhq_echo_users.php";
-		echo_users();
-		exit;
-	}
 	else if ($content_page == "user_set_new_role" && $security->isAdmin())
 	{
 		if(isset($_GET['iduser']) && isset($_GET['role']))

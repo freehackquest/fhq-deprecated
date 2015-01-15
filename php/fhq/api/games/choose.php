@@ -1,11 +1,15 @@
 <?php
-$curdir = dirname(__FILE__);
-include ($curdir."/../api.lib/api.helpers.php");
-include ($curdir."/../../config/config.php");
-include ($curdir."/../../engine/fhq.php");
+header("Access-Control-Allow-Origin: *");
 
-$security = new fhq_security();
-checkAuth($security);
+$curdir = dirname(__FILE__);
+include_once ($curdir."/../api.lib/api.base.php");
+include_once ($curdir."/../api.lib/api.security.php");
+include_once ($curdir."/../api.lib/api.helpers.php");
+include_once ($curdir."/../../config/config.php");
+
+include_once ($curdir."/../api.lib/loadtoken.php");
+
+FHQHelpers::checkAuth();
 
 $result = array(
 	'result' => 'fail',
@@ -19,11 +23,11 @@ if (!checkGameDates($security, &$message))
 
 $conn = FHQHelpers::createConnection($config);
 
-if (issetParam('id')) {
-	$game_id = getParam('id', 0);
+if (FHQHelpers::issetParam('id')) {
+	$game_id = FHQHelpers::getParam('id', 0);
 
 	if (!is_numeric($game_id))
-		showerror(705, 'Error 705: incorrect id');
+		FHQHelpers::showerror(705, 'Error 705: incorrect id');
 
 	try {
 		$query = '
@@ -48,7 +52,7 @@ if (issetParam('id')) {
 		}
 		else
 		{
-			showerror(702, 'Error 702: Game with id='.$game_id.' are not exists');
+			FHQHelpers::showerror(702, 'Game with id='.$game_id.' are not exists');
 		}
 		
 		// loading score
@@ -88,9 +92,11 @@ if (issetParam('id')) {
 			$result['user']['score'] = $score;
 		}
 	} catch(PDOException $e) {
-		showerror(712, 'Error 712: '.$e->getMessage());
+		FHQHelpers::showerror(712, $e->getMessage());
 	}
 } else {
-	showerror(713, 'Error 713: not found parameter id');
+	FHQHelpers::showerror(713, 'not found parameter id');
 }
+
+include_once ($curdir."/../api.lib/savetoken.php");
 echo json_encode($result);

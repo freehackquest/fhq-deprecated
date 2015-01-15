@@ -1,0 +1,32 @@
+\subsection{Refresh User's Score}
+\par
+
+This function access for all authorized users. \\
+Must be selected game. \\
+Refreshing user's score.
+
+URL:
+\begin{Verbatim}[frame=single]
+http://fhq.keva.su/api/games/update_score.php
+\end{Verbatim}
+
+Input parameters (GET or POST):
+\begin{itemize}
+  \item no
+\end{itemize}
+
+Successfully response:  \\
+\begin{Verbatim}[frame=single]
+{
+    "result": "ok",
+    "data": [],
+    "user": {
+        "score": "1161"
+    }
+}
+\end{Verbatim}
+
+
+
+Also look ~\nameref{sec:code_errors_games}
+

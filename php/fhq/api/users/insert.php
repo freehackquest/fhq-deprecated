@@ -1,4 +1,6 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+
 $curdir = dirname(__FILE__);
 include ($curdir."/../api.lib/api.helpers.php");
 include ($curdir."/../../config/config.php");
