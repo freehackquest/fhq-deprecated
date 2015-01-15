@@ -30,9 +30,6 @@ $logo = FHQHelpers::getParam('logo', '');
 $result['data']['logo'] = $logo;
 $result['data']['userid'] = $userid;
 
-if (strlen($logo) <= 3)
-  FHQHelpers::showerror(912, '"logo" must be more then 3 characters');
-
 try {
 	$query = 'UPDATE user SET logo = ? WHERE iduser = ?';
 	$stmt = $conn->prepare($query);

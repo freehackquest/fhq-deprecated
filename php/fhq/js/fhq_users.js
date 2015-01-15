@@ -104,6 +104,7 @@ function changeUserPassword(userid) {
 	var params = {};
 	params.userid = userid;
 	params.password = document.getElementById('user_new_password').value;
+	params.email = document.getElementById('user_current_email').innerHTML;
 	send_request_post(
 		'api/users/update_password.php',
 		createUrlFromObj(params),
@@ -152,6 +153,27 @@ function changeUserRole(userid) {
 	);
 }
 
+function deleteUser(userid) {
+	if (!confirm("Are you sure that wand remove user?"))
+		return;
+
+	var params = {};
+	params.userid = userid;
+	send_request_post(
+		'api/users/delete.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "fail") {
+				alert(obj.error.message);
+				return;
+			}
+			alert("removed! Cry baby cry...");
+			closeModalDialog();
+			updateUsers();
+		}
+	);
+}
+
 function createUserInfoRow(name, param) {
 	return '<div class="user_info_row"><div class="user_info_param">' + name + '</div><div class="user_info_value">' + param + '</div></div>';
 }
@@ -179,7 +201,7 @@ function showUserInfo(id) {
 			var content = '<div class="user_info_table">';
 			content += createUserInfoRow('Logo:', '<img id="user_current_logo" src="'+ obj.data.logo + '"/>');
 			content += createUserInfoRow('ID:',  obj.data.userid);
-			content += createUserInfoRow('E-mail:', obj.data.email);
+			content += createUserInfoRow('E-mail:', '<div id="user_current_email">' + obj.data.email + '</div>');
 			content += createUserInfoRow('Role:', '<div id="user_current_role">' + obj.data.role + '</div>');
 			content += createUserInfoRow('Nick:', '<div id="user_current_nick">' + obj.data.nick + '</div>');
 			content += createUserInfoRow('Status:', '<div id="user_current_status">' + obj.data.status + '</div>');
@@ -191,6 +213,7 @@ function showUserInfo(id) {
 			content += createUserInfoRow('Change Password:', '<input id="user_new_password" type="password" value="" > <div class="button3 ad" onclick="changeUserPassword(' + obj.data.userid + ');">Save</div> ');
 			content += createUserInfoRow('Change Status:', '<input id="user_new_status" type="text" value="' + obj.data.status + '" > <div class="button3 ad" onclick="changeUserStatus(' + obj.data.userid + ');">Save</div> ');
 			content += createUserInfoRow('Change Role:', '<input id="user_new_role" type="text" value="' + obj.data.role + '" > <div class="button3 ad" onclick="changeUserRole(' + obj.data.userid + ');">Save</div> ');
+			content += createUserInfoRow('Remove User:', '<div class="button3 ad" onclick="deleteUser(' + obj.data.userid + ');">Remove</div> ');
 
 			content += createUserInfoRow_Skip();
 

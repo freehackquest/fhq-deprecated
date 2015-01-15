@@ -2,12 +2,10 @@
 header("Access-Control-Allow-Origin: *");
 
 $curdir = dirname(__FILE__);
-include ($curdir."/../api.lib/api.helpers.php");
-include ($curdir."/../../config/config.php");
-include ($curdir."/../../engine/fhq.php");
+include_once ($curdir."/../api.lib/api.base.php");
+include_once ($curdir."/../../config/config.php");
 
-$security = new fhq_security();
-checkAuth($security);
+FHQHelpers::checkAuth();
 
 $result = array(
 	'result' => 'fail',
@@ -16,25 +14,24 @@ $result = array(
 
 $conn = FHQHelpers::createConnection($config);
 
-if($security->isAdmin())
-  showerror(886, 'Error 886: access denie. you must be admin.');
+if (!FHQSecurity::isAdmin()) 
+	FHQHelpers::showerror(912, 'only for admin');
 
-if (issetParam('id'))
-  showerror(889, 'Error 889: not found parameter "id"');
+if (!FHQHelpers::issetParam('userid'))
+  FHQHelpers::showerror(889, 'Error 889: not found parameter "userid"');
 
-$user_id = getParam('id', 0);
+$userid = FHQHelpers::getParam('userid', 0);
 
-if (!is_numeric($user_id))
-  showerror(885, 'Error 885: incorrect id');
-		
-$query = 'DELETE FROM user WHERE iduser = ?';
+if (!is_numeric($userid))
+  FHQHelpers::showerror(885, 'userid must be numeric');
 
 try {
- 	$stmt = $conn->prepare($query);
- 	$stmt->execute(array(intval($user_id)));
+	$params = array($userid);
+ 	$conn->prepare('DELETE FROM user WHERE iduser = ?')->execute($params);
+ 	$conn->prepare('DELETE FROM users_games WHERE userid = ?')->execute($params);
  	$result['result'] = 'ok';
 } catch(PDOException $e) {
- 	showerror(882, 'Error 882: ' + $e->getMessage());
+ 	FHQHelpers::showerror(882, $e->getMessage());
 }
 
 echo json_encode($result);

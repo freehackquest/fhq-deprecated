@@ -16,6 +16,18 @@ class FHQSecurity {
 		return (FHQSecurity::isLogged() && $_SESSION['user']['role'] == 'admin' ); 
 	}
 	
+	static function generatePassword($config, $email, $password) {
+		if (FHQSecurity::isLogged()) {
+			$username = base64_encode(strtoupper($email));
+			$data = "";
+			$arr = array($password, $username, strtoupper($email));
+			for($i = 0; $i < count($arr); $i++)
+				$data .= $arr[$i].$config['secrets'][$i];
+			return md5($data);
+		}
+		return "";
+	}
+	
 	static function isUser() { 
 		return (FHQSecurity::isLogged() && $_SESSION['user']['role'] == 'user' ); 
 	}
