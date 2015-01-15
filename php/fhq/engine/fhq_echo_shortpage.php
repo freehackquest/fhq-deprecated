@@ -9,6 +9,10 @@ function echo_shortpage($page)
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="sea-kg" />
+    <meta name="copyright" lang="ru" content="sea-kg" />
+    <meta name="description" content="competition information security" />
+    <meta name="keywords" content="security, free, hack, quest, competition, information security, ctf, joepardy" />
 		<title> Free-Hack-Quest </title>
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css" />
 		<script type="text/javascript" src="js/index.js"></script>
