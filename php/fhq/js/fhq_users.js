@@ -66,9 +66,90 @@ function setUsersPage(val) {
 	document.getElementById('user_page').value = val;
 }
 
+function changeUserLogo(userid) {
+	var params = {};
+	params.userid = userid;
+	params.logo = document.getElementById('user_new_logo').value;
+	send_request_post(
+		'api/users/update_logo.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "fail") {
+				alert(obj.error.message);
+				return;
+			}
+			document.getElementById('user_current_logo').src = obj.data.logo;
+		}
+	);
+}
 
-function formEditUser() {
-	alert("todo: formEditUser");
+function changeUserNick(userid) {
+	var params = {};
+	params.userid = userid;
+	params.nick = document.getElementById('user_new_nick').value;
+	send_request_post(
+		'api/users/update_nick.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "fail") {
+				alert(obj.error.message);
+				return;
+			}
+			document.getElementById('user_current_nick').innerHTML = obj.data.nick;
+		}
+	);
+}
+
+function changeUserPassword(userid) {
+	var params = {};
+	params.userid = userid;
+	params.password = document.getElementById('user_new_password').value;
+	send_request_post(
+		'api/users/update_password.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "fail") {
+				alert(obj.error.message);
+				return;
+			}
+			document.getElementById('user_new_password').value = "";
+			alert('updated');
+		}
+	);
+}
+
+function changeUserStatus(userid) {
+	var params = {};
+	params.userid = userid;
+	params.status = document.getElementById('user_new_status').value;
+	send_request_post(
+		'api/users/update_status.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "fail") {
+				alert(obj.error.message);
+				return;
+			}
+			document.getElementById('user_current_status').innerHTML = obj.data.status;
+		}
+	);
+}
+
+function changeUserRole(userid) {
+	var params = {};
+	params.userid = userid;
+	params.role = document.getElementById('user_new_role').value;
+	send_request_post(
+		'api/users/update_role.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "fail") {
+				alert(obj.error.message);
+				return;
+			}
+			document.getElementById('user_current_role').innerHTML = obj.data.role;
+		}
+	);
 }
 
 function createUserInfoRow(name, param) {
@@ -79,9 +160,8 @@ function createUserInfoRow_Skip() {
 	return '<div class="user_info_row_skip"></div>';
 }
 
-function viewInfoUser(id) {
-	showModalDialog('<div id="user_info"><center>Please wait...</div><div id="user_ips"></div>');
-	
+function showUserInfo(id) {
+	showModalDialog('<div id="user_info"><center>Please wait...</div>');
 
 	var params = {};
 	params.userid = id;
@@ -97,11 +177,20 @@ function viewInfoUser(id) {
 			}
 			var ui = document.getElementById('user_info');
 			var content = '<div class="user_info_table">';
-			content += createUserInfoRow('Logo:', '<img src="'+ obj.data.logo + '"/>');
-			content += createUserInfoRow('ID:', obj.data.userid);
+			content += createUserInfoRow('Logo:', '<img id="user_current_logo" src="'+ obj.data.logo + '"/>');
+			content += createUserInfoRow('ID:',  obj.data.userid);
 			content += createUserInfoRow('E-mail:', obj.data.email);
-			content += createUserInfoRow('Role:', obj.data.role);
-			content += createUserInfoRow('Nick:', obj.data.nick);
+			content += createUserInfoRow('Role:', '<div id="user_current_role">' + obj.data.role + '</div>');
+			content += createUserInfoRow('Nick:', '<div id="user_current_nick">' + obj.data.nick + '</div>');
+			content += createUserInfoRow('Status:', '<div id="user_current_status">' + obj.data.status + '</div>');
+			
+			content += createUserInfoRow_Skip();
+			
+			content += createUserInfoRow('Change Logo:', '<input id="user_new_logo" type="text" value="' + obj.data.logo + '" > <div class="button3 ad" onclick="changeUserLogo(' + obj.data.userid + ');">Save</div> ');
+			content += createUserInfoRow('Change Nick:', '<input id="user_new_nick" type="text" value="' + obj.data.nick + '" > <div class="button3 ad" onclick="changeUserNick(' + obj.data.userid + ');">Save</div> ');
+			content += createUserInfoRow('Change Password:', '<input id="user_new_password" type="password" value="" > <div class="button3 ad" onclick="changeUserPassword(' + obj.data.userid + ');">Save</div> ');
+			content += createUserInfoRow('Change Status:', '<input id="user_new_status" type="text" value="' + obj.data.status + '" > <div class="button3 ad" onclick="changeUserStatus(' + obj.data.userid + ');">Save</div> ');
+			content += createUserInfoRow('Change Role:', '<input id="user_new_role" type="text" value="' + obj.data.role + '" > <div class="button3 ad" onclick="changeUserRole(' + obj.data.userid + ');">Save</div> ');
 
 			content += createUserInfoRow_Skip();
 
@@ -121,7 +210,14 @@ function viewInfoUser(id) {
 			// ui.innerHTML += JSON.stringify(obj);
 		}
 	);
-	
+}
+
+function showUserIP(id) {
+	showModalDialog('<div id="user_ips"></div>');
+
+	var params = {};
+	params.userid = id;
+	document.getElementById('user_ips').innerHTML = "Please wait...";
 	// user_ips
 	send_request_post(
 		'api/users/get_ips.php',
@@ -148,6 +244,8 @@ function viewInfoUser(id) {
 		}
 	);
 }
+
+
 
 function updateUsers() {
 	var lu = document.getElementById("listUsers");
@@ -199,10 +297,9 @@ function updateUsers() {
 			content += '	<div class="users_cell">ID</div>';
 			content += '	<div class="users_cell">E-mail</div>';
 			content += '	<div class="users_cell">Nick</div>';
-			content += '	<div class="users_cell">Last Sign in</div>';
 			content += '	<div class="users_cell">Role</div>';
 			content += '	<div class="users_cell">Status</div>';
-			
+			content += '	<div class="users_cell">Last Sign in</div>';
 			content += '</div>'; // users_row
 			
 			for (var k in obj.data) {
@@ -220,29 +317,18 @@ function updateUsers() {
 				content += '<div class="users_cell">' + k + '</div>';
 
 				// email
-				content += '<div class="users_cell"> ';
-				content += '	<div class="button3 ad" onclick="viewInfoUser(' + k + ');">' + obj.data[k]['email'] + '</div>';
+				content += '<div class="users_cell"> ' + obj.data[k]['email'];
+				content += '	<div class="button3 ad" onclick="showUserInfo(' + k + ');">Info</div>';
+				content += '	<div class="button3 ad" onclick="showUserIP(' + k + ');">IP</div>';
 				content += '</div>';
-
-				// nick
-				// TODO: must be edit
 				content += '<div class="users_cell">' + obj.data[k]['nick'] + '</div>';
-
-				// date_last_signup
-				content += '<div class="users_cell">' + obj.data[k].date_last_signup + '</div>';
-
-				// role
-				// TODO: must be edit
 				content += '<div class="users_cell">' + obj.data[k]['role'] + '</div>';
 
 				// status
 				// TODO: if not activated can allow edit email and send mail again 
-				content += '<div class="users_cell">' + obj.data[k].status + ' ';
-				content += '	<div class="button3 ad" onclick="formBlockUser(' + k + ');">Block</div>';
-				content += '</div>';
+				content += '<div class="users_cell">' + obj.data[k].status + '</div> ';
 
-				
-
+				content += '<div class="users_cell">' + obj.data[k].date_last_signup + '</div>';				
 				content += '</div>'; // users_row
 			}
 			content += '</div>'; // users_table
