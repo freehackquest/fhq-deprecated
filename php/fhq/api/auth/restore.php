@@ -48,29 +48,29 @@ if (isset($_GET['email']) && isset($_GET['captcha'])) {
 						$result['result'] = 'ok';
 						$result['data']['message'] = 'Check your your e-mail (also check spam).';
 					} else {
-						$result['error']['code'] = '107';
-						$result['error']['message'] = 'Error 107[restore]: Problem with sending email. '.$error;
+						$result['error']['code'] = '1007';
+						$result['error']['message'] = 'Error 1007[restore]: Problem with sending email. '.$error;
 					}
 				} else {
-					$result['error']['code'] = '106';
-					$result['error']['message'] = 'Error 106[restore]: Restore is denied.';
+					$result['error']['code'] = '1006';
+					$result['error']['message'] = 'Error 1006[restore]: Restore is denied.';
 				}
 			} else {
-				$result['error']['code'] = '105';
-				$result['error']['message'] = 'Error 105[restore]: This e-mail was not registered.';
+				$result['error']['code'] = '1005';
+				$result['error']['message'] = 'Error 1005[restore]: This e-mail was not registered.';
 			}
 			mysql_free_result($qresult);
 		} else {
-			$result['error']['code'] = '104';
-			$result['error']['message'] = 'Error 104[restore]: Invalid e-mail address.';
+			$result['error']['code'] = '1004';
+			$result['error']['message'] = 'Error 1004[restore]: Invalid e-mail address.';
 		}		
 	} else {
-		$result['error']['code'] = '103';
-		$result['error']['message'] = 'Error 103[restore]: Captcha is not correct,<br> please "Refresh captcha" and try again';
+		$result['error']['code'] = '1003';
+		$result['error']['message'] = 'Error 1003[restore]: Captcha is not correct,<br> please "Refresh captcha" and try again';
 	}
 } else {
-	$result['error']['code'] = '108';
-	$result['error']['message'] = 'Error 108[restore]: Incorrect input parameters email or captcha';
+	$result['error']['code'] = '1008';
+	$result['error']['message'] = 'Error 1008[restore]: Incorrect input parameters email or captcha';
 }
 
 echo json_encode($result);
