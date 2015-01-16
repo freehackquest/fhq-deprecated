@@ -1,0 +1,10 @@
+{
+   'name' : 'example',
+   'protocol' : 'http',
+   'api' : {
+     'load' : {
+       'id' : 'id of binary data',
+       'file' : 'it's just binary data'
+     }
+   }
+}
