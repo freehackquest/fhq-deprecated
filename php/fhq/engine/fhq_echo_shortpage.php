@@ -37,7 +37,7 @@ echo ' <center>
 						<table>				
 							<tr>
 								<td><center><br>
-								<img src="templates/base/images/mainlogo.png"/></center></td>
+								<img src="templates/base/images/logo/fhq_2015.png"/></center></td>
 							</tr>
 							<tr>
 								<td > 

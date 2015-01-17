@@ -16,7 +16,6 @@ function load_content_html(idelem, url) {
 function show_index_element(idelem) {
 	var index_elems = [
 		'indexcontent_sign_in',
-		'indexcontent_about',
 		'indexcontent_registration',
 		'indexcontent_restore'
 	];
@@ -64,6 +63,7 @@ function sign_in()
 		function(obj) {
 			if (obj.result == "fail") {
 				document.getElementById("error_message").innerHTML = "<b>" + obj.error.message + "</b>";
+				document.getElementById("info_message").innerHTML = "";
 			} else {
 				var date = new Date( new Date().getTime() + 60*1000 ); // cookie on hour
 				document.cookie = "token=" + encodeURIComponent(obj.token) + "; path=/; expires="+date.toUTCString();
