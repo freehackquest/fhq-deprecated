@@ -3,6 +3,8 @@ header("Access-Control-Allow-Origin: *");
 
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
+include_once ($curdir."/../api.lib/api.security.php");
+include_once ($curdir."/../api.lib/api.helpers.php");
 include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../../config/config.php");
 
@@ -13,7 +15,7 @@ FHQHelpers::checkAuth();
 $message = '';
 
 if (!FHQGame::checkGameDates($message))
-	FHQHelpers::showerror(916, $message);
+	FHQHelpers::showerror(917, $message);
 
 $result = array(
 	'result' => 'fail',
@@ -260,7 +262,7 @@ try {
 	$result['permissions']['insert'] = FHQSecurity::isAdmin();
 	
 } catch(PDOException $e) {
-	showerror(822, 'Error 822: ' + $e->getMessage());
+	FHQHelpers::showerror(822, $e->getMessage());
 }
 
 include_once ($curdir."/../api.lib/savetoken.php");

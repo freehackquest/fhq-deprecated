@@ -1,16 +1,12 @@
 <?php
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
 header("Access-Control-Allow-Origin: *");
-
 $curdir = dirname(__FILE__);
+include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.helpers.php");
 include_once ($curdir."/../api.lib/api.security.php");
 include_once ($curdir."/../api.lib/api.user.php");
-include ($curdir."/../../config/config.php");
-include ($curdir."/../../engine/fhq.php");
+include_once ($curdir."/../../config/config.php");
 // include ($curdir."/../api.lib/api.user.php");
-
-$security = new fhq_security();
 
 $result = array(
 	'result' => 'fail',
@@ -18,22 +14,24 @@ $result = array(
 );
 
 if (FHQHelpers::issetParam('email') && FHQHelpers::issetParam('password')) {
-	$email = FHQHelpers::getParam('email');
-	$password = FHQHelpers::getParam('password');
+	$email = FHQHelpers::getParam('email', '');
+	$password = FHQHelpers::getParam('password', '');
+	$conn = FHQHelpers::createConnection($config);
+	$hash_password = FHQSecurity::generatePassword($config, $email, $password);
 	
-	if( $security->login($email, $password) ) {
+	if( FHQSecurity::login($conn, $email, $hash_password) ) {
 		$result['result'] = 'ok';
 		$result['token'] = FHQHelpers::gen_guid();
 	} else {
-		FHQHelpers::showerror(1002, 'email or password was not found in system');
+		FHQHelpers::showerror(1002, 'email or password was not found in system ['.$email.']  ['.$password.'] ');
 	}
 } else {
 	FHQHelpers::showerror(1001, 'parameters was not found email or password');
 }
 
 if ($result['result'] == 'ok') {
-	$conn = FHQHelpers::createConnection($config);
-	FHQSecurity::insertLastIp($conn, FHQHelpers::getParam('client', FHQHelpers::getParam('client', 'none')));
+	
+	FHQSecurity::insertLastIp($conn, FHQHelpers::getParam('client', 'none'));
 	FHQUser::loadUserProfile($conn);
 	// FHQUser::loadUserScore($conn);
 	FHQSecurity::saveByToken($conn, $result['token']);

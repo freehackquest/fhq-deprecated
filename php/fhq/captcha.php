@@ -2,12 +2,16 @@
   /*
     sea-kg: if not working: try for debian "sudo apt-get install php5-gd" and than restart apache
   */
-	function create_capcha_image($str, $font_name, $backgraund_jpg)
+	function create_capcha_image($str, $font_name, $backgraund_png)
 	{
-		$img = imagecreatefromjpeg($backgraund_jpg); // 89?30 px
-		$color = imagecolorallocate( $img, 0, 0, 0 );
+		$img = imagecreatefrompng($backgraund_png); // 89?30 px
+		// imagealphablending($img, false);
+		imagesavealpha($img, true);
+
+		// $color = imagecolorallocate( $img, 0, 0, 0 );
+		$color = imagecolorallocate( $img, 159, 159, 159 );
 		$str_arr = preg_split('//', $str, -1, PREG_SPLIT_NO_EMPTY);
-		$font_size = 20;
+		$font_size = 30;
 		$x_pos = 10;
 		$y_pos = 40;
 		for ( $i = 0; $i < strlen($str); $i++ )
@@ -34,13 +38,13 @@
 	$str = rc(4);
 	session_start();
 	$_SESSION['captcha_reg'] = $str;
-	$captcha = create_capcha_image($str,"templates/base/fonts/Bleeding_Cowboys.ttf","templates/base/images/background_captcha.jpg");
+	$captcha = create_capcha_image($str,"templates/base/fonts/Bleeding_Cowboys.ttf","templates/base/images/background_captcha.png");
 	header('Expires: Sat, 31 May 2008 05:00:00 GMT'); 
-	header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+	header('Last-Modified: '.gmdate("D, d M Y H:i:s").' GMT');
 	header('Cache-Control: no-store, no-cache, must-revalidate'); 
 	header('Cache-Control: post-check=0, pre-check=0', FALSE); 
 	header('Pragma: no-cache');  
-	header("Content-Type: image/x-png");
-	imagepng($captcha);
+	header('Content-Type: image/x-png');
+	imagepng($captcha, NULL, 9);
   imagedestroy($captcha);
 ?>

@@ -31,6 +31,7 @@ try {
 				games.description,
 				games.logo,
 				games.owner,
+        games.organizators,
 				user.nick
 			FROM
 				games
@@ -38,7 +39,7 @@ try {
 			ORDER BY games.date_start
 			DESC LIMIT 0,10;';
 
-	$columns = array('id', 'title', 'type_game', 'date_start', 'date_stop', 'date_restart', 'description', 'logo', 'owner', 'nick');
+	$columns = array('id', 'title', 'type_game', 'date_start', 'date_stop', 'date_restart', 'description', 'logo', 'owner', 'nick', 'organizators');
 
 	$stmt = $conn->prepare($query);
 	$stmt->execute();

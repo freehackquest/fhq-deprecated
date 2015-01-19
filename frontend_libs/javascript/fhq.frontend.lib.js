@@ -67,7 +67,6 @@ function FHQFrontEndLib() {
 		tmpXMLhttp.open("POST", this.baseUrl + page, false);
 		tmpXMLhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		tmpXMLhttp.send(this.createUrlFromObj(params));
-
 		return obj;
 	};
 
@@ -79,6 +78,7 @@ function FHQFrontEndLib() {
 			params.password = password;
 			params.client = this.p.client;
 			var obj = this.p.sendPostRequest_Sync('api/auth/sign_in.php', params);
+			// alert(JSON.stringify(obj));
 			var bRes = obj.result == "ok";
 			if (bRes)
 				this.p.token = obj.token;
@@ -114,32 +114,26 @@ function FHQFrontEndLib() {
 			var params = {};
 			params.id = gameid;
 			var obj = this.p.sendPostRequest_Sync('api/games/choose.php', params);
+			// alert(JSON.stringify(params));
+			var bRes = obj.result == "ok";
+			return bRes ? obj : obj.error;
+		};
+	})(this);
+	
+	this.quests = new (function(t) {
+		this.p = t;
+		this.list = function() {
+			var params = {};
+			var obj = this.p.sendPostRequest_Sync('api/quests/list.php', params);
+			var bRes = obj.result == "ok";
+			return bRes ? obj : obj.error;
+		};
+		this.get = function(questid) {
+			var params = {};
+			params.id = questid;
+			var obj = this.p.sendPostRequest_Sync('api/quests/get.php', params);
 			var bRes = obj.result == "ok";
 			return bRes ? obj.data : obj.error;
 		};
 	})(this);
 };
-		
-
-			
-			
-			
-			/*function choose_game() {
-				var params = {};
-				params.id = 7;
-				params.token = token;
-
-				document.getElementById('error').innerHTML = "";
-				send_request_post(
-					base_url + 'api/games/choose.php',
-					createUrlFromObj(params),
-					function (obj) {
-						if (obj.result == "ok") {
-							document.getElementById('choose_game_result').innerHTML = "Choosed";
-						} else {
-							document.getElementById('error').innerHTML = obj.error.message;
-							document.getElementById('choose_game_result').innerHTML = "Fail";
-						}
-					}
-				);
-			}*/

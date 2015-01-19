@@ -26,7 +26,8 @@ $columns = array(
   'date_start' => '0000-00-00 00:00:00',
   'date_stop' => '0000-00-00 00:00:00',
   'date_restart' => '0000-00-00 00:00:00',
-  'description' => ''
+  'description' => '',
+  'organizators' => '',
 );
 
 if (!issetParam('id'))

@@ -57,7 +57,7 @@ echo '
 		'name' => 'logo',
 		'html' => '
 			<div class="fhq_btn_menu fhq_btn_menu_color_none hint--bottom" data-hint="Free-Hack-Quest" onclick="window.location.href = \'?\';">
-				<img class="fhq_btn_menu_img" src="templates/base/images/minilogo.png"/>
+				<img class="fhq_btn_menu_img" src="templates/base/images/logo/fhq_2015_small.png"/>
 			</div>
 		',
 		'show' => true,
@@ -258,8 +258,8 @@ echo '
 	$arrmenu[] = array(
 		'name' => 'about',
 		'html' => '
-			<div class="fhq_btn_menu" data-hint="About" onclick="load_content_page(\'about\');">
-				<img width="50px" src="templates/'.$template.'/images/menu_btn_about.png"/><br>
+			<div class="fhq_btn_menu hint--bottom" data-hint="About" onclick="load_content_page(\'about\');">
+				<img width="50px" src="templates/'.$template.'/images/menu/about.png"/><br>
 			</div>
 		',
 		'show' => true,
