@@ -29,6 +29,7 @@ $columns = array(
   'date_restart' => '0000-00-00 00:00:00',
   'description' => '',
   'owner' => $security->userId(),
+  'organizators' => '',
 );
 
 $param_values = array(); 
