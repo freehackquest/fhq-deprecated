@@ -35,62 +35,9 @@
 	if(isset($_POST['content_page'])) $content_page = $_POST['content_page'];
 	if(isset($_GET['number_of_page'])) $number_of_page = $_GET['number_of_page'];
 	if(isset($_POST['number_of_page'])) $number_of_page = $_POST['number_of_page'];
-	
-	/*if($content_page == "quests_all")
-	{
-		$errmsg = "";
-		if (!checkGameDates($security, $errmsg)) {
-			echo $errmsg;
-			exit;
-		}
-		
-		$page = new fhq_page_listofquests('all');
-		$page->echo_content($number_of_page);
-		exit;
-	}
-	else if($content_page == "quests_allow")
-	{
-		$errmsg = "";
-		if (!checkGameDates($security, $errmsg)) {
-			echo $errmsg;
-			exit;
-		}
-		
-		$page = new fhq_page_listofquests('allow');
-		$page->echo_content($number_of_page);
-		exit;
-	}
-	else if($content_page == "quests_process")
-	{
-		$errmsg = "";
-		if (!checkGameDates($security, $errmsg)) {
-			echo $errmsg;
-			exit;
-		}
-		
-		$page = new fhq_page_listofquests('process');
-		$page->echo_content($number_of_page);
-		exit;
-	}
-	else if($content_page == "quests_completed")
-	{
-		$errmsg = "";
-		if (!checkGameDates($security, $errmsg)) {
-			echo $errmsg;
-			exit;
-		}
-		
-		$page = new fhq_page_listofquests('completed');
-		$page->echo_content($number_of_page);
-		exit;
-	}
-	else */
+
 	if($content_page == "update_db" && $security->isAdmin()) {
 		include dirname(__FILE__)."/db/update_database.php";
-		exit;
-	}
-	else if($content_page == "query_db" && $security->isAdmin()) {
-		include dirname(__FILE__)."/db/query_database.php";
 		exit;
 	}
 	else if($content_page == "feedback_my")
@@ -148,13 +95,9 @@
 	    $feedback->echo_insert_form("?action=feedback_add","POST");
 		exit;
 	}
-	else if($content_page == "dr_zoyberg")
-	{
-		echo '<img src="images/dr_zoyberg.gif"/>';
-		exit;
-	}
 	else if($content_page == "user_info")
 	{
+		// TODO: remove it
 		$user_info = new fhq_user_info();
 		$user_info->echo_info();
 		exit;
@@ -185,6 +128,7 @@
 	}
 	else if ($content_page == "user_set_new_my_nick")
 	{
+		// TODO: remove it
 		$user_info = new fhq_user_info();
 		if(isset($_GET['nick']))
 			$user_info->setNewMyNick($_GET['nick']);
@@ -244,11 +188,6 @@
 		$news->echo_teams();
 		exit;
 	}
-	else if ($content_page == 'hacker_girl')
-	{
-		echo '<img src="files/orig/hacker_girl.png">';
-		exit;
-	}
 	else if ($content_page == "add_news" && ($security->isAdmin() || $security->isTester()))
 	{
 		$news = new fhq_news();
@@ -282,6 +221,7 @@
 	}
 	else if ($content_page == "user_set_new_role" && $security->isAdmin())
 	{
+		// TODO: remove it
 		if(isset($_GET['iduser']) && isset($_GET['role']))
 		{
 			$iduser = $_GET['iduser'];
@@ -296,6 +236,7 @@
 	}
 	else if ($content_page == "user_set_new_nick" && $security->isAdmin())
 	{
+		// TODO: remove it
 		if(isset($_GET['iduser']) && isset($_GET['nick']))
 		{		
 			$iduser = $_GET['iduser'];
@@ -324,6 +265,7 @@
 	}
 	else if ($content_page == "remove_user" && $security->isAdmin())
 	{
+		// TODO: remove it
 		if(isset($_GET['iduser']) && isset($_GET['email']))
 		{
 			$email = $_GET['email'];
@@ -370,95 +312,6 @@
 		$quest->export();
 		exit;
 	}
-	/*else if($content_page == "edit_quest")
-	{
-		if(!$security->isAdmin())
-		{
-				echo "Forbidden";
-				exit;
-		};
-
-		if(!isset($_GET['id']))
-		{
-			echo 'not found paramenter "id"';
-			exit;	
-		};
-		
-		$id = $_GET['id'];
-		
-		$quest =  new fhq_quest();
-		
-		if(!$quest->select($id))
-		{
-			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
-			exit;
-		}
-		echo $quest->getForm();
-		
-	}
-	else if($content_page == "take_quest")
-	{
-		$errmsg = "";
-		if (!checkGameDates($security, $errmsg)) {
-			echo $errmsg;
-			exit;
-		}
-		
-		if(!isset($_GET['id']))
-		{
-			echo 'Not found paramenter "id"';
-			exit;	
-		};
-
-		if(!is_numeric($_GET['id']))
-		{
-		  echo 'Not needed hack me';
-				exit;	
-		}
-
-		$id = $_GET['id'];
-		$quest = new fhq_quest();
-
-		if(!$quest->take_quest($id))
-		{
-			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
-			exit;
-		};
-		$quest->echo_view_quest();
-		exit;
-	}
-	else if($content_page == "pass_quest")
-	{
-		$errmsg = "";
-		if (!checkGameDates($security, $errmsg)) {
-			echo $errmsg;
-			exit;
-		}
-		
-		if(!isset($_GET['id']) && !isset($_GET['answer']))
-		{
-			echo 'Not found paramenter "id"';
-			exit;
-		};
-
-		if(!is_numeric($_GET['id']))
-		{
-			echo 'don\'t needed hack me';
-			exit;
-		}
-
-		$id = $_GET['id'];
-		$answer = $_GET['answer'];
-		$quest = new fhq_quest();
-
-		if(!$quest->pass_quest($id, $answer))
-		{
-			echo '<font color="#ff0000">Not passed quest #'.$id.'</font><br><br>';
-		};
-		
-		$quest->echo_view_quest();
-		exit;
-	}*/
 	else if($content_page == "remove_file")
 	{
 		if(!$security->isAdmin())
@@ -547,109 +400,6 @@
 		}
 		
 		$quest->echo_view_quest();
-		exit;
-	}
-	/*else if($content_page == "add_quest")
-	{
-		if(!$security->isAdmin())
-		{
-			echo "Forbidden";
-			exit;
-		};
-		
-		$quest =  new fhq_quest();
-		
-		$quest->setEmptyAll();
-		echo $quest->getForm();
-
-		// if($check != "" ) $check = "<font color='#FE2E64'>Uncorrect(!):<br>$check</font><br>";		
-		exit;
-	}
-	else if($content_page == "save_quest")
-	{
-		if(!$security->isAdmin())
-		{
-			echo "Forbidden";
-			exit;
-		};
-		
-		$quest =  new fhq_quest();
-		
-		$quest->fillQuestFromGet();
-		
-		$check = $quest->check();
-
-		if( strlen($check) > 0 )
-		{
-			echo $quest->getForm();
-			echo '<font color="#ff0000">'.$check.'</font>';
-			exit;
-		}
-		
-		// insert;
-		
-		if($quest->idquest() == 0)
-			$id = $quest->insert();
-		else 
-			$id = $quest->update();
-		
-		if($id == 0)
-		{
-			echo $quest->getForm();
-			echo '<font color="#ff0000">could not inserted</font>';
-			exit;
-		}
-		
-		if(!$quest->select($id))
-		{
-			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
-			exit;
-		}
-		
-		$quest->echo_view_quest();
-		exit;
-	}
-	else if($content_page == "delete_quest")
-	{
-		if(!$security->isAdmin())
-		{
-			echo "Forbidden";
-			exit;
-		};
-		
-		if(!isset($_GET['id']))
-		{
-			echo 'Not found paramenter "id"';
-			exit;
-		};
-
-		if(!is_numeric($_GET['id']))
-		{
-			echo 'don\'t needed hack me';
-			exit;
-		}
-
-		$id = $_GET['id'];
-		$quest = new fhq_quest();
-		if( $quest->delete($id) )
-		{
-			echo 'Quest was deleted!';
-			exit;
-		}
-		
-		$quest->echo_view_quest();
-		exit;
-	}*/
-	else if($content_page == "recalculate_score")
-	{
-		$errmsg = "";
-		if (!checkGameDates($security, $errmsg)) {
-			echo $errmsg;
-			exit;
-		}
-		
-		$score = new fhq_score();
-		echo $score->recalculate_score();
 		exit;
 	}
 	else if ($content_page == "profile")
