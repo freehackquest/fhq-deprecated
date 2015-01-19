@@ -4,6 +4,31 @@ class FHQSecurity {
 		return isset($_SESSION['user']); 
 	}
 	
+	static function login($conn, $email, $hash_password) {
+		// try {
+			$query = 'SELECT * FROM user WHERE email = ? AND password = ?';
+			$email = strtolower($email);
+			$params = array(
+				$email,
+				$hash_password,
+			);
+			$stmt = $conn->prepare($query);
+			$stmt->execute($params);
+			if ($row = $stmt->fetch())
+			{
+				$_SESSION['user'] = array();
+				$_SESSION['user']['iduser'] = $row['iduser'];
+				$_SESSION['user']['email'] = $row['email'];
+				$_SESSION['user']['nick'] = $row['nick'];
+				$_SESSION['user']['role'] = $row['role'];
+				return true;
+			}
+		// } catch(PDOException $e) {
+			// FHQHelpers::showerror(103, $e->getMessage());
+		// }
+		return false;
+	}
+	
 	static function logout() {
 		if(FHQSecurity::isLogged()) { unset($_SESSION['user']); unset($_SESSION['game']); }
 	}
@@ -17,15 +42,12 @@ class FHQSecurity {
 	}
 	
 	static function generatePassword($config, $email, $password) {
-		if (FHQSecurity::isLogged()) {
-			$username = base64_encode(strtoupper($email));
-			$data = "";
-			$arr = array($password, $username, strtoupper($email));
-			for($i = 0; $i < count($arr); $i++)
-				$data .= $arr[$i].$config['secrets'][$i];
-			return md5($data);
-		}
-		return "";
+		$username = base64_encode(strtoupper($email));
+		$data = "";
+		$arr = array($password, $username, strtoupper($email));
+		for($i = 0; $i < count($arr); $i++)
+			$data .= $arr[$i].$config['secrets'][$i];
+		return md5($data);
 	}
 	
 	static function isUser() { 
@@ -128,17 +150,18 @@ class FHQSecurity {
 	}
 	
 	static function updateByToken($conn, $token) { 
-		try {
-			$query = 'UDPATE users_tokens SET data = ? AND end_date = NOW() + INTERVAL 1 DAY WHERE token = ?';
+		// try {
+			
+			$query = 'UPDATE users_tokens SET data = ?, end_date = DATE_ADD(NOW(), INTERVAL 1 DAY) WHERE token = ?';
 			$params = array(
 				json_encode($_SESSION),
 				$token,
 			);
 			$stmt = $conn->prepare($query);
 			$stmt->execute($params);
-		} catch(PDOException $e) {
-			showerror(103, $e->getMessage());
-		}
+		// } catch(PDOException $e) {
+//			FHQHelpers::showerror(103, $e->getMessage());
+		//}
 	}
 	
 	static function removeByToken($conn, $token) { 
@@ -150,7 +173,7 @@ class FHQSecurity {
 			$stmt = $conn->prepare($query);
 			$stmt->execute($params);
 		} catch(PDOException $e) {
-			showerror(103, $e->getMessage());
+			FHQHelpers::showerror(103, $e->getMessage());
 		}
 	}
 }

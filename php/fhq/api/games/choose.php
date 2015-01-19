@@ -20,7 +20,6 @@ $result = array(
 if (!checkGameDates($security, &$message))
 	showerror(709, 'Error 709: '.$errmsg);*/
 
-
 $conn = FHQHelpers::createConnection($config);
 
 if (FHQHelpers::issetParam('id')) {
@@ -29,7 +28,7 @@ if (FHQHelpers::issetParam('id')) {
 	if (!is_numeric($game_id))
 		FHQHelpers::showerror(705, 'Error 705: incorrect id');
 
-	try {
+	// try {
 		$query = '
 			SELECT *
 			FROM
@@ -54,7 +53,7 @@ if (FHQHelpers::issetParam('id')) {
 		{
 			FHQHelpers::showerror(702, 'Game with id='.$game_id.' are not exists');
 		}
-		
+
 		// loading score
 		$stmt2 = $conn->prepare('select * from users_games where userid= ? AND gameid = ?');
 		$stmt2->execute(array(intval(FHQSecurity::userid()), intval($game_id)));
@@ -81,7 +80,7 @@ if (FHQHelpers::issetParam('id')) {
 			$score = 0;
 			$stmt4 = $conn->prepare($query2);
 			$stmt4->execute(array(intval($game_id), FHQSecurity::userid()));
-			if($row3 = $stmt4->fetch())
+			if ($row3 = $stmt4->fetch())
 				$score = $row3['sum_score'];
 			
 			$stmt3 = $conn->prepare('INSERT INTO users_games (userid, gameid, score, date_change) VALUES(?,?,?,NOW())');
@@ -90,10 +89,10 @@ if (FHQHelpers::issetParam('id')) {
 			$_SESSION['user']['score'] = $score;
 			$result['user'] = array();
 			$result['user']['score'] = $score;
-		}
-	} catch(PDOException $e) {
-		FHQHelpers::showerror(712, $e->getMessage());
-	}
+		}	
+	// } catch(PDOException $e) {
+//		FHQHelpers::showerror(712, $e->getMessage());
+//	}
 } else {
 	FHQHelpers::showerror(713, 'not found parameter id');
 }
