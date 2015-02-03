@@ -25,6 +25,9 @@ if (!FHQHelpers::issetParam('answer'))
 $questid = FHQHelpers::getParam('questid', 0);
 $answer = FHQHelpers::getParam('answer', '');
 
+if ($answer == "")
+  FHQHelpers::showerror(777, 'parameter "answer" must be not empty');
+
 if (!is_numeric($questid))
 	FHQHelpers::showerror(988, 'parameter "questid" must be numeric');
 

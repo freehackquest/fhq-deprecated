@@ -130,8 +130,85 @@ function FHQFrontEndLib() {
 		};
 		this.get = function(questid) {
 			var params = {};
-			params.id = questid;
+			params.taskid = questid;
 			var obj = this.p.sendPostRequest_Sync('api/quests/get.php', params);
+			var bRes = obj.result == "ok";
+			return bRes ? obj.data : obj.error;
+		};
+    // return all information if you are admin
+  	this.get_all = function(questid) {
+			var params = {};
+			params.questid = questid;
+			var obj = this.p.sendPostRequest_Sync('api/quests/get_all.php', params);
+			var bRes = obj.result == "ok";
+			return bRes ? obj.data : obj.error;
+		};
+    // remove quest if you are admin
+    this.delete = function(questid) {
+			var params = {};
+			params.questid = questid;
+			var obj = this.p.sendPostRequest_Sync('api/quests/delete.php', params);
+			var bRes = obj.result == "ok";
+			return bRes ? obj.data : obj.error;
+		};
+    this.take = function(questid) {
+			var params = {};
+			params.questid = questid;
+			var obj = this.p.sendPostRequest_Sync('api/quests/take.php', params);
+			var bRes = obj.result == "ok";
+			return bRes ? obj.data : obj.error;
+		};
+    this.pass = function(questid, answer) {
+			var params = {};
+			params.questid = questid;
+      params.answer = answer;
+			var obj = this.p.sendPostRequest_Sync('api/quests/pass.php', params);
+			var bRes = obj.result == "ok";
+			return bRes ? obj.data : obj.error;
+		};
+    // insert quest if you are admin
+    this.insert = function(quest_uuid, name, short_text, text, score, min_score, subject, idauthor, author, answer, state, description_state) {
+			var params = {};
+			params.quest_uuid = quest_uuid;
+      params.name = name;
+      params.short_text = short_text;
+      params.text = text;
+      params.score = score;
+      params.min_score = min_score;
+      params.subject = subject;
+      params.idauthor = idauthor;
+      params.author = author;
+      params.answer = answer;
+      params.state = state;
+      params.description_state = description_state;
+			var obj = this.p.sendPostRequest_Sync('api/quests/insert.php', params);
+			var bRes = obj.result == "ok";
+			return bRes ? obj.data : obj.error;
+		};
+    // update quest info if you are admin
+    this.update = function(questid, name, short_text, text, score, min_score, subject, idauthor, author, answer, state, description_state) {
+			var params = {};
+			params.questid = questid;
+      params.name = name;
+      params.short_text = short_text;
+      params.text = text;
+      params.score = score;
+      params.min_score = min_score;
+      params.subject = subject;
+      params.idauthor = idauthor;
+      params.author = author;
+      params.answer = answer;
+      params.state = state;
+      params.description_state = description_state;
+			var obj = this.p.sendPostRequest_Sync('api/quests/update.php', params);
+			var bRes = obj.result == "ok";
+			return bRes ? obj.data : obj.error;
+		};
+    // update quest info if you are admin
+    this.user_answers = function(questid) {
+			var params = {};
+			params.questid = questid;
+			var obj = this.p.sendPostRequest_Sync('api/quests/user_answers.php', params);
 			var bRes = obj.result == "ok";
 			return bRes ? obj.data : obj.error;
 		};
