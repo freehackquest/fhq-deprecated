@@ -6,6 +6,7 @@ include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../api.lib/api.quest.php");
 include_once ($curdir."/../../config/config.php");
+include_once ($curdir."/../api.lib/loadtoken.php");
 
 FHQHelpers::checkAuth();
 
@@ -95,4 +96,5 @@ try {
 	FHQHelpers::showerror(747,$e->getMessage());
 }
 
+include_once ($curdir."/../api.lib/savetoken.php");
 echo json_encode($result);
