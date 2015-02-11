@@ -100,6 +100,8 @@ function changeUserNick(userid) {
 	);
 }
 
+// for admin
+// TODO rename to update_user_password
 function changeUserPassword(userid) {
 	var params = {};
 	params.userid = userid;
@@ -115,6 +117,28 @@ function changeUserPassword(userid) {
 			}
 			document.getElementById('user_new_password').value = "";
 			alert('updated');
+		}
+	);
+}
+
+// for user
+function userpage_changeUserPassword() {
+	var params = {};
+	params.old_password = document.getElementById('userpage_old_password').value;
+	params.new_password = document.getElementById('userpage_new_password').value;
+	params.new_password_confirm = document.getElementById('userpage_new_password_confirm').value;
+	send_request_post(
+		'api/users/change_password.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "fail") {
+				showModalDialog(obj.error.message);
+				return;
+			}
+			document.getElementById('userpage_old_password').value = "";
+			document.getElementById('userpage_new_password').value = "";
+			document.getElementById('userpage_new_password_confirm').value = "";
+			showModalDialog('updated');
 		}
 	);
 }

@@ -115,32 +115,26 @@
 					<div class="user_info_row">
 						<div class="user_info_param">Old password:</div>
 						<div class="user_info_value">
-							<input id="old_password" type="password" value=""/>
+							<input id="userpage_old_password" type="password" value=""/>
 						</div>
 					</div>
 					<div class="user_info_row">
 						<div class="user_info_param">New password:</div>
 						<div class="user_info_value">
-							<input id="new_password" type="password" value=""/>
+							<input id="userpage_new_password" type="password" value=""/>
 						</div>
 					</div>
 					<div class="user_info_row">
 						<div class="user_info_param">New password(confirm):</div>
 						<div class="user_info_value">
-							<input id="new_password_confirm" type="password" value=""/>
+							<input id="userpage_new_password_confirm" type="password" value=""/>
 						</div>
 					</div>					
 					<div class="user_info_row">
 						<div class="user_info_param"></div>
-						<div class="user_info_value"><a class="button3 ad" href="javascript:void(0);" onclick="
-							load_content_page(\'user_set_new_password\', 
-								{
-									old_password : document.getElementById(\'old_password\').value,
-									new_password : document.getElementById(\'new_password\').value,
-									new_password_confirm : document.getElementById(\'new_password_confirm\').value
-								}
-							);
-						">Change password</a></div>
+						<div class="user_info_value">
+							<div class="button3 ad" onclick="userpage_changeUserPassword();">Change password</div>
+						</div>
 					</div>
 					
 					';

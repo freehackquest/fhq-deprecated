@@ -71,7 +71,7 @@ class FHQSecurity {
 	}
 	
 	static function email() { 
-		return (FHQSecurity::isLogged()) ? strtolower(base64_decode($_SESSION['user']['email'])) : ''; 
+		return (FHQSecurity::isLogged()) ? strtolower($_SESSION['user']['email']) : '';
 	}
   
 	static function setNick($nick) { 
