@@ -15,11 +15,26 @@ topic/score/answer - answer for task<br>
 topic/score/author - creator<br>
 topic/score/solve - real (and possible) solution by author<br>
 -->
-<h2>developers</h2>
-Evgenii Sopov, Dmitrii Mukovkin, Igor Polyakov<br>
-<h2>designers</h2>
-Evgenii Sopov<br>
+<h2>developers and designers</h2>
+Evgenii Sopov, Igor Polyakov<br>
+
+<h2>api</h2>
+<a href="api/?html">HTML</a>, 
+<a href="api/?json">JSON</a>, 
+<a href="api/?tex">LaTeX</a><br>
+
+<h2>source code</h2>
+<a href="http://github.com/sea-kg/fhq">main</a>,
+<a href="http://gitlab.keva.su/keva/kevactfplatform">fork</a>, 
+<a href="https://github.com/Nitive/StarsDesign">front-end by Nitive</a><br>
+
+<h2>contacts</h2>
+see us in <a href="http://vk.com/freehackquest">VKontakte</a><br>
+also you can write email to us<br>
+freehackquest@gmail.com<br>
+
 <h2>thanks for</h2>
+Dmitrii Mukovkin,
 Team Keva,
 Alexey Gulyaev,
 Alexander Menschikov,
@@ -27,13 +42,3 @@ Ilya Bokov,
 Maxim Samoilov,
 Extrim Code,
 Taisiya Lebedeva<br>
-
-<h1>contacts</h1>
-see us in <a href="http://vk.com/freehackquest">VKontakte</a><br>
-also you can write email to us<br>
-freehackquest@gmail.com<br>
-or mrseakg@gmail.com<br>
-
-<h1>source code</h1>
-Main: <a href="http://github.com/sea-kg/fhq">http://github.com/sea-kg/fhq</a><br>
-Fork: <a href="http://gitlab.keva.su/keva/kevactfplatform">http://gitlab.keva.su/keva/kevactfplatform</a><br>
