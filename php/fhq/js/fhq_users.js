@@ -326,32 +326,34 @@ function updateUsers() {
 			content += '</div>'; // users_row
 			
 			for (var k in obj.data) {
+        var userinfo = obj.data[k];
+
 				content += '<div class="users_row">';
 
 				// logo
 				content += '<div class="users_cell users_cell_logo">';
-				if (obj.data[k]['logo'] != null) 
-					content += ' <img height="100px" src="' + obj.data[k]['logo'] + '"/>'
+				if (userinfo.logo != null) 
+					content += ' <img height="100px" src="' + userinfo.logo + '"/>'
 				else
 					content += ' '
 				content += '</div>'; // users_cell_logo
 
 				// id
-				content += '<div class="users_cell">' + k + '</div>';
+				content += '<div class="users_cell">' + userinfo.userid + '</div>';
 
 				// email
-				content += '<div class="users_cell"> ' + obj.data[k]['email'];
-				content += '	<div class="button3 ad" onclick="showUserInfo(' + k + ');">Info</div>';
-				content += '	<div class="button3 ad" onclick="showUserIP(' + k + ');">IP</div>';
+				content += '<div class="users_cell"> ' + userinfo.email;
+				content += '	<div class="button3 ad" onclick="showUserInfo(' + userinfo.userid + ');">Info</div>';
+				content += '	<div class="button3 ad" onclick="showUserIP(' + userinfo.userid + ');">IP</div>';
 				content += '</div>';
-				content += '<div class="users_cell">' + obj.data[k]['nick'] + '</div>';
-				content += '<div class="users_cell">' + obj.data[k]['role'] + '</div>';
+				content += '<div class="users_cell">' + userinfo.nick + '</div>';
+				content += '<div class="users_cell">' + userinfo.role + '</div>';
 
 				// status
 				// TODO: if not activated can allow edit email and send mail again 
-				content += '<div class="users_cell">' + obj.data[k].status + '</div> ';
+				content += '<div class="users_cell">' + userinfo.status + '</div> ';
 
-				content += '<div class="users_cell">' + obj.data[k].date_last_signup + '</div>';				
+				content += '<div class="users_cell">' + userinfo.date_last_signup + '</div>';				
 				content += '</div>'; // users_row
 			}
 			content += '</div>'; // users_table

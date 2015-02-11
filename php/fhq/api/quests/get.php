@@ -5,7 +5,6 @@ $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../../config/config.php");
-
 include_once ($curdir."/../api.lib/loadtoken.php");
 
 FHQHelpers::checkAuth();

@@ -79,9 +79,10 @@ try {
 			LIMIT '.$start.','.$onpage.'
 	');
 	$stmt2->execute(array($search, $search, $role, $status));
+  $i = 0;
 	while ($row2 = $stmt2->fetch()) {
 		$userid = $row2['iduser'];
-		$result['data'][$userid] = array(
+		$result['data'][$i] = array(
 			'userid' => $userid,
 			'email' => $row2['email'],
 			'role' => $row2['role'],
@@ -90,6 +91,7 @@ try {
 			'date_last_signup' => $row2['date_last_signup'],
 			'status' => (strpos($row2['password'], 'notactivated') !== FALSE) ? 'notactivated' : 'activated',
 		);
+    $i++;
 	}
 } catch(PDOException $e) {
 	FHQHelpers::showerror(922, $e->getMessage());

@@ -7,6 +7,7 @@ include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../api.lib/api.answerlist.php");
 include_once ($curdir."/../api.lib/api.quest.php");
 include_once ($curdir."/../../config/config.php");
+include_once ($curdir."/../api.lib/loadtoken.php");
 
 FHQHelpers::checkAuth();
 
@@ -23,6 +24,9 @@ if (!FHQHelpers::issetParam('answer'))
 	
 $questid = FHQHelpers::getParam('questid', 0);
 $answer = FHQHelpers::getParam('answer', '');
+
+if ($answer == "")
+  FHQHelpers::showerror(777, 'parameter "answer" must be not empty');
 
 if (!is_numeric($questid))
 	FHQHelpers::showerror(988, 'parameter "questid" must be numeric');
@@ -130,4 +134,5 @@ try {
 	FHQHelpers::showerror(822, $e->getMessage());
 }
 
+include_once ($curdir."/../api.lib/savetoken.php");
 echo json_encode($result);

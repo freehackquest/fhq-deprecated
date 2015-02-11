@@ -225,16 +225,6 @@ echo '
 	);
 	
 	$arrmenu[] = array(
-		'name' => 'hacker_girl',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Hacker girl here" onclick="load_content_page(\'hacker_girl\');">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_hacker_girl.png"/>
-			</div>
-		',
-		'show' => true,
-	);
-	
-	$arrmenu[] = array(
 		'name' => 'rules',
 		'html' => '
 			<div class="fhq_btn_menu" data-hint="Rules" onclick="load_content_page(\'rules\');">
