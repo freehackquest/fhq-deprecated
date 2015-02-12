@@ -59,7 +59,58 @@ function indent($json) {
 }
 
 function convert_to_html($doc) {
-	return "TODO";
+  $result = "
+     <h1>API</h1>
+     This chapter will talk about what external functions exist to work with
+     the system. Also presented are various examples for the job. Also,
+     this chapter is devoted to the frontend developers using kernel of fhq.	
+     <br>
+  ";
+	
+	foreach ($doc as $section_key => $section)
+	{
+		$result .= "
+      <h2>".$section['name']."</2>
+      ".$section['description']." <br>
+    ";
+		foreach ($section['methods'] as $method_key => $method)
+		{
+			
+			$result .= "
+        <h3>".$method['name']."</h3>
+        ".$method['description']." <br>
+        This function access for ".$method['access'].".<br>
+URI:
+<pre>
+".$method['uri']."
+</pre>
+<br>
+Input parameters (GET or POST):
+<ul>";
+			foreach ($method['input'] as $input_key => $input)
+			{
+				$result .= "
+          <li> <b>".$input_key."</b> - ".$input['type'].", ".$input['description']."</li>";
+
+			};
+			$result .= "
+</ul>
+
+        Successfully response:
+        <pre>
+        ".indent(json_encode($method['output']['successfull']))."
+        </pre>
+      <br>
+      Code errors: <ul>";
+
+			foreach ($method['output']['errors'] as $error_key => $error)
+				$result .= "<li> <b>".$error_key."</b> ".$error." </li>";
+      $result .= "</ul>";
+		}
+		
+	}
+
+	return $result;
 }
 
 function convert_to_tex($doc) {
