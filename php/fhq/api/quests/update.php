@@ -17,7 +17,7 @@ $result = array(
 
 $message = '';
 
-if (!FHQGame::checkGameDates($message))
+if (!APIGame::checkGameDates($message))
 	APIHelpers::showerror(350, $message);
 
 if (!APISecurity::isAdmin())
@@ -63,14 +63,14 @@ $params['answer'] = base64_encode($params['answer']);
 $params['score'] = intval($params['score']);
 $params['min_score'] = intval($params['min_score']);
 $params['for_person'] = 0;
-$params['id_game'] = FHQGame::id();
+$params['id_game'] = APIGame::id();
 $params['idauthor'] = intval($params['idauthor']);
 $params['author'] = base64_encode($params['author']);
 // $params['state'] = $params['state'];
 // $params['description_state'] = $params['description_state'];
 // $params['subject'] = $params['subject'];
 // $params['quest_uuid'] = $params['quest_uuid'];
-$params['gameid'] = FHQGame::id();
+$params['gameid'] = APIGame::id();
 $params['userid'] = APISecurity::userid();
 
 $conn = APIHelpers::createConnection($config);
@@ -91,7 +91,7 @@ $values[] = $questid;
 	$stmt = $conn->prepare($query);
 	if($stmt->execute(array_values($values))) {
 		$result['result'] = 'ok';
-		FHQQuest::updateCountUserSolved($conn, $questid);
+		APIQuest::updateCountUserSolved($conn, $questid);
 	} else {
 		$result['error']['pdo'] = $conn->errorInfo();
 		$result['error']['code'] = 304;

@@ -1,6 +1,6 @@
 <?php
 
-class FHQQuest {
+class APIQuest {
 	static function updateCountUserSolved($conn, $questid) {
 		$query = '
 			UPDATE

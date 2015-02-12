@@ -11,7 +11,7 @@ APIHelpers::checkAuth();
 
 $message = '';
 
-if (!FHQGame::checkGameDates($message))
+if (!APIGame::checkGameDates($message))
 	APIHelpers::showerror(986, $message);
 
 if (!APIHelpers::issetParam('questid'))

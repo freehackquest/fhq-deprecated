@@ -20,7 +20,7 @@ $result['result'] = 'ok';
 
 $conn = APIHelpers::createConnection($config);
 
-$version = FHQUpdates::getVersion($conn);
+$version = APIUpdates::getVersion($conn);
 $result['version'] = $version;
 
 $updates = array();
@@ -37,7 +37,7 @@ while (file_exists($filename)) {
 	}
 
 	if ($function_update($conn)) {
-		FHQUpdates::insertUpdateInfo($conn,
+		APIUpdates::insertUpdateInfo($conn,
 			$version,
 			$updates[$version]['to_version'],
 			$updates[$version]['name'],
@@ -49,7 +49,7 @@ while (file_exists($filename)) {
 		$result['data'][$version] = 'failed';
 	}
 
-	$new_version = FHQUpdates::getVersion($conn);
+	$new_version = APIUpdates::getVersion($conn);
 	if ($new_version == $version)
 		break;
 	$version = $new_version;

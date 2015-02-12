@@ -1,6 +1,6 @@
 <?php
 
-class FHQUpdates {
+class APIUpdates {
 	static function getVersion($conn) {
 		$version = 'u0000';
 		$id = NULL;

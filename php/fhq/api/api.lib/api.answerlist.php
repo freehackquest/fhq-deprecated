@@ -1,6 +1,6 @@
 <?php
 
-class FHQAnswerList {
+class APIAnswerList {
 
 	static function addTryAnswer($conn, $questid, $user_answer, $real_answer,  $passed) {
 		$answer_try = base64_encode(htmlspecialchars($user_answer));

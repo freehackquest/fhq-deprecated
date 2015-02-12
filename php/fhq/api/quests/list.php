@@ -14,7 +14,7 @@ APIHelpers::checkAuth();
 
 $message = '';
 
-if (!FHQGame::checkGameDates($message))
+if (!APIGame::checkGameDates($message))
 	APIHelpers::showerror(917, $message);
 
 $result = array(
@@ -24,7 +24,7 @@ $result = array(
 
 $result['result'] = 'ok';
 
-if (FHQGame::id() == 0)
+if (APIGame::id() == 0)
 	APIHelpers::showerror(926, "Game was not selected.");
 
 // TODO: must be added filters
@@ -42,7 +42,7 @@ $result['filter']['open'] = filter_var($result['filter']['open'], FILTER_VALIDAT
 $result['filter']['current'] = filter_var($result['filter']['current'], FILTER_VALIDATE_BOOLEAN);
 $result['filter']['completed'] = filter_var($result['filter']['completed'], FILTER_VALIDATE_BOOLEAN);
 
-$result['gameid'] = FHQGame::id();
+$result['gameid'] = APIGame::id();
 $result['userid'] = APISecurity::userid();
 
 $filter_by_state = APISecurity::isAdmin() ? '' : ' AND quest.state = "open" ';
@@ -63,7 +63,7 @@ try {
 				AND (quest.for_person = 0 OR quest.for_person = ?)
 			
 	');
-	$stmt->execute(array(FHQGame::id(),APISecurity::userid()));
+	$stmt->execute(array(APIGame::id(),APISecurity::userid()));
 	if($row = $stmt->fetch())
 		$result['status']['summary'] = $row['cnt'];
 } catch(PDOException $e) {
@@ -88,7 +88,7 @@ try {
 	';
 	// $result['query_open'] = $query;
 	$stmt1 = $conn->prepare($query);
-	$stmt1->execute(array(APISecurity::userid(),FHQGame::id(), APISecurity::userid()));
+	$stmt1->execute(array(APISecurity::userid(),APIGame::id(), APISecurity::userid()));
 	if($row = $stmt1->fetch())
 		$result['status']['open'] = $row['cnt'];
 } catch(PDOException $e) {
@@ -112,7 +112,7 @@ try {
 				AND userquest.startdate <> \'0000-00-00 00:00:00\'
 				AND userquest.stopdate = \'0000-00-00 00:00:00\'
 	');
-	$stmt->execute(array(APISecurity::userid(),FHQGame::id(),APISecurity::userid()));
+	$stmt->execute(array(APISecurity::userid(),APIGame::id(),APISecurity::userid()));
 	if($row = $stmt->fetch())
 		$result['status']['current'] = $row['cnt'];
 } catch(PDOException $e) {
@@ -136,7 +136,7 @@ try {
 				AND userquest.startdate <> \'0000-00-00 00:00:00\'
 				AND userquest.stopdate <> \'0000-00-00 00:00:00\' 
 	');
-	$stmt->execute(array(APISecurity::userid(),FHQGame::id(), APISecurity::userid()));
+	$stmt->execute(array(APISecurity::userid(),APIGame::id(), APISecurity::userid()));
 	if($row = $stmt->fetch())
 		$result['status']['completed'] = $row['cnt'];
 } catch(PDOException $e) {
@@ -159,7 +159,7 @@ try {
 			GROUP BY
 				quest.tema
 	');
-	$stmt->execute(array(APISecurity::userid(),FHQGame::id()));
+	$stmt->execute(array(APISecurity::userid(),APIGame::id()));
 	while($row = $stmt->fetch())
 	{
 		$result['subjects'][base64_decode($row['tema'])] = $row['cnt'];
@@ -169,7 +169,7 @@ try {
 }
 
 /*$userid = APIHelpers::getParam('userid', 0);*/
-$params = array(APISecurity::userid(), FHQGame::id());
+$params = array(APISecurity::userid(), APIGame::id());
 
 // filter by status
 $arrWhere_status = array();

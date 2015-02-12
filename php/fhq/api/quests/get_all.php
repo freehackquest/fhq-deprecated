@@ -32,10 +32,10 @@ $result['result'] = 'ok';
 // TODO: must be added filters
 $conn = APIHelpers::createConnection($config);
 
-$result['gameid'] = FHQGame::id(); 
+$result['gameid'] = APIGame::id(); 
 $result['userid'] = APISecurity::userid();
 
-$params[] = FHQGame::id();
+$params[] = APIGame::id();
 $params[] = intval($questid);
 
 $query = '

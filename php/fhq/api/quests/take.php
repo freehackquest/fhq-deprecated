@@ -11,7 +11,7 @@ APIHelpers::checkAuth();
 
 $message = '';
 
-if (!FHQGame::checkGameDates($message))
+if (!APIGame::checkGameDates($message))
 	APIHelpers::showerror(986, $message);
 
 if (!APIHelpers::issetParam('questid'))
@@ -32,14 +32,14 @@ $result['result'] = 'ok';
 // TODO: must be added filters
 $conn = APIHelpers::createConnection($config);
 
-$result['gameid'] = FHQGame::id(); 
+$result['gameid'] = APIGame::id(); 
 $result['userid'] = APISecurity::userid();
 
 $filter_by_state = APISecurity::isAdmin() ? '' : ' AND quest.state = "open" ';
 $filter_by_score = APISecurity::isAdmin() ? '' : ' AND quest.min_score <= '.APISecurity::score().' ';
 
 $params[] = APISecurity::userid();
-$params[] = FHQGame::id();
+$params[] = APIGame::id();
 $params[] = intval($questid);
 
 $query = '

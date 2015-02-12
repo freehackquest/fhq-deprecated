@@ -86,7 +86,7 @@ class APIHelpers {
 		';
 		$score = 0;
 		$stmt = $conn->prepare($query);
-		$stmt->execute(array(FHQGame::id(), APISecurity::userid()));
+		$stmt->execute(array(APIGame::id(), APISecurity::userid()));
 		if($row = $stmt->fetch())
 			$score = $row['sum_score'];
 		return $score;

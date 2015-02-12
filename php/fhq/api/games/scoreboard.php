@@ -13,7 +13,7 @@ $message = '';
 $gameid = APIHelpers::getParam('gameid', 0);
 
 if (!APIHelpers::issetParam('gameid'))
-	$gameid = FHQGame::id();
+	$gameid = APIGame::id();
 
 if (!is_numeric($gameid))
 	APIHelpers::showerror(988, 'parameter "gameid" must be numeric');

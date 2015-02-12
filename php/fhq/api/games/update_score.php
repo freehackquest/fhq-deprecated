@@ -22,7 +22,7 @@ if (!checkGameDates($security, &$message))
 
 $conn = APIHelpers::createConnection($config);
 
-$gameid = FHQGame::id();
+$gameid = APIGame::id();
 if ($gameid == 0)
 	APIHelpers::showerror(616, 'Please choose game');
 

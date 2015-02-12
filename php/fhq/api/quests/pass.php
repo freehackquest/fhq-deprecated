@@ -13,7 +13,7 @@ APIHelpers::checkAuth();
 
 $message = '';
 
-if (!FHQGame::checkGameDates($message))
+if (!APIGame::checkGameDates($message))
 	APIHelpers::showerror(986, $message);
 
 if (!APIHelpers::issetParam('questid'))
@@ -41,14 +41,14 @@ $result['result'] = 'ok';
 // TODO: must be added filters
 $conn = APIHelpers::createConnection($config);
 
-$result['gameid'] = FHQGame::id(); 
+$result['gameid'] = APIGame::id(); 
 $result['userid'] = APISecurity::userid();
 
 $filter_by_state = APISecurity::isAdmin() ? '' : ' AND quest.state = "open" ';
 $filter_by_score = APISecurity::isAdmin() ? '' : ' AND quest.min_score <= '.APISecurity::score().' ';
 
 $params[] = APISecurity::userid();
-$params[] = FHQGame::id();
+$params[] = APIGame::id();
 $params[] = intval($questid);
 
 $query = '
@@ -105,15 +105,15 @@ try {
 					$_SESSION['user']['score'] = $result['new_user_score'];
 					$query2 = 'UPDATE users_games SET date_change = NOW(), score = ? WHERE userid = ? AND gameid = ?;';
 					$stmt2 = $conn->prepare($query2);
-					$stmt2->execute(array(intval($new_user_score), APISecurity::userid(), FHQGame::id()));
+					$stmt2->execute(array(intval($new_user_score), APISecurity::userid(), APIGame::id()));
 				}
-				FHQQuest::updateCountUserSolved($conn, $questid);
+				APIQuest::updateCountUserSolved($conn, $questid);
 
-				FHQAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, 'Yes');
-				FHQAnswerList::movedToBackup($conn, $questid);
+				APIAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, 'Yes');
+				APIAnswerList::movedToBackup($conn, $questid);
 				
 			} else {
-				FHQAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, 'No');
+				APIAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, 'No');
 				APIHelpers::showerror(340, 'answer incorrect "'.htmlspecialchars($answer).'"');
 			};
 		}

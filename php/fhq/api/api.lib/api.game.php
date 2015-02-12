@@ -1,5 +1,5 @@
 <?php
-class FHQGame {
+class APIGame {
 
 	static function checkGameDates(&$message) {
 
