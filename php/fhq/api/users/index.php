@@ -11,6 +11,7 @@ if (!isset($doc)) {
 $doc['users'] = array(
 	'name' => 'Users',
 	'description' => 'methods for work with users or for user',
+  'uri' => 'api/users/',
 	'methods' => array( 
 		'change_password' => array(
 			'name' => 'Change User Password',

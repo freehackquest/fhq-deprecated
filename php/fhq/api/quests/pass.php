@@ -14,22 +14,22 @@ APIHelpers::checkAuth();
 $message = '';
 
 if (!APIGame::checkGameDates($message))
-	APIHelpers::showerror(986, $message);
+	APIHelpers::showerror(3101, $message);
 
 if (!APIHelpers::issetParam('questid'))
-	APIHelpers::showerror(987, 'Not found parameter "questid"');
+	APIHelpers::showerror(3102, 'Not found parameter "questid"');
 
 if (!APIHelpers::issetParam('answer'))
-	APIHelpers::showerror(387, 'Not found parameter "answer"');
+	APIHelpers::showerror(3103, 'Not found parameter "answer"');
 	
 $questid = APIHelpers::getParam('questid', 0);
 $answer = APIHelpers::getParam('answer', '');
 
 if ($answer == "")
-  APIHelpers::showerror(777, 'parameter "answer" must be not empty');
+  APIHelpers::showerror(3104, 'Parameter "answer" must be not empty');
 
 if (!is_numeric($questid))
-	APIHelpers::showerror(988, 'parameter "questid" must be numeric');
+	APIHelpers::showerror(3105, 'Parameter "questid" must be numeric');
 
 $result = array(
 	'result' => 'fail',
@@ -114,12 +114,12 @@ try {
 				
 			} else {
 				APIAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, 'No');
-				APIHelpers::showerror(340, 'answer incorrect "'.htmlspecialchars($answer).'"');
+				APIHelpers::showerror(3106, 'Answer incorrect');
 			};
 		}
 		else
 		{
-			APIHelpers::showerror(822, 'quest already passed');
+			APIHelpers::showerror(3107, 'Quest already passed');
 		}
 
 		/*if ($status == 'current' || $status == 'completed')
@@ -127,11 +127,11 @@ try {
 	}
 	else
 	{
-		APIHelpers::showerror(822, 'not found quest');
+		APIHelpers::showerror(3108, 'Not found quest');
 	}
 	
 } catch(PDOException $e) {
-	APIHelpers::showerror(822, $e->getMessage());
+	APIHelpers::showerror(3109, $e->getMessage());
 }
 
 include_once ($curdir."/../api.lib/savetoken.php");

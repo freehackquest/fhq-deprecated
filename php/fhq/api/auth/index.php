@@ -11,6 +11,7 @@ if (!isset($doc)) {
 $doc['auth'] = array(
 	'name' => 'Authorization',
 	'description' => 'Methods for authorization, registration and restore password.',
+  'uri' => 'api/auth/',
 	'methods' => array(
 
     // sign in
