@@ -1,5 +1,5 @@
 <?php
 
 if ($issetToken) {
-	FHQSecurity::updateByToken($conn, $token);
+	APISecurity::updateByToken($conn, $token);
 }

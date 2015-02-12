@@ -31,10 +31,10 @@ $result['result'] = 'ok';
 
 $conn = FHQHelpers::createConnection($config);
 
-$result['userid'] = FHQSecurity::userid();
+$result['userid'] = APISecurity::userid();
 $result['questid'] = $questid;
 
-$params[] = FHQSecurity::userid();
+$params[] = APISecurity::userid();
 $params[] = intval($questid);
 
 $query = '

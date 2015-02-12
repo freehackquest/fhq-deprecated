@@ -6,7 +6,7 @@ class FHQAnswerList {
 		$answer_try = base64_encode(htmlspecialchars($user_answer));
 		$answer_real = base64_encode(htmlspecialchars($real_answer));
 		$query = 'INSERT INTO tryanswer(iduser, idquest, answer_try, answer_real, passed, datetime_try) VALUES (?, ?, ?, ?, ?, NOW());';
-		$params[] = FHQSecurity::userid();
+		$params[] = APISecurity::userid();
 		$params[] = intval($questid);
 		$params[] = $answer_try;
 		$params[] = $answer_real;
@@ -19,7 +19,7 @@ class FHQAnswerList {
 	static function movedToBackup($conn, $questid) {
 		$query = 'INSERT INTO tryanswer_backup (iduser, idquest, answer_try, answer_real, passed, datetime_try) 
 				SELECT iduser, idquest, answer_try, answer_real, passed, datetime_try FROM tryanswer WHERE iduser = ? and idquest = ?';
-		$params[] = FHQSecurity::userid();
+		$params[] = APISecurity::userid();
 		$params[] = intval($questid);
 		$stmt = $conn->prepare($query);
 		if ($stmt->execute($params)) {

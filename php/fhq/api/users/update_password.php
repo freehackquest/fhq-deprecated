@@ -8,7 +8,7 @@ include_once ($curdir."/../../config/config.php");
 
 FHQHelpers::checkAuth();
 
-if (!FHQSecurity::isAdmin()) 
+if (!APISecurity::isAdmin()) 
 	FHQHelpers::showerror(912, 'only for admin');
 
 if (!FHQHelpers::issetParam('userid'))
@@ -19,7 +19,7 @@ $userid = FHQHelpers::getParam('userid', '');
 if (!is_numeric($userid))
 	FHQHelpers::showerror(912, 'userid must be numeric');
 
-if ($userid == FHQSecurity::userid())
+if ($userid == APISecurity::userid())
 	FHQHelpers::showerror(912, 'Please use another function for change your password');
 
 $result = array(
@@ -38,7 +38,7 @@ if (!FHQHelpers::issetParam('email'))
 $password = FHQHelpers::getParam('password', '');
 $email = FHQHelpers::getParam('email', '');
 
-$password = FHQSecurity::generatePassword($config, $email, $password);
+$password = APISecurity::generatePassword($config, $email, $password);
 
 $result['data']['password'] = $password;
 $result['data']['email'] = $email;

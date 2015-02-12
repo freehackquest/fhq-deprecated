@@ -13,7 +13,7 @@ class FHQUser {
 
 			$query = 'SELECT * FROM users_profile WHERE userid = ?';
 			$stmt = $conn->prepare($query);
-			$stmt->execute(array(FHQSecurity::userid()));
+			$stmt->execute(array(APISecurity::userid()));
 			while($row = $stmt->fetch()) {
 				$name = $row['name'];
 				$value = $row['value'];
@@ -33,7 +33,7 @@ class FHQUser {
 
 			$stmt2 = $conn->prepare('INSERT INTO users_profile(userid,name,value,date_change) VALUES(?,?,?,NOW());');
 			foreach ( $inserts as $k => $v) {
-				$stmt2->execute(array(FHQSecurity::userid(), $k, $v));
+				$stmt2->execute(array(APISecurity::userid(), $k, $v));
 			}
 		} catch(PDOException $e) {
 			showerror(103, 'Error 103: ' + $e->getMessage());

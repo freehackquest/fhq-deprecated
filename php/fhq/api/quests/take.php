@@ -33,12 +33,12 @@ $result['result'] = 'ok';
 $conn = FHQHelpers::createConnection($config);
 
 $result['gameid'] = FHQGame::id(); 
-$result['userid'] = FHQSecurity::userid();
+$result['userid'] = APISecurity::userid();
 
-$filter_by_state = FHQSecurity::isAdmin() ? '' : ' AND quest.state = "open" ';
-$filter_by_score = FHQSecurity::isAdmin() ? '' : ' AND quest.min_score <= '.FHQSecurity::score().' ';
+$filter_by_state = APISecurity::isAdmin() ? '' : ' AND quest.state = "open" ';
+$filter_by_score = APISecurity::isAdmin() ? '' : ' AND quest.min_score <= '.APISecurity::score().' ';
 
-$params[] = FHQSecurity::userid();
+$params[] = APISecurity::userid();
 $params[] = FHQGame::id();
 $params[] = intval($questid);
 
@@ -84,7 +84,7 @@ try {
 			
 			$stmt2 = $conn->prepare('INSERT INTO userquest(iduser,idquest,startdate,stopdate) VALUES (?,?,NOW(),\'0000-00-00 00:00:00\');');
 			$params2 = array(
-				FHQSecurity::userid(),
+				APISecurity::userid(),
 				intval($questid),
 			);
 			$stmt2->execute($params2);

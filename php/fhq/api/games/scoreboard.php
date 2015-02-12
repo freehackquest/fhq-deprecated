@@ -32,7 +32,7 @@ $result['gameid'] = $gameid;
 
 $params[] = intval($gameid);
 
-$filter_by_role = FHQSecurity::isAdmin() == false ? ' AND user.role = "user" ' : '';
+$filter_by_role = APISecurity::isAdmin() == false ? ' AND user.role = "user" ' : '';
 
 $query = '
 			SELECT 

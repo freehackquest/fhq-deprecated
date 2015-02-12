@@ -30,7 +30,7 @@ try {
 	$query = 'UPDATE users_profile SET value = ?, date_change = NOW() WHERE name = ? AND userid = ?';
 	$stmt = $conn->prepare($query);
 
-	$stmt->execute(array($style, 'template', FHQSecurity::userid()));
+	$stmt->execute(array($style, 'template', APISecurity::userid()));
 
 	$result['result'] = 'ok';
 } catch(PDOException $e) {

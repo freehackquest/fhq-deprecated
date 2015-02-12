@@ -7,5 +7,5 @@ $issetToken = FHQHelpers::issetParam('token');
 if ($issetToken) {
 	$conn = FHQHelpers::createConnection($config);
 	$token = FHQHelpers::getParam('token', '');
-	FHQSecurity::loadByToken($conn, $token);
+	APISecurity::loadByToken($conn, $token);
 }

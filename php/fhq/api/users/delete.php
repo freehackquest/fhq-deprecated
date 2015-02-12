@@ -14,7 +14,7 @@ $result = array(
 
 $conn = FHQHelpers::createConnection($config);
 
-if (!FHQSecurity::isAdmin()) 
+if (!APISecurity::isAdmin()) 
 	FHQHelpers::showerror(912, 'only for admin');
 
 if (!FHQHelpers::issetParam('userid'))

@@ -8,7 +8,7 @@ class FHQGame {
 			return false;
 		}
 
-		if (FHQSecurity::isAdmin() || FHQSecurity::isTester())
+		if (APISecurity::isAdmin() || APISecurity::isTester())
 			return true;
 
 		$date_start = new DateTime();

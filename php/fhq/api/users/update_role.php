@@ -7,15 +7,15 @@ include_once ($curdir."/../../config/config.php");
 
 FHQHelpers::checkAuth();
 
-if (FHQHelpers::issetParam('userid') && !FHQSecurity::isAdmin()) 
+if (FHQHelpers::issetParam('userid') && !APISecurity::isAdmin()) 
 	FHQHelpers::showerror(912, 'you what change role for another user, it can do only admin');
 
-$userid = FHQHelpers::getParam('userid', FHQSecurity::userid());
+$userid = FHQHelpers::getParam('userid', APISecurity::userid());
 // $userid = intval($userid);
 if (!is_numeric($userid))
 	FHQHelpers::showerror(912, 'userid must be numeric');
 
-if (FHQSecurity::isAdmin() && FHQSecurity::userid() == $userid)
+if (APISecurity::isAdmin() && APISecurity::userid() == $userid)
 	FHQHelpers::showerror(912, 'you are administrator and you cannot change role for self');
 
 $result = array(

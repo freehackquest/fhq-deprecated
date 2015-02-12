@@ -42,12 +42,12 @@ $result['result'] = 'ok';
 $conn = FHQHelpers::createConnection($config);
 
 $result['gameid'] = FHQGame::id(); 
-$result['userid'] = FHQSecurity::userid();
+$result['userid'] = APISecurity::userid();
 
-$filter_by_state = FHQSecurity::isAdmin() ? '' : ' AND quest.state = "open" ';
-$filter_by_score = FHQSecurity::isAdmin() ? '' : ' AND quest.min_score <= '.FHQSecurity::score().' ';
+$filter_by_state = APISecurity::isAdmin() ? '' : ' AND quest.state = "open" ';
+$filter_by_score = APISecurity::isAdmin() ? '' : ' AND quest.min_score <= '.APISecurity::score().' ';
 
-$params[] = FHQSecurity::userid();
+$params[] = APISecurity::userid();
 $params[] = FHQGame::id();
 $params[] = intval($questid);
 
@@ -97,7 +97,7 @@ try {
 				$nowdate = date('Y-m-d H:i:s');
 				$query1 = 'UPDATE userquest SET stopdate = NOW() WHERE idquest = ? AND iduser = ?;';
 				$stmt1 = $conn->prepare($query1);
-				$stmt1->execute(array(intval($questid), FHQSecurity::userid()));
+				$stmt1->execute(array(intval($questid), APISecurity::userid()));
 				$new_user_score = FHQHelpers::calculateScore($conn);
 				$result['new_user_score'] = $new_user_score;
 				if ($_SESSION['user']['score'] != $result['new_user_score'])
@@ -105,7 +105,7 @@ try {
 					$_SESSION['user']['score'] = $result['new_user_score'];
 					$query2 = 'UPDATE users_games SET date_change = NOW(), score = ? WHERE userid = ? AND gameid = ?;';
 					$stmt2 = $conn->prepare($query2);
-					$stmt2->execute(array(intval($new_user_score), FHQSecurity::userid(), FHQGame::id()));
+					$stmt2->execute(array(intval($new_user_score), APISecurity::userid(), FHQGame::id()));
 				}
 				FHQQuest::updateCountUserSolved($conn, $questid);
 

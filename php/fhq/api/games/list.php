@@ -52,13 +52,13 @@ try {
 			$result['data'][$id][$k] = $row[$k];
 		}
 
-		$bAllows = FHQSecurity::isAdmin();
+		$bAllows = APISecurity::isAdmin();
 		$result['data'][$id]['permissions']['delete'] = $bAllows;
 		$result['data'][$id]['permissions']['update'] = $bAllows;
 	}
 	$result['current_game'] = isset($_SESSION['game']) ? $_SESSION['game']['id'] : 0;
 	
-	$result['permissions']['insert'] = FHQSecurity::isAdmin();
+	$result['permissions']['insert'] = APISecurity::isAdmin();
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
 	FHQHelpers::showerror(702, $e->getMessage());

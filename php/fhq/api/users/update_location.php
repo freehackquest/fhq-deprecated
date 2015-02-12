@@ -41,9 +41,9 @@ try {
 	$query = 'UPDATE users_profile SET value = ?, date_change = NOW() WHERE name = ? AND userid = ?';
 	$stmt = $conn->prepare($query);
 
-	$stmt->execute(array($country, 'country', FHQSecurity::userid()));
-	$stmt->execute(array($city, 'city', FHQSecurity::userid()));
-	$stmt->execute(array($university, 'university', FHQSecurity::userid()));
+	$stmt->execute(array($country, 'country', APISecurity::userid()));
+	$stmt->execute(array($city, 'city', APISecurity::userid()));
+	$stmt->execute(array($university, 'university', APISecurity::userid()));
 
 	$result['result'] = 'ok';
 } catch(PDOException $e) {

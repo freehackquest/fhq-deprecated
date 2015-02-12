@@ -34,14 +34,14 @@ $new_password_confirm = FHQHelpers::getParam('new_password_confirm', '');
 if (strlen($new_password) <= 3)
   FHQHelpers::showerror(7803, '"New password" must be more then 3 characters');
   
-$email = FHQSecurity::email();
-$userid = FHQSecurity::userid();
+$email = APISecurity::email();
+$userid = APISecurity::userid();
 
 if (md5($new_password) != md5($new_password_confirm))
   FHQHelpers::showerror(7804, 'New password and New password confirm are not equals');
   
-$old_password = FHQSecurity::generatePassword($config, $email, $old_password);
-$new_password = FHQSecurity::generatePassword($config, $email, $new_password);
+$old_password = APISecurity::generatePassword($config, $email, $old_password);
+$new_password = APISecurity::generatePassword($config, $email, $new_password);
 
 /*$result['data']['password'] = $password;
 $result['data']['email'] = $email;

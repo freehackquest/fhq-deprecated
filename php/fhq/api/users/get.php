@@ -26,7 +26,7 @@ if (!is_numeric($userid))
 
 $userid = intval($userid);
 
-$bAllow = FHQSecurity::isAdmin() || FHQSecurity::isTester() || FHQSecurity::userid() == $userid;
+$bAllow = APISecurity::isAdmin() || APISecurity::isTester() || APISecurity::userid() == $userid;
 
 $columns = array('iduser', 'email', 'password', 'role', 'nick', 'logo');
 

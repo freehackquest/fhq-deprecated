@@ -17,9 +17,9 @@ if (FHQHelpers::issetParam('email') && FHQHelpers::issetParam('password')) {
 	$email = FHQHelpers::getParam('email', '');
 	$password = FHQHelpers::getParam('password', '');
 	$conn = FHQHelpers::createConnection($config);
-	$hash_password = FHQSecurity::generatePassword($config, $email, $password);
+	$hash_password = APISecurity::generatePassword($config, $email, $password);
 	
-	if( FHQSecurity::login($conn, $email, $hash_password) ) {
+	if( APISecurity::login($conn, $email, $hash_password) ) {
 		$result['result'] = 'ok';
 		$result['token'] = FHQHelpers::gen_guid();
 	} else {
@@ -31,10 +31,10 @@ if (FHQHelpers::issetParam('email') && FHQHelpers::issetParam('password')) {
 
 if ($result['result'] == 'ok') {
 	
-	FHQSecurity::insertLastIp($conn, FHQHelpers::getParam('client', 'none'));
+	APISecurity::insertLastIp($conn, FHQHelpers::getParam('client', 'none'));
 	FHQUser::loadUserProfile($conn);
 	// FHQUser::loadUserScore($conn);
-	FHQSecurity::saveByToken($conn, $result['token']);
+	APISecurity::saveByToken($conn, $result['token']);
 }
 
 echo json_encode($result);

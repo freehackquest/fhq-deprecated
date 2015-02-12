@@ -11,7 +11,7 @@ FHQHelpers::checkAuth();
 
 $message = '';
 
-if (!FHQSecurity::isAdmin())
+if (!APISecurity::isAdmin())
 	FHQHelpers::showerror(986, 'Access denied');
 
 if (!FHQHelpers::issetParam('questid'))
@@ -33,7 +33,7 @@ $result['result'] = 'ok';
 $conn = FHQHelpers::createConnection($config);
 
 $result['gameid'] = FHQGame::id(); 
-$result['userid'] = FHQSecurity::userid();
+$result['userid'] = APISecurity::userid();
 
 $params[] = FHQGame::id();
 $params[] = intval($questid);

@@ -8,7 +8,7 @@ include_once ($curdir."/../../config/config.php");
 
 FHQHelpers::checkAuth();
 
-if (!FHQSecurity::isAdmin())
+if (!APISecurity::isAdmin())
 	FHQHelpers::showerror(10927, "This function allowed only for admin");
 
 $result = array(
@@ -42,7 +42,7 @@ while (file_exists($filename)) {
 			$updates[$version]['to_version'],
 			$updates[$version]['name'],
 			$updates[$version]['description'],
-			FHQSecurity::userid()
+			APISecurity::userid()
 		);
 		$result['data'][$version] = 'installed';
 	} else {

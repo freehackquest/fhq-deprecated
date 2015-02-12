@@ -56,7 +56,7 @@ if (FHQHelpers::issetParam('id')) {
 
 		// loading score
 		$stmt2 = $conn->prepare('select * from users_games where userid= ? AND gameid = ?');
-		$stmt2->execute(array(intval(FHQSecurity::userid()), intval($game_id)));
+		$stmt2->execute(array(intval(APISecurity::userid()), intval($game_id)));
 		if($row2 = $stmt2->fetch())
 		{
 			$_SESSION['user']['score'] = $row2['score'];
@@ -79,12 +79,12 @@ if (FHQHelpers::issetParam('id')) {
 			';
 			$score = 0;
 			$stmt4 = $conn->prepare($query2);
-			$stmt4->execute(array(intval($game_id), FHQSecurity::userid()));
+			$stmt4->execute(array(intval($game_id), APISecurity::userid()));
 			if ($row3 = $stmt4->fetch())
 				$score = $row3['sum_score'];
 			
 			$stmt3 = $conn->prepare('INSERT INTO users_games (userid, gameid, score, date_change) VALUES(?,?,?,NOW())');
-			$stmt3->execute(array(intval(FHQSecurity::userid()), intval($game_id), intval($score)));
+			$stmt3->execute(array(intval(APISecurity::userid()), intval($game_id), intval($score)));
 			
 			$_SESSION['user']['score'] = $score;
 			$result['user'] = array();

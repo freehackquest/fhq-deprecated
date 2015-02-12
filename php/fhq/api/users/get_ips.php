@@ -14,7 +14,7 @@ $result = array(
 
 $result['result'] = 'ok';
 
-if (!FHQSecurity::isAdmin())
+if (!APISecurity::isAdmin())
 	FHQHelpers::showerror(900, 'Access only for admin');
 
 // TODO: added pagginator

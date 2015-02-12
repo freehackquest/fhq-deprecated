@@ -10,7 +10,7 @@ FHQHelpers::checkAuth();
 
 $message = '';
 
-if (!FHQSecurity::isAdmin())
+if (!APISecurity::isAdmin())
 	FHQHelpers::showerror(927, "This function allowed only for admin");
 
 $result = array(

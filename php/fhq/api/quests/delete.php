@@ -22,7 +22,7 @@ if (!FHQGame::checkGameDates($message))
 if (!FHQHelpers::issetParam('questid'))
 	FHQHelpers::showerror(987, 'Not found parameter "questid"');
 
-if (!FHQSecurity::isAdmin())
+if (!APISecurity::isAdmin())
 	FHQHelpers::showerror(351, 'Access denied. You are not admin.');
 
 $questid = FHQHelpers::getParam('questid', 0);

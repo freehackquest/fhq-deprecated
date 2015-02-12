@@ -1,5 +1,5 @@
 <?php
-class FHQSecurity {
+class APISecurity {
 	static function isLogged() {
 		return isset($_SESSION['user']); 
 	}
@@ -30,15 +30,15 @@ class FHQSecurity {
 	}
 	
 	static function logout() {
-		if(FHQSecurity::isLogged()) { unset($_SESSION['user']); unset($_SESSION['game']); }
+		if(APISecurity::isLogged()) { unset($_SESSION['user']); unset($_SESSION['game']); }
 	}
 	
 	static function role() { 
-		return (FHQSecurity::isLogged()) ? $_SESSION['user']['role'] : ''; 
+		return (APISecurity::isLogged()) ? $_SESSION['user']['role'] : ''; 
 	}
 	
 	static function isAdmin() { 
-		return (FHQSecurity::isLogged() && $_SESSION['user']['role'] == 'admin' ); 
+		return (APISecurity::isLogged() && $_SESSION['user']['role'] == 'admin' ); 
 	}
 	
 	static function generatePassword($config, $email, $password) {
@@ -51,40 +51,40 @@ class FHQSecurity {
 	}
 	
 	static function isUser() { 
-		return (FHQSecurity::isLogged() && $_SESSION['user']['role'] == 'user' ); 
+		return (APISecurity::isLogged() && $_SESSION['user']['role'] == 'user' ); 
 	}
 	
 	static function isTester() { 
-		return (FHQSecurity::isLogged() && $_SESSION['user']['role'] == 'tester' ); 
+		return (APISecurity::isLogged() && $_SESSION['user']['role'] == 'tester' ); 
 	}
 	
 	static function isGod() { 
-		return (FHQSecurity::isLogged() && $_SESSION['user']['role'] == 'god' ); 
+		return (APISecurity::isLogged() && $_SESSION['user']['role'] == 'god' ); 
 	}
 	
 	static function score() { 
-		return (FHQSecurity::isLogged() && is_numeric($_SESSION['user']['score'])) ? $_SESSION['user']['score'] : 0; 
+		return (APISecurity::isLogged() && is_numeric($_SESSION['user']['score'])) ? $_SESSION['user']['score'] : 0; 
 	}
 	
 	static function nick() { 
-		return (FHQSecurity::isLogged()) ? $_SESSION['user']['nick'] : ''; 
+		return (APISecurity::isLogged()) ? $_SESSION['user']['nick'] : ''; 
 	}
 	
 	static function email() { 
-		return (FHQSecurity::isLogged()) ? strtolower($_SESSION['user']['email']) : '';
+		return (APISecurity::isLogged()) ? strtolower($_SESSION['user']['email']) : '';
 	}
   
 	static function setNick($nick) { 
-		if(FHQSecurity::isLogged())
+		if(APISecurity::isLogged())
 			$_SESSION['user']['nick'] = $nick;
 	}
 	
 	static function iduser() { 
-		return (FHQSecurity::isLogged() && is_numeric($_SESSION['user']['iduser'])) ? $_SESSION['user']['iduser'] : ''; 
+		return (APISecurity::isLogged() && is_numeric($_SESSION['user']['iduser'])) ? $_SESSION['user']['iduser'] : ''; 
 	}
 	
 	static function userid() { 
-		return (FHQSecurity::isLogged() && is_numeric($_SESSION['user']['iduser'])) ? $_SESSION['user']['iduser'] : ''; 
+		return (APISecurity::isLogged() && is_numeric($_SESSION['user']['iduser'])) ? $_SESSION['user']['iduser'] : ''; 
 	}
 	
 	static function insertLastIp($conn, $client) { 
@@ -100,7 +100,7 @@ class FHQSecurity {
 			}
 
 			$params = array(
-				FHQSecurity::iduser(),
+				APISecurity::iduser(),
 				$_SERVER['REMOTE_ADDR'],
 				$country,
 				$city,
@@ -111,7 +111,7 @@ class FHQSecurity {
 			$stmt->execute($params);
 
 			$stmt_dls = $conn->prepare('UPDATE user SET date_last_signup = NOW() WHERE iduser = ?');
-			$stmt_dls->execute(array(FHQSecurity::iduser()));
+			$stmt_dls->execute(array(APISecurity::iduser()));
 		} catch(PDOException $e) {
 			showerror(103, $e->getMessage());
 		}
@@ -121,7 +121,7 @@ class FHQSecurity {
 		try {
 			$query = 'INSERT INTO users_tokens (userid, token, status, data, start_date, end_date) VALUES(?, ?, ?, ?, NOW(), NOW() + INTERVAL 1 DAY)';
 			$params = array(
-				FHQSecurity::userid(),
+				APISecurity::userid(),
 				$token,
 				'active',
 				json_encode($_SESSION)

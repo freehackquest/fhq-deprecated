@@ -20,7 +20,7 @@ $message = '';
 if (!FHQGame::checkGameDates($message))
 	FHQHelpers::showerror(350, $message);
 
-if (!FHQSecurity::isAdmin())
+if (!APISecurity::isAdmin())
 	FHQHelpers::showerror(351, 'Access denied. You are not admin.');
 
 if (!FHQHelpers::issetParam('questid'))
@@ -71,7 +71,7 @@ $params['author'] = base64_encode($params['author']);
 // $params['subject'] = $params['subject'];
 // $params['quest_uuid'] = $params['quest_uuid'];
 $params['gameid'] = FHQGame::id();
-$params['userid'] = FHQSecurity::userid();
+$params['userid'] = APISecurity::userid();
 
 $conn = FHQHelpers::createConnection($config);
 $values_q = array();

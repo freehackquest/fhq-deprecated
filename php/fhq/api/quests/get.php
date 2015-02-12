@@ -33,12 +33,12 @@ $result['result'] = 'ok';
 $conn = FHQHelpers::createConnection($config);
 
 $result['gameid'] = FHQGame::id(); 
-$result['userid'] = FHQSecurity::userid();
+$result['userid'] = APISecurity::userid();
 
-$filter_by_state = FHQSecurity::isAdmin() ? '' : ' AND quest.state = "open" ';
-$filter_by_score = FHQSecurity::isAdmin() ? '' : ' AND quest.min_score <= '.FHQSecurity::score().' ';
+$filter_by_state = APISecurity::isAdmin() ? '' : ' AND quest.state = "open" ';
+$filter_by_score = APISecurity::isAdmin() ? '' : ' AND quest.min_score <= '.APISecurity::score().' ';
 
-$params[] = FHQSecurity::userid();
+$params[] = APISecurity::userid();
 $params[] = FHQGame::id();
 $params[] = intval($taskid);
 
@@ -105,8 +105,8 @@ try {
 			$result['data']['game_title'] = $_SESSION['game']['title'];
 	}
 	$result['result'] = 'ok';
-	$result['permissions']['edit'] = FHQSecurity::isAdmin();
-	$result['permissions']['delete'] = FHQSecurity::isAdmin();
+	$result['permissions']['edit'] = APISecurity::isAdmin();
+	$result['permissions']['delete'] = APISecurity::isAdmin();
 	
 } catch(PDOException $e) {
 	FHQHelpers::showerror(822, $e->getMessage());

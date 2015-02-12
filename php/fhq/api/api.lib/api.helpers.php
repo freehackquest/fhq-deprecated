@@ -40,7 +40,7 @@ function getParam($name, $defaultValue = "") {
 class FHQHelpers {
 	static function checkAuth()
 	{
-		if(!FHQSecurity::isLogged()) {
+		if(!APISecurity::isLogged()) {
 			FHQHelpers::showerror(4001, 'Not authorized request');
 		}
 	}
@@ -86,7 +86,7 @@ class FHQHelpers {
 		';
 		$score = 0;
 		$stmt = $conn->prepare($query);
-		$stmt->execute(array(FHQGame::id(), FHQSecurity::userid()));
+		$stmt->execute(array(FHQGame::id(), APISecurity::userid()));
 		if($row = $stmt->fetch())
 			$score = $row['sum_score'];
 		return $score;

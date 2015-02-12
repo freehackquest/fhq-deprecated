@@ -43,11 +43,11 @@ $result['filter']['current'] = filter_var($result['filter']['current'], FILTER_V
 $result['filter']['completed'] = filter_var($result['filter']['completed'], FILTER_VALIDATE_BOOLEAN);
 
 $result['gameid'] = FHQGame::id();
-$result['userid'] = FHQSecurity::userid();
+$result['userid'] = APISecurity::userid();
 
-$filter_by_state = FHQSecurity::isAdmin() ? '' : ' AND quest.state = "open" ';
+$filter_by_state = APISecurity::isAdmin() ? '' : ' AND quest.state = "open" ';
 
-$filter_by_score = FHQSecurity::isAdmin() ? '' : ' AND quest.min_score <= '.FHQSecurity::score().' ';
+$filter_by_score = APISecurity::isAdmin() ? '' : ' AND quest.min_score <= '.APISecurity::score().' ';
 
 // calculate count summary
 try {
@@ -63,7 +63,7 @@ try {
 				AND (quest.for_person = 0 OR quest.for_person = ?)
 			
 	');
-	$stmt->execute(array(FHQGame::id(),FHQSecurity::userid()));
+	$stmt->execute(array(FHQGame::id(),APISecurity::userid()));
 	if($row = $stmt->fetch())
 		$result['status']['summary'] = $row['cnt'];
 } catch(PDOException $e) {
@@ -88,7 +88,7 @@ try {
 	';
 	// $result['query_open'] = $query;
 	$stmt1 = $conn->prepare($query);
-	$stmt1->execute(array(FHQSecurity::userid(),FHQGame::id(), FHQSecurity::userid()));
+	$stmt1->execute(array(APISecurity::userid(),FHQGame::id(), APISecurity::userid()));
 	if($row = $stmt1->fetch())
 		$result['status']['open'] = $row['cnt'];
 } catch(PDOException $e) {
@@ -112,7 +112,7 @@ try {
 				AND userquest.startdate <> \'0000-00-00 00:00:00\'
 				AND userquest.stopdate = \'0000-00-00 00:00:00\'
 	');
-	$stmt->execute(array(FHQSecurity::userid(),FHQGame::id(),FHQSecurity::userid()));
+	$stmt->execute(array(APISecurity::userid(),FHQGame::id(),APISecurity::userid()));
 	if($row = $stmt->fetch())
 		$result['status']['current'] = $row['cnt'];
 } catch(PDOException $e) {
@@ -136,7 +136,7 @@ try {
 				AND userquest.startdate <> \'0000-00-00 00:00:00\'
 				AND userquest.stopdate <> \'0000-00-00 00:00:00\' 
 	');
-	$stmt->execute(array(FHQSecurity::userid(),FHQGame::id(), FHQSecurity::userid()));
+	$stmt->execute(array(APISecurity::userid(),FHQGame::id(), APISecurity::userid()));
 	if($row = $stmt->fetch())
 		$result['status']['completed'] = $row['cnt'];
 } catch(PDOException $e) {
@@ -159,7 +159,7 @@ try {
 			GROUP BY
 				quest.tema
 	');
-	$stmt->execute(array(FHQSecurity::userid(),FHQGame::id()));
+	$stmt->execute(array(APISecurity::userid(),FHQGame::id()));
 	while($row = $stmt->fetch())
 	{
 		$result['subjects'][base64_decode($row['tema'])] = $row['cnt'];
@@ -169,7 +169,7 @@ try {
 }
 
 /*$userid = FHQHelpers::getParam('userid', 0);*/
-$params = array(FHQSecurity::userid(), FHQGame::id());
+$params = array(APISecurity::userid(), FHQGame::id());
 
 // filter by status
 $arrWhere_status = array();
@@ -259,7 +259,7 @@ try {
 		);
 	}
 	$result['result'] = 'ok';
-	$result['permissions']['insert'] = FHQSecurity::isAdmin();
+	$result['permissions']['insert'] = APISecurity::isAdmin();
 	
 } catch(PDOException $e) {
 	FHQHelpers::showerror(822, $e->getMessage());

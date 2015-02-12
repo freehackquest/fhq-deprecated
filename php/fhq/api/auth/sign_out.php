@@ -14,8 +14,8 @@ $result = array(
 if (FHQHelpers::issetParam('token')) {
 	$token = FHQHelpers::getParam('token', '');
 	$conn = FHQHelpers::createConnection($config);
-	FHQSecurity::removeByToken($conn, $token);
-	FHQSecurity::logout();
+	APISecurity::removeByToken($conn, $token);
+	APISecurity::logout();
 }
 
 echo json_encode($result);

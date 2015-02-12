@@ -43,7 +43,7 @@ try {
 	$score = 0;
 	// loading score
 	$stmt2 = $conn->prepare('select * from users_games where userid= ? AND gameid = ?');
-	$stmt2->execute(array(intval(FHQSecurity::userid()), intval($gameid)));
+	$stmt2->execute(array(intval(APISecurity::userid()), intval($gameid)));
 	if($row2 = $stmt2->fetch())
 	{
 		$_SESSION['user']['score'] = $row2['score'];
@@ -53,7 +53,7 @@ try {
 	else
 	{
 		$stmt3 = $conn->prepare('INSERT INTO users_games (userid, gameid, score, date_change) VALUES(?,?,0,NOW())');
-		$stmt3->execute(array(intval(FHQSecurity::userid()), intval($gameid)));
+		$stmt3->execute(array(intval(APISecurity::userid()), intval($gameid)));
 		$_SESSION['user']['score'] = 0;
 		$result['user'] = array();
 		$result['user']['score'] = 0;
@@ -61,7 +61,7 @@ try {
 		
 
 	$stmt = $conn->prepare($query);
-	$stmt->execute(array(intval($gameid), intval(FHQSecurity::userid())));
+	$stmt->execute(array(intval($gameid), intval(APISecurity::userid())));
 	if($row = $stmt->fetch())
 	{
 		$_SESSION['user']['score'] = $row['sum_score'];
@@ -72,7 +72,7 @@ try {
 		if ($row['sum_score'] != $score)
 		{
 			$stmt = $conn->prepare('UPDATE users_games SET score = ?, date_change = NOW() WHERE gameid = ? AND userid = ?');
-			$stmt->execute(array(intval($row['sum_score']), intval($gameid), intval(FHQSecurity::userid())));
+			$stmt->execute(array(intval($row['sum_score']), intval($gameid), intval(APISecurity::userid())));
 		}
 	}
 	else
