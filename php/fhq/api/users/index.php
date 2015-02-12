@@ -1,7 +1,6 @@
 <?php
 
-$curdir_users = dirname(__FILE__);
-include_once $curdir_users."/../tex.php";
+include_once dirname(__FILE__)."/../tex.php";
 
 $bShow = false;
 if (!isset($doc)) {
