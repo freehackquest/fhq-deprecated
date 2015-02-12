@@ -70,9 +70,16 @@ function convert_to_html($doc) {
 	foreach ($doc as $section_key => $section)
 	{
 		$result .= "
-      <h2>".$section['name']."</2>
+      <h2>".$section['name']."</h2>
       ".$section['description']." <br>
     ";
+
+    if (isset($section['uri'])) {
+      $result .= "
+        <pre>".$section['uri']."</pre><br>
+      ";
+    }
+
 		foreach ($section['methods'] as $method_key => $method)
 		{
 			
@@ -128,6 +135,16 @@ this chapter is devoted to the frontend developers using kernel of fhq.
 \\section{".$section['name']."}
 ".$section['description']." \\\\
 ";
+
+    if (isset($section['uri'])) {
+      $result .= "
+URI:
+\\begin{Verbatim}[frame=single]
+".$section['uri']."
+\\end{Verbatim}
+";
+    }
+
 		foreach ($section['methods'] as $method_key => $method)
 		{
 			
