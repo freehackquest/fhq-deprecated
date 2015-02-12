@@ -5,7 +5,7 @@ $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../../config/config.php");
 
-FHQHelpers::checkAuth();
+APIHelpers::checkAuth();
 
 $result = array(
 	'result' => 'fail',
@@ -14,15 +14,15 @@ $result = array(
 
 $result['result'] = 'ok';
 
-$conn = FHQHelpers::createConnection($config);
+$conn = APIHelpers::createConnection($config);
 
 $country = '';
 $city = '';
 
-if (!FHQHelpers::issetParam('style'))
-  FHQHelpers::showerror(912, 'Not found parameter "style"');
+if (!APIHelpers::issetParam('style'))
+  APIHelpers::showerror(912, 'Not found parameter "style"');
 
-$style = FHQHelpers::getParam('style', '');
+$style = APIHelpers::getParam('style', '');
 
 try {
 	$_SESSION['user']['profile']['template'] = $style;

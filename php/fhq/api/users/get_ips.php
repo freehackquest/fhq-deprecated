@@ -5,7 +5,7 @@ $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../../config/config.php");
 
-FHQHelpers::checkAuth();
+APIHelpers::checkAuth();
 
 $result = array(
 	'result' => 'fail',
@@ -15,19 +15,19 @@ $result = array(
 $result['result'] = 'ok';
 
 if (!APISecurity::isAdmin())
-	FHQHelpers::showerror(900, 'Access only for admin');
+	APIHelpers::showerror(900, 'Access only for admin');
 
 // TODO: added pagginator
-$conn = FHQHelpers::createConnection($config);
+$conn = APIHelpers::createConnection($config);
 
 
-if (!FHQHelpers::issetParam('userid'))
-  FHQHelpers::showerror(901, 'Not found parameter userid');
+if (!APIHelpers::issetParam('userid'))
+  APIHelpers::showerror(901, 'Not found parameter userid');
 
-$userid = FHQHelpers::getParam('userid', 0);
+$userid = APIHelpers::getParam('userid', 0);
 
 if (!is_numeric($userid))
-	FHQHelpers::showerror(902, 'Error 902: incorrect userid');
+	APIHelpers::showerror(902, 'Error 902: incorrect userid');
 
 include_once(dirname(__FILE__).'/../api.lib/SxGeo.php');
 $SxGeo = new SxGeo(dirname(__FILE__).'/../api.lib/SxGeoCity.dat', SXGEO_BATCH | SXGEO_MEMORY);

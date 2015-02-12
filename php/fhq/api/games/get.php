@@ -9,7 +9,7 @@ include_once ($curdir."/../../config/config.php");
 
 include_once ($curdir."/../api.lib/loadtoken.php");
 
-FHQHelpers::checkAuth();
+APIHelpers::checkAuth();
 
 $result = array(
 	'result' => 'fail',
@@ -17,15 +17,15 @@ $result = array(
 );
 
 if ($conn == null)
-	$conn = FHQHelpers::createConnection($config);
+	$conn = APIHelpers::createConnection($config);
 
-if (!FHQHelpers::issetParam('id'))
-	FHQHelpers::showerror(723, 'not found parameter id');
+if (!APIHelpers::issetParam('id'))
+	APIHelpers::showerror(723, 'not found parameter id');
 
-$game_id = FHQHelpers::getParam('id', 0);
+$game_id = APIHelpers::getParam('id', 0);
 
 if (!is_numeric($game_id))
-	FHQHelpers::showerror(715, 'incorrect id');
+	APIHelpers::showerror(715, 'incorrect id');
 	
 try {
 
@@ -48,7 +48,7 @@ try {
 	}
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
-	FHQHelpers::showerror(722, $e->getMessage());
+	APIHelpers::showerror(722, $e->getMessage());
 }
 
 include_once ($curdir."/../api.lib/savetoken.php");

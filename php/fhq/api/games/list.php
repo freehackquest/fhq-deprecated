@@ -9,7 +9,7 @@ include_once ($curdir."/../../config/config.php");
 
 include_once ($curdir."/../api.lib/loadtoken.php");
 
-FHQHelpers::checkAuth();
+APIHelpers::checkAuth();
 
 $result = array(
 	'result' => 'fail',
@@ -17,7 +17,7 @@ $result = array(
 );
 
 if ($conn == null)
-	$conn = FHQHelpers::createConnection($config);
+	$conn = APIHelpers::createConnection($config);
 
 try {
   // TODO paging
@@ -61,7 +61,7 @@ try {
 	$result['permissions']['insert'] = APISecurity::isAdmin();
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
-	FHQHelpers::showerror(702, $e->getMessage());
+	APIHelpers::showerror(702, $e->getMessage());
 }
 
 include_once ($curdir."/../api.lib/savetoken.php");

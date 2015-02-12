@@ -12,7 +12,7 @@ class FHQUpdates {
 			if ($row = $stmt->fetch())
 				$id = $row['max'];
 		} catch(PDOException $e) {
-			FHQHelpers::showerror(10922, $e->getMessage());
+			APIHelpers::showerror(10922, $e->getMessage());
 		}
 
 		if ($id == NULL)
@@ -26,7 +26,7 @@ class FHQUpdates {
 			if ($row = $stmt->fetch())
 				$version = $row['version'];
 		} catch(PDOException $e) {
-			FHQHelpers::showerror(10923, $e->getMessage());
+			APIHelpers::showerror(10923, $e->getMessage());
 		}
 		return $version;
 	}
@@ -39,7 +39,7 @@ class FHQUpdates {
 			');
 			$stmt->execute(array($old_version, $new_version, $name, 'updated', $description, $userid));
 		} catch(PDOException $e) {
-			FHQHelpers::showerror(10924, $e->getMessage());
+			APIHelpers::showerror(10924, $e->getMessage());
 		}
 	}
 }

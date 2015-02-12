@@ -5,7 +5,7 @@ $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../../config/config.php");
 
-FHQHelpers::checkAuth();
+APIHelpers::checkAuth();
 
 $result = array(
 	'result' => 'fail',
@@ -14,23 +14,23 @@ $result = array(
 
 $result['result'] = 'ok';
 
-$conn = FHQHelpers::createConnection($config);
+$conn = APIHelpers::createConnection($config);
 
 $country = '';
 $city = '';
 
-if (!FHQHelpers::issetParam('country'))
-  FHQHelpers::showerror(909, 'Not found parameter "country"');
+if (!APIHelpers::issetParam('country'))
+  APIHelpers::showerror(909, 'Not found parameter "country"');
 
-if (!FHQHelpers::issetParam('city'))
-  FHQHelpers::showerror(910, 'Not found parameter "city"');
+if (!APIHelpers::issetParam('city'))
+  APIHelpers::showerror(910, 'Not found parameter "city"');
   
-if (!FHQHelpers::issetParam('university'))
-  FHQHelpers::showerror(915, 'Not found parameter "university"');
+if (!APIHelpers::issetParam('university'))
+  APIHelpers::showerror(915, 'Not found parameter "university"');
 
-$country = FHQHelpers::getParam('country', '');
-$city = FHQHelpers::getParam('city', '');
-$university = FHQHelpers::getParam('university', '');
+$country = APIHelpers::getParam('country', '');
+$city = APIHelpers::getParam('city', '');
+$university = APIHelpers::getParam('university', '');
 
 
 try {
@@ -47,7 +47,7 @@ try {
 
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
-	FHQHelpers::showerror(911, $e->getMessage());
+	APIHelpers::showerror(911, $e->getMessage());
 }
 
 echo json_encode($result);

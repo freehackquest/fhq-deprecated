@@ -7,20 +7,20 @@ include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../../config/config.php");
 include_once ($curdir."/../api.lib/loadtoken.php");
 
-FHQHelpers::checkAuth();
+APIHelpers::checkAuth();
 
 $message = '';
 
 if (!FHQGame::checkGameDates($message))
-	FHQHelpers::showerror(986, $message);
+	APIHelpers::showerror(986, $message);
 
-if (!FHQHelpers::issetParam('questid'))
-	FHQHelpers::showerror(987, 'Not found parameter "questid"');
+if (!APIHelpers::issetParam('questid'))
+	APIHelpers::showerror(987, 'Not found parameter "questid"');
 
-$questid = FHQHelpers::getParam('questid', 0);
+$questid = APIHelpers::getParam('questid', 0);
 
 if (!is_numeric($questid))
-	FHQHelpers::showerror(988, 'parameter "questid" must be numeric');
+	APIHelpers::showerror(988, 'parameter "questid" must be numeric');
 
 $result = array(
 	'result' => 'fail',
@@ -29,7 +29,7 @@ $result = array(
 
 $result['result'] = 'ok';
 
-$conn = FHQHelpers::createConnection($config);
+$conn = APIHelpers::createConnection($config);
 
 $result['userid'] = APISecurity::userid();
 $result['questid'] = $questid;
@@ -63,7 +63,7 @@ try {
 	$result['result'] = 'ok';
 	
 } catch(PDOException $e) {
-	FHQHelpers::showerror(822, $e->getMessage());
+	APIHelpers::showerror(822, $e->getMessage());
 }
 
 include_once ($curdir."/../api.lib/savetoken.php");

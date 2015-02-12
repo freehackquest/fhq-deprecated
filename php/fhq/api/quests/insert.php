@@ -8,7 +8,7 @@ include_once ($curdir."/../api.lib/api.quest.php");
 include_once ($curdir."/../../config/config.php");
 include_once ($curdir."/../api.lib/loadtoken.php");
 
-FHQHelpers::checkAuth();
+APIHelpers::checkAuth();
 
 $result = array(
 	'result' => 'fail',
@@ -18,10 +18,10 @@ $result = array(
 $message = '';
 
 if (!FHQGame::checkGameDates($message))
-	FHQHelpers::showerror(350, $message);
+	APIHelpers::showerror(350, $message);
 
 if (!APISecurity::isAdmin())
-	FHQHelpers::showerror(351, 'Access denied. You are not admin.');
+	APIHelpers::showerror(351, 'Access denied. You are not admin.');
 
 $params = array(
 	'quest_uuid' => '',
@@ -39,9 +39,9 @@ $params = array(
 );
 
 foreach( $params as $key => $val ) {
-	if (!FHQHelpers::issetParam($key))
-		FHQHelpers::showerror(352, 'Not found parameter "'.$key.'"');
-	$params[$key] = FHQHelpers::getParam($key, '');
+	if (!APIHelpers::issetParam($key))
+		APIHelpers::showerror(352, 'Not found parameter "'.$key.'"');
+	$params[$key] = APIHelpers::getParam($key, '');
 }
 
 $params['tema'] = base64_encode($params['subject']);
@@ -66,7 +66,7 @@ $params['author'] = base64_encode($params['author']);
 $params['gameid'] = FHQGame::id();
 $params['userid'] = APISecurity::userid();
 
-$conn = FHQHelpers::createConnection($config);
+$conn = APIHelpers::createConnection($config);
 $values_q = array();
 
 foreach ( $params as $k => $v) {
@@ -93,7 +93,7 @@ try {
 		$result['error']['message'] = 'Could not insert';
 	}
 } catch(PDOException $e) {
-	FHQHelpers::showerror(747,$e->getMessage());
+	APIHelpers::showerror(747,$e->getMessage());
 }
 
 include_once ($curdir."/../api.lib/savetoken.php");

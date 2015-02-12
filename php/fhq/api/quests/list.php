@@ -10,12 +10,12 @@ include_once ($curdir."/../../config/config.php");
 
 include_once ($curdir."/../api.lib/loadtoken.php");
 
-FHQHelpers::checkAuth();
+APIHelpers::checkAuth();
 
 $message = '';
 
 if (!FHQGame::checkGameDates($message))
-	FHQHelpers::showerror(917, $message);
+	APIHelpers::showerror(917, $message);
 
 $result = array(
 	'result' => 'fail',
@@ -25,18 +25,18 @@ $result = array(
 $result['result'] = 'ok';
 
 if (FHQGame::id() == 0)
-	FHQHelpers::showerror(926, "Game was not selected.");
+	APIHelpers::showerror(926, "Game was not selected.");
 
 // TODO: must be added filters
-$conn = FHQHelpers::createConnection($config);
+$conn = APIHelpers::createConnection($config);
 
 $result['status']['open'] = 0;
 $result['status']['current'] = 0;
 $result['status']['completed'] = 0;
 
-$result['filter']['open'] = FHQHelpers::getParam('filter_open', true);
-$result['filter']['current'] = FHQHelpers::getParam('filter_current', true);
-$result['filter']['completed'] = FHQHelpers::getParam('filter_completed', false);
+$result['filter']['open'] = APIHelpers::getParam('filter_open', true);
+$result['filter']['current'] = APIHelpers::getParam('filter_current', true);
+$result['filter']['completed'] = APIHelpers::getParam('filter_completed', false);
 
 $result['filter']['open'] = filter_var($result['filter']['open'], FILTER_VALIDATE_BOOLEAN);
 $result['filter']['current'] = filter_var($result['filter']['current'], FILTER_VALIDATE_BOOLEAN);
@@ -67,7 +67,7 @@ try {
 	if($row = $stmt->fetch())
 		$result['status']['summary'] = $row['cnt'];
 } catch(PDOException $e) {
-	FHQHelpers::showerror(922, $e->getMessage());
+	APIHelpers::showerror(922, $e->getMessage());
 }
 
 // calculate open tasks
@@ -92,7 +92,7 @@ try {
 	if($row = $stmt1->fetch())
 		$result['status']['open'] = $row['cnt'];
 } catch(PDOException $e) {
-	FHQHelpers::showerror(920, $e->getMessage());
+	APIHelpers::showerror(920, $e->getMessage());
 }
 
 // calculate current tasks
@@ -116,7 +116,7 @@ try {
 	if($row = $stmt->fetch())
 		$result['status']['current'] = $row['cnt'];
 } catch(PDOException $e) {
-	FHQHelpers::showerror(921, $e->getMessage());
+	APIHelpers::showerror(921, $e->getMessage());
 }
 
 // calculate completed tasks
@@ -140,7 +140,7 @@ try {
 	if($row = $stmt->fetch())
 		$result['status']['completed'] = $row['cnt'];
 } catch(PDOException $e) {
-	FHQHelpers::showerror(922, $e->getMessage());
+	APIHelpers::showerror(922, $e->getMessage());
 }
 
 // calculate count of types
@@ -165,10 +165,10 @@ try {
 		$result['subjects'][base64_decode($row['tema'])] = $row['cnt'];
 	}
 } catch(PDOException $e) {
-	FHQHelpers::showerror(922, $e->getMessage());
+	APIHelpers::showerror(922, $e->getMessage());
 }
 
-/*$userid = FHQHelpers::getParam('userid', 0);*/
+/*$userid = APIHelpers::getParam('userid', 0);*/
 $params = array(APISecurity::userid(), FHQGame::id());
 
 // filter by status
@@ -262,7 +262,7 @@ try {
 	$result['permissions']['insert'] = APISecurity::isAdmin();
 	
 } catch(PDOException $e) {
-	FHQHelpers::showerror(822, $e->getMessage());
+	APIHelpers::showerror(822, $e->getMessage());
 }
 
 include_once ($curdir."/../api.lib/savetoken.php");

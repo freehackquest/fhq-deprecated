@@ -9,27 +9,27 @@ include_once ($curdir."/../api.lib/api.quest.php");
 include_once ($curdir."/../../config/config.php");
 include_once ($curdir."/../api.lib/loadtoken.php");
 
-FHQHelpers::checkAuth();
+APIHelpers::checkAuth();
 
 $message = '';
 
 if (!FHQGame::checkGameDates($message))
-	FHQHelpers::showerror(986, $message);
+	APIHelpers::showerror(986, $message);
 
-if (!FHQHelpers::issetParam('questid'))
-	FHQHelpers::showerror(987, 'Not found parameter "questid"');
+if (!APIHelpers::issetParam('questid'))
+	APIHelpers::showerror(987, 'Not found parameter "questid"');
 
-if (!FHQHelpers::issetParam('answer'))
-	FHQHelpers::showerror(387, 'Not found parameter "answer"');
+if (!APIHelpers::issetParam('answer'))
+	APIHelpers::showerror(387, 'Not found parameter "answer"');
 	
-$questid = FHQHelpers::getParam('questid', 0);
-$answer = FHQHelpers::getParam('answer', '');
+$questid = APIHelpers::getParam('questid', 0);
+$answer = APIHelpers::getParam('answer', '');
 
 if ($answer == "")
-  FHQHelpers::showerror(777, 'parameter "answer" must be not empty');
+  APIHelpers::showerror(777, 'parameter "answer" must be not empty');
 
 if (!is_numeric($questid))
-	FHQHelpers::showerror(988, 'parameter "questid" must be numeric');
+	APIHelpers::showerror(988, 'parameter "questid" must be numeric');
 
 $result = array(
 	'result' => 'fail',
@@ -39,7 +39,7 @@ $result = array(
 $result['result'] = 'ok';
 
 // TODO: must be added filters
-$conn = FHQHelpers::createConnection($config);
+$conn = APIHelpers::createConnection($config);
 
 $result['gameid'] = FHQGame::id(); 
 $result['userid'] = APISecurity::userid();
@@ -98,7 +98,7 @@ try {
 				$query1 = 'UPDATE userquest SET stopdate = NOW() WHERE idquest = ? AND iduser = ?;';
 				$stmt1 = $conn->prepare($query1);
 				$stmt1->execute(array(intval($questid), APISecurity::userid()));
-				$new_user_score = FHQHelpers::calculateScore($conn);
+				$new_user_score = APIHelpers::calculateScore($conn);
 				$result['new_user_score'] = $new_user_score;
 				if ($_SESSION['user']['score'] != $result['new_user_score'])
 				{
@@ -114,12 +114,12 @@ try {
 				
 			} else {
 				FHQAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, 'No');
-				FHQHelpers::showerror(340, 'answer incorrect "'.htmlspecialchars($answer).'"');
+				APIHelpers::showerror(340, 'answer incorrect "'.htmlspecialchars($answer).'"');
 			};
 		}
 		else
 		{
-			FHQHelpers::showerror(822, 'quest already passed');
+			APIHelpers::showerror(822, 'quest already passed');
 		}
 
 		/*if ($status == 'current' || $status == 'completed')
@@ -127,11 +127,11 @@ try {
 	}
 	else
 	{
-		FHQHelpers::showerror(822, 'not found quest');
+		APIHelpers::showerror(822, 'not found quest');
 	}
 	
 } catch(PDOException $e) {
-	FHQHelpers::showerror(822, $e->getMessage());
+	APIHelpers::showerror(822, $e->getMessage());
 }
 
 include_once ($curdir."/../api.lib/savetoken.php");

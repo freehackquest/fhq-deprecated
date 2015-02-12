@@ -6,12 +6,12 @@ include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../../config/config.php");
 
-FHQHelpers::checkAuth();
+APIHelpers::checkAuth();
 
 $message = '';
 
 if (!APISecurity::isAdmin())
-	FHQHelpers::showerror(927, "This function allowed only for admin");
+	APIHelpers::showerror(927, "This function allowed only for admin");
 
 $result = array(
 	'result' => 'fail',
@@ -20,24 +20,24 @@ $result = array(
 
 $result['result'] = 'ok';
 
-$conn = FHQHelpers::createConnection($config);
+$conn = APIHelpers::createConnection($config);
 
-$search = FHQHelpers::getParam('search', '');
+$search = APIHelpers::getParam('search', '');
 $result['search'] = $search;
 $search = '%'.$search.'%';
 
-$page = FHQHelpers::getParam('page', 0);
+$page = APIHelpers::getParam('page', 0);
 $page = intval($page);
 $result['page'] = $page;
 
-$onpage = FHQHelpers::getParam('onpage', 5);
+$onpage = APIHelpers::getParam('onpage', 5);
 $onpage = intval($onpage);
 $result['onpage'] = $onpage;
 
 $start = $page * $onpage;
 
-$role = FHQHelpers::getParam('role', '');
-$status = FHQHelpers::getParam('status', '');
+$role = APIHelpers::getParam('role', '');
+$status = APIHelpers::getParam('status', '');
 
 $role = '%'.$role.'%';
 $status = '%'.$status.'%';
@@ -59,7 +59,7 @@ try {
 		$result['found'] = $row['cnt'];
 	}
 } catch(PDOException $e) {
-	FHQHelpers::showerror(922, $e->getMessage());
+	APIHelpers::showerror(922, $e->getMessage());
 }
 
 try {
@@ -94,7 +94,7 @@ try {
     $i++;
 	}
 } catch(PDOException $e) {
-	FHQHelpers::showerror(922, $e->getMessage());
+	APIHelpers::showerror(922, $e->getMessage());
 }
 
 echo json_encode($result);

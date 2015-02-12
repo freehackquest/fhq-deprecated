@@ -11,9 +11,9 @@ $result = array(
 	'data' => array(),
 );
 
-if (FHQHelpers::issetParam('token')) {
-	$token = FHQHelpers::getParam('token', '');
-	$conn = FHQHelpers::createConnection($config);
+if (APIHelpers::issetParam('token')) {
+	$token = APIHelpers::getParam('token', '');
+	$conn = APIHelpers::createConnection($config);
 	APISecurity::removeByToken($conn, $token);
 	APISecurity::logout();
 }

@@ -6,10 +6,10 @@ include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../api.lib/api.updates.php");
 include_once ($curdir."/../../config/config.php");
 
-FHQHelpers::checkAuth();
+APIHelpers::checkAuth();
 
 if (!APISecurity::isAdmin())
-	FHQHelpers::showerror(10927, "This function allowed only for admin");
+	APIHelpers::showerror(10927, "This function allowed only for admin");
 
 $result = array(
 	'result' => 'fail',
@@ -18,7 +18,7 @@ $result = array(
 
 $result['result'] = 'ok';
 
-$conn = FHQHelpers::createConnection($config);
+$conn = APIHelpers::createConnection($config);
 
 $version = FHQUpdates::getVersion($conn);
 $result['version'] = $version;

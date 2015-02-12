@@ -6,7 +6,7 @@ include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../../config/config.php");
 
-FHQHelpers::checkAuth();
+APIHelpers::checkAuth();
 
 $message = '';
 
@@ -20,11 +20,11 @@ if (!checkGameDates($security, &$message))
 	showerror(709, 'Error 709: '.$errmsg);*/
 
 
-$conn = FHQHelpers::createConnection($config);
+$conn = APIHelpers::createConnection($config);
 
 $gameid = FHQGame::id();
 if ($gameid == 0)
-	FHQHelpers::showerror(616, 'Please choose game');
+	APIHelpers::showerror(616, 'Please choose game');
 
 $query = '
 	SELECT 
@@ -77,10 +77,10 @@ try {
 	}
 	else
 	{
-		FHQHelpers::showerror(616, 'Game not found');
+		APIHelpers::showerror(616, 'Game not found');
 	}
 } catch(PDOException $e) {
-	FHQHelpers::showerror(716, $e->getMessage());
+	APIHelpers::showerror(716, $e->getMessage());
 }
 
 echo json_encode($result);

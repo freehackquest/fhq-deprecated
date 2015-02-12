@@ -6,7 +6,7 @@ include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../../config/config.php");
 
-FHQHelpers::checkAuth();
+APIHelpers::checkAuth();
 
 $result = array(
 	'result' => 'fail',
@@ -14,12 +14,12 @@ $result = array(
 	'profile' => array(),
 );
 
-$conn = FHQHelpers::createConnection($config);
+$conn = APIHelpers::createConnection($config);
 
-if (!FHQHelpers::issetParam('userid'))
+if (!APIHelpers::issetParam('userid'))
   showerror(823, 'Error 823: not found parameter userid');
 
-$userid = FHQHelpers::getParam('userid', 0);
+$userid = APIHelpers::getParam('userid', 0);
 
 if (!is_numeric($userid))
 	showerror(825, 'Error 825: incorrect id');

@@ -13,27 +13,27 @@ $result = array(
 	'data' => array(),
 );
 
-if (FHQHelpers::issetParam('email') && FHQHelpers::issetParam('password')) {
-	$email = FHQHelpers::getParam('email', '');
-	$password = FHQHelpers::getParam('password', '');
-	$conn = FHQHelpers::createConnection($config);
+if (APIHelpers::issetParam('email') && APIHelpers::issetParam('password')) {
+	$email = APIHelpers::getParam('email', '');
+	$password = APIHelpers::getParam('password', '');
+	$conn = APIHelpers::createConnection($config);
 	$hash_password = APISecurity::generatePassword($config, $email, $password);
 	
 	if( APISecurity::login($conn, $email, $hash_password) ) {
 		$result['result'] = 'ok';
-		$result['token'] = FHQHelpers::gen_guid();
+		$result['token'] = APIHelpers::gen_guid();
 	} else {
-		FHQHelpers::showerror(1002, 'email or password was not found in system ['.$email.']  ['.$password.'] ');
+		APIHelpers::showerror(1002, 'email or password was not found in system ['.$email.']  ['.$password.'] ');
 	}
 } else {
-	FHQHelpers::showerror(1001, 'parameters was not found email or password');
+	APIHelpers::showerror(1001, 'parameters was not found email or password');
 }
 
 if ($result['result'] == 'ok') {
 	
-	APISecurity::insertLastIp($conn, FHQHelpers::getParam('client', 'none'));
-	FHQUser::loadUserProfile($conn);
-	// FHQUser::loadUserScore($conn);
+	APISecurity::insertLastIp($conn, APIHelpers::getParam('client', 'none'));
+	APIUser::loadUserProfile($conn);
+	// APIUser::loadUserScore($conn);
 	APISecurity::saveByToken($conn, $result['token']);
 }
 

@@ -37,11 +37,11 @@ function getParam($name, $defaultValue = "") {
   return isset($_GET[$name]) ? $_GET[$name] : (isset($_POST[$name]) ? $_POST[$name] : $defaultValue);
 }
 
-class FHQHelpers {
+class APIHelpers {
 	static function checkAuth()
 	{
 		if(!APISecurity::isLogged()) {
-			FHQHelpers::showerror(4001, 'Not authorized request');
+			APIHelpers::showerror(4001, 'Not authorized request');
 		}
 	}
 	

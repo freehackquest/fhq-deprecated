@@ -14,7 +14,7 @@ $result = array(
 	'data' => array(),
 );
 
-$conn = FHQHelpers::createConnection($config);
+$conn = APIHelpers::createConnection($config);
 
 if($security->isAdmin())
   showerror(746, 'Error 746: access denie. you must be admin.');

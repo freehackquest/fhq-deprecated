@@ -2,10 +2,10 @@
 
 $conn = null;
 $token = null;
-$issetToken = FHQHelpers::issetParam('token');
+$issetToken = APIHelpers::issetParam('token');
 
 if ($issetToken) {
-	$conn = FHQHelpers::createConnection($config);
-	$token = FHQHelpers::getParam('token', '');
+	$conn = APIHelpers::createConnection($config);
+	$token = APIHelpers::getParam('token', '');
 	APISecurity::loadByToken($conn, $token);
 }

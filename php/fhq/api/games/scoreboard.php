@@ -6,17 +6,17 @@ include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../../config/config.php");
 
-// FHQHelpers::checkAuth();
+// APIHelpers::checkAuth();
 
 $message = '';
 
-$gameid = FHQHelpers::getParam('gameid', 0);
+$gameid = APIHelpers::getParam('gameid', 0);
 
-if (!FHQHelpers::issetParam('gameid'))
+if (!APIHelpers::issetParam('gameid'))
 	$gameid = FHQGame::id();
 
 if (!is_numeric($gameid))
-	FHQHelpers::showerror(988, 'parameter "gameid" must be numeric');
+	APIHelpers::showerror(988, 'parameter "gameid" must be numeric');
 
 $result = array(
 	'result' => 'fail',
@@ -26,7 +26,7 @@ $result = array(
 $result['result'] = 'ok';
 
 // TODO: must be added filters
-$conn = FHQHelpers::createConnection($config);
+$conn = APIHelpers::createConnection($config);
 
 $result['gameid'] = $gameid;
 
@@ -78,7 +78,7 @@ try {
 	}
 	
 } catch(PDOException $e) {
-	FHQHelpers::showerror(822, $e->getMessage());
+	APIHelpers::showerror(822, $e->getMessage());
 }
 
 echo json_encode($result);

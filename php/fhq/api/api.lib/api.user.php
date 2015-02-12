@@ -1,5 +1,5 @@
 <?php
-class FHQUser {
+class APIUser {
 	static function loadUserProfile($conn) {
 		try {
 			$profile = array();

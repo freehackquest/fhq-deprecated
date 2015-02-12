@@ -7,20 +7,20 @@ include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../../config/config.php");
 include_once ($curdir."/../api.lib/loadtoken.php");
 
-FHQHelpers::checkAuth();
+APIHelpers::checkAuth();
 
 $message = '';
 
 if (!FHQGame::checkGameDates($message))
-	FHQHelpers::showerror(986, $message);
+	APIHelpers::showerror(986, $message);
 
-if (!FHQHelpers::issetParam('taskid'))
-	FHQHelpers::showerror(987, 'Not found parameter "taskid"');
+if (!APIHelpers::issetParam('taskid'))
+	APIHelpers::showerror(987, 'Not found parameter "taskid"');
 
-$taskid = FHQHelpers::getParam('taskid', 0);
+$taskid = APIHelpers::getParam('taskid', 0);
 
 if (!is_numeric($taskid))
-	FHQHelpers::showerror(988, 'parameter "taskid" must be numeric');
+	APIHelpers::showerror(988, 'parameter "taskid" must be numeric');
 
 $result = array(
 	'result' => 'fail',
@@ -30,7 +30,7 @@ $result = array(
 $result['result'] = 'ok';
 
 // TODO: must be added filters
-$conn = FHQHelpers::createConnection($config);
+$conn = APIHelpers::createConnection($config);
 
 $result['gameid'] = FHQGame::id(); 
 $result['userid'] = APISecurity::userid();
@@ -109,7 +109,7 @@ try {
 	$result['permissions']['delete'] = APISecurity::isAdmin();
 	
 } catch(PDOException $e) {
-	FHQHelpers::showerror(822, $e->getMessage());
+	APIHelpers::showerror(822, $e->getMessage());
 }
 
 include_once ($curdir."/../api.lib/savetoken.php");

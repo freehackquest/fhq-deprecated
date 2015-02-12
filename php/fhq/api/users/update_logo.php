@@ -5,27 +5,27 @@ $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../../config/config.php");
 
-FHQHelpers::checkAuth();
+APIHelpers::checkAuth();
 
-if (FHQHelpers::issetParam('userid') && !APISecurity::isAdmin()) 
-	FHQHelpers::showerror(912, 'you what change logo for another user, it can do only admin');
+if (APIHelpers::issetParam('userid') && !APISecurity::isAdmin()) 
+	APIHelpers::showerror(912, 'you what change logo for another user, it can do only admin');
 
-$userid = FHQHelpers::getParam('userid', APISecurity::userid());
+$userid = APIHelpers::getParam('userid', APISecurity::userid());
 // $userid = intval($userid);
 if (!is_numeric($userid))
-	FHQHelpers::showerror(912, 'userid must be numeric');
+	APIHelpers::showerror(912, 'userid must be numeric');
 
 $result = array(
 	'result' => 'fail',
 	'data' => array(),
 );
 
-$conn = FHQHelpers::createConnection($config);
+$conn = APIHelpers::createConnection($config);
 
-if (!FHQHelpers::issetParam('logo'))
-  FHQHelpers::showerror(912, 'Not found parameter "logo"');
+if (!APIHelpers::issetParam('logo'))
+  APIHelpers::showerror(912, 'Not found parameter "logo"');
 
-$logo = FHQHelpers::getParam('logo', '');
+$logo = APIHelpers::getParam('logo', '');
 
 $result['data']['logo'] = $logo;
 $result['data']['userid'] = $userid;
@@ -38,7 +38,7 @@ try {
 	else
 		$result['result'] = 'fail';
 } catch(PDOException $e) {
-	FHQHelpers::showerror(911, $e->getMessage());
+	APIHelpers::showerror(911, $e->getMessage());
 }
 
 echo json_encode($result);

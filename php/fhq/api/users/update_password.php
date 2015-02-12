@@ -6,37 +6,37 @@ include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.security.php");
 include_once ($curdir."/../../config/config.php");
 
-FHQHelpers::checkAuth();
+APIHelpers::checkAuth();
 
 if (!APISecurity::isAdmin()) 
-	FHQHelpers::showerror(912, 'only for admin');
+	APIHelpers::showerror(912, 'only for admin');
 
-if (!FHQHelpers::issetParam('userid'))
-  FHQHelpers::showerror(912, 'Not found parameter "userid"');
+if (!APIHelpers::issetParam('userid'))
+  APIHelpers::showerror(912, 'Not found parameter "userid"');
 
-$userid = FHQHelpers::getParam('userid', '');
+$userid = APIHelpers::getParam('userid', '');
 
 if (!is_numeric($userid))
-	FHQHelpers::showerror(912, 'userid must be numeric');
+	APIHelpers::showerror(912, 'userid must be numeric');
 
 if ($userid == APISecurity::userid())
-	FHQHelpers::showerror(912, 'Please use another function for change your password');
+	APIHelpers::showerror(912, 'Please use another function for change your password');
 
 $result = array(
 	'result' => 'fail',
 	'data' => array(),
 );
 
-$conn = FHQHelpers::createConnection($config);
+$conn = APIHelpers::createConnection($config);
 
-if (!FHQHelpers::issetParam('password'))
-  FHQHelpers::showerror(912, 'Not found parameter "password"');
+if (!APIHelpers::issetParam('password'))
+  APIHelpers::showerror(912, 'Not found parameter "password"');
   
-if (!FHQHelpers::issetParam('email'))
-  FHQHelpers::showerror(912, 'Not found parameter "email"');
+if (!APIHelpers::issetParam('email'))
+  APIHelpers::showerror(912, 'Not found parameter "email"');
 
-$password = FHQHelpers::getParam('password', '');
-$email = FHQHelpers::getParam('email', '');
+$password = APIHelpers::getParam('password', '');
+$email = APIHelpers::getParam('email', '');
 
 $password = APISecurity::generatePassword($config, $email, $password);
 
@@ -45,7 +45,7 @@ $result['data']['email'] = $email;
 $result['data']['userid'] = $userid;
 
 if (strlen($password) <= 3)
-  FHQHelpers::showerror(912, '"password" must be more then 3 characters');
+  APIHelpers::showerror(912, '"password" must be more then 3 characters');
 
 try {
 	$query = 'UPDATE user SET password = ? WHERE iduser = ? AND email = ?';
@@ -55,7 +55,7 @@ try {
 	else
 		$result['result'] = 'fail';
 } catch(PDOException $e) {
-	FHQHelpers::showerror(911, $e->getMessage());
+	APIHelpers::showerror(911, $e->getMessage());
 }
 
 echo json_encode($result);

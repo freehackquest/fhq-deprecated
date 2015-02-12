@@ -9,7 +9,7 @@ include_once ($curdir."/../../config/config.php");
 
 include_once ($curdir."/../api.lib/loadtoken.php");
 
-FHQHelpers::checkAuth();
+APIHelpers::checkAuth();
 
 $result = array(
 	'result' => 'fail',
@@ -20,13 +20,13 @@ $result = array(
 if (!checkGameDates($security, &$message))
 	showerror(709, 'Error 709: '.$errmsg);*/
 
-$conn = FHQHelpers::createConnection($config);
+$conn = APIHelpers::createConnection($config);
 
-if (FHQHelpers::issetParam('id')) {
-	$game_id = FHQHelpers::getParam('id', 0);
+if (APIHelpers::issetParam('id')) {
+	$game_id = APIHelpers::getParam('id', 0);
 
 	if (!is_numeric($game_id))
-		FHQHelpers::showerror(705, 'Error 705: incorrect id');
+		APIHelpers::showerror(705, 'Error 705: incorrect id');
 
 	// try {
 		$query = '
@@ -51,7 +51,7 @@ if (FHQHelpers::issetParam('id')) {
 		}
 		else
 		{
-			FHQHelpers::showerror(702, 'Game with id='.$game_id.' are not exists');
+			APIHelpers::showerror(702, 'Game with id='.$game_id.' are not exists');
 		}
 
 		// loading score
@@ -91,10 +91,10 @@ if (FHQHelpers::issetParam('id')) {
 			$result['user']['score'] = $score;
 		}	
 	// } catch(PDOException $e) {
-//		FHQHelpers::showerror(712, $e->getMessage());
+//		APIHelpers::showerror(712, $e->getMessage());
 //	}
 } else {
-	FHQHelpers::showerror(713, 'not found parameter id');
+	APIHelpers::showerror(713, 'not found parameter id');
 }
 
 include_once ($curdir."/../api.lib/savetoken.php");

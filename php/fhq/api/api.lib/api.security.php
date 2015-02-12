@@ -24,7 +24,7 @@ class APISecurity {
 				return true;
 			}
 		// } catch(PDOException $e) {
-			// FHQHelpers::showerror(103, $e->getMessage());
+			// APIHelpers::showerror(103, $e->getMessage());
 		// }
 		return false;
 	}
@@ -145,7 +145,7 @@ class APISecurity {
 			if ($row = $stmt->fetch())
 				$_SESSION = json_decode($row['data'],true);
 		} catch(PDOException $e) {
-			FHQHelpers::showerror(103, $e->getMessage());
+			APIHelpers::showerror(103, $e->getMessage());
 		}
 	}
 	
@@ -160,7 +160,7 @@ class APISecurity {
 			$stmt = $conn->prepare($query);
 			$stmt->execute($params);
 		// } catch(PDOException $e) {
-//			FHQHelpers::showerror(103, $e->getMessage());
+//			APIHelpers::showerror(103, $e->getMessage());
 		//}
 	}
 	
@@ -173,7 +173,7 @@ class APISecurity {
 			$stmt = $conn->prepare($query);
 			$stmt->execute($params);
 		} catch(PDOException $e) {
-			FHQHelpers::showerror(103, $e->getMessage());
+			APIHelpers::showerror(103, $e->getMessage());
 		}
 	}
 }
