@@ -44,6 +44,8 @@ $doc['auth'] = array(
 				),
 			),
 		),
+
+
     // sign_out
     'sign_out' => array(
 			'name' => 'Sign Out/Logoff',
@@ -64,6 +66,8 @@ $doc['auth'] = array(
 				),
 			),
 		),
+
+
     // registration
     'registration' => array(
 			'name' => 'Change User Password',
@@ -93,6 +97,8 @@ $doc['auth'] = array(
 				),
 			),
 		),
+
+
     // restore
     'restore' => array(
 			'name' => 'Restore Password',
