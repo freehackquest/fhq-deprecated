@@ -65,42 +65,34 @@ $doc['auth'] = array(
 			),
 		),
     // registration
-    /* 'registration' => array(
+    'registration' => array(
 			'name' => 'Change User Password',
 			'description' => 'Methods for change user password',
-			'uri' => 'api/auth/change_password.php',
-			'access' => 'authorized users',
+			'uri' => 'api/auth/registration.php',
+			'access' => 'all',
 			'input' => array(
-				'old_password' => array(
+  			'email' => array(
 					'type' => 'string',
-					'description' => 'Old password',
+					'description' => 'User\'s email',
 				),
-				'new_password' => array(
+				'captcha' => array(
 					'type' => 'string',
-					'description' => 'New password (muts be more then 3 characters)',
-				),
-				'new_password_confirm' => array(
-					'type' => 'string',
-					'description' => 'New password confirm',
+					'description' => 'See section about captcha.',
 				),
 			),
 			'output' => array(
 				'errors' => array(
-					'7800' => 'Not found parameter "old_password"',
-					'7801' => 'Not found parameter "new_password"',
-					'7802' => 'Not found parameter "new_password_confirm"',
-					'7803' => '"New password" must be more then 3 characters',
-					'7804' => 'New password and New password confirm are not equals',
-					'7805' => 'Old password are incorrect',
-					'7806' => 'errors from db',
-					'7807' => 'errors from db',
+					'1010' => 'Problem with registration',
+					'1011' => 'Invalid e-mail address',
+					'1012' => 'Captcha is not correct, please "Refresh captcha"',
+					'1013' => 'Incorrect input parameters email or captcha',
 				),
 				'successfull' => array(
 					'result' => 'ok',
 					'data' => array(),
 				),
 			),
-		), */
+		),
     // restore
     'restore' => array(
 			'name' => 'Restore Password',
