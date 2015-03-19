@@ -1,0 +1,8 @@
+FHQ Backend (c++ version)
+
+Used sources from https://github.com/nikhilm/qhttpserver
+
+Need to install:
+# apt-get install libqt5sql5-mysql
+
+
