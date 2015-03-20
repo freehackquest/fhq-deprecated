@@ -35,7 +35,7 @@ QJsonObject AuthLogon::api() {
 
 // --------------------------------------------------------------------
 
-void AuthLogon::handleRequest(QSqlDatabase &db, SecretToken *pToken, QHttpRequest *req, QJsonObject &response) {
+void AuthLogon::handleRequest(GlobalContext *, QSqlDatabase *db, QHttpRequest *req, QJsonObject &response) {
 	QString uuid = QUuid::createUuid().toString();
 	uuid = uuid.mid(1,uuid.length()-2);
 	QUrlQuery urlQuery(req->url());
@@ -91,7 +91,7 @@ QJsonObject AuthLogoff::api() {
 
 // --------------------------------------------------------------------
 
-void AuthLogoff::handleRequest(QSqlDatabase &db, SecretToken *pToken, QHttpRequest *req, QJsonObject &response) {
+void AuthLogoff::handleRequest(GlobalContext *, QSqlDatabase *db, QHttpRequest *req, QJsonObject &response) {
 	QString uuid = QUuid::createUuid().toString();
 	uuid = uuid.mid(1,uuid.length()-2);
 	QUrlQuery urlQuery(req->url());

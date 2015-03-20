@@ -13,13 +13,11 @@ class HandlerManager : public QObject
 {
 		Q_OBJECT
 		QMap<QString, IHTTPHandler*> m_mapHandlers;
-		QSettings *m_pSettings;
+    GlobalContext *m_pGlobalContext;
+    QHttpServer *m_pServer;
 	public:
-		HandlerManager();
-		void setServer(QHttpServer *server);
-		void setConfigFile(QString configFile);
-		QSettings *getSettings();
-		int getServerPort();
+		HandlerManager(GlobalContext *pGlobalContext);
+		void startServer();
 
 		void RegisterHTTPHandler(IHTTPHandler*);
 		void UnregisterHTTPHandler(IHTTPHandler*);

@@ -10,7 +10,7 @@ class IHTTPHandler {
 	public:
 		virtual QString target() = 0;
 		virtual QJsonObject api() = 0;
-		virtual void handleRequest(QSqlDatabase &db, SecretToken *pToken, QHttpRequest *req, QJsonObject &response) = 0;
+		virtual void handleRequest(GlobalContext *, QSqlDatabase *db, QHttpRequest *req, QJsonObject &response) = 0;
 };
 
 void setErrorResponse(QJsonObject &response, int code, QString message);

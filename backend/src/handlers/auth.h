@@ -10,14 +10,14 @@ class AuthLogon : public IHTTPHandler {
 	public:
 		virtual QString target();
 		virtual QJsonObject api();
-		virtual void handleRequest(QSqlDatabase &db, SecretToken *pToken, QHttpRequest *req, QJsonObject &response);
+		virtual void handleRequest(GlobalContext *, QSqlDatabase *db, QHttpRequest *req, QJsonObject &response);
 };
 
 class AuthLogoff : public IHTTPHandler {
 	public:
 		virtual QString target();
 		virtual QJsonObject api();
-		virtual void handleRequest(QSqlDatabase &db, SecretToken *pToken, QHttpRequest *req, QJsonObject &response);
+		virtual void handleRequest(GlobalContext *, QSqlDatabase *db, QHttpRequest *req, QJsonObject &response);
 };
 
 } // namespace handlers

@@ -11,20 +11,11 @@
 // --------------------------------------------------------------------
 
 void DatabaseUpdater::update(QSettings *settings) {
-	QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL", "fhqupdate");
-	db.setHostName(settings->value("database/host", "localhost").toString());
-	db.setDatabaseName(settings->value("database/dbname", "fhq").toString());
-	db.setUserName(settings->value("database/dbuser", "fhq").toString());
-	db.setPassword(settings->value("database/dbuserpassword", "fhq").toString());
+  QSqlDatabase *db = pGlobalContext->getDatabaseConnection();
+  if (db == NULL) {
+    return;
+  }
 
-	if (!db.open()) {
-		std::cerr << "[ERROR] " << db.lastError().text().toStdString() << "\n";
-		std::cerr << "[ERROR] Failed to connect.\n";
-		return;
-	} else {
-		std::cout << " * Connect to database successfully.\n";
-	}
-	
 	int nInstalledUpdates = 0;
 	
 	if ( !db.tables().contains( QLatin1String("backend_dbupdates"))) {

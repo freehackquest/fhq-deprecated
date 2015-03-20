@@ -21,34 +21,9 @@ void setErrorResponse(QJsonObject &response, int code, QString message) {
 };
 
 /// HandlerManager
-HandlerManager::HandlerManager()
+HandlerManager::HandlerManager(GlobalContext *pGlobalContext)
 {
-	
-}
-
-// --------------------------------------------------------------------
-
-void HandlerManager::setServer(QHttpServer *server) {
-	connect(server, SIGNAL(newRequest(QHttpRequest*, QHttpResponse*)),
-		this, SLOT(handleRequest(QHttpRequest*, QHttpResponse*)));
-}
-
-// --------------------------------------------------------------------
-
-void HandlerManager::setConfigFile(QString configFile) {
-	m_pSettings = new QSettings(configFile, QSettings::IniFormat);
-}
-
-// --------------------------------------------------------------------
-
-QSettings *HandlerManager::getSettings() {
-	return m_pSettings;
-}
-
-// --------------------------------------------------------------------
-
-int HandlerManager::getServerPort() {
-	return m_pSettings->value("server/port", 8010).toInt();
+	m_pGlobalContext = pGlobalContext;
 }
 
 // --------------------------------------------------------------------
@@ -65,6 +40,17 @@ void HandlerManager::UnregisterHTTPHandler(IHTTPHandler* pHandler) {
 
 // --------------------------------------------------------------------
 
+void HandlerManager::startServer() {
+  m_pServer = new QHttpServer(this);
+  int nServerPort = m_pGlobalContext->getServerPort();
+  connect(m_pServer, SIGNAL(newRequest(QHttpRequest*, QHttpResponse*)),
+		this, SLOT(handleRequest(QHttpRequest*, QHttpResponse*)));
+	m_pServer->listen(QHostAddress::Any, nServerPort);
+  std::cout << "Started server on " << nServerPort << " port.\n";
+}
+
+// --------------------------------------------------------------------
+
 void HandlerManager::handleRequest(QHttpRequest *req, QHttpResponse *resp)
 {
 	Q_UNUSED(req);
@@ -77,33 +63,25 @@ void HandlerManager::handleRequest(QHttpRequest *req, QHttpResponse *resp)
 			response[i.key()] = i.value()->api();
 		}
 	} else if (m_mapHandlers.contains(target)) {
-		QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL", "handleRequest"); // todo check name connection
-		db.setHostName(m_pSettings->value("database/host", "localhost").toString());
-		db.setDatabaseName(m_pSettings->value("database/dbname", "fhq").toString());
-		db.setUserName(m_pSettings->value("database/dbuser", "fhq").toString());
-		db.setPassword(m_pSettings->value("database/dbuserpassword", "fhq").toString());
-		if (!db.open()){
-			setErrorResponse(response, 403, db.lastError().text());
-			std::cerr << "[ERROR] " << db.lastError().text().toStdString() << "\n";
-			std::cerr << "[ERROR] Failed to connect.\n";
-			return;
-		}
 
-		QUrlQuery urlQuery(req->url());
-		QString sToken = urlQuery.queryItemValue("token");
-		SecretToken *pToken = NULL; 
-		if (!sToken.isEmpty()) {
-			pToken = new SecretToken(sToken);
-			if (!pToken->loadToken(db)) {
-				delete pToken;
-				pToken = NULL;
-			}
-		}
-		
-		m_mapHandlers[target]->handleRequest(db, pToken, req, response);
-
+    AutoDatabaseConnection autodb(m_pGlobalContext);
+    if (!db.isEmpty()) {
+    	QUrlQuery urlQuery(req->url());
+  		QString sToken = urlQuery.queryItemValue("token");
+  		SecretToken *pToken = NULL; 
+  		if (!sToken.isEmpty()) {
+  			pToken = new SecretToken(sToken);
+  			if (!pToken->loadToken(db)) {
+  				delete pToken;
+  				pToken = NULL;
+  			}
+  		}  		
+  		m_mapHandlers[target]->handleRequest(m_pGlobalContext, autodb->db(), req, response);
+    } else {
+      setErrorResponse(response, 2001, "Problem with database");
+    }
 	} else {
-		setErrorResponse(response, 404, "Handler did not found");
+		setErrorResponse(response, 2000, "Handler did not found");
 	}
 
 	QByteArray body = QJsonDocument(response).toJson();

@@ -1,6 +1,5 @@
-#ifndef TOKEN_H
-#define TOKEN_H
-// TODO 
+#ifndef USERSESSION_H
+#define USERSESSION_H
 
 #include <QObject>
 #include <QMap>
@@ -12,7 +11,6 @@ class UserSession
 {
 		QString m_sToken;
 		QJsonObject m_pDataToken;
-
 	public:
 		UserSession();
   	void setToken(QString sToken);
@@ -23,4 +21,4 @@ class UserSession
 		QJsonObject &getJson();
 };
 
-#endif // TOKEN_H
+#endif // USERSESSION_H

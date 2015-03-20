@@ -7,7 +7,7 @@
 #include <iostream>
 #include <QCoreApplication>
 #include "handlermanager.h"
-#include "handlers/auth_logon.h"
+#include "handlers/auth.h"
 #include "database/databaseupdater.h"
 
 int main(int argc, char* argv[]) {
@@ -48,31 +48,25 @@ int main(int argc, char* argv[]) {
 
   // check exists config file
 	QString configFile = "/etc/fhq/backend/config.ini";
-	QFile file(configFile);
-	if (!file.exists()) {
-		std::cout << "File: '" << configFile.toStdString() << "' not found. Please look --help \n";
+
+	if (!GlobalContext::checkConfigFile(configFile)) {
 		return -1;
 	}
 
-  GlobalContext *globalContext = new GlobalContext(configFile);
-
-	HandlerManager *pHandlerManager = new HandlerManager(globalContext);
-	pHandlerManager->setConfigFile(configFile);
+  GlobalContext *pGlobalContext = new GlobalContext(configFile);
+	HandlerManager *pHandlerManager = new HandlerManager(pGlobalContext);
 
 	if (m_args.contains("--update-database")) {
 		DatabaseUpdater dbupdt;
-		dbupdt.update(pHandlerManager->getSettings());
+		dbupdt.update(pGlobalContext);
 		return 0;
 	}
 	
-	QHttpServer *pServer = new QHttpServer();
-	pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AuthLogon());
-	pHandlerManager->setServer(pServer);
-
-	// start server
-	int nServerPort = pHandlerManager->getServerPort();
-	std::cout << "Start server on " << nServerPort << " port.\n";
-	pServer->listen(QHostAddress::Any, nServerPort);
+  // list of handlers
+  pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AuthLogon());
+  pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AuthLogoff());
+	pHandlerManager->startServer(pServer);
+ 
   
 	return app.exec();
 }
