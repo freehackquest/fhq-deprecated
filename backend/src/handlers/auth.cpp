@@ -1,6 +1,8 @@
 #include <QJsonObject>
 #include "../ihttphandler.h"
-#include "src/handlers/auth_logon.h"
+#include "auth.h"
+#include "../globalcontext.h"
+#include "../usersession.h"
 #include <QUuid>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
@@ -27,19 +29,20 @@ QJsonObject AuthLogon::api() {
 	parameters["password"] = QString("your password");
 
 	QJsonObject obj;
+	obj["path"] = target();
 	obj["access"] = QString("unauthorized");
 	obj["input"] = parameters;
-	obj["path"] = target();
+	obj["output"] = QString("token");
 	return obj;
 };
 
 // --------------------------------------------------------------------
 
-void AuthLogon::handleRequest(GlobalContext *, QSqlDatabase *db, QHttpRequest *req, QJsonObject &response) {
+void AuthLogon::handleRequest(GlobalContext *pGlobalContext, QSqlDatabase *db, QHttpRequest *req, QJsonObject &response) {
 	QString uuid = QUuid::createUuid().toString();
 	uuid = uuid.mid(1,uuid.length()-2);
 	QUrlQuery urlQuery(req->url());
-	
+
 	QString name = urlQuery.queryItemValue("name");
 	QString password = urlQuery.queryItemValue("password");
 	
@@ -48,7 +51,7 @@ void AuthLogon::handleRequest(GlobalContext *, QSqlDatabase *db, QHttpRequest *r
 	} else if (password.isEmpty()) {
 		setErrorResponse(response, 1004, "Parameter password are not found.");
 	} else {
-		QSqlQuery query(db);
+		QSqlQuery query(*db);
 		query.prepare("SELECT * FROM backend_users WHERE name = :name and password = :password");
 		query.bindValue(":name", name);
 		query.bindValue(":password", QString(QCryptographicHash::hash((password.toUtf8()),QCryptographicHash::Md5).toHex()));
@@ -58,15 +61,15 @@ void AuthLogon::handleRequest(GlobalContext *, QSqlDatabase *db, QHttpRequest *r
 		if (query.next()) {
 			response["result"] = QString("ok");
 			response["token"] = uuid;
-			pToken = new SecretToken(uuid);
-			pToken->getJson()["userid"] = query.value(rec.indexOf("id")).toInt();
-			pToken->getJson()["name"] = query.value(rec.indexOf("name")).toString();
-			pToken->getJson()["role"] = query.value(rec.indexOf("role")).toString();
-			pToken->saveToken(db);
+			UserSession *pUserSession = new UserSession();
+			pUserSession->setToken(uuid);
+			pUserSession->json()["userid"] = query.value(rec.indexOf("id")).toInt();
+			pUserSession->json()["name"] = query.value(rec.indexOf("name")).toString();
+			pUserSession->json()["role"] = query.value(rec.indexOf("role")).toString();
+			pGlobalContext->addUserSession(pUserSession, db);
 		} else {
 			setErrorResponse(response, 1002, "Name or password are incorrect.");
 		}
-		// response["password"] = QString(QCryptographicHash::hash((password.toUtf8()),QCryptographicHash::Md5).toHex());
 	}
 };
 
@@ -91,39 +94,15 @@ QJsonObject AuthLogoff::api() {
 
 // --------------------------------------------------------------------
 
-void AuthLogoff::handleRequest(GlobalContext *, QSqlDatabase *db, QHttpRequest *req, QJsonObject &response) {
-	QString uuid = QUuid::createUuid().toString();
-	uuid = uuid.mid(1,uuid.length()-2);
-	QUrlQuery urlQuery(req->url());
+void AuthLogoff::handleRequest(GlobalContext *pGlobalContext, QSqlDatabase *db, QHttpRequest *req, QJsonObject &response) {
 	
-	QString name = urlQuery.queryItemValue("name");
-	QString password = urlQuery.queryItemValue("password");
-	
-	if (name.isEmpty()) {
-		setErrorResponse(response, 1003, "Parameter name are not found.");
-	} else if (password.isEmpty()) {
-		setErrorResponse(response, 1004, "Parameter password are not found.");
-	} else {
-		QSqlQuery query(db);
-		query.prepare("SELECT * FROM backend_users WHERE name = :name and password = :password");
-		query.bindValue(":name", name);
-		query.bindValue(":password", QString(QCryptographicHash::hash((password.toUtf8()),QCryptographicHash::Md5).toHex()));
-		query.exec();
-		QSqlRecord rec = query.record();
-
-		if (query.next()) {
-			response["result"] = QString("ok");
-			response["token"] = uuid;
-			pToken = new SecretToken(uuid);
-			pToken->getJson()["userid"] = query.value(rec.indexOf("id")).toInt();
-			pToken->getJson()["name"] = query.value(rec.indexOf("name")).toString();
-			pToken->getJson()["role"] = query.value(rec.indexOf("role")).toString();
-			pToken->saveToken(db);
-		} else {
-			setErrorResponse(response, 1002, "Name or password are incorrect.");
-		}
-		// response["password"] = QString(QCryptographicHash::hash((password.toUtf8()),QCryptographicHash::Md5).toHex());
+	UserSession *pUserSession = pGlobalContext->userSession(req->url(), db);
+	if (pUserSession == NULL) {
+		setErrorResponse(response, 1005, "token are not found");
+		return;
 	}
+	response["result"] = QString("ok");
+	pGlobalContext->removeUserSession(pUserSession, db);
 };
 
 // --------------------------------------------------------------------

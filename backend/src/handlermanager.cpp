@@ -63,23 +63,12 @@ void HandlerManager::handleRequest(QHttpRequest *req, QHttpResponse *resp)
 			response[i.key()] = i.value()->api();
 		}
 	} else if (m_mapHandlers.contains(target)) {
-
-    AutoDatabaseConnection autodb(m_pGlobalContext);
-    if (!db.isEmpty()) {
-    	QUrlQuery urlQuery(req->url());
-  		QString sToken = urlQuery.queryItemValue("token");
-  		SecretToken *pToken = NULL; 
-  		if (!sToken.isEmpty()) {
-  			pToken = new SecretToken(sToken);
-  			if (!pToken->loadToken(db)) {
-  				delete pToken;
-  				pToken = NULL;
-  			}
-  		}  		
-  		m_mapHandlers[target]->handleRequest(m_pGlobalContext, autodb->db(), req, response);
-    } else {
-      setErrorResponse(response, 2001, "Problem with database");
-    }
+		AutoDatabaseConnection autodb(m_pGlobalContext);
+		if (!autodb.isEmpty()) {
+			m_mapHandlers[target]->handleRequest(m_pGlobalContext, autodb.db(), req, response);
+		} else {
+			setErrorResponse(response, 2001, "Problem with database");
+		}
 	} else {
 		setErrorResponse(response, 2000, "Handler did not found");
 	}

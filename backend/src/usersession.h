@@ -13,12 +13,10 @@ class UserSession
 		QJsonObject m_pDataToken;
 	public:
 		UserSession();
-  	void setToken(QString sToken);
-  	QString getToken();
-		bool loadToken();
-		bool saveToken();
-		int getUserID();
-		QJsonObject &getJson();
+		void setToken(QString sToken);
+		QString token();
+		int userID();
+		QJsonObject &json();
 };
 
 #endif // USERSESSION_H

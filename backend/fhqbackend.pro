@@ -21,7 +21,8 @@ SOURCES +=  \
 		src/handlermanager.cpp \
 		src/handlers/auth.cpp \
 		src/database/databaseupdater.cpp \
-		src/SecretToken.cpp \
+		src/globalcontext.cpp \
+		src/usersession.cpp \
 
 HEADERS += \
 	src/qhttpserver/qhttpconnection.h \
@@ -35,7 +36,8 @@ HEADERS += \
 	src/ihttphandler.h \
 	src/handlers/auth.h \
 	src/database/databaseupdater.h \
-	src/SecretToken.h \
+	src/globalcontext.h \
+	src/usersession.h \
 	
 	# src/daemon.h \
 	# src/thread.h \

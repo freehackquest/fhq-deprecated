@@ -1,25 +1,25 @@
 #include "qhttpserver/qhttpserver.h"
 #include "qhttpserver/qhttprequest.h"
 #include "qhttpserver/qhttpresponse.h"
-#include "SecretToken.h"
+#include "globalcontext.h"
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <iostream>
 #include <QMap>
-#include <QtSql/QSqlError>
-#include <QSqlQuery>
-#include <QSqlRecord>
+#include <QFile>
+#include <QUuid>
+#include <QUrlQuery>
 
 // --------------------------------------------------------------------
 
 AutoDatabaseConnection::AutoDatabaseConnection(GlobalContext *pGlobalContext) {
   m_pGlobalContext = pGlobalContext;
-  m_pGlobalContext->getDatabaseConnection(m_db);
+  m_pGlobalContext->getDatabaseConnection(*this);
 };
 
 // --------------------------------------------------------------------
 
-AutoDatabaseConnection::~AutoFreeConnection() {
+AutoDatabaseConnection::~AutoDatabaseConnection() {
   if (m_db != NULL)
     m_pGlobalContext->toFree(m_db);
 };
@@ -32,7 +32,7 @@ void AutoDatabaseConnection::setdb(QSqlDatabase *db) {
 
 // --------------------------------------------------------------------
 
-AutoDatabaseConnection::QSqlDatabase *db() {
+QSqlDatabase * AutoDatabaseConnection::db() {
   return m_db;
 };
 
@@ -48,6 +48,7 @@ GlobalContext::GlobalContext(const QString &configFile) {
   QSettings settings(configFile, QSettings::IniFormat);
   m_sDatabaseHost = settings.value("database/host", "localhost").toString();
   m_sDatabaseName = settings.value("database/dbname", "freehackquest").toString();
+  m_nDatabasePort = settings.value("database/port", 3306).toInt();
   m_sDatabaseUserName = settings.value("database/dbusername", "freehackquest_u").toString();
   m_sDatabaseUserPassword = settings.value("database/dbuserpassword", "freehackquest_u").toString();
   m_nServerPort = settings.value("server/port", 8010).toInt();
@@ -56,30 +57,30 @@ GlobalContext::GlobalContext(const QString &configFile) {
 
 // --------------------------------------------------------------------
 
-static QString GlobalContext::getExampleConfigFile() {
-  QString result =
-    "[database]\n"
+QString GlobalContext::getExampleConfigFile() {
+	QString result =
+		"[database]\n"
 		"host=localhost\n"
 		"port=3306\n"
-		"dbname=freehackquest\n\n"
-  	"dbusername=freehackquest_u\n"
-		"dbuserpassword=freehackquest_u\n\n"
+		"dbname=fhqbackend\n\n"
+		"dbusername=fhqbackend\n"
+		"dbuserpassword=fhqbackend\n\n"
 		"[server]\n"
 		"port=8010\n"
-  	"maxDatabaseConnections=100\n";
-  return result;
+		"maxDatabaseConnections=100\n";
+	return result;
 }
 
 // --------------------------------------------------------------------
 
-static bool GlobalContext::checkConfigFile(const QString &configFile)  {
-  // check exists config file
+bool GlobalContext::checkConfigFile(const QString &configFile)  {
+	// check exists config file
 	QFile file(configFile);
 	if (!file.exists()) {
 		std::cerr << "File: '" << configFile.toStdString() << "' not found. Please look --help \n";
 		return false;
 	}
-  return true;
+	return true;
 }
 
 // --------------------------------------------------------------------
@@ -90,42 +91,72 @@ int GlobalContext::getServerPort() {
 
 // --------------------------------------------------------------------
 
-void GlobalContext::getDatabaseConnection(AutoDatabaseConnection &autoDb) {
+QString GlobalContext::getDatabaseHost() {
+	return m_sDatabaseHost;
+}
+
+// --------------------------------------------------------------------
+
+int GlobalContext::getDatabasePort() {
+	return m_nDatabasePort;
+}
+
+// --------------------------------------------------------------------
+
+QString GlobalContext::getDatabaseName() {
+	return m_sDatabaseName;
+}
+
+// --------------------------------------------------------------------
+
+QString GlobalContext::getDatabaseUserName() {
+	return m_sDatabaseUserName;
+}
+
+// --------------------------------------------------------------------
+
+QString GlobalContext::getDatabaseUserPassword() {
+	return m_sDatabaseUserPassword;
+}
+
+// --------------------------------------------------------------------
+
+void GlobalContext::getDatabaseConnection(AutoDatabaseConnection &autodb) {
   QMutexLocker ml(&m_MutexDBConnections);
 
-  int nFree = m_arrFreeDatabaseConnections.size()
+  int nFree = m_arrFreeDatabaseConnections.size();
   int nBuzy = m_arrBuzyDatabaseConnections.size();
 
   if (nBuzy >= m_nMaxDatabaseConnections && nFree == 0) {
      // TODO: must wait if not exists free db
-    autoDb.setdb(NULL);
+    autodb.setdb(NULL);
     std::cerr << "[ERROR] connections more then " << m_nMaxDatabaseConnections << " and non free connections.";
     return;
   }
 
   if (nFree > 0) {
-    autoDb.setdb(m_arrFreeDatabaseConnections.at(0));
+    autodb.setdb(m_arrFreeDatabaseConnections.at(0));
     m_arrFreeDatabaseConnections.pop_front();
-    m_arrBuzyDatabaseConnections.push_back(autoDb.db());
+    m_arrBuzyDatabaseConnections.push_back(autodb.db());
   } else {
     QString uuid = QUuid::createUuid().toString();
   	uuid = uuid.mid(1,uuid.length()-2);
     QString connectionnamedb = "web" + uuid;
-    autoDb.setdb(new QSqlDatabase(QSqlDatabase::addDatabase("QMYSQL", connectionnamedb)));
+    autodb.setdb(new QSqlDatabase(QSqlDatabase::addDatabase("QMYSQL", connectionnamedb)));
 
-  	autoDb.db()->setHostName(m_sDatabaseHost);
-  	autoDb.db()->setDatabaseName(m_sDatabaseName);
-    autoDb.db()->setUserName(m_sDatabaseUserName);
-    autoDb.db()->setPassword(m_sDatabaseUserPassword);
+  	autodb.db()->setHostName(m_sDatabaseHost);
+  	autodb.db()->setDatabaseName(m_sDatabaseName);
+    autodb.db()->setUserName(m_sDatabaseUserName);
+    autodb.db()->setPassword(m_sDatabaseUserPassword);
 
-  	if (!autoDb.db()->open()) {
-  		std::cerr << "[ERROR] " << autoDb.db()->lastError().text().toStdString() << "\n";
-  		std::cerr << "[ERROR] Failed to connect.\n";
-      delete autoDb.db();
-      autoDb.setdb(NULL);
+  	if (!autodb.db()->open()) {
+		std::cerr << "[ERROR] " << autodb.db()->lastError().text().toStdString() << "\n";
+		std::cerr << "[ERROR] Failed to connect.\n";
+		delete autodb.db();
+		autodb.setdb(NULL);
   		return;
   	} else {
-      m_arrBuzyDatabaseConnections.push_back(autoDb.db());
+		m_arrBuzyDatabaseConnections.push_back(autodb.db());
   		std::cout << " * Connect to database successfully " << connectionnamedb.toStdString() << ".\n";
   	}
   }
@@ -145,55 +176,56 @@ void GlobalContext::toFree(QSqlDatabase *db) {
 // --------------------------------------------------------------------
 
 // return UserSession* if exists
-UserSession* userSession(const QUrl& url) {
-  
-};
-
-
-
-bool SecretToken::loadToken(QSqlDatabase &db) {
-	QSqlQuery query(db);
+UserSession* GlobalContext::userSession(const QUrl& url, QSqlDatabase *db) {
+	QMutexLocker ml(&m_userSessions);
+	QUrlQuery urlQuery(url);
+	QString sToken = urlQuery.queryItemValue("token");
+	
+	if (m_mapUserSessions.contains(sToken))
+		return m_mapUserSessions.value(sToken);
+	
+	// try find in database
+	QSqlQuery query(*db);
+	// TODO check session which ended
 	query.prepare("SELECT data FROM backend_users_tokens WHERE token = :token");
-	query.bindValue(":token", m_sToken);
+	query.bindValue(":token", sToken);
 	query.exec();
 	QSqlRecord rec = query.record();
 	if (query.next()) {
 		QString data = query.value(rec.indexOf("data")).toString();
-		std::cout << data.toStdString() << "\n";
 		QJsonDocument doc = QJsonDocument::fromJson(data.toLatin1());
-		m_pObj = doc.object();
-		return true;
+		UserSession* pUserSession = new UserSession();
+		pUserSession->json() = doc.object();
+		pUserSession->setToken(sToken);
+		m_mapUserSessions[sToken] = pUserSession;
+		return pUserSession;
 	}
-	return false;
-};
-
-// --------------------------------------------------------------------
-
-bool SecretToken::saveToken(QSqlDatabase &db) {
-	QByteArray body = QJsonDocument(m_pObj).toJson();
-	QSqlQuery query(db);
-	query.prepare("INSERT INTO backend_users_tokens (token,status,data,dt_start,dt_end) VALUES (?,?,?, NOW(), NOW()) "
-	" ON DUPLICATE KEY UPDATE status=?, data=?, dt_end=NOW()");
-	query.addBindValue(m_sToken);
-	query.addBindValue(QString("active"));
-	query.addBindValue(QString(body));
-	query.addBindValue(QString("active"));
-	query.addBindValue(QString(body));
-	return query.exec();
-};
-
-// --------------------------------------------------------------------
-
-QJsonObject &SecretToken::getJson() {
-	return m_pObj;
+	return NULL;
 }
 
 // --------------------------------------------------------------------
 
-int SecretToken::getUserID() {
-	if (m_pObj.contains("userid"))
-		return m_pObj.value("userid").toInt();
-	return 0;
+void GlobalContext::addUserSession(UserSession* pUserSession, QSqlDatabase *db) {
+	QMutexLocker ml(&m_userSessions);
+	m_mapUserSessions[pUserSession->token()] = pUserSession;
+	
+	QByteArray body = QJsonDocument(pUserSession->json()).toJson();
+	QSqlQuery query(*db);
+	query.prepare("INSERT INTO backend_users_tokens (token,status,data,dt_start,dt_end) VALUES (?,?,?, NOW(), NOW()) "
+	" ON DUPLICATE KEY UPDATE status=?, data=?, dt_end=NOW()");
+	query.addBindValue(pUserSession->token());
+	query.addBindValue(QString("active"));
+	query.addBindValue(QString(body));
+	query.addBindValue(QString("active"));
+	query.addBindValue(QString(body));
+	query.exec();
+}
+
+// --------------------------------------------------------------------
+
+void GlobalContext::removeUserSession(UserSession* pUserSession, QSqlDatabase */*db*/) {
+	QMutexLocker ml(&m_userSessions);
+	m_mapUserSessions.remove(pUserSession->token());
 }
 
 // --------------------------------------------------------------------

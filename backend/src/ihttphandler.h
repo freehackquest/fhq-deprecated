@@ -4,7 +4,7 @@
 #include "qhttpserver/qhttpserverfwd.h"
 #include <QJsonObject>
 #include <QtSql/QSqlDatabase>
-#include "SecretToken.h"
+#include "globalcontext.h"
 
 class IHTTPHandler {
 	public:
