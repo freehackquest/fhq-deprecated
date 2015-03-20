@@ -22,22 +22,31 @@ int main(int argc, char* argv[]) {
 
 	if (m_args.contains("--help")) {
 		std::cout << "Usage: \n\n"
-			<< "\t" << argv[0] << " --help                - help\n"
-			<< "\t" << argv[0] << " --daemon              - start daemon\n"
-			<< "\t" << argv[0] << " --update-database     - update (or init) database structure\n"
-			<< "\n\n ------ example file: /etc/fhq/backend/config.ini ------------- \n"
-			<< "[database]\n"
-			<< "host=localhost\n"
-			<< "port=3306\n"
-			<< "dbuser=fhq\n"
-			<< "dbuserpassword=fhq\n"
-			<< "dbname=fhq\n\n"
-			<< "[server]\n"
-			<< "port=8010\n"		
+			<< "\t" << argv[0] << " --help" << std::endl
+      << "\t\t just this help" << std::endl
+
+			/*<< "\t" << argv[0] << " --daemon" << std::endl
+      << "\t\t not work now! run as daemon\n"*/
+
+  		<< "\t" << argv[0] << " --example-config\n"
+      << "\t\t show example config file (/etc/fhq/backend/config.ini)\n"
+
+			<< "\t" << argv[0] << " --update-database\n"
+      << "\t\t update (or init) database structure\n"
+
+  		/*<< "\t" << argv[0] << " --create-database-by-root <root_password>"
+      << "\t\t not work now! create empty database with default name, user and password \n"*/
 			<< "\n\n";
 		return 1;
 	}
 
+  if (m_args.contains("--example-config")) {
+    std::cout << GlobalContext::getExampleConfigFile().toStdString()
+      << "\n\n";
+    return 2;
+  }
+
+  // check exists config file
 	QString configFile = "/etc/fhq/backend/config.ini";
 	QFile file(configFile);
 	if (!file.exists()) {
@@ -45,7 +54,9 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
-	HandlerManager *pHandlerManager = new HandlerManager();
+  GlobalContext *globalContext = new GlobalContext(configFile);
+
+	HandlerManager *pHandlerManager = new HandlerManager(globalContext);
 	pHandlerManager->setConfigFile(configFile);
 
 	if (m_args.contains("--update-database")) {
@@ -62,6 +73,6 @@ int main(int argc, char* argv[]) {
 	int nServerPort = pHandlerManager->getServerPort();
 	std::cout << "Start server on " << nServerPort << " port.\n";
 	pServer->listen(QHostAddress::Any, nServerPort);
-
+  
 	return app.exec();
 }

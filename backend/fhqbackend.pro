@@ -19,7 +19,7 @@ SOURCES +=  \
 		src/qhttpserver/qhttpresponse.cpp \
 		src/http_parser/http_parser.c \
 		src/handlermanager.cpp \
-		src/handlers/auth_logon.cpp \
+		src/handlers/auth.cpp \
 		src/database/databaseupdater.cpp \
 		src/SecretToken.cpp \
 
@@ -33,7 +33,7 @@ HEADERS += \
 	src/http_parser/http_parser.h \
 	src/handlermanager.h \
 	src/ihttphandler.h \
-	src/handlers/auth_logon.h \
+	src/handlers/auth.h \
 	src/database/databaseupdater.h \
 	src/SecretToken.h \
 	

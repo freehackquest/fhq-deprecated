@@ -13,6 +13,13 @@ class AuthLogon : public IHTTPHandler {
 		virtual void handleRequest(QSqlDatabase &db, SecretToken *pToken, QHttpRequest *req, QJsonObject &response);
 };
 
+class AuthLogoff : public IHTTPHandler {
+	public:
+		virtual QString target();
+		virtual QJsonObject api();
+		virtual void handleRequest(QSqlDatabase &db, SecretToken *pToken, QHttpRequest *req, QJsonObject &response);
+};
+
 } // namespace handlers
 
 #endif // AUTH_LOGON
