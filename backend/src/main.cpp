@@ -11,6 +11,8 @@
 #include "handlers/games.h"
 #include "handlers/services.h"
 #include "handlers/teams.h"
+#include "handlers/admin.h"
+#include "handlers/users.h"
 #include "database/databaseupdater.h"
 
 int main(int argc, char* argv[]) {
@@ -78,7 +80,11 @@ int main(int argc, char* argv[]) {
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::TeamsUpdate());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::TeamsDelete());
 		
-		/*pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::ServicesList());
+		/*
+
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::Scoreboard());
+
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::ServicesList());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::ServicesInsert());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::ServicesUpdate());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::ServicesDelete());
@@ -86,7 +92,27 @@ int main(int argc, char* argv[]) {
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::GamesList());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::GamesInsert());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::GamesUpdate());
-		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::GamesDelete());*/
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::GamesDelete());
+
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::UsersList());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::UsersInsert());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::UsersUpdate());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::UsersDelete());
+		
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminGameStart());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminGameStop());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminScoreboardFreeze());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminUserChangePassword());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminUserInsert());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminUserUpdate());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminUserDelete());
+		
+		*/
+
+		
+		
+
+
 		pHandlerManager->startServer();
 		return app.exec();
 	}

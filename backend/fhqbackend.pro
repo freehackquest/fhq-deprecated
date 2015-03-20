@@ -23,6 +23,9 @@ SOURCES +=  \
 	src/handlers/teams.cpp \
 	src/handlers/games.cpp \
 	src/handlers/services.cpp \
+	src/handlers/admin.cpp \
+	src/handlers/users.cpp \
+	src/handlers/scoreboard.cpp \
 	src/database/databaseupdater.cpp \
 	src/globalcontext.cpp \
 	src/usersession.cpp \
@@ -42,6 +45,8 @@ HEADERS += \
 	src/handlers/teams.h \
 	src/handlers/games.h \
 	src/handlers/services.h \
+	src/handlers/users.h \
+	src/handlers/scoreboard.h \
 	src/database/databaseupdater.h \
 	src/globalcontext.h \
 	src/usersession.h \
