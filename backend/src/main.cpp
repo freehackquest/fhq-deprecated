@@ -8,6 +8,9 @@
 #include <QCoreApplication>
 #include "handlermanager.h"
 #include "handlers/auth.h"
+#include "handlers/games.h"
+#include "handlers/services.h"
+#include "handlers/teams.h"
 #include "database/databaseupdater.h"
 
 int main(int argc, char* argv[]) {
@@ -69,6 +72,21 @@ int main(int argc, char* argv[]) {
 		HandlerManager *pHandlerManager = new HandlerManager(pGlobalContext);
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AuthLogon());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AuthLogoff());
+		
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::TeamsList());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::TeamsInsert());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::TeamsUpdate());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::TeamsDelete());
+		
+		/*pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::ServicesList());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::ServicesInsert());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::ServicesUpdate());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::ServicesDelete());
+		
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::GamesList());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::GamesInsert());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::GamesUpdate());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::GamesDelete());*/
 		pHandlerManager->startServer();
 		return app.exec();
 	}

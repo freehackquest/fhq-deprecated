@@ -32,6 +32,22 @@ QJsonObject &UserSession::json() {
 }
 
 // --------------------------------------------------------------------
+
+bool UserSession::isAdmin() {
+	if (m_pDataToken.contains("role"))
+		return m_pDataToken.value("role").toString() == "admin";
+	return false;
+}
+
+// --------------------------------------------------------------------
+
+bool UserSession::isUser() {
+	if (m_pDataToken.contains("role"))
+		return m_pDataToken.value("role").toString() == "user";
+	return false;
+}
+
+// --------------------------------------------------------------------
 		
 int UserSession::userID() {
 	if (m_pDataToken.contains("userid"))

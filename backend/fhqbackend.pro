@@ -12,17 +12,21 @@ OBJECTS_DIR = tmp/
 MOC_DIR = tmp/
 
 SOURCES +=  \
-		src/main.cpp \
-		src/qhttpserver/qhttpconnection.cpp \
-		src/qhttpserver/qhttpserver.cpp \
-		src/qhttpserver/qhttprequest.cpp \
-		src/qhttpserver/qhttpresponse.cpp \
-		src/http_parser/http_parser.c \
-		src/handlermanager.cpp \
-		src/handlers/auth.cpp \
-		src/database/databaseupdater.cpp \
-		src/globalcontext.cpp \
-		src/usersession.cpp \
+	src/main.cpp \
+	src/qhttpserver/qhttpconnection.cpp \
+	src/qhttpserver/qhttpserver.cpp \
+	src/qhttpserver/qhttprequest.cpp \
+	src/qhttpserver/qhttpresponse.cpp \
+	src/http_parser/http_parser.c \
+	src/handlermanager.cpp \
+	src/handlers/auth.cpp \
+	src/handlers/teams.cpp \
+	src/handlers/games.cpp \
+	src/handlers/services.cpp \
+	src/database/databaseupdater.cpp \
+	src/globalcontext.cpp \
+	src/usersession.cpp \
+
 
 HEADERS += \
 	src/qhttpserver/qhttpconnection.h \
@@ -35,10 +39,9 @@ HEADERS += \
 	src/handlermanager.h \
 	src/ihttphandler.h \
 	src/handlers/auth.h \
+	src/handlers/teams.h \
+	src/handlers/games.h \
+	src/handlers/services.h \
 	src/database/databaseupdater.h \
 	src/globalcontext.h \
 	src/usersession.h \
-	
-	# src/daemon.h \
-	# src/thread.h \
-	# src/config.h 

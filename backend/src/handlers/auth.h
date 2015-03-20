@@ -1,5 +1,5 @@
-#ifndef AUTH_LOGON
-#define AUTH_LOGON
+#ifndef AUTH_HANDLERS
+#define AUTH_HANDLERS
 
 #include <QJsonObject>
 #include "../ihttphandler.h"
@@ -22,4 +22,4 @@ class AuthLogoff : public IHTTPHandler {
 
 } // namespace handlers
 
-#endif // AUTH_LOGON
+#endif // AUTH_HANDLERS

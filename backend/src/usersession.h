@@ -16,6 +16,8 @@ class UserSession
 		void setToken(QString sToken);
 		QString token();
 		int userID();
+		bool isAdmin();
+		bool isUser();
 		QJsonObject &json();
 };
 
