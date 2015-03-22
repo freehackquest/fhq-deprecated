@@ -86,16 +86,14 @@ int main(int argc, char* argv[]) {
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::ServicesUpdate());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::ServicesDelete());
 		// pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::ServicesUploadChecker());
-		/*
-
-		
-		
 		
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::GamesList());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::GamesInsert());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::GamesUpdate());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::GamesDelete());
+		// pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::GamesUploadLogo());
 
+		/*
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::UsersList());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::UsersInsert());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::UsersUpdate());
