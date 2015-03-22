@@ -72,7 +72,7 @@ void TeamsList::handleRequest(GlobalContext *pGlobalContext, QSqlDatabase *db, Q
 		}
 		response["data"] = data;
 	} else {
-		setErrorResponse(response, 1037, query.lastError().text());
+		setErrorResponse(response, 1038, query.lastError().text());
 		return;
 	}
 		
@@ -224,7 +224,7 @@ void TeamsUpdate::handleRequest(GlobalContext *pGlobalContext, QSqlDatabase *db,
 	if (query.exec()) {
 		response["result"] = QString("ok");
 	} else {
-		setErrorResponse(response, 1037, query.lastError().text());
+		setErrorResponse(response, 1039, query.lastError().text());
 		return;
 	}
 };

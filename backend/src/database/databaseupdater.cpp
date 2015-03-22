@@ -280,6 +280,25 @@ class Update0006 : IUpdate {
 
 // --------------------------------------------------------------------
 
+class Update0007 : IUpdate {
+	public:
+		virtual QString fromVersion() { return "u0006"; }
+		virtual QString toVersion()   { return "u0007"; }		
+		virtual QString text() { return "new table backend_games"; }			
+		virtual bool update(QSqlDatabase *db) {
+			QSqlQuery query(*db);
+			bool bResult = query.exec(
+				" ALTER TABLE `backend_services` ADD COLUMN `script_body` TEXT NOT NULL; "
+			);
+			if (!bResult) {
+				std::cerr << "[ERROR] " << query.lastError().text().toStdString() << "\n";
+			}
+			return bResult;
+		}
+};
+
+// --------------------------------------------------------------------
+
 void DatabaseUpdater::update(GlobalContext *pGlobalContext) {
 	std::cout << " * Update database\n";
 	AutoDatabaseConnection autodb(pGlobalContext);
@@ -302,6 +321,7 @@ void DatabaseUpdater::update(GlobalContext *pGlobalContext) {
 	updates.push_back((IUpdate *) new Update0004());
 	updates.push_back((IUpdate *) new Update0005());
 	updates.push_back((IUpdate *) new Update0006());
+	updates.push_back((IUpdate *) new Update0007());
 
 	for (int i = 0; i < updates.size(); i++) {
 		IUpdate *upd = updates[i];

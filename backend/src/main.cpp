@@ -13,6 +13,7 @@
 #include "handlers/teams.h"
 #include "handlers/admin.h"
 #include "handlers/users.h"
+#include "handlers/scoreboard.h"
 #include "database/databaseupdater.h"
 
 int main(int argc, char* argv[]) {
@@ -80,14 +81,15 @@ int main(int argc, char* argv[]) {
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::TeamsUpdate());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::TeamsDelete());
 		
-		/*
-
-		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::Scoreboard());
-
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::ServicesList());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::ServicesInsert());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::ServicesUpdate());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::ServicesDelete());
+		// pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::ServicesUploadChecker());
+		/*
+
+		
+		
 		
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::GamesList());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::GamesInsert());
@@ -106,6 +108,11 @@ int main(int argc, char* argv[]) {
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminUserInsert());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminUserUpdate());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminUserDelete());
+		
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::Scoreboard());
+		
+		// todo 
+		Advisers
 		
 		*/
 

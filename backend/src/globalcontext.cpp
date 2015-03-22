@@ -7,6 +7,7 @@
 #include <iostream>
 #include <QMap>
 #include <QFile>
+#include <QDir>
 #include <QUuid>
 #include <QUrlQuery>
 
@@ -53,6 +54,11 @@ GlobalContext::GlobalContext(const QString &configFile) {
   m_sDatabaseUserPassword = settings.value("database/dbuserpassword", "freehackquest_u").toString();
   m_nServerPort = settings.value("server/port", 8010).toInt();
   m_nMaxDatabaseConnections = settings.value("server/maxDatabaseConnections", 100).toInt();
+  m_sScriptDir = settings.value("server/scriptdir", "/usr/share/fhq/backend/scripts").toString();
+  
+  if (!QDir(m_sScriptDir).exists()) {
+	  std::cerr << "[ERROR] scriptdir are not exists '" << m_sScriptDir.toStdString() << "'\n";
+  }
 };
 
 // --------------------------------------------------------------------
@@ -67,7 +73,8 @@ QString GlobalContext::getExampleConfigFile() {
 		"dbuserpassword=fhqbackend\n\n"
 		"[server]\n"
 		"port=8010\n"
-		"maxDatabaseConnections=100\n";
+		"maxDatabaseConnections=100\n"
+		"scriptdir=/usr/share/fhq/backend/scripts\n";
 	return result;
 }
 
@@ -117,6 +124,12 @@ QString GlobalContext::getDatabaseUserName() {
 
 QString GlobalContext::getDatabaseUserPassword() {
 	return m_sDatabaseUserPassword;
+}
+
+// --------------------------------------------------------------------
+
+QString GlobalContext::getScriptDir() {
+	return m_sScriptDir;
 }
 
 // --------------------------------------------------------------------

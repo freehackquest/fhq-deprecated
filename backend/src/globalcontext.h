@@ -45,6 +45,9 @@ class GlobalContext
 		QString m_sDatabaseName;
 		QString m_sDatabaseUserName;
 		QString m_sDatabaseUserPassword;
+		
+		// other
+		QString m_sScriptDir;
 	public:
 		GlobalContext(const QString &configFile);
 		static QString getExampleConfigFile();
@@ -66,6 +69,7 @@ class GlobalContext
 		QString getDatabaseName();
 		QString getDatabaseUserName();
 		QString getDatabaseUserPassword();
+		QString getScriptDir();
 };
 
 #endif // TOKEN_H
