@@ -183,7 +183,7 @@ class Update0003 : IUpdate {
 	public:
 		virtual QString fromVersion() { return "u0002"; }
 		virtual QString toVersion()   { return "u0003"; }		
-		virtual QString text() { return "new table backend_users"; }			
+		virtual QString text() { return "new table backend_users_tokens"; }			
 		virtual bool update(QSqlDatabase *db) {
 			QSqlQuery query(*db);
 			bool bResult = query.exec(
@@ -318,6 +318,106 @@ class Update0008 : IUpdate {
 
 // --------------------------------------------------------------------
 
+class Update0009 : IUpdate {
+	public:
+		virtual QString fromVersion() { return "u0008"; }
+		virtual QString toVersion()   { return "u0009"; }		
+		virtual QString text() { return "new table backend_scoreboard"; }			
+		virtual bool update(QSqlDatabase *db) {
+			QSqlQuery query(*db);
+			bool bResult = query.exec(
+				" CREATE TABLE IF NOT EXISTS `backend_scoreboard` ( "
+				" `id` int(11) NOT NULL AUTO_INCREMENT, "
+				" `name` varchar(255) NOT NULL,"
+				" `type` varchar(255) NOT NULL,"
+				" `gameid` int(11) NOT NULL, "
+				" `userid` int(11) NOT NULL, "
+				" `teamid` int(11) NOT NULL, "
+				" `score` int(11) NOT NULL, "
+				" `dt_change` datetime NOT NULL, "
+				" PRIMARY KEY (`id`) "
+				" ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;"
+			);
+			if (!bResult) {
+				std::cerr << "[ERROR] " << query.lastError().text().toStdString() << "\n";
+			}
+			return bResult;
+		}
+};
+
+// --------------------------------------------------------------------
+
+class Update0010 : IUpdate {
+	public:
+		virtual QString fromVersion() { return "u0009"; }
+		virtual QString toVersion()   { return "u0010"; }		
+		virtual QString text() { return "new table backend_scoreboard_freeze"; }
+		virtual bool update(QSqlDatabase *db) {
+			QSqlQuery query(*db);
+			bool bResult = query.exec(
+				" CREATE TABLE IF NOT EXISTS `backend_scoreboard_freeze` ( "
+				" `id` int(11) NOT NULL AUTO_INCREMENT, "
+				" `name` varchar(255) NOT NULL,"
+				" `type` varchar(255) NOT NULL,"
+				" `gameid` int(11) NOT NULL, "
+				" `userid` int(11) NOT NULL, "
+				" `teamid` int(11) NOT NULL, "
+				" `score` int(11) NOT NULL, "
+				" `dt_change` datetime NOT NULL, "
+				" PRIMARY KEY (`id`) "
+				" ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;"
+			);
+			if (!bResult) {
+				std::cerr << "[ERROR] " << query.lastError().text().toStdString() << "\n";
+			}
+			return bResult;
+		}
+};
+
+// --------------------------------------------------------------------
+
+class Update0011 : IUpdate {
+	public:
+		virtual QString fromVersion() { return "u0010"; }
+		virtual QString toVersion()   { return "u0011"; }		
+		virtual QString text() { return "update backend_games"; }			
+		virtual bool update(QSqlDatabase *db) {
+			QSqlQuery query(*db);
+			bool bResult = query.exec(
+				" ALTER TABLE `backend_games` ADD COLUMN `type` varchar(255) NOT NULL; "
+			);
+			if (!bResult) {
+				std::cerr << "[ERROR] " << query.lastError().text().toStdString() << "\n";
+			}
+			return bResult;
+		}
+};
+
+// --------------------------------------------------------------------
+
+class Update0012 : IUpdate {
+	public:
+		virtual QString fromVersion() { return "u0011"; }
+		virtual QString toVersion()   { return "u0012"; }		
+		virtual QString text() { return "new table backend_games_teams"; }
+		virtual bool update(QSqlDatabase *db) {
+			QSqlQuery query(*db);
+			bool bResult = query.exec(
+				" CREATE TABLE IF NOT EXISTS `backend_games_teams` ( "
+				" `gameid` int(11) NOT NULL, "
+				" `teamid` int(11) NOT NULL, "
+				" PRIMARY KEY (`gameid`,`teamid`) "
+				" ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;"
+			);
+			if (!bResult) {
+				std::cerr << "[ERROR] " << query.lastError().text().toStdString() << "\n";
+			}
+			return bResult;
+		}
+};
+
+// --------------------------------------------------------------------
+
 void DatabaseUpdater::update(GlobalContext *pGlobalContext) {
 	std::cout << " * Update database\n";
 	AutoDatabaseConnection autodb(pGlobalContext);
@@ -333,7 +433,6 @@ void DatabaseUpdater::update(GlobalContext *pGlobalContext) {
 	};
 
 	QVector<IUpdate *> updates;
-
 	updates.push_back((IUpdate *) new Update0001());
 	updates.push_back((IUpdate *) new Update0002());
 	updates.push_back((IUpdate *) new Update0003());
@@ -342,6 +441,10 @@ void DatabaseUpdater::update(GlobalContext *pGlobalContext) {
 	updates.push_back((IUpdate *) new Update0006());
 	updates.push_back((IUpdate *) new Update0007());
 	updates.push_back((IUpdate *) new Update0008());
+	updates.push_back((IUpdate *) new Update0009());
+	updates.push_back((IUpdate *) new Update0010());
+	updates.push_back((IUpdate *) new Update0011());
+	updates.push_back((IUpdate *) new Update0012());
 	
 	for (int i = 0; i < updates.size(); i++) {
 		IUpdate *upd = updates[i];

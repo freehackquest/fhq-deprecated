@@ -107,15 +107,11 @@ int main(int argc, char* argv[]) {
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::UsersInsert());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::UsersUpdate());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::UsersDelete());
-		
-		
-		
-		
+
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::Scoreboard());
 		
 		// todo 
 		Advisers
-		
 		*/
 
 		
