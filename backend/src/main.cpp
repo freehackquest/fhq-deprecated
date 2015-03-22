@@ -93,19 +93,23 @@ int main(int argc, char* argv[]) {
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::GamesDelete());
 		// pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::GamesUploadLogo());
 
+
+		//pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminGameStart());
+		//pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminGameStop());
+		//pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminScoreboardFreeze());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminUserChangePassword());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminUserInsert());
+		//pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminUserUpdate());
+		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminUserDelete());
+
 		/*
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::UsersList());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::UsersInsert());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::UsersUpdate());
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::UsersDelete());
 		
-		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminGameStart());
-		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminGameStop());
-		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminScoreboardFreeze());
-		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminUserChangePassword());
-		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminUserInsert());
-		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminUserUpdate());
-		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::AdminUserDelete());
+		
+		
 		
 		pHandlerManager->RegisterHTTPHandler((IHTTPHandler *)new handlers::Scoreboard());
 		
