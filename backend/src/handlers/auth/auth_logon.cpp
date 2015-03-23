@@ -1,8 +1,4 @@
 #include <QJsonObject>
-#include "../ihttphandler.h"
-#include "auth.h"
-#include "../globalcontext.h"
-#include "../usersession.h"
 #include <QUuid>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
@@ -10,10 +6,15 @@
 #include <QSqlRecord>
 #include <QUrl>
 #include <QUrlQuery>
-#include "../qhttpserver/qhttprequest.h"
 #include <iostream>
 #include <QUuid>
 #include <QCryptographicHash>
+
+#include "../ihttphandler.h"
+#include "auth.h"
+#include "../globalcontext.h"
+#include "../usersession.h"
+#include "../qhttpserver/qhttprequest.h"
 
 namespace handlers {
 
@@ -71,38 +72,6 @@ void AuthLogon::handleRequest(GlobalContext *pGlobalContext, QSqlDatabase *db, Q
 			setErrorResponse(response, 1002, "Name or password are incorrect.");
 		}
 	}
-};
-
-// --------------------------------------------------------------------
-
-QString AuthLogoff::target() {
-	return "/auth/logoff";
-};
-
-// --------------------------------------------------------------------
-
-QJsonObject AuthLogoff::api() {
-	QJsonObject parameters;
-	parameters["token"] = QString("your token");
-
-	QJsonObject obj;
-	obj["access"] = QString("authorized");
-	obj["input"] = parameters;
-	obj["path"] = target();
-	return obj;
-};
-
-// --------------------------------------------------------------------
-
-void AuthLogoff::handleRequest(GlobalContext *pGlobalContext, QSqlDatabase *db, QHttpRequest *req, QJsonObject &response) {
-	
-	UserSession *pUserSession = pGlobalContext->userSession(req->url(), db);
-	if (pUserSession == NULL) {
-		setErrorResponse(response, 1005, "token are not found");
-		return;
-	}
-	response["result"] = QString("ok");
-	pGlobalContext->removeUserSession(pUserSession, db);
 };
 
 // --------------------------------------------------------------------

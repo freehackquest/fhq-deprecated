@@ -19,9 +19,14 @@ SOURCES +=  \
 	src/qhttpserver/qhttpresponse.cpp \
 	src/http_parser/http_parser.c \
 	src/handlermanager.cpp \
-	src/handlers/auth.cpp \
+  src/handlers/auth_logon.cpp \
+  src/handlers/auth_logoff.cpp \
 	src/handlers/teams.cpp \
-	src/handlers/games.cpp \
+  src/handlers/games_delete.cpp \
+  src/handlers/games_insert.cpp \
+  src/handlers/games_list.cpp \
+  src/handlers/games_update.cpp \
+  src/handlers/games_updatelogo.cpp \
 	src/handlers/services.cpp \
 	src/handlers/admin.cpp \
 	src/handlers/users.cpp \
