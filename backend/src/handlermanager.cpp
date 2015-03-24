@@ -1,7 +1,3 @@
-#include "qhttpserver/qhttpserver.h"
-#include "qhttpserver/qhttprequest.h"
-#include "qhttpserver/qhttpresponse.h"
-#include "handlermanager.h"
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <iostream>
@@ -11,6 +7,12 @@
 #include <QSqlRecord>
 #include <QUrl>
 #include <QUrlQuery>
+
+#include "qhttpserver/qhttpserver.h"
+#include "qhttpserver/qhttprequest.h"
+#include "qhttpserver/qhttpresponse.h"
+#include "handlermanager.h"
+#include "generatedocumentation.h"
 
 void setErrorResponse(QJsonObject &response, int code, QString message) {
 	response["result"] = QString("fail");
@@ -58,10 +60,23 @@ void HandlerManager::handleRequest(QHttpRequest *req, QHttpResponse *resp)
 	QJsonObject response;
 
 	if (target == "/") {
+		
 		QMap<QString, IHTTPHandler*>::iterator i;
 		for (i = m_mapHandlers.begin(); i != m_mapHandlers.end(); ++i) {
 			response[i.key()] = i.value()->api();
 		}
+
+		QUrlQuery urlQuery(req->url());
+		if (urlQuery.hasQueryItem("html")) {
+			QString result = apiToHtml(response);
+			QByteArray body = result.toUtf8();
+			resp->setHeader("Content-Length", QString::number(body.size()));
+			resp->writeHead(200);
+			resp->end(body);
+			return;
+		}
+		// else json as-is
+		
 	} else if (m_mapHandlers.contains(target)) {
 		AutoDatabaseConnection autodb(m_pGlobalContext);
 		if (!autodb.isEmpty()) {

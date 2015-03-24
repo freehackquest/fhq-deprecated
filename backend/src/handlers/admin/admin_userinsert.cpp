@@ -1,8 +1,4 @@
 #include <QJsonObject>
-#include "../ihttphandler.h"
-#include "admin.h"
-#include "../globalcontext.h"
-#include "../usersession.h"
 #include <QUuid>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
@@ -10,11 +6,16 @@
 #include <QSqlRecord>
 #include <QUrl>
 #include <QUrlQuery>
-#include "../qhttpserver/qhttprequest.h"
 #include <iostream>
 #include <QUuid>
 #include <QCryptographicHash>
 #include <QJsonArray>
+
+#include "../../qhttpserver/qhttprequest.h"
+#include "../../ihttphandler.h"
+#include "../admin.h"
+#include "../../globalcontext.h"
+#include "../../usersession.h"
 
 namespace handlers {
 
@@ -32,14 +33,16 @@ QJsonObject AdminUserInsert::api() {
 	QJsonObject parameters;
 	parameters["token"] = QString("your token");
 	parameters["name"] = QString("name of user");
-	parameters["name"] = QString("role of user (admin or user)");
+	parameters["role"] = QString("role of user (admin or user)");
 	parameters["password"] = QString("password of user");
 
 	QJsonObject obj;
 	obj["path"] = target();
+	obj["method"] = QString("GET");
 	obj["access"] = QString("admin");
 	obj["input"] = parameters;
-	obj["output"] = QString("result");
+	obj["output"] = QString("ok/fail");
+	obj["description"] = QString("Insert user");
 	return obj;
 };
 
@@ -64,7 +67,7 @@ void AdminUserInsert::handleRequest(GlobalContext *pGlobalContext, QSqlDatabase 
 		setErrorResponse(response, 1068, "Parameter name are not found or it is empty");
 		return;
 	}
-	
+
 	if (sPassword.isEmpty()) {
 		setErrorResponse(response, 1069, "Parameter password are not found or it is empty");
 		return;

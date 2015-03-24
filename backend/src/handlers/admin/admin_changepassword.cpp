@@ -32,12 +32,16 @@ QString AdminUserChangePassword::target() {
 QJsonObject AdminUserChangePassword::api() {
 	QJsonObject parameters;
 	parameters["token"] = QString("your token");
+	parameters["id"] = QString("user id");
+	parameters["password"] = QString("new user password");
 
 	QJsonObject obj;
 	obj["path"] = target();
-	obj["access"] = QString("authorized");
+	obj["method"] = QString("GET");
+	obj["access"] = QString("admin");
 	obj["input"] = parameters;
-	obj["output"] = QString("list of teams");
+	obj["output"] = QString("ok/fail");
+	obj["description"] = QString("Change user password");
 	return obj;
 };
 

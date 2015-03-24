@@ -19,21 +19,28 @@ SOURCES +=  \
 	src/qhttpserver/qhttpresponse.cpp \
 	src/http_parser/http_parser.c \
 	src/handlermanager.cpp \
-  src/handlers/auth_logon.cpp \
-  src/handlers/auth_logoff.cpp \
+	src/handlers/auth/auth_logon.cpp \
+	src/handlers/auth/auth_logoff.cpp \
 	src/handlers/teams.cpp \
-  src/handlers/games_delete.cpp \
-  src/handlers/games_insert.cpp \
-  src/handlers/games_list.cpp \
-  src/handlers/games_update.cpp \
-  src/handlers/games_updatelogo.cpp \
+	src/handlers/games/games_delete.cpp \
+	src/handlers/games/games_insert.cpp \
+	src/handlers/games/games_list.cpp \
+	src/handlers/games/games_update.cpp \
+	src/handlers/games/games_updatelogo.cpp \
 	src/handlers/services.cpp \
-	src/handlers/admin.cpp \
+	src/handlers/admin/admin_changepassword.cpp \
+	src/handlers/admin/admin_gamestart.cpp \
+	src/handlers/admin/admin_gamestop.cpp \
+	src/handlers/admin/admin_scoreboardfreeze.cpp \
+	src/handlers/admin/admin_userdelete.cpp \
+	src/handlers/admin/admin_userinsert.cpp \
+	src/handlers/admin/admin_userupdate.cpp \
 	src/handlers/users.cpp \
 	src/handlers/scoreboard.cpp \
 	src/database/databaseupdater.cpp \
 	src/globalcontext.cpp \
 	src/usersession.cpp \
+	src/generatedocumentation.cpp \
 
 
 HEADERS += \
@@ -55,3 +62,4 @@ HEADERS += \
 	src/database/databaseupdater.h \
 	src/globalcontext.h \
 	src/usersession.h \
+	src/generatedocumentation.h \

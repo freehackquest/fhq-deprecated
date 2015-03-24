@@ -36,9 +36,10 @@ QJsonObject AdminGameStop::api() {
 
 	QJsonObject obj;
 	obj["path"] = target();
+	obj["method"] = QString("GET");
 	obj["access"] = QString("admin");
 	obj["input"] = parameters;
-	obj["output"] = QString("result");
+	obj["output"] = QString("ok/fail");
 	return obj;
 };
 

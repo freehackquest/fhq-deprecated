@@ -1,8 +1,4 @@
 #include <QJsonObject>
-#include "../ihttphandler.h"
-#include "admin.h"
-#include "../globalcontext.h"
-#include "../usersession.h"
 #include <QUuid>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
@@ -10,11 +6,16 @@
 #include <QSqlRecord>
 #include <QUrl>
 #include <QUrlQuery>
-#include "../qhttpserver/qhttprequest.h"
 #include <iostream>
 #include <QUuid>
 #include <QCryptographicHash>
 #include <QJsonArray>
+
+#include "../../qhttpserver/qhttprequest.h"
+#include "../../ihttphandler.h"
+#include "../admin.h"
+#include "../../globalcontext.h"
+#include "../../usersession.h"
 
 namespace handlers {
 
@@ -35,9 +36,11 @@ QJsonObject AdminUserUpdate::api() {
 
 	QJsonObject obj;
 	obj["path"] = target();
+	obj["method"] = QString("GET");
 	obj["access"] = QString("admin");
 	obj["input"] = parameters;
-	obj["output"] = QString("result");
+	obj["output"] = QString("ok/fail");
+	obj["description"] = QString("Update user");
 	return obj;
 };
 

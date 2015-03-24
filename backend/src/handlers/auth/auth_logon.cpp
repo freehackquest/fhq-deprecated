@@ -10,11 +10,11 @@
 #include <QUuid>
 #include <QCryptographicHash>
 
-#include "../ihttphandler.h"
-#include "auth.h"
-#include "../globalcontext.h"
-#include "../usersession.h"
-#include "../qhttpserver/qhttprequest.h"
+#include "../../ihttphandler.h"
+#include "../auth.h"
+#include "../../globalcontext.h"
+#include "../../usersession.h"
+#include "../../qhttpserver/qhttprequest.h"
 
 namespace handlers {
 

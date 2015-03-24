@@ -42,9 +42,10 @@ QJsonObject AdminGameStart::api() {
 
 	QJsonObject obj;
 	obj["path"] = target();
+	obj["method"] = QString("GET");
 	obj["access"] = QString("admin");
 	obj["input"] = parameters;
-	obj["output"] = QString("new id of team");
+	obj["output"] = QString("ok/fail");
 	return obj;
 };
 
