@@ -95,13 +95,6 @@
 	    $feedback->echo_insert_form("?action=feedback_add","POST");
 		exit;
 	}
-	else if($content_page == "user_info")
-	{
-		// TODO: remove it
-		$user_info = new fhq_user_info();
-		$user_info->echo_info();
-		exit;
-	}
 	else if($content_page == "scoreboard")
 	{
 		$errmsg = "";
@@ -124,24 +117,6 @@
 	else if($content_page == "rules")
 	{
 		include_once(dirname(__FILE__)."/config/rules.html");
-		exit;
-	}
-	else if ($content_page == "user_set_new_my_nick")
-	{
-		// TODO: remove it
-		$user_info = new fhq_user_info();
-		if(isset($_GET['nick']))
-			$user_info->setNewMyNick($_GET['nick']);
-
-		$user_info->echo_info();
-		exit;
-	}
-	else if ($content_page == "user_set_new_password")
-	{
-		$user_info = new fhq_user_info();
-		if(isset($_GET['old_password']) && isset($_GET['new_password']) && isset($_GET['new_password_confirm']))
-			$user_info->setNewPassword($_GET['old_password'], $_GET['new_password'], $_GET['new_password_confirm']);
-		$user_info->echo_info();
 		exit;
 	}
 	else if($content_page == "statistics"  && ($security->isAdmin() || $security->isTester()))
@@ -339,58 +314,6 @@
 		{
 			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
 			exit;
-		}
-		
-		$quest->echo_view_quest();
-		exit;
-	}
-	else if($content_page == "upload_files")
-	{
-		if(!$security->isAdmin())
-		{
-			echo "Forbidden";
-			exit;
-		};
-		
-		if(!isset($_GET['id']) && count($_FILES) <= 0)
-		{
-			echo 'Not found paramenter "id" or not files';
-			exit;
-		};
-
-		if(!is_numeric($_GET['id']))
-		{
-			echo 'don\'t needed hack me';
-			exit;
-		}
-
-		$id = $_GET['id'];
-		$quest =  new fhq_quest();
-		
-		if(!$quest->select($id))
-		{
-			echo '<font color="#ff0000">Not found quest with id = '.$id.'</font>';
-			exit;
-		}
-
-		$output_dir = 'files/';
-		$keys = array_keys($_FILES);
-		$prefix = 'quest'.$id.'_';
-		for($i = 0; $i < count($keys); $i++)
-		{
-			$filename = $keys[$i];
-			if ($_FILES[$filename]['error'] > 0)
-			{
-				echo "Error: " . $_FILES[$filename]["error"] . "<br>";
-			}
-			else
-			{
-				$full_filename = $output_dir.$prefix.$filename;
-				move_uploaded_file($_FILES[$filename]["tmp_name"],$full_filename);
-				// echo "Uploaded File: ".$full_filename."<br>";
-				if(!file_exists($full_filename))
-				  echo "$full_filename - File not exists!";
-			}
 		}
 		
 		$quest->echo_view_quest();

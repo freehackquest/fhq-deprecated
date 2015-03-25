@@ -135,36 +135,6 @@ echo '
 		'show' => ($game_type == 'jeopardy'),
 	);
 
-	/*$arrmenu[] = array(
-		'name' => 'quests_allow',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Tasks Open" onclick="load_content_page(\'quests_allow\');">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_tasks.png"/>
-			</div>
-		',
-		'show' => ($game_type == 'jeopardy'),
-	);
-					
-	$arrmenu[] = array(
-		'name' => 'quests_process',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Tasks Current" onclick="load_content_page(\'quests_process\');">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_tasks.png"/>
-			</div>
-		',
-		'show' => ($game_type == 'jeopardy'),
-	);
-	
-	$arrmenu[] = array(
-		'name' => 'quests_completed',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Tasks Completed" onclick="load_content_page(\'quests_completed\');">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_tasks.png"/>
-			</div>
-		',
-		'show' => ($game_type == 'jeopardy'),
-	);*/
-	
 	$arrmenu[] = array(
 		'name' => 'splitter',
 		'html' => '
@@ -228,7 +198,7 @@ echo '
 	$arrmenu[] = array(
 		'name' => 'user_info',
 		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="User profile"  onclick="load_content_page(\'user_info\');">
+			<div class="fhq_btn_menu hint--bottom" data-hint="User profile"  onclick="loadUserProfile('.$security->userid().');">
 				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_default_logo_user.png"/> <div style="display: inline-block;" id="btn_user_info">'.$security->nick().'</div>
 			</div>
 		',

@@ -85,7 +85,8 @@ function changeUserLogo(userid) {
 
 function changeUserNick(userid) {
 	var params = {};
-	params.userid = userid;
+	if (userid != null)
+		params.userid = userid;
 	params.nick = document.getElementById('user_new_nick').value;
 	send_request_post(
 		'api/users/update_nick.php',
@@ -96,6 +97,9 @@ function changeUserNick(userid) {
 				return;
 			}
 			document.getElementById('user_current_nick').innerHTML = obj.data.nick;
+			if (userid == null) {
+				document.getElementById('btn_user_info').innerHTML = obj.data.nick;
+			}
 		}
 	);
 }
@@ -350,7 +354,7 @@ function updateUsers() {
 			content += '</div>'; // users_row
 			
 			for (var k in obj.data) {
-        var userinfo = obj.data[k];
+				var userinfo = obj.data[k];
 
 				content += '<div class="users_row">';
 
@@ -440,3 +444,98 @@ function createPageUsers() {
 	cp.innerHTML += '<div id="listUsers"></div>';
 }
 
+function getComboBoxStyle(idelem, currentstyle) {
+	
+	var templates = [];
+	templates.push({style: 'base', caption: 'Base'});
+	templates.push({style: 'dark', caption: 'Nigth'});
+	templates.push({style: 'yellow', caption: 'Yellow (not completed)'});
+	templates.push({style: 'red', caption: 'Red (not completed)'});
+	
+	var result = '<select id="' + idelem + '">';
+	for (var k in templates) {
+		result += '<option ';
+		if (currentstyle == templates[k].style)
+			result += ' selected ';
+		result += ' value="' + templates[k].style + '">' + templates[k].caption + '</option>';
+	}
+	result += '</select>';
+	return result;
+}
+
+function updateUserLogo(userid) {
+	var files = document.getElementById('user_new_logo').files;
+	/*for(i = 0; i < files.length; i++)
+		alert(files[i].name);*/
+	
+	send_request_post_files(
+		files,
+		'api/users/upload_logo.php',
+		createUrlFromObj({"userid": userid}),
+		function (obj) {
+			if (obj.result == "fail") {
+				showModalDialog(obj.error.message);
+				return;
+			}
+			document.getElementById('user_logo').src = obj.data.logo + '?' + new Date().getTime();
+			showModalDialog('updated');
+		}
+	);
+}
+
+function loadUserProfile(userid) {
+	// alert(userid);
+
+	var cp = document.getElementById('content_page');
+	cp.innerHTML = 'Please wait...';
+
+	// alert(createUrlFromObj(params));
+	send_request_post(
+		'api/users/get.php',
+		createUrlFromObj({"userid": userid}),
+		function (obj) {
+			// alert(1);
+			if (obj.result == "fail") {
+				content = obj.error.message;
+				cp.innerHTML = content;
+				return;
+			}
+			var content = '<div class="user_info_table">';
+			content += createUserInfoRow('ID:', userid);
+	
+			content += createUserInfoRow('Your logo:', '<img id="user_logo" src="' + obj.data.logo + '"/>');
+			content += createUserInfoRow('Your name:', '<div id="user_current_nick">' + obj.data.nick + '</div>');
+			content += createUserInfoRow('Your role:', obj.data.role);
+			for (var k in obj.games) {
+				content += createUserInfoRow('Game "' + obj.games[k].title + '" (' + obj.games[k].type_game + '):', obj.games[k].score);
+			}
+			content += createUserInfoRow_Skip();
+			content += createUserInfoRow('Update logo:', 'PNG: <input id="user_new_logo" type="file" accept="image/png" required/>');
+			content += createUserInfoRow('', '<div class="button3 ad" onclick="updateUserLogo(' + userid + ');">Upload</div>');
+			
+			content += createUserInfoRow_Skip();
+			content += createUserInfoRow('Update nick:', '<input id="user_new_nick" type="text" value="' + obj.data.nick + '"/>');
+			content += createUserInfoRow('', '<div class="button3 ad" onclick="changeUserNick(null);">Change name</div>');
+			content += createUserInfoRow_Skip();
+			content += createUserInfoRow('Country:', '<input id="edit_user_country" type="text" value="'+obj.profile.country+'"/>');
+			content += createUserInfoRow('City:', '<input id="edit_user_city" type="text" value="'+obj.profile.city+'"/>');
+			content += createUserInfoRow('University:', '<input id="edit_user_university" type="text" value="'+obj.profile.university+'"/>');
+			content += createUserInfoRow('', '<div class="button3 ad" onclick="update_profile_location();">Update</div>');
+			content += createUserInfoRow_Skip();
+
+			// todo change password
+			content += createUserInfoRow('Old password:', '<input id="userpage_old_password" type="password" value=""/>');
+			content += createUserInfoRow('New password:', '<input id="userpage_new_password" type="password" value=""/>');
+			content += createUserInfoRow('New password(confirm):', '<input id="userpage_new_password_confirm" type="password" value=""/>');
+			content += createUserInfoRow('', '<div class="button3 ad" onclick="userpage_changeUserPassword();">Change password</div>');
+			content += createUserInfoRow_Skip();
+
+			// todo style
+			content += createUserInfoRow('Сolor spectrum', getComboBoxStyle('edit_style', obj.profile.template));
+			content += createUserInfoRow('', '<div class="button3 ad" onclick="update_profile_style()">Save</div>');
+
+			content += '</div>'; // user_info_table
+			cp.innerHTML = content;
+		}
+	);
+}
