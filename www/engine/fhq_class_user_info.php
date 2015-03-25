@@ -288,8 +288,8 @@
 								.substr($charid,16, 4).$hyphen
 								.substr($charid,20,12);	
 
-						$query = "INSERT INTO user(uuid_user, username, password, nick, role, logo)
-							VALUES ('$uuid', '$username','$password_hash','$nickname','$role', '$logo');";
+						$query = "INSERT INTO user(uuid_user, email, status, username, password, nick, role, logo)
+							VALUES ('$uuid', '$email', 'activated', '$username','$password_hash','$nickname','$role', '$logo');";
 						$result2 = $db->query($query);
 						echo "User registered<br>";
 					}
