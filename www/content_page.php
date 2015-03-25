@@ -182,12 +182,6 @@
 		$news->echo_news();
 		exit;
 	}
-	else if ($content_page == "teams")
-	{
-		$news = new fhq_teams();
-		$news->echo_teams();
-		exit;
-	}
 	else if ($content_page == "add_news" && ($security->isAdmin() || $security->isTester()))
 	{
 		$news = new fhq_news();

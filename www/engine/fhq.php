@@ -63,7 +63,6 @@ include_once "$curdir/fhq_class_feedback.php";
 include_once "$curdir/fhq_class_score.php";
 include_once "$curdir/fhq_class_answer_list.php";
 include_once "$curdir/fhq_class_quest.php";
-include_once "$curdir/fhq_class_teams.php";
 include_once "$curdir/fhq_class_adviser.php";
 include_once "$curdir/fhq_class_mail.php";
 include_once "$curdir/fhq_class_user_info.php";

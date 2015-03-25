@@ -146,24 +146,6 @@
 			  PRIMARY KEY (`id`)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
 		$conn->query($table_services);
-	
-		$table_teams = "CREATE TABLE IF NOT EXISTS `teams` (
-			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  `uuid_team` varchar(255) DEFAULT NULL,
-			  `rating` int(11) DEFAULT '0',
-			  `logo` varchar(255) DEFAULT NULL,
-			  `title` varchar(255) DEFAULT NULL,
-			  `date_create` datetime DEFAULT NULL,
-			  `date_change` datetime DEFAULT NULL,
-			  `owner` int(11) DEFAULT NULL,
-			  `json_data` text,
-			  `json_security_data` text,
-			  PRIMARY KEY (`id`),
-			  UNIQUE KEY `uuid_team` (`uuid_team`),
-			  KEY `title` (`title`),
-			  KEY `owner` (`owner`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
-		$conn->query($table_teams);
 		
 		$table_tryanswer = "CREATE TABLE IF NOT EXISTS `tryanswer` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -221,14 +203,7 @@
 			  PRIMARY KEY (`iduser`,`idquest`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 		$conn->query($table_userquest);
-		
-		$table_userteams = "CREATE TABLE IF NOT EXISTS `userteams` (
-			  `id_user` int(11) NOT NULL AUTO_INCREMENT,
-			  `date_begin` datetime DEFAULT NULL,
-			  `date_end` datetime DEFAULT NULL,
-			  PRIMARY KEY (`id_user`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
-		$conn->query($table_userteams);
+
 		
 		include_once("install_gotonextstep.php");
 	}

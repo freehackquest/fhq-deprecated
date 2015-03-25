@@ -1,13 +1,13 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 
-$curdir = dirname(__FILE__);
-include ($curdir."/../api.lib/api.helpers.php");
-include ($curdir."/../../config/config.php");
-include ($curdir."/../../engine/fhq.php");
+$curdir_games_update = dirname(__FILE__);
+include_once ($curdir_games_update."/../api.lib/api.helpers.php");
+include_once ($curdir_games_update."/../../config/config.php");
+include_once ($curdir_games_update."/../api.lib/api.base.php");
 
-$security = new fhq_security();
-checkAuth($security);
+include_once ($curdir_games_update."/../api.lib/loadtoken.php");
+APIHelpers::checkAuth();
 
 $result = array(
 	'result' => 'fail',
@@ -16,8 +16,8 @@ $result = array(
 
 $conn = APIHelpers::createConnection($config);
 
-if(!$security->isAdmin())
-  showerror(756, 'Error 756: access denie. you must be admin.');
+if(!APISecurity::isAdmin())
+  APIHelpers::showerror(756, 'Error 756: access denie. you must be admin.');
 
 $columns = array(
   'title' => 'Unknown',
@@ -27,16 +27,18 @@ $columns = array(
   'date_stop' => '0000-00-00 00:00:00',
   'date_restart' => '0000-00-00 00:00:00',
   'description' => '',
+  'state' => 'Unlicensed copy',
+  'form' => 'online',
   'organizators' => '',
 );
 
-if (!issetParam('id'))
-  showerror(759, 'Error 759: not found parameter "id"');
+if (!APIHelpers::issetParam('id'))
+  APIHelpers::showerror(759, 'not found parameter "id"');
 
 $game_id = getParam('id', 0);
 
 if (!is_numeric($game_id))
-	showerror(754, 'Error 754: incorrect "id"');
+	APIHelpers::showerror(754, 'incorrect "id"');
 
 $game_id = intval($game_id);
 
@@ -45,10 +47,10 @@ $values_q = array();
 
 foreach ( $columns as $k => $v) {
   $values_q[] = ' '.$k.' = ?';
-  if (issetParam($k))
-    $param_values[$k] = getParam($k, $v);
+  if (APIHelpers::issetParam($k))
+    $param_values[$k] = APIHelpers::getParam($k, $v);
   else
-    showerror(758, 'Error 758: not found parameter "'.$k.'"');
+    APIHelpers::showerror(758, 'Error 758: not found parameter "'.$k.'"');
 }
 
 $query = 'UPDATE games SET '.implode(',', $values_q).', date_change = NOW()
@@ -65,7 +67,7 @@ try {
 	$stmt->execute($values);
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
-	showerror(747, 'Error 747: ' + $e->getMessage());
+	APIHelpers::showerror(747, $e->getMessage());
 }
 
 

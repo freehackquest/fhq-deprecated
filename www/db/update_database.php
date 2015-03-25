@@ -119,18 +119,6 @@
 	$tables['tasks']['description_status'] = array ( 'Field' => 'description_status', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 */
 
-	$tables['teams'] = array();
-	$tables['teams']['id'] = array ( 'Field' => 'id', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
-	$tables['teams']['uuid_team'] = array ( 'Field' => 'uuid_team', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => 'UNI', 'Default' => NULL, 'Extra' => '', );
-	$tables['teams']['rating'] = array ( 'Field' => 'rating', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => '', 'Default' => '0', 'Extra' => '', );
-	$tables['teams']['logo'] = array ( 'Field' => 'logo', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
-	$tables['teams']['title'] = array ( 'Field' => 'title', 'Type' => 'varchar(255)', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
-	$tables['teams']['date_create'] = array ( 'Field' => 'date_create', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
-	$tables['teams']['date_change'] = array ( 'Field' => 'date_change', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
-	$tables['teams']['owner'] = array ( 'Field' => 'owner', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => 'MUL', 'Default' => NULL, 'Extra' => '', );
-	$tables['teams']['json_data'] = array ( 'Field' => 'json_data', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
-	$tables['teams']['json_security_data'] = array ( 'Field' => 'json_security_data', 'Type' => 'text', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
-
 	$tables['tryanswer'] = array();
 	$tables['tryanswer']['id'] = array ( 'Field' => 'id', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
 	$tables['tryanswer']['iduser'] = array ( 'Field' => 'iduser', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
@@ -182,12 +170,6 @@
 	$tables['userquest']['stopdate'] = array ( 'Field' => 'stopdate', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['userquest']['startdate'] = array ( 'Field' => 'startdate', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 
-	$tables['userteams'] = array();
-	$tables['userteams']['id_user'] = array ( 'Field' => 'id_user', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
-	// $tables['userteams']['id_team'] = array ( 'Field' => 'id_team', 'Type' => 'int(11)', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
-	$tables['userteams']['date_begin'] = array ( 'Field' => 'date_begin', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
-	$tables['userteams']['date_end'] = array ( 'Field' => 'date_end', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
-
 	$tables['flags'] = array();
 	$tables['flags']['id'] = array ( 'Field' => 'id', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => 'PRI', 'Default' => NULL, 'Extra' => 'auto_increment', );
 	$tables['flags']['idservice'] = array ( 'Field' => 'idservice', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
@@ -230,8 +212,6 @@
 	$tables['scoreboard']['owner'] = array ( 'Field' => 'owner', 'Type' => 'varchar(300)', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['scoreboard']['score'] = array ( 'Field' => 'score', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
 	$tables['scoreboard']['date_change'] = array ( 'Field' => 'date_change', 'Type' => 'datetime', 'Null' => 'NO', 'Key' => '', 'Default' => NULL, 'Extra' => '', );
-	
-	// $tables['userteams'] = array();
 
 	$db = new fhq_database();
 	
