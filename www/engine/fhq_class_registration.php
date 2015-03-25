@@ -31,7 +31,20 @@
 			$notactivated = md5(rand().rand());
 			$nickname = "hacker-".substr(md5(rand().rand()), 0, 7);
 			$email = strtolower($email);
-			$query = "INSERT user( username, password, email, nick, role ) VALUES ('$username','notactivated$notactivated', $email, '$nickname','user');";
+			
+			
+			//  generate uniq id for user
+			mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
+			$charid = strtoupper(md5(uniqid(rand(), true)));
+			$hyphen = chr(45);// "-"
+			$uuid = substr($charid, 0, 8).$hyphen
+					.substr($charid, 8, 4).$hyphen
+					.substr($charid,12, 4).$hyphen
+					.substr($charid,16, 4).$hyphen
+					.substr($charid,20,12);	
+
+			$query = "INSERT INTO user(uuid_user, username, password, email, nick, role )
+				VALUES ( '$uuid', '$username','notactivated$notactivated', $email, '$nickname','user');";
 			$result = $db->query($query);
 
 			if($result == '1')
