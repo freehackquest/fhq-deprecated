@@ -275,9 +275,21 @@
 					$cnt = $row['cnt'];
 					// print_r($row);
 					// echo "[cnt = $cnt]";
-					if ($cnt == 0) {
+					if ($cnt == 0) {			
 						$password_hash = $security->tokenByData( array($pass, $username, strtoupper($email)));
-						$query = "INSERT user( username, password, nick, role, logo) VALUES ('$username','$password_hash','$nickname','$role', '$logo');";
+						
+						//  generate uniq id for user
+						mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
+						$charid = strtoupper(md5(uniqid(rand(), true)));
+						$hyphen = chr(45);// "-"
+						$uuid = substr($charid, 0, 8).$hyphen
+								.substr($charid, 8, 4).$hyphen
+								.substr($charid,12, 4).$hyphen
+								.substr($charid,16, 4).$hyphen
+								.substr($charid,20,12);	
+
+						$query = "INSERT INTO user(uuid_user, username, password, nick, role, logo)
+							VALUES ('$uuid', '$username','$password_hash','$nickname','$role', '$logo');";
 						$result2 = $db->query($query);
 						echo "User registered<br>";
 					}
