@@ -21,8 +21,12 @@ function send_request_post(page, url, callbackf)
 				alert("error");
 			else
 			{
-				var obj = JSON.parse(tmpXMLhttp.responseText);
-				callbackf(obj);
+				try {
+					var obj = JSON.parse(tmpXMLhttp.responseText);
+					callbackf(obj);
+				} catch(e) {
+					alert(tmpXMLhttp.responseText);
+				}
 				tmpXMLhttp = null;
 			}
 		}
@@ -32,6 +36,36 @@ function send_request_post(page, url, callbackf)
 	tmpXMLhttp.send(url);
 };
 
+function send_request_post_files(files, page, url, callbackf) {
+	
+	var formData = new FormData();
+	for(i = 0; i < files.length; i++)
+		formData.append(files[i].name, files[i]);
+	var tmpXMLhttp = null;
+	if (window.XMLHttpRequest) {
+		// code for IE7+, Firefox, Chrome, Opera, Safari
+		tmpXMLhttp=new XMLHttpRequest();
+	};
+	tmpXMLhttp.onreadystatechange=function() {
+		if (tmpXMLhttp.readyState==4 && tmpXMLhttp.status==200) {
+			if(tmpXMLhttp.responseText == "")
+				alert("error");
+			else
+			{
+				try {
+					var obj = JSON.parse(tmpXMLhttp.responseText);
+					callbackf(obj);
+				} catch(e) {
+					alert(tmpXMLhttp.responseText);
+				}
+				tmpXMLhttp = null;
+			}
+		}
+	}
+	tmpXMLhttp.open("POST", page + "?" + url, true);
+	// tmpXMLhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	tmpXMLhttp.send(formData);
+}
 
 var guid = (function() {
   function s4() {

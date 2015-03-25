@@ -7,19 +7,26 @@ include_once ($curdir."/../../config/config.php");
 
 APIHelpers::checkAuth();
 
-if (APIHelpers::issetParam('userid') && !APISecurity::isAdmin()) 
-	APIHelpers::showerror(912, 'you what change nick for another user, it can do only admin');
-
 $userid = APIHelpers::getParam('userid', APISecurity::userid());
 // $userid = intval($userid);
 if (!is_numeric($userid))
-	APIHelpers::showerror(912, 'userid must be numeric');
+	APIHelpers::showerror(912, 'userid must be numeric '.$userid);
+
+if (!APISecurity::isAdmin() && $userid != APISecurity::userid()) 
+	APIHelpers::showerror(912, 'you what change nick for another user, it can do only admin '.APISecurity::userid());
 
 $result = array(
 	'result' => 'fail',
 	'data' => array(),
 );
 
+// todo check if changed is current user
+// if (isset($config['profile']) && isset($config['profile']['change_nick']) && $config['profile']['change_nick'] == 'yes') {
+/*include dirname(__FILE__)."/../config/config.php";
+			if (isset($config['profile']) && isset($config['profile']['change_nick']) && $config['profile']['change_nick'] == 'no') {
+				return;
+			}*/
+			
 $conn = APIHelpers::createConnection($config);
 
 if (!APIHelpers::issetParam('nick'))
@@ -27,7 +34,7 @@ if (!APIHelpers::issetParam('nick'))
 
 $nick = APIHelpers::getParam('nick', '');
 
-$result['data']['nick'] = $nick;
+$result['data']['nick'] = htmlspecialchars($nick);
 $result['data']['userid'] = $userid;
 
 if (strlen($nick) <= 3)
@@ -36,7 +43,7 @@ if (strlen($nick) <= 3)
 try {
 	$query = 'UPDATE user SET nick = ? WHERE iduser = ?';
 	$stmt = $conn->prepare($query);
-	if ($stmt->execute(array($nick, $userid)))
+	if ($stmt->execute(array(htmlspecialchars($nick), $userid)))
 		$result['result'] = 'ok';
 	else
 		$result['result'] = 'fail';
