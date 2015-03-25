@@ -23,15 +23,18 @@ try {
   // TODO paging
 	$query = 'SELECT 
 				games.id,
+				games.uuid_game,
 				games.title,
 				games.type_game,
 				games.date_start,
 				games.date_stop,
 				games.date_restart,
 				games.description,
+				games.state,
+				games.form,
 				games.logo,
 				games.owner,
-        games.organizators,
+				games.organizators,
 				user.nick
 			FROM
 				games
@@ -39,14 +42,14 @@ try {
 			ORDER BY games.date_start
 			DESC LIMIT 0,10;';
 
-	$columns = array('id', 'title', 'type_game', 'date_start', 'date_stop', 'date_restart', 'description', 'logo', 'owner', 'nick', 'organizators');
+	$columns = array('id', 'title', 'state', 'form', 'type_game', 'date_start', 'date_stop', 'date_restart', 'description', 'logo', 'owner', 'nick', 'organizators');
 
 	$stmt = $conn->prepare($query);
 	$stmt->execute();
 	$i = 0;
 	while($row = $stmt->fetch())
 	{
-		$id = $row['date_start'];
+		$id = $row['uuid_game'];
 		$result['data'][$id] = array();
 		foreach ( $columns as $k) {
 			$result['data'][$id][$k] = $row[$k];

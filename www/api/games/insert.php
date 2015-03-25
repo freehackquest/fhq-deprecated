@@ -1,13 +1,13 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 
-$curdir = dirname(__FILE__);
-include ($curdir."/../api.lib/api.helpers.php");
-include ($curdir."/../../config/config.php");
-include ($curdir."/../../engine/fhq.php");
+$curdir_games_insert = dirname(__FILE__);
+include_once ($curdir_games_insert."/../api.lib/api.helpers.php");
+include_once ($curdir_games_insert."/../../config/config.php");
+include_once ($curdir_games_insert."/../api.lib/api.base.php");
 
-$security = new fhq_security();
-checkAuth($security);
+include_once ($curdir_games_insert."/../api.lib/loadtoken.php");
+APIHelpers::checkAuth();
 
 $result = array(
 	'result' => 'fail',
@@ -16,8 +16,8 @@ $result = array(
 
 $conn = APIHelpers::createConnection($config);
 
-if(!$security->isAdmin())
-  showerror(746, 'Error 746: access denie. you must be admin.');
+if(!APISecurity::isAdmin())
+  APIHelpers::showerror(746, 'Error 746: access denie. you must be admin.');
 
 $columns = array(
   'uuid_game' => 'none',
@@ -28,7 +28,9 @@ $columns = array(
   'date_stop' => '0000-00-00 00:00:00',
   'date_restart' => '0000-00-00 00:00:00',
   'description' => '',
-  'owner' => $security->userId(),
+  'state' => 'Unlicensed copy',
+  'form' => 'online',
+  'owner' => APISecurity::userid(),
   'organizators' => '',
 );
 
@@ -39,14 +41,14 @@ foreach ( $columns as $k => $v) {
   $values_q[] = '?';
   if ($k == 'owner')
 	$param_values[$k] = $v;
-  else if (issetParam($k))
-    $param_values[$k] = getParam($k, $v);
+  else if (APIHelpers::issetParam($k))
+    $param_values[$k] = APIHelpers::getParam($k, $v);
   else
-    showerror(748, 'Error 748: not found parameter "'.$k.'"');
+    APIHelpers::showerror(748, 'not found parameter "'.$k.'"');
 }
 
 if (!is_numeric($param_values['owner']))
-	showerror(745, 'Error 745: incorrect owner');
+	APIHelpers::showerror(745, 'incorrect owner');
 
 $param_values['owner'] = intval($param_values['owner']);
 
@@ -63,7 +65,7 @@ try {
 	$result['data']['game']['id'] = $conn->lastInsertId();
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
-	showerror(747, 'Error 747: ' + $e->getMessage());
+	APIHelpers::showerror(747, $e->getMessage());
 }
 
 echo json_encode($result);
