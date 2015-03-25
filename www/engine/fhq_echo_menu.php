@@ -195,16 +195,6 @@ echo '
 	);
 	
 	$arrmenu[] = array(
-		'name' => 'teams',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Teams" onclick="load_content_page(\'teams\');">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_teams.png"/>
-			</div>
-		',
-		'show' => true,
-	);
-	
-	$arrmenu[] = array(
 		'name' => 'news',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="News" onclick="load_content_page(\'news\');">
