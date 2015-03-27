@@ -17,5 +17,6 @@ include_once $curdir."/users/index.php";
 include_once $curdir."/games/index.php";
 include_once $curdir."/quests/index.php";
 include_once $curdir."/updates/index.php";
+include_once $curdir."/events/index.php";
 
 print_doc($doc);
