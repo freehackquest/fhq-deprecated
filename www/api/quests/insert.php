@@ -1,12 +1,12 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 
-$curdir = dirname(__FILE__);
-include_once ($curdir."/../api.lib/api.base.php");
-include_once ($curdir."/../api.lib/api.game.php");
-include_once ($curdir."/../api.lib/api.quest.php");
-include_once ($curdir."/../../config/config.php");
-include_once ($curdir."/../api.lib/loadtoken.php");
+$curdir_quests_insert = dirname(__FILE__);
+include_once ($curdir_quests_insert."/../api.lib/api.base.php");
+include_once ($curdir_quests_insert."/../api.lib/api.game.php");
+include_once ($curdir_quests_insert."/../api.lib/api.quest.php");
+include_once ($curdir_quests_insert."/../../config/config.php");
+include_once ($curdir_quests_insert."/../api.lib/loadtoken.php");
 
 APIHelpers::checkAuth();
 
@@ -43,6 +43,8 @@ foreach( $params as $key => $val ) {
 		APIHelpers::showerror(352, 'Not found parameter "'.$key.'"');
 	$params[$key] = APIHelpers::getParam($key, '');
 }
+
+$questname = $params['name'];
 
 $params['tema'] = base64_encode($params['subject']);
 $params['name'] = base64_encode($params['name']);
@@ -87,6 +89,11 @@ try {
 		$result['data']['quest']['id'] = $conn->lastInsertId();
 		$result['result'] = 'ok';
 		APIQuest::updateCountUserSolved($conn, $result['data']['quest']['id']);
+		
+		// to public evants
+		if ($params['state'] == 'open') {
+			APIEvents::addPublicEvents($conn, "quests", "New quest #".$result['data']['quest']['id']." ".$questname." (subject: ".$params['subject'].")");
+		}
 	} else {
 		$result['error']['pdo'] = $conn->errorInfo();
 		$result['error']['code'] = 304;
@@ -96,5 +103,5 @@ try {
 	APIHelpers::showerror(747,$e->getMessage());
 }
 
-include_once ($curdir."/../api.lib/savetoken.php");
+include_once ($curdir_quests_insert."/../api.lib/savetoken.php");
 echo json_encode($result);

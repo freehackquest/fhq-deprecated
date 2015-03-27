@@ -51,7 +51,8 @@
 			// $mail->send_to_all('Free-Hack-Quest: News', $text, true);
 		}
 
-		function echo_news()
+		// TODO: remove it
+		/*function echo_news()
 		{
 			$security = new fhq_security();
 			$db = new fhq_database();
@@ -80,6 +81,6 @@
 
 				echo "<br></pre>";	
 			}
-		}
+		}*/
 	}
 ?>

@@ -41,10 +41,18 @@ if (strlen($nick) <= 3)
   APIHelpers::showerror(912, '"nick" must be more then 3 characters');
 
 try {
+	$oldnick = APISecurity::nick();
+	
 	$query = 'UPDATE user SET nick = ? WHERE iduser = ?';
 	$stmt = $conn->prepare($query);
 	if ($stmt->execute(array(htmlspecialchars($nick), $userid)))
+	{
 		$result['result'] = 'ok';
+		APISecurity::setNick(htmlspecialchars($nick));
+
+		// add to public events
+		APIEvents::addPublicEvents($conn, 'users', 'User #'.$userid.' {'.$oldnick.'} changed nick to {'.htmlspecialchars($nick).'} ');
+	}
 	else
 		$result['result'] = 'fail';
 } catch(PDOException $e) {

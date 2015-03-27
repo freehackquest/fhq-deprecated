@@ -51,6 +51,8 @@ foreach( $params as $key => $val ) {
 	$params[$key] = APIHelpers::getParam($key, '');
 }
 
+$questname = $params['name'];
+
 $params['tema'] = base64_encode($params['subject']);
 $params['name'] = base64_encode($params['name']);
 $params['short_text_copy'] = $params['short_text'];
@@ -92,6 +94,11 @@ $values[] = $questid;
 	if($stmt->execute(array_values($values))) {
 		$result['result'] = 'ok';
 		APIQuest::updateCountUserSolved($conn, $questid);
+
+		// add to public events
+		if ($params['state'] == 'open') {
+			APIEvents::addPublicEvents($conn, "quests", "Updated quest #".$questid." ".$questname.' (subject: '.$params['subject'].')');
+		}
 	} else {
 		$result['error']['pdo'] = $conn->errorInfo();
 		$result['error']['code'] = 304;

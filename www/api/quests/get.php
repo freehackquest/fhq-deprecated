@@ -30,7 +30,8 @@ $result = array(
 $result['result'] = 'ok';
 
 // TODO: must be added filters
-$conn = APIHelpers::createConnection($config);
+if ($conn == null)
+	$conn = APIHelpers::createConnection($config);
 
 $result['gameid'] = APIGame::id(); 
 $result['userid'] = APISecurity::userid();

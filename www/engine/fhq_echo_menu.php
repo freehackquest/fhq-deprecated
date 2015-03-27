@@ -173,7 +173,7 @@ echo '
 		',
 		'show' => true,
 	);
-	
+
 	$arrmenu[] = array(
 		'name' => 'feedback',
 		'html' => '
