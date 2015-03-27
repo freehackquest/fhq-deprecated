@@ -151,30 +151,6 @@
 		$adviser->echo_advisers($number_of_page);
 		exit;
 	}
-	else if ($content_page == "add_news" && ($security->isAdmin() || $security->isTester()))
-	{
-		// todo remove it
-		/*
-		$news = new fhq_news();
-		if(isset($_GET['text']) && isset($_GET['send_as_copies'])) {
-			$send_as_copies = ($_GET['send_as_copies'] == 'true') || ($_GET['send_as_copies'] == '1');
-			$news->add_news($_GET['text'], $send_as_copies);
-			echo "sended";
-		}
-
-		$news->echo_insert_form();
-		* */
-		exit;
-	}
-	else if ($content_page == "save_news" && ($security->isAdmin() || $security->isTester()))
-	{
-		// TODO remove it
-		$news = new fhq_news();
-		if(isset($_GET['text']) && isset($_GET['id']))
-			$news->save_news($_GET['id'], $_GET['text']);
-		echo "saved";
-		exit;
-	}
 	else if ($content_page == "add_user" && $security->isAdmin())
 	{
 		$user = new fhq_user_info();

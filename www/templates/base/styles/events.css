@@ -1,0 +1,43 @@
+.fhq_event_info {
+	display: inline-table;
+	/* border: 1px solid black;*/
+	border-radius: 10px;
+	margin: 12px;
+	font-family: arial;
+	padding: 10px;
+	text-align: center;
+	min-width: 200px;
+	width: 70%;
+	background-color: #eee;
+}
+
+.fhq_event_info_row {
+	display: table-row;
+	padding: 10px;
+	margin: 10px;
+}
+
+.fhq_event_info_cell_img {
+	display: table-cell;
+	width: 110px;
+	padding: 10px;
+	margin: 10px;
+}
+
+.fhq_event_info_cell_content {
+	display: table-cell;
+	text-align: left;
+	vertical-align: top;
+	padding: 10px;
+	margin: 10px;
+}
+
+.fhq_event_caption {
+	font-size: 15px;
+}
+
+.fhq_event_score {
+	font-size: 25px;
+	text-align: center;
+	padding: 10px;
+}

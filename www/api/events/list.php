@@ -42,7 +42,10 @@ try {
 	$stmt = $conn->prepare($query);
 	$stmt->execute($params);
 
+	$bAdmin = APISecurity::isAdmin();
+
 	$result['result'] = 'ok';
+	$result['access'] = $bAdmin;
 	$new_id = $id;
 	$result['data']['events'] = array();
 	while($row = $stmt->fetch())

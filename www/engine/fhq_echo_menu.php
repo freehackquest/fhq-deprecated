@@ -269,22 +269,6 @@ echo '
 		'show' => $security->isAdmin() || $security->isTester(),
 	);
 	
-	/* $arrsystemmenu[] = array(
-		'name' => 'add_quest',
-		'html' => '
-			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'add_quest\');">Add new quest</div>
-		',
-		'show' => $security->isAdmin(),
-	);*/
-	
-	$arrsystemmenu[] = array(
-		'name' => 'add_news',
-		'html' => '
-			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'add_news\');">Add News</div>
-		',
-		'show' => $security->isAdmin() || $security->isTester(),
-	);
-	
 	// TODO: must be moved to fhq_users.js
 	$arrsystemmenu[] = array(
 		'name' => 'add_user',

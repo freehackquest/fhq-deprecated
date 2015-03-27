@@ -61,6 +61,7 @@ function echo_mainpage($page)
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/timer.css?ver='.$versioncontent.'">
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/quests.css?ver='.$versioncontent.'">
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/users.css?ver='.$versioncontent.'">
+	<link rel="stylesheet" type="text/css" href="templates/base/styles/events.css?ver='.$versioncontent.'">
 
 	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/colors.css?ver='.$versioncontent.'" />
 
@@ -90,7 +91,6 @@ function echo_mainpage($page)
 </head>
 	';
 	
-    // reload_news();
     $game_info = "";
 	if (isset($_SESSION['game'])) {
 		$game_info .= "<b><font size=5>".$_SESSION['game']['title']."</font></b><br>";
