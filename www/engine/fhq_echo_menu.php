@@ -167,13 +167,13 @@ echo '
 	$arrmenu[] = array(
 		'name' => 'news',
 		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="News" onclick="load_content_page(\'news\');">
+			<div class="fhq_btn_menu hint--bottom" data-hint="News" onclick="loadEvents();">
 				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_news.png"/>
 			</div>
 		',
 		'show' => true,
 	);
-	
+
 	$arrmenu[] = array(
 		'name' => 'feedback',
 		'html' => '
@@ -265,22 +265,6 @@ echo '
 		'name' => 'statistics',
 		'html' => '
 			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'statistics\');">Statistics</div>
-		',
-		'show' => $security->isAdmin() || $security->isTester(),
-	);
-	
-	/* $arrsystemmenu[] = array(
-		'name' => 'add_quest',
-		'html' => '
-			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'add_quest\');">Add new quest</div>
-		',
-		'show' => $security->isAdmin(),
-	);*/
-	
-	$arrsystemmenu[] = array(
-		'name' => 'add_news',
-		'html' => '
-			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'add_news\');">Add News</div>
 		',
 		'show' => $security->isAdmin() || $security->isTester(),
 	);

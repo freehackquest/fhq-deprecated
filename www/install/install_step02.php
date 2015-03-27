@@ -98,15 +98,6 @@
 			  KEY `owner` (`owner`)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
 		$conn->query($table_games);
-
-		$table_news = "CREATE TABLE IF NOT EXISTS `news` (
-			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  `text` text,
-			  `datetime_` datetime DEFAULT NULL,
-			  `author` int(11) DEFAULT NULL,
-			  PRIMARY KEY (`id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
-		$conn->query($table_news);
 		
 		
 		$table_quest = "CREATE TABLE IF NOT EXISTS `quest` (

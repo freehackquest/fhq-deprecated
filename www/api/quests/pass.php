@@ -98,7 +98,7 @@ try {
 				$query1 = 'UPDATE userquest SET stopdate = NOW() WHERE idquest = ? AND iduser = ?;';
 				$stmt1 = $conn->prepare($query1);
 				$stmt1->execute(array(intval($questid), APISecurity::userid()));
-				$new_user_score = APIHelpers::calculateScore($conn);
+				$new_user_score = APIHelpers::calculateScore($conn);			
 				$result['new_user_score'] = $new_user_score;
 				if ($_SESSION['user']['score'] != $result['new_user_score'])
 				{
@@ -111,7 +111,9 @@ try {
 
 				APIAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, 'Yes');
 				APIAnswerList::movedToBackup($conn, $questid);
-				
+
+				// add to public events
+				APIEvents::addPublicEvents($conn, "users", "User ".APISecurity::nick()." passed quest #".$questid." (new user score: ".$new_user_score.")");
 			} else {
 				APIAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, 'No');
 				APIHelpers::showerror(3106, 'Answer incorrect');

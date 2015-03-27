@@ -10,6 +10,7 @@ class APIUser {
 			$defaults['city'] = '?';
 			$defaults['university'] = '?';
 			$defaults['game'] = '0';
+			$defaults['events_last_id'] = '0';
 
 			$query = 'SELECT * FROM users_profile WHERE userid = ?';
 			$stmt = $conn->prepare($query);
@@ -36,7 +37,7 @@ class APIUser {
 				$stmt2->execute(array(APISecurity::userid(), $k, $v));
 			}
 		} catch(PDOException $e) {
-			showerror(103, 'Error 103: ' + $e->getMessage());
+			showerror(103, 'Error 103: '.$e->getMessage());
 		}
 	}
 	

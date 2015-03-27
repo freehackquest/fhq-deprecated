@@ -16,7 +16,7 @@ topic/score/author - creator<br>
 topic/score/solve - real (and possible) solution by author<br>
 -->
 <h2>developers and designers</h2>
-Evgenii Sopov, Igor Polyakov<br>
+Evgenii Sopov, Igor Polyakov, Maxim Samoilov (Nitive)<br>
 
 <h2>api</h2>
 <a href="api/?html">HTML</a>, 
@@ -32,6 +32,7 @@ Evgenii Sopov, Igor Polyakov<br>
 see us in <a href="http://vk.com/freehackquest">VKontakte</a><br>
 also you can write email to us<br>
 freehackquest@gmail.com<br>
+Read us on twitter <a href="https://twitter.com/freehackquest">twitter</a><br>
 
 <h2>thanks for</h2>
 Dmitrii Mukovkin,
@@ -39,6 +40,5 @@ Team Keva,
 Alexey Gulyaev,
 Alexander Menschikov,
 Ilya Bokov, 
-Maxim Samoilov,
 Extrim Code,
 Taisiya Lebedeva<br>
