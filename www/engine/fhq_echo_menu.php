@@ -13,27 +13,6 @@ echo '
 <script>
 </script>
 ';
-	/* echo '<table width=100%>
-			<tr>
-				<td >
-					<p>
-					Your name is <a id="btn_user_info" class="button3" href="javascript:void(0);" onclick="load_content_page(\'user_info\');" >'.$security->nick().'</a> ,
-					your score is <font id="view_score" size=5>'.$security->score().'</font>
-					and you can try <a class="button3" href="javascript:void(0);" onclick="recalculate_score();">recalculate score</a> . 
-					also you can look your at quests: 
-					<a class="button3" href="javascript:void(0);" onclick="load_content_page(\'quests_allow\');">Open</a> , 
-					<a class="button3" href="javascript:void(0);" onclick="load_content_page(\'quests_process\');">Current</a> , 
-					<a class="button3" href="javascript:void(0);" onclick="load_content_page(\'quests_completed\');">Completed</a> .
-					You can write <a class="button3" href="javascript:void(0);" onclick="load_content_page(\'feedback_my\');">Feedback</a> .
-					Also you can look at <a class="button3" href="javascript:void(0);" onclick="load_content_page(\'top100\');">"Top 100"</a> .
-					And of course you can 
-					<a class="button3" href="javascript:void(0);" onclick="exit();">logout</a> .
-					<!-- And I almost forgot... You can look at <a class="button3" href="javascript:void(0);" onclick="load_content_page(\'dr_zoyberg\');">Dr. Zoyberg</a> .  -->
-					Just do it!
-					</p>
-			</tr>
-		</table>';
-	*/
 	
 	$game_type = "";
 	$game_title = "";
@@ -93,16 +72,6 @@ echo '
 		',
 		'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
 	);
-	
-	/*$arrmenu[] = array(
-		'name' => 'recalculate_score',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Recalculate Score" onclick="recalculate_score();">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_recalculate.png"/>
-			</div>
-		',
-		'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
-	);*/
 	
 	$arrmenu[] = array(
 		'name' => 'advisers',
@@ -218,7 +187,7 @@ echo '
 	$arrmenu[] = array(
 		'name' => 'logout',
 		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Logout" onclick="exit();">
+			<div class="fhq_btn_menu hint--bottom" data-hint="Logout" onclick="logout();">
 				<img width="50px" src="templates/'.$template.'/images/menu_btn_logout.png"/><br>
 			</div>
 		',

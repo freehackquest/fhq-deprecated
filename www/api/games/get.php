@@ -9,7 +9,7 @@ include_once ($curdir."/../../config/config.php");
 
 include_once ($curdir."/../api.lib/loadtoken.php");
 
-APIHelpers::checkAuth();
+// APIHelpers::checkAuth();
 
 $result = array(
 	'result' => 'fail',
@@ -26,7 +26,7 @@ $game_id = APIHelpers::getParam('id', 0);
 
 if (!is_numeric($game_id))
 	APIHelpers::showerror(715, 'incorrect id');
-	
+
 try {
 
 	$query = '

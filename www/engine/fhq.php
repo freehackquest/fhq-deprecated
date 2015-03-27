@@ -59,7 +59,6 @@ include_once "$curdir/fhq_class_security.php";
 include_once "$curdir/fhq_class_registration.php";
 include_once "$curdir/fhq_class_objects.php";
 include_once "$curdir/fhq_class_feedback.php";
-include_once "$curdir/fhq_class_score.php";
 include_once "$curdir/fhq_class_answer_list.php";
 include_once "$curdir/fhq_class_quest.php";
 include_once "$curdir/fhq_class_adviser.php";

@@ -1,13 +1,13 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 
-$curdir = dirname(__FILE__);
-include_once ($curdir."/../api.lib/api.base.php");
-include_once ($curdir."/../api.lib/api.security.php");
-include_once ($curdir."/../api.lib/api.helpers.php");
-include_once ($curdir."/../../config/config.php");
+$curdir_games_choose = dirname(__FILE__);
+include_once ($curdir_games_choose."/../api.lib/api.base.php");
+include_once ($curdir_games_choose."/../api.lib/api.security.php");
+include_once ($curdir_games_choose."/../api.lib/api.helpers.php");
+include_once ($curdir_games_choose."/../../config/config.php");
 
-include_once ($curdir."/../api.lib/loadtoken.php");
+include_once ($curdir_games_choose."/../api.lib/loadtoken.php");
 
 APIHelpers::checkAuth();
 

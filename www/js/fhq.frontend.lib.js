@@ -72,12 +72,12 @@ function FHQFrontEndLib() {
 
 	this.auth = new (function(t) {
 		this.p = t;
-		this.sign_in = function (email, password) {
+		this.login = function (email, password) {
 			var params = {};
 			params.email = email;
 			params.password = password;
 			params.client = this.p.client;
-			var obj = this.p.sendPostRequest_Sync('api/auth/sign_in.php', params);
+			var obj = this.p.sendPostRequest_Sync('api/auth/login.php', params);
 			// alert(JSON.stringify(obj));
 			var bRes = obj.result == "ok";
 			if (bRes)
@@ -86,9 +86,9 @@ function FHQFrontEndLib() {
 				this.p.token = "";
 			return bRes;
 		};
-		this.sign_out = function () {
+		this.logout = function () {
 			var params = {};
-			var obj = this.p.sendPostRequest_Sync('api/auth/sign_out.php', params);
+			var obj = this.p.sendPostRequest_Sync('api/auth/logout.php', params);
 			this.p.token = "";
 			return true;
 		};

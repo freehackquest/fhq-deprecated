@@ -18,12 +18,13 @@ if (APIHelpers::issetParam('email') && APIHelpers::issetParam('password')) {
 	$password = APIHelpers::getParam('password', '');
 	$conn = APIHelpers::createConnection($config);
 	$hash_password = APISecurity::generatePassword($config, $email, $password);
-	
-	if( APISecurity::login($conn, $email, $hash_password) ) {
+	$hash_password2 = APISecurity::generatePassword2($email, $password);
+// , $hash_password2
+	if( APISecurity::login($conn, $email, $hash_password, $hash_password2)) {
 		$result['result'] = 'ok';
 		$result['token'] = APIHelpers::gen_guid();
 	} else {
-		APIHelpers::showerror(1002, 'email or password was not found in system ['.$email.']  ['.$password.'] ');
+		APIHelpers::showerror(1002, 'email {'.$email.'} and password was not found in system ');
 	}
 } else {
 	APIHelpers::showerror(1001, 'parameters was not found email or password');

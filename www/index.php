@@ -5,22 +5,11 @@ if (!file_exists("config/config.php")) {
 	exit;
 };
 
-include_once "config/config.php";
-include_once "engine/fhq.php";
-
-$security = new fhq_security();
-
-if (isset( $_GET['exit']) )
-{
-	$security = new fhq_security();
-	$security->logout();
-	echo "OK";
-	exit;
-};
-
+session_start();
 if (isset($_SESSION['user']))
 {
-	refreshTo("main.php");
+	header ("Location: main.php");
+	exit;
 };
 
 ?>

@@ -32,7 +32,8 @@ function chooseGame(id) {
 		'api/games/choose.php',
 		'id=' + id,
 		function (obj) {
-			window.location.href = "index.php";
+			window.location.href = "main.php?" + Math.random();
+			
 		}
 	);
 }
@@ -286,7 +287,9 @@ function loadScoreboard(gameid) {
 		function (obj) {
 			
 			var el = document.getElementById("content_page");
-			el.innerHTML = '<div id="scoreboard_table" class="fhq_scoreboard_table"></div>';
+			el.innerHTML = '';
+			el.innerHTML += '<a href="scoreboard.php?gameid=' + gameid + '" target="_ablank">auto refresh scoreboard</a>';
+			el.innerHTML += '<div id="scoreboard_table" class="fhq_scoreboard_table"></div>';
 			var tbl = document.getElementById("scoreboard_table");
 
 			var content = '';
