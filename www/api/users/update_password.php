@@ -31,14 +31,16 @@ $conn = APIHelpers::createConnection($config);
 
 if (!APIHelpers::issetParam('password'))
   APIHelpers::showerror(912, 'Not found parameter "password"');
-  
+
+// TODO must be get email by iduser!!!!  
 if (!APIHelpers::issetParam('email'))
   APIHelpers::showerror(912, 'Not found parameter "email"');
 
 $password = APIHelpers::getParam('password', '');
 $email = APIHelpers::getParam('email', '');
 
-$password = APISecurity::generatePassword($config, $email, $password);
+// NEW PASSWORD 
+$password = APISecurity::generatePassword2($email, $password);
 
 $result['data']['password'] = $password;
 $result['data']['email'] = $email;
@@ -48,9 +50,9 @@ if (strlen($password) <= 3)
   APIHelpers::showerror(912, '"password" must be more then 3 characters');
 
 try {
-	$query = 'UPDATE user SET password = ? WHERE iduser = ? AND email = ?';
+	$query = 'UPDATE user SET pass = ?, password = ? WHERE iduser = ? AND email = ?';
 	$stmt = $conn->prepare($query);
-	if ($stmt->execute(array($password, $userid, $email)))
+	if ($stmt->execute(array($password, "", $userid, $email)))
 		$result['result'] = 'ok';
 	else
 		$result['result'] = 'fail';

@@ -4,13 +4,14 @@ class APISecurity {
 		return isset($_SESSION['user']);
 	}
 	
-	static function login($conn, $email, $hash_password) {
+	static function login($conn, $email, $hash_password, $hash_password2) {
 		// try {
-			$query = 'SELECT * FROM user WHERE email = ? AND password = ?';
+			$query = 'SELECT * FROM user WHERE email = ? AND (password = ? OR pass = ?)';
 			$email = strtolower($email);
 			$params = array(
 				$email,
 				$hash_password,
+				$hash_password2,
 			);
 			$stmt = $conn->prepare($query);
 			$stmt->execute($params);
@@ -21,6 +22,11 @@ class APISecurity {
 				$_SESSION['user']['email'] = $row['email'];
 				$_SESSION['user']['nick'] = $row['nick'];
 				$_SESSION['user']['role'] = $row['role'];
+				
+				// temporary code for moving
+				$stmt_updatepass = $conn->prepare('UPDATE user SET pass = ?, password = ? WHERE iduser = ?');
+				$stmt_updatepass->execute(array($hash_password2, '', $row['iduser']));
+
 				return true;
 			}
 		// } catch(PDOException $e) {
@@ -51,6 +57,10 @@ class APISecurity {
 		for($i = 0; $i < count($arr); $i++)
 			$data .= $arr[$i].$config['secrets'][$i];
 		return md5($data);
+	}
+	
+	static function generatePassword2($email, $password) {
+		return sha1(strtoupper($email).$password);
 	}
 	
 	static function isUser() { 

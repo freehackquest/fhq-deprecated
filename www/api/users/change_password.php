@@ -8,9 +8,6 @@ include_once ($curdir."/../../config/config.php");
 
 APIHelpers::checkAuth();
 
-
-
-
 $result = array(
 	'result' => 'fail',
 	'data' => array(),
@@ -40,8 +37,11 @@ $userid = APISecurity::userid();
 if (md5($new_password) != md5($new_password_confirm))
   APIHelpers::showerror(7804, 'New password and New password confirm are not equals');
   
-$old_password = APISecurity::generatePassword($config, $email, $old_password);
-$new_password = APISecurity::generatePassword($config, $email, $new_password);
+// temporary double passwords 
+$hash_old_password = APISecurity::generatePassword($config, $email, $old_password);
+$hash_old_password2 = APISecurity::generatePassword2($email, $old_password);
+$hash_new_password = APISecurity::generatePassword($config, $email, $new_password);
+$hash_new_password2 = APISecurity::generatePassword2($email, $new_password);
 
 /*$result['data']['password'] = $password;
 $result['data']['email'] = $email;
@@ -49,9 +49,9 @@ $result['data']['userid'] = $userid;*/
 
 // check old password
 try {
-	$query = 'SELECT iduser FROM user WHERE iduser = ? AND email = ? AND password = ?';
+	$query = 'SELECT iduser FROM user WHERE iduser = ? AND email = ? AND (password = ? OR pass = ?)';
 	$stmt = $conn->prepare($query);
-	$stmt->execute(array($userid, $email, $old_password));
+	$stmt->execute(array($userid, $email, $hash_old_password, $hash_old_password2));
 	if (!$row = $stmt->fetch()) {
 		APIHelpers::showerror(7805, 'Old password are incorrect');
 	}
@@ -61,9 +61,9 @@ try {
 
 // set new password
 try {
-	$query = 'UPDATE user SET password = ? WHERE iduser = ? AND email = ? AND password = ?';
+	$query = 'UPDATE user SET password = ?, pass = ? WHERE iduser = ? AND email = ? AND (password = ? OR pass = ?)';
 	$stmt = $conn->prepare($query);
-	if ($stmt->execute(array($new_password, $userid, $email, $old_password)))
+	if ($stmt->execute(array("", $hash_new_password2, $userid, $email, $hash_old_password, $hash_old_password2)))
 		$result['result'] = 'ok';
 	else
 		$result['result'] = 'fail';

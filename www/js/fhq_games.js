@@ -32,7 +32,8 @@ function chooseGame(id) {
 		'api/games/choose.php',
 		'id=' + id,
 		function (obj) {
-			window.location.href = "index.php";
+			window.location.href = "main.php?" + Math.random();
+			
 		}
 	);
 }

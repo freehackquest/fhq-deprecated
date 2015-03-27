@@ -7,35 +7,6 @@ include_once "$curdir/fhq_class_database.php";
 
 class fhq_security
 {
-	function login($email, $password)
-	{
-		unset($_SESSION['user']);
-
-		if(!$this->isLogged())
-		{
-			$username = base64_encode(strtoupper($email));
-			$pass_hash = $this->tokenByData(array($password, $username, strtoupper($email)));
-
-			// echo "pass_hash = $pass_hash, username = $username <br>";
-			$db = new fhq_database();
-			$query = "select * from user where username = '$username' and password = '$pass_hash';";
-			$result = $db->query($query);
-			if ($db->count( $result ) == 1)
-			{
-				$_SESSION['user'] = array();
-				$_SESSION['user']['iduser'] = mysql_result($result, 0, 'iduser');
-				$_SESSION['user']['email'] = mysql_result($result, 0, 'username');
-				$_SESSION['user']['nick'] = mysql_result($result, 0, 'nick');
-				$_SESSION['user']['role'] = mysql_result($result, 0, 'role');
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	function logout() {
-		if($this->isLogged()) { unset($_SESSION['user']); unset($_SESSION['game']); }
-	}
 	function isLogged() { 
 		return (isset($_SESSION['user'])); 
 	}
@@ -61,7 +32,8 @@ class fhq_security
 	function nick() { 
 		return ($this->isLogged()) ? $_SESSION['user']['nick'] : ''; 
 	}
-  function email() { 
+
+	function email() { 
 		return ($this->isLogged()) ? strtolower(base64_decode($_SESSION['user']['email'])) : ''; 
 	}
   
