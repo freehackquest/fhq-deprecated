@@ -10,14 +10,6 @@ include_once "engine/fhq.php";
 
 $security = new fhq_security();
 
-if (isset( $_GET['exit']) )
-{
-	$security = new fhq_security();
-	$security->logout();
-	echo "OK";
-	exit;
-};
-
 if (isset($_SESSION['user']))
 {
 	refreshTo("main.php");

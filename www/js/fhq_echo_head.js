@@ -118,32 +118,9 @@ function delete_file() {
 	// btn btn-large btn-primary
 	// btn btn-small btn-info
 	
-function exit()
-{
-  if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
-	 xmlhttp=new XMLHttpRequest();
-  };  
-  xmlhttp.onreadystatechange=function()
-  {
-	if (xmlhttp.readyState==4 && xmlhttp.status==200)
-	{
-		if(xmlhttp.responseText == "OK")
-		{
-			window.location.href = "index.php";
-		}
-	}
-  }
-  xmlhttp.open("GET","index.php?exit",true);
-  xmlhttp.send();
-};
+
 
 // fhq_echo_menu
-
-function dr_zoyberg()
-{
-  document.getElementById("content_page").innerHTML="<img width=100% src=\"http://fc03.deviantart.net/fs70/f/2012/119/b/7/zoidberg_trace_by_deepfry3-d4y0wlc.png\"/>";
-};
 
 function load_content_page_files(files, content_page, other_params) {
 		

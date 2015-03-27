@@ -1,7 +1,7 @@
 <?php
 class APISecurity {
 	static function isLogged() {
-		return isset($_SESSION['user']); 
+		return isset($_SESSION['user']);
 	}
 	
 	static function login($conn, $email, $hash_password) {
@@ -30,7 +30,10 @@ class APISecurity {
 	}
 	
 	static function logout() {
-		if(APISecurity::isLogged()) { unset($_SESSION['user']); unset($_SESSION['game']); }
+		if(APISecurity::isLogged()) {
+			unset($_SESSION['user']);
+			unset($_SESSION['game']);
+		}
 	}
 	
 	static function role() { 

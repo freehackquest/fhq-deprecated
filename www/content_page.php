@@ -95,25 +95,6 @@
 	    $feedback->echo_insert_form("?action=feedback_add","POST");
 		exit;
 	}
-	else if($content_page == "scoreboard")
-	{
-		$errmsg = "";
-		if (!checkGameDates($security, $errmsg)) {
-			echo $errmsg;
-			exit;
-		}
-		
-		$score = new fhq_score();
-		echo '<h6><a href="scoreboard.php" target="_blank">auto refresh scoreboard here</a></h6>';
-		$score->echo_scoreboard();
-		exit;
-	}
-	else if($content_page == "init_scoreboard")
-	{
-		$score = new fhq_score();
-		$score->init_scoreboard();
-		exit;
-	}
 	else if($content_page == "rules")
 	{
 		include_once(dirname(__FILE__)."/config/rules.html");
@@ -162,38 +143,9 @@
 		$user->echo_insert_form();
 		exit;
 	}
-	else if ($content_page == "user_set_new_role" && $security->isAdmin())
-	{
-		// TODO: remove it
-		if(isset($_GET['iduser']) && isset($_GET['role']))
-		{
-			$iduser = $_GET['iduser'];
-			$role = $_GET['role'];
-			$query = 'UPDATE user SET role = \''.$role.'\' WHERE iduser = '.$iduser;
-			$result = $db->query( $query );
-		}
-
-		include_once "engine/fhq_echo_users.php";
-		echo_users();
-		exit;
-	}
-	else if ($content_page == "user_set_new_nick" && $security->isAdmin())
-	{
-		// TODO: remove it
-		if(isset($_GET['iduser']) && isset($_GET['nick']))
-		{		
-			$iduser = $_GET['iduser'];
-			$nick = mysql_real_escape_string($_GET['nick']);
-			$query = 'UPDATE user SET nick = \''.$nick.'\' WHERE iduser = '.$iduser;
-			$result = $db->query( $query );
-		}
-
-		include_once "engine/fhq_echo_users.php";
-		echo_users();
-		exit;
-	}
 	else if ($content_page == "send_mail_again" && $security->isAdmin())
 	{
+		// todo redesign it
 		if(isset($_GET['iduser']) && isset($_GET['email']))
 		{
 			$email = $_GET['email'];
@@ -202,22 +154,6 @@
 			$registration->addEmailAndSendMail($email);
 		}
 
-		include_once "engine/fhq_echo_users.php";
-		echo_users();
-		exit;
-	}
-	else if ($content_page == "remove_user" && $security->isAdmin())
-	{
-		// TODO: remove it
-		if(isset($_GET['iduser']) && isset($_GET['email']))
-		{
-			$email = $_GET['email'];
-			$registration = new fhq_registration();
-			$registration->removeEmail($email);
-		}
-
-		include_once "engine/fhq_echo_users.php";
-		echo_users();
 		exit;
 	}
 	else if($content_page == "answer_list" && ($security->isAdmin() || $security->isTester())) 
@@ -225,7 +161,7 @@
 		include_once "engine/fhq_echo_answer_list.php";
 		echo_answer_list();
 		exit;
-	}	
+	}
 	else if($content_page == "export_quest")
 	{
 		if(!$security->isAdmin())
