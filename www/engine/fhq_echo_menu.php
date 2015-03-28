@@ -248,14 +248,6 @@ echo '
 	);
 	
 	$arrsystemmenu[] = array(
-		'name' => 'update_db',
-		'html' => '
-			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'update_db\');">Update DB</div>
-		',
-		'show' => $security->isAdmin(),
-	);
-	
-	$arrsystemmenu[] = array(
 		'name' => 'install_updates',
 		'html' => '
 			<div class="button3 ad" href="javascript:void(0);" onclick="installUpdates();">Install Updates</div>

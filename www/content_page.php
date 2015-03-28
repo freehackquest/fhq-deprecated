@@ -36,11 +36,8 @@
 	if(isset($_GET['number_of_page'])) $number_of_page = $_GET['number_of_page'];
 	if(isset($_POST['number_of_page'])) $number_of_page = $_POST['number_of_page'];
 
-	if($content_page == "update_db" && $security->isAdmin()) {
-		include dirname(__FILE__)."/db/update_database.php";
-		exit;
-	}
-	else if($content_page == "feedback_my")
+
+	if($content_page == "feedback_my")
 	{
 	    $feedback = new fhq_feedback();
 	    $feedback->echo_menu();
@@ -144,7 +141,7 @@
 		$user->echo_insert_form();
 		exit;
 	}*/
-	else if ($content_page == "send_mail_again" && $security->isAdmin())
+	/*else if ($content_page == "send_mail_again" && $security->isAdmin())
 	{
 		// todo redesign it
 		if(isset($_GET['iduser']) && isset($_GET['email']))
@@ -156,7 +153,7 @@
 		}
 
 		exit;
-	}
+	}*/
 	else if($content_page == "answer_list" && ($security->isAdmin() || $security->isTester())) 
 	{
 		include_once "engine/fhq_echo_answer_list.php";
