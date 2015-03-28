@@ -1,7 +1,7 @@
 <?php
 class fhq_quest
 {
-	private $quest_name, $short_text, $full_text, $score, $min_score, $subject, $answer, $reply_answer, $idquest, $for_person, $idauthor, $author;
+	private $quest_name, $full_text, $score, $min_score, $subject, $answer, $reply_answer, $idquest, $for_person, $idauthor, $author;
 	private $fields;
 	
 	function fhq_quest()
@@ -10,7 +10,6 @@ class fhq_quest
 		$this->idquest = 0;
 	   // $field['idquest'] = new field('idquest', 'idquest', new typefield_int() );
 	   // $field['quest_name'] = new field('quest_name','quest_name', new typefield_text() );
-	   //    $field['short_text'] = new field('short_text','short_text',);
 	   //   $field['full_text'] = new field();
 	   //   $field['score'] = new field();
 	   //   $field['min_score'] = new field();
@@ -24,7 +23,6 @@ class fhq_quest
 	{
 		$this->idquest = 0;
 		$this->quest_name = "";
-		$this->short_text = "";
 		$this->full_text = "";
 		$this->score = "";
 		$this->min_score = "";
@@ -38,7 +36,6 @@ class fhq_quest
 	}
 
 	function setQuestName( $text ) { $this->quest_name = $text; }
-	function setShortText( $text ) { $this->short_text = $text; }
 	function setFullText( $text ) { $this->full_text = $text; }
 	function setScore( $number ) { $this->score = $number; }
 	function setMinScore( $number ) { $this->min_score = $number; }
@@ -57,7 +54,6 @@ class fhq_quest
 		$check = "";
 
 		if( strlen($this->quest_name) < 3 ) $check .= "length of 'Name' must be more than 3 <br>";
-		if( strlen($this->short_text) < 10 ) $check .= "length of 'Short text' must be more than 10 <br>";
 		if( strlen($this->full_text) < 20 ) $check .= "length of 'Full Text' must be more than 20 <br>";
 		if( strlen($this->score) == 0 ) $check .= " 'Score' is empty <br>";
 		if( !is_numeric($this->score) ) $check .= " 'Score' is not numeric <br>";
@@ -78,9 +74,8 @@ class fhq_quest
 			$id_game = $_SESSION['game']['id'];
 
 		if(strlen($this->check()) != 0) return 0;
-		$query = "INSERT INTO quest( name, short_text, text, score, min_score, tema, answer, for_person, id_game, idauthor, author )
+		$query = "INSERT INTO quest( name, text, score, min_score, tema, answer, for_person, id_game, idauthor, author )
 			VALUES('".base64_encode($this->quest_name)."',
-				'".base64_encode($this->short_text)."',
 				'".base64_encode($this->full_text)."',
 				".$this->score.",
 				".$this->min_score.",
@@ -111,7 +106,6 @@ class fhq_quest
 		if(strlen($this->check()) != 0) return 0;
 		$query = "UPDATE quest SET 
 					name = '".base64_encode($this->quest_name)."', 
-					short_text = '".base64_encode($this->short_text)."', 
 					text = '".base64_encode($this->full_text)."', 
 					score = ".$this->score.", 
 					min_score = ".$this->min_score.", 
@@ -164,7 +158,6 @@ class fhq_quest
 		$this->idquest = $row['idquest'];
 		$this->quest_name = base64_decode($row['name']);
 		// echo "quest_name: // ".$this->quest_name."<br>";
-		$this->short_text = base64_decode($row['short_text']);
 		$this->full_text = base64_decode($row['text']);
 		$this->score = $row['score'];
 		$this->min_score = $row['min_score'];
@@ -254,7 +247,6 @@ class fhq_quest
 			$this->idquest = 0;
 		
 		$this->quest_name = htmlspecialchars($_GET['quest_name']);
-		$this->short_text = htmlspecialchars($_GET['quest_short_text']);
 		$this->full_text = htmlspecialchars($_GET['quest_full_text']);
 		$this->score = $_GET['quest_score'];
 		$this->min_score = $_GET['quest_min_score'];
@@ -298,12 +290,6 @@ class fhq_quest
 					<div class="quest_info_param">Name:</div>
 					<div class="quest_info_value">
 						<input type="text" id="quest_name" size=30 value="'.$this->quest_name.'"/>
-					</div>
-				</div>
-				<div class="quest_info_row">
-					<div class="quest_info_param">Short Text:</div>
-					<div class="quest_info_value">
-						<input type="text" size=30 id="quest_short_text" value="'.$this->short_text.'"/>
 					</div>
 				</div>
 				<div class="quest_info_row">
@@ -368,7 +354,6 @@ class fhq_quest
 					<div class="quest_info_value">
 						<a class="button3 ad" href="javascript:void(0);" onclick="
 							var quest_name = document.getElementById(\'quest_name\').value;
-							var quest_short_text = document.getElementById(\'quest_short_text\').value;
 							var quest_full_text = document.getElementById(\'quest_full_text\').value;
 							var quest_score = document.getElementById(\'quest_score\').value;
 							var quest_min_score = document.getElementById(\'quest_min_score\').value;
@@ -380,7 +365,6 @@ class fhq_quest
 							load_content_page(\'save_quest\', {
 									'.$js.'
 									\'quest_name\' : quest_name, 
-									\'quest_short_text\' : quest_short_text, 
 									\'quest_full_text\' : quest_full_text, 
 									\'quest_score\' : quest_score, 
 									\'quest_min_score\' : quest_min_score, 
@@ -471,7 +455,6 @@ class fhq_quest
 		$quest_arr['min_score'] = $this->min_score;
 		$quest_arr['score'] = $this->score;
 		$quest_arr['full_text'] = $this->full_text;
-		$quest_arr['short_text'] = $this->short_text;
 		$quest_arr['answer'] = $this->answer;
 		$quest_arr['author'] = $this->auhtor;
 		$quest_arr['idauthor'] = $this->idauhtor;
@@ -550,10 +533,6 @@ class fhq_quest
 				<div class="quest_info_row">
 					<div class="quest_info_param">Subject:</div>
 					<div class="quest_info_value">'.htmlspecialchars_decode($this->subject).'</div>
-				</div>
-				<div class="quest_info_row">
-					<div class="quest_info_param">Short Text:</div>
-					<div class="quest_info_value">'.htmlspecialchars_decode($this->short_text).'</div>
 				</div>
 				<div class="quest_info_row">
 					<div class="quest_info_param">Author:</div>

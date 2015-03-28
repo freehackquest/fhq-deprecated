@@ -4,14 +4,13 @@ class APISecurity {
 		return isset($_SESSION['user']);
 	}
 	
-	static function login($conn, $email, $hash_password, $hash_password2) {
+	static function login($conn, $email, $hash_password) {
 		// try {
-			$query = 'SELECT * FROM user WHERE email = ? AND (password = ? OR pass = ?)';
+			$query = 'SELECT * FROM user WHERE email = ? AND pass = ?';
 			$email = strtolower($email);
 			$params = array(
 				$email,
 				$hash_password,
-				$hash_password2,
 			);
 			$stmt = $conn->prepare($query);
 			$stmt->execute($params);
@@ -22,10 +21,6 @@ class APISecurity {
 				$_SESSION['user']['email'] = $row['email'];
 				$_SESSION['user']['nick'] = $row['nick'];
 				$_SESSION['user']['role'] = $row['role'];
-				
-				// temporary code for moving
-				$stmt_updatepass = $conn->prepare('UPDATE user SET pass = ?, password = ? WHERE iduser = ?');
-				$stmt_updatepass->execute(array($hash_password2, '', $row['iduser']));
 
 				return true;
 			}

@@ -62,7 +62,6 @@ try {
 			'questid' => $row['idquest'],
 			'subject' => base64_decode($row['tema']),
 			'name' => base64_decode($row['name']),
-			'short_text' => base64_decode($row['short_text']),
 			'text' => base64_decode($row['text']),
 			'score' => $row['score'],
 			'min_score' => $row['min_score'],

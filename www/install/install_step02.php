@@ -104,7 +104,6 @@
 			  `idquest` int(10) unsigned NOT NULL AUTO_INCREMENT,
 			  `tema` varchar(128) DEFAULT NULL,
 			  `name` varchar(300) DEFAULT NULL,
-			  `short_text` varchar(128) DEFAULT NULL,
 			  `text` varchar(4048) DEFAULT NULL,
 			  `answer` text,
 			  `score` int(10) unsigned DEFAULT NULL,

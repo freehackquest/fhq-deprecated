@@ -39,7 +39,6 @@ if (!APIHelpers::issetParam('email'))
 $password = APIHelpers::getParam('password', '');
 $email = APIHelpers::getParam('email', '');
 
-// NEW PASSWORD 
 $password = APISecurity::generatePassword2($email, $password);
 
 $result['data']['password'] = $password;
@@ -50,9 +49,9 @@ if (strlen($password) <= 3)
   APIHelpers::showerror(912, '"password" must be more then 3 characters');
 
 try {
-	$query = 'UPDATE user SET pass = ?, password = ? WHERE iduser = ? AND email = ?';
+	$query = 'UPDATE user SET pass = ? WHERE iduser = ? AND email = ?';
 	$stmt = $conn->prepare($query);
-	if ($stmt->execute(array($password, "", $userid, $email)))
+	if ($stmt->execute(array($password, $userid, $email)))
 		$result['result'] = 'ok';
 	else
 		$result['result'] = 'fail';
