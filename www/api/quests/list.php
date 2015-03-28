@@ -212,7 +212,6 @@ $query = '
 				quest.count_user_solved,
 				userquest.startdate,
 				userquest.stopdate
-				
 			FROM 
 				quest
 			LEFT JOIN 

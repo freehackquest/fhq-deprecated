@@ -391,9 +391,63 @@ function updateUsers() {
 	);
 }
 
-function formCreateUser() {
-	alert("todo: formCreateUser");
+function createUser() {
+	var params = {};
+	params.uuid = document.getElementById('newuser_uuid').value;
+	params.logo = document.getElementById('newuser_logo').value;
+	params.email = document.getElementById('newuser_email').value;
+	params.role = document.getElementById('newuser_role').value;
+	params.nick = document.getElementById('newuser_nick').value;
+	params.password = document.getElementById('newuser_password').value;
+	params.status = document.getElementById('newuser_status').value;
+
+	// alert(createUrlFromObj(params));
+	send_request_post(
+		'api/users/insert.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "fail") {
+				document.getElementById('newuser_errors').innerHTML = obj.error.message;
+				return;
+			}
+			closeModalDialog();
+			updateUsers();
+		}
+	);
 }
+
+function formCreateUser() {
+	
+	var content = '<div class="user_info_table">';
+	content += createUserInfoRow('Uuid:', '<input type="text" id="newuser_uuid" value="' + guid() + '"/>');
+	content += createUserInfoRow('Logo:', '<input type="text" id="newuser_logo" value="files/users/0.png"/>');
+	content += createUserInfoRow('E-mail:', '<input type="text" id="newuser_email" value=""/>');
+
+	var user_role = ' <select id="newuser_role">';
+	user_role += '	<option value="user">User</option>';
+	user_role += '	<option value="tester">Tester</option>';
+	user_role += '	<option value="admin">Admin</option>';
+	user_role += '</select> ';
+	
+	content += createUserInfoRow('Role:', user_role);
+	content += createUserInfoRow('Nick:', '<input type="text" id="newuser_nick" value=""/>');
+	content += createUserInfoRow('Password:', '<input type="password" id="newuser_password" value=""/>');
+	
+	var user_status = ' <select id="newuser_status">';
+	user_status += '	<option value="activated">Activated</option>';
+	user_status += '	<option value="blocked">Blocked</option>';
+	user_status += '</select> ';
+
+	content += createUserInfoRow('Status:', user_status);
+	content += createUserInfoRow('', '<div class="button3 ad" onclick="createUser();">Create</div>');
+	
+	content += createUserInfoRow('', '<div id="newuser_errors"></div>');
+	
+	content += createUserInfoRow_Skip();
+	content += '</div>';
+	showModalDialog(content);
+}
+
 
 function createPageUsers() {
 	var cp = document.getElementById('content_page');

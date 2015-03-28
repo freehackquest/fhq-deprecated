@@ -238,15 +238,6 @@ echo '
 		'show' => $security->isAdmin() || $security->isTester(),
 	);
 	
-	// TODO: must be moved to fhq_users.js
-	$arrsystemmenu[] = array(
-		'name' => 'add_user',
-		'html' => '
-			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'add_user\');">Add user</div>
-		',
-		'show' => $security->isAdmin(),
-	);
-	
 	$arrsystemmenu[] = array(
 		'name' => 'install_updates',
 		'html' => '

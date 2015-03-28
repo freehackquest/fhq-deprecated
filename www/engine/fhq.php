@@ -62,7 +62,6 @@ include_once "$curdir/fhq_class_answer_list.php";
 include_once "$curdir/fhq_class_quest.php";
 include_once "$curdir/fhq_class_adviser.php";
 include_once "$curdir/fhq_class_mail.php";
-include_once "$curdir/fhq_class_user_info.php";
 include_once "$curdir/fhq_page_listofquests.php";
 include_once "$curdir/fhq_echo_shortpage.php";
 include_once "$curdir/fhq_echo_mainpage.php";
