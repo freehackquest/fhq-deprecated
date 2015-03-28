@@ -255,13 +255,13 @@ echo '
 		'show' => $security->isAdmin(),
 	);
 
-	$arrsystemmenu[] = array(
+	/*$arrsystemmenu[] = array(
 		'name' => 'init_scoreboard',
 		'html' => '
 			<div class="button3 ad" onclick="load_content_page2(\'init_scoreboard\');">init scoreboard</div>
 		',
 		'show' => $security->isAdmin(),
-	);
+	);*/
 	
 	// echo menu
 
