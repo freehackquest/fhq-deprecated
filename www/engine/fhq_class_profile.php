@@ -1,7 +1,7 @@
 <?php
 class fhq_profile
 {
-	private $quest_name, $short_text, $full_text, $score, $min_score, $subject, $answer, $reply_answer, $idquest, $for_person;
+	private $quest_name, $full_text, $score, $min_score, $subject, $answer, $reply_answer, $idquest, $for_person;
 	private $fields;
 
 	function get_user_profile($user_id = 0)

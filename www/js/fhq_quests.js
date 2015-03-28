@@ -19,7 +19,6 @@ function createQuestInfo(quest) {
 	var questid = quest.questid;
 	var name = quest.name
 	var score = quest.score;
-	// var short_text = quest.short_text;
 	var subject = quest.subject;
 	var status = quest.status;
 	var solved = quest.count_user_solved;
@@ -110,7 +109,6 @@ function reloadQuests()
 				// var questid = obj.data[k]['questid'];
 				// var name = obj.data[k]['name'];
 				// var score = obj.data[k]['score'];
-				// var short_text = obj.data[k]['short_text'];
 				// var subject = obj.data[k]['subject'];
 				var status = obj.data[k]['status'];
 
@@ -230,7 +228,6 @@ function updateQuest(id)
 	var params = {};
 	params["questid"] = id;
 	params["name"] = document.getElementById("editquest_name").value;
-	params["short_text"] = document.getElementById("editquest_short_text").value;
 	params["text"] = document.getElementById("editquest_text").value;
 	params["score"] = document.getElementById("editquest_score").value;
 	params["min_score"] = document.getElementById("editquest_min_score").value;
@@ -288,7 +285,6 @@ function formEditQuest(id)
 			content += createQuestRow('Quest ID: ', obj.quest);
 			content += createQuestRow('Game: ', obj.data.game_title);
 			content += createQuestRow('Name:', '<input type="text" id="editquest_name" value="' + obj.data.name + '"/>');
-			content += createQuestRow('Short Text:', '<input type="text" id="editquest_short_text" value="' + obj.data.short_text + '"/>');
 			content += createQuestRow('Text:', '<textarea id="editquest_text">' + obj.data.text + '</textarea>');
 			content += createQuestRow('Score(+):', '<input type="text" id="editquest_score" value="' + obj.data.score + '"/>');
 			content += createQuestRow('Min Score(>):', '<input type="text" id="editquest_min_score" value="' + obj.data.min_score + '"/>');
@@ -338,9 +334,6 @@ function showQuest(id)
 
 			if (obj.data.score)
 				content += createQuestRow('Score: ', '+' + obj.data.score + ' (>' + obj.data.min_score + ')');
-				
-			if (obj.data.short_text)
-				content += createQuestRow('Short Text: ', obj.data.short_text);
 			
 			if (obj.data.author)
 				content += createQuestRow('Author: ', obj.data.author);
@@ -386,7 +379,6 @@ function createQuest()
 	var params = {};
 	params["quest_uuid"] = document.getElementById("newquest_quest_uuid").value;
 	params["name"] = document.getElementById("newquest_name").value;
-	params["short_text"] = document.getElementById("newquest_short_text").value;
 	params["text"] = document.getElementById("newquest_text").value;
 	params["score"] = document.getElementById("newquest_score").value;
 	params["min_score"] = document.getElementById("newquest_min_score").value;
@@ -418,7 +410,6 @@ function formCreateQuest()
 	content += '<div class="quest_info_table">\n';
 	content += createQuestRow('Quest UUID:', '<input type="text" id="newquest_quest_uuid" value="' + guid() + '"/>');
 	content += createQuestRow('Name:', '<input type="text" id="newquest_name" value=""/>');
-	content += createQuestRow('Short Text:', '<input type="text" id="newquest_short_text"/>');
 	content += createQuestRow('Text:', '<textarea id="newquest_text"></textarea>');
 	content += createQuestRow('Score(+):', '<input type="text" id="newquest_score" value="100"/>');
 	content += createQuestRow('Min Score(>):', '<input type="text" id="newquest_min_score" value="0"/>');

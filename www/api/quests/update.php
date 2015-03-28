@@ -33,7 +33,6 @@ if (!is_numeric($questid))
 
 $params = array(
 	'name' => '',
-	'short_text' => '',
 	'text' => '',
 	'score' => '',
 	'min_score' => '',
@@ -55,8 +54,6 @@ $questname = $params['name'];
 
 $params['tema'] = base64_encode($params['subject']);
 $params['name'] = base64_encode($params['name']);
-$params['short_text_copy'] = $params['short_text'];
-$params['short_text'] = base64_encode($params['short_text']);
 $params['text_copy'] = $params['text'];
 $params['text'] = base64_encode($params['text']);
 $params['answer_copy'] = $params['answer'];
