@@ -346,6 +346,26 @@ function formCreateGame()
 	showModalDialog(content);
 }
 
+function loadGameRules(gameid) {
+	var params = {};
+	params["id"] = gameid;
+	var el = document.getElementById("content_page");
+	el.innerHTML = 'Loading...';
+	send_request_post(
+		'api/games/get.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "fail") 
+				el.innerHTML = obj.error.message;
+			else {
+				el.innerHTML = '<h1>Rules</h1>' + obj.data.title + '<pre id="game_rules"></pre>';
+				var rules = document.getElementById("game_rules");
+				rules.innerHTML = obj.data.rules;
+			}
+		}
+	);
+}
+
 function loadScoreboard(gameid) {
 	var params = {};
 	params["gameid"] = gameid;

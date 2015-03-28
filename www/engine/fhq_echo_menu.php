@@ -72,6 +72,16 @@ echo '
 		',
 		'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
 	);
+
+	$arrmenu[] = array(
+		'name' => 'rules',
+		'html' => '
+			<div class="fhq_btn_menu" data-hint="Rules" onclick="loadGameRules('.$gameid.');">
+				<img width="50px" src="templates/'.$template.'/images/menu_btn_rules.png"/><br>
+			</div>
+		',
+		'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
+	);
 	
 	$arrmenu[] = array(
 		'name' => 'advisers',
@@ -152,17 +162,6 @@ echo '
 		',
 		'show' => true,
 	);
-	
-	$arrmenu[] = array(
-		'name' => 'rules',
-		'html' => '
-			<div class="fhq_btn_menu" data-hint="Rules" onclick="load_content_page(\'rules\');">
-				<img width="50px" src="templates/'.$template.'/images/menu_btn_rules.png"/><br>
-			</div>
-		',
-		'show' => true,
-	);
-	
 	
 	$arrmenu[] = array(
 		'name' => 'user_info',
