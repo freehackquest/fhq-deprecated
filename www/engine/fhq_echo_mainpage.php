@@ -42,7 +42,7 @@ function echo_mainpage($page)
 	
 	$template = isset($_SESSION['user']['profile']['template']) ? $_SESSION['user']['profile']['template'] : 'base';
 	$template = htmlspecialchars($template);
-	$versioncontent = '201503251608';
+	$versioncontent = '201503281358';
 	
 	echo '
 <head>

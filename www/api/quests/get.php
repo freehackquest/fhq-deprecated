@@ -52,7 +52,6 @@ $query = '
 				quest.text,
 				quest.state,
 				quest.tema,
-				quest.idauthor,
 				quest.author,
 				userquest.startdate,
 				userquest.stopdate
@@ -70,6 +69,7 @@ $query = '
 try {
 	$stmt = $conn->prepare($query);
 	$stmt->execute($params);
+
 	if($row = $stmt->fetch())
 	{
 		$status = '';
@@ -90,7 +90,6 @@ try {
 			'date_stop' => $row['stopdate'],
 			'state' => $row['state'],
 			'author' => base64_decode($row['author']),
-			'idauthor' => base64_decode($row['idauthor']),
 			'status' => $status,
 		);
 		$result['quest'] = $row['idquest'];
@@ -99,14 +98,13 @@ try {
 		{
 			$result['data']['text'] = base64_decode($row['text']);
 		}
-		
+
 		if (isset($_SESSION['game']))
 			$result['data']['game_title'] = $_SESSION['game']['title'];
 	}
 	$result['result'] = 'ok';
 	$result['permissions']['edit'] = APISecurity::isAdmin();
 	$result['permissions']['delete'] = APISecurity::isAdmin();
-	
 } catch(PDOException $e) {
 	APIHelpers::showerror(822, $e->getMessage());
 }

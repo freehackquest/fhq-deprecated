@@ -50,7 +50,7 @@
 			$security = new fhq_security();
 			$db = new fhq_database();
       $emails = "";
-      $result = $db->query('select username, password from user where role=\'admin\'');
+      $result = $db->query('select username from user where role=\'admin\'');
       while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
 			{   
 				$email = strtolower(base64_decode($row['username']));
@@ -73,7 +73,7 @@
 			$db = new fhq_database();
 			$emails = "";
 			$main_email = "";
-			$result = $db->query('select username, password from user');
+			$result = $db->query('select username from user where status = "activated"');
       $count = 0;
 			while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
 			{   

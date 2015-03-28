@@ -92,11 +92,6 @@
 	    $feedback->echo_insert_form("?action=feedback_add","POST");
 		exit;
 	}
-	else if($content_page == "rules")
-	{
-		include_once(dirname(__FILE__)."/config/rules.html");
-		exit;
-	}
 	else if($content_page == "statistics"  && ($security->isAdmin() || $security->isTester()))
 	{
 		include_once "engine/fhq_echo_statistics.php";
@@ -129,18 +124,6 @@
 		$adviser->echo_advisers($number_of_page);
 		exit;
 	}
-	/*
-	// TODO remove it
-	else if ($content_page == "add_user" && $security->isAdmin())
-	{
-		$user = new fhq_user_info();
-		if(isset($_GET['login']) && isset($_GET['pass']) && isset($_GET['nick']) && isset($_GET['role']) && isset($_GET['logo'])) {
-			$user->add_user($_GET['login'], $_GET['pass'], $_GET['nick'], $_GET['role'], $_GET['logo']);
-			// echo "added";
-		}
-		$user->echo_insert_form();
-		exit;
-	}*/
 	/*else if ($content_page == "send_mail_again" && $security->isAdmin())
 	{
 		// todo redesign it

@@ -72,6 +72,16 @@ echo '
 		',
 		'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
 	);
+
+	$arrmenu[] = array(
+		'name' => 'rules',
+		'html' => '
+			<div class="fhq_btn_menu" data-hint="Rules" onclick="loadGameRules('.$gameid.');">
+				<img width="50px" src="templates/'.$template.'/images/menu_btn_rules.png"/><br>
+			</div>
+		',
+		'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
+	);
 	
 	$arrmenu[] = array(
 		'name' => 'advisers',
@@ -154,17 +164,6 @@ echo '
 	);
 	
 	$arrmenu[] = array(
-		'name' => 'rules',
-		'html' => '
-			<div class="fhq_btn_menu" data-hint="Rules" onclick="load_content_page(\'rules\');">
-				<img width="50px" src="templates/'.$template.'/images/menu_btn_rules.png"/><br>
-			</div>
-		',
-		'show' => true,
-	);
-	
-	
-	$arrmenu[] = array(
 		'name' => 'user_info',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="User profile"  onclick="loadUserProfile('.$security->userid().');">
@@ -236,15 +235,6 @@ echo '
 			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'statistics\');">Statistics</div>
 		',
 		'show' => $security->isAdmin() || $security->isTester(),
-	);
-	
-	// TODO: must be moved to fhq_users.js
-	$arrsystemmenu[] = array(
-		'name' => 'add_user',
-		'html' => '
-			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'add_user\');">Add user</div>
-		',
-		'show' => $security->isAdmin(),
 	);
 	
 	$arrsystemmenu[] = array(

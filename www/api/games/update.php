@@ -21,7 +21,6 @@ if(!APISecurity::isAdmin())
 
 $columns = array(
   'title' => 'Unknown',
-  'logo' => '',  
   'type_game' => 'jeopardy',
   'date_start' => '0000-00-00 00:00:00',
   'date_stop' => '0000-00-00 00:00:00',
@@ -30,6 +29,7 @@ $columns = array(
   'state' => 'Unlicensed copy',
   'form' => 'online',
   'organizators' => '',
+  'rules' => '',
 );
 
 if (!APIHelpers::issetParam('id'))

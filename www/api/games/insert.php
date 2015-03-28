@@ -32,6 +32,7 @@ $columns = array(
   'form' => 'online',
   'owner' => APISecurity::userid(),
   'organizators' => '',
+  'rules' => '',
 );
 
 $param_values = array(); 

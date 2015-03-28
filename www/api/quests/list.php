@@ -152,14 +152,14 @@ try {
 			FROM
 				quest
 			WHERE
-				(quest.for_person = 0 OR quest.for_person = ?)
-				AND id_game = ?
+				id_game = ?
 				'.$filter_by_state.'
 				'.$filter_by_score.'
+				AND (quest.for_person = 0 OR quest.for_person = ?)
 			GROUP BY
 				quest.tema
 	');
-	$stmt->execute(array(APISecurity::userid(),APIGame::id()));
+	$stmt->execute(array(APIGame::id(), APISecurity::userid()));
 	while($row = $stmt->fetch())
 	{
 		$result['subjects'][base64_decode($row['tema'])] = $row['cnt'];
@@ -212,7 +212,6 @@ $query = '
 				quest.count_user_solved,
 				userquest.startdate,
 				userquest.stopdate
-				
 			FROM 
 				quest
 			LEFT JOIN 
@@ -222,6 +221,7 @@ $query = '
 				'.$filter_by_state.'
 				'.$filter_by_score.'
 				'.$where_status.'
+				AND (quest.for_person = 0 OR quest.for_person = ?)
 			ORDER BY
 				quest.tema, quest.score ASC, quest.score
 		';
@@ -229,7 +229,7 @@ $query = '
 // $result['where_status'] = $where_status;
 // $result['params'] = $params;
 // $result['query'] = $query;
-
+$params[] =  APISecurity::userid();
 try {
 	$stmt = $conn->prepare($query);
 	$stmt->execute($params);

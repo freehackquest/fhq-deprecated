@@ -119,13 +119,13 @@ function reloadQuests()
 				// content += '<font class="fhq_task" size="1">Status: ' + status + '</font>\n';
 				content += '</div>\n';*/
 				
-				if (status == 'current')
+				if (status == 'current' && current_quests)
 					current_quests.innerHTML += content;
 
-				if (status == 'open')
+				if (status == 'open' && open_quests)
 					open_quests.innerHTML += content;
 
-				if (status == 'completed')
+				if (status == 'completed' && completed_quests)
 					completed_quests.innerHTML += content;
 				
 				// quests.innerHTML += content;
@@ -232,7 +232,7 @@ function updateQuest(id)
 	params["score"] = document.getElementById("editquest_score").value;
 	params["min_score"] = document.getElementById("editquest_min_score").value;
 	params["subject"] = document.getElementById("editquest_subject").value;
-	params["idauthor"] = document.getElementById("editquest_authorid").value;
+	params["idauthor"] = 0;
 	params["author"] = document.getElementById("editquest_author").value;
 	params["answer"] = document.getElementById("editquest_answer").value;
 	params["state"] = document.getElementById("editquest_state").value;
@@ -253,6 +253,52 @@ function updateQuest(id)
 			}
 		}
 	);
+}
+
+var g_questStates = [
+	{ state: 'open', caption: 'Open'},
+	{ state: 'closed',  caption: 'Closed'},
+	{ state: 'broken', caption: 'Broken'}
+];
+	
+function createComboBoxQuestState(idelem, value) {
+	var result = '<select id="' + idelem + '">';
+	for (var k in g_questStates) {
+		result += '<option ';
+		if (g_questStates[k].state == value)
+			result += ' selected ';
+		result += ' value="' + g_questStates[k].state + '">';
+		result += g_questStates[k].caption + '</option>';
+	}
+	result += '</select>';
+	return result;
+}
+
+var g_questTypes = [
+		{ type: 'hashes', caption: 'Hashes'},
+		{ type: 'stego',  caption: 'Stego'},
+		{ type: 'reverse', caption: 'Reverse'},
+		{ type: 'recon', caption: 'Recon'},
+		{ type: 'trivia', caption: 'Trivia'},
+		{ type: 'crypto', caption: 'Crypto'},
+		{ type: 'forensics', caption: 'Forensics'},
+		{ type: 'network', caption: 'Network'},
+		{ type: 'web', caption: 'Web'},
+		{ type: 'admin', caption: 'Admin'},
+		{ type: 'enjoy', caption: 'Enjoy'}
+	];
+
+function createComboBoxQuestSubject(idelem, value) {
+	var result = '<select id="' + idelem + '">';
+	for (var k in g_questTypes) {
+		result += '<option ';
+		if (g_questTypes[k].type == value)
+			result += ' selected ';
+		result += ' value="' + g_questTypes[k].type + '">';
+		result += g_questTypes[k].caption + '</option>';
+	}
+	result += '</select>';
+	return result;
 }
 
 function formEditQuest(id)
@@ -288,11 +334,11 @@ function formEditQuest(id)
 			content += createQuestRow('Text:', '<textarea id="editquest_text">' + obj.data.text + '</textarea>');
 			content += createQuestRow('Score(+):', '<input type="text" id="editquest_score" value="' + obj.data.score + '"/>');
 			content += createQuestRow('Min Score(>):', '<input type="text" id="editquest_min_score" value="' + obj.data.min_score + '"/>');
-			content += createQuestRow('Subject:', '<input type="text" id="editquest_subject" value="' + obj.data.subject + '"/>');
-			content += createQuestRow('Author Id:', '<input type="text" id="editquest_authorid" value="' + obj.data.authorid + '"/>');
+			content += createQuestRow('Subject:', createComboBoxQuestSubject('editquest_subject', obj.data.subject));
+			// content += createQuestRow('Author Id:', '<input type="text" id="editquest_authorid" value="' + obj.data.authorid + '"/>');
 			content += createQuestRow('Author:', '<input type="text" id="editquest_author" value="' + obj.data.author + '"/>');
 			content += createQuestRow('Answer:', '<input type="text" id="editquest_answer" value="' + obj.data.answer + '"/>');
-			content += createQuestRow('State:', '<input type="text" id="editquest_state" value="' + obj.data.state + '"/>');
+			content += createQuestRow('State:', createComboBoxQuestState('editquest_state', obj.data.state));
 			content += createQuestRow('Description State:', '<textarea id="editquest_description_state">' + obj.data.description_state + '</textarea>');
 			content += createQuestRow('', '<div class="button3 ad" onclick="updateQuest(' + obj.quest + ');">Update</div>'
 				+ '<div class="button3 ad" onclick="showQuest(' + obj.quest + ');">Cancel</div>'
@@ -383,7 +429,7 @@ function createQuest()
 	params["score"] = document.getElementById("newquest_score").value;
 	params["min_score"] = document.getElementById("newquest_min_score").value;
 	params["subject"] = document.getElementById("newquest_subject").value;
-	params["idauthor"] = document.getElementById("newquest_author_id").value;
+	params["idauthor"] = 0; // document.getElementById("newquest_author_id").value;
 	params["author"] = document.getElementById("newquest_author").value;
 	params["answer"] = document.getElementById("newquest_answer").value;
 	params["state"] = document.getElementById("newquest_state").value;
@@ -413,11 +459,11 @@ function formCreateQuest()
 	content += createQuestRow('Text:', '<textarea id="newquest_text"></textarea>');
 	content += createQuestRow('Score(+):', '<input type="text" id="newquest_score" value="100"/>');
 	content += createQuestRow('Min Score(>):', '<input type="text" id="newquest_min_score" value="0"/>');
-	content += createQuestRow('Subject:', '<input type="text" id="newquest_subject" value="enjoy"/>');
-	content += createQuestRow('Author Id:', '<input type="text" id="newquest_author_id" value=""/>');
+	content += createQuestRow('Subject:', createComboBoxQuestSubject('newquest_subject', 'trivia'));
+	// content += createQuestRow('Author Id:', '<input type="text" id="newquest_author_id" value=""/>');
 	content += createQuestRow('Author:', '<input type="text" id="newquest_author" value=""/>');
 	content += createQuestRow('Answer:', '<input type="text" id="newquest_answer" value=""/>');
-	content += createQuestRow('State:', '<input type="text" id="newquest_state" value="open"/>');
+	content += createQuestRow('State:', createComboBoxQuestState('newquest_state', 'open'));
 	content += createQuestRow('Description State:', '<textarea id="newquest_description_state"></textarea>');
 	content += createQuestRow('', '<div class="button3 ad" onclick="createQuest();">Create</div>');
 	content += '</div>'; // quest_info_table

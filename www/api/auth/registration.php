@@ -52,6 +52,8 @@ $uuid = APIHelpers::gen_guid();
 
 $password = substr(md5(rand().rand()), 0, 8);
 $password_hash = APISecurity::generatePassword2($email, $password);
+			
+// same code exists in api/users/insert.php
 				
 $stmt_insert = $conn->prepare('
 	INSERT INTO user(

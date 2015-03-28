@@ -2,12 +2,16 @@
 header("Access-Control-Allow-Origin: *");
 
 $curdir = dirname(__FILE__);
-include ($curdir."/../api.lib/api.helpers.php");
-include ($curdir."/../../config/config.php");
-include ($curdir."/../../engine/fhq.php");
+include_once ($curdir."/../api.lib/api.base.php");
+include_once ($curdir."/../api.lib/api.game.php");
+include_once ($curdir."/../../config/config.php");
 
-$security = new fhq_security();
-checkAuth($security);
+APIHelpers::checkAuth();
+
+$message = '';
+
+if (!APISecurity::isAdmin())
+	APIHelpers::showerror(927, "This function allowed only for admin");
 
 $result = array(
 	'result' => 'fail',
@@ -16,49 +20,86 @@ $result = array(
 
 $conn = APIHelpers::createConnection($config);
 
-if($security->isAdmin())
-  showerror(746, 'Error 746: access denie. you must be admin.');
 
-  /*
-$columns = array(
-  'global_id' => 'none',
-  'game_name' => 'Unknown',
-  'game_logo' => '',  
-  'game_type' => 'jeopardy',
-  'start_date' => '0000-00-00 00:00:00',
-  'end_date' => '0000-00-00 00:00:00',
-  'author_id' => $security->userId(),
-);
+if (!APIHelpers::issetParam('uuid'))
+	APIHelpers::showerror(927, "Not found parameter uuid");
+	
+if (!APIHelpers::issetParam('logo'))
+	APIHelpers::showerror(927, "Not found parameter logo");
+	
+if (!APIHelpers::issetParam('email'))
+	APIHelpers::showerror(927, "Not found parameter email");
+	
+if (!APIHelpers::issetParam('role'))
+	APIHelpers::showerror(927, "Not found parameter role");
+	
+if (!APIHelpers::issetParam('nick'))
+	APIHelpers::showerror(927, "Not found parameter nick");
+	
+if (!APIHelpers::issetParam('password'))
+	APIHelpers::showerror(927, "Not found parameter password");
+	
+if (!APIHelpers::issetParam('status'))
+	APIHelpers::showerror(927, "Not found parameter status");
 
-$param_values = array(); 
-$values_q = array();
+$uuid = APIHelpers::getParam('uuid', APIHelpers::gen_guid());
+$logo = APIHelpers::getParam('logo', 'files/users/0.png');
+$email = APIHelpers::getParam('email', '1');
+$role = APIHelpers::getParam('role', 'user');
+$nick = APIHelpers::getParam('nick', '1');
+$password = APIHelpers::getParam('password', '1');
+$status = APIHelpers::getParam('status', 'activated');
 
-foreach ( $columns as $k => $v) {
-  $values_q[] = '?';
-  if (issetParam($k))
-    $param_values[$k] = getParam($k, $v);
-  else
-    showerror(748, 'Error 748: not found parameter "'.$k.'"');
+
+if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+	APIHelpers::showerror(1011, 'Invalid e-mail address.');
+
+$stmt = $conn->prepare('select count(*) as cnt from user where email = ?');
+$stmt->execute(array($email));
+if ($row = $stmt->fetch())
+{
+	if (intval($row['cnt']) >= 1)
+		APIHelpers::showerror(702, 'This e-mail was already registered.');	
 }
 
-if (!is_numeric($param_values['author_id']))
-	showerror(745, 'Error 745: incorrect author_id');
+// same code exists in api/auth/registration.php
+$email = strtolower($email);
+$username = base64_encode(strtoupper($email));
 
-$param_values['author_id'] = intval($param_values['author_id']);
+$password_hash = APISecurity::generatePassword2($email, $password);
+				
+$stmt_insert = $conn->prepare('
+	INSERT INTO user(
+		uuid_user,
+		username,
+		password,
+		pass,
+		status,
+		email,
+		nick,
+		role,
+		logo,
+		last_ip,
+		date_last_signup,
+		date_create
+	)
+	VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW());
+');
 
-$query = 'INSERT INTO games('.implode(',', array_keys($param_values)).', change_date) 
-  VALUES('.implode(',', $values_q).', NOW());';
+$stmt_insert->execute(array(
+	$uuid,
+	$username,
+	'', // password
+	$password_hash, // pass
+	$status,
+	$email,
+	$nick,
+	$role,
+	$logo,
+	$_SERVER['REMOTE_ADDR'],
+	'0000-00-00 00:00:00',
+));
 
-$values = array_values($param_values);
-
-try {
-	$stmt = $conn->prepare($query);
-	$stmt->execute($values);    
-  $result['data']['game']['id'] = $conn->lastInsertId();
-  $result['result'] = 'ok';
-} catch(PDOException $e) {
-  showerror(747, 'Error 747: ' + $e->getMessage());
-}
-*/
+$result['result'] = 'ok';
 
 echo json_encode($result);

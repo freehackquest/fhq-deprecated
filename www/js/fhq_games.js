@@ -62,6 +62,10 @@ function createDivRowGame(name, value) {
 		+ '</div>\n';
 }
 
+function createDivRowGame_Skip() {
+	return '<div class="user_info_row_skip"></div> \n';
+}
+
 function loadGames() {
 	var el = document.getElementById("content_page");
 	el.innerHTML = "Please wait...";
@@ -155,10 +159,34 @@ function formDeleteGame(id)
 	showModalDialog(content);
 };
 
+function updateGameLogo(gameid) {
+	var files = document.getElementById('editgame_new_logo').files;
+	if (files.length == 0) {
+		alert("Please select file");
+		return;
+	}
+	/*for(i = 0; i < files.length; i++)
+		alert(files[i].name);*/
+	
+	send_request_post_files(
+		files,
+		'api/games/upload_logo.php',
+		createUrlFromObj({"gameid": gameid}),
+		function (obj) {
+			if (obj.result == "fail") {
+				alert(obj.error.message);
+				return;
+			}
+			document.getElementById('editgame_logo').src = obj.data.logo + '?' + new Date().getTime();
+			// showModalDialog('updated');
+			loadGames();
+		}
+	);
+}
+
 function updateGame(id) {
 	// alert(id);
 	var params = {};
-	params["logo"] = document.getElementById("editgame_logo").value;
 	params["title"] = document.getElementById("editgame_title").value;
 	params["state"] = document.getElementById("editgame_state").value;
 	params["form"] = document.getElementById("editgame_form").value;
@@ -168,6 +196,7 @@ function updateGame(id) {
 	params["date_restart"] = document.getElementById("editgame_date_restart").value;
 	params["description"] = document.getElementById("editgame_description").value; // TODO may be innerHTML
 	params["organizators"] = document.getElementById("editgame_organizators").value; // TODO may be innerHTML
+	params["rules"] = document.getElementById("editgame_rules").value; // TODO may be innerHTML
 	params["id"] = id;
 
 	// alert(createUrlFromObj(params));
@@ -188,6 +217,34 @@ function updateGame(id) {
 	);
 }
 
+var g_gameTypes = [
+		{ type: 'jeopardy', caption: 'Jeopardy'},
+		{ type: 'attack-defence',  caption: 'Attack-Defence'}
+	];
+
+var g_gameForm = [
+		{ type: 'online', caption: 'Online'},
+		{ type: 'offline',  caption: 'Offline'}
+	];
+	
+var g_gameState = [
+		{ type: 'original', caption: 'Original'},
+		{ type: 'copy',  caption: 'Copy'},
+		{ type: 'unlicensed copy',  caption: 'Unlicensed copy'}
+	];
+
+function createComboBoxGame(idelem, value, arr) {
+	var result = '<select id="' + idelem + '">';
+	for (var k in arr) {
+		result += '<option ';
+		if (arr[k].type == value)
+			result += ' selected ';
+		result += ' value="' + arr[k].type + '">';
+		result += arr[k].caption + '</option>';
+	}
+	result += '</select>';
+	return result;
+}
 
 function formEditGame(id)
 {
@@ -201,20 +258,32 @@ function formEditGame(id)
 			if (obj.result == "ok") {
 				var content = '<div class="fhq_game_info">';
 				content += '<div class="fhq_game_info_table">\n';
-				content += createDivRowGame('Logo:', '<input type="text" id="editgame_logo" value="' + obj.data.logo + '"/>');
-				content += createDivRowGame('Name:', '<input type="text" id="editgame_title" value="' + obj.data.title + '"/>');
-				content += createDivRowGame('State:', '<input type="text" id="editgame_state" value="' + obj.data.state + '"/>');
-				content += createDivRowGame('Form:', '<input type="text" id="editgame_form" value="' + obj.data.form + '"/>');
-				content += createDivRowGame('Type:', '<input type="text" id="editgame_type_game" value="' + obj.data.type_game + '"/>');
-				content += createDivRowGame('Date Start:', '<input type="text" id="editgame_date_start" value="' + obj.data.date_start + '"/>');
-				content += createDivRowGame('Date Stop:', '<input type="text" id="editgame_date_stop" value="' + obj.data.date_stop + '"/>');
+				content += createDivRowGame('', '<img class="fhq_game_img" id="editgame_logo" src="' + obj.data.logo + '"/>');
+				content += createDivRowGame('Update logo:', 'PNG: <input id="editgame_new_logo" type="file" accept="image/png" required/>');
+				content += createDivRowGame('', '<div class="button3 ad" onclick="updateGameLogo(' + id + ');">Upload</div>');
+				content += createDivRowGame_Skip();
+				content += createDivRowGame('Name (Type):',
+					'<input type="text" id="editgame_title" value="' + obj.data.title + '"/> '
+					+ createComboBoxGame('editgame_type_game', obj.data.type_game, g_gameTypes )
+				);
+				content += createDivRowGame('Form/State:', 
+					createComboBoxGame('editgame_form', obj.data.form, g_gameForm ) + ' / '
+					+ createComboBoxGame('editgame_state', obj.data.state, g_gameState )
+				);
+				content += createDivRowGame('Date Start/Stop:',
+					'<input type="text" id="editgame_date_start" value="' + obj.data.date_start + '"/> / '
+					+ '<input type="text" id="editgame_date_stop" value="' + obj.data.date_stop + '"/>'
+				);
 				content += createDivRowGame('Date Restart:', '<input type="text" id="editgame_date_restart" value="' + obj.data.date_restart + '"/>');
-				content += createDivRowGame('Description:', '<textarea id="editgame_description">' + obj.data.description + '</textarea>');
+				content += createDivRowGame('Description:', '<textarea id="editgame_description"></textarea>');
 				content += createDivRowGame('Organizators:', '<input type="text" id="editgame_organizators" value="' + obj.data.organizators + '"/>');
-				content += createDivRowGame('', '<div class="button3 ad" onclick="updateGame(\'' + id + '\');">Update</div>');
+				content += createDivRowGame('Rules:', '<textarea id="editgame_rules"></textarea>');
+				content += createDivRowGame('', '<div class="button3 ad" onclick="updateGame(' + id + ');">Update</div>');
 				content += '</div>'; // game_info_table
 				content += '</div>\n'; // game_info
 				showModalDialog(content);
+				document.getElementById('editgame_rules').innerHTML = obj.data.rules;
+				document.getElementById('editgame_description').innerHTML = obj.data.description;
 			} else {
 				alert(obj.error.message);
 			}
@@ -236,6 +305,7 @@ function createGame()
 	params["date_restart"] = document.getElementById("newgame_date_restart").value;
 	params["description"] = document.getElementById("newgame_description").value;
 	params["organizators"] = document.getElementById("newgame_organizators").value;
+	params["rules"] = document.getElementById("newgame_rules").value;
 	// params["author_id"] = document.getElementById("newgame_author_id").value;
 	// alert(createUrlFromObj(params));
 
@@ -260,19 +330,40 @@ function formCreateGame()
 	content += createDivRowGame('UUID Game:', '<input type="text" id="newgame_uuid_game" value="' + guid() + '"/>');
 	content += createDivRowGame('Logo:', '<input type="text" id="newgame_logo" value="http://fhq.keva.su/templates/base/images/minilogo.png"/>');
 	content += createDivRowGame('Name:', '<input type="text" id="newgame_title"/>');
-	content += createDivRowGame('State:', '<input type="text" id="newgame_state"/>');
-	content += createDivRowGame('Form:', '<input type="text" id="newgame_form"/>');
-	content += createDivRowGame('Type:', '<select id="newgame_type"> <option value="jeopardy">Jeopardy</option><option value="attack-defence">Attack-Defence</option></select>');
+	content += createDivRowGame('State:', createComboBoxGame('newgame_state', 'original', g_gameState));
+	content += createDivRowGame('Form:', createComboBoxGame('newgame_form', 'online', g_gameForm));
+	content += createDivRowGame('Type:', createComboBoxGame('newgame_type', 'jeopardy', g_gameTypes ));
 	content += createDivRowGame('Date Start:', '<input type="text" id="newgame_date_start" value="0000-00-00 00:00:00"/>');
 	content += createDivRowGame('Date Stop:', '<input type="text" id="newgame_date_stop" value="0000-00-00 00:00:00"/>');
 	content += createDivRowGame('Date Restart:', '<input type="text" id="newgame_date_restart" value="0000-00-00 00:00:00"/>');
 	content += createDivRowGame('Description:', '<textarea id="newgame_description"></textarea>');
 	content += createDivRowGame('Organizators:', '<input type="text" id="newgame_organizators" value=""/>');
+	content += createDivRowGame('Rules:', '<textarea id="newgame_rules"></textarea>');
 	// content += createDivRowGame('Author ID:', '<input type="text" id="newgame_author_id" value=""/>');
 	content += createDivRowGame('', '<div class="button3 ad" onclick="createGame();">Create</div>');
 	content += '</div>'; // game_info_table
 	content += '</div>\n'; // game_info
 	showModalDialog(content);
+}
+
+function loadGameRules(gameid) {
+	var params = {};
+	params["id"] = gameid;
+	var el = document.getElementById("content_page");
+	el.innerHTML = 'Loading...';
+	send_request_post(
+		'api/games/get.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "fail") 
+				el.innerHTML = obj.error.message;
+			else {
+				el.innerHTML = '<h1>Rules</h1>' + obj.data.title + '<pre id="game_rules"></pre>';
+				var rules = document.getElementById("game_rules");
+				rules.innerHTML = obj.data.rules;
+			}
+		}
+	);
 }
 
 function loadScoreboard(gameid) {
