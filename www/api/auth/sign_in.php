@@ -17,10 +17,8 @@ if (APIHelpers::issetParam('email') && APIHelpers::issetParam('password')) {
 	$email = APIHelpers::getParam('email', '');
 	$password = APIHelpers::getParam('password', '');
 	$conn = APIHelpers::createConnection($config);
-	$hash_password = APISecurity::generatePassword($config, $email, $password);
 	$hash_password2 = APISecurity::generatePassword2($email, $password);
-// , $hash_password2
-	if( APISecurity::login($conn, $email, $hash_password, $hash_password2)) {
+	if( APISecurity::login($conn, $email, $hash_password2)) {
 		$result['result'] = 'ok';
 		$result['token'] = APIHelpers::gen_guid();
 	} else {

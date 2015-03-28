@@ -7,6 +7,6 @@ $updates['u0024'] = array(
 );
 
 function update_u0024($conn) {
-	$res = $conn->prepare('ALTER TABLE `user` ADD COLUMN `pass` VARCHAR(255) DEFAULT "";')->execute();
-	return ($res != 1);
+	$conn->prepare('ALTER TABLE `user` ADD COLUMN `pass` VARCHAR(255) DEFAULT "";')->execute();
+	return true;
 }
