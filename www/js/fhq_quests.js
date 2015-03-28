@@ -119,13 +119,13 @@ function reloadQuests()
 				// content += '<font class="fhq_task" size="1">Status: ' + status + '</font>\n';
 				content += '</div>\n';*/
 				
-				if (status == 'current')
+				if (status == 'current' && current_quests)
 					current_quests.innerHTML += content;
 
-				if (status == 'open')
+				if (status == 'open' && open_quests)
 					open_quests.innerHTML += content;
 
-				if (status == 'completed')
+				if (status == 'completed' && completed_quests)
 					completed_quests.innerHTML += content;
 				
 				// quests.innerHTML += content;
