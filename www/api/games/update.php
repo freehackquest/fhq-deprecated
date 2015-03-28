@@ -29,6 +29,7 @@ $columns = array(
   'state' => 'Unlicensed copy',
   'form' => 'online',
   'organizators' => '',
+  'rules' => '',
 );
 
 if (!APIHelpers::issetParam('id'))
