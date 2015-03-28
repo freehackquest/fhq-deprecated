@@ -46,7 +46,6 @@ function checkGameDates($security, &$message) {
 			<div class="fhq_timer" id="seconds">'.$di->s.'</div> second(s)<br>
 			<div id="reload_content" onclick="startTimer();"/></div> <br><br>
 		';
-		
 		return false;
 	}
 
