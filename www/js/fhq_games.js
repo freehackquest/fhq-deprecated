@@ -216,6 +216,34 @@ function updateGame(id) {
 	);
 }
 
+var g_gameTypes = [
+		{ type: 'jeopardy', caption: 'Jeopardy'},
+		{ type: 'attack-defence',  caption: 'Attack-Defence'}
+	];
+
+var g_gameForm = [
+		{ type: 'online', caption: 'Online'},
+		{ type: 'offline',  caption: 'Offline'}
+	];
+	
+var g_gameState = [
+		{ type: 'original', caption: 'Original'},
+		{ type: 'copy',  caption: 'Copy'},
+		{ type: 'unlicensed copy',  caption: 'Unlicensed copy'}
+	];
+
+function createComboBoxGame(idelem, value, arr) {
+	var result = '<select id="' + idelem + '">';
+	for (var k in arr) {
+		result += '<option ';
+		if (arr[k].type == value)
+			result += ' selected ';
+		result += ' value="' + arr[k].type + '">';
+		result += arr[k].caption + '</option>';
+	}
+	result += '</select>';
+	return result;
+}
 
 function formEditGame(id)
 {
@@ -235,11 +263,11 @@ function formEditGame(id)
 				content += createDivRowGame_Skip();
 				content += createDivRowGame('Name (Type):',
 					'<input type="text" id="editgame_title" value="' + obj.data.title + '"/> '
-					+ '( <input type="text" id="editgame_type_game" value="' + obj.data.type_game + '"/> ) '
+					+ createComboBoxGame('editgame_type_game', obj.data.type_game, g_gameTypes )
 				);
 				content += createDivRowGame('Form/State:', 
-					'<input type="text" id="editgame_form" value="' + obj.data.form + '"/> / '
-					 + '<input type="text" id="editgame_state" value="' + obj.data.state + '"/>'
+					createComboBoxGame('editgame_form', obj.data.form, g_gameForm ) + ' / '
+					+ createComboBoxGame('editgame_state', obj.data.state, g_gameState )
 				);
 				content += createDivRowGame('Date Start/Stop:',
 					'<input type="text" id="editgame_date_start" value="' + obj.data.date_start + '"/> / '
@@ -297,9 +325,9 @@ function formCreateGame()
 	content += createDivRowGame('UUID Game:', '<input type="text" id="newgame_uuid_game" value="' + guid() + '"/>');
 	content += createDivRowGame('Logo:', '<input type="text" id="newgame_logo" value="http://fhq.keva.su/templates/base/images/minilogo.png"/>');
 	content += createDivRowGame('Name:', '<input type="text" id="newgame_title"/>');
-	content += createDivRowGame('State:', '<input type="text" id="newgame_state"/>');
-	content += createDivRowGame('Form:', '<input type="text" id="newgame_form"/>');
-	content += createDivRowGame('Type:', '<select id="newgame_type"> <option value="jeopardy">Jeopardy</option><option value="attack-defence">Attack-Defence</option></select>');
+	content += createDivRowGame('State:', createComboBoxGame('newgame_state', 'original', g_gameState));
+	content += createDivRowGame('Form:', createComboBoxGame('newgame_form', 'online', g_gameForm));
+	content += createDivRowGame('Type:', createComboBoxGame('newgame_type', 'jeopardy', g_gameTypes ));
 	content += createDivRowGame('Date Start:', '<input type="text" id="newgame_date_start" value="0000-00-00 00:00:00"/>');
 	content += createDivRowGame('Date Stop:', '<input type="text" id="newgame_date_stop" value="0000-00-00 00:00:00"/>');
 	content += createDivRowGame('Date Restart:', '<input type="text" id="newgame_date_restart" value="0000-00-00 00:00:00"/>');
