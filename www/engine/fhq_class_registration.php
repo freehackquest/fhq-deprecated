@@ -43,8 +43,9 @@
 					.substr($charid,16, 4).$hyphen
 					.substr($charid,20,12);	
 
+			// todo fix sqlinjection here (email) (use pdo):
 			$query = "INSERT INTO user(uuid_user, username, password, email, nick, role )
-				VALUES ( '$uuid', '$username','notactivated$notactivated', $email, '$nickname','user');";
+				VALUES ( '$uuid', '$username','notactivated$notactivated', '$email', '$nickname','user');";
 			$result = $db->query($query);
 
 			if($result == '1')
@@ -102,10 +103,11 @@
 				$password = substr(md5(rand().rand()), 0, 7);
 				
 				$password_hash = $security->tokenByData( array($password, $username, strtoupper($email)));
+				$password_hash2 = sha1(strtoupper($email), $password);
 				
 				// echo "e-mail: $email<br> password: $password";
 				
-				$query2 = "update user set password = '$password_hash' where username = '$username';";
+				$query2 = "update user set password = '' AND pass = '$password_hash2' where username = '$username';";
 				$db->query($query2);
 
 				$subject = "Your account was activated";
