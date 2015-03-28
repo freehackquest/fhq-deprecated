@@ -7,13 +7,16 @@ include_once ($curdir_upload_logo."/../../config/config.php");
 
 APIHelpers::checkAuth();
 
-$userid = APIHelpers::getParam('userid', APISecurity::userid());
-// $userid = intval($userid);
-if (!is_numeric($userid))
-	APIHelpers::showerror(912, 'userid must be numeric');
+if (!APIHelpers::issetParam('gameid'))
+	APIHelpers::showerror(912, 'Not found parameter gameid');
 
-if (!APISecurity::isAdmin() && $userid != APISecurity::userid())
-	APIHelpers::showerror(912, 'you what change logo for another user, it can do only admin');
+$gameid = APIHelpers::getParam('gameid', 0);
+// $userid = intval($userid);
+if (!is_numeric($gameid))
+	APIHelpers::showerror(912, 'gameid must be numeric');
+
+if (!APISecurity::isAdmin())
+	APIHelpers::showerror(912, 'This method only for admin');
 
 if (count($_FILES) <= 0)
 	APIHelpers::showerror(3010, 'Not found files '.count($_FILES));
@@ -36,9 +39,9 @@ for($i = 0; $i < count($keys); $i++)
 	}
 	else
 	{
-		$full_filename = $curdir_upload_logo.'/../../files/users/'.$userid.'_orig.png'; 
-		$full_filename_new = $curdir_upload_logo.'/../../files/users/'.$userid.'.png';
-		// chmod($curdir_upload_logo.'/../../files/users/',0755);
+		$full_filename = $curdir_upload_logo.'/../../files/games/'.$gameid.'_orig.png'; 
+		$full_filename_new = $curdir_upload_logo.'/../../files/games/'.$gameid.'.png';
+		// chmod($curdir_upload_logo.'/../../files/games/',0755);
 		
 		move_uploaded_file($_FILES[$filename]["tmp_name"],$full_filename);
 		if(!file_exists($full_filename))
@@ -58,15 +61,12 @@ for($i = 0; $i < count($keys); $i++)
 				$newheight = 100;
 				$source = imagecreatefrompng($full_filename);
 				imagealphablending($source, true);
-				imagesavealpha($source, true);
 				
 				$thumb = imagecreatetruecolor($newwidth, $newheight);
 				imagealphablending($thumb, true);
-				// imagesavealpha($thumb, true);
-				// $black = imagecolorallocate($thumb, 0, 0, 0);
-				// imagecolortransparent($thumb, $black);
-				imagecolortransparent($thumb);
-				
+				$black = imagecolorallocate($thumb, 0, 0, 0);
+				imagecolortransparent($thumb, $black);
+
 				imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
 				imagepng($thumb, $full_filename_new, 9 , PNG_NO_FILTER);
 				imagedestroy($thumb);
@@ -84,11 +84,11 @@ for($i = 0; $i < count($keys); $i++)
 $conn = APIHelpers::createConnection($config);
 
 try {
-	$query = 'UPDATE user SET logo = ? WHERE iduser = ?';
+	$query = 'UPDATE games SET logo = ? WHERE id = ?';
 	$stmt = $conn->prepare($query);
-	if ($stmt->execute(array('files/users/'.$userid.'.png', $userid))) {
+	if ($stmt->execute(array('files/games/'.$gameid.'.png', $gameid))) {
 		$result['result'] = 'ok';
-		$result['data']['logo'] = 'files/users/'.$userid.'.png';
+		$result['data']['logo'] = 'files/games/'.$gameid.'.png';
 	} else
 		$result['result'] = 'fail';
 } catch(PDOException $e) {

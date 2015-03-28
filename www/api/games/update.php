@@ -21,7 +21,6 @@ if(!APISecurity::isAdmin())
 
 $columns = array(
   'title' => 'Unknown',
-  'logo' => '',  
   'type_game' => 'jeopardy',
   'date_start' => '0000-00-00 00:00:00',
   'date_stop' => '0000-00-00 00:00:00',

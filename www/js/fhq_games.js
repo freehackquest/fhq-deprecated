@@ -62,6 +62,10 @@ function createDivRowGame(name, value) {
 		+ '</div>\n';
 }
 
+function createDivRowGame_Skip() {
+	return '<div class="user_info_row_skip"></div> \n';
+}
+
 function loadGames() {
 	var el = document.getElementById("content_page");
 	el.innerHTML = "Please wait...";
@@ -155,10 +159,34 @@ function formDeleteGame(id)
 	showModalDialog(content);
 };
 
+function updateGameLogo(gameid) {
+	var files = document.getElementById('editgame_new_logo').files;
+	if (files.length == 0) {
+		alert("Please select file");
+		return;
+	}
+	/*for(i = 0; i < files.length; i++)
+		alert(files[i].name);*/
+	
+	send_request_post_files(
+		files,
+		'api/games/upload_logo.php',
+		createUrlFromObj({"gameid": gameid}),
+		function (obj) {
+			if (obj.result == "fail") {
+				alert(obj.error.message);
+				return;
+			}
+			document.getElementById('editgame_logo').src = obj.data.logo + '?' + new Date().getTime();
+			// showModalDialog('updated');
+			loadGames();
+		}
+	);
+}
+
 function updateGame(id) {
 	// alert(id);
 	var params = {};
-	params["logo"] = document.getElementById("editgame_logo").value;
 	params["title"] = document.getElementById("editgame_title").value;
 	params["state"] = document.getElementById("editgame_state").value;
 	params["form"] = document.getElementById("editgame_form").value;
@@ -201,17 +229,26 @@ function formEditGame(id)
 			if (obj.result == "ok") {
 				var content = '<div class="fhq_game_info">';
 				content += '<div class="fhq_game_info_table">\n';
-				content += createDivRowGame('Logo:', '<input type="text" id="editgame_logo" value="' + obj.data.logo + '"/>');
-				content += createDivRowGame('Name:', '<input type="text" id="editgame_title" value="' + obj.data.title + '"/>');
-				content += createDivRowGame('State:', '<input type="text" id="editgame_state" value="' + obj.data.state + '"/>');
-				content += createDivRowGame('Form:', '<input type="text" id="editgame_form" value="' + obj.data.form + '"/>');
-				content += createDivRowGame('Type:', '<input type="text" id="editgame_type_game" value="' + obj.data.type_game + '"/>');
-				content += createDivRowGame('Date Start:', '<input type="text" id="editgame_date_start" value="' + obj.data.date_start + '"/>');
-				content += createDivRowGame('Date Stop:', '<input type="text" id="editgame_date_stop" value="' + obj.data.date_stop + '"/>');
+				content += createDivRowGame('', '<img class="fhq_game_img" id="editgame_logo" src="' + obj.data.logo + '"/>');
+				content += createDivRowGame('Update logo:', 'PNG: <input id="editgame_new_logo" type="file" accept="image/png" required/>');
+				content += createDivRowGame('', '<div class="button3 ad" onclick="updateGameLogo(' + id + ');">Upload</div>');
+				content += createDivRowGame_Skip();
+				content += createDivRowGame('Name (Type):',
+					'<input type="text" id="editgame_title" value="' + obj.data.title + '"/> '
+					+ '( <input type="text" id="editgame_type_game" value="' + obj.data.type_game + '"/> ) '
+				);
+				content += createDivRowGame('Form/State:', 
+					'<input type="text" id="editgame_form" value="' + obj.data.form + '"/> / '
+					 + '<input type="text" id="editgame_state" value="' + obj.data.state + '"/>'
+				);
+				content += createDivRowGame('Date Start/Stop:',
+					'<input type="text" id="editgame_date_start" value="' + obj.data.date_start + '"/> / '
+					+ '<input type="text" id="editgame_date_stop" value="' + obj.data.date_stop + '"/>'
+				);
 				content += createDivRowGame('Date Restart:', '<input type="text" id="editgame_date_restart" value="' + obj.data.date_restart + '"/>');
 				content += createDivRowGame('Description:', '<textarea id="editgame_description">' + obj.data.description + '</textarea>');
 				content += createDivRowGame('Organizators:', '<input type="text" id="editgame_organizators" value="' + obj.data.organizators + '"/>');
-				content += createDivRowGame('', '<div class="button3 ad" onclick="updateGame(\'' + id + '\');">Update</div>');
+				content += createDivRowGame('', '<div class="button3 ad" onclick="updateGame(' + id + ');">Update</div>');
 				content += '</div>'; // game_info_table
 				content += '</div>\n'; // game_info
 				showModalDialog(content);
