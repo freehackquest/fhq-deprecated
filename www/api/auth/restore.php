@@ -92,8 +92,11 @@ $stmt_insert2->execute(array(
 	'sending',
 ));
 
-$error = '';
-APIMail::send($config, $email, '', '', $email_subject, $email_message, $error);
+// this option must be moved to db
+if (isset($config['mail']) && isset($config['mail']['allow']) && $config['mail']['allow'] == 'yes') {
+	$error = '';
+	APIMail::send($config, $email, '', '', $email_subject, $email_message, $error);
+}
 
 $result['result'] = 'ok';
 $result['data']['message'] = 'Check your your e-mail (also please check spam).';
