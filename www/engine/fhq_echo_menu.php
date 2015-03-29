@@ -132,6 +132,15 @@ echo '
 		',
 		'show' => $security->isAdmin(),
 	);
+	$arrmenu[] = array(
+		'name' => 'users',
+		'html' => '
+			<div class="fhq_btn_menu hint--bottom" data-hint="Users" onclick="createPageUsers(); updateUsers();">
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_users.png"/>
+			</div>
+		',
+		'show' => $security->isAdmin(),
+	);
 	
 	$arrmenu[] = array(
 		'name' => 'games',
@@ -201,14 +210,6 @@ echo '
 		'name' => 'feedbacks',
 		'html' => '
 			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'feedbacks\');">Messages</div>
-		',
-		'show' => $security->isAdmin(),
-	);
-	
-	$arrsystemmenu[] = array(
-		'name' => 'users',
-		'html' => '
-			<div class="button3 ad" href="javascript:void(0);" onclick="createPageUsers(); updateUsers();">Users</div>
 		',
 		'show' => $security->isAdmin(),
 	);
