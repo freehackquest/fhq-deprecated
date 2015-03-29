@@ -68,6 +68,7 @@ function echo_mainpage($page)
 	<!-- script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js?ver='.$versioncontent.'"></script -->
 	<!-- script src="http://malsup.github.com/jquery.form.js?ver='.$versioncontent.'"></script -->	
 	<!-- script type="text/javascript" src="js/encoder.js?ver='.$versioncontent.'"></script -->
+	<script type="text/javascript" src="js/fhq.frontend.lib.js?ver='.$versioncontent.'"></script>
 	<script type="text/javascript" src="js/fhq_send_request.js?ver='.$versioncontent.'"></script>
 	<script type="text/javascript" src="js/fhq_echo_head.js?ver='.$versioncontent.'"></script>
 	<script type="text/javascript" src="js/fhq_modal_dialog.js?ver='.$versioncontent.'"></script>
@@ -78,16 +79,8 @@ function echo_mainpage($page)
 	<script type="text/javascript" src="js/fhq_timer.js?ver='.$versioncontent.'"></script>
 	<script type="text/javascript" src="js/fhq_updates.js?ver='.$versioncontent.'"></script>
 	<script type="text/javascript" src="js/fhq_events.js?ver='.$versioncontent.'"></script>
+	<script type="text/javascript" src="js/fhq_stats.js?ver='.$versioncontent.'"></script>
 
-	<style>
-		textarea.full_text
-		{	
-			margin: 0pt; 
-			width: 80%;
-			height: 200px;
-		}
-
-	</style>
 </head>
 	';
 	
@@ -105,7 +98,7 @@ function echo_mainpage($page)
 			<div class="overlay_cell">
 				<div class="overlay_content">
 					<div id="modal_dialog_content">
-						Текст посередине DIV
+						text
 					</div>
 					<div class="overlay_close">
 						<a class="button3 ad" href="javascript:void(0);" onclick="closeModalDialog();">

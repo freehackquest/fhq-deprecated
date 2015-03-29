@@ -115,6 +115,16 @@ echo '
 	);
 
 	$arrmenu[] = array(
+		'name' => 'stats',
+		'html' => '
+			<div class="fhq_btn_menu hint--bottom" data-hint="Statistics" onclick="loadStatistics('.$gameid.');">
+				<img width="50px" src="templates/'.$template.'/images/menu/stats.png"/><br>
+			</div>
+		',
+		'show' => ($game_type == 'jeopardy'),
+	);	
+
+	$arrmenu[] = array(
 		'name' => 'splitter',
 		'html' => '
 			<div class="fhq_btn_menu_splitter">
@@ -128,6 +138,15 @@ echo '
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="System Menu" onclick="showSystemMenu();">
 				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_system.png"/>
+			</div>
+		',
+		'show' => $security->isAdmin(),
+	);
+	$arrmenu[] = array(
+		'name' => 'users',
+		'html' => '
+			<div class="fhq_btn_menu hint--bottom" data-hint="Users" onclick="createPageUsers(); updateUsers();">
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_users.png"/>
 			</div>
 		',
 		'show' => $security->isAdmin(),
@@ -206,14 +225,6 @@ echo '
 	);
 	
 	$arrsystemmenu[] = array(
-		'name' => 'users',
-		'html' => '
-			<div class="button3 ad" href="javascript:void(0);" onclick="createPageUsers(); updateUsers();">Users</div>
-		',
-		'show' => $security->isAdmin(),
-	);
-	
-	$arrsystemmenu[] = array(
 		'name' => 'answer_list',
 		'html' => '
 			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'answer_list\');">Answer List</div>
@@ -225,14 +236,6 @@ echo '
 		'name' => 'answer_list_backups',
 		'html' => '
 			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'answer_list\' , { backup : \'\' } );">Backup Answer List</div>
-		',
-		'show' => $security->isAdmin() || $security->isTester(),
-	);
-	
-	$arrsystemmenu[] = array(
-		'name' => 'statistics',
-		'html' => '
-			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'statistics\');">Statistics</div>
 		',
 		'show' => $security->isAdmin() || $security->isTester(),
 	);

@@ -1,5 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+header('Content-Type: application/json');
 
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
@@ -12,6 +13,7 @@ $result = array(
 	'result' => 'fail',
 	'data' => array(),
 	'profile' => array(),
+	'access' => array(),
 );
 
 $conn = APIHelpers::createConnection($config);
@@ -27,6 +29,9 @@ if (!is_numeric($userid))
 $userid = intval($userid);
 
 $bAllow = APISecurity::isAdmin() || APISecurity::isTester() || APISecurity::userid() == $userid;
+
+$result['access']['edit'] = $bAllow;
+$result['currentUser'] = APISecurity::userid() == $userid;
 
 $columns = array('iduser', 'email', 'password', 'role', 'nick', 'logo');
 
