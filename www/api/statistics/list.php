@@ -107,7 +107,7 @@ try {
 		$questid = $row['idquest'];
 		$result['data']['quests'][$id] = array(
 			'id' => $row['idquest'],
-			'name' => base64_decode($row['name']),
+			'name' => $row['name'],
 			'subject' => $row['subject'],
 			'min_score' => $row['min_score'],
 			'score' => $row['score'],

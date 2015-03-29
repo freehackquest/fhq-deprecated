@@ -102,12 +102,12 @@
 		
 		$table_quest = "CREATE TABLE IF NOT EXISTS `quest` (
 			  `idquest` int(10) unsigned NOT NULL AUTO_INCREMENT,
-			  `tema` varchar(128) DEFAULT NULL,
+			  `subject` varchar(128) DEFAULT NULL,
 			  `name` varchar(300) DEFAULT NULL,
 			  `text` varchar(4048) DEFAULT NULL,
 			  `answer` text,
 			  `score` int(10) unsigned DEFAULT NULL,
-			  `id_game` int(10) unsigned DEFAULT NULL,
+			  `gameid` int(10) unsigned DEFAULT NULL,
 			  `min_score` int(10) DEFAULT '0',
 			  `for_person` bigint(20) DEFAULT '0',
 			  `idauthor` bigint(20) DEFAULT '0',

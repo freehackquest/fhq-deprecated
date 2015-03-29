@@ -33,7 +33,7 @@ $query = '
 	FROM 
 		userquest 
 	INNER JOIN 
-		quest ON quest.idquest = userquest.idquest AND quest.id_game = ?
+		quest ON quest.idquest = userquest.idquest AND quest.gameid = ?
 	WHERE 
 		(userquest.iduser = ?) 
 		AND ( userquest.stopdate <> \'0000-00-00 00:00:00\' );

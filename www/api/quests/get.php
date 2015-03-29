@@ -52,7 +52,7 @@ $query = '
 				quest.min_score,
 				quest.text,
 				quest.state,
-				quest.tema,
+				quest.subject,
 				quest.author,
 				userquest.startdate,
 				userquest.stopdate
@@ -61,7 +61,7 @@ $query = '
 			LEFT JOIN 
 				userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
 			WHERE
-				quest.id_game = ?
+				quest.gameid = ?
 				AND quest.idquest = ?
 				'.$filter_by_state.'
 				'.$filter_by_score.'
@@ -85,19 +85,19 @@ try {
 			'questid' => $row['idquest'],
 			'score' => $row['score'],
 			'min_score' => $row['min_score'],
-			'name' => base64_decode($row['name']),
-			'subject' => base64_decode($row['tema']),
+			'name' => $row['name'],
+			'subject' => $row['subject'],
 			'date_start' => $row['startdate'],
 			'date_stop' => $row['stopdate'],
 			'state' => $row['state'],
-			'author' => base64_decode($row['author']),
+			'author' => $row['author'],
 			'status' => $status,
 		);
 		$result['quest'] = $row['idquest'];
 
 		if ($status == 'current' || $status == 'completed')
 		{
-			$result['data']['text'] = base64_decode($row['text']);
+			$result['data']['text'] = $row['text'];
 		}
 
 		if (isset($_SESSION['game']))

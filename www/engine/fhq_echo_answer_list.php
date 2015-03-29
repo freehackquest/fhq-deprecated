@@ -93,9 +93,9 @@ function echo_answer_list()
 		$nick = $row['nick'];
 		$email = strtolower(base64_decode($row['username']));
 		$idquest = $row['idquest'];
-		$name = base64_decode($row['name']);
-		$answer_try = base64_decode($row['answer_try']);
-		$answer_real = base64_decode($row['answer_real']);
+		$name = $row['name'];
+		$answer_try = $row['answer_try'];
+		$answer_real = $row['answer_real'];
 		$passed = $row['passed'];
 		$datetime_try = $row['datetime_try'];
 		

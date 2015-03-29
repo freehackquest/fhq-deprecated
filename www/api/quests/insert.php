@@ -46,19 +46,13 @@ foreach( $params as $key => $val ) {
 
 $questname = $params['name'];
 
-$params['tema'] = base64_encode($params['subject']);
-$params['name'] = base64_encode($params['name']);
-$params['text_copy'] = $params['text'];
-$params['text'] = base64_encode($params['text']);
-$params['answer_copy'] = $params['answer'];
 $params['answer_upper_md5'] = md5(strtoupper($params['answer']));
-$params['answer'] = base64_encode($params['answer']);
 $params['score'] = intval($params['score']);
 $params['min_score'] = intval($params['min_score']);
 $params['for_person'] = 0;
-$params['id_game'] = APIGame::id();
+$params['gameid'] = APIGame::id();
 $params['idauthor'] = intval($params['idauthor']);
-$params['author'] = base64_encode($params['author']);
+$params['author'] = $params['author'];
 // $params['state'] = $params['state'];
 // $params['description_state'] = $params['description_state'];
 // $params['subject'] = $params['subject'];

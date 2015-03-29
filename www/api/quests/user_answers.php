@@ -58,7 +58,7 @@ try {
 	{
 		$result['data'][] = array(
 			'datetime_try' => $row['datetime_try'],
-			'answer_try' => base64_decode($row['answer_try']),
+			'answer_try' => $row['answer_try'],
 		);
 	}
 	$result['result'] = 'ok';

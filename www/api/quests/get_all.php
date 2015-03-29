@@ -45,7 +45,7 @@ $query = '
 			FROM 
 				quest
 			WHERE
-				quest.id_game = ?
+				quest.gameid = ?
 				AND quest.idquest = ?
 		';
 
@@ -55,21 +55,17 @@ try {
 	if($row = $stmt->fetch())
 	{
 		$status = '';
-		// $result['data'] = 
-		/*$result['data']['subject'] = base64_decode($result['data']['tema']);
-		$result['data']['tema'] = base64_decode($result['data']['tema']);*/
-		
 		$result['data'] = array(
 			'questid' => $row['idquest'],
-			'subject' => base64_decode($row['tema']),
-			'name' => base64_decode($row['name']),
-			'text' => base64_decode($row['text']),
+			'subject' => $row['subject'],
+			'name' => $row['name'],
+			'text' => $row['text'],
 			'score' => $row['score'],
 			'min_score' => $row['min_score'],
 			'for_person' => $row['for_person'],
 			'authorid' => $row['idauthor'],
-			'author' => base64_decode($row['author']),
-			'answer' => base64_decode($row['answer']),
+			'author' => $row['author'],
+			'answer' => $row['answer'],
 			'state' => $row['state'],
 			'description_state' => $row['description_state'],
 		);

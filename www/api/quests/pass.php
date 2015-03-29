@@ -66,7 +66,7 @@ $query = '
 			LEFT JOIN 
 				userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
 			WHERE
-				quest.id_game = ?
+				quest.gameid = ?
 				AND quest.idquest = ?
 				'.$filter_by_state.'
 				'.$filter_by_score.'
@@ -77,7 +77,7 @@ try {
 	$stmt->execute($params);
 	if($row = $stmt->fetch())
 	{
-		$questname = base64_decode($row['name']);
+		$questname = $row['name'];
 		$status = '';
 		if ($row['stopdate'] == null)
 			$status = 'open';
@@ -92,7 +92,7 @@ try {
 			'date_stop' => $row['stopdate'],
 		);
 		$result['quest'] = $row['idquest'];
-		$real_answer = base64_decode($row['answer']);
+		$real_answer = $row['answer'];
 		if ($status == 'in_progress') {
 			// check answer
 			if (md5(strtoupper($real_answer)) == md5(strtoupper($answer))) {
@@ -131,7 +131,7 @@ try {
 		}
 
 		/*if ($status == 'current' || $status == 'completed')
-			$result['data']['text'] = base64_decode($row['text']);*/
+			$result['data']['text'] = $row['text'];*/
 	}
 	else
 	{
