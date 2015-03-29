@@ -18,7 +18,7 @@ $result = array(
 $conn = APIHelpers::createConnection($config);
 
 if(!APISecurity::isAdmin())
-  APIHelpers::showerror(746, 'Error 746: access denie. you must be admin.');
+  APIHelpers::showerror(746, 'access denie. you must be admin.');
 
 $columns = array(
   'uuid_game' => 'none',
