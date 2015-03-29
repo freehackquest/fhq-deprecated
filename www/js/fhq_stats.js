@@ -28,8 +28,8 @@ function loadStatistics(gameid) {
 						content += '<tr ' + (bColor == true ? 'class="alt"' : '') + '>';
 						
 						content += '	<td align=center valign=top>';
-						// content += '<div class="button3 ad" onclick="showQuest(' + q.id + ');">';
-						content += '<div class="button3 ad">';
+						content += '<div class="button3 ad" onclick="showQuest(' + q.id + ');">';
+						// content += '<div class="button3 ad">';
 						content += q.id + ' ' + q.name + '<br>';
 						content += ' <font size=3> ' + q.subject + ' ' + q.score + '</font><br>';
 						content += 'Solved ' + q.solved + ' ';
