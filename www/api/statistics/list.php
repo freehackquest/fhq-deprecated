@@ -97,7 +97,7 @@ try {
 				for_person = ?
 				AND gameid = ?
 			ORDER BY
-				subject, min_score, score
+				subject, score ASC, min_score
 	');
 	$stmt->execute(array(0,intval($gameid)));
 	$result['data']['quests'] = array();
