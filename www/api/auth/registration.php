@@ -121,6 +121,10 @@ $stmt_insert2->execute(array(
 	'sending',
 ));
 
+
+// $nickname
+APIEvents::addPublicEvents($conn, 'users', 'Joined new user {'.htmlspecialchars($nickname).'}!');
+
 $error = '';
 // this option must be moved to db
 if (isset($config['mail']) && isset($config['mail']['allow']) && $config['mail']['allow'] == 'yes') {

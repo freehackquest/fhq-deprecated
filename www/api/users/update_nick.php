@@ -58,7 +58,7 @@ try {
 		if ($userid != APISecurity::userid())
 			APIEvents::addPublicEvents($conn, 'users', 'Admin changed nick for user #'.$userid.' from {'.htmlspecialchars($oldnick).'} to {'.htmlspecialchars($nick).'} ');
 		else
-			APIEvents::addPublicEvents($conn, 'users', 'User changed nick #'.$userid.' from {'.htmlspecialchars($oldnick).'} to {'.htmlspecialchars($nick).'} ');
+			APIEvents::addPublicEvents($conn, 'users', 'User #'.$userid.' changed nick from {'.htmlspecialchars($oldnick).'} to {'.htmlspecialchars($nick).'} ');
 	}
 	else
 		$result['result'] = 'fail';

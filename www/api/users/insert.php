@@ -100,6 +100,8 @@ $stmt_insert->execute(array(
 	'0000-00-00 00:00:00',
 ));
 
+APIEvents::addPublicEvents($conn, 'users', 'Joined new user {'.htmlspecialchars($nick).'} by admin!');
+
 $result['result'] = 'ok';
 
 echo json_encode($result);

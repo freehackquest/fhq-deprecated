@@ -36,12 +36,16 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL))
 	APIHelpers::showerror(1011, '[Restore] Invalid e-mail address. ');
 
 $conn = APIHelpers::createConnection($config);
-$stmt = $conn->prepare('select count(*) as cnt from user where email = ?');
+$stmt = $conn->prepare('select iduser, nick from user where email = ?');
 $stmt->execute(array($email));
-if ($row = $stmt->fetch())
-{
-	if (intval($row['cnt']) == 0)
-		APIHelpers::showerror(702, '[Restore] This e-mail was not registered.');
+$nick = '';
+$userid = 0;
+
+if ($row = $stmt->fetch()) {
+	$nick = $row['nick'];
+	$userid = $row['iduser'];
+} else {
+	APIHelpers::showerror(702, '[Restore] This e-mail was not registered.');
 }
 
 $password = substr(md5(rand().rand()), 0, 8);
@@ -91,6 +95,9 @@ $stmt_insert2->execute(array(
 	'high',
 	'sending',
 ));
+
+// $nickname
+APIEvents::addPublicEvents($conn, 'users', 'The user #'.$userid.' {'.htmlspecialchars($nick).'} is returned to us! Welcome!');
 
 // this option must be moved to db
 if (isset($config['mail']) && isset($config['mail']['allow']) && $config['mail']['allow'] == 'yes') {

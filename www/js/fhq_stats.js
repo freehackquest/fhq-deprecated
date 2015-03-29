@@ -16,7 +16,7 @@ function loadStatistics(gameid) {
 				content += '<tr class="alt">';
 				content += '	<th width=10%>Quest</th>';
 				content += '	<th width=5%>Attempts</th>';
-				content += '	<th>Users who decided quest</th>';
+				content += '	<th>Users who solved quest</th>';
 				content += '</tr>\n';
 				var bColor = false;
 				
@@ -29,7 +29,6 @@ function loadStatistics(gameid) {
 						
 						content += '	<td align=center valign=top>';
 						content += '<div class="button3 ad" onclick="showQuest(' + q.id + ');">';
-						// content += '<div class="button3 ad">';
 						content += q.id + ' ' + q.name + '<br>';
 						content += ' <font size=3> ' + q.subject + ' ' + q.score + '</font><br>';
 						content += 'Solved ' + q.solved + ' ';
