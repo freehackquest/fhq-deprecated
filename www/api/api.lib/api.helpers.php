@@ -103,5 +103,12 @@ class APIHelpers {
 				.substr($charid,20,12);
 		return $uuid;	
 	}
+	
+	static function isMobile()
+	{
+		$browser = $_SERVER['HTTP_USER_AGENT']."\n\n";
+		$pos = strpos($browser,"Mobile");
+		return !($pos === false);
+	}
 }
 

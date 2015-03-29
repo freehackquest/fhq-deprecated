@@ -23,7 +23,7 @@
 
   if($income->isFinished())
   {
-    refreshTo("scoreboard.php");
+		refreshTo("scoreboard.php");
 	 	exit;  
   };
 	
@@ -130,13 +130,7 @@
 
 		exit;
 	}*/
-	else if($content_page == "answer_list" && ($security->isAdmin() || $security->isTester())) 
-	{
-		include_once "engine/fhq_echo_answer_list.php";
-		echo_answer_list();
-		exit;
-	}
-	else if($content_page == "export_quest")
+/*	else if($content_page == "export_quest")
 	{
 		if(!$security->isAdmin())
 		{
@@ -217,7 +211,7 @@
 			echo $profile->get_user_profile($user_id);
 			exit;
 		}
-	}
+	}*/
 	else 
 	{
 		// echo "404 page not found ;)";

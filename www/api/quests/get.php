@@ -12,15 +12,15 @@ APIHelpers::checkAuth();
 
 $message = '';
 
-if (!APIGame::checkGameDates($message))
+if (!APIGame::checkGameDates($message) && !APISecurity::isAdmin())
 	APIHelpers::showerror(986, $message);
 
 if (!APIHelpers::issetParam('taskid'))
 	APIHelpers::showerror(987, 'Not found parameter "taskid"');
 
-$taskid = APIHelpers::getParam('taskid', 0);
+$questid = APIHelpers::getParam('taskid', 0);
 
-if (!is_numeric($taskid))
+if (!is_numeric($questid))
 	APIHelpers::showerror(988, 'parameter "taskid" must be numeric');
 
 $result = array(
@@ -34,15 +34,26 @@ $result['result'] = 'ok';
 if ($conn == null)
 	$conn = APIHelpers::createConnection($config);
 
-$result['gameid'] = APIGame::id(); 
 $result['userid'] = APISecurity::userid();
 
-$filter_by_state = APISecurity::isAdmin() ? '' : ' AND quest.state = "open" ';
-$filter_by_score = APISecurity::isAdmin() ? '' : ' AND quest.min_score <= '.APISecurity::score().' ';
-
+$params = array();
 $params[] = APISecurity::userid();
-$params[] = APIGame::id();
-$params[] = intval($taskid);
+$params[] = intval($questid);
+
+$filter_by_state = '';
+$filter_by_score = '';
+$filter_by_game = '';
+
+if (!APISecurity::isAdmin()) {
+	$filter_by_state = ' AND quest.state = ?';
+	$params[] = 'open';
+	
+	$filter_by_score = ' AND quest.min_score <= ?';
+	$params[] = APISecurity::score();
+	
+	$filter_by_game = ' AND quest.gameid = ? ';
+	$params[] = APIGame::id();	
+}
 
 $query = '
 			SELECT 
@@ -54,6 +65,7 @@ $query = '
 				quest.state,
 				quest.subject,
 				quest.author,
+				quest.gameid,
 				userquest.startdate,
 				userquest.stopdate
 			FROM 
@@ -61,10 +73,10 @@ $query = '
 			LEFT JOIN 
 				userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
 			WHERE
-				quest.gameid = ?
-				AND quest.idquest = ?
+				quest.idquest = ?
 				'.$filter_by_state.'
 				'.$filter_by_score.'
+				'.$filter_by_game.'
 		';
 
 try {
@@ -94,6 +106,7 @@ try {
 			'status' => $status,
 		);
 		$result['quest'] = $row['idquest'];
+		$result['gameid'] = $row['gameid'];
 
 		if ($status == 'current' || $status == 'completed')
 		{
@@ -102,7 +115,10 @@ try {
 
 		if (isset($_SESSION['game']))
 			$result['data']['game_title'] = $_SESSION['game']['title'];
+	} else {
+		APIHelpers::showerror(822, 'Problem... may be incorrect game are selected?');
 	}
+	
 	$result['result'] = 'ok';
 	$result['permissions']['edit'] = APISecurity::isAdmin();
 	$result['permissions']['delete'] = APISecurity::isAdmin();

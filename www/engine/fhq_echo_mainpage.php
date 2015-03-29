@@ -42,8 +42,8 @@ function echo_mainpage($page)
 	
 	$template = isset($_SESSION['user']['profile']['template']) ? $_SESSION['user']['profile']['template'] : 'base';
 	$template = htmlspecialchars($template);
-	$versioncontent = '201503281358';
-	
+	$versioncontent = '201503300326';
+
 	echo '
 <head>
 	<title> Free-Hack-Quests </title>

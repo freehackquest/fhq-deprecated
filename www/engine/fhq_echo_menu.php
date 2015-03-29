@@ -142,11 +142,22 @@ echo '
 		',
 		'show' => $security->isAdmin(),
 	);
+	
 	$arrmenu[] = array(
 		'name' => 'users',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="Users" onclick="createPageUsers(); updateUsers();">
 				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_users.png"/>
+			</div>
+		',
+		'show' => $security->isAdmin(),
+	);
+	
+	$arrmenu[] = array(
+		'name' => 'answerlist',
+		'html' => '
+			<div class="fhq_btn_menu hint--bottom" data-hint="Answer List" onclick="loadAnswerList();">
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/answerlist.png"/>
 			</div>
 		',
 		'show' => $security->isAdmin(),
@@ -225,6 +236,7 @@ echo '
 	
 	$arrsystemmenu = array();
 	
+	// todo
 	$arrsystemmenu[] = array(
 		'name' => 'feedbacks',
 		'html' => '
@@ -233,22 +245,7 @@ echo '
 		'show' => $security->isAdmin(),
 	);
 	
-	$arrsystemmenu[] = array(
-		'name' => 'answer_list',
-		'html' => '
-			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'answer_list\');">Answer List</div>
-		',
-		'show' => $security->isAdmin() || $security->isTester(),
-	);
-	
-	$arrsystemmenu[] = array(
-		'name' => 'answer_list_backups',
-		'html' => '
-			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'answer_list\' , { backup : \'\' } );">Backup Answer List</div>
-		',
-		'show' => $security->isAdmin() || $security->isTester(),
-	);
-	
+	// todo
 	$arrsystemmenu[] = array(
 		'name' => 'install_updates',
 		'html' => '
@@ -257,6 +254,7 @@ echo '
 		'show' => $security->isAdmin(),
 	);
 
+	// todo
 	/*$arrsystemmenu[] = array(
 		'name' => 'init_scoreboard',
 		'html' => '
