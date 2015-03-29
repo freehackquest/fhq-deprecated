@@ -85,8 +85,9 @@ function changeUserLogo(userid) {
 
 function changeUserNick(userid) {
 	var params = {};
-	if (userid != null)
+	if (userid != null) {
 		params.userid = userid;
+	}
 	params.nick = document.getElementById('user_new_nick').value;
 	send_request_post(
 		'api/users/update_nick.php',
@@ -203,11 +204,11 @@ function deleteUser(userid) {
 }
 
 function createUserInfoRow(name, param) {
-	return '<div class="user_info_row"><div class="user_info_param">' + name + '</div><div class="user_info_value">' + param + '</div></div>';
+	return '<div class="user_info_row"><div class="user_info_param">' + name + '</div><div class="user_info_value">' + param + '</div></div>\n';
 }
 
 function createUserInfoRow_Skip() {
-	return '<div class="user_info_row_skip"></div>';
+	return '<div class="user_info_row_skip"></div>\n';
 }
 
 function showUserInfo(id) {
@@ -240,7 +241,7 @@ function showUserInfo(id) {
 			if (obj.access.edit) {
 				if (!obj.currentUser) {
 					content += createUserInfoRow_Skip();
-					content += createUserInfoRow('Change Logo:', '<input id="user_new_logo" type="text" value="' + obj.data.logo + '" > <div class="button3 ad" onclick="changeUserLogo(' + obj.data.userid + ');">Save</div> ');
+					content += createUserInfoRow('Change Logo:', '<input id="user_new_logo" type="text" value="' + obj.data.logo + '" > <div class="button3 ad" onclick="changeUserLogo(' + obj.data.userid + ');">Save</div>');
 					content += createUserInfoRow('Change Nick:', '<input id="user_new_nick" type="text" value="' + obj.data.nick + '" > <div class="button3 ad" onclick="changeUserNick(' + obj.data.userid + ');">Save</div> ');
 					content += createUserInfoRow('Change Password:', '<input id="user_new_password" type="password" value="" > <div class="button3 ad" onclick="changeUserPassword(' + obj.data.userid + ');">Save</div> ');
 					content += createUserInfoRow('Change Status:', '<input id="user_new_status" type="text" value="' + obj.data.status + '" > <div class="button3 ad" onclick="changeUserStatus(' + obj.data.userid + ');">Save</div> ');

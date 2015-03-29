@@ -153,6 +153,15 @@ echo '
 	);
 	
 	$arrmenu[] = array(
+		'name' => 'splitter',
+		'html' => '
+			<div class="fhq_btn_menu_splitter">
+			</div>
+		',
+		'show' => $security->isAdmin(),
+	);
+	
+	$arrmenu[] = array(
 		'name' => 'games',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="Games" onclick="loadGames();">
