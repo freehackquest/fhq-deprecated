@@ -97,13 +97,15 @@ try {
 				for_person = ?
 				AND gameid = ?
 			ORDER BY
-				min_score, score
+				subject, min_score, score
 	');
 	$stmt->execute(array(0,intval($gameid)));
 	$result['data']['quests'] = array();
+	$id = -1;
 	while ($row = $stmt->fetch()) {
+		$id++;
 		$questid = $row['idquest'];
-		$result['data']['quests'][$questid] = array(
+		$result['data']['quests'][$id] = array(
 			'id' => $row['idquest'],
 			'name' => base64_decode($row['name']),
 			'subject' => $row['subject'],
@@ -121,9 +123,9 @@ try {
 		$solved += getCountStatBy($conn, 'tryanswer_backup', $questid, 'Yes');
 		$tries += getCountStatBy($conn, 'tryanswer_backup', $questid, 'No');
 
-		$result['data']['quests'][$questid]['solved'] = $solved;
-		$result['data']['quests'][$questid]['tries'] = $tries;
-		$result['data']['quests'][$questid]['users'] = array();
+		$result['data']['quests'][$id]['solved'] = $solved;
+		$result['data']['quests'][$id]['tries'] = $tries;
+		$result['data']['quests'][$id]['users'] = array();
 		// how solved this quest
 		
 		$stmt_users = $conn->prepare('
@@ -142,12 +144,11 @@ try {
 		$stmt_users->execute(array('user',intval($questid), '0000-00-00 00:00:00'));
 	
 		while ($row_user = $stmt_users->fetch()) {
-			$result['data']['quests'][$questid]['users'][] = array(
-				'iduser' => $row_user['iduser'],
+			$result['data']['quests'][$id]['users'][] = array(
+				'userid' => $row_user['iduser'],
 				'nick' => $row_user['nick'],
 			);
 		}
-		
 	}
 } catch(PDOException $e) {
 	APIHelpers::showerror(922, $e->getMessage());

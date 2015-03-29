@@ -26,6 +26,7 @@ if (isset($_SESSION['user']))
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/button3.css" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/hint.css">
+		<script type="text/javascript" src="js/fhq.frontend.lib.js"></script>
 		<script type="text/javascript" src="js/index.js"></script>
 
 		<?php

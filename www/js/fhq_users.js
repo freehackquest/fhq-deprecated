@@ -229,24 +229,29 @@ function showUserInfo(id) {
 			var content = '<div class="user_info_table">';
 			content += createUserInfoRow('Logo:', '<img id="user_current_logo" src="'+ obj.data.logo + '"/>');
 			content += createUserInfoRow('ID:',  obj.data.userid);
-			content += createUserInfoRow('E-mail:', '<div id="user_current_email">' + obj.data.email + '</div>');
-			content += createUserInfoRow('Role:', '<div id="user_current_role">' + obj.data.role + '</div>');
+			if (obj.access.edit == true) {
+				content += createUserInfoRow('E-mail:', '<div id="user_current_email">' + obj.data.email + '</div>');
+				content += createUserInfoRow('Role:', '<div id="user_current_role">' + obj.data.role + '</div>');
+			}
 			content += createUserInfoRow('Nick:', '<div id="user_current_nick">' + obj.data.nick + '</div>');
-			content += createUserInfoRow('Status:', '<div id="user_current_status">' + obj.data.status + '</div>');
+			if (obj.access.edit == true)
+				content += createUserInfoRow('Status:', '<div id="user_current_status">' + obj.data.status + '</div>');
 			
-			content += createUserInfoRow_Skip();
-			
-			content += createUserInfoRow('Change Logo:', '<input id="user_new_logo" type="text" value="' + obj.data.logo + '" > <div class="button3 ad" onclick="changeUserLogo(' + obj.data.userid + ');">Save</div> ');
-			content += createUserInfoRow('Change Nick:', '<input id="user_new_nick" type="text" value="' + obj.data.nick + '" > <div class="button3 ad" onclick="changeUserNick(' + obj.data.userid + ');">Save</div> ');
-			content += createUserInfoRow('Change Password:', '<input id="user_new_password" type="password" value="" > <div class="button3 ad" onclick="changeUserPassword(' + obj.data.userid + ');">Save</div> ');
-			content += createUserInfoRow('Change Status:', '<input id="user_new_status" type="text" value="' + obj.data.status + '" > <div class="button3 ad" onclick="changeUserStatus(' + obj.data.userid + ');">Save</div> ');
-			content += createUserInfoRow('Change Role:', '<input id="user_new_role" type="text" value="' + obj.data.role + '" > <div class="button3 ad" onclick="changeUserRole(' + obj.data.userid + ');">Save</div> ');
-			content += createUserInfoRow('Remove User:', '<div class="button3 ad" onclick="deleteUser(' + obj.data.userid + ');">Remove</div> ');
+			if (obj.access.edit) {
+				if (!obj.currentUser) {
+					content += createUserInfoRow_Skip();
+					content += createUserInfoRow('Change Logo:', '<input id="user_new_logo" type="text" value="' + obj.data.logo + '" > <div class="button3 ad" onclick="changeUserLogo(' + obj.data.userid + ');">Save</div> ');
+					content += createUserInfoRow('Change Nick:', '<input id="user_new_nick" type="text" value="' + obj.data.nick + '" > <div class="button3 ad" onclick="changeUserNick(' + obj.data.userid + ');">Save</div> ');
+					content += createUserInfoRow('Change Password:', '<input id="user_new_password" type="password" value="" > <div class="button3 ad" onclick="changeUserPassword(' + obj.data.userid + ');">Save</div> ');
+					content += createUserInfoRow('Change Status:', '<input id="user_new_status" type="text" value="' + obj.data.status + '" > <div class="button3 ad" onclick="changeUserStatus(' + obj.data.userid + ');">Save</div> ');
+					content += createUserInfoRow('Change Role:', '<input id="user_new_role" type="text" value="' + obj.data.role + '" > <div class="button3 ad" onclick="changeUserRole(' + obj.data.userid + ');">Save</div> ');
+					content += createUserInfoRow('Remove User:', '<div class="button3 ad" onclick="deleteUser(' + obj.data.userid + ');">Remove</div> ');
+				}
 
-			content += createUserInfoRow_Skip();
-
-			for (var k in obj.profile) {
-				content += createUserInfoRow('Profile "' + k + '":', obj.profile[k]);
+				content += createUserInfoRow_Skip();
+				for (var k in obj.profile) {
+					content += createUserInfoRow('Profile "' + k + '":', obj.profile[k]);
+				}
 			}
 
 			content += createUserInfoRow_Skip();

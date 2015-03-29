@@ -15,9 +15,9 @@
    version="1.1"
    inkscape:version="0.48.4 r9939"
    sodipodi:docname="stats.svg"
-   inkscape:export-filename="/home/seakg/developing/fhq.git/src/img/menu/about.png"
-   inkscape:export-xdpi="22.639999"
-   inkscape:export-ydpi="22.639999">
+   inkscape:export-filename="stats.png"
+   inkscape:export-xdpi="22.200001"
+   inkscape:export-ydpi="22.200001">
   <defs
      id="defs4">
     <marker
@@ -74,7 +74,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>

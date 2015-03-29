@@ -92,13 +92,6 @@
 	    $feedback->echo_insert_form("?action=feedback_add","POST");
 		exit;
 	}
-	else if($content_page == "statistics"  && ($security->isAdmin() || $security->isTester()))
-	{
-		include_once "engine/fhq_echo_statistics.php";
-		echo_statistics();
-		echo "not yet work";
-		exit;
-	}
 	else if ($content_page == "advisers")
 	{
 		$errmsg = "";
