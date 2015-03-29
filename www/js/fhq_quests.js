@@ -46,6 +46,8 @@ function createQuestInfo(quest) {
 function reloadQuests()
 {
 	var quests = document.getElementById("quests");
+	if (!quests)
+		return;
 	quests.innerHTML = "Please wait...";
 	
 	var params = {};

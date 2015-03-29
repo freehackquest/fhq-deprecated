@@ -3,8 +3,8 @@
 class APIAnswerList {
 
 	static function addTryAnswer($conn, $questid, $user_answer, $real_answer,  $passed) {
-		$answer_try = base64_encode(htmlspecialchars($user_answer));
-		$answer_real = base64_encode(htmlspecialchars($real_answer));
+		$answer_try = $user_answer;
+		$answer_real = $real_answer;
 		$query = 'INSERT INTO tryanswer(iduser, idquest, answer_try, answer_real, passed, datetime_try) VALUES (?, ?, ?, ?, ?, NOW());';
 		$params[] = APISecurity::userid();
 		$params[] = intval($questid);

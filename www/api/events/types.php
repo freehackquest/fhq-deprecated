@@ -1,5 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+header('Content-Type: application/json');
 
 $curdir_events_count = dirname(__FILE__);
 include_once ($curdir_events_count."/../api.lib/api.base.php");

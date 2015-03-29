@@ -1,5 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+header('Content-Type: application/json');
 
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
@@ -51,9 +52,12 @@ $params[] = APISecurity::userid();
 $params[] = APIGame::id();
 $params[] = intval($questid);
 
+$questname = '';
+
 $query = '
 			SELECT 
 				quest.idquest,
+				quest.name,
 				quest.answer,
 				userquest.startdate,
 				userquest.stopdate
@@ -62,7 +66,7 @@ $query = '
 			LEFT JOIN 
 				userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
 			WHERE
-				quest.id_game = ?
+				quest.gameid = ?
 				AND quest.idquest = ?
 				'.$filter_by_state.'
 				'.$filter_by_score.'
@@ -73,6 +77,7 @@ try {
 	$stmt->execute($params);
 	if($row = $stmt->fetch())
 	{
+		$questname = $row['name'];
 		$status = '';
 		if ($row['stopdate'] == null)
 			$status = 'open';
@@ -87,7 +92,7 @@ try {
 			'date_stop' => $row['stopdate'],
 		);
 		$result['quest'] = $row['idquest'];
-		$real_answer = base64_decode($row['answer']);
+		$real_answer = $row['answer'];
 		if ($status == 'in_progress') {
 			// check answer
 			if (md5(strtoupper($real_answer)) == md5(strtoupper($answer))) {
@@ -113,7 +118,8 @@ try {
 				APIAnswerList::movedToBackup($conn, $questid);
 
 				// add to public events
-				APIEvents::addPublicEvents($conn, "users", "User ".APISecurity::nick()." passed quest #".$questid." (new user score: ".$new_user_score.")");
+				if (!APISecurity::isAdmin())
+					APIEvents::addPublicEvents($conn, "users", 'User {'.APISecurity::nick().'} passed quest #'.$questid.' {'.$questname.'} from game #'.APIGame::id().' {'.APIGame::title().'} (new user score: '.$new_user_score.')');
 			} else {
 				APIAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, 'No');
 				APIHelpers::showerror(3106, 'Answer incorrect');
@@ -125,7 +131,7 @@ try {
 		}
 
 		/*if ($status == 'current' || $status == 'completed')
-			$result['data']['text'] = base64_decode($row['text']);*/
+			$result['data']['text'] = $row['text'];*/
 	}
 	else
 	{

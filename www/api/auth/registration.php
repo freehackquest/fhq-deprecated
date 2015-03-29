@@ -1,5 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+header('Content-Type: application/json');
 
 $httpname = 'http://'.$_SERVER['HTTP_HOST'].dirname(dirname(dirname($_SERVER['PHP_SELF']))).'/';
 
@@ -120,6 +121,10 @@ $stmt_insert2->execute(array(
 	'high',
 	'sending',
 ));
+
+
+// $nickname
+APIEvents::addPublicEvents($conn, 'users', 'Joined new user {'.htmlspecialchars($nickname).'}!');
 
 $error = '';
 // this option must be moved to db

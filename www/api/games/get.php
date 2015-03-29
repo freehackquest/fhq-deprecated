@@ -1,5 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+header('Content-Type: application/json');
 
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");

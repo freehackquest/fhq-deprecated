@@ -1,5 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+header('Content-Type: application/json');
 
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
@@ -32,7 +33,7 @@ $query = '
 	FROM 
 		userquest 
 	INNER JOIN 
-		quest ON quest.idquest = userquest.idquest AND quest.id_game = ?
+		quest ON quest.idquest = userquest.idquest AND quest.gameid = ?
 	WHERE 
 		(userquest.iduser = ?) 
 		AND ( userquest.stopdate <> \'0000-00-00 00:00:00\' );

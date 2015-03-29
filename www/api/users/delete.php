@@ -1,9 +1,10 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+header('Content-Type: application/json');
 
-$curdir = dirname(__FILE__);
-include_once ($curdir."/../api.lib/api.base.php");
-include_once ($curdir."/../../config/config.php");
+$curdir_users_delete = dirname(__FILE__);
+include_once ($curdir_users_delete."/../api.lib/api.base.php");
+include_once ($curdir_users_delete."/../../config/config.php");
 
 APIHelpers::checkAuth();
 
@@ -25,6 +26,21 @@ $userid = APIHelpers::getParam('userid', 0);
 if (!is_numeric($userid))
   APIHelpers::showerror(885, 'userid must be numeric');
 
+$nick = '';
+// check user
+try {
+	$stmt = $conn->prepare('SELECT iduser, nick FROM user WHERE iduser = ?');
+	$stmt->execute(array($userid));
+	if ($row = $stmt->fetch()) {
+		$nick = $row['nick'];
+	} else {
+		APIHelpers::showerror(822, "User with id ".$userid.' did not found' );
+	}
+} catch(PDOException $e) {
+	APIHelpers::showerror(822, $e->getMessage());
+}
+
+
 try {
 	$params = array($userid);
  	$conn->prepare('DELETE FROM user WHERE iduser = ?')->execute($params);
@@ -33,5 +49,7 @@ try {
 } catch(PDOException $e) {
  	APIHelpers::showerror(882, $e->getMessage());
 }
+
+APIEvents::addPublicEvents($conn, 'users', 'User #'.$userid.' {'.htmlspecialchars($nick).'} was removed by admin!');
 
 echo json_encode($result);

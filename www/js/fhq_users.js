@@ -64,6 +64,8 @@ function resetUsersPage() {
 
 function setUsersPage(val) {
 	document.getElementById('user_page').value = val;
+	// todo disign paginator
+	
 }
 
 function changeUserLogo(userid) {
@@ -85,8 +87,9 @@ function changeUserLogo(userid) {
 
 function changeUserNick(userid) {
 	var params = {};
-	if (userid != null)
+	if (userid != null) {
 		params.userid = userid;
+	}
 	params.nick = document.getElementById('user_new_nick').value;
 	send_request_post(
 		'api/users/update_nick.php',
@@ -203,11 +206,11 @@ function deleteUser(userid) {
 }
 
 function createUserInfoRow(name, param) {
-	return '<div class="user_info_row"><div class="user_info_param">' + name + '</div><div class="user_info_value">' + param + '</div></div>';
+	return '<div class="user_info_row"><div class="user_info_param">' + name + '</div><div class="user_info_value">' + param + '</div></div>\n';
 }
 
 function createUserInfoRow_Skip() {
-	return '<div class="user_info_row_skip"></div>';
+	return '<div class="user_info_row_skip"></div>\n';
 }
 
 function showUserInfo(id) {
@@ -240,7 +243,7 @@ function showUserInfo(id) {
 			if (obj.access.edit) {
 				if (!obj.currentUser) {
 					content += createUserInfoRow_Skip();
-					content += createUserInfoRow('Change Logo:', '<input id="user_new_logo" type="text" value="' + obj.data.logo + '" > <div class="button3 ad" onclick="changeUserLogo(' + obj.data.userid + ');">Save</div> ');
+					content += createUserInfoRow('Change Logo:', '<input id="user_new_logo" type="text" value="' + obj.data.logo + '" > <div class="button3 ad" onclick="changeUserLogo(' + obj.data.userid + ');">Save</div>');
 					content += createUserInfoRow('Change Nick:', '<input id="user_new_nick" type="text" value="' + obj.data.nick + '" > <div class="button3 ad" onclick="changeUserNick(' + obj.data.userid + ');">Save</div> ');
 					content += createUserInfoRow('Change Password:', '<input id="user_new_password" type="password" value="" > <div class="button3 ad" onclick="changeUserPassword(' + obj.data.userid + ');">Save</div> ');
 					content += createUserInfoRow('Change Status:', '<input id="user_new_status" type="text" value="' + obj.data.status + '" > <div class="button3 ad" onclick="changeUserStatus(' + obj.data.userid + ');">Save</div> ');
@@ -301,7 +304,62 @@ function showUserIP(id) {
 	);
 }
 
+function getHTMLPaging1(min,max,onpage,page) {
+	if (min == max || page > max || page < min )
+		return " Paging Error ";
+	
+	var pages = Math.ceil(max / onpage);
 
+	var pagesInt = [];
+	var leftp = 5;
+	var rightp = leftp + 1;
+	
+	
+	
+	if (pages > (leftp + rightp + 2)) {
+		pagesInt.push(min);
+		if (page - leftp > min + 1) {
+			pagesInt.push(-1);
+			for (var i = (page - leftp); i <= page; i++) {
+				pagesInt.push(i);
+			}
+		} else {
+			for (var i = min+1; i <= page; i++) {
+				pagesInt.push(i);
+			}
+		}
+		
+		if (page + rightp < pages-1) {
+			for (var i = page+1; i < (page + rightp); i++) {
+				pagesInt.push(i);
+			}
+			pagesInt.push(-1);
+		} else {
+			for (var i = page+1; i < pages-1; i++) {
+				pagesInt.push(i);
+			}
+		}
+		if (page != pages-1)
+			pagesInt.push(pages-1);
+	} else {
+		for (var i = 0; i < pages; i++) {
+			pagesInt.push(i);
+		}
+	}
+
+	var pagesHtml = [];
+	for (var i = 0; i < pagesInt.length; i++) {
+		if (pagesInt[i] == -1) {
+			pagesHtml.push("...");
+		} else if (pagesInt[i] == page) {
+			pagesHtml.push('<div class="selected_user_page">[' + (pagesInt[i]+1) + ']</div>');
+		} else {
+			pagesHtml.push('<div class="button3 ad" onclick="setUsersPage(' + pagesInt[i] + '); updateUsers();">[' + (pagesInt[i]+1) + ']</div>');
+		}
+	}
+
+	return pagesHtml.join(' ');
+}
 
 function updateUsers() {
 	var lu = document.getElementById("listUsers");
@@ -333,9 +391,9 @@ function updateUsers() {
 			var onpage = parseInt(obj.onpage, 10);
 			var page = parseInt(obj.page, 10);
 
-			var pages = Math.ceil(found / onpage);
+			// var pages = Math.ceil(found / onpage);
 			
-			var pagesHtml = [];
+			/*var pagesHtml = [];
 			
 			for (var i = 0; i < pages; i++) {
 				if (i == page) {
@@ -343,10 +401,9 @@ function updateUsers() {
 				} else {
 					pagesHtml.push('<div class="button3 ad" onclick="setUsersPage(' + i + '); updateUsers();">[' + (i+1) + ']</div>');
 				}
-			}
+			}*/
 			
-			lu.innerHTML += pagesHtml.join(' ');
-
+			lu.innerHTML += '<div id="user_paging">' + getHTMLPaging1(0,found, onpage, page) + '</div>';
 			var content = '<div class="users_table">';
 			content += '<div class="users_row">';
 			content += '	<div class="users_cell">Logo</div>';
@@ -453,7 +510,6 @@ function formCreateUser() {
 	showModalDialog(content);
 }
 
-
 function createPageUsers() {
 	var cp = document.getElementById('content_page');
 	cp.innerHTML = '';
@@ -489,8 +545,7 @@ function createPageUsers() {
 	user_onpage += '	<option value="50">50</option>';
 	user_onpage += '</select> ';
 	content += createUserInfoRow('On Page:', user_onpage);
-	
-	
+
 	content += createUserInfoRow('', '<div class="button3 ad" onclick="resetUsersPage(); updateUsers();">Search</div>');
 	content += createUserInfoRow_Skip();
 	content += createUserInfoRow('Found:', '<font id="search_found">0</font>');

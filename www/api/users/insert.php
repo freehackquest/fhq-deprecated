@@ -1,5 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+header('Content-Type: application/json');
 
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
@@ -99,6 +100,8 @@ $stmt_insert->execute(array(
 	$_SERVER['REMOTE_ADDR'],
 	'0000-00-00 00:00:00',
 ));
+
+APIEvents::addPublicEvents($conn, 'users', 'Joined new user {'.htmlspecialchars($nick).'} by admin!');
 
 $result['result'] = 'ok';
 

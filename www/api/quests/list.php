@@ -1,5 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+header('Content-Type: application/json');
 
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
@@ -57,7 +58,7 @@ try {
 			FROM
 				quest
 			WHERE
-				id_game = ?
+				gameid = ?
 				'.$filter_by_state.'
 				'.$filter_by_score.'
 				AND (quest.for_person = 0 OR quest.for_person = ?)
@@ -79,7 +80,7 @@ try {
 				quest
 			LEFT JOIN userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
 			WHERE
-				id_game = ?
+				gameid = ?
 				'.$filter_by_state.'
 				'.$filter_by_score.'
 				AND (quest.for_person = 0 OR quest.for_person = ?)
@@ -105,7 +106,7 @@ try {
 			INNER JOIN 
 				userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
 			WHERE
-				id_game = ?
+				gameid = ?
 				'.$filter_by_state.'
 				'.$filter_by_score.'
 				AND (quest.for_person = 0 OR quest.for_person = ?)
@@ -129,7 +130,7 @@ try {
 			INNER JOIN 
 				userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
 			WHERE
-				id_game = ?
+				gameid = ?
 				'.$filter_by_state.'
 				'.$filter_by_score.'
 				AND (quest.for_person = 0 OR quest.for_person = ?)
@@ -147,22 +148,22 @@ try {
 try {
 	$stmt = $conn->prepare('
 			SELECT
-				quest.tema,
+				quest.subject,
 				count(quest.idquest) as cnt
 			FROM
 				quest
 			WHERE
-				id_game = ?
+				gameid = ?
 				'.$filter_by_state.'
 				'.$filter_by_score.'
 				AND (quest.for_person = 0 OR quest.for_person = ?)
 			GROUP BY
-				quest.tema
+				quest.subject
 	');
 	$stmt->execute(array(APIGame::id(), APISecurity::userid()));
 	while($row = $stmt->fetch())
 	{
-		$result['subjects'][base64_decode($row['tema'])] = $row['cnt'];
+		$result['subjects'][$row['subject']] = $row['cnt'];
 	}
 } catch(PDOException $e) {
 	APIHelpers::showerror(922, $e->getMessage());
@@ -195,8 +196,8 @@ $arrWhere_subjects = array();
 foreach ($filter_subjects as $k)
 {
 	if (strlen($k) > 0) {
-		$arrWhere_subjects[] = 'quest.tema = ?';
-		$params[] = base64_encode($k);
+		$arrWhere_subjects[] = 'quest.subject = ?';
+		$params[] = $k;
 	}
 }
 if (count($arrWhere_subjects) > 0)
@@ -207,7 +208,7 @@ $query = '
 				quest.idquest,
 				quest.name,
 				quest.score,
-				quest.tema,
+				quest.subject,
 				quest.state,
 				quest.count_user_solved,
 				userquest.startdate,
@@ -217,13 +218,13 @@ $query = '
 			LEFT JOIN 
 				userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
 			WHERE
-				quest.id_game = ?
+				quest.gameid = ?
 				'.$filter_by_state.'
 				'.$filter_by_score.'
 				'.$where_status.'
 				AND (quest.for_person = 0 OR quest.for_person = ?)
 			ORDER BY
-				quest.tema, quest.score ASC, quest.score
+				quest.subject, quest.score ASC, quest.score
 		';
 
 // $result['where_status'] = $where_status;
@@ -247,8 +248,8 @@ try {
 		$result['data'][] = array(
 			'questid' => $row['idquest'],
 			'score' => $row['score'],
-			'name' => base64_decode($row['name']),
-			'subject' => base64_decode($row['tema']),
+			'name' => $row['name'],
+			'subject' => $row['subject'],
 			'date_start' => $row['startdate'],
 			'date_stop' => $row['stopdate'],
 			'state' => $row['state'],

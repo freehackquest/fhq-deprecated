@@ -57,7 +57,7 @@ $doc['quests'] = array(
 					'description' => 'Identificator of quest',
 				),
         'answer' => array(
-					'type' => 'integer',
+					'type' => 'string',
 					'description' => 'Answer to quest',
 				),
         'token' => array(

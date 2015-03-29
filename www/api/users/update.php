@@ -1,5 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+header('Content-Type: application/json');
 
 $curdir = dirname(__FILE__);
 include ($curdir."/../api.lib/api.helpers.php");
@@ -8,6 +9,9 @@ include ($curdir."/../../engine/fhq.php");
 
 $security = new fhq_security();
 checkAuth($security);
+
+
+// TODO 
 /*
 $result = array(
 	'result' => 'fail',

@@ -1,5 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+header('Content-Type: application/json');
 
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
@@ -52,7 +53,7 @@ $query = '
 			LEFT JOIN 
 				userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
 			WHERE
-				quest.id_game = ?
+				quest.gameid = ?
 				AND quest.idquest = ?
 				'.$filter_by_state.'
 				'.$filter_by_score.'
@@ -95,7 +96,7 @@ try {
 		}
 
 		/*if ($status == 'current' || $status == 'completed')
-			$result['data']['text'] = base64_decode($row['text']);*/
+			$result['data']['text'] = $row['text'];*/
 	}
 	else
 	{
