@@ -1,11 +1,14 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+header('Content-Type: application/json');
 
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../../config/config.php");
 
 APIHelpers::checkAuth();
+
+// TODO only for admins
 
 $result = array(
 	'result' => 'fail',

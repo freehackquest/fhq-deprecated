@@ -1,5 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+header('Content-Type: application/json');
 
 $curdir_games_choose = dirname(__FILE__);
 include_once ($curdir_games_choose."/../api.lib/api.base.php");

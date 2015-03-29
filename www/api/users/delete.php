@@ -1,5 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+header('Content-Type: application/json');
 
 $curdir_users_delete = dirname(__FILE__);
 include_once ($curdir_users_delete."/../api.lib/api.base.php");

@@ -1,5 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+header('Content-Type: application/json');
 
 $curdir_upload_logo = dirname(__FILE__);
 include_once ($curdir_upload_logo."/../api.lib/api.base.php");
