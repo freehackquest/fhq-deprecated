@@ -49,6 +49,10 @@ class APIGame {
 		return (isset($_SESSION['game']) && isset($_SESSION['game']['id'])) ? $_SESSION['game']['id'] : 0;
 	}
 	
+	static function title() {
+		return (isset($_SESSION['game']) && isset($_SESSION['game']['title'])) ? $_SESSION['game']['title'] : 'Unknown game';
+	}
+	
 	static function score() {
 		return (isset($_SESSION['user']) && isset($_SESSION['user']['score'])) ? $_SESSION['user']['score'] : 0;
 	}

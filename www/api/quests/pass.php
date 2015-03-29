@@ -51,9 +51,12 @@ $params[] = APISecurity::userid();
 $params[] = APIGame::id();
 $params[] = intval($questid);
 
+$questname = '';
+
 $query = '
 			SELECT 
 				quest.idquest,
+				quest.name,
 				quest.answer,
 				userquest.startdate,
 				userquest.stopdate
@@ -73,6 +76,7 @@ try {
 	$stmt->execute($params);
 	if($row = $stmt->fetch())
 	{
+		$questname = base64_decode($row['name']);
 		$status = '';
 		if ($row['stopdate'] == null)
 			$status = 'open';
@@ -113,7 +117,8 @@ try {
 				APIAnswerList::movedToBackup($conn, $questid);
 
 				// add to public events
-				APIEvents::addPublicEvents($conn, "users", "User ".APISecurity::nick()." passed quest #".$questid." (new user score: ".$new_user_score.")");
+				if (!APISecurity::isAdmin())
+					APIEvents::addPublicEvents($conn, "users", 'User {'.APISecurity::nick().'} passed quest #'.$questid.' {'.$questname.'} from game #'.APIGame::id().' {'.APIGame::title().'} (new user score: '.$new_user_score.')');
 			} else {
 				APIAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, 'No');
 				APIHelpers::showerror(3106, 'Answer incorrect');
