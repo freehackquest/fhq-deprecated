@@ -67,7 +67,7 @@ try {
 	$stmt2 = $conn->prepare('
 			SELECT
 				iduser, email, role,
-				nick, logo, password,
+				nick, logo, status,
 				date_last_signup
 			FROM
 				user
@@ -80,7 +80,7 @@ try {
 			LIMIT '.$start.','.$onpage.'
 	');
 	$stmt2->execute(array($search, $search, $role, $status));
-  $i = 0;
+	$i = 0;
 	while ($row2 = $stmt2->fetch()) {
 		$userid = $row2['iduser'];
 		$result['data'][$i] = array(
@@ -90,7 +90,7 @@ try {
 			'nick' => $row2['nick'],
 			'logo' => $row2['logo'],
 			'date_last_signup' => $row2['date_last_signup'],
-			'status' => (strpos($row2['password'], 'notactivated') !== FALSE) ? 'notactivated' : 'activated',
+			'status' => $row2['status'],
 		);
     $i++;
 	}

@@ -1,4 +1,29 @@
 
+var g_userRoles = [
+		{ type: 'user', caption: 'User'},
+		{ type: 'tester',  caption: 'Tester'},
+		{ type: 'admin',  caption: 'Admin'}
+	];
+
+var g_userStatus = [
+		{ type: 'activated', caption: 'Activated'},
+		{ type: 'blocked',  caption: 'Blocked'}
+	];
+
+// the same function createComboBoxGame
+function createComboBoxUser(idelem, value, arr) {
+	var result = '<select id="' + idelem + '">';
+	for (var k in arr) {
+		result += '<option ';
+		if (arr[k].type == value)
+			result += ' selected ';
+		result += ' value="' + arr[k].type + '">';
+		result += arr[k].caption + '</option>';
+	}
+	result += '</select>';
+	return result;
+}
+
 // depricated
 function showUserProfile(user_id) {
 
@@ -64,8 +89,6 @@ function resetUsersPage() {
 
 function setUsersPage(val) {
 	document.getElementById('user_page').value = val;
-	// todo disign paginator
-	
 }
 
 function changeUserLogo(userid) {
@@ -246,8 +269,8 @@ function showUserInfo(id) {
 					content += createUserInfoRow('Change Logo:', '<input id="user_new_logo" type="text" value="' + obj.data.logo + '" > <div class="button3 ad" onclick="changeUserLogo(' + obj.data.userid + ');">Save</div>');
 					content += createUserInfoRow('Change Nick:', '<input id="user_new_nick" type="text" value="' + obj.data.nick + '" > <div class="button3 ad" onclick="changeUserNick(' + obj.data.userid + ');">Save</div> ');
 					content += createUserInfoRow('Change Password:', '<input id="user_new_password" type="password" value="" > <div class="button3 ad" onclick="changeUserPassword(' + obj.data.userid + ');">Save</div> ');
-					content += createUserInfoRow('Change Status:', '<input id="user_new_status" type="text" value="' + obj.data.status + '" > <div class="button3 ad" onclick="changeUserStatus(' + obj.data.userid + ');">Save</div> ');
-					content += createUserInfoRow('Change Role:', '<input id="user_new_role" type="text" value="' + obj.data.role + '" > <div class="button3 ad" onclick="changeUserRole(' + obj.data.userid + ');">Save</div> ');
+					content += createUserInfoRow('Change Status:', createComboBoxUser('user_new_status', obj.data.status, g_userStatus) + ' <div class="button3 ad" onclick="changeUserStatus(' + obj.data.userid + ');">Save</div> ');
+					content += createUserInfoRow('Change Role:', createComboBoxUser('user_new_role', obj.data.role, g_userRoles)  + '<div class="button3 ad" onclick="changeUserRole(' + obj.data.userid + ');">Save</div> ');
 					content += createUserInfoRow('Remove User:', '<div class="button3 ad" onclick="deleteUser(' + obj.data.userid + ');">Remove</div> ');
 				}
 
@@ -485,22 +508,12 @@ function formCreateUser() {
 	content += createUserInfoRow('Logo:', '<input type="text" id="newuser_logo" value="files/users/0.png"/>');
 	content += createUserInfoRow('E-mail:', '<input type="text" id="newuser_email" value=""/>');
 
-	var user_role = ' <select id="newuser_role">';
-	user_role += '	<option value="user">User</option>';
-	user_role += '	<option value="tester">Tester</option>';
-	user_role += '	<option value="admin">Admin</option>';
-	user_role += '</select> ';
 	
-	content += createUserInfoRow('Role:', user_role);
+	content += createUserInfoRow('Role:', createComboBoxUser('newuser_role', 'user', g_userRoles));
 	content += createUserInfoRow('Nick:', '<input type="text" id="newuser_nick" value=""/>');
 	content += createUserInfoRow('Password:', '<input type="password" id="newuser_password" value=""/>');
-	
-	var user_status = ' <select id="newuser_status">';
-	user_status += '	<option value="activated">Activated</option>';
-	user_status += '	<option value="blocked">Blocked</option>';
-	user_status += '</select> ';
 
-	content += createUserInfoRow('Status:', user_status);
+	content += createUserInfoRow('Status:', createComboBoxUser('newuser_status', 'activated', g_userStatus));
 	content += createUserInfoRow('', '<div class="button3 ad" onclick="createUser();">Create</div>');
 	
 	content += createUserInfoRow('', '<div id="newuser_errors"></div>');
@@ -532,14 +545,13 @@ function createPageUsers() {
 	user_status += '	<option value="">*</option>';
 	user_status += '	<option value="blocked">Blocked</option>';
 	user_status += '	<option value="activated">Activated</option>';
-	user_status += '	<option value="notactivated">Not Activated</option>';
 	user_status += '</select> ';
 	content += createUserInfoRow('Status:', user_status);
 	
 	var user_onpage = ' <select id="user_onpage">';
 	user_onpage += '	<option value="5">5</option>';
 	user_onpage += '	<option value="10">10</option>';
-	user_onpage += '	<option value="15">15</option>';
+	user_onpage += '	<option selected value="15">15</option>';
 	user_onpage += '	<option value="20">20</option>';
 	user_onpage += '	<option value="30">30</option>';
 	user_onpage += '	<option value="50">50</option>';
