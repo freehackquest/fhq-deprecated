@@ -108,6 +108,15 @@ function getHTMLPaging2(min,max,onpage,page, table) {
 	return pagesHtml.join(' ');
 }
 
+function hatchAnswer(answer) {
+	hatch = "";
+	for (var i = 0; i < answer.length; i++) {
+		hatch += "*";
+	}
+	return '<div answer="' + answer + '" hatch="' + hatch + '" onmouseover="this.innerHTML=this.getAttribute(\'answer\');" onmouseout="this.innerHTML=this.getAttribute(\'hatch\');">' + hatch + "</div>";
+}
+
+
 function loadAnswerList(gameid, page, onpage, table) {
 	
 	if (page == null)
@@ -179,8 +188,8 @@ function loadAnswerList(gameid, page, onpage, table) {
 						content += 'Solved ' + ans.questsolved + ' ';
 						content += '	</div></td>';
 						
-						content += '	<td align=center>' + ans.answer_try + '</td>';
-						content += '	<td align=center>' + ans.answer_real + '</td>';
+						content += '	<td align=center>' + (ans.passed == 'Yes' ? hatchAnswer(ans.answer_try) : ans.answer_try) + '</td>';
+						content += '	<td align=center>' + hatchAnswer(ans.answer_real) + '</td>';
 						content += '	<td align=center>' + ans.passed + '</td>';
 						content += '	<td align=center><div class="button3 ad" onclick="showUserInfo(' + ans.userid + ');">' + ans.userid + ', ' + ans.usernick + ', ' + ans.username + ' </div></td>';
 						
