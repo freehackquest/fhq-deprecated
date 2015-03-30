@@ -34,6 +34,7 @@ if (!APIHelpers::issetParam('nick'))
   APIHelpers::showerror(912, 'Not found parameter "nick"');
 
 $nick = APIHelpers::getParam('nick', '');
+$nick = htmlspecialchars($nick);
 
 $result['data']['nick'] = htmlspecialchars($nick);
 $result['data']['userid'] = $userid;
@@ -47,19 +48,18 @@ try {
 
 	$query = 'UPDATE user SET nick = ? WHERE iduser = ?';
 	$stmt = $conn->prepare($query);
-	if ($stmt->execute(array(htmlspecialchars($nick), $userid)))
+	if ($stmt->execute(array($nick, $userid)))
 	{
 		$result['result'] = 'ok';
-
 		if ($userid == APISecurity::userid()) {
-			APISecurity::setNick(htmlspecialchars($nick));
+			APISecurity::setNick($nick);
 		}
 
 		// add to public events
 		if ($userid != APISecurity::userid())
-			APIEvents::addPublicEvents($conn, 'users', 'Admin changed nick for user #'.$userid.' from {'.htmlspecialchars($oldnick).'} to {'.htmlspecialchars($nick).'} ');
+			APIEvents::addPublicEvents($conn, 'users', 'Admin changed nick for user #'.$userid.' from {'.htmlspecialchars($oldnick).'} to {'.$nick.'} ');
 		else
-			APIEvents::addPublicEvents($conn, 'users', 'User #'.$userid.' changed nick from {'.htmlspecialchars($oldnick).'} to {'.htmlspecialchars($nick).'} ');
+			APIEvents::addPublicEvents($conn, 'users', 'User #'.$userid.' changed nick from {'.htmlspecialchars($oldnick).'} to {'.$nick.'} ');
 	}
 	else
 		$result['result'] = 'fail';
