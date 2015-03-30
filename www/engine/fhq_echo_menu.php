@@ -77,7 +77,7 @@ echo '
 		'name' => 'rules',
 		'html' => '
 			<div class="fhq_btn_menu" data-hint="Rules" onclick="loadGameRules('.$gameid.');">
-				<img width="50px" src="templates/'.$template.'/images/menu_btn_rules.png"/><br>
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_rules.png"/><br>
 			</div>
 		',
 		'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
@@ -118,7 +118,7 @@ echo '
 		'name' => 'stats',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="Statistics" onclick="loadStatistics('.$gameid.');">
-				<img width="50px" src="templates/'.$template.'/images/menu/stats.png"/><br>
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/stats.png"/><br>
 			</div>
 		',
 		'show' => ($game_type == 'jeopardy'),
@@ -216,7 +216,7 @@ echo '
 		'name' => 'about',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="About" onclick="load_content_page(\'about\');">
-				<img width="50px" src="templates/'.$template.'/images/menu/about.png"/><br>
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/about.png"/><br>
 			</div>
 		',
 		'show' => true,
@@ -226,7 +226,7 @@ echo '
 		'name' => 'logout',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="Logout" onclick="logout();">
-				<img width="50px" src="templates/'.$template.'/images/menu_btn_logout.png"/><br>
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_logout.png"/><br>
 			</div>
 		',
 		'show' => true,
