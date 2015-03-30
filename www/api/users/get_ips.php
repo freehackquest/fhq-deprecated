@@ -16,19 +16,19 @@ $result = array(
 $result['result'] = 'ok';
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(900, 'Access only for admin');
+	APIHelpers::showerror(1143, 'Access only for admin');
 
 // TODO: added pagginator
 $conn = APIHelpers::createConnection($config);
 
 
 if (!APIHelpers::issetParam('userid'))
-  APIHelpers::showerror(901, 'Not found parameter userid');
+  APIHelpers::showerror(1144, 'Not found parameter userid');
 
 $userid = APIHelpers::getParam('userid', 0);
 
 if (!is_numeric($userid))
-	APIHelpers::showerror(902, 'Error 902: incorrect userid');
+	APIHelpers::showerror(1145, 'incorrect userid');
 
 include_once(dirname(__FILE__).'/../api.lib/SxGeo.php');
 $SxGeo = new SxGeo(dirname(__FILE__).'/../api.lib/SxGeoCity.dat', SXGEO_BATCH | SXGEO_MEMORY);
@@ -66,7 +66,7 @@ try {
 	}
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
-	showerror(822, 'Error 822: ' + $e->getMessage());
+	APIHelpers::showerror(1146, $e->getMessage());
 }
 unset($SxGeo);
 echo json_encode($result);

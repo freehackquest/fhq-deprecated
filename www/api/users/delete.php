@@ -16,15 +16,15 @@ $result = array(
 $conn = APIHelpers::createConnection($config);
 
 if (!APISecurity::isAdmin()) 
-	APIHelpers::showerror(912, 'only for admin');
+	APIHelpers::showerror(1107, 'only for admin');
 
 if (!APIHelpers::issetParam('userid'))
-  APIHelpers::showerror(889, 'Error 889: not found parameter "userid"');
+  APIHelpers::showerror(1108, 'not found parameter "userid"');
 
 $userid = APIHelpers::getParam('userid', 0);
 
 if (!is_numeric($userid))
-  APIHelpers::showerror(885, 'userid must be numeric');
+  APIHelpers::showerror(1109, 'userid must be numeric');
 
 $nick = '';
 // check user
@@ -34,10 +34,10 @@ try {
 	if ($row = $stmt->fetch()) {
 		$nick = $row['nick'];
 	} else {
-		APIHelpers::showerror(822, "User with id ".$userid.' did not found' );
+		APIHelpers::showerror(1111, "User with id ".$userid.' did not found' );
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(822, $e->getMessage());
+	APIHelpers::showerror(1110, $e->getMessage());
 }
 
 
@@ -47,7 +47,7 @@ try {
  	$conn->prepare('DELETE FROM users_games WHERE userid = ?')->execute($params);
  	$result['result'] = 'ok';
 } catch(PDOException $e) {
- 	APIHelpers::showerror(882, $e->getMessage());
+ 	APIHelpers::showerror(1147, $e->getMessage());
 }
 
 APIEvents::addPublicEvents($conn, 'users', 'User #'.$userid.' {'.htmlspecialchars($nick).'} was removed by admin!');

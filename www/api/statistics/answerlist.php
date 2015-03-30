@@ -15,7 +15,7 @@ include_once ($curdir_statistics_list."/../api.lib/loadtoken.php");
 APIHelpers::checkAuth();
 
 if(!APISecurity::isAdmin())
-  APIHelpers::showerror(746, 'access denie. you must be admin.');
+  APIHelpers::showerror(1068, 'access denie. you must be admin.');
 
 $gameid = APIHelpers::getParam("gameid", APIGame::id());
 
@@ -29,27 +29,27 @@ $result = array(
 $result['result'] = 'ok';
 
 /*if ($gameid == 0)
-	APIHelpers::showerror(926, "Game was not selected.");
+	APIHelpers::showerror(1069, "Game was not selected.");
 
 if (!is_numeric($gameid))
-	APIHelpers::showerror(988, 'parameter "gameid" must be numeric');*/
+	APIHelpers::showerror(1070, 'parameter "gameid" must be numeric');*/
 
 // $result['data']['gameid'] = $gameid;
 
 $table = APIHelpers::getParam('table', 'active');
 if ($table != 'active' && $table != 'backup')
-	APIHelpers::showerror(988, 'parameter "active" must be "current" or "backup"');
+	APIHelpers::showerror(1071, 'parameter "active" must be "current" or "backup"');
 $result['data']['table'] = $table;
 $table = $table == 'active' ? 'tryanswer' : 'tryanswer_backup';
 
 $page = APIHelpers::getParam('page', 0);
 if (!is_numeric($page))
-	APIHelpers::showerror(988, 'parameter "page" must be numeric');
+	APIHelpers::showerror(1072, 'parameter "page" must be numeric');
 $result['data']['page'] = intval($page);
 
 $onpage = APIHelpers::getParam('onpage', 25);
 if (!is_numeric($onpage))
-	APIHelpers::showerror(988, 'parameter "onpage" must be numeric');
+	APIHelpers::showerror(1073, 'parameter "onpage" must be numeric');
 $result['data']['onpage'] = intval($onpage);
 
 $conn = APIHelpers::createConnection($config);
@@ -70,7 +70,7 @@ try {
 		$result['data']['count'] = intval($row['cnt']);
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(922, $e->getMessage());
+	APIHelpers::showerror(1074, $e->getMessage());
 }
 
 try {
@@ -123,7 +123,7 @@ try {
 		);
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(922, $e->getMessage());
+	APIHelpers::showerror(1075, $e->getMessage());
 }
 
 // not needed here

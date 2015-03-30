@@ -10,18 +10,18 @@ include_once ($curdir."/../../config/config.php");
 APIHelpers::checkAuth();
 
 if (!APISecurity::isAdmin()) 
-	APIHelpers::showerror(912, 'only for admin');
+	APIHelpers::showerror(1120, 'only for admin');
 
 if (!APIHelpers::issetParam('userid'))
-  APIHelpers::showerror(912, 'Not found parameter "userid"');
+  APIHelpers::showerror(1121, 'Not found parameter "userid"');
 
 $userid = APIHelpers::getParam('userid', '');
 
 if (!is_numeric($userid))
-	APIHelpers::showerror(912, 'userid must be numeric');
+	APIHelpers::showerror(1122, 'userid must be numeric');
 
 if ($userid == APISecurity::userid())
-	APIHelpers::showerror(912, 'Please use another function for change your password');
+	APIHelpers::showerror(1123, 'Please use another function for change your password');
 
 $result = array(
 	'result' => 'fail',
@@ -31,11 +31,11 @@ $result = array(
 $conn = APIHelpers::createConnection($config);
 
 if (!APIHelpers::issetParam('password'))
-  APIHelpers::showerror(912, 'Not found parameter "password"');
+  APIHelpers::showerror(1124, 'Not found parameter "password"');
 
 // TODO must be get email by iduser!!!!  
 if (!APIHelpers::issetParam('email'))
-  APIHelpers::showerror(912, 'Not found parameter "email"');
+  APIHelpers::showerror(1125, 'Not found parameter "email"');
 
 $password = APIHelpers::getParam('password', '');
 $email = APIHelpers::getParam('email', '');
@@ -47,7 +47,7 @@ $result['data']['email'] = $email;
 $result['data']['userid'] = $userid;
 
 if (strlen($password) <= 3)
-  APIHelpers::showerror(912, '"password" must be more then 3 characters');
+  APIHelpers::showerror(1126, '"password" must be more then 3 characters');
 
 try {
 	$query = 'UPDATE user SET pass = ? WHERE iduser = ? AND email = ?';
@@ -57,7 +57,7 @@ try {
 	else
 		$result['result'] = 'fail';
 } catch(PDOException $e) {
-	APIHelpers::showerror(911, $e->getMessage());
+	APIHelpers::showerror(1127, $e->getMessage());
 }
 
 echo json_encode($result);

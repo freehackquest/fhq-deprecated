@@ -65,7 +65,7 @@ try {
 	$result['permissions']['insert'] = APISecurity::isAdmin();
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
-	APIHelpers::showerror(702, $e->getMessage());
+	APIHelpers::showerror(1193, $e->getMessage());
 }
 
 include_once ($curdir."/../api.lib/savetoken.php");

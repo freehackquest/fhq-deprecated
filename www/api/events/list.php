@@ -21,7 +21,7 @@ $where = [];
 $id = APIHelpers::getParam('id', -1);
 if ($id != -1) {
 	if (!is_numeric($id))
-		APIHelpers::showerror(4202, 'Id must be integer');
+		APIHelpers::showerror(1228, 'Id must be integer');
 	$params[] = $id;
 	$where[] = 'id > ?';
 }
@@ -63,7 +63,7 @@ try {
 	}
 	$result['data']['new_id'] = $new_id;
 } catch(PDOException $e) {
-	APIHelpers::showerror(4203, $e->getMessage());
+	APIHelpers::showerror(1229, $e->getMessage());
 }
 
 echo json_encode($result);

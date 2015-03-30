@@ -27,7 +27,7 @@ try {
 		$result['data'][] = $row['type'];
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(702, $e->getMessage());
+	APIHelpers::showerror(1194, $e->getMessage());
 }
 
 echo json_encode($result);

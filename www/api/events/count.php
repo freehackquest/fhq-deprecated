@@ -16,14 +16,14 @@ $result = array(
 $conn = APIHelpers::createConnection($config);
 
 if (!APIHelpers::issetParam('id'))
-  APIHelpers::showerror(4101, 'Not found parameter "id"');
+  APIHelpers::showerror(1225, 'Not found parameter "id"');
 
 $type = APIHelpers::getParam('type', '');
 
 $id = APIHelpers::getParam('id', 0);
 
 if (!is_numeric($id))
-  APIHelpers::showerror(4102, 'id must be integer');
+  APIHelpers::showerror(1226, 'id must be integer');
 
 try {
 	$params = [];
@@ -44,7 +44,7 @@ try {
 		$result['result'] = 'ok';		
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(4103, $e->getMessage());
+	APIHelpers::showerror(1227, $e->getMessage());
 }
 
 echo json_encode($result);

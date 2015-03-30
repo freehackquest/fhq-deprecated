@@ -9,18 +9,18 @@ include_once ($curdir_upload_logo."/../../config/config.php");
 APIHelpers::checkAuth();
 
 if (!APIHelpers::issetParam('gameid'))
-	APIHelpers::showerror(912, 'Not found parameter gameid');
+	APIHelpers::showerror(1051, 'Not found parameter gameid');
 
 $gameid = APIHelpers::getParam('gameid', 0);
 // $userid = intval($userid);
 if (!is_numeric($gameid))
-	APIHelpers::showerror(912, 'gameid must be numeric');
+	APIHelpers::showerror(1052, 'gameid must be numeric');
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(912, 'This method only for admin');
+	APIHelpers::showerror(1053, 'This method only for admin');
 
 if (count($_FILES) <= 0)
-	APIHelpers::showerror(3010, 'Not found files '.count($_FILES));
+	APIHelpers::showerror(1054, 'Not found files '.count($_FILES));
 
 $result = array(
 	'result' => 'fail',
@@ -46,11 +46,11 @@ for($i = 0; $i < count($keys); $i++)
 		
 		move_uploaded_file($_FILES[$filename]["tmp_name"],$full_filename);
 		if(!file_exists($full_filename))
-			APIHelpers::showerror(3010, 'File was not loaded');
+			APIHelpers::showerror(1055, 'File was not loaded');
 		else {
 			if(mime_content_type($full_filename) != 'image/png') {
 				unlink($full_filename);
-				APIHelpers::showerror(3010, 'File are not png-image');
+				APIHelpers::showerror(1056, 'File are not png-image');
 			}
 				
 			try {
@@ -76,7 +76,7 @@ for($i = 0; $i < count($keys); $i++)
 				unlink($full_filename);
 			} catch(Exception $e) {
 				unlink($full_filename);
-				APIHelpers::showerror(3011, 'Problem with convert image: '.$e->getMessage());
+				APIHelpers::showerror(1057, 'Problem with convert image: '.$e->getMessage());
 			}
 		}
 	}
@@ -93,7 +93,7 @@ try {
 	} else
 		$result['result'] = 'fail';
 } catch(PDOException $e) {
-	APIHelpers::showerror(3012, $e->getMessage());
+	APIHelpers::showerror(1058, $e->getMessage());
 }
 
 echo json_encode($result);

@@ -25,7 +25,7 @@ class APISecurity {
 				return true;
 			}
 		// } catch(PDOException $e) {
-			// APIHelpers::showerror(103, $e->getMessage());
+			// APIHelpers::showerror(1201, $e->getMessage());
 		// }
 		return false;
 	}
@@ -121,7 +121,7 @@ class APISecurity {
 			$stmt_dls = $conn->prepare('UPDATE user SET date_last_signup = NOW() WHERE iduser = ?');
 			$stmt_dls->execute(array(APISecurity::iduser()));
 		} catch(PDOException $e) {
-			showerror(103, $e->getMessage());
+			APIHelpers::showerror(1198, $e->getMessage());
 		}
 	}
 	
@@ -137,7 +137,7 @@ class APISecurity {
 			$stmt = $conn->prepare($query);
 			$stmt->execute($params);
 		} catch(PDOException $e) {
-			showerror(103, $e->getMessage());
+			APIHelpers::showerror(1196, $e->getMessage());
 		}
 	}
 
@@ -153,7 +153,7 @@ class APISecurity {
 			if ($row = $stmt->fetch())
 				$_SESSION = json_decode($row['data'],true);
 		} catch(PDOException $e) {
-			APIHelpers::showerror(103, $e->getMessage());
+			APIHelpers::showerror(1197, $e->getMessage());
 		}
 	}
 	
@@ -168,7 +168,7 @@ class APISecurity {
 			$stmt = $conn->prepare($query);
 			$stmt->execute($params);
 		// } catch(PDOException $e) {
-//			APIHelpers::showerror(103, $e->getMessage());
+//			APIHelpers::showerror(1200, $e->getMessage());
 		//}
 	}
 	
@@ -181,7 +181,7 @@ class APISecurity {
 			$stmt = $conn->prepare($query);
 			$stmt->execute($params);
 		} catch(PDOException $e) {
-			APIHelpers::showerror(103, $e->getMessage());
+			APIHelpers::showerror(1199, $e->getMessage());
 		}
 	}
 }

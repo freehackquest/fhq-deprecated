@@ -16,7 +16,7 @@ APIHelpers::checkAuth();
 $message = '';
 
 if (!APIGame::checkGameDates($message))
-	APIHelpers::showerror(917, $message);
+	APIHelpers::showerror(1094, $message);
 
 $result = array(
 	'result' => 'fail',
@@ -26,7 +26,7 @@ $result = array(
 $result['result'] = 'ok';
 
 if (APIGame::id() == 0)
-	APIHelpers::showerror(926, "Game was not selected.");
+	APIHelpers::showerror(1095, "Game was not selected.");
 
 // TODO: must be added filters
 $conn = APIHelpers::createConnection($config);
@@ -68,7 +68,7 @@ try {
 	if($row = $stmt->fetch())
 		$result['status']['summary'] = $row['cnt'];
 } catch(PDOException $e) {
-	APIHelpers::showerror(922, $e->getMessage());
+	APIHelpers::showerror(1096, $e->getMessage());
 }
 
 // calculate open tasks
@@ -93,7 +93,7 @@ try {
 	if($row = $stmt1->fetch())
 		$result['status']['open'] = $row['cnt'];
 } catch(PDOException $e) {
-	APIHelpers::showerror(920, $e->getMessage());
+	APIHelpers::showerror(1097, $e->getMessage());
 }
 
 // calculate current tasks
@@ -117,7 +117,7 @@ try {
 	if($row = $stmt->fetch())
 		$result['status']['current'] = $row['cnt'];
 } catch(PDOException $e) {
-	APIHelpers::showerror(921, $e->getMessage());
+	APIHelpers::showerror(1098, $e->getMessage());
 }
 
 // calculate completed tasks
@@ -141,7 +141,7 @@ try {
 	if($row = $stmt->fetch())
 		$result['status']['completed'] = $row['cnt'];
 } catch(PDOException $e) {
-	APIHelpers::showerror(922, $e->getMessage());
+	APIHelpers::showerror(1099, $e->getMessage());
 }
 
 // calculate count of types
@@ -166,7 +166,7 @@ try {
 		$result['subjects'][$row['subject']] = $row['cnt'];
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(922, $e->getMessage());
+	APIHelpers::showerror(1100, $e->getMessage());
 }
 
 /*$userid = APIHelpers::getParam('userid', 0);*/
@@ -261,7 +261,7 @@ try {
 	$result['permissions']['insert'] = APISecurity::isAdmin();
 	
 } catch(PDOException $e) {
-	APIHelpers::showerror(822, $e->getMessage());
+	APIHelpers::showerror(1101, $e->getMessage());
 }
 
 include_once ($curdir."/../api.lib/savetoken.php");

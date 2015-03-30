@@ -12,7 +12,7 @@ APIHelpers::checkAuth();
 $message = '';
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(927, "This function allowed only for admin");
+	APIHelpers::showerror(1091, "This function allowed only for admin");
 
 $result = array(
 	'result' => 'fail',
@@ -60,7 +60,7 @@ try {
 		$result['found'] = $row['cnt'];
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(922, $e->getMessage());
+	APIHelpers::showerror(1092, $e->getMessage());
 }
 
 try {
@@ -95,7 +95,7 @@ try {
     $i++;
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(922, $e->getMessage());
+	APIHelpers::showerror(1093, $e->getMessage());
 }
 
 echo json_encode($result);

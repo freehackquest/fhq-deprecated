@@ -23,12 +23,12 @@ $country = '';
 $city = '';
 
 if (!APIHelpers::issetParam('id'))
-  APIHelpers::showerror(1501, 'Not found parameter "id"');
+  APIHelpers::showerror(1202, 'Not found parameter "id"');
 
 $id = APIHelpers::getParam('id', 0);
 
 if (!is_numeric($id))
-  APIHelpers::showerror(1502, 'id must be integer');
+  APIHelpers::showerror(1203, 'id must be integer');
 
 try {
 	$_SESSION['user']['profile']['events_last_id'] = $id;
@@ -39,7 +39,7 @@ try {
 
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
-	APIHelpers::showerror(1503, $e->getMessage());
+	APIHelpers::showerror(1204, $e->getMessage());
 }
 
 echo json_encode($result);

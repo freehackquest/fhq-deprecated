@@ -19,7 +19,7 @@ $result = array(
 
 /*$errmsg = "";
 if (!checkGameDates($security, &$message))
-	showerror(709, 'Error 709: '.$errmsg);*/
+	APIHelpers::showerror(1175, $errmsg);*/
 
 $conn = APIHelpers::createConnection($config);
 
@@ -27,7 +27,7 @@ if (APIHelpers::issetParam('id')) {
 	$game_id = APIHelpers::getParam('id', 0);
 
 	if (!is_numeric($game_id))
-		APIHelpers::showerror(705, 'Error 705: incorrect id');
+		APIHelpers::showerror(1176, 'Error 705: incorrect id');
 
 	// try {
 		$query = '
@@ -52,7 +52,7 @@ if (APIHelpers::issetParam('id')) {
 		}
 		else
 		{
-			APIHelpers::showerror(702, 'Game with id='.$game_id.' are not exists');
+			APIHelpers::showerror(1178, 'Game with id='.$game_id.' are not exists');
 		}
 
 		// loading score
@@ -92,10 +92,10 @@ if (APIHelpers::issetParam('id')) {
 			$result['user']['score'] = $score;
 		}	
 	// } catch(PDOException $e) {
-//		APIHelpers::showerror(712, $e->getMessage());
+//		APIHelpers::showerror(1179, $e->getMessage());
 //	}
 } else {
-	APIHelpers::showerror(713, 'not found parameter id');
+	APIHelpers::showerror(1180, 'not found parameter id');
 }
 
 include_once ($curdir."/../api.lib/savetoken.php");

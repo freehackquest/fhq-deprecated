@@ -19,12 +19,12 @@ $params = [];
 $where = [];
 
 if (!APIHelpers::issetParam('id'))
-  APIHelpers::showerror(4402, 'not found parameter id');
+  APIHelpers::showerror(1220, 'not found parameter id');
 
 $id = APIHelpers::getParam('id', 0);
 
 if (!is_numeric($id))
-  APIHelpers::showerror(4403, 'incorrect id');
+  APIHelpers::showerror(1221, 'incorrect id');
 
 $conn = APIHelpers::createConnection($config);
 
@@ -39,10 +39,10 @@ try {
 		$result['data']['message'] = htmlspecialchars($row['message']);
 		
 	} else {
-		APIHelpers::showerror(4403, 'not found event with this id');
+		APIHelpers::showerror(1222, 'not found event with this id');
 	}
 } catch(PDOException $e) {
- 	APIHelpers::showerror(4404, $e->getMessage());
+ 	APIHelpers::showerror(1223, $e->getMessage());
 }
 
 echo json_encode($result);

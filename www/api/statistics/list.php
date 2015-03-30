@@ -26,14 +26,14 @@ $result = array(
 $result['result'] = 'ok';
 
 if ($gameid == 0)
-	APIHelpers::showerror(926, "Game was not selected.");
+	APIHelpers::showerror(1076, "Game was not selected.");
 
 $conn = APIHelpers::createConnection($config);
 
 $result['data']['gameid'] = $gameid;
 
 if (!is_numeric($gameid))
-	APIHelpers::showerror(988, 'parameter "gameid" must be numeric');
+	APIHelpers::showerror(1077, 'parameter "gameid" must be numeric');
 
 // count quests
 try {
@@ -53,7 +53,7 @@ try {
 		$result['data']['count'] = $row['cnt'];
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(922, $e->getMessage());
+	APIHelpers::showerror(1078, $e->getMessage());
 }
 
 
@@ -77,7 +77,7 @@ function getCountStatBy($conn, $table, $questid, $passed)
 			$result = $row['cnt'];
 		}
 	} catch(PDOException $e) {
-		APIHelpers::showerror(922, $e->getMessage());
+		APIHelpers::showerror(1079, $e->getMessage());
 	}
 	return $result;
 }
@@ -151,7 +151,7 @@ try {
 		}
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(922, $e->getMessage());
+	APIHelpers::showerror(1102, $e->getMessage());
 }
 
 // not needed here
