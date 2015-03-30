@@ -156,7 +156,7 @@ echo '
 	$arrmenu[] = array(
 		'name' => 'answerlist',
 		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Answer List" onclick="loadAnswerList();">
+			<div class="fhq_btn_menu hint--bottom" data-hint="Answer List" onclick="createPageAnswerList(); updateAnswerList();">
 				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/answerlist.png"/>
 			</div>
 		',

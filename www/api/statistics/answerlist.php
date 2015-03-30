@@ -17,7 +17,7 @@ APIHelpers::checkAuth();
 if(!APISecurity::isAdmin())
   APIHelpers::showerror(1068, 'access denie. you must be admin.');
 
-$gameid = APIHelpers::getParam("gameid", APIGame::id());
+// $gameid = APIHelpers::getParam("gameid", APIGame::id());
 
 // todo check integer value
 
@@ -36,21 +36,90 @@ if (!is_numeric($gameid))
 
 // $result['data']['gameid'] = $gameid;
 
+// table
 $table = APIHelpers::getParam('table', 'active');
 if ($table != 'active' && $table != 'backup')
 	APIHelpers::showerror(1071, 'parameter "active" must be "current" or "backup"');
 $result['data']['table'] = $table;
 $table = $table == 'active' ? 'tryanswer' : 'tryanswer_backup';
 
+// page
 $page = APIHelpers::getParam('page', 0);
 if (!is_numeric($page))
 	APIHelpers::showerror(1072, 'parameter "page" must be numeric');
 $result['data']['page'] = intval($page);
 
+// onpage
 $onpage = APIHelpers::getParam('onpage', 25);
 if (!is_numeric($onpage))
 	APIHelpers::showerror(1073, 'parameter "onpage" must be numeric');
 $result['data']['onpage'] = intval($onpage);
+
+
+$filter_where = [];
+$filter_values = [];
+
+// userid
+$userid = APIHelpers::getParam('userid', '');
+if (is_numeric($userid)) {
+	$filter_where[] = 'u.iduser = ?';
+	$filter_values[] = intval($userid);
+}
+
+// user
+$user = APIHelpers::getParam('user', '');
+if ($user != '') {
+	$filter_where[] = '(u.email like ? OR u.nick like ?)';
+	$filter_values[] = '%'.$user.'%';
+	$filter_values[] = '%'.$user.'%';
+}
+
+// gameid
+$gameid = APIHelpers::getParam('gameid', '');
+if (is_numeric($gameid)) {
+	$filter_where[] = '(g.id = ?)';
+	$filter_values[] = intval($gameid);
+}
+
+// gamename
+$gamename = APIHelpers::getParam('gamename', '');
+if ($gamename != '') {
+	$filter_where[] = '(g.title like ?)';
+	$filter_values[] = '%'.$gamename.'%';
+}
+
+// questid
+$questid = APIHelpers::getParam('questid', '');
+if (is_numeric($questid)) {
+	$filter_where[] = '(q.idquest = ?)';
+	$filter_values[] = intval($questid);
+}
+
+// questname
+$questname = APIHelpers::getParam('questname', '');
+if ($questname != '') {
+	$filter_where[] = '(q.name like ?)';
+	$filter_values[] = '%'.$questname.'%';
+}
+
+// questsubject
+$questsubject = APIHelpers::getParam('questsubject', '');
+if ($questsubject != '') {
+	$filter_where[] = 'q.subject = ?';
+	$filter_values[] = $questsubject;
+}
+
+// passed
+$passed = APIHelpers::getParam('passed', '');
+if ($passed != '') {
+	$filter_where[] = 'ta.passed = ?';
+	$filter_values[] = $passed;
+}
+
+$where = implode(' AND ', $filter_where);
+if ($where != '') {
+	$where = ' WHERE '.$where;
+}
 
 $conn = APIHelpers::createConnection($config);
 
@@ -64,8 +133,9 @@ try {
 		INNER JOIN user u ON u.iduser = ta.iduser
 		INNER JOIN quest q ON q.idquest = ta.idquest
 		INNER JOIN games g ON g.id = q.gameid
+		'.$where.'
 	');
-	$stmt->execute();
+	$stmt->execute($filter_values);
 	if($row = $stmt->fetch()) {
 		$result['data']['count'] = intval($row['cnt']);
 	}
@@ -95,12 +165,12 @@ try {
 		INNER JOIN user u ON u.iduser = ta.iduser
 		INNER JOIN quest q ON q.idquest = ta.idquest
 		INNER JOIN games g ON g.id = q.gameid
+		'.$where.'
 		ORDER BY 
 			datetime_try DESC
-
 		LIMIT '.($page*$onpage).','.$onpage.'
 	');
-	$stmt->execute();
+	$stmt->execute($filter_values);
 	$result['data']['answers'] = array();
 	$id = -1;
 	while ($row = $stmt->fetch()) {

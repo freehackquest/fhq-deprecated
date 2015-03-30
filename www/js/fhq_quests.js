@@ -280,18 +280,18 @@ function createComboBoxQuestState(idelem, value) {
 }
 
 var g_questTypes = [
-		{ type: 'hashes', caption: 'Hashes'},
-		{ type: 'stego',  caption: 'Stego'},
-		{ type: 'reverse', caption: 'Reverse'},
-		{ type: 'recon', caption: 'Recon'},
-		{ type: 'trivia', caption: 'Trivia'},
-		{ type: 'crypto', caption: 'Crypto'},
-		{ type: 'forensics', caption: 'Forensics'},
-		{ type: 'network', caption: 'Network'},
-		{ type: 'web', caption: 'Web'},
-		{ type: 'admin', caption: 'Admin'},
-		{ type: 'enjoy', caption: 'Enjoy'}
-	];
+	{ type: 'hashes', caption: 'Hashes'},
+	{ type: 'stego',  caption: 'Stego'},
+	{ type: 'reverse', caption: 'Reverse'},
+	{ type: 'recon', caption: 'Recon'},
+	{ type: 'trivia', caption: 'Trivia'},
+	{ type: 'crypto', caption: 'Crypto'},
+	{ type: 'forensics', caption: 'Forensics'},
+	{ type: 'network', caption: 'Network'},
+	{ type: 'web', caption: 'Web'},
+	{ type: 'admin', caption: 'Admin'},
+	{ type: 'enjoy', caption: 'Enjoy'}
+];
 
 function createComboBoxQuestSubject(idelem, value) {
 	var result = '<select id="' + idelem + '">';

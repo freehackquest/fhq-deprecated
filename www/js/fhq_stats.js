@@ -53,7 +53,8 @@ function loadStatistics(gameid) {
 	);	
 }
 
-function getHTMLPaging2(min,max,onpage,page, table) {
+// this same function to getHTMLPaging1
+function getHTMLPaging2(min,max,onpage,page) {
 	if (min == max || page > max || page < min )
 		return " Paging Error ";
 	
@@ -101,10 +102,9 @@ function getHTMLPaging2(min,max,onpage,page, table) {
 		} else if (pagesInt[i] == page) {
 			pagesHtml.push('<div class="selected_user_page">[' + (pagesInt[i]+1) + ']</div>');
 		} else {
-			pagesHtml.push('<div class="button3 ad" onclick="loadAnswerList(null, ' + pagesInt[i] + ', ' + onpage + ', \'' + table + '\'); updateUsers();">[' + (pagesInt[i]+1) + ']</div>');
+			pagesHtml.push('<div class="button3 ad" onclick="setPageAnswerList(' + pagesInt[i] + '); updateAnswerList();">[' + (pagesInt[i]+1) + ']</div>');
 		}
 	}
-
 	return pagesHtml.join(' ');
 }
 
@@ -116,27 +116,108 @@ function hatchAnswer(answer) {
 	return '<div answer="' + answer + '" hatch="' + hatch + '" onmouseover="this.innerHTML=this.getAttribute(\'answer\');" onmouseout="this.innerHTML=this.getAttribute(\'hatch\');">' + hatch + "</div>";
 }
 
+var g_answerlistOnPage = [
+	{ type: '5', caption: '5'},
+	{ type: '10', caption: '10'},
+	{ type: '15', caption: '15'},
+	{ type: '20', caption: '20'},
+	{ type: '25', caption: '25'},
+	{ type: '30', caption: '30'},
+	{ type: '50', caption: '50'}
+];
 
-function loadAnswerList(gameid, page, onpage, table) {
+var g_answerlistTable = [
+	{ type: 'active', caption: 'Active'},
+	{ type: 'backup', caption: 'Backup'}
+];
+
+var g_answerlistPassed = [
+	{ type: '', caption: '*'},
+	{ type: 'Yes', caption: 'Yes'},
+	{ type: 'No', caption: 'No'},
+];
+
+var g_answerlistQuestSubjects = [
+	{ type: '', caption: '*'},
+	{ type: 'hashes', caption: 'Hashes'},
+	{ type: 'stego',  caption: 'Stego'},
+	{ type: 'reverse', caption: 'Reverse'},
+	{ type: 'recon', caption: 'Recon'},
+	{ type: 'trivia', caption: 'Trivia'},
+	{ type: 'crypto', caption: 'Crypto'},
+	{ type: 'forensics', caption: 'Forensics'},
+	{ type: 'network', caption: 'Network'},
+	{ type: 'web', caption: 'Web'},
+	{ type: 'admin', caption: 'Admin'},
+	{ type: 'enjoy', caption: 'Enjoy'}
+];
+
+// the same function createComboBoxGame
+function createComboBoxAnswerList(idelem, value, arr) {
+	var result = '<select id="' + idelem + '">';
+	for (var k in arr) {
+		result += '<option ';
+		if (arr[k].type == value)
+			result += ' selected ';
+		result += ' value="' + arr[k].type + '">';
+		result += arr[k].caption + '</option>';
+	}
+	result += '</select>';
+	return result;
+}
+
+function createPageAnswerList() {
+	var cp = document.getElementById('content_page');
+	cp.innerHTML = '';
+
+	var content = '';
+	var onkeydown_ = 'onkeydown="if (event.keyCode == 13) {resetPageAnswerList(); updateAnswerList();};"';
+	content += '<div class="user_info_table">';
+	content += createUserInfoRow('UserID:', '<input type="text" id="answerlist_userid" value="" ' + onkeydown_ + '/>');
+	content += createUserInfoRow('E-mail or Nick:', '<input type="text" id="answerlist_user" value="" ' + onkeydown_ + '/>');
+	content += createUserInfoRow('GameID:', '<input type="text" id="answerlist_gameid" value="" ' + onkeydown_ + '/>');
+	content += createUserInfoRow('Game Name:', '<input type="text" id="answerlist_gamename" value="" ' + onkeydown_ + '/>');
+	content += createUserInfoRow('Quest ID:', '<input type="text" id="answerlist_questid" value="" ' + onkeydown_ + '/>');
+	content += createUserInfoRow('Quest Name:', '<input type="text" id="answerlist_questname" value="" ' + onkeydown_ + '/>');
+	content += createUserInfoRow('Quest Subject:', createComboBoxAnswerList('answerlist_questsubject', '', g_answerlistQuestSubjects));
+	content += createUserInfoRow('Passed:', createComboBoxAnswerList('answerlist_passed', '', g_answerlistPassed));
+	content += createUserInfoRow('Table:', createComboBoxAnswerList('answerlist_table', 'active', g_answerlistTable));
+	content += createUserInfoRow('On Page:', createComboBoxAnswerList('answerlist_onpage', '10', g_answerlistOnPage));
+	content += createUserInfoRow('', '<div class="button3 ad" onclick="resetPageAnswerList(); updateAnswerList();">Update</div>');
+	content += createUserInfoRow_Skip();
+	content += createUserInfoRow('Found:', '<font id="answerlist_found">0</font>');
+	content += createUserInfoRow_Skip();
+	content += '</div><hr>'; // user_info_table
+	content += '<input type="hidden" id="answerlist_page" value="0"/>'	
+	content += '<div id="answerList"></div>';
+	cp.innerHTML = content;
+}
+
+function resetPageAnswerList() {
+	document.getElementById('answerlist_page').value = 0;
+}
+
+function setPageAnswerList(val) {
+	document.getElementById('answerlist_page').value = val;
+}
+
+function updateAnswerList() {
+
+	var al = document.getElementById("answerList");
+	al.innerHTML = "Loading...";
 	
-	if (page == null)
-		page = 0;
-		
-	if (onpage == null)
-		onpage = 10;
-	
-	if (table == null)
-		table = 'active';
-		
 	var params = {};
-	// params.gameid = gameid;
-	params.page = page;
-	params.onpage = onpage;
-	params.table = table;
-
-	var el = document.getElementById("content_page");
-	el.innerHTML = "Loading...";
-
+	params.userid = document.getElementById('answerlist_userid').value;
+	params.username = document.getElementById('answerlist_user').value;
+	params.gameid = document.getElementById('answerlist_gameid').value;
+	params.gamename = document.getElementById('answerlist_gamename').value;
+	params.questid = document.getElementById('answerlist_questid').value;
+	params.questname = document.getElementById('answerlist_questname').value;
+	params.questsubject = document.getElementById('answerlist_questsubject').value;
+	params.passed = document.getElementById('answerlist_passed').value;
+	params.table = document.getElementById('answerlist_table').value;
+	params.page = document.getElementById('answerlist_page').value;
+	params.onpage = document.getElementById('answerlist_onpage').value;
 	send_request_post(
 		'api/statistics/answerlist.php',
 		createUrlFromObj(params),
@@ -144,13 +225,14 @@ function loadAnswerList(gameid, page, onpage, table) {
 			if (obj.result == "fail") {
 				el.innerHTML = obj.error.message;
 			} else {
+				var found = parseInt(obj.data.count, 10);
+				document.getElementById("answerlist_found").innerHTML = found;
+				var onpage = parseInt(obj.data.onpage, 10);
+				var page = parseInt(obj.data.page, 10);
+				var table = parseInt(obj.data.table, 10);
+				al.innerHTML = '<div id="answerlist_paging">' + getHTMLPaging2(0,found, onpage, page) + '</div>';
+
 				var content = '';
-				
-				content += '<div class="button3 ad" onclick="loadAnswerList(' + gameid + ', 0, ' + onpage + ', \'active\');">Active</div>';
-				content += '<div class="button3 ad" onclick="loadAnswerList(' + gameid + ', 0, ' + onpage + ', \'backup\');">Backup</div>';
-				content += '<br>';
-				content += 'Found: ' + obj.data.count + '<br>';
-				content += getHTMLPaging2(0, obj.data.count, obj.data.onpage, obj.data.page, obj.data.table);
 				content += '<table id="customers">';
 				content += '<tr class="alt">';
 				content += '	<th width=10%>Date Time</th>';
@@ -162,7 +244,7 @@ function loadAnswerList(gameid, page, onpage, table) {
 				content += '	<th>User</th>';
 				content += '</tr>\n';
 				var bColor = false;
-				
+
 				for (var k in obj.data.answers) {
 					content += '';
 					if (obj.data.answers.hasOwnProperty(k)) {
@@ -192,29 +274,11 @@ function loadAnswerList(gameid, page, onpage, table) {
 						content += '	<td align=center>' + hatchAnswer(ans.answer_real) + '</td>';
 						content += '	<td align=center>' + ans.passed + '</td>';
 						content += '	<td align=center><div class="button3 ad" onclick="showUserInfo(' + ans.userid + ');">' + ans.userid + ', ' + ans.usernick + ', ' + ans.username + ' </div></td>';
-						
-						
-						
-						/*
-						// quest
-						content += '	<td align=center valign=top>';
-						content += '<div class="button3 ad" onclick="showQuest(' + q.id + ');">';
-						content += q.id + ' ' + q.name + '<br>';
-						content += ' <font size=3> ' + q.subject + ' ' + q.score + '</font><br>';
-						content += 'Solved ' + q.solved + ' ';
-						content += '	</div></td>';
-						
-						content += '	<td align=center>' + q.tries + '</td>';
-						content += '	<td>';
-							for (var u in q.users) {
-								content += ' <div class="button3 ad" onclick="showUserInfo(' + q.users[u].userid + ');">' + q.users[u].nick + '</div> ';
-							}
-						content += '</td>';*/
 						content += '</tr>\n';
 						bColor = !bColor;
 					}
 				}
-				el.innerHTML = content;
+				al.innerHTML += content;
 			}
 		}
 	);
