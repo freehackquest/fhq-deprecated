@@ -18,18 +18,18 @@ $result = array(
 $message = '';
 
 if (!APIGame::checkGameDates($message))
-	APIHelpers::showerror(986, $message);
+	APIHelpers::showerror(1059, $message);
 
 if (!APIHelpers::issetParam('questid'))
-	APIHelpers::showerror(987, 'Not found parameter "questid"');
+	APIHelpers::showerror(1060, 'Not found parameter "questid"');
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(351, 'Access denied. You are not admin.');
+	APIHelpers::showerror(1061, 'Access denied. You are not admin.');
 
 $questid = APIHelpers::getParam('questid', 0);
 
 if (!is_numeric($questid))
-	APIHelpers::showerror(988, 'parameter "questid" must be numeric');
+	APIHelpers::showerror(1062, 'parameter "questid" must be numeric');
 
 $conn = APIHelpers::createConnection($config);
 
@@ -40,7 +40,7 @@ try {
 	$stmt->execute(array(intval($questid)));
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
-	APIHelpers::showerror(822, $e->getMessage());
+	APIHelpers::showerror(1063, $e->getMessage());
 }
 
 include_once ($curdir."/../api.lib/savetoken.php");

@@ -19,10 +19,10 @@ $result = array(
 $message = '';
 
 if (!APIGame::checkGameDates($message))
-	APIHelpers::showerror(350, $message);
+	APIHelpers::showerror(1164, $message);
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(351, 'Access denied. You are not admin.');
+	APIHelpers::showerror(1165, 'Access denied. You are not admin.');
 
 $params = array(
 	'quest_uuid' => '',
@@ -40,7 +40,7 @@ $params = array(
 
 foreach( $params as $key => $val ) {
 	if (!APIHelpers::issetParam($key))
-		APIHelpers::showerror(352, 'Not found parameter "'.$key.'"');
+		APIHelpers::showerror(1166, 'Not found parameter "'.$key.'"');
 	$params[$key] = APIHelpers::getParam($key, '');
 }
 
@@ -87,12 +87,10 @@ try {
 			APIEvents::addPublicEvents($conn, "quests", "New quest #".$result['data']['quest']['id']." ".$questname." (subject: ".$params['subject'].")");
 		}
 	} else {
-		$result['error']['pdo'] = $conn->errorInfo();
-		$result['error']['code'] = 304;
-		$result['error']['message'] = 'Could not insert';
+		APIHelpers::showerror(1168,'Could not insert. PDO: '.$conn->errorInfo());
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(747,$e->getMessage());
+	APIHelpers::showerror(1167,$e->getMessage());
 }
 
 include_once ($curdir_quests_insert."/../api.lib/savetoken.php");

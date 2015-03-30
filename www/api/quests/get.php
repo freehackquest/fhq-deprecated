@@ -13,15 +13,15 @@ APIHelpers::checkAuth();
 $message = '';
 
 if (!APIGame::checkGameDates($message) && !APISecurity::isAdmin())
-	APIHelpers::showerror(986, $message);
+	APIHelpers::showerror(1064, $message);
 
 if (!APIHelpers::issetParam('taskid'))
-	APIHelpers::showerror(987, 'Not found parameter "taskid"');
+	APIHelpers::showerror(1065, 'Not found parameter "taskid"');
 
 $questid = APIHelpers::getParam('taskid', 0);
 
 if (!is_numeric($questid))
-	APIHelpers::showerror(988, 'parameter "taskid" must be numeric');
+	APIHelpers::showerror(1066, 'parameter "taskid" must be numeric');
 
 $result = array(
 	'result' => 'fail',
@@ -116,14 +116,14 @@ try {
 		if (isset($_SESSION['game']))
 			$result['data']['game_title'] = $_SESSION['game']['title'];
 	} else {
-		APIHelpers::showerror(822, 'Problem... may be incorrect game are selected?');
+		APIHelpers::showerror(1148, 'Problem... may be incorrect game are selected?');
 	}
 	
 	$result['result'] = 'ok';
 	$result['permissions']['edit'] = APISecurity::isAdmin();
 	$result['permissions']['delete'] = APISecurity::isAdmin();
 } catch(PDOException $e) {
-	APIHelpers::showerror(822, $e->getMessage());
+	APIHelpers::showerror(1067, $e->getMessage());
 }
 
 include_once ($curdir."/../api.lib/savetoken.php");

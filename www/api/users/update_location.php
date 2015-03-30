@@ -21,13 +21,13 @@ $country = '';
 $city = '';
 
 if (!APIHelpers::issetParam('country'))
-  APIHelpers::showerror(909, 'Not found parameter "country"');
+  APIHelpers::showerror(1103, 'Not found parameter "country"');
 
 if (!APIHelpers::issetParam('city'))
-  APIHelpers::showerror(910, 'Not found parameter "city"');
+  APIHelpers::showerror(1104, 'Not found parameter "city"');
   
 if (!APIHelpers::issetParam('university'))
-  APIHelpers::showerror(915, 'Not found parameter "university"');
+  APIHelpers::showerror(1105, 'Not found parameter "university"');
 
 $country = APIHelpers::getParam('country', '');
 $city = APIHelpers::getParam('city', '');
@@ -48,7 +48,7 @@ try {
 
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
-	APIHelpers::showerror(911, $e->getMessage());
+	APIHelpers::showerror(1106, $e->getMessage());
 }
 
 echo json_encode($result);

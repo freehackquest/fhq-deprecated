@@ -2,33 +2,6 @@
 $curdir_helpers = dirname(__FILE__);
 include_once ($curdir_helpers."/api.security.php");
 
-function showerror($code, $message) {
-	$result = array(
-		'result' => 'fail',
-		'data' => array(),
-	);
-	
- 	$result['error']['code'] = $code;
-	$result['error']['message'] = $message;
-	header("Access-Control-Allow-Origin: *");
-	echo json_encode($result);
-	exit;
-}
-
-function checkAuth($security)
-{
-	if(!$security->isLogged()) {
-		$result = array(
-			'result' => 'fail',
-			'data' => array(),
-		);
-		$result['error']['code'] = 403;
-		$result['error']['message'] = 'Error 403: Not authorized request';
-		echo json_encode($result);
-		exit;
-	}
-}
-
 function issetParam($name) {
   return isset($_GET[$name]) || isset($_POST[$name]);
 }
@@ -41,7 +14,8 @@ class APIHelpers {
 	static function checkAuth()
 	{
 		if(!APISecurity::isLogged()) {
-			APIHelpers::showerror(4001, 'Not authorized request');
+			APIHelpers::showerror(1224, 'Not authorized request');
+			exit;
 		}
 	}
 	

@@ -12,7 +12,7 @@ APIHelpers::checkAuth();
 $message = '';
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(927, "This function allowed only for admin");
+	APIHelpers::showerror(1091, "This function allowed only for admin");
 
 $result = array(
 	'result' => 'fail',
@@ -60,14 +60,14 @@ try {
 		$result['found'] = $row['cnt'];
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(922, $e->getMessage());
+	APIHelpers::showerror(1092, $e->getMessage());
 }
 
 try {
 	$stmt2 = $conn->prepare('
 			SELECT
 				iduser, email, role,
-				nick, logo, password,
+				nick, logo, status,
 				date_last_signup
 			FROM
 				user
@@ -80,7 +80,7 @@ try {
 			LIMIT '.$start.','.$onpage.'
 	');
 	$stmt2->execute(array($search, $search, $role, $status));
-  $i = 0;
+	$i = 0;
 	while ($row2 = $stmt2->fetch()) {
 		$userid = $row2['iduser'];
 		$result['data'][$i] = array(
@@ -90,12 +90,12 @@ try {
 			'nick' => $row2['nick'],
 			'logo' => $row2['logo'],
 			'date_last_signup' => $row2['date_last_signup'],
-			'status' => (strpos($row2['password'], 'notactivated') !== FALSE) ? 'notactivated' : 'activated',
+			'status' => $row2['status'],
 		);
     $i++;
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(922, $e->getMessage());
+	APIHelpers::showerror(1093, $e->getMessage());
 }
 
 echo json_encode($result);

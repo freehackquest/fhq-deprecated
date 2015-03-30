@@ -72,9 +72,12 @@ function reloadQuests()
 			if (obj.result == 'fail')
 			{
 				quests.innerHTML = obj.error.message;
+				if (obj.error.code == 1094) {
+					changeGame();
+				}
 				return;
 			}
-			
+
 			// var current_game = obj.current_game;
 			document.getElementById("filter_open_count").innerHTML = obj.status.open;
 			document.getElementById("filter_current_count").innerHTML = obj.status.current;
@@ -277,18 +280,18 @@ function createComboBoxQuestState(idelem, value) {
 }
 
 var g_questTypes = [
-		{ type: 'hashes', caption: 'Hashes'},
-		{ type: 'stego',  caption: 'Stego'},
-		{ type: 'reverse', caption: 'Reverse'},
-		{ type: 'recon', caption: 'Recon'},
-		{ type: 'trivia', caption: 'Trivia'},
-		{ type: 'crypto', caption: 'Crypto'},
-		{ type: 'forensics', caption: 'Forensics'},
-		{ type: 'network', caption: 'Network'},
-		{ type: 'web', caption: 'Web'},
-		{ type: 'admin', caption: 'Admin'},
-		{ type: 'enjoy', caption: 'Enjoy'}
-	];
+	{ type: 'hashes', caption: 'Hashes'},
+	{ type: 'stego',  caption: 'Stego'},
+	{ type: 'reverse', caption: 'Reverse'},
+	{ type: 'recon', caption: 'Recon'},
+	{ type: 'trivia', caption: 'Trivia'},
+	{ type: 'crypto', caption: 'Crypto'},
+	{ type: 'forensics', caption: 'Forensics'},
+	{ type: 'network', caption: 'Network'},
+	{ type: 'web', caption: 'Web'},
+	{ type: 'admin', caption: 'Admin'},
+	{ type: 'enjoy', caption: 'Enjoy'}
+];
 
 function createComboBoxQuestSubject(idelem, value) {
 	var result = '<select id="' + idelem + '">';

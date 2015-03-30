@@ -33,7 +33,6 @@ function chooseGame(id) {
 		'id=' + id,
 		function (obj) {
 			window.location.href = "main.php?" + Math.random();
-			
 		}
 	);
 }

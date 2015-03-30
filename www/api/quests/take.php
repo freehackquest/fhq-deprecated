@@ -13,15 +13,15 @@ APIHelpers::checkAuth();
 $message = '';
 
 if (!APIGame::checkGameDates($message))
-	APIHelpers::showerror(3001, $message);
+	APIHelpers::showerror(1210, $message);
 
 if (!APIHelpers::issetParam('questid'))
-	APIHelpers::showerror(3002, 'Not found parameter "questid"');
+	APIHelpers::showerror(1205, 'Not found parameter "questid"');
 
 $questid = APIHelpers::getParam('questid', 0);
 
 if (!is_numeric($questid))
-	APIHelpers::showerror(3003, 'parameter "questid" must be numeric');
+	APIHelpers::showerror(1206, 'parameter "questid" must be numeric');
 
 $result = array(
 	'result' => 'fail',
@@ -92,7 +92,7 @@ try {
 		}
 		else
 		{
-			APIHelpers::showerror(3004, 'quest already takes');
+			APIHelpers::showerror(1207, 'quest already takes');
 		}
 
 		/*if ($status == 'current' || $status == 'completed')
@@ -100,11 +100,11 @@ try {
 	}
 	else
 	{
-		APIHelpers::showerror(3005, 'not found quest');
+		APIHelpers::showerror(1208, 'not found quest');
 	}
 	
 } catch(PDOException $e) {
-	APIHelpers::showerror(3006, $e->getMessage());
+	APIHelpers::showerror(1209, $e->getMessage());
 }
 
 include_once ($curdir."/../api.lib/savetoken.php");

@@ -14,10 +14,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="stats.svg"
-   inkscape:export-filename="stats.png"
-   inkscape:export-xdpi="67.98436"
-   inkscape:export-ydpi="67.98436">
+   sodipodi:docname="updates.svg"
+   inkscape:export-filename="updates.png"
+   inkscape:export-xdpi="67.911522"
+   inkscape:export-ydpi="67.911522">
   <defs
      id="defs4">
     <marker
@@ -54,16 +54,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="77.075787"
-     inkscape:cy="28.193874"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="182.52424"
+     inkscape:cy="-7.3202587"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1320"
      inkscape:window-height="927"
-     inkscape:window-x="181"
-     inkscape:window-y="69"
+     inkscape:window-x="281"
+     inkscape:window-y="51"
      inkscape:window-maximized="0"
      inkscape:snap-grids="true" />
   <metadata
@@ -95,22 +95,28 @@
        d="m 201.02036,101.00505 c 0,55.23129 -44.99994,100.0051 -100.51018,100.0051 C 44.999939,201.01015 0,156.23634 0,101.00505 0,45.773761 44.999939,0.99995422 100.51018,0.99995422 c 55.51024,0 100.51018,44.77380678 100.51018,100.00509578 z"
        transform="matrix(0.94198405,0,0,0.95189954,5.8548202,856.6232)" />
     <path
-       style="fill:none;stroke:#9f9f9f;stroke-width:3.62299991;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 20.937088,955.60057 12.402829,-18.33992 26.450875,0.3769 10.147933,-19.88977 16.619833,-0.0162 9.267767,-16.61727 25.839915,8.94396 12.74511,-11.8729 -5.77733,-4.66863 24.93741,-7.22604 -8.44913,21.18919 -5.76318,-4.97579 -16.09843,16.13611 -22.64357,-6.63522 -7.857146,13.95883 -18.36222,-0.45304 -10.147934,19.18292 -25.754535,-1.05529 -11.98441,17.63306 z"
-       id="path2990"
+       style="fill:none;stroke:#9f9f9f;stroke-width:3.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 57.290262,1021.6298 0.30484,-65.04648 c 33.248708,-16.1696 48.333868,-16.70268 78.673238,-3.23357 -22.50073,8.8315 -47.04608,9.50527 -64.126744,1.60338 l -7.208738,3.19374 c 27.173538,13.28718 54.570932,7.3649 74.702782,-1.07116 l -0.53571,67.86409 c -29.5825,14.3112 -58.505942,10.4251 -81.809668,-3.31 z"
+       id="path2988"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccccccccccccccccccc" />
+       sodipodi:nodetypes="cccccccc" />
     <text
        xml:space="preserve"
-       style="font-size:54.32987595000000169px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#9f9f9f;fill-opacity:1;stroke:#9f9f9f;font-family:Sans;stroke-opacity:1;stroke-width:3.50000003;stroke-miterlimit:4;stroke-dasharray:none"
-       x="30.96586"
-       y="901.4068"
-       id="text3772"
+       style="font-size:59.39418411px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#9f9f9f;fill-opacity:1;stroke:none;font-family:Sans"
+       x="59.454052"
+       y="974.45032"
+       id="text3792"
        sodipodi:linespacing="125%"
-       transform="scale(0.8950367,1.1172726)"><tspan
+       transform="scale(0.95527733,1.0468164)"><tspan
          sodipodi:role="line"
-         id="tspan3774"
-         x="30.96586"
-         y="901.4068">STATS</tspan></text>
+         id="tspan3794"
+         x="59.454052"
+         y="974.45032">DB</tspan></text>
+    <path
+       style="fill:#9f9f9f;fill-opacity:1;stroke:#9f9f9f;stroke-width:3.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
+       d="m 57.577311,922.97011 24.590554,0.48924 -7.76921,-42.17043 49.767765,0.20274 -9.06515,41.75276 25.08136,-0.16611 -40.747728,16.27994 z"
+       id="path2988-3"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccc" />
   </g>
 </svg>

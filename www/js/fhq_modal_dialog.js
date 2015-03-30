@@ -18,4 +18,5 @@ function closeModalDialog()
 	document.documentElement.style.overflow = 'auto';  // firefox, chrome
     document.body.scroll = "yes"; // ie only
     document.onkeydown = null;
+    document.getElementById('modal_dialog_content').innerHTML = "";
 }

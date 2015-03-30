@@ -17,10 +17,10 @@ $result = array(
 );
 
 if (!APIHelpers::issetParam('email'))
-	APIHelpers::showerror(1013, 'Parameter email was not found');
+	APIHelpers::showerror(1038, 'Parameter email was not found');
 
 if (!APIHelpers::issetParam('captcha'))
-	APIHelpers::showerror(1013, 'Parameter captcha was not found');
+	APIHelpers::showerror(1039, 'Parameter captcha was not found');
 
 
 $email = APIHelpers::getParam('email', '');
@@ -31,10 +31,10 @@ $orig_captcha = $_SESSION['captcha_reg'];
 $_SESSION['captcha_reg'] = md5(rand().rand());
 
 if (strtoupper($captcha) != strtoupper($orig_captcha))
-	APIHelpers::showerror(1012, '[Restore] Captcha is not correct, please "Refresh captcha" and try again');
+	APIHelpers::showerror(1040, '[Restore] Captcha is not correct, please "Refresh captcha" and try again');
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-	APIHelpers::showerror(1011, '[Restore] Invalid e-mail address. ');
+	APIHelpers::showerror(1041, '[Restore] Invalid e-mail address. ');
 
 $conn = APIHelpers::createConnection($config);
 $stmt = $conn->prepare('select iduser, nick from user where email = ?');
@@ -46,7 +46,7 @@ if ($row = $stmt->fetch()) {
 	$nick = $row['nick'];
 	$userid = $row['iduser'];
 } else {
-	APIHelpers::showerror(702, '[Restore] This e-mail was not registered.');
+	APIHelpers::showerror(1042, '[Restore] This e-mail was not registered.');
 }
 
 $password = substr(md5(rand().rand()), 0, 8);

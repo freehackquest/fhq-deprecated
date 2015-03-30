@@ -20,7 +20,7 @@ if (!APIHelpers::issetParam('email'))
 	APIHelpers::showerror(1013, 'Parameter email was not found');
 
 if (!APIHelpers::issetParam('captcha'))
-	APIHelpers::showerror(1013, 'Parameter captcha was not found');
+	APIHelpers::showerror(1043, 'Parameter captcha was not found');
 
 
 $email = APIHelpers::getParam('email', '');
@@ -42,7 +42,7 @@ $stmt->execute(array($email));
 if ($row = $stmt->fetch())
 {
 	if (intval($row['cnt']) >= 1)
-		APIHelpers::showerror(702, '[Registration] This e-mail was already registered.');	
+		APIHelpers::showerror(1192, '[Registration] This e-mail was already registered.');	
 }
 
 $nickname = "hacker-".substr(md5(rand().rand()), 0, 7);

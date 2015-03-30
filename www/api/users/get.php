@@ -19,12 +19,12 @@ $result = array(
 $conn = APIHelpers::createConnection($config);
 
 if (!APIHelpers::issetParam('userid'))
-  showerror(823, 'Error 823: not found parameter userid');
+	APIHelpers::showerror(1177, 'Not found parameter userid');
 
 $userid = APIHelpers::getParam('userid', 0);
 
 if (!is_numeric($userid))
-	showerror(825, 'Error 825: incorrect id');
+	APIHelpers::showerror(1181, 'Parameter userid must be integer');
 
 $userid = intval($userid);
 
@@ -64,7 +64,7 @@ try {
 	}
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
-	showerror(822, 'Error 822: ' + $e->getMessage());
+	APIHelpers::showerror(1184, 'Error 822: ' + $e->getMessage());
 }
 
 // users_profile
@@ -76,7 +76,7 @@ try {
 		$result['profile'][$row['name']] = $row['value'];
 	}
 } catch(PDOException $e) {
-	showerror(822, 'Error 822: ' + $e->getMessage());
+	APIHelpers::showerror(1183, 'Error 822: ' + $e->getMessage());
 }
 
 // users_games
@@ -92,7 +92,7 @@ try {
 		);
 	}
 } catch(PDOException $e) {
-	showerror(822, 'Error 822: ' + $e->getMessage());
+	APIHelpers::showerror(1182, $e->getMessage());
 }
 
 echo json_encode($result);

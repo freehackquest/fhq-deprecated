@@ -25,30 +25,28 @@ class simple_page
 
 function echo_mainpage($page)
 {	
-	// if() view_quest
-	// $onload = 'load_content_page(\'quests_allow\');';
 	$onload = 'loadQuests();';
 	
-	if(isset($_GET['content_page']))
+	/*if(isset($_GET['content_page']))
 	{
 		$json = json_encode($_GET, JSON_HEX_TAG);		
 		$json = str_replace("'", "\'", $json);
 		$json = str_replace("\"", "'", $json);
 
 		$onload = 'load_content_page(\''.$_GET['content_page'].'\', '.$json.');';
-	};
+	};*/
 	
 	echo '<html>';
 	
 	$template = isset($_SESSION['user']['profile']['template']) ? $_SESSION['user']['profile']['template'] : 'base';
 	$template = htmlspecialchars($template);
-	$versioncontent = '201503300326';
+	$versioncontent = '201504012309';
 
-	echo '
+echo '
 <head>
 	<title> Free-Hack-Quests </title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf8">
-	
+
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css?ver='.$versioncontent.'" />
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/menu.css?ver='.$versioncontent.'" />
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css?ver='.$versioncontent.'" />
@@ -65,9 +63,6 @@ function echo_mainpage($page)
 
 	<link rel="stylesheet" type="text/css" href="templates/'.$template.'/styles/colors.css?ver='.$versioncontent.'" />
 
-	<!-- script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js?ver='.$versioncontent.'"></script -->
-	<!-- script src="http://malsup.github.com/jquery.form.js?ver='.$versioncontent.'"></script -->	
-	<!-- script type="text/javascript" src="js/encoder.js?ver='.$versioncontent.'"></script -->
 	<script type="text/javascript" src="js/fhq.frontend.lib.js?ver='.$versioncontent.'"></script>
 	<script type="text/javascript" src="js/fhq_send_request.js?ver='.$versioncontent.'"></script>
 	<script type="text/javascript" src="js/fhq_echo_head.js?ver='.$versioncontent.'"></script>
@@ -79,9 +74,24 @@ function echo_mainpage($page)
 	<script type="text/javascript" src="js/fhq_timer.js?ver='.$versioncontent.'"></script>
 	<script type="text/javascript" src="js/fhq_updates.js?ver='.$versioncontent.'"></script>
 	<script type="text/javascript" src="js/fhq_events.js?ver='.$versioncontent.'"></script>
-	<script type="text/javascript" src="js/fhq_stats.js?ver='.$versioncontent.'"></script>
+	<script type="text/javascript" src="js/fhq_stats.js?ver='.$versioncontent.'"></script>';
+	
+?>
+		<script type="text/javascript">
+			var fhq = new FHQFrontEndLib();
+			fhq.client = "web-fhq2014";
+			fhq.baseUrl = fhq.getCurrentApiPath(); // or another path
+			// fhq.token = fhq.getTokenFromCookie();		
 
-</head>
+			function logout() {
+				fhq.security.logout();			
+				window.location.href = "index.php";
+			}
+
+		</script>
+<?php
+
+echo '</head>
 	';
 	
     $game_info = "";

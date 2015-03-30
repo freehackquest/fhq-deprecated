@@ -10,11 +10,11 @@ APIHelpers::checkAuth();
 
 $userid = APIHelpers::getParam('userid', APISecurity::userid());
 if (!is_numeric($userid))
-	APIHelpers::showerror(912, 'userid must be numeric '.$userid);
+	APIHelpers::showerror(1117, 'userid must be numeric '.$userid);
 $userid = intval($userid);
 
 if (!APISecurity::isAdmin() && $userid != APISecurity::userid()) 
-	APIHelpers::showerror(912, 'you what change nick for another user, it can do only admin '.APISecurity::userid());
+	APIHelpers::showerror(1116, 'you what change nick for another user, it can do only admin '.APISecurity::userid());
 
 $result = array(
 	'result' => 'fail',
@@ -31,40 +31,46 @@ $result = array(
 $conn = APIHelpers::createConnection($config);
 
 if (!APIHelpers::issetParam('nick'))
-  APIHelpers::showerror(912, 'Not found parameter "nick"');
+  APIHelpers::showerror(1115, 'Not found parameter "nick"');
 
 $nick = APIHelpers::getParam('nick', '');
+$nick = htmlspecialchars($nick);
+$oldnick = APISecurity::nick();
+
+if ($nick == $oldnick) {
+	APIHelpers::showerror(1112, 'New nick equal with old nick');
+}
+
 
 $result['data']['nick'] = htmlspecialchars($nick);
 $result['data']['userid'] = $userid;
 $result['currentUser'] = $userid == APISecurity::userid();
 
 if (strlen($nick) <= 3)
-  APIHelpers::showerror(912, '"nick" must be more then 3 characters');
+  APIHelpers::showerror(1113, '"nick" must be more then 3 characters');
 
 try {
-	$oldnick = APISecurity::nick();
+	
 
 	$query = 'UPDATE user SET nick = ? WHERE iduser = ?';
 	$stmt = $conn->prepare($query);
-	if ($stmt->execute(array(htmlspecialchars($nick), $userid)))
+	if ($stmt->execute(array($nick, $userid)))
 	{
 		$result['result'] = 'ok';
-
 		if ($userid == APISecurity::userid()) {
-			APISecurity::setNick(htmlspecialchars($nick));
+			APISecurity::setNick($nick);
 		}
 
 		// add to public events
 		if ($userid != APISecurity::userid())
-			APIEvents::addPublicEvents($conn, 'users', 'Admin changed nick for user #'.$userid.' from {'.htmlspecialchars($oldnick).'} to {'.htmlspecialchars($nick).'} ');
+			APIEvents::addPublicEvents($conn, 'users', 'Admin changed nick for user #'.$userid.' from {'.htmlspecialchars($oldnick).'} to {'.$nick.'} ');
 		else
-			APIEvents::addPublicEvents($conn, 'users', 'User #'.$userid.' changed nick from {'.htmlspecialchars($oldnick).'} to {'.htmlspecialchars($nick).'} ');
+			APIEvents::addPublicEvents($conn, 'users', 'User #'.$userid.' changed nick from {'.htmlspecialchars($oldnick).'} to {'.$nick.'} ');
 	}
 	else
 		$result['result'] = 'fail';
 } catch(PDOException $e) {
-	APIHelpers::showerror(911, $e->getMessage());
+	APIHelpers::showerror(1114, $e->getMessage());
 }
 
 echo json_encode($result);

@@ -22,13 +22,33 @@ if (isset($_SESSION['user']))
 		<meta name="copyright" lang="ru" content="sea-kg" />
 		<meta name="description" content="competition information security" />
 		<meta name="keywords" content="security, fhq, fhq 2012, fhq 2013, fhq 2014, free, hack, quest, competition, information security, ctf, joepardy" />		
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css" />
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css" />
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/button3.css" />
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/hint.css">
-		<script type="text/javascript" src="js/fhq.frontend.lib.js"></script>
-		<script type="text/javascript" src="js/index.js"></script>
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css?version=1" />
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css?version=1" />
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/button3.css?version=1" />
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/hint.css?version=1">
+		<script type="text/javascript" src="js/fhq.frontend.lib.js?version=1"></script>
+		<script type="text/javascript" src="js/index.js?version=1"></script>
+		<script type="text/javascript">
+			var fhq = new FHQFrontEndLib();
+			fhq.client = "web-fhq2014";
+			fhq.baseUrl = fhq.getCurrentApiPath(); // or another path
+			// fhq.token = fhq.getTokenFromCookie();
 
+			if (fhq.token && fhq.token != "")  // todo 
+				fhq.security.logout();
+			
+			// new lib js
+			function login() {
+				var obj = fhq.security.login(this.email.value,this.password.value);
+				if (obj.result == "fail") {
+					this.error_message.innerHTML = "<b>" + obj.error.message + "</b>";
+					this.info_message.innerHTML = "";
+				} else {
+					window.location.href = "main.php";
+				}	
+			}
+		</script>
+			
 		<?php
 			$anticolors = isset($_GET['dark']) ? 'base' : 'dark';
 			$colors = isset($_GET['dark']) ? 'dark' : 'base';
@@ -61,9 +81,9 @@ if (isset($_SESSION['user']))
 							</div>
 
 							<div class="indexcontent" id="indexcontent_sign_in">
-								<input placeholder="your@email.com" id="email" value="" type="text" onkeydown="if (event.keyCode == 13) sign_in();"><br><br>
-								<input placeholder="*****" id="password" value="" type="password"  onkeydown="if (event.keyCode == 13) sign_in();"><br><br>
-								<div class="button3 ad" onclick="sign_in();">sign in</div>
+								<input placeholder="your@email.com" id="email" value="" type="text" onkeydown="if (event.keyCode == 13) login();"><br><br>
+								<input placeholder="*****" id="password" value="" type="password"  onkeydown="if (event.keyCode == 13) login();"><br><br>
+								<div class="button3 ad" onclick="login();">sign in</div>
 							</div>
 
 							<div class="indexcontent" id="indexcontent_registration">

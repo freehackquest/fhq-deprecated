@@ -32,7 +32,7 @@ Evgenii Sopov, Igor Polyakov, Maxim Samoilov (Nitive)<br>
 see us in <a href="http://vk.com/freehackquest">VKontakte</a><br>
 also you can write email to us<br>
 freehackquest@gmail.com<br>
-Read us on twitter <a href="https://twitter.com/freehackquest">twitter</a><br>
+Read us on <a href="https://twitter.com/freehackquest">twitter</a><br>
 
 <h2>thanks for</h2>
 Sergey Belov (xss!),

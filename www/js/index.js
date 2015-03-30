@@ -50,29 +50,6 @@ function send_request(url, callbackf) {
 	xmlhttp.send();	
 }
 
-function sign_in()
-{
-	document.getElementById("error_message").innerHTML = "";
-	document.getElementById("info_message").innerHTML = "Please wait...";
-	
-	var email = document.getElementById('email').value;
-	var password = document.getElementById('password').value;
-	
-	send_request(
-		"api/auth/sign_in.php?email=" + email + "&password=" + password + "&client=web-fhq2014",
-		function(obj) {
-			if (obj.result == "fail") {
-				document.getElementById("error_message").innerHTML = "<b>" + obj.error.message + "</b>";
-				document.getElementById("info_message").innerHTML = "";
-			} else {
-				var date = new Date( new Date().getTime() + 60*1000 ); // cookie on hour
-				document.cookie = "token=" + encodeURIComponent(obj.token) + "; path=/; expires="+date.toUTCString();
-				window.location.href = "main.php";
-			}
-		}
-	);
-}
-
 function restore()
 {
 	document.getElementById("error_message").innerHTML = "";
@@ -82,7 +59,7 @@ function restore()
 	var captcha = document.getElementById('captcha_restore').value;
 	
 	send_request(
-		"api/auth/restore.php?email="+email + "&captcha=" + captcha,
+		"api/security/restore.php?email="+email + "&captcha=" + captcha,
 		function(obj) {
 			if (obj.result == "fail") {
 				document.getElementById("error_message").innerHTML = "<b>" + obj.error.message + "</b>";
@@ -106,7 +83,7 @@ function registration()
 	var captcha = document.getElementById('captcha_reg').value;
 	
 	send_request(
-		"api/auth/registration.php?email="+email + "&captcha=" + captcha,
+		"api/security/registration.php?email="+email + "&captcha=" + captcha,
 		function(obj) {
 			if (obj.result == "fail") {
 				document.getElementById("error_message").innerHTML = "<b>" + obj.error.message + "</b>";

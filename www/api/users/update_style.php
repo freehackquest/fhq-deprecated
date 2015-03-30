@@ -21,7 +21,7 @@ $country = '';
 $city = '';
 
 if (!APIHelpers::issetParam('style'))
-  APIHelpers::showerror(912, 'Not found parameter "style"');
+  APIHelpers::showerror(1118, 'Not found parameter "style"');
 
 $style = APIHelpers::getParam('style', '');
 
@@ -35,7 +35,7 @@ try {
 
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
-	showerror(911, 'Error 911: ' + $e->getMessage());
+	APIHelpers::showerror(1119, $e->getMessage());
 }
 
 echo json_encode($result);

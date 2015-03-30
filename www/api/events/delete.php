@@ -16,15 +16,15 @@ $result = array(
 );
 
 if(!APISecurity::isAdmin())
-  APIHelpers::showerror(4401, 'access denie. you must be admin.');
+  APIHelpers::showerror(1003, 'access denie. you must be admin.');
 
 if (!APIHelpers::issetParam('id'))
-  APIHelpers::showerror(4402, 'not found parameter id');
+  APIHelpers::showerror(1004, 'not found parameter id');
 
 $id = APIHelpers::getParam('id', 0);
 
 if (!is_numeric($id))
-  APIHelpers::showerror(4403, 'incorrect id');
+  APIHelpers::showerror(1005, 'incorrect id');
 
 $conn = APIHelpers::createConnection($config);
 
@@ -33,7 +33,7 @@ try {
  	$stmt->execute(array(intval($id)));
  	$result['result'] = 'ok';
 } catch(PDOException $e) {
- 	APIHelpers::showerror(4404, $e->getMessage());
+ 	APIHelpers::showerror(1006, $e->getMessage());
 }
 
 echo json_encode($result);

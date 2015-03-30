@@ -13,15 +13,15 @@ APIHelpers::checkAuth();
 $message = '';
 
 if (!APIGame::checkGameDates($message))
-	APIHelpers::showerror(986, $message);
+	APIHelpers::showerror(1085, $message);
 
 if (!APIHelpers::issetParam('questid'))
-	APIHelpers::showerror(987, 'Not found parameter "questid"');
+	APIHelpers::showerror(1086, 'Not found parameter "questid"');
 
 $questid = APIHelpers::getParam('questid', 0);
 
 if (!is_numeric($questid))
-	APIHelpers::showerror(988, 'parameter "questid" must be numeric');
+	APIHelpers::showerror(1087, 'parameter "questid" must be numeric');
 
 $result = array(
 	'result' => 'fail',
@@ -64,7 +64,7 @@ try {
 	$result['result'] = 'ok';
 	
 } catch(PDOException $e) {
-	APIHelpers::showerror(822, $e->getMessage());
+	APIHelpers::showerror(1084, $e->getMessage());
 }
 
 include_once ($curdir."/../api.lib/savetoken.php");

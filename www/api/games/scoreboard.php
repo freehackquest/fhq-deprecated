@@ -17,7 +17,7 @@ if (!APIHelpers::issetParam('gameid'))
 	$gameid = APIGame::id();
 
 if (!is_numeric($gameid))
-	APIHelpers::showerror(988, 'parameter "gameid" must be numeric');
+	APIHelpers::showerror(1088, 'parameter "gameid" must be numeric');
 
 $result = array(
 	'result' => 'fail',
@@ -79,7 +79,7 @@ try {
 	}
 	
 } catch(PDOException $e) {
-	APIHelpers::showerror(822, $e->getMessage());
+	APIHelpers::showerror(1089, $e->getMessage());
 }
 
 echo json_encode($result);

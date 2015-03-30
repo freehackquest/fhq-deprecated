@@ -37,7 +37,7 @@ class APIUser {
 				$stmt2->execute(array(APISecurity::userid(), $k, $v));
 			}
 		} catch(PDOException $e) {
-			showerror(103, 'Error 103: '.$e->getMessage());
+			APIHelpers::showerror(1195, $e->getMessage());
 		}
 	}
 	

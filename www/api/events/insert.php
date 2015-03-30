@@ -16,19 +16,19 @@ $result = array(
 );
 
 if(!APISecurity::isAdmin())
-  APIHelpers::showerror(4301, 'access denie. you must be admin.');
+  APIHelpers::showerror(1230, 'access denie. you must be admin.');
 
 if (!APIHelpers::issetParam('type'))
-  APIHelpers::showerror(4302, 'not found parameter type');
+  APIHelpers::showerror(1231, 'not found parameter type');
 
 if (!APIHelpers::issetParam('message'))
-  APIHelpers::showerror(4303, 'not found parameter message');
+  APIHelpers::showerror(1232, 'not found parameter message');
 
 $type = APIHelpers::getParam('type', 'info');
 $message = APIHelpers::getParam('message', '???');
 
 if (strlen($message) <= 3)
-  APIHelpers::showerror(4304, 'message must be informative! (more than 3 character)');
+  APIHelpers::showerror(1233, 'message must be informative! (more than 3 character)');
 
 $conn = APIHelpers::createConnection($config);
 APIEvents::addPublicEvents($conn, $type, $message);

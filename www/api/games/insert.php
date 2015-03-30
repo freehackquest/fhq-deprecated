@@ -18,7 +18,7 @@ $result = array(
 $conn = APIHelpers::createConnection($config);
 
 if(!APISecurity::isAdmin())
-  APIHelpers::showerror(746, 'access denie. you must be admin.');
+  APIHelpers::showerror(1160, 'access denie. you must be admin.');
 
 $columns = array(
   'uuid_game' => 'none',
@@ -46,11 +46,11 @@ foreach ( $columns as $k => $v) {
   else if (APIHelpers::issetParam($k))
     $param_values[$k] = APIHelpers::getParam($k, $v);
   else
-    APIHelpers::showerror(748, 'not found parameter "'.$k.'"');
+    APIHelpers::showerror(1161, 'not found parameter "'.$k.'"');
 }
 
 if (!is_numeric($param_values['owner']))
-	APIHelpers::showerror(745, 'incorrect owner');
+	APIHelpers::showerror(1162, 'incorrect owner');
 
 $param_values['owner'] = intval($param_values['owner']);
 
@@ -67,7 +67,7 @@ try {
 	$result['data']['game']['id'] = $conn->lastInsertId();
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
-	APIHelpers::showerror(747, $e->getMessage());
+	APIHelpers::showerror(1163, $e->getMessage());
 }
 
 echo json_encode($result);

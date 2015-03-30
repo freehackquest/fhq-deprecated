@@ -21,12 +21,12 @@ if ($conn == null)
 	$conn = APIHelpers::createConnection($config);
 
 if (!APIHelpers::issetParam('id'))
-	APIHelpers::showerror(723, 'not found parameter id');
+	APIHelpers::showerror(1170, 'not found parameter id');
 
 $game_id = APIHelpers::getParam('id', 0);
 
 if (!is_numeric($game_id))
-	APIHelpers::showerror(715, 'incorrect id');
+	APIHelpers::showerror(1171, 'incorrect id');
 
 try {
 
@@ -49,7 +49,7 @@ try {
 	}
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
-	APIHelpers::showerror(722, $e->getMessage());
+	APIHelpers::showerror(1169, $e->getMessage());
 }
 
 include_once ($curdir."/../api.lib/savetoken.php");

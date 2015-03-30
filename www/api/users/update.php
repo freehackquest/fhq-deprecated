@@ -21,7 +21,7 @@ $result = array(
 $conn = APIHelpers::createConnection($config);
 
 if($security->isAdmin())
-  showerror(756, 'Error 756: access denie. you must be admin.');
+  APIHelpers::showerror(1189, 'Access denie. you must be admin.');
 
 $columns = array(
   'global_id' => 'none',
@@ -34,12 +34,12 @@ $columns = array(
 );
 
 if (!issetParam('id'))
-  showerror(759, 'Error 759: not found parameter "id"');
+  APIHelpers::showerror(1185, 'Not found parameter "id"');
 
 $game_id = getParam('id', 0);
 
 if (!is_numeric($game_id))
-	showerror(754, 'Error 754: incorrect "id"');
+	APIHelpers::showerror(1190, 'Incorrect "id"');
 
 $game_id = intval($game_id);
 
@@ -51,11 +51,11 @@ foreach ( $columns as $k => $v) {
   if (issetParam($k))
     $param_values[$k] = getParam($k, $v);
   else
-    showerror(758, 'Error 758: not found parameter "'.$k.'"');
+    APIHelpers::showerror(1186, 'not found parameter "'.$k.'"');
 }
 
 if (!is_numeric($param_values['author_id']))
-	showerror(755, 'Error 755: incorrect author_id');
+	APIHelpers::showerror(1187, 'incorrect author_id');
 
 $param_values['author_id'] = intval($param_values['author_id']);
 
@@ -70,7 +70,7 @@ try {
 	$stmt->execute($values);
   $result['result'] = 'ok';
 } catch(PDOException $e) {
-  showerror(747, 'Error 747: ' + $e->getMessage());
+  APIHelpers::showerror(1188, $e->getMessage());
 }
 
 */

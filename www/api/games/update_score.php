@@ -18,14 +18,14 @@ $result = array(
 
 /*$errmsg = "";
 if (!checkGameDates($security, &$message))
-	showerror(709, 'Error 709: '.$errmsg);*/
+	APIHelpers::showerror(1191, $errmsg);*/
 
 
 $conn = APIHelpers::createConnection($config);
 
 $gameid = APIGame::id();
 if ($gameid == 0)
-	APIHelpers::showerror(616, 'Please choose game');
+	APIHelpers::showerror(1172, 'Please choose game');
 
 $query = '
 	SELECT 
@@ -78,10 +78,10 @@ try {
 	}
 	else
 	{
-		APIHelpers::showerror(616, 'Game not found');
+		APIHelpers::showerror(1173, 'Game not found');
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(716, $e->getMessage());
+	APIHelpers::showerror(1174, $e->getMessage());
 }
 
 echo json_encode($result);
