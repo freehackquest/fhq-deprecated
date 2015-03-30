@@ -95,16 +95,18 @@ function updateScoreboard(gameid) {
 	);	
 }
 
+var g_maxRows = 25;
+
 function initNewsPanel() {
 	document.getElementById("events_panel").innerHTML = '';
-	for(var i = 0; i < 15; i++) {
+	for(var i = 0; i < g_maxRows; i++) {
 		document.getElementById("events_panel").innerHTML += '<div id="news' + i + '"></div><br>';
 	}
 }
 
 function pushNews(text) {
 	// move to down one rows
-	for(var i = 14; i > 0; i--) {
+	for(var i = g_maxRows-1; i > 0; i--) {
 		var el1 = document.getElementById("news" + i);
 		var el2 = document.getElementById("news" + (i-1));
 		el1.innerHTML = el2.innerHTML;
@@ -132,7 +134,7 @@ function updateNews() {
 				for (var k in obj.data.events) {
 					if (obj.data.events.hasOwnProperty(k)) {
 						var e = obj.data.events[k];
-						arr.push('[' + e.type + '] ' + e.message);
+						arr.push('[' + e.type + ', ' + e.dt + ']<br>' + e.message);
 					}
 				}
 				arr = arr.reverse();
