@@ -117,8 +117,8 @@ try {
 			'userid' => $row['iduser'],
 			'usernick' => $row['nick'],
 			'username' => strtolower(base64_decode($row['username'])),
-			'answer_try' => $row['answer_try'],
-			'answer_real' => $row['answer_real'],
+			'answer_try' => htmlspecialchars($row['answer_try']),
+			'answer_real' => htmlspecialchars($row['answer_real']),
 			'passed' => $row['passed'],
 		);
 	}

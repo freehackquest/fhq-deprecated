@@ -35,6 +35,7 @@ freehackquest@gmail.com<br>
 Read us on twitter <a href="https://twitter.com/freehackquest">twitter</a><br>
 
 <h2>thanks for</h2>
+Sergey Belov (xss!),
 Dmitrii Mukovkin,
 Team Keva,
 Alexey Gulyaev,
