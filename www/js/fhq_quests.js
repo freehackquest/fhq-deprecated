@@ -72,9 +72,12 @@ function reloadQuests()
 			if (obj.result == 'fail')
 			{
 				quests.innerHTML = obj.error.message;
+				if (obj.error.code == 1094) {
+					changeGame();
+				}
 				return;
 			}
-			
+
 			// var current_game = obj.current_game;
 			document.getElementById("filter_open_count").innerHTML = obj.status.open;
 			document.getElementById("filter_current_count").innerHTML = obj.status.current;
