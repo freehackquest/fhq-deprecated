@@ -45,11 +45,8 @@ $doc['auth'] = array(
 				),
 			),
 		),
-
-
-    // sign_out
-    'sign_out' => array(
-			'name' => 'Sign Out/Logoff',
+    'logout' => array(
+			'name' => 'Logout',
 			'description' => 'Methods for change user password',
 			'uri' => 'api/security/logout.php',
 			'access' => 'authorized users',
