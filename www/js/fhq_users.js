@@ -1,14 +1,37 @@
 
 var g_userRoles = [
-		{ type: 'user', caption: 'User'},
-		{ type: 'tester',  caption: 'Tester'},
-		{ type: 'admin',  caption: 'Admin'}
-	];
+	{ type: 'user', caption: 'User'},
+	{ type: 'tester',  caption: 'Tester'},
+	{ type: 'admin',  caption: 'Admin'}
+];
+
+var g_userRoleSearch = [
+	{ type: '', caption: '*'},
+	{ type: 'user', caption: 'User'},
+	{ type: 'tester',  caption: 'Tester'},
+	{ type: 'admin',  caption: 'Admin'}
+];
 
 var g_userStatus = [
-		{ type: 'activated', caption: 'Activated'},
-		{ type: 'blocked',  caption: 'Blocked'}
-	];
+	{ type: 'activated', caption: 'Activated'},
+	{ type: 'blocked',  caption: 'Blocked'}
+];
+
+var g_userStatusSearch = [
+	{ type: '', caption: '*'},
+	{ type: 'activated', caption: 'Activated'},
+	{ type: 'blocked',  caption: 'Blocked'}
+];
+
+var g_userOnPage = [
+	{ type: '5', caption: '5'},
+	{ type: '10', caption: '10'},
+	{ type: '15', caption: '15'},
+	{ type: '20', caption: '20'},
+	{ type: '25', caption: '25'},
+	{ type: '30', caption: '30'},
+	{ type: '50', caption: '50'}
+]
 
 // the same function createComboBoxGame
 function createComboBoxUser(idelem, value, arr) {
@@ -413,18 +436,6 @@ function updateUsers() {
 
 			var onpage = parseInt(obj.onpage, 10);
 			var page = parseInt(obj.page, 10);
-
-			// var pages = Math.ceil(found / onpage);
-			
-			/*var pagesHtml = [];
-			
-			for (var i = 0; i < pages; i++) {
-				if (i == page) {
-					pagesHtml.push('<div class="selected_user_page">[' + (i+1) + ']</div>');
-				} else {
-					pagesHtml.push('<div class="button3 ad" onclick="setUsersPage(' + i + '); updateUsers();">[' + (i+1) + ']</div>');
-				}
-			}*/
 			
 			lu.innerHTML += '<div id="user_paging">' + getHTMLPaging1(0,found, onpage, page) + '</div>';
 			var content = '<div class="users_table">';
@@ -532,31 +543,9 @@ function createPageUsers() {
 	content += createUserInfoRow_Skip();
 	
 	content += createUserInfoRow('E-mail or Nick:', '<input type="text" id="user_search" value="" onkeydown="if (event.keyCode == 13) {resetUsersPage(); updateUsers();};"/>');
-	
-	var user_role = ' <select id="user_role">';
-	user_role += '	<option value="">*</option>';
-	user_role += '	<option value="user">User</option>';
-	user_role += '	<option value="tester">Tester</option>';
-	user_role += '	<option value="admin">Admin</option>';
-	user_role += '</select> ';
-	content += createUserInfoRow('Role:', user_role);
-	
-	var user_status = ' <select id="user_status">';
-	user_status += '	<option value="">*</option>';
-	user_status += '	<option value="blocked">Blocked</option>';
-	user_status += '	<option value="activated">Activated</option>';
-	user_status += '</select> ';
-	content += createUserInfoRow('Status:', user_status);
-	
-	var user_onpage = ' <select id="user_onpage">';
-	user_onpage += '	<option value="5">5</option>';
-	user_onpage += '	<option value="10">10</option>';
-	user_onpage += '	<option selected value="15">15</option>';
-	user_onpage += '	<option value="20">20</option>';
-	user_onpage += '	<option value="30">30</option>';
-	user_onpage += '	<option value="50">50</option>';
-	user_onpage += '</select> ';
-	content += createUserInfoRow('On Page:', user_onpage);
+	content += createUserInfoRow('Role:', createComboBoxUser('user_role', '', g_userRoleSearch));
+	content += createUserInfoRow('Status:', createComboBoxUser('user_status', '', g_userStatusSearch));
+	content += createUserInfoRow('On Page:', createComboBoxUser('user_onpage', '15', g_userOnPage) );
 
 	content += createUserInfoRow('', '<div class="button3 ad" onclick="resetUsersPage(); updateUsers();">Search</div>');
 	content += createUserInfoRow_Skip();
