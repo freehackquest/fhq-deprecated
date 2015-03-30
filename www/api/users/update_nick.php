@@ -35,6 +35,12 @@ if (!APIHelpers::issetParam('nick'))
 
 $nick = APIHelpers::getParam('nick', '');
 $nick = htmlspecialchars($nick);
+$oldnick = APISecurity::nick();
+
+if ($nick == $oldnick) {
+	APIHelpers::showerror(912, 'New nick equal with old nick');
+}
+
 
 $result['data']['nick'] = htmlspecialchars($nick);
 $result['data']['userid'] = $userid;
@@ -44,7 +50,7 @@ if (strlen($nick) <= 3)
   APIHelpers::showerror(912, '"nick" must be more then 3 characters');
 
 try {
-	$oldnick = APISecurity::nick();
+	
 
 	$query = 'UPDATE user SET nick = ? WHERE iduser = ?';
 	$stmt = $conn->prepare($query);
