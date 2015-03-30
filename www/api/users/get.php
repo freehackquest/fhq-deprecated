@@ -33,7 +33,7 @@ $bAllow = APISecurity::isAdmin() || APISecurity::isTester() || APISecurity::user
 $result['access']['edit'] = $bAllow;
 $result['currentUser'] = APISecurity::userid() == $userid;
 
-$columns = array('iduser', 'email', 'password', 'role', 'nick', 'logo');
+$columns = array('iduser', 'email', 'status', 'role', 'nick', 'logo');
 
 $query = '
 		SELECT '.implode(', ', $columns).' FROM
@@ -56,10 +56,7 @@ try {
 		if ($bAllow) {
 			 $result['data']['email'] = $row['email'];
 			 $result['data']['role'] = $row['role'];
-			 $result['data']['status'] = 'activated';
-			 
-			 if (strpos($row['password'], 'notactivated') !== FALSE)
-				$result['data']['status'] = 'notactivated';
+			 $result['data']['status'] = $row['status'];
 		}
 	}
 	$result['result'] = 'ok';
