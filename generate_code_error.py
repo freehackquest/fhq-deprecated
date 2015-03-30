@@ -19,7 +19,7 @@ for cpp in listcpp:
 		# print line
 		# APIHelpers::showerror(912, 'only for admin');
 		# matchObj = re.match( r'.*setErrorResponse[ ]*\(\w{1,},(\d{1,}),.*', line, re.M|re.I)
-		matchObj = re.match( r'.*APIHelpers::showerror[ ]*\([ ]*(\d{1,})[ ]*,.*', line, re.M|re.I)
+		matchObj = re.match( r'.*showerror[ ]*\([ ]*(\d{1,})[ ]*,.*', line, re.M|re.I)
 		if matchObj:
 			# print matchObj.group()
 			nCode = int(matchObj.group(1))
@@ -40,8 +40,8 @@ sort = False
 while sort == False:
 	sort = True
 	for index in range(len(errorcodes2)-1):
-		objCode1 = errorcodes2[index]
-		objCode2 = errorcodes2[index+1]
+		objCode1 = errorcodes2[index].copy()
+		objCode2 = errorcodes2[index+1].copy()
 		if objCode1['code'] > objCode2['code']:
 			errorcodes2[index]['code'] = objCode2['code']
 			errorcodes2[index]['file'] = objCode2['file']
@@ -58,17 +58,21 @@ tmpcode=0
 tmpfile=''
 tmpline=''
 for codeObj in errorcodes2:
-	code = codeObj['code']
+	code = int(codeObj['code'])
+
+	# check format code
 	if code < 1000 or code > 9999:
-		print "Code", code, "must be 999 < code < 10000: ", codeObj['file'], ":", codeObj['line']
+		print "Code", code, "must be 999 < code < 10000:", codeObj['file'], ":", codeObj['line']
+
+	# check using twice
 	if code == tmpcode:
-		print "Code", code ,"used twice: ", codeObj['file'], ":", codeObj['line'], 'and', tmpfile, ':',tmpline
+		print "Code", code ,"used twice:", codeObj['file'], ":", codeObj['line'], 'and', tmpfile, ':',tmpline
 	tmpfreecode=tmpcode+1
-	if code != tmpcode and code != tmpfreecode and tmpfreecode >= 1000:
-		print "Code", tmpfreecode, "are not used: ", tmpfreecode
-	tmpcode = code
-	tmpfile=codeObj['file']
-	tmpline=codeObj['line']
+	if code != tmpcode and code != tmpfreecode and tmpfreecode >= 1000 and tmpfreecode < 10000:
+		print "Code", tmpfreecode, "are not used (",tmpcode," => ", tmpfile, ':',tmpline, ')'
+	tmpcode = codeObj['code']
+	tmpfile = codeObj['file']
+	tmpline = codeObj['line']
 
 #for objCode in errorcodes2:
 #	print objCode['code']
