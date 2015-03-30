@@ -12,7 +12,7 @@ $doc['captcha'] = array(
 );
 
 include_once $curdir."/tex.php";
-include_once $curdir."/auth/index.php";
+include_once $curdir."/security/index.php";
 include_once $curdir."/users/index.php";
 include_once $curdir."/games/index.php";
 include_once $curdir."/quests/index.php";

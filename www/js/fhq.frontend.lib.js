@@ -100,7 +100,7 @@ function FHQFrontEndLib() {
 			params.email = email;
 			params.password = password;
 			params.client = this.p.client;
-			var obj = this.p.sendPostRequest_Sync('api/auth/login.php', params);
+			var obj = this.p.sendPostRequest_Sync('api/security/login.php', params);
 			if (obj.result == "ok") {
 				this.p.token = obj.data.token;
 				this.p.setTokenToCookie(obj.data.token);
@@ -113,7 +113,7 @@ function FHQFrontEndLib() {
 		this.logout = function () {
 			var params = {};
 			params.token = this.p.token;
-			var obj = this.p.sendPostRequest_Sync('api/auth/logout.php', params);
+			var obj = this.p.sendPostRequest_Sync('api/security/logout.php', params);
 			this.p.token = "";
 			//this.p.removeTokenFromCookie();
 			return true;

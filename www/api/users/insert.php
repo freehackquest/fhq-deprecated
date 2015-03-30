@@ -63,7 +63,7 @@ if ($row = $stmt->fetch())
 		APIHelpers::showerror(1037, 'This e-mail was already registered.');	
 }
 
-// same code exists in api/auth/registration.php
+// same code exists in api/security/registration.php
 $email = strtolower($email);
 $username = base64_encode(strtoupper($email));
 

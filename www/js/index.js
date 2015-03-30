@@ -59,7 +59,7 @@ function restore()
 	var captcha = document.getElementById('captcha_restore').value;
 	
 	send_request(
-		"api/auth/restore.php?email="+email + "&captcha=" + captcha,
+		"api/security/restore.php?email="+email + "&captcha=" + captcha,
 		function(obj) {
 			if (obj.result == "fail") {
 				document.getElementById("error_message").innerHTML = "<b>" + obj.error.message + "</b>";
@@ -83,7 +83,7 @@ function registration()
 	var captcha = document.getElementById('captcha_reg').value;
 	
 	send_request(
-		"api/auth/registration.php?email="+email + "&captcha=" + captcha,
+		"api/security/registration.php?email="+email + "&captcha=" + captcha,
 		function(obj) {
 			if (obj.result == "fail") {
 				document.getElementById("error_message").innerHTML = "<b>" + obj.error.message + "</b>";

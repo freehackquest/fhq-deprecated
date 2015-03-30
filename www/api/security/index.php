@@ -9,16 +9,16 @@ if (!isset($doc)) {
 }
 
 $doc['auth'] = array(
-	'name' => 'Authorization',
+	'name' => 'Security',
 	'description' => 'Methods for authorization, registration and restore password.',
-  'uri' => 'api/auth/',
+  'uri' => 'api/security/',
 	'methods' => array(
 
     // sign in
     'sign_in' => array(
-			'name' => 'Sign In / Log in',
+			'name' => 'Login',
 			'description' => 'Methods for login user in the system',
-			'uri' => 'api/auth/sign_in.php',
+			'uri' => 'api/security/login.php',
 			'access' => 'all',
 			'input' => array(
 				'email' => array(
@@ -51,7 +51,7 @@ $doc['auth'] = array(
     'sign_out' => array(
 			'name' => 'Sign Out/Logoff',
 			'description' => 'Methods for change user password',
-			'uri' => 'api/auth/sign_out.php',
+			'uri' => 'api/security/logout.php',
 			'access' => 'authorized users',
 			'input' => array(
         'token' => array(
@@ -73,7 +73,7 @@ $doc['auth'] = array(
     'registration' => array(
 			'name' => 'Change User Password',
 			'description' => 'Methods for change user password',
-			'uri' => 'api/auth/registration.php',
+			'uri' => 'api/security/registration.php',
 			'access' => 'all',
 			'input' => array(
   			'email' => array(
@@ -104,7 +104,7 @@ $doc['auth'] = array(
     'restore' => array(
 			'name' => 'Restore Password',
 			'description' => 'Methods for restore user password',
-			'uri' => 'api/auth/restore.php',
+			'uri' => 'api/security/restore.php',
 			'access' => 'all',
 			'input' => array(
 				'email' => array(
