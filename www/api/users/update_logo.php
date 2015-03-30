@@ -8,8 +8,8 @@ include_once ($curdir."/../../config/config.php");
 
 APIHelpers::checkAuth();
 
-if (APIHelpers::issetParam('userid') && !APISecurity::isAdmin()) 
-	APIHelpers::showerror(912, 'you what change logo for another user, it can do only admin');
+if (!APISecurity::isAdmin()) 
+	APIHelpers::showerror(912, 'only for admin');
 
 $userid = APIHelpers::getParam('userid', APISecurity::userid());
 // $userid = intval($userid);
