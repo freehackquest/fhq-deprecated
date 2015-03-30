@@ -1,5 +1,4 @@
 function FHQFrontEndLib() {
-
 	// helpers function
 	this.createUrlFromObj = function(obj) {
 		var str = "";
@@ -9,9 +8,33 @@ function FHQFrontEndLib() {
 			str += encodeURIComponent(k) + "=" + encodeURIComponent(obj[k]);
 		}
 		return str;
+	};
+	
+	this.getCurrentApiPath = function() {
+		var path = location.pathname.split("/");
+		path.splice(path.indexOf('index.php'), 1);	
+		var newURL = location.protocol + '//' + location.host + path.join("/") + "/";
+		return newURL;
+	};
+
+	this.setTokenToCookie = function(token) {
+		var date = new Date( new Date().getTime() + (7 * 24 * 60 * 60 * 1000) ); // cookie on week
+		document.cookie = "fhqtoken=" + encodeURIComponent(token) + "; path=/; expires="+date.toUTCString();
 	}
+	
+	this.removeTokenFromCookie = function() {
+		document.cookie = "fhqtoken=; path=/;";
+	}
+	
+	this.getTokenFromCookie = function() {
+		var matches = document.cookie.match(new RegExp(
+			"(?:^|; )" + "fhqtoken".replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+		));
+		return matches ? decodeURIComponent(matches[1]) : '';
+	}
+
 	this.baseUrl = "http://fhq.keva.su/";
-	this.token = "";
+	this.token = this.getTokenFromCookie();
 	this.client = "FHQFrontEndLib.js";
 
 	// post request to server Async
@@ -70,7 +93,7 @@ function FHQFrontEndLib() {
 		return obj;
 	};
 
-	this.auth = new (function(t) {
+	this.security = new (function(t) {
 		this.p = t;
 		this.login = function (email, password) {
 			var params = {};
@@ -78,18 +101,21 @@ function FHQFrontEndLib() {
 			params.password = password;
 			params.client = this.p.client;
 			var obj = this.p.sendPostRequest_Sync('api/auth/login.php', params);
-			// alert(JSON.stringify(obj));
-			var bRes = obj.result == "ok";
-			if (bRes)
-				this.p.token = obj.token;
-			else
+			if (obj.result == "ok") {
+				this.p.token = obj.data.token;
+				this.p.setTokenToCookie(obj.data.token);
+			} else {
 				this.p.token = "";
-			return bRes;
+				this.p.removeTokenFromCookie();
+			}
+			return obj;
 		};
 		this.logout = function () {
 			var params = {};
+			params.token = this.p.token;
 			var obj = this.p.sendPostRequest_Sync('api/auth/logout.php', params);
 			this.p.token = "";
+			//this.p.removeTokenFromCookie();
 			return true;
 		};
 	})(this);
