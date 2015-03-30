@@ -162,7 +162,17 @@ echo '
 		',
 		'show' => $security->isAdmin(),
 	);
-	
+
+	$arrmenu[] = array(
+		'name' => 'install_updates',
+		'html' => '
+			<div class="fhq_btn_menu hint--bottom" data-hint="Install Updates" onclick="installUpdates();">
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/updates.png"/>
+			</div>
+		',
+		'show' => $security->isAdmin(),
+	);
+		
 	$arrmenu[] = array(
 		'name' => 'splitter',
 		'html' => '
@@ -241,15 +251,6 @@ echo '
 		'name' => 'feedbacks',
 		'html' => '
 			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'feedbacks\');">Messages</div>
-		',
-		'show' => $security->isAdmin(),
-	);
-	
-	// todo
-	$arrsystemmenu[] = array(
-		'name' => 'install_updates',
-		'html' => '
-			<div class="button3 ad" href="javascript:void(0);" onclick="installUpdates();">Install Updates</div>
 		',
 		'show' => $security->isAdmin(),
 	);
