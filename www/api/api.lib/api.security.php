@@ -44,16 +44,7 @@ class APISecurity {
 	static function isAdmin() { 
 		return (APISecurity::isLogged() && $_SESSION['user']['role'] == 'admin' ); 
 	}
-	
-	static function generatePassword($config, $email, $password) {
-		$username = base64_encode(strtoupper($email));
-		$data = "";
-		$arr = array($password, $username, strtoupper($email));
-		for($i = 0; $i < count($arr); $i++)
-			$data .= $arr[$i].$config['secrets'][$i];
-		return md5($data);
-	}
-	
+
 	static function generatePassword2($email, $password) {
 		return sha1(strtoupper($email).$password);
 	}
