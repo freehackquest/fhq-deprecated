@@ -49,6 +49,15 @@ if(!APISecurity::isAdmin()) {
 }
 
 try {
+	// TODO send mail
+	/*
+	 *           $msg = "
+Answer On Feedback
+Feedback Text: 
+  ".$text."
+Feedback Answer: 
+  ".$answer_text."";
+	 * */
  	$stmt = $conn->prepare('INSERT INTO feedback_msg(feedback_id, msg, author, dt) VALUES(?,?,?,NOW())');
  	$stmt->execute(array($feedbackid, $text, APISecurity::userid()));
  	$result['result'] = 'ok';

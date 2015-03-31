@@ -29,6 +29,8 @@ if (strlen($text) <= 3)
 $conn = APIHelpers::createConnection($config);
 
 try {
+	// TODO send mail to admin
+
 	$stmt = $conn->prepare('INSERT INTO feedback(typeFB, full_text, author, dt) VALUES(?,?,?,NOW());');
 	if($stmt->execute(array($type, $text, APISecurity::userid()))) {
 		$result['data']['feedback']['id'] = $conn->lastInsertId();
