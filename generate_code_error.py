@@ -8,6 +8,8 @@ print 'Generate code error'
 PATH="./www/api/"
 listcpp = [os.path.join(dp, f) for dp, dn, filenames in os.walk(PATH) for f in filenames if os.path.splitext(f)[1] == '.php']
 
+nLines = 0
+
 errorcodes = []
 errorcodes2 = []
 for cpp in listcpp:
@@ -30,7 +32,9 @@ for cpp in listcpp:
 			#	print "Code must be more then 999: ", objCode
 			# print nLine
 	text_file.close()
+	nLines = nLines + nLine;
 
+print "Lines in api:", nLines
 
 # print "Before sorting"
 # print errorcodes2
@@ -74,6 +78,10 @@ for codeObj in errorcodes2:
 	tmpfile = codeObj['file']
 	tmpline = codeObj['line']
 
+tmpfreecode=tmpcode+1
+if tmpfreecode >= 1000 and tmpfreecode < 10000:
+	print "Code", tmpfreecode, "are not used (",tmpcode," => ", tmpfile, ':',tmpline, ')'
+		
 #for objCode in errorcodes2:
 #	print objCode['code']
 
