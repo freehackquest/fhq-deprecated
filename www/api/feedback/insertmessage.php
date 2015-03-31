@@ -36,7 +36,7 @@ $author = 0;
 // check access user
 if(!APISecurity::isAdmin()) {
 	try {
-		$stmt = $conn->prepare('SELECT count(*) as cnt FROM feedback WHERE id = ? and author = ?');
+		$stmt = $conn->prepare('SELECT count(*) as cnt FROM feedback WHERE id = ? and userid = ?');
 		$stmt->execute(array($feedbackid, APISecurity::userid()));
 		if($row = $stmt->fetch()) {
 			if (intval($row['cnt']) != 1) {

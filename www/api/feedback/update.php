@@ -39,7 +39,7 @@ $id = intval($id);
 $conn = APIHelpers::createConnection($config);
 
 try {
- 	$stmt = $conn->prepare('UPDATE feedback SET typeFB = ?, full_text = ? WHERE id = ?');
+ 	$stmt = $conn->prepare('UPDATE feedback SET type = ?, text = ? WHERE id = ?');
  	$stmt->execute(array($type, $text, intval($id)));
  	$result['result'] = 'ok';
 } catch(PDOException $e) {

@@ -31,7 +31,7 @@ $conn = APIHelpers::createConnection($config);
 try {
 	// TODO send mail to admin
 
-	$stmt = $conn->prepare('INSERT INTO feedback(typeFB, full_text, author, dt) VALUES(?,?,?,NOW());');
+	$stmt = $conn->prepare('INSERT INTO feedback(type, text, userid, dt) VALUES(?,?,?,NOW());');
 	if($stmt->execute(array($type, $text, APISecurity::userid()))) {
 		$result['data']['feedback']['id'] = $conn->lastInsertId();
 		$result['result'] = 'ok';

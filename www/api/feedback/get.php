@@ -39,8 +39,8 @@ try {
 	');
 	$stmt->execute(array($id));
 	if($row = $stmt->fetch()) {
-		$result['data']['type'] = htmlspecialchars($row['typeFB']);
-		$result['data']['text'] = htmlspecialchars($row['full_text']);
+		$result['data']['type'] = htmlspecialchars($row['type']);
+		$result['data']['text'] = htmlspecialchars($row['text']);
 	}
 } catch(PDOException $e) {
 	APIHelpers::showerror(1267, $e->getMessage());

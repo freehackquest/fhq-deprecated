@@ -59,7 +59,7 @@ try {
 				count(*) as cnt
 			FROM 
 				feedback fb
-			INNER JOIN user u ON fb.author = u.iduser 
+			INNER JOIN user u ON fb.userid = u.iduser 
 			'.$where.'
 	');
 	$stmt->execute($filter_values);
@@ -74,8 +74,8 @@ try {
 	$stmt = $conn->prepare('
 			SELECT
 				fb.id,
-				fb.typeFB,
-				fb.full_text,
+				fb.type,
+				fb.text,
 				fb.dt,
 				u.email,
 				u.nick,
@@ -83,7 +83,7 @@ try {
 				u.iduser
 			FROM 
 				feedback fb
-			INNER JOIN user u ON fb.author = u.iduser 
+			INNER JOIN user u ON fb.userid = u.iduser 
 				'.$where.'
 			ORDER BY
 				fb.id DESC
@@ -97,8 +97,8 @@ try {
 		$feedbackid = $row['id'];
 		$result['data']['feedback'][$id] = array(
 			'id' => $row['id'],
-			'type' => htmlspecialchars($row['typeFB']),
-			'text' => htmlspecialchars($row['full_text']),
+			'type' => htmlspecialchars($row['type']),
+			'text' => htmlspecialchars($row['text']),
 			'email' => htmlspecialchars($row['email']),
 			'nick' => htmlspecialchars($row['nick']),
 			'userid' => htmlspecialchars($row['iduser']),
