@@ -58,7 +58,7 @@ Feedback Text:
 Feedback Answer: 
   ".$answer_text."";
 	 * */
- 	$stmt = $conn->prepare('INSERT INTO feedback_msg(feedback_id, msg, author, dt) VALUES(?,?,?,NOW())');
+ 	$stmt = $conn->prepare('INSERT INTO feedback_msg(feedbackid, text, userid, dt) VALUES(?,?,?,NOW())');
  	$stmt->execute(array($feedbackid, $text, APISecurity::userid()));
  	$result['result'] = 'ok';
 } catch(PDOException $e) {

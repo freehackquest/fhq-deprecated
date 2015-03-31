@@ -111,8 +111,8 @@ try {
 		$stmt_messages = $conn->prepare('
 			select 
 				fbm.id,
-				fbm.feedback_id,
-				fbm.msg,
+				fbm.feedbackid,
+				fbm.text,
 				fbm.dt,
 				u.iduser,
 				u.nick,
@@ -120,9 +120,9 @@ try {
 				u.email
 			from 
 				feedback_msg fbm
-			INNER JOIN user u ON fbm.author = u.iduser
+			INNER JOIN user u ON fbm.userid = u.iduser
 			WHERE
-				feedback_id = ?
+				feedbackid = ?
 			ORDER BY id DESC
 		');
 		$stmt_messages->execute(array($feedbackid));
@@ -130,12 +130,12 @@ try {
 		while ($row_message = $stmt_messages->fetch()) {
 			$result['data']['feedback'][$id]['messages'][] = array(
 				'id' => htmlspecialchars($row_message['id']),
-				'feedbackid' => htmlspecialchars($row_message['feedback_id']),
+				'feedbackid' => htmlspecialchars($row_message['feedbackid']),
 				'userid' => $row_message['iduser'],
 				'nick' => htmlspecialchars($row_message['nick']),
 				'logo' => htmlspecialchars($row_message['logo']),
 				'email' => htmlspecialchars($row_message['email']),
-				'text' => htmlspecialchars($row_message['msg']),
+				'text' => htmlspecialchars($row_message['text']),
 				'dt' => $row_message['dt'],
 			);
 		}

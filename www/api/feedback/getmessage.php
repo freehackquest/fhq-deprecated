@@ -40,7 +40,7 @@ try {
 	$stmt->execute(array($id));
 	if($row = $stmt->fetch()) {
 		$result['data']['id'] = htmlspecialchars($row['id']);
-		$result['data']['text'] = htmlspecialchars($row['msg']);
+		$result['data']['text'] = htmlspecialchars($row['text']);
 	}
 } catch(PDOException $e) {
 	APIHelpers::showerror(1274, $e->getMessage());

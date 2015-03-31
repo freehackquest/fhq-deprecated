@@ -28,14 +28,14 @@ $id = APIHelpers::getParam('id', 0);
 $text = APIHelpers::getParam('text', '');
 
 if (!is_numeric($id))
-  APIHelpers::showerror(1279, 'incorrect feedbackid');
+  APIHelpers::showerror(1279, 'Parameter id must be integer');
 
 $id = intval($id);
 
 $conn = APIHelpers::createConnection($config);
 
 try {
- 	$stmt = $conn->prepare('UPDATE feedback_msg SET msg = ? WHERE id = ?');
+ 	$stmt = $conn->prepare('UPDATE feedback_msg SET text = ? WHERE id = ?');
  	$stmt->execute(array($text, intval($id)));
  	$result['result'] = 'ok';
 } catch(PDOException $e) {
