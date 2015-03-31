@@ -59,6 +59,7 @@ if (!isset($_SESSION['user']))
 		<script type="text/javascript" src="js/fhq_events.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_stats.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_feedback.js?ver=1"></script>
+		<script type="text/javascript" src="js/fhq_settings.js?ver=1"></script>
 	
 		<script type="text/javascript">
 			var fhq = new FHQFrontEndLib();
@@ -231,7 +232,7 @@ if (!isset($_SESSION['user']))
 	$arrmenu[] = array(
 		'name' => 'system_menu',
 		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="System Menu" onclick="showSystemMenu();">
+			<div class="fhq_btn_menu hint--bottom" data-hint="Settings" onclick="loadSettings();">
 				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_system.png"/>
 			</div>
 		',
@@ -338,7 +339,6 @@ if (!isset($_SESSION['user']))
 	);
 
 	// echo menu
-
 	foreach ($arrmenu as $menu) {
 		if ($menu['show']) {
 			echo $menu['html'];

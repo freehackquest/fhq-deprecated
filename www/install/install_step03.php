@@ -7,6 +7,7 @@
 	$current_step = 3;
 	include_once("install_base.php");
 	
+	// TODO REMOVE IT
 	if (isset($_GET['httpname']))
 	{
 		include_once('config.php');
