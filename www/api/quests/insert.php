@@ -59,6 +59,7 @@ $params['author'] = $params['author'];
 // $params['quest_uuid'] = $params['quest_uuid'];
 $params['gameid'] = APIGame::id();
 $params['userid'] = APISecurity::userid();
+$params['count_user_solved'] = 0;
 
 $conn = APIHelpers::createConnection($config);
 $values_q = array();
