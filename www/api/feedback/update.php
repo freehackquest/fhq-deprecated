@@ -16,32 +16,34 @@ $result = array(
 );
 
 if(!APISecurity::isAdmin())
-  APIHelpers::showerror(1253, 'access denie. you must be admin.');
+  APIHelpers::showerror(1268, 'access denie. you must be admin.');
 
 if (!APIHelpers::issetParam('id'))
-  APIHelpers::showerror(1254, 'not found parameter id');
-  
-if (!APIHelpers::issetParam('type'))
-  APIHelpers::showerror(1255, 'not found parameter type');
+  APIHelpers::showerror(1259, 'not found parameter id');
 
-if (!APIHelpers::issetParam('message'))
-  APIHelpers::showerror(1256, 'not found parameter message');
+if (!APIHelpers::issetParam('type'))
+  APIHelpers::showerror(1260, 'not found parameter type');
+  
+if (!APIHelpers::issetParam('text'))
+  APIHelpers::showerror(1262, 'not found parameter text');
 
 $id = APIHelpers::getParam('id', 0);
-$type = APIHelpers::getParam('type', 'info');
-$message = APIHelpers::getParam('message', 0);
+$type = APIHelpers::getParam('type', '');
+$text = APIHelpers::getParam('text', '');
 
 if (!is_numeric($id))
-  APIHelpers::showerror(1257, 'incorrect id');
+  APIHelpers::showerror(1261, 'incorrect feedbackid');
+
+$id = intval($id);
 
 $conn = APIHelpers::createConnection($config);
 
 try {
- 	$stmt = $conn->prepare('UPDATE public_events SET type = ?, message = ? WHERE id = ?');
- 	$stmt->execute(array($type, $message, intval($id)));
+ 	$stmt = $conn->prepare('UPDATE feedback SET type = ?, text = ? WHERE id = ?');
+ 	$stmt->execute(array($type, $text, intval($id)));
  	$result['result'] = 'ok';
 } catch(PDOException $e) {
- 	APIHelpers::showerror(1258, $e->getMessage());
+ 	APIHelpers::showerror(1263, $e->getMessage());
 }
 
 echo json_encode($result);

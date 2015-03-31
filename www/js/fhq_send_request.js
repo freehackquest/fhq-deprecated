@@ -36,6 +36,29 @@ function send_request_post(page, url, callbackf)
 	tmpXMLhttp.send(url);
 };
 
+function send_request_post_html(page, url, callbackf)
+{
+	var tmpXMLhttp = null;
+	if (window.XMLHttpRequest) {
+		// code for IE7+, Firefox, Chrome, Opera, Safari
+		tmpXMLhttp=new XMLHttpRequest();
+	};  
+	tmpXMLhttp.onreadystatechange=function() {
+		if (tmpXMLhttp.readyState==4 && tmpXMLhttp.status==200) {
+			if(tmpXMLhttp.responseText == "")
+				alert("error");
+			else
+			{
+				callbackf(tmpXMLhttp.responseText);
+				tmpXMLhttp = null;
+			}
+		}
+	}
+	tmpXMLhttp.open("POST", page, true);
+	tmpXMLhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	tmpXMLhttp.send(url);
+};
+
 function send_request_post_files(files, page, url, callbackf) {
 	
 	var formData = new FormData();

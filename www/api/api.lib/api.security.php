@@ -86,15 +86,11 @@ class APISecurity {
 		if(APISecurity::isLogged())
 			$_SESSION['user']['nick'] = $nick;
 	}
-	
-	static function iduser() { 
-		return (APISecurity::isLogged() && is_numeric($_SESSION['user']['iduser'])) ? $_SESSION['user']['iduser'] : ''; 
-	}
-	
+
 	static function userid() { 
 		return (APISecurity::isLogged() && is_numeric($_SESSION['user']['iduser'])) ? $_SESSION['user']['iduser'] : ''; 
 	}
-	
+		
 	static function insertLastIp($conn, $client) { 
 		try {
 			$query = 'INSERT INTO users_ips (userid, ip, country, city, browser, client, date_sign_in) VALUES(?,?,?,?,?,?,NOW())';
@@ -108,7 +104,7 @@ class APISecurity {
 			}
 
 			$params = array(
-				APISecurity::iduser(),
+				APISecurity::userid(),
 				$_SERVER['REMOTE_ADDR'],
 				$country,
 				$city,
@@ -119,7 +115,7 @@ class APISecurity {
 			$stmt->execute($params);
 
 			$stmt_dls = $conn->prepare('UPDATE user SET date_last_signup = NOW() WHERE iduser = ?');
-			$stmt_dls->execute(array(APISecurity::iduser()));
+			$stmt_dls->execute(array(APISecurity::userid()));
 		} catch(PDOException $e) {
 			APIHelpers::showerror(1198, $e->getMessage());
 		}

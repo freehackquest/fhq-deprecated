@@ -216,21 +216,25 @@ function updateGame(id) {
 	);
 }
 
+/*var g_gameTypes = [
+	{ type: 'jeopardy', caption: 'Jeopardy'},
+	{ type: 'attack-defence',  caption: 'Attack-Defence'}
+];*/
+
 var g_gameTypes = [
-		{ type: 'jeopardy', caption: 'Jeopardy'},
-		{ type: 'attack-defence',  caption: 'Attack-Defence'}
-	];
+	{ type: 'jeopardy', caption: 'Jeopardy'}
+];
 
 var g_gameForm = [
-		{ type: 'online', caption: 'Online'},
-		{ type: 'offline',  caption: 'Offline'}
-	];
+	{ type: 'online', caption: 'Online'},
+	{ type: 'offline',  caption: 'Offline'}
+];
 	
 var g_gameState = [
-		{ type: 'original', caption: 'Original'},
-		{ type: 'copy',  caption: 'Copy'},
-		{ type: 'unlicensed copy',  caption: 'Unlicensed copy'}
-	];
+	{ type: 'original', caption: 'Original'},
+	{ type: 'copy',  caption: 'Copy'},
+	{ type: 'unlicensed copy',  caption: 'Unlicensed copy'}
+];
 
 function createComboBoxGame(idelem, value, arr) {
 	var result = '<select id="' + idelem + '">';
