@@ -11,6 +11,7 @@ function getParam($name, $defaultValue = "") {
 }
 
 class APIHelpers {
+
 	static function checkAuth()
 	{
 		if(!APISecurity::isLogged()) {
@@ -21,7 +22,15 @@ class APIHelpers {
 	
 	static function createConnection($config)
 	{
-		return new PDO('mysql:host='.$config['db']['host'].';dbname='.$config['db']['dbname'].';charset=utf8', $config['db']['username'], $config['db']['userpass']);
+		if (APIHelpers::$CONN != null)
+			return APIHelpers::$CONN;
+		
+		APIHelpers::$CONN = new PDO(
+			'mysql:host='.$config['db']['host'].';dbname='.$config['db']['dbname'].';charset=utf8',
+			$config['db']['username'],
+			$config['db']['userpass']
+		);
+		return APIHelpers::$CONN;
 	}
 	
 	static function issetParam($name) {
@@ -37,10 +46,9 @@ class APIHelpers {
 			'result' => 'fail',
 			'data' => array(),
 		);
-		
 		$result['error']['code'] = $code;
 		$result['error']['message'] = 'Error '.$code.': '.$message;
-		echo json_encode($result);
+		APIHelpers::endpage($result);
 		exit;
 	}
 	
@@ -83,6 +91,26 @@ class APIHelpers {
 		$browser = $_SERVER['HTTP_USER_AGENT']."\n\n";
 		$pos = strpos($browser,"Mobile");
 		return !($pos === false);
+	}
+	
+	static $TIMESTART = null;
+	static $FHQSESSION = null;
+	static $FHQSESSION_CHANGED = false;
+	static $CONN = null;
+
+	static function startpage($config) {
+		header("Access-Control-Allow-Origin: *");
+		header('Content-Type: application/json');
+		APIHelpers::$TIMESTART = microtime(true);	
+	}
+	
+	static function endpage($result) {
+		if (APIHelpers::$TIMESTART != null)
+			$result['lead_time_sec'] = microtime(true) - APIHelpers::$TIMESTART;
+		if (APIHelpers::$FHQSESSION_CHANGED) {
+			// TODO save session
+		}
+		echo json_encode($result);
 	}
 }
 
