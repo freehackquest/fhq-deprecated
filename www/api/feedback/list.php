@@ -37,7 +37,7 @@ $filter_where = [];
 $filter_values = [];
 
 if (!APISecurity::isAdmin()) {
-	$filter_where[] = 'fb.author = ?';
+	$filter_where[] = 'fb.userid = ?';
 	$filter_values[] = APISecurity::userid();
 }
 
