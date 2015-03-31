@@ -53,11 +53,8 @@ function checkGameDates($security, &$message) {
 }
 
 include_once "$curdir/fhq_base.php";
-include_once "$curdir/fhq_class_income.php";
 include_once "$curdir/fhq_class_security.php";
-include_once "$curdir/fhq_class_feedback.php";
 include_once "$curdir/fhq_class_adviser.php";
-include_once "$curdir/fhq_class_mail.php";
 include_once "$curdir/fhq_echo_shortpage.php";
 include_once "$curdir/fhq_echo_mainpage.php";
 ?>

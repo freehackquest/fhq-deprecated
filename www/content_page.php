@@ -9,24 +9,6 @@
 		return;
 	};
 	
-	$income = new fhq_income();
-	if ( 
-		!$income->isStarted() 
-		&& !$security->isAdmin()
-		&& !$security->isTester()
-		&& !$security->isGod()
-	)
-	{
-		echo "free-hack-quest not started yet";	
-		exit;
-	}
-
-  if($income->isFinished())
-  {
-		refreshTo("scoreboard.php");
-	 	exit;  
-  };
-	
 	$db = new fhq_database();
 	
 	$content_page = "";
