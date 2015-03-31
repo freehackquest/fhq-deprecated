@@ -74,7 +74,8 @@ echo '
 	<script type="text/javascript" src="js/fhq_timer.js?ver='.$versioncontent.'"></script>
 	<script type="text/javascript" src="js/fhq_updates.js?ver='.$versioncontent.'"></script>
 	<script type="text/javascript" src="js/fhq_events.js?ver='.$versioncontent.'"></script>
-	<script type="text/javascript" src="js/fhq_stats.js?ver='.$versioncontent.'"></script>';
+	<script type="text/javascript" src="js/fhq_stats.js?ver='.$versioncontent.'"></script>
+	<script type="text/javascript" src="js/fhq_feedback.js?ver='.$versioncontent.'"></script>';
 	
 ?>
 		<script type="text/javascript">

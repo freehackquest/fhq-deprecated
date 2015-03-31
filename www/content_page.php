@@ -37,20 +37,7 @@
 	if(isset($_POST['number_of_page'])) $number_of_page = $_POST['number_of_page'];
 
 
-	if($content_page == "feedback_my")
-	{
-	    $feedback = new fhq_feedback();
-	    $feedback->echo_menu();
-	    $feedback->echo_list();
-		exit;
-	}
-	else if($content_page == "feedbacks")
-	{
-	    $feedback = new fhq_feedback();
-	    $feedback->echo_list();
-		exit;
-	}
-	else if($content_page == "about")
+	if($content_page == "about")
 	{
 	    include("about.php");
 		exit;

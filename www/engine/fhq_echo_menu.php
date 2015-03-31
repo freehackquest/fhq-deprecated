@@ -205,7 +205,7 @@ echo '
 	$arrmenu[] = array(
 		'name' => 'feedback',
 		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Feedback" onclick="load_content_page(\'feedback_my\');">
+			<div class="fhq_btn_menu hint--bottom" data-hint="Feedback" onclick="loadFeedback();">
 				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_feedback.png"/>
 			</div>
 		',
@@ -245,15 +245,6 @@ echo '
 	// system menu
 	
 	$arrsystemmenu = array();
-	
-	// todo
-	$arrsystemmenu[] = array(
-		'name' => 'feedbacks',
-		'html' => '
-			<div class="button3 ad" href="javascript:void(0);" onclick="load_content_page(\'feedbacks\');">Messages</div>
-		',
-		'show' => $security->isAdmin(),
-	);
 
 	// todo
 	/*$arrsystemmenu[] = array(
