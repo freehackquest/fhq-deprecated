@@ -45,8 +45,6 @@ try {
 			WHERE
 				for_person = ?
 				AND gameid = ?
-			ORDER BY
-				min_score, score
 	');
 	$stmt->execute(array(0,intval($gameid)));
 	if($row = $stmt->fetch()) {
