@@ -40,6 +40,7 @@ $query = '
 				user.iduser,
 				user.nick,
 				user.role,
+				user.logo,
 				users_games.score
 			FROM 
 				users_games
@@ -73,7 +74,8 @@ try {
 		
 		$result['data'][$i][] = array(
 			'userid' => $row['iduser'],
-			'nick' => $row['nick'],
+			'nick' => htmlspecialchars($row['nick']),
+			'logo' => $row['logo'],
 			'score' => $row['score'],
 			// 'role' => $row['role'],
 		);

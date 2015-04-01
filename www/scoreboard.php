@@ -23,6 +23,7 @@
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/quests.css?ver=<?php echo $versioncontent; ?>"/>
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/users.css?ver=<?php echo $versioncontent; ?>"/>
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/events.css?ver=<?php echo $versioncontent; ?>"/>
+	<link rel="stylesheet" type="text/css" href="templates/base/styles/fhq.css?ver=<?php echo $versioncontent; ?>"/>
 
 <?php
 	$get_gameid = '';
