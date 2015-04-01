@@ -108,18 +108,26 @@ function loadCities() {
 			} else {
 				var c = document.getElementById('cities');
 				
-				c.innerHTML += "<br><font size=1><b>Квестов в системе:</b></font><br>";
+				c.innerHTML += "<br><font size=1><b>Quests in the system:</b></font><br>";
 				c.innerHTML += "<font size=1>" + obj.data.quests.count + "</font><br>";
 				
-				c.innerHTML += "<br><font size=1><b>Количество попыток:</b></font><br>";
+				c.innerHTML += "<br><font size=1><b>The number of attempts:</b></font><br>";
 				c.innerHTML += "<font size=1>" + obj.data.quests.attempts + "</font><br>";
 				
-				c.innerHTML += "<br><font size=1><b>Количество решений:</b></font><br>";
+				c.innerHTML += "<br><font size=1><b>The number of solved:</b></font><br>";
 				c.innerHTML += "<font size=1>" + obj.data.quests.solved + "</font><br>";
 				
-				c.innerHTML += "<br><font size=1><b>С нами играют из городов:</b></font><br>";
+				
+				for (var k in obj.data.winners) {
+					c.innerHTML += '<br><font size=1><b>Winner of ' + obj.data.winners[k].game + ':</b></font><br>';
+					c.innerHTML += '<font size=1>' + obj.data.winners[k].user + ' with +' + obj.data.winners[k].score + '</font><br>';
+				}
+
+				c.innerHTML += "<br><font size=1><b>Playing with us:</b></font><br>";
 				for (var k in obj.data.cities) {
-					c.innerHTML += '<font size=1>[' + obj.data.cities[k].city + ' (' + obj.data.cities[k].cnt + ')]</font><br>';
+					if (obj.data.cities[k].cnt > 1) {
+						c.innerHTML += '<font size=1>[' + obj.data.cities[k].city + ' (' + obj.data.cities[k].cnt + ')]</font><br>';
+					}
 				}
 			}
 		}
