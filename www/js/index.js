@@ -119,8 +119,10 @@ function loadCities() {
 				
 				
 				for (var k in obj.data.winners) {
-					c.innerHTML += '<br><font size=1><b>Winner of ' + obj.data.winners[k].game + ':</b></font><br>';
-					c.innerHTML += '<font size=1>' + obj.data.winners[k].user + ' with +' + obj.data.winners[k].score + '</font><br>';
+					c.innerHTML += '<br><font size=1><b>Winner(s) of ' + k + ':</b></font><br>';
+					for (var k1 in obj.data.winners[k]) {
+						c.innerHTML += '<font size=1>' + obj.data.winners[k][k1].user + ' with +' + obj.data.winners[k][k1].score + '</font><br>';
+					}
 				}
 
 				c.innerHTML += "<br><font size=1><b>Playing with us:</b></font><br>";

@@ -110,14 +110,15 @@ try {
 				INNER JOIN user u1 ON t1.userid = u1.iduser
 				WHERE t1.gameid = t0.gameid
 				AND u1.role = ?
-			) AND t0.score > 0;
+			) AND t0.score > 0
+			AND u0.role = ?
 	');
- 	$stmt->execute(array('user'));
+ 	$stmt->execute(array('user','user'));
 	
 	$result['data']['winners'] = array();
 
  	while ($row = $stmt->fetch()) {
-		$result['data']['winners'][] = array(
+		$result['data']['winners'][$row['title']][] = array(
 			'game' => $row['title'],
 			'user' => htmlspecialchars($row['nick']),
 			'score' => $row['score'],
