@@ -23,6 +23,7 @@ if (!isset($_SESSION['user']))
 		<meta name="description" content="competition information security" />
 		<meta name="keywords" content="security, fhq, fhq 2012, fhq 2013, fhq 2014, free, hack, quest, competition, information security, ctf, joepardy" />		
 
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/fhq.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/menu.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css?ver=1" />

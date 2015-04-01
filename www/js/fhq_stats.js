@@ -122,22 +122,24 @@ function createPageAnswerList() {
 
 	var content = '';
 	var onkeydown_ = 'onkeydown="if (event.keyCode == 13) {resetPageAnswerList(); updateAnswerList();};"';
-	content += '<div class="user_info_table">';
-	content += createUserInfoRow('UserID:', '<input type="text" id="answerlist_userid" value="" ' + onkeydown_ + '/>');
-	content += createUserInfoRow('E-mail or Nick:', '<input type="text" id="answerlist_user" value="" ' + onkeydown_ + '/>');
-	content += createUserInfoRow('GameID:', '<input type="text" id="answerlist_gameid" value="" ' + onkeydown_ + '/>');
-	content += createUserInfoRow('Game Name:', '<input type="text" id="answerlist_gamename" value="" ' + onkeydown_ + '/>');
-	content += createUserInfoRow('Quest ID:', '<input type="text" id="answerlist_questid" value="" ' + onkeydown_ + '/>');
-	content += createUserInfoRow('Quest Name:', '<input type="text" id="answerlist_questname" value="" ' + onkeydown_ + '/>');
-	content += createUserInfoRow('Quest Subject:', fhqgui.createComboBox('answerlist_questsubject', '', fhq.getQuestTypesFilter()));
-	content += createUserInfoRow('Passed:', fhqgui.createComboBox('answerlist_passed', '', fhq.getAnswerlistPassedFilter()));
-	content += createUserInfoRow('Table:', fhqgui.createComboBox('answerlist_table', 'active', fhq.getAnswerlistTable()));
-	content += createUserInfoRow('On Page:', fhqgui.createComboBox('answerlist_onpage', '10', fhq.getOnPage()));
-	content += createUserInfoRow('', '<div class="button3 ad" onclick="resetPageAnswerList(); updateAnswerList();">Update</div>');
-	content += createUserInfoRow_Skip();
-	content += createUserInfoRow('Found:', '<font id="answerlist_found">0</font>');
-	content += createUserInfoRow_Skip();
-	content += '</div><hr>'; // user_info_table
+	
+	var pt = new FHQParamTable();
+	pt.row('UserID:', '<input type="text" id="answerlist_userid" value="" ' + onkeydown_ + '/>');
+	pt.row('E-mail or Nick:', '<input type="text" id="answerlist_user" value="" ' + onkeydown_ + '/>');
+	pt.row('GameID:', '<input type="text" id="answerlist_gameid" value="" ' + onkeydown_ + '/>');
+	pt.row('Game Name:', '<input type="text" id="answerlist_gamename" value="" ' + onkeydown_ + '/>');
+	pt.row('Quest ID:', '<input type="text" id="answerlist_questid" value="" ' + onkeydown_ + '/>');
+	pt.row('Quest Name:', '<input type="text" id="answerlist_questname" value="" ' + onkeydown_ + '/>');
+	pt.row('Quest Subject:', fhqgui.combobox('answerlist_questsubject', '', fhq.getQuestTypesFilter()));
+	pt.row('Passed:', fhqgui.combobox('answerlist_passed', '', fhq.getAnswerlistPassedFilter()));
+	pt.row('Table:', fhqgui.combobox('answerlist_table', 'active', fhq.getAnswerlistTable()));
+	pt.row('On Page:', fhqgui.combobox('answerlist_onpage', '10', fhq.getOnPage()));
+	pt.row('', '<div class="button3 ad" onclick="resetPageAnswerList(); updateAnswerList();">Update</div>');
+	pt.skip();
+	pt.row('Found:', '<font id="answerlist_found">0</font>');
+	pt.skip();
+	content += pt.render();
+	content += '</div><hr>'; // fhqparamtbl
 	content += '<input type="hidden" id="answerlist_page" value="0"/>'	
 	content += '<div id="answerList"></div>';
 	cp.innerHTML = content;

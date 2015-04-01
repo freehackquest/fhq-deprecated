@@ -10,17 +10,15 @@ function loadSettings() {
 				cp.innerHTML = obj.error.message;
 				return;
 			}
-
-			var content = '<div class="user_info_table">';
+			var pt = new FHQParamTable();
 			for (var k in obj.data) {
 				for (var k1 in obj.data[k]) {
-					content += createUserInfoRow(k + '.' + k1, obj.data[k][k1]);
+					pt.row(k+'.'+k1, obj.data[k][k1]);
 				}
-				content += createUserInfoRow_Skip();
+				pt.skip();
 			}
-			content += createUserInfoRow_Skip();
-			content += '</div>';
-			cp.innerHTML = content;
+			pt.skip();
+			cp.innerHTML = pt.render();
 		}
 	);
 }

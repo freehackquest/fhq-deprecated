@@ -180,14 +180,6 @@ function deleteUser(userid) {
 	);
 }
 
-function createUserInfoRow(name, param) {
-	return '<div class="user_info_row"><div class="user_info_param">' + name + '</div><div class="user_info_value">' + param + '</div></div>\n';
-}
-
-function createUserInfoRow_Skip() {
-	return '<div class="user_info_row_skip"></div>\n';
-}
-
 function showUserInfo(id) {
 	showModalDialog('<div id="user_info"><center>Please wait...</div>');
 
@@ -205,45 +197,50 @@ function showUserInfo(id) {
 			}
 			var ui = document.getElementById('user_info');
 			
-			// var paramtable = [];
-			// table.push(fhqgui.createParamRow())
-			var content = '<div class="user_info_table">';
-			content += createUserInfoRow('Logo:', '<img id="user_current_logo" src="'+ obj.data.logo + '"/>');
-			content += createUserInfoRow('ID:',  obj.data.userid);
+			
+			var pt = new FHQParamTable();
+			pt.row('Logo:', '<img id="user_current_logo" src="'+ obj.data.logo + '"/>');
+			pt.row('ID:',  obj.data.userid);
 			if (obj.access.edit == true) {
-				content += createUserInfoRow('E-mail:', '<div id="user_current_email">' + obj.data.email + '</div>');
-				content += createUserInfoRow('Role:', '<div id="user_current_role">' + obj.data.role + '</div>');
+				pt.row('E-mail:', '<div id="user_current_email">' + obj.data.email + '</div>');
+				pt.row('Role:', '<div id="user_current_role">' + obj.data.role + '</div>');
 			}
-			content += createUserInfoRow('Nick:', '<div id="user_current_nick">' + obj.data.nick + '</div>');
+			pt.row('Nick:', '<div id="user_current_nick">' + obj.data.nick + '</div>');
 			if (obj.access.edit == true)
-				content += createUserInfoRow('Status:', '<div id="user_current_status">' + obj.data.status + '</div>');
+				pt.row('Status:', '<div id="user_current_status">' + obj.data.status + '</div>');
 			
 			if (obj.access.edit) {
 				if (!obj.currentUser) {
-					content += createUserInfoRow_Skip();
-					content += createUserInfoRow('Change Logo:', '<input id="user_new_logo" type="text" value="' + obj.data.logo + '" > <div class="button3 ad" onclick="changeUserLogo(' + obj.data.userid + ');">Save</div>');
-					content += createUserInfoRow('Change Nick:', '<input id="user_new_nick" type="text" value="' + obj.data.nick + '" > <div class="button3 ad" onclick="changeUserNick(' + obj.data.userid + ');">Save</div> ');
-					content += createUserInfoRow('Change Password:', '<input id="user_new_password" type="password" value="" > <div class="button3 ad" onclick="changeUserPassword(' + obj.data.userid + ');">Save</div> ');
-					content += createUserInfoRow('Change Status:', fhqgui.createComboBox('user_new_status', obj.data.status, fhq.getUserStatuses()) + ' <div class="button3 ad" onclick="changeUserStatus(' + obj.data.userid + ');">Save</div> ');
-					content += createUserInfoRow('Change Role:', fhqgui.createComboBox('user_new_role', obj.data.role, fhq.getUserRoles())  + '<div class="button3 ad" onclick="changeUserRole(' + obj.data.userid + ');">Save</div> ');
-					content += createUserInfoRow('Remove User:', '<div class="button3 ad" onclick="deleteUser(' + obj.data.userid + ');">Remove</div> ');
+					pt.skip();
+
+					pt.row('Change Logo:', '<input id="user_new_logo" type="text" value="' + obj.data.logo + '" > '
+						+ fhqgui.btn('Save', 'changeUserLogo(' + obj.data.userid + ');'));
+
+					pt.row('Change Nick:', '<input id="user_new_nick" type="text" value="' + obj.data.nick + '" > '
+						+ fhqgui.btn('Save', 'changeUserNick(' + obj.data.userid + ');'));
+
+					pt.row('Change Password:', '<input id="user_new_password" type="password" value="" > '
+						+ fhqgui.btn('Save', 'changeUserPassword(' + obj.data.userid + ');'));
+
+					pt.row('Change Status:', fhqgui.combobox('user_new_status', obj.data.status, fhq.getUserStatuses()) + ' '
+						+ fhqgui.btn('Save', 'changeUserStatus(' + obj.data.userid + ');'));
+					pt.row('Change Role:', fhqgui.combobox('user_new_role', obj.data.role, fhq.getUserRoles()) + ' '
+						+ fhqgui.btn('Save', 'changeUserRole(' + obj.data.userid + ');'));
+					pt.row('Remove User:', fhqgui.btn('Remove', 'deleteUser(' + obj.data.userid + ');'));
 				}
 
-				content += createUserInfoRow_Skip();
+				pt.skip();
 				for (var k in obj.profile) {
-					content += createUserInfoRow('Profile "' + k + '":', obj.profile[k]);
+					pt.row('Profile "' + k + '":', obj.profile[k]);
 				}
 			}
 
-			content += createUserInfoRow_Skip();
-
+			pt.skip();
 			for (var k in obj.games) {
-				content += createUserInfoRow('Game "' + obj.games[k].title + '" (' + obj.games[k].type_game + '):', obj.games[k].score);
+				pt.row('Game "' + obj.games[k].title + '" (' + obj.games[k].type_game + '):', obj.games[k].score);
 			}
-			content += createUserInfoRow_Skip();
-
-			content += '</div>';
-			ui.innerHTML = content;
+			pt.skip();
+			ui.innerHTML = pt.render();
 			// ui.innerHTML += JSON.stringify(obj);
 		}
 	);
@@ -332,7 +329,7 @@ function getHTMLPaging1(min,max,onpage,page) {
 		} else if (pagesInt[i] == page) {
 			pagesHtml.push('<div class="selected_user_page">[' + (pagesInt[i]+1) + ']</div>');
 		} else {
-			pagesHtml.push('<div class="button3 ad" onclick="setUsersPage(' + pagesInt[i] + '); updateUsers();">[' + (pagesInt[i]+1) + ']</div>');
+			pagesHtml.push(fhqgui.btn('[' + (pagesInt[i]+1) + ']', 'setUsersPage(' + pagesInt[i] + '); updateUsers();'));
 		}
 	}
 
@@ -399,8 +396,8 @@ function updateUsers() {
 
 				// email
 				content += '<div class="users_cell"> ' + userinfo.email;
-				content += '	<div class="button3 ad" onclick="showUserInfo(' + userinfo.userid + ');">Info</div>';
-				content += '	<div class="button3 ad" onclick="showUserIP(' + userinfo.userid + ');">IP</div>';
+				content += '	' + fhqgui.btn('Info', 'showUserInfo(' + userinfo.userid + ');');
+				content += '	' + fhqgui.btn('IP', 'showUserIP(' + userinfo.userid + ');');
 				content += '</div>';
 				content += '<div class="users_cell">' + userinfo.nick + '</div>';
 				content += '<div class="users_cell">' + userinfo.role + '</div>';
@@ -445,50 +442,47 @@ function createUser() {
 }
 
 function formCreateUser() {
-	
-	var content = '<div class="user_info_table">';
-	content += createUserInfoRow('Uuid:', '<input type="text" id="newuser_uuid" value="' + guid() + '"/>');
-	content += createUserInfoRow('Logo:', '<input type="text" id="newuser_logo" value="files/users/0.png"/>');
-	content += createUserInfoRow('E-mail:', '<input type="text" id="newuser_email" value=""/>');
-
-	
-	content += createUserInfoRow('Role:', fhqgui.createComboBox('newuser_role', 'user', fhq.getUserRoles()));
-	content += createUserInfoRow('Nick:', '<input type="text" id="newuser_nick" value=""/>');
-	content += createUserInfoRow('Password:', '<input type="password" id="newuser_password" value=""/>');
-
-	content += createUserInfoRow('Status:', fhqgui.createComboBox('newuser_status', 'activated', fhq.getUserStatuses()));
-	content += createUserInfoRow('', '<div class="button3 ad" onclick="createUser();">Create</div>');
-	
-	content += createUserInfoRow('', '<div id="newuser_errors"></div>');
-	
-	content += createUserInfoRow_Skip();
-	content += '</div>';
-	showModalDialog(content);
+	var pt = new FHQParamTable();
+	pt.row('Uuid:', '<input type="text" id="newuser_uuid" value="' + guid() + '"/>');
+	pt.row('Logo:', '<input type="text" id="newuser_logo" value="files/users/0.png"/>');
+	pt.row('E-mail:', '<input type="text" id="newuser_email" value=""/>');
+	pt.row('Role:', fhqgui.combobox('newuser_role', 'user', fhq.getUserRoles()));
+	pt.row('Nick:', '<input type="text" id="newuser_nick" value=""/>');
+	pt.row('Password:', '<input type="password" id="newuser_password" value=""/>');
+	pt.row('Status:', fhqgui.combobox('newuser_status', 'activated', fhq.getUserStatuses()));
+	pt.right('<div class="fhqbtn" onclick="createUser();">Create</div>');
+	pt.right('<div id="newuser_errors"></div>');
+	pt.skip();
+	showModalDialog(pt.render());
 }
 
 function createPageUsers() {
-	var cp = document.getElementById('content_page');
-	cp.innerHTML = '';
+	var pt = new FHQParamTable();
+	pt.row('', fhqgui.btn('Create User', 'formCreateUser();'));
+	pt.skip();
+	pt.row('E-mail or Nick:', '<input type="text" id="user_search" value="" onkeydown="if (event.keyCode == 13) {resetUsersPage(); updateUsers();};"/>');
+	pt.row('Role:', fhqgui.combobox('user_role', '', fhq.getUserRolesFilter()));
+	pt.row('Status:', fhqgui.combobox('user_status', '', fhq.getUserStatusesFilter()));
+	pt.row('On Page:', fhqgui.combobox('user_onpage', '15', fhq.getOnPage()));
+	pt.row('', fhqgui.btn('Search', 'resetUsersPage(); updateUsers();'));
+	pt.skip();
+	pt.row('Found:', '<font id="search_found">0</font>');
+	var cp = new FHQContentPage();
+	cp.clear();
 
-	var content = '<div class="user_info_table">';
-	content += createUserInfoRow('', '<div class="button3 ad" onclick="formCreateUser();"> * Create User</div>');
-	content += createUserInfoRow_Skip();
-	
-	content += createUserInfoRow('E-mail or Nick:', '<input type="text" id="user_search" value="" onkeydown="if (event.keyCode == 13) {resetUsersPage(); updateUsers();};"/>');
-	content += createUserInfoRow('Role:', fhqgui.createComboBox('user_role', '', fhq.getUserRolesFilter()));
-	content += createUserInfoRow('Status:', fhqgui.createComboBox('user_status', '', fhq.getUserStatusesFilter()));
-	content += createUserInfoRow('On Page:', fhqgui.createComboBox('user_onpage', '15', fhq.getOnPage()));
-
-	content += createUserInfoRow('', '<div class="button3 ad" onclick="resetUsersPage(); updateUsers();">Search</div>');
-	content += createUserInfoRow_Skip();
-	content += createUserInfoRow('Found:', '<font id="search_found">0</font>');
-	
-	content += '</div>'; // user_info_table
-	content += '<input type="hidden" id="user_page" value="0"/>'	
-	cp.innerHTML += content;
-	cp.innerHTML += '<div id="error_search"></div>';
-	cp.innerHTML += '<hr/>';
-	cp.innerHTML += '<div id="listUsers"></div>';
+/*
+	// alternative:
+	var pt0 = new FHQParamTable();
+	pt0.row(pt.render(), '<input type="hidden" id="user_page" value="0"/>'
+		+ '<div id="error_search"></div>'
+		+ '<div id="listUsers"></div>');
+	cp.append(pt0.render());
+*/
+	cp.append(pt.render());
+	cp.append('<input type="hidden" id="user_page" value="0"/>'
+		+ '<div id="error_search"></div>'
+		+ '<hr/>'
+		+ '<div id="listUsers"></div>');
 }
 
 function updateUserLogo(userid) {
@@ -528,42 +522,41 @@ function loadUserProfile(userid) {
 				cp.innerHTML = content;
 				return;
 			}
-			var content = '<div class="user_info_table">';
-			content += createUserInfoRow('ID:', userid);
-	
-			content += createUserInfoRow('Your logo:', '<img id="user_logo" src="' + obj.data.logo + '"/>');
-			content += createUserInfoRow('Your name:', '<div id="user_current_nick">' + obj.data.nick + '</div>');
-			content += createUserInfoRow('Your role:', obj.data.role);
-			for (var k in obj.games) {
-				content += createUserInfoRow('Game "' + obj.games[k].title + '" (' + obj.games[k].type_game + '):', obj.games[k].score);
-			}
-			content += createUserInfoRow_Skip();
-			content += createUserInfoRow('Update logo:', 'PNG: <input id="user_new_logo" type="file" accept="image/png" required/>');
-			content += createUserInfoRow('', '<div class="button3 ad" onclick="updateUserLogo(' + userid + ');">Upload</div>');
 			
-			content += createUserInfoRow_Skip();
-			content += createUserInfoRow('Update nick:', '<input id="user_new_nick" type="text" value="' + obj.data.nick + '"/>');
-			content += createUserInfoRow('', '<div class="button3 ad" onclick="changeUserNick(null);">Change name</div>');
-			content += createUserInfoRow_Skip();
-			content += createUserInfoRow('Country:', '<input id="edit_user_country" type="text" value="'+obj.profile.country+'"/>');
-			content += createUserInfoRow('City:', '<input id="edit_user_city" type="text" value="'+obj.profile.city+'"/>');
-			content += createUserInfoRow('University:', '<input id="edit_user_university" type="text" value="'+obj.profile.university+'"/>');
-			content += createUserInfoRow('', '<div class="button3 ad" onclick="update_profile_location();">Update</div>');
-			content += createUserInfoRow_Skip();
+			var pt = new FHQParamTable();
+			pt.row('ID:', userid);
+			pt.row('Your logo:', '<img id="user_logo" src="' + obj.data.logo + '"/>');
+			pt.row('Your name:', '<div id="user_current_nick">' + obj.data.nick + '</div>');
+			pt.row('Your role:', obj.data.role);
+			for (var k in obj.games) {
+				pt.row('Game "' + obj.games[k].title + '" (' + obj.games[k].type_game + '):', obj.games[k].score);
+			}
+			pt.skip();
+			pt.row('Update logo:', 'PNG: <input id="user_new_logo" type="file" accept="image/png" required/>');
+			pt.row('', '<div class="fhqbtn" onclick="updateUserLogo(' + userid + ');">Upload</div>');
+			
+			pt.skip();
+			pt.row('Update nick:', '<input id="user_new_nick" type="text" value="' + obj.data.nick + '"/>');
+			pt.row('', '<div class="fhqbtn" onclick="changeUserNick(null);">Change name</div>');
+			pt.skip();
+			pt.row('Country:', '<input id="edit_user_country" type="text" value="'+obj.profile.country+'"/>');
+			pt.row('City:', '<input id="edit_user_city" type="text" value="'+obj.profile.city+'"/>');
+			pt.row('University:', '<input id="edit_user_university" type="text" value="'+obj.profile.university+'"/>');
+			pt.row('', '<div class="fhqbtn" onclick="update_profile_location();">Update</div>');
+			pt.skip();
 
 			// todo change password
-			content += createUserInfoRow('Old password:', '<input id="userpage_old_password" type="password" value=""/>');
-			content += createUserInfoRow('New password:', '<input id="userpage_new_password" type="password" value=""/>');
-			content += createUserInfoRow('New password(confirm):', '<input id="userpage_new_password_confirm" type="password" value=""/>');
-			content += createUserInfoRow('', '<div class="button3 ad" onclick="userpage_changeUserPassword();">Change password</div>');
-			content += createUserInfoRow_Skip();
+			pt.row('Old password:', '<input id="userpage_old_password" type="password" value=""/>');
+			pt.row('New password:', '<input id="userpage_new_password" type="password" value=""/>');
+			pt.row('New password(confirm):', '<input id="userpage_new_password_confirm" type="password" value=""/>');
+			pt.row('', '<div class="fhqbtn" onclick="userpage_changeUserPassword();">Change password</div>');
+			pt.skip();
 
 			// todo style
-			content += createUserInfoRow('Сolor spectrum', fhqgui.createComboBox('edit_style', obj.profile.template, fhq.getStyles()));
-			content += createUserInfoRow('', '<div class="button3 ad" onclick="update_profile_style()">Save</div>');
+			pt.row('Сolor spectrum', fhqgui.combobox('edit_style', obj.profile.template, fhq.getStyles()));
+			pt.row('', '<div class="fhqbtn" onclick="update_profile_style()">Save</div>');
 
-			content += '</div>'; // user_info_table
-			cp.innerHTML = content;
+			cp.innerHTML = pt.render();
 		}
 	);
 }

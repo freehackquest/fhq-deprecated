@@ -39,6 +39,7 @@ try {
 	');
 	$stmt->execute(array($id));
 	if($row = $stmt->fetch()) {
+		$result['data']['id'] = htmlspecialchars($row['id']);
 		$result['data']['type'] = htmlspecialchars($row['type']);
 		$result['data']['text'] = htmlspecialchars($row['text']);
 	}

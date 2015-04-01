@@ -54,17 +54,6 @@ function updateScore() {
 	);
 }
 
-function createDivRowGame(name, value) {
-	return '<div class="user_info_row"> \n'
-		+ '\t<div class="user_info_param">' + name + '</div>\n'
-		+ '\t<div class="user_info_value">' + value + '</div>\n'
-		+ '</div>\n';
-}
-
-function createDivRowGame_Skip() {
-	return '<div class="user_info_row_skip"></div> \n';
-}
-
 function loadGames() {
 	var el = document.getElementById("content_page");
 	el.innerHTML = "Please wait...";
@@ -79,26 +68,25 @@ function loadGames() {
 			
 			var perms = obj['permissions'];
 			if (perms['insert'] == true)
-				el.innerHTML += '<div class="fhq_game_info"><div class="button3 ad" onclick="formCreateGame();">Create Game</div></div><br>';
-				
+				el.innerHTML += '<div class="fhqinfo"><div class="button3 ad" onclick="formCreateGame();">Create Game</div></div><br>';
+
 			for (var k in obj.data) {
-				var content = '<div class="fhq_game_info">' 
-				
-				content += '<div class="fhq_game_info_table">\n';
-				
+				var pt = new FHQParamTable();
+								
 				if (obj.data.hasOwnProperty(k)) {
-					content += createDivRowGame('Logo:', '<img class="fhq_game_img" src="' + obj.data[k]['logo'] + '"/>');
-					content += createDivRowGame('Name:', obj.data[k]['title'].trim());
-					content += createDivRowGame('State:', obj.data[k]['state'].trim());
-					content += createDivRowGame('Form:', obj.data[k]['form'].trim());
-					content += createDivRowGame('Type:', obj.data[k]['type_game'].trim());
-					content += createDivRowGame('Date Start:', obj.data[k]['date_start'].trim());
-					content += createDivRowGame('Date Stop:', obj.data[k]['date_stop'].trim());
-					content += createDivRowGame('Date Restart:', (obj.data[k]['date_restart'] + '').trim());
-					content += createDivRowGame('Description:', (obj.data[k]['description'] + '').trim());
-					content += createDivRowGame('Organizators:', obj.data[k]['organizators'].trim());				
-					var btns = '';
 					
+					pt.row('Logo:', '<img class="fhq_game_img" src="' + obj.data[k]['logo'] + '"/>');
+					pt.row('Name:', obj.data[k]['title'].trim());
+					pt.row('State:', obj.data[k]['state'].trim());
+					pt.row('Form:', obj.data[k]['form'].trim());
+					pt.row('Type:', obj.data[k]['type_game'].trim());
+					pt.row('Date Start:', obj.data[k]['date_start'].trim());
+					pt.row('Date Stop:', obj.data[k]['date_stop'].trim());
+					pt.row('Date Restart:', (obj.data[k]['date_restart'] + '').trim());
+					pt.row('Description:', (obj.data[k]['description'] + '').trim());
+					pt.row('Organizators:', obj.data[k]['organizators'].trim());				
+
+					var btns = '';
 					if (current_game != obj.data[k]['id'])
 						btns += '<div class="button3 ad" onclick="chooseGame(\'' + obj.data[k]['id'] + '\');">Choose</div> ';
 					else
@@ -112,16 +100,11 @@ function loadGames() {
 					if (perms['update'] == true)
 						btns += '<div class="button3 ad" onclick="formEditGame(\'' + obj.data[k]['id'] + '\');">Edit</div>';
 
-					content += createDivRowGame(' ', btns);
+					pt.row(' ', btns);
 				}
-				content += '\n';
-				content += '<div class="user_info_row_skip">';
-				
-				content += '</div>'; // game_info_table
-				content += '</div>\n'; // game_info
-				el.innerHTML += content;
+				pt.skip();
+				el.innerHTML += pt.render();
 			}
-
 			el.innerHTML += '';
 		}
 	);	
@@ -226,32 +209,31 @@ function formEditGame(id)
 		createUrlFromObj(params),
 		function (obj) {
 			if (obj.result == "ok") {
-				var content = '<div class="fhq_game_info">';
-				content += '<div class="fhq_game_info_table">\n';
-				content += createDivRowGame('', '<img class="fhq_game_img" id="editgame_logo" src="' + obj.data.logo + '"/>');
-				content += createDivRowGame('Update logo:', 'PNG: <input id="editgame_new_logo" type="file" accept="image/png" required/>');
-				content += createDivRowGame('', '<div class="button3 ad" onclick="updateGameLogo(' + id + ');">Upload</div>');
-				content += createDivRowGame_Skip();
-				content += createDivRowGame('Name (Type):',
+				
+				var pt = new FHQParamTable();
+				pt.row('', '<img class="fhq_game_img" id="editgame_logo" src="' + obj.data.logo + '"/>');
+				pt.row('Update logo:', 'PNG: <input id="editgame_new_logo" type="file" accept="image/png" required/>');
+				pt.row('', '<div class="button3 ad" onclick="updateGameLogo(' + id + ');">Upload</div>');
+				pt.skip();
+				pt.row('Name (Type):',
 					'<input type="text" id="editgame_title" value="' + obj.data.title + '"/> '
-					+ fhqgui.createComboBox('editgame_type_game', obj.data.type_game, fhq.getGameTypes())
+					+ fhqgui.combobox('editgame_type_game', obj.data.type_game, fhq.getGameTypes())
 				);
-				content += createDivRowGame('Form/State:', 
-					fhqgui.createComboBox('editgame_form', obj.data.form, fhq.getGameForms()) + ' / '
-					+ fhqgui.createComboBox('editgame_state', obj.data.state, fhq.getGameStates())
+				pt.row('Form/State:', 
+					fhqgui.combobox('editgame_form', obj.data.form, fhq.getGameForms()) + ' / '
+					+ fhqgui.combobox('editgame_state', obj.data.state, fhq.getGameStates())
 				);
-				content += createDivRowGame('Date Start/Stop:',
+				pt.row('Date Start/Stop:',
 					'<input type="text" id="editgame_date_start" value="' + obj.data.date_start + '"/> / '
 					+ '<input type="text" id="editgame_date_stop" value="' + obj.data.date_stop + '"/>'
 				);
-				content += createDivRowGame('Date Restart:', '<input type="text" id="editgame_date_restart" value="' + obj.data.date_restart + '"/>');
-				content += createDivRowGame('Description:', '<textarea id="editgame_description"></textarea>');
-				content += createDivRowGame('Organizators:', '<input type="text" id="editgame_organizators" value="' + obj.data.organizators + '"/>');
-				content += createDivRowGame('Rules:', '<textarea id="editgame_rules"></textarea>');
-				content += createDivRowGame('', '<div class="button3 ad" onclick="updateGame(' + id + ');">Update</div>');
-				content += '</div>'; // game_info_table
-				content += '</div>\n'; // game_info
-				showModalDialog(content);
+				pt.row('Date Restart:', '<input type="text" id="editgame_date_restart" value="' + obj.data.date_restart + '"/>');
+				pt.row('Description:', '<textarea id="editgame_description"></textarea>');
+				pt.row('Organizators:', '<input type="text" id="editgame_organizators" value="' + obj.data.organizators + '"/>');
+				pt.row('Rules:', '<textarea id="editgame_rules"></textarea>');
+				pt.row('', '<div class="button3 ad" onclick="updateGame(' + id + ');">Update</div>');
+				
+				showModalDialog(pt.render());
 				document.getElementById('editgame_rules').innerHTML = obj.data.rules;
 				document.getElementById('editgame_description').innerHTML = obj.data.description;
 			} else {
@@ -295,25 +277,22 @@ function createGame()
 
 function formCreateGame() 
 {
-	var content = '<div class="fhq_game_info">';
-	content += '<div class="fhq_game_info_table">\n';
-	content += createDivRowGame('UUID Game:', '<input type="text" id="newgame_uuid_game" value="' + guid() + '"/>');
-	content += createDivRowGame('Logo:', '<input type="text" id="newgame_logo" value="http://fhq.keva.su/templates/base/images/minilogo.png"/>');
-	content += createDivRowGame('Name:', '<input type="text" id="newgame_title"/>');
-	content += createDivRowGame('State:', fhqgui.createComboBox('newgame_state', 'original', fhq.getGameStates()));
-	content += createDivRowGame('Form:', fhqgui.createComboBox('newgame_form', 'online', fhq.getGameForms()));
-	content += createDivRowGame('Type:', fhqgui.createComboBox('newgame_type', 'jeopardy', fhq.getGameTypes()));
-	content += createDivRowGame('Date Start:', '<input type="text" id="newgame_date_start" value="0000-00-00 00:00:00"/>');
-	content += createDivRowGame('Date Stop:', '<input type="text" id="newgame_date_stop" value="0000-00-00 00:00:00"/>');
-	content += createDivRowGame('Date Restart:', '<input type="text" id="newgame_date_restart" value="0000-00-00 00:00:00"/>');
-	content += createDivRowGame('Description:', '<textarea id="newgame_description"></textarea>');
-	content += createDivRowGame('Organizators:', '<input type="text" id="newgame_organizators" value=""/>');
-	content += createDivRowGame('Rules:', '<textarea id="newgame_rules"></textarea>');
-	// content += createDivRowGame('Author ID:', '<input type="text" id="newgame_author_id" value=""/>');
-	content += createDivRowGame('', '<div class="button3 ad" onclick="createGame();">Create</div>');
-	content += '</div>'; // game_info_table
-	content += '</div>\n'; // game_info
-	showModalDialog(content);
+	var pt = new FHQParamTable();
+	pt.row('UUID Game:', '<input type="text" id="newgame_uuid_game" value="' + guid() + '"/>');
+	pt.row('Logo:', '<input type="text" id="newgame_logo" value="http://fhq.keva.su/templates/base/images/minilogo.png"/>');
+	pt.row('Name:', '<input type="text" id="newgame_title"/>');
+	pt.row('State:', fhqgui.combobox('newgame_state', 'original', fhq.getGameStates()));
+	pt.row('Form:', fhqgui.combobox('newgame_form', 'online', fhq.getGameForms()));
+	pt.row('Type:', fhqgui.combobox('newgame_type', 'jeopardy', fhq.getGameTypes()));
+	pt.row('Date Start:', '<input type="text" id="newgame_date_start" value="0000-00-00 00:00:00"/>');
+	pt.row('Date Stop:', '<input type="text" id="newgame_date_stop" value="0000-00-00 00:00:00"/>');
+	pt.row('Date Restart:', '<input type="text" id="newgame_date_restart" value="0000-00-00 00:00:00"/>');
+	pt.row('Description:', '<textarea id="newgame_description"></textarea>');
+	pt.row('Organizators:', '<input type="text" id="newgame_organizators" value=""/>');
+	pt.row('Rules:', '<textarea id="newgame_rules"></textarea>');
+	// pt.row('Author ID:', '<input type="text" id="newgame_author_id" value=""/>');
+	pt.row('', '<div class="button3 ad" onclick="createGame();">Create</div>');
+	showModalDialog(pt.render());
 }
 
 function loadGameRules(gameid) {

@@ -94,7 +94,7 @@ function reloadQuests()
 			quests.innerHTML = '';
 			var perms = obj['permissions'];
 			if (perms['insert'] == true)
-				quests.innerHTML += '<div class="fhq_game_info"><div class="button3 ad" onclick="formCreateQuest();">Create Quest</div></div><br>';
+				quests.innerHTML += '<div class="fhqinfo"><div class="button3 ad" onclick="formCreateQuest();">Create Quest</div></div><br>';
 
 			if (params.filter_current && obj.status.current > 0)
 				quests.innerHTML += '<hr>In progress:<br><div id="current_quests"></div>';
@@ -290,11 +290,11 @@ function formEditQuest(id)
 			content += createQuestRow('Text:', '<textarea id="editquest_text">' + obj.data.text + '</textarea>');
 			content += createQuestRow('Score(+):', '<input type="text" id="editquest_score" value="' + obj.data.score + '"/>');
 			content += createQuestRow('Min Score(>):', '<input type="text" id="editquest_min_score" value="' + obj.data.min_score + '"/>');
-			content += createQuestRow('Subject:', fhqgui.createComboBox('editquest_subject', obj.data.subject, fhq.getQuestTypes()));
+			content += createQuestRow('Subject:', fhqgui.combobox('editquest_subject', obj.data.subject, fhq.getQuestTypes()));
 			// content += createQuestRow('Author Id:', '<input type="text" id="editquest_authorid" value="' + obj.data.authorid + '"/>');
 			content += createQuestRow('Author:', '<input type="text" id="editquest_author" value="' + obj.data.author + '"/>');
 			content += createQuestRow('Answer:', '<input type="text" id="editquest_answer" value="' + obj.data.answer + '"/>');
-			content += createQuestRow('State:', fhqgui.createComboBox('editquest_state', obj.data.state, fhq.getQuestStates()));
+			content += createQuestRow('State:', fhqgui.combobox('editquest_state', obj.data.state, fhq.getQuestStates()));
 			content += createQuestRow('Description State:', '<textarea id="editquest_description_state">' + obj.data.description_state + '</textarea>');
 			content += createQuestRow('', '<div class="button3 ad" onclick="updateQuest(' + obj.quest + ');">Update</div>'
 				+ '<div class="button3 ad" onclick="showQuest(' + obj.quest + ');">Cancel</div>'
@@ -415,11 +415,11 @@ function formCreateQuest()
 	content += createQuestRow('Text:', '<textarea id="newquest_text"></textarea>');
 	content += createQuestRow('Score(+):', '<input type="text" id="newquest_score" value="100"/>');
 	content += createQuestRow('Min Score(>):', '<input type="text" id="newquest_min_score" value="0"/>');
-	content += createQuestRow('Subject:', fhqgui.createComboBox('newquest_subject', 'trivia', fhq.getQuestTypes()));
+	content += createQuestRow('Subject:', fhqgui.combobox('newquest_subject', 'trivia', fhq.getQuestTypes()));
 	// content += createQuestRow('Author Id:', '<input type="text" id="newquest_author_id" value=""/>');
 	content += createQuestRow('Author:', '<input type="text" id="newquest_author" value=""/>');
 	content += createQuestRow('Answer:', '<input type="text" id="newquest_answer" value=""/>');
-	content += createQuestRow('State:', fhqgui.createComboBox('newquest_state', 'open', fhq.getQuestStates()));
+	content += createQuestRow('State:', fhqgui.combobox('newquest_state', 'open', fhq.getQuestStates()));
 	content += createQuestRow('Description State:', '<textarea id="newquest_description_state"></textarea>');
 	content += createQuestRow('', '<div class="button3 ad" onclick="createQuest();">Create</div>');
 	content += '</div>'; // quest_info_table

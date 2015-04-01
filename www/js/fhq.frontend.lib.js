@@ -184,10 +184,10 @@ function FHQFrontEndLib() {
 			var bRes = obj.result == "ok";
 			return bRes ? obj.data : obj.error;
 		};
-    this.pass = function(questid, answer) {
+		this.pass = function(questid, answer) {
 			var params = {};
 			params.questid = questid;
-      params.answer = answer;
+			params.answer = answer;
 			var obj = this.p.sendPostRequest_Sync('api/quests/pass.php', params);
 			var bRes = obj.result == "ok";
 			return bRes ? obj.data : obj.error;
@@ -240,16 +240,39 @@ function FHQFrontEndLib() {
 		};
 	})(this);
 	
-	/*this.enums = new (function(t) {
+	this.feedback = new (function(t) {
 		this.p = t;
-		this.e = null;
-		this.questTypes() {
-			
-			this.e
-			
-			// 
+		this.insert = function(params, callback) {
+			var obj = null;
+			if (callback)
+				this.p.sendPostRequest_Async('api/feedback/insert.php', params, callback);
+			else
+				return this.p.sendPostRequest_Sync('api/feedback/insert.php', params);
 		};
-	})(this);*/
+		this.get = function(gameid) {
+			var params = {};
+			params.id = gameid;
+			var obj = this.p.sendPostRequest_Sync('api/games/get.php', params);
+			var bRes = obj.result == "ok";
+			return bRes ? obj.data : obj.error;
+		};
+		this.update = function(gameid) {
+			var params = {};
+			params.id = gameid;
+			var obj = this.p.sendPostRequest_Sync('api/games/choose.php', params);
+			// alert(JSON.stringify(params));
+			var bRes = obj.result == "ok";
+			return bRes ? obj : obj.error;
+		};
+		this.delete = function(gameid) {
+			var params = {};
+			params.id = gameid;
+			var obj = this.p.sendPostRequest_Sync('api/games/choose.php', params);
+			// alert(JSON.stringify(params));
+			var bRes = obj.result == "ok";
+			return bRes ? obj : obj.error;
+		};
+	})(this);
 	
 	this.enums = null;
 	
