@@ -96,7 +96,6 @@ try {
 			t0.score,
 			u0.nick,
 			g0.title
-			
 		FROM
 			users_games t0
 		INNER JOIN games g0 ON g0.id = t0.gameid
@@ -112,8 +111,9 @@ try {
 				AND u1.role = ?
 			) AND t0.score > 0
 			AND u0.role = ?
+			AND ( g0.state = ? OR g0.state = ?)
 	');
- 	$stmt->execute(array('user','user'));
+ 	$stmt->execute(array('user','user', 'original', 'copy'));
 	
 	$result['data']['winners'] = array();
 

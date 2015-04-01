@@ -116,14 +116,6 @@ function loadCities() {
 				
 				c.innerHTML += "<br><font size=1><b>The number of solved:</b></font><br>";
 				c.innerHTML += "<font size=1>" + obj.data.quests.solved + "</font><br>";
-				
-				
-				for (var k in obj.data.winners) {
-					c.innerHTML += '<br><font size=1><b>Winner(s) of ' + k + ':</b></font><br>';
-					for (var k1 in obj.data.winners[k]) {
-						c.innerHTML += '<font size=1>' + obj.data.winners[k][k1].user + ' with +' + obj.data.winners[k][k1].score + '</font><br>';
-					}
-				}
 
 				c.innerHTML += "<br><font size=1><b>Playing with us:</b></font><br>";
 				for (var k in obj.data.cities) {
@@ -131,6 +123,20 @@ function loadCities() {
 						c.innerHTML += '<font size=1>[' + obj.data.cities[k].city + ' (' + obj.data.cities[k].cnt + ')]</font><br>';
 					}
 				}
+				
+				var a = document.getElementById('about');
+				var content = '<center>';
+				for (var k in obj.data.winners) {
+					
+					content += '<br><b>Winner(s) of ' + k + ':</b><br>';
+					var us = []
+					for (var k1 in obj.data.winners[k]) {
+						us.push(obj.data.winners[k][k1].user + ' with +' + obj.data.winners[k][k1].score);
+					}
+					content +=  us.join(', ');
+					content += '<br>';
+				}
+				a.innerHTML += content;
 			}
 		}
 	);

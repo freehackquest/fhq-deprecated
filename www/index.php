@@ -116,7 +116,7 @@ if (isset($_SESSION['user']))
 							<font id="error_message" color='#ff0000'></font>
 
 					</td>
-					<td width="30%" class="fhq_index_column">
+					<td width="30%" class="fhq_index_column" id="about">
 						<center>
 							<?php
 				include("about.php");
