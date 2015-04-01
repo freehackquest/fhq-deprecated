@@ -47,6 +47,7 @@ if (!isset($_SESSION['user']))
 		?>
 
 		<script type="text/javascript" src="js/fhq.frontend.lib.js?ver=1"></script>
+		<script type="text/javascript" src="js/fhq.gui.lib.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_send_request.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_echo_head.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_modal_dialog.js?ver=1"></script>
@@ -60,9 +61,11 @@ if (!isset($_SESSION['user']))
 		<script type="text/javascript" src="js/fhq_stats.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_feedback.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_settings.js?ver=1"></script>
-	
+
 		<script type="text/javascript">
 			var fhq = new FHQFrontEndLib();
+			var fhqgui = new FHQGuiLib();
+
 			fhq.client = "web-fhq2014";
 			fhq.baseUrl = fhq.getCurrentApiPath(); // or another path
 			// fhq.token = fhq.getTokenFromCookie();		

@@ -4,7 +4,7 @@ function loadStatistics(gameid) {
 	params.gameid = gameid;
 	var el = document.getElementById("content_page");
 	el.innerHTML = "Loading...";
-	
+
 	send_request_post(
 		'api/statistics/list.php',
 		createUrlFromObj(params),
@@ -116,56 +116,6 @@ function hatchAnswer(answer) {
 	return '<div answer="' + answer + '" hatch="' + hatch + '" onmouseover="this.innerHTML=this.getAttribute(\'answer\');" onmouseout="this.innerHTML=this.getAttribute(\'hatch\');">' + hatch + "</div>";
 }
 
-var g_answerlistOnPage = [
-	{ type: '5', caption: '5'},
-	{ type: '10', caption: '10'},
-	{ type: '15', caption: '15'},
-	{ type: '20', caption: '20'},
-	{ type: '25', caption: '25'},
-	{ type: '30', caption: '30'},
-	{ type: '50', caption: '50'}
-];
-
-var g_answerlistTable = [
-	{ type: 'active', caption: 'Active'},
-	{ type: 'backup', caption: 'Backup'}
-];
-
-var g_answerlistPassed = [
-	{ type: '', caption: '*'},
-	{ type: 'Yes', caption: 'Yes'},
-	{ type: 'No', caption: 'No'},
-];
-
-var g_answerlistQuestSubjects = [
-	{ type: '', caption: '*'},
-	{ type: 'hashes', caption: 'Hashes'},
-	{ type: 'stego',  caption: 'Stego'},
-	{ type: 'reverse', caption: 'Reverse'},
-	{ type: 'recon', caption: 'Recon'},
-	{ type: 'trivia', caption: 'Trivia'},
-	{ type: 'crypto', caption: 'Crypto'},
-	{ type: 'forensics', caption: 'Forensics'},
-	{ type: 'network', caption: 'Network'},
-	{ type: 'web', caption: 'Web'},
-	{ type: 'admin', caption: 'Admin'},
-	{ type: 'enjoy', caption: 'Enjoy'}
-];
-
-// the same function createComboBoxGame
-function createComboBoxAnswerList(idelem, value, arr) {
-	var result = '<select id="' + idelem + '">';
-	for (var k in arr) {
-		result += '<option ';
-		if (arr[k].type == value)
-			result += ' selected ';
-		result += ' value="' + arr[k].type + '">';
-		result += arr[k].caption + '</option>';
-	}
-	result += '</select>';
-	return result;
-}
-
 function createPageAnswerList() {
 	var cp = document.getElementById('content_page');
 	cp.innerHTML = '';
@@ -179,10 +129,10 @@ function createPageAnswerList() {
 	content += createUserInfoRow('Game Name:', '<input type="text" id="answerlist_gamename" value="" ' + onkeydown_ + '/>');
 	content += createUserInfoRow('Quest ID:', '<input type="text" id="answerlist_questid" value="" ' + onkeydown_ + '/>');
 	content += createUserInfoRow('Quest Name:', '<input type="text" id="answerlist_questname" value="" ' + onkeydown_ + '/>');
-	content += createUserInfoRow('Quest Subject:', createComboBoxAnswerList('answerlist_questsubject', '', g_answerlistQuestSubjects));
-	content += createUserInfoRow('Passed:', createComboBoxAnswerList('answerlist_passed', '', g_answerlistPassed));
-	content += createUserInfoRow('Table:', createComboBoxAnswerList('answerlist_table', 'active', g_answerlistTable));
-	content += createUserInfoRow('On Page:', createComboBoxAnswerList('answerlist_onpage', '10', g_answerlistOnPage));
+	content += createUserInfoRow('Quest Subject:', fhqgui.createComboBox('answerlist_questsubject', '', fhq.getQuestTypesFilter()));
+	content += createUserInfoRow('Passed:', fhqgui.createComboBox('answerlist_passed', '', fhq.getAnswerlistPassedFilter()));
+	content += createUserInfoRow('Table:', fhqgui.createComboBox('answerlist_table', 'active', fhq.getAnswerlistTable()));
+	content += createUserInfoRow('On Page:', fhqgui.createComboBox('answerlist_onpage', '10', fhq.getOnPage()));
 	content += createUserInfoRow('', '<div class="button3 ad" onclick="resetPageAnswerList(); updateAnswerList();">Update</div>');
 	content += createUserInfoRow_Skip();
 	content += createUserInfoRow('Found:', '<font id="answerlist_found">0</font>');

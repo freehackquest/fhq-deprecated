@@ -6,32 +6,10 @@
 		+ '</div>\n';
 }*/
 
-var g_feedbackTypes = [
-	{ type: 'complaint', caption: 'Complaint (Жалоба)'},
-	{ type: 'defect', caption: 'Defect (Недочет)'},
-	{ type: 'error', caption: 'Error (Ошибка)'},
-	{ type: 'approval', caption: 'Approval (Одобрение)'},
-	{ type: 'proposal', caption: 'Proposal (Предложение)'}
-];
-
-// the same function createComboBoxGame
-function createComboBoxFeedback(idelem, value, arr) {
-	var result = '<select id="' + idelem + '">';
-	for (var k in arr) {
-		result += '<option ';
-		if (arr[k].type == value)
-			result += ' selected ';
-		result += ' value="' + arr[k].type + '">';
-		result += arr[k].caption + '</option>';
-	}
-	result += '</select>';
-	return result;
-}
-
 function formCreateFeedback() {
 	var content = '<div class="fhq_game_info">';
 	content += '<div class="fhq_game_info_table">\n';
-	content += createDivRowEvent('Type:', createComboBoxFeedback('newfeedback_type', 'complaint', g_feedbackTypes));
+	content += createDivRowEvent('Type:', fhqgui.createComboBox('newfeedback_type', 'complaint', fhq.getFeedbackTypes()));
 	content += createDivRowEvent('Message:', '<textarea id="newfeedback_text"></textarea>');
 	content += createDivRowEvent('', '<div class="button3 ad" onclick="insertFeedback();">Create</div>');
 	content += '</div>'; // game_info_table
@@ -145,7 +123,7 @@ function formEditFeedback(id)  {
 			if (obj.result == "ok") {
 				var content = '<div class="fhq_game_info">';
 				content += '<div class="fhq_game_info_table">\n';
-				content += createDivRowEvent('Type:', createComboBoxFeedback('editfeedback_type', obj.data.type, g_feedbackTypes));
+				content += createDivRowEvent('Type:', fhqgui.createComboBoxFeedback('editfeedback_type', obj.data.type, fhq.getFeedbackTypes()));
 				content += createDivRowEvent('Message:', '<textarea id="editfeedback_text">' + obj.data.text + '</textarea>');
 				content += createDivRowEvent('', '<div class="button3 ad" onclick="saveFeedback(' + id + ');">Save</div>');
 				content += '</div>'; // game_info_table

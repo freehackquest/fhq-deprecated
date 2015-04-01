@@ -6,31 +6,10 @@ function createDivRowEvent(name, value) {
 		+ '</div>\n';
 }
 
-var g_eventsTypes = [
-	{ type: 'info', caption: 'Information'},
-	{ type: 'users', caption: 'Users'},
-	{ type: 'games', caption: 'Games'},
-	{ type: 'warning', caption: 'Warning'}
-];
-
-// the same function createComboBoxGame
-function createComboBoxEvents(idelem, value, arr) {
-	var result = '<select id="' + idelem + '">';
-	for (var k in arr) {
-		result += '<option ';
-		if (arr[k].type == value)
-			result += ' selected ';
-		result += ' value="' + arr[k].type + '">';
-		result += arr[k].caption + '</option>';
-	}
-	result += '</select>';
-	return result;
-}
-
 function formCreateEvent() {
 	var content = '<div class="fhq_game_info">';
 	content += '<div class="fhq_game_info_table">\n';
-	content += createDivRowEvent('Type:', createComboBoxEvents('newevent_type', 'info', g_eventsTypes));
+	content += createDivRowEvent('Type:', fhqgui.createComboBox('newevent_type', 'info', fhq.getEventTypes()));
 	content += createDivRowEvent('Message:', '<textarea id="newevent_message"></textarea>');
 	content += createDivRowEvent('', '<div class="button3 ad" onclick="insertEvent();">Create</div>');
 	content += '</div>'; // game_info_table
@@ -115,7 +94,7 @@ function formEditEvent(id, type, message)  {
 			if (obj.result == "ok") {
 				var content = '<div class="fhq_game_info">';
 				content += '<div class="fhq_game_info_table">\n';
-				content += createDivRowEvent('Type:', createComboBoxEvents('editevent_type', obj.data.type, g_eventsTypes));
+				content += createDivRowEvent('Type:', fhqgui.createComboBox('editevent_type', obj.data.type, fhq.getEventTypes()));
 				content += createDivRowEvent('Message:', '<textarea id="editevent_message">' + obj.data.message + '</textarea>');
 				content += createDivRowEvent('', '<div class="button3 ad" onclick="saveEvent(' + id + ');">Save</div>');
 				content += '</div>'; // game_info_table

@@ -1,52 +1,4 @@
 
-var g_userRoles = [
-	{ type: 'user', caption: 'User'},
-	{ type: 'tester',  caption: 'Tester'},
-	{ type: 'admin',  caption: 'Admin'}
-];
-
-var g_userRoleSearch = [
-	{ type: '', caption: '*'},
-	{ type: 'user', caption: 'User'},
-	{ type: 'tester',  caption: 'Tester'},
-	{ type: 'admin',  caption: 'Admin'}
-];
-
-var g_userStatus = [
-	{ type: 'activated', caption: 'Activated'},
-	{ type: 'blocked',  caption: 'Blocked'}
-];
-
-var g_userStatusSearch = [
-	{ type: '', caption: '*'},
-	{ type: 'activated', caption: 'Activated'},
-	{ type: 'blocked',  caption: 'Blocked'}
-];
-
-var g_userOnPage = [
-	{ type: '5', caption: '5'},
-	{ type: '10', caption: '10'},
-	{ type: '15', caption: '15'},
-	{ type: '20', caption: '20'},
-	{ type: '25', caption: '25'},
-	{ type: '30', caption: '30'},
-	{ type: '50', caption: '50'}
-]
-
-// the same function createComboBoxGame
-function createComboBoxUser(idelem, value, arr) {
-	var result = '<select id="' + idelem + '">';
-	for (var k in arr) {
-		result += '<option ';
-		if (arr[k].type == value)
-			result += ' selected ';
-		result += ' value="' + arr[k].type + '">';
-		result += arr[k].caption + '</option>';
-	}
-	result += '</select>';
-	return result;
-}
-
 function update_profile_location() {
 	
 	var params = {};
@@ -252,6 +204,9 @@ function showUserInfo(id) {
 				return;
 			}
 			var ui = document.getElementById('user_info');
+			
+			// var paramtable = [];
+			// table.push(fhqgui.createParamRow())
 			var content = '<div class="user_info_table">';
 			content += createUserInfoRow('Logo:', '<img id="user_current_logo" src="'+ obj.data.logo + '"/>');
 			content += createUserInfoRow('ID:',  obj.data.userid);
@@ -269,8 +224,8 @@ function showUserInfo(id) {
 					content += createUserInfoRow('Change Logo:', '<input id="user_new_logo" type="text" value="' + obj.data.logo + '" > <div class="button3 ad" onclick="changeUserLogo(' + obj.data.userid + ');">Save</div>');
 					content += createUserInfoRow('Change Nick:', '<input id="user_new_nick" type="text" value="' + obj.data.nick + '" > <div class="button3 ad" onclick="changeUserNick(' + obj.data.userid + ');">Save</div> ');
 					content += createUserInfoRow('Change Password:', '<input id="user_new_password" type="password" value="" > <div class="button3 ad" onclick="changeUserPassword(' + obj.data.userid + ');">Save</div> ');
-					content += createUserInfoRow('Change Status:', createComboBoxUser('user_new_status', obj.data.status, g_userStatus) + ' <div class="button3 ad" onclick="changeUserStatus(' + obj.data.userid + ');">Save</div> ');
-					content += createUserInfoRow('Change Role:', createComboBoxUser('user_new_role', obj.data.role, g_userRoles)  + '<div class="button3 ad" onclick="changeUserRole(' + obj.data.userid + ');">Save</div> ');
+					content += createUserInfoRow('Change Status:', fhqgui.createComboBox('user_new_status', obj.data.status, fhq.getUserStatuses()) + ' <div class="button3 ad" onclick="changeUserStatus(' + obj.data.userid + ');">Save</div> ');
+					content += createUserInfoRow('Change Role:', fhqgui.createComboBox('user_new_role', obj.data.role, fhq.getUserRoles())  + '<div class="button3 ad" onclick="changeUserRole(' + obj.data.userid + ');">Save</div> ');
 					content += createUserInfoRow('Remove User:', '<div class="button3 ad" onclick="deleteUser(' + obj.data.userid + ');">Remove</div> ');
 				}
 
@@ -497,11 +452,11 @@ function formCreateUser() {
 	content += createUserInfoRow('E-mail:', '<input type="text" id="newuser_email" value=""/>');
 
 	
-	content += createUserInfoRow('Role:', createComboBoxUser('newuser_role', 'user', g_userRoles));
+	content += createUserInfoRow('Role:', fhqgui.createComboBox('newuser_role', 'user', fhq.getUserRoles()));
 	content += createUserInfoRow('Nick:', '<input type="text" id="newuser_nick" value=""/>');
 	content += createUserInfoRow('Password:', '<input type="password" id="newuser_password" value=""/>');
 
-	content += createUserInfoRow('Status:', createComboBoxUser('newuser_status', 'activated', g_userStatus));
+	content += createUserInfoRow('Status:', fhqgui.createComboBox('newuser_status', 'activated', fhq.getUserStatuses()));
 	content += createUserInfoRow('', '<div class="button3 ad" onclick="createUser();">Create</div>');
 	
 	content += createUserInfoRow('', '<div id="newuser_errors"></div>');
@@ -520,9 +475,9 @@ function createPageUsers() {
 	content += createUserInfoRow_Skip();
 	
 	content += createUserInfoRow('E-mail or Nick:', '<input type="text" id="user_search" value="" onkeydown="if (event.keyCode == 13) {resetUsersPage(); updateUsers();};"/>');
-	content += createUserInfoRow('Role:', createComboBoxUser('user_role', '', g_userRoleSearch));
-	content += createUserInfoRow('Status:', createComboBoxUser('user_status', '', g_userStatusSearch));
-	content += createUserInfoRow('On Page:', createComboBoxUser('user_onpage', '15', g_userOnPage) );
+	content += createUserInfoRow('Role:', fhqgui.createComboBox('user_role', '', fhq.getUserRolesFilter()));
+	content += createUserInfoRow('Status:', fhqgui.createComboBox('user_status', '', fhq.getUserStatusesFilter()));
+	content += createUserInfoRow('On Page:', fhqgui.createComboBox('user_onpage', '15', fhq.getOnPage()));
 
 	content += createUserInfoRow('', '<div class="button3 ad" onclick="resetUsersPage(); updateUsers();">Search</div>');
 	content += createUserInfoRow_Skip();
@@ -534,25 +489,6 @@ function createPageUsers() {
 	cp.innerHTML += '<div id="error_search"></div>';
 	cp.innerHTML += '<hr/>';
 	cp.innerHTML += '<div id="listUsers"></div>';
-}
-
-function getComboBoxStyle(idelem, currentstyle) {
-	
-	var templates = [];
-	templates.push({style: 'base', caption: 'Base'});
-	templates.push({style: 'dark', caption: 'Nigth'});
-	templates.push({style: 'yellow', caption: 'Yellow (not completed)'});
-	templates.push({style: 'red', caption: 'Red (not completed)'});
-	
-	var result = '<select id="' + idelem + '">';
-	for (var k in templates) {
-		result += '<option ';
-		if (currentstyle == templates[k].style)
-			result += ' selected ';
-		result += ' value="' + templates[k].style + '">' + templates[k].caption + '</option>';
-	}
-	result += '</select>';
-	return result;
 }
 
 function updateUserLogo(userid) {
@@ -623,7 +559,7 @@ function loadUserProfile(userid) {
 			content += createUserInfoRow_Skip();
 
 			// todo style
-			content += createUserInfoRow('Сolor spectrum', getComboBoxStyle('edit_style', obj.profile.template));
+			content += createUserInfoRow('Сolor spectrum', fhqgui.createComboBox('edit_style', obj.profile.template, fhq.getStyles()));
 			content += createUserInfoRow('', '<div class="button3 ad" onclick="update_profile_style()">Save</div>');
 
 			content += '</div>'; // user_info_table
