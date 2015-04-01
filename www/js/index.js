@@ -101,15 +101,25 @@ function registration()
 function loadCities() {
 	var params = {};
 	send_request(
-		'api/settings/city.php',
+		'api/settings/public_info.php',
 		function (obj) {
 			if (obj.result == "fail") {
 				// el.innerHTML = obj.error.message;
 			} else {
 				var c = document.getElementById('cities');
-				c.innerHTML += "<font size=1><b>С нами играют!</b></font><br>";
-				for (var k in obj.data) {
-					c.innerHTML += '<font size=1>' + obj.data[k] + '</font><br>';
+				
+				c.innerHTML += "<br><font size=1><b>Квестов в системе:</b></font><br>";
+				c.innerHTML += "<font size=1>" + obj.data.quests.count + "</font><br>";
+				
+				c.innerHTML += "<br><font size=1><b>Количество попыток:</b></font><br>";
+				c.innerHTML += "<font size=1>" + obj.data.quests.attempts + "</font><br>";
+				
+				c.innerHTML += "<br><font size=1><b>Количество решений:</b></font><br>";
+				c.innerHTML += "<font size=1>" + obj.data.quests.solved + "</font><br>";
+				
+				c.innerHTML += "<br><font size=1><b>С нами играют из городов:</b></font><br>";
+				for (var k in obj.data.cities) {
+					c.innerHTML += '<font size=1>[' + obj.data.cities[k].city + ' (' + obj.data.cities[k].cnt + ')]</font><br>';
 				}
 			}
 		}
