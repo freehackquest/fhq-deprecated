@@ -61,7 +61,7 @@ if (isset($_SESSION['user']))
 
 			<table width="100%" height="100%">
 				<tr>
-					<td width="5%" class="fhq_index_column" valign="top" align="center" id="cities">
+					<td width="8%" class="fhq_index_column" valign="top" align="center" id="cities">
 					</td>
 					<td align="center" valign="middle">
 						

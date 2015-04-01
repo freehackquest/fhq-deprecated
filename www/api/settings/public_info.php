@@ -87,4 +87,45 @@ try {
  	APIHelpers::showerror(1283, $e->getMessage());
 }
 
+
+try {
+ 	$stmt = $conn->prepare('
+		SELECT
+			t0.userid,
+			t0.gameid,
+			t0.score,
+			u0.nick,
+			g0.title
+			
+		FROM
+			users_games t0
+		INNER JOIN games g0 ON g0.id = t0.gameid
+		INNER JOIN user u0 ON t0.userid = u0.iduser
+		WHERE
+			t0.score = (
+				SELECT
+					max( score )
+				FROM
+					users_games t1
+				INNER JOIN user u1 ON t1.userid = u1.iduser
+				WHERE t1.gameid = t0.gameid
+				AND u1.role = ?
+			) AND t0.score > 0;
+	');
+ 	$stmt->execute(array('user'));
+	
+	$result['data']['winners'] = array();
+
+ 	while ($row = $stmt->fetch()) {
+		$result['data']['winners'][] = array(
+			'game' => $row['title'],
+			'user' => htmlspecialchars($row['nick']),
+			'score' => $row['score'],
+		);
+	}
+
+} catch(PDOException $e) {
+ 	APIHelpers::showerror(1283, $e->getMessage());
+}
+
 echo json_encode($result);
