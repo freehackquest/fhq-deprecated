@@ -57,11 +57,11 @@ if (isset($_SESSION['user']))
 		?>
 		
 	</head>
-	<body class="main" onload="show_index_element('indexcontent_sign_in');">
+	<body class="main" onload="show_index_element('indexcontent_sign_in'); loadCities();">
 
 			<table width="100%" height="100%">
 				<tr>
-					<td width="5%" class="fhq_index_column" valign="top">
+					<td width="5%" class="fhq_index_column" valign="top" align="center" id="cities">
 					</td>
 					<td align="center" valign="middle">
 						

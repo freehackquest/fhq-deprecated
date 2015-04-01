@@ -72,6 +72,7 @@ try {
 		}
 		
 		$result['data'][$i][] = array(
+			'userid' => $row['iduser'],
 			'nick' => $row['nick'],
 			'score' => $row['score'],
 			// 'role' => $row['role'],

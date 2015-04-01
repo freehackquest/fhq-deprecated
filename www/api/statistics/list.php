@@ -38,13 +38,13 @@ $filter_values[] = intval($gameid);
 // page
 $page = APIHelpers::getParam('page', 0);
 if (!is_numeric($page))
-	APIHelpers::showerror(1072, 'Parameter "page" must be numeric');
+	APIHelpers::showerror(1284, 'Parameter "page" must be numeric');
 $result['data']['page'] = intval($page);
 
 // onpage
 $onpage = APIHelpers::getParam('onpage', 25);
 if (!is_numeric($onpage))
-	APIHelpers::showerror(1073, 'parameter "onpage" must be numeric');
+	APIHelpers::showerror(1285, 'parameter "onpage" must be numeric');
 $result['data']['onpage'] = intval($onpage);
 
 // questid
@@ -53,7 +53,7 @@ if ($questid != '' && is_numeric($questid)) {
 	$filter_where[] = '(idquest = ?)';
 	$filter_values[] = intval($questid);
 } else if ($questid != '' && !is_numeric($questid)) {
-	APIHelpers::showerror(1073, 'Parameter "questid" must be numeric or empty');
+	APIHelpers::showerror(1286, 'Parameter "questid" must be numeric or empty');
 }
 
 // questname
@@ -68,6 +68,11 @@ $questsubject = APIHelpers::getParam('questsubject', '');
 if ($questsubject != '') {
 	$filter_where[] = 'subject = ?';
 	$filter_values[] = $questsubject;
+}
+
+if (!APISecurity::isAdmin()) {
+	$filter_where[] = 'state = ?';
+	$filter_values[] = 'open';
 }
 
 $where = implode(' AND ', $filter_where);
