@@ -70,6 +70,11 @@ if ($questsubject != '') {
 	$filter_values[] = $questsubject;
 }
 
+if (!APISecurity::isAdmin()) {
+	$filter_where[] = 'state = ?';
+	$filter_values[] = 'open';
+}
+
 $where = implode(' AND ', $filter_where);
 if ($where != '') {
 	$where = ' AND '.$where;
