@@ -98,5 +98,22 @@ function registration()
 	);
 }
 
+function loadCities() {
+	var params = {};
+	send_request(
+		'api/settings/city.php',
+		function (obj) {
+			if (obj.result == "fail") {
+				// el.innerHTML = obj.error.message;
+			} else {
+				var c = document.getElementById('cities');
+				c.innerHTML += "<font size=1><b>С нами играют!</b></font><br>";
+				for (var k in obj.data) {
+					c.innerHTML += '<font size=1>' + obj.data[k] + '</font><br>';
+				}
+			}
+		}
+	);
+}
 
 
