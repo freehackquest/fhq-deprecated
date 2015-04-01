@@ -32,7 +32,7 @@ $type = APIHelpers::getParam('type', '');
 $text = APIHelpers::getParam('text', '');
 
 if (!is_numeric($id))
-  APIHelpers::showerror(1261, 'incorrect feedbackid');
+  APIHelpers::showerror(1261, 'Parameter id must be integer');
 
 $id = intval($id);
 

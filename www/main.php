@@ -23,11 +23,11 @@ if (!isset($_SESSION['user']))
 		<meta name="description" content="competition information security" />
 		<meta name="keywords" content="security, fhq, fhq 2012, fhq 2013, fhq 2014, free, hack, quest, competition, information security, ctf, joepardy" />		
 
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/fhq.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/menu.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/button3.css?ver=1" />
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/user_info.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/games.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/quest_info.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/overlay.css?ver=1" />
@@ -47,6 +47,7 @@ if (!isset($_SESSION['user']))
 		?>
 
 		<script type="text/javascript" src="js/fhq.frontend.lib.js?ver=1"></script>
+		<script type="text/javascript" src="js/fhq.gui.lib.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_send_request.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_echo_head.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_modal_dialog.js?ver=1"></script>
@@ -59,9 +60,12 @@ if (!isset($_SESSION['user']))
 		<script type="text/javascript" src="js/fhq_events.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_stats.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_feedback.js?ver=1"></script>
-	
+		<script type="text/javascript" src="js/fhq_settings.js?ver=1"></script>
+
 		<script type="text/javascript">
 			var fhq = new FHQFrontEndLib();
+			var fhqgui = new FHQGuiLib();
+
 			fhq.client = "web-fhq2014";
 			fhq.baseUrl = fhq.getCurrentApiPath(); // or another path
 			// fhq.token = fhq.getTokenFromCookie();		
@@ -178,7 +182,7 @@ if (!isset($_SESSION['user']))
 		'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
 	);
 	
-	$arrmenu[] = array(
+	/*$arrmenu[] = array(
 		'name' => 'advisers',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="Advisers" onclick="load_content_page2(\'advisers\');">
@@ -196,7 +200,7 @@ if (!isset($_SESSION['user']))
 			</div>
 		',
 		'show' => ($game_type == 'attack-defence'),
-	);
+	);*/
 
 
 	$arrmenu[] = array(
@@ -212,7 +216,7 @@ if (!isset($_SESSION['user']))
 	$arrmenu[] = array(
 		'name' => 'stats',
 		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Statistics" onclick="loadStatistics('.$gameid.');">
+			<div class="fhq_btn_menu hint--bottom" data-hint="Statistics" onclick="createPageStatistics('.$gameid.'); updateStatistics();">
 				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/stats.png"/><br>
 			</div>
 		',
@@ -231,7 +235,7 @@ if (!isset($_SESSION['user']))
 	$arrmenu[] = array(
 		'name' => 'system_menu',
 		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="System Menu" onclick="showSystemMenu();">
+			<div class="fhq_btn_menu hint--bottom" data-hint="Settings" onclick="loadSettings();">
 				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_system.png"/>
 			</div>
 		',
@@ -338,7 +342,6 @@ if (!isset($_SESSION['user']))
 	);
 
 	// echo menu
-
 	foreach ($arrmenu as $menu) {
 		if ($menu['show']) {
 			echo $menu['html'];

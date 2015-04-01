@@ -45,6 +45,9 @@ try {
 	$params = array($userid);
  	$conn->prepare('DELETE FROM user WHERE iduser = ?')->execute($params);
  	$conn->prepare('DELETE FROM users_games WHERE userid = ?')->execute($params);
+ 	$conn->prepare('DELETE FROM feedback WHERE userid = ?')->execute($params);
+ 	$conn->prepare('DELETE FROM feedback_msg WHERE userid = ?')->execute($params);
+ 	
  	$result['result'] = 'ok';
 } catch(PDOException $e) {
  	APIHelpers::showerror(1147, $e->getMessage());

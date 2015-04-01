@@ -25,7 +25,7 @@ function send_request_post(page, url, callbackf)
 					var obj = JSON.parse(tmpXMLhttp.responseText);
 					callbackf(obj);
 				} catch(e) {
-					alert(tmpXMLhttp.responseText);
+					alert("Error in js " + e.name + " on request to " + page + "\nResponse:\n" + tmpXMLhttp.responseText);
 				}
 				tmpXMLhttp = null;
 			}
@@ -79,7 +79,7 @@ function send_request_post_files(files, page, url, callbackf) {
 					var obj = JSON.parse(tmpXMLhttp.responseText);
 					callbackf(obj);
 				} catch(e) {
-					alert(tmpXMLhttp.responseText);
+					alert(tmpXMLhttp.responseText + ' ' + e.name);
 				}
 				tmpXMLhttp = null;
 			}

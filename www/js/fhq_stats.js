@@ -1,20 +1,62 @@
 
-function loadStatistics(gameid) {
-	var params = {};
-	params.gameid = gameid;
-	var el = document.getElementById("content_page");
-	el.innerHTML = "Loading...";
+
+function resetStatisticsPage() {
+	document.getElementById('statistics_page').value = 0;
+}
+
+function setStatisticsPage(val) {
+	document.getElementById('statistics_page').value = val;
+}
+
+function createPageStatistics(gameid) {
+	var pt = new FHQParamTable();
+	pt.row('Quest Name:', '<input type="text" id="statistics_questname" value="" onkeydown="if (event.keyCode == 13) {resetStatisticsPage(' + gameid + '); updateStatistics();};"/>');
+	pt.row('Quest ID:', '<input type="text" id="statistics_questid" value="" onkeydown="if (event.keyCode == 13) {resetStatisticsPage(' + gameid + '); updateStatistics();};"/>');
+	pt.row('Quest Subject:', fhqgui.combobox('statistics_questsubject', '', fhq.getQuestTypesFilter()));
+	pt.row('On Page:', fhqgui.combobox('statistics_onpage', '15', fhq.getOnPage()));
+	pt.row('', fhqgui.btn('Search', 'resetStatisticsPage(' + gameid + '); updateStatistics();'));
+	pt.skip();
+	pt.row('Found:', '<font id="statistics_found">0</font>');
+	var cp = new FHQContentPage();
+	cp.clear();
+	cp.append(pt.render());
+	cp.append('<input type="hidden" id="statistics_page" value="0"/>'
+		+ '<input type="hidden" id="statistics_gameid" value="' + gameid + '"/>'
+		+ '<div id="error_search"></div>'
+		+ '<hr/>'
+		+ '<div id="listStatistics"></div>');
+}
+
+function updateStatistics() {
+
+	var ls = document.getElementById("listStatistics");
+	ls.innerHTML = "Loading...";
 	
+	var params = {};
+	params.gameid = document.getElementById('statistics_gameid').value;
+	params.questname = document.getElementById('statistics_questname').value;
+	params.questid = document.getElementById('statistics_questid').value;
+	params.questsubject = document.getElementById('statistics_questsubject').value;
+	params.page = document.getElementById('statistics_page').value;
+	params.onpage = document.getElementById('statistics_onpage').value;
+
 	send_request_post(
 		'api/statistics/list.php',
 		createUrlFromObj(params),
 		function (obj) {
 			if (obj.result == "fail") {
-				el.innerHTML = obj.error.message;
+				ls.innerHTML = obj.error.message;
 			} else {
 				
+				var found = parseInt(obj.data.count, 10);
+				document.getElementById("statistics_found").innerHTML = found;
+				var onpage = parseInt(obj.data.onpage, 10);
+				var page = parseInt(obj.data.page, 10);
+				
 				var content = '';
-				content += 'Processed ' + obj.lead_time_sec + ' sec <br>';
+				
+				// content += 'Processed ' + obj.lead_time_sec + ' sec <br>';
+				content += fhqgui.paginator(0, found, onpage, page, 'setStatisticsPage', 'updateStatistics');
 				content += '<table id="customers">';
 				content += '<tr class="alt">';
 				content += '	<th width=10%>Quest</th>';
@@ -29,7 +71,6 @@ function loadStatistics(gameid) {
 						var q = obj.data.quests[k];
 
 						content += '<tr ' + (bColor == true ? 'class="alt"' : '') + '>';
-						
 						content += '	<td align=center valign=top>';
 						content += '<div class="button3 ad" onclick="showQuest(' + q.id + ');">';
 						content += q.id + ' ' + q.name + '<br>';
@@ -47,65 +88,10 @@ function loadStatistics(gameid) {
 						bColor = !bColor;
 					}
 				}
-				el.innerHTML = content;
+				ls.innerHTML = content;
 			}
 		}
 	);	
-}
-
-// this same function to getHTMLPaging1
-function getHTMLPaging2(min,max,onpage,page) {
-	if (min == max || page > max || page < min )
-		return " Paging Error ";
-	
-	var pages = Math.ceil(max / onpage);
-
-	var pagesInt = [];
-	var leftp = 5;
-	var rightp = leftp + 1;
-
-	if (pages > (leftp + rightp + 2)) {
-		pagesInt.push(min);
-		if (page - leftp > min + 1) {
-			pagesInt.push(-1);
-			for (var i = (page - leftp); i <= page; i++) {
-				pagesInt.push(i);
-			}
-		} else {
-			for (var i = min+1; i <= page; i++) {
-				pagesInt.push(i);
-			}
-		}
-		
-		if (page + rightp < pages-1) {
-			for (var i = page+1; i < (page + rightp); i++) {
-				pagesInt.push(i);
-			}
-			pagesInt.push(-1);
-		} else {
-			for (var i = page+1; i < pages-1; i++) {
-				pagesInt.push(i);
-			}
-		}
-		if (page != pages-1)
-			pagesInt.push(pages-1);
-	} else {
-		for (var i = 0; i < pages; i++) {
-			pagesInt.push(i);
-		}
-	}
-
-	var pagesHtml = [];
-	for (var i = 0; i < pagesInt.length; i++) {
-		if (pagesInt[i] == -1) {
-			pagesHtml.push("...");
-		} else if (pagesInt[i] == page) {
-			pagesHtml.push('<div class="selected_user_page">[' + (pagesInt[i]+1) + ']</div>');
-		} else {
-			pagesHtml.push('<div class="button3 ad" onclick="setPageAnswerList(' + pagesInt[i] + '); updateAnswerList();">[' + (pagesInt[i]+1) + ']</div>');
-		}
-	}
-	return pagesHtml.join(' ');
 }
 
 function hatchAnswer(answer) {
@@ -116,78 +102,30 @@ function hatchAnswer(answer) {
 	return '<div answer="' + answer + '" hatch="' + hatch + '" onmouseover="this.innerHTML=this.getAttribute(\'answer\');" onmouseout="this.innerHTML=this.getAttribute(\'hatch\');">' + hatch + "</div>";
 }
 
-var g_answerlistOnPage = [
-	{ type: '5', caption: '5'},
-	{ type: '10', caption: '10'},
-	{ type: '15', caption: '15'},
-	{ type: '20', caption: '20'},
-	{ type: '25', caption: '25'},
-	{ type: '30', caption: '30'},
-	{ type: '50', caption: '50'}
-];
-
-var g_answerlistTable = [
-	{ type: 'active', caption: 'Active'},
-	{ type: 'backup', caption: 'Backup'}
-];
-
-var g_answerlistPassed = [
-	{ type: '', caption: '*'},
-	{ type: 'Yes', caption: 'Yes'},
-	{ type: 'No', caption: 'No'},
-];
-
-var g_answerlistQuestSubjects = [
-	{ type: '', caption: '*'},
-	{ type: 'hashes', caption: 'Hashes'},
-	{ type: 'stego',  caption: 'Stego'},
-	{ type: 'reverse', caption: 'Reverse'},
-	{ type: 'recon', caption: 'Recon'},
-	{ type: 'trivia', caption: 'Trivia'},
-	{ type: 'crypto', caption: 'Crypto'},
-	{ type: 'forensics', caption: 'Forensics'},
-	{ type: 'network', caption: 'Network'},
-	{ type: 'web', caption: 'Web'},
-	{ type: 'admin', caption: 'Admin'},
-	{ type: 'enjoy', caption: 'Enjoy'}
-];
-
-// the same function createComboBoxGame
-function createComboBoxAnswerList(idelem, value, arr) {
-	var result = '<select id="' + idelem + '">';
-	for (var k in arr) {
-		result += '<option ';
-		if (arr[k].type == value)
-			result += ' selected ';
-		result += ' value="' + arr[k].type + '">';
-		result += arr[k].caption + '</option>';
-	}
-	result += '</select>';
-	return result;
-}
-
 function createPageAnswerList() {
 	var cp = document.getElementById('content_page');
 	cp.innerHTML = '';
 
 	var content = '';
 	var onkeydown_ = 'onkeydown="if (event.keyCode == 13) {resetPageAnswerList(); updateAnswerList();};"';
-	content += '<div class="user_info_table">';
-	content += createUserInfoRow('UserID:', '<input type="text" id="answerlist_userid" value="" ' + onkeydown_ + '/>');
-	content += createUserInfoRow('E-mail or Nick:', '<input type="text" id="answerlist_user" value="" ' + onkeydown_ + '/>');
-	content += createUserInfoRow('GameID:', '<input type="text" id="answerlist_gameid" value="" ' + onkeydown_ + '/>');
-	content += createUserInfoRow('Game Name:', '<input type="text" id="answerlist_gamename" value="" ' + onkeydown_ + '/>');
-	content += createUserInfoRow('Quest ID:', '<input type="text" id="answerlist_questid" value="" ' + onkeydown_ + '/>');
-	content += createUserInfoRow('Quest Name:', '<input type="text" id="answerlist_questname" value="" ' + onkeydown_ + '/>');
-	content += createUserInfoRow('Quest Subject:', createComboBoxAnswerList('answerlist_questsubject', '', g_answerlistQuestSubjects));
-	content += createUserInfoRow('Passed:', createComboBoxAnswerList('answerlist_passed', '', g_answerlistPassed));
-	content += createUserInfoRow('Table:', createComboBoxAnswerList('answerlist_table', 'active', g_answerlistTable));
-	content += createUserInfoRow('On Page:', createComboBoxAnswerList('answerlist_onpage', '10', g_answerlistOnPage));
-	content += createUserInfoRow('', '<div class="button3 ad" onclick="resetPageAnswerList(); updateAnswerList();">Update</div>');
-	content += createUserInfoRow_Skip();
-	content += createUserInfoRow('Found:', '<font id="answerlist_found">0</font>');
-	content += createUserInfoRow_Skip();
-	content += '</div><hr>'; // user_info_table
+	
+	var pt = new FHQParamTable();
+	pt.row('UserID:', '<input type="text" id="answerlist_userid" value="" ' + onkeydown_ + '/>');
+	pt.row('E-mail or Nick:', '<input type="text" id="answerlist_user" value="" ' + onkeydown_ + '/>');
+	pt.row('GameID:', '<input type="text" id="answerlist_gameid" value="" ' + onkeydown_ + '/>');
+	pt.row('Game Name:', '<input type="text" id="answerlist_gamename" value="" ' + onkeydown_ + '/>');
+	pt.row('Quest ID:', '<input type="text" id="answerlist_questid" value="" ' + onkeydown_ + '/>');
+	pt.row('Quest Name:', '<input type="text" id="answerlist_questname" value="" ' + onkeydown_ + '/>');
+	pt.row('Quest Subject:', fhqgui.combobox('answerlist_questsubject', '', fhq.getQuestTypesFilter()));
+	pt.row('Passed:', fhqgui.combobox('answerlist_passed', '', fhq.getAnswerlistPassedFilter()));
+	pt.row('Table:', fhqgui.combobox('answerlist_table', 'active', fhq.getAnswerlistTable()));
+	pt.row('On Page:', fhqgui.combobox('answerlist_onpage', '10', fhq.getOnPage()));
+	pt.row('', '<div class="button3 ad" onclick="resetPageAnswerList(); updateAnswerList();">Update</div>');
+	pt.skip();
+	pt.row('Found:', '<font id="answerlist_found">0</font>');
+	pt.skip();
+	content += pt.render();
+	content += '</div><hr>'; // fhqparamtbl
 	content += '<input type="hidden" id="answerlist_page" value="0"/>'	
 	content += '<div id="answerList"></div>';
 	cp.innerHTML = content;
@@ -229,8 +167,8 @@ function updateAnswerList() {
 				document.getElementById("answerlist_found").innerHTML = found;
 				var onpage = parseInt(obj.data.onpage, 10);
 				var page = parseInt(obj.data.page, 10);
-				var table = parseInt(obj.data.table, 10);
-				al.innerHTML = '<div id="answerlist_paging">' + getHTMLPaging2(0,found, onpage, page) + '</div>';
+
+				al.innerHTML = '<div id="answerlist_paging">' + fhqgui.paginator(0,found, onpage, page, 'setPageAnswerList', 'updateAnswerList') + '</div>';
 
 				var content = '';
 				content += '<table id="customers">';

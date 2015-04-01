@@ -1,53 +1,28 @@
 
-/*function createDivRowEvent(name, value) {
-	return '<div class="user_info_row"> \n'
-		+ '\t<div class="user_info_param">' + name + '</div>\n'
-		+ '\t<div class="user_info_value">' + value + '</div>\n'
-		+ '</div>\n';
-}*/
-
-var g_feedbackTypes = [
-	{ type: 'complaint', caption: 'Complaint (Жалоба)'},
-	{ type: 'defect', caption: 'Defect (Недочет)'},
-	{ type: 'error', caption: 'Error (Ошибка)'},
-	{ type: 'approval', caption: 'Approval (Одобрение)'},
-	{ type: 'proposal', caption: 'Proposal (Предложение)'}
-];
-
-// the same function createComboBoxGame
-function createComboBoxFeedback(idelem, value, arr) {
-	var result = '<select id="' + idelem + '">';
-	for (var k in arr) {
-		result += '<option ';
-		if (arr[k].type == value)
-			result += ' selected ';
-		result += ' value="' + arr[k].type + '">';
-		result += arr[k].caption + '</option>';
-	}
-	result += '</select>';
-	return result;
-}
-
-function formCreateFeedback() {
-	var content = '<div class="fhq_game_info">';
-	content += '<div class="fhq_game_info_table">\n';
-	content += createDivRowEvent('Type:', createComboBoxFeedback('newfeedback_type', 'complaint', g_feedbackTypes));
-	content += createDivRowEvent('Message:', '<textarea id="newfeedback_text"></textarea>');
-	content += createDivRowEvent('', '<div class="button3 ad" onclick="insertFeedback();">Create</div>');
-	content += '</div>'; // game_info_table
-	content += '</div>\n'; // game_info
-	showModalDialog(content);
-}
-
 function insertFeedback()
 {
-	var params = {};
-	params["type"] = document.getElementById("newfeedback_type").value;
-	params["text"] = document.getElementById("newfeedback_text").value;
-// 	alert(createUrlFromObj(params));
+	var feedback = new FHQFeedback();
+ 	// alert(createUrlFromObj(feedback.params()));
 	send_request_post(
 		'api/feedback/insert.php',
-		createUrlFromObj(params),
+		createUrlFromObj(feedback.params()),
+		function (obj) {
+			if (obj.result == "ok") {
+				feedback.close();
+				loadFeedback();
+			} else {
+				alert(obj.error.message);
+			}
+		}
+	);
+};
+
+function saveFeedback()  {
+	var feedback = new FHQFeedback();
+	// alert(createUrlFromObj(feedback.params()));
+	send_request_post(
+		'api/feedback/update.php',
+		createUrlFromObj(feedback.params()),
 		function (obj) {
 			if (obj.result == "ok") {
 				closeModalDialog();
@@ -57,16 +32,13 @@ function insertFeedback()
 			}
 		}
 	);
-};
+}
 
 function formInsertFeedbackMessage(feedbackid) {
-	var content = '<div class="fhq_game_info">';
-	content += '<div class="fhq_game_info_table">\n';
-	content += createDivRowEvent('Message:', '<textarea id="newfeedbackmessage_text"></textarea>');
-	content += createDivRowEvent('', '<div class="button3 ad" onclick="insertFeedbackMessage(' + feedbackid + ');">Add</div>');
-	content += '</div>'; // game_info_table
-	content += '</div>\n'; // game_info
-	showModalDialog(content);
+	var pt = new FHQParamTable();
+	pt.row('Message:', fhqgui.textedit('newfeedbackmessage_text', ''));
+	pt.right(fhqgui.btn('Add', 'insertFeedbackMessage(' + feedbackid + ');'));
+	fhqgui.showModalDialog(pt.render());
 }
 
 function insertFeedbackMessage(feedbackid)
@@ -113,27 +85,6 @@ function deleteConfirmFeedback(id) {
 	showModalDialog(content);
 };
 
-function saveFeedback(id)  {
-	var params = {};
-	params["id"] = id;
-	params["type"] = document.getElementById("editfeedback_type").value;
-	params["text"] = document.getElementById("editfeedback_text").value;
-	
-	// 	alert(createUrlFromObj(params));
-	send_request_post(
-		'api/feedback/update.php',
-		createUrlFromObj(params),
-		function (obj) {
-			if (obj.result == "ok") {
-				closeModalDialog();
-				loadFeedback();
-			} else {
-				alert(obj.error.message);
-			}
-		}
-	);
-}
-
 function formEditFeedback(id)  {
 	var params = {};
 	params["id"] = id;
@@ -143,14 +94,9 @@ function formEditFeedback(id)  {
 		createUrlFromObj(params),
 		function (obj) {
 			if (obj.result == "ok") {
-				var content = '<div class="fhq_game_info">';
-				content += '<div class="fhq_game_info_table">\n';
-				content += createDivRowEvent('Type:', createComboBoxFeedback('editfeedback_type', obj.data.type, g_feedbackTypes));
-				content += createDivRowEvent('Message:', '<textarea id="editfeedback_text">' + obj.data.text + '</textarea>');
-				content += createDivRowEvent('', '<div class="button3 ad" onclick="saveFeedback(' + id + ');">Save</div>');
-				content += '</div>'; // game_info_table
-				content += '</div>\n'; // game_info
-				showModalDialog(content);
+				FHQFeedback.type = 'error';
+				var feedback = new FHQFeedback();
+				feedback.show(obj.data);
 			} else {
 				alert(obj.error.message);
 			}
@@ -211,13 +157,10 @@ function formEditFeedbackMessage(id)  {
 		createUrlFromObj(params),
 		function (obj) {
 			if (obj.result == "ok") {
-				var content = '<div class="fhq_game_info">';
-				content += '<div class="fhq_game_info_table">\n';
-				content += createDivRowEvent('Message:', '<textarea id="editfeedbackmessage_text">' + obj.data.text + '</textarea>');
-				content += createDivRowEvent('', '<div class="button3 ad" onclick="saveFeedbackMessage(' + id + ');">Save</div>');
-				content += '</div>'; // game_info_table
-				content += '</div>\n'; // game_info
-				showModalDialog(content);
+				var pt = new FHQParamTable();
+				pt.row('Message:', fhqgui.textedit('editfeedbackmessage_text', obj.data.text));
+				pt.right(fhqgui.btn('Save', 'saveFeedbackMessage(' + id + ');'));
+				fhqgui.showModalDialog(pt.render());
 			} else {
 				alert(obj.error.message);
 			}
@@ -238,7 +181,7 @@ function loadFeedback() {
 				el.innerHTML = obj.error.message;
 			} else {
 				var content = '';
-				content += '<div class="button3 ad" onclick="formCreateFeedback();">Create Feedback</div><br>';
+				content += '<div class="button3 ad" onclick="new FHQFeedback().show();">Create Feedback</div><br>';
 				
 				for (var k in obj.data.feedback) {
 					content += '';

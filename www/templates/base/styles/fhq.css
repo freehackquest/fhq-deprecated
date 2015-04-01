@@ -1,0 +1,61 @@
+.fhqbtn {
+	display: inline-block;
+	background: #ccc;
+	padding: 8px;
+	text-decoration: none;
+	position:relative;
+    color: #000000;
+    margin:3px 3px 3px 3px;
+    cursor: pointer;
+    text-shadow: 0px;
+    border-radius: 5px;
+}
+
+.fhqbtn:before, .fhqbtn:after{
+	content: '';
+    position: absolute;
+    z-index:-2;
+}
+
+.fhqbtn:hover{
+	background: #606060;
+	color: #fff;
+	text-decoration: none;
+}
+
+.fhqinfo {
+	display: inline-block;
+	margin: 10px;
+	vertical-align: top;
+}
+
+.fhqparamtbl {
+	display: table;
+}
+
+.fhqparamtbl_row {
+	display: table-row;
+	padding: 3px;
+	text-decoration: none;
+	color: #000000;
+	margin:3px 3px 3px 3px;
+}
+
+.fhqparamtbl_rowskip {
+	display: table-row;
+	background: inherit;
+	height: 10px;
+}
+
+.fhqparamtbl_param {
+	display: table-cell;
+	padding: 8px 20px 8px 20px;
+	background: #cccccc;
+	text-align: right;
+}
+
+.fhqparamtbl_value {
+	display: table-cell;
+	background: #e4e4e4;
+	padding:8px 20px 8px 20px;
+}

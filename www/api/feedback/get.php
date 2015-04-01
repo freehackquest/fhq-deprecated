@@ -20,9 +20,12 @@ $result = array(
 );
 
 if (!APIHelpers::issetParam('id'))
-  APIHelpers::showerror(1266, 'not found parameter id');
+	APIHelpers::showerror(1266, 'not found parameter id');
 
 $id = APIHelpers::getParam("id", 0);
+
+if (!is_numeric($id))
+	APIHelpers::showerror(1281, 'Parameter id must be numeric');
 
 $conn = APIHelpers::createConnection($config);
 
@@ -39,6 +42,7 @@ try {
 	');
 	$stmt->execute(array($id));
 	if($row = $stmt->fetch()) {
+		$result['data']['id'] = htmlspecialchars($row['id']);
 		$result['data']['type'] = htmlspecialchars($row['type']);
 		$result['data']['text'] = htmlspecialchars($row['text']);
 	}

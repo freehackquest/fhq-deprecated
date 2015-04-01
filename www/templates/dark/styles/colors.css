@@ -19,6 +19,23 @@ body.main
 	background: #383838;
 }
 
+.fhqbtn {
+	background: #303030;
+	color: #C8C8C8;
+	background: #383838;
+}
+
+.fhqparamtbl_param {
+    background-color: #3b3b3b;
+    color: #C8C8C8;
+}
+
+.fhqparamtbl_value {
+    background-color: #4f4f4f;
+    color: #C8C8C8;
+}
+
+
 /* menu */
 .fhq_btn_menu {
 	background-color: #303030;
@@ -74,16 +91,6 @@ body.main
 #customers tr.alt td {
     color: #C8C8C8;
     background-color: #3e3e3e;
-}
-
-.user_info_param {
-    background-color: #3b3b3b;
-    color: #C8C8C8;
-}
-
-.user_info_value {
-    background-color: #4f4f4f;
-    color: #C8C8C8;
 }
 
 input[type="text"], input[type="password"], select, textarea {

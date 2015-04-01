@@ -1,41 +1,10 @@
 
-function createDivRowEvent(name, value) {
-	return '<div class="user_info_row"> \n'
-		+ '\t<div class="user_info_param">' + name + '</div>\n'
-		+ '\t<div class="user_info_value">' + value + '</div>\n'
-		+ '</div>\n';
-}
-
-var g_eventsTypes = [
-	{ type: 'info', caption: 'Information'},
-	{ type: 'users', caption: 'Users'},
-	{ type: 'games', caption: 'Games'},
-	{ type: 'warning', caption: 'Warning'}
-];
-
-// the same function createComboBoxGame
-function createComboBoxEvents(idelem, value, arr) {
-	var result = '<select id="' + idelem + '">';
-	for (var k in arr) {
-		result += '<option ';
-		if (arr[k].type == value)
-			result += ' selected ';
-		result += ' value="' + arr[k].type + '">';
-		result += arr[k].caption + '</option>';
-	}
-	result += '</select>';
-	return result;
-}
-
 function formCreateEvent() {
-	var content = '<div class="fhq_game_info">';
-	content += '<div class="fhq_game_info_table">\n';
-	content += createDivRowEvent('Type:', createComboBoxEvents('newevent_type', 'info', g_eventsTypes));
-	content += createDivRowEvent('Message:', '<textarea id="newevent_message"></textarea>');
-	content += createDivRowEvent('', '<div class="button3 ad" onclick="insertEvent();">Create</div>');
-	content += '</div>'; // game_info_table
-	content += '</div>\n'; // game_info
-	showModalDialog(content);
+	var pt = new FHQParamTable();
+	pt.row('Type:', fhqgui.combobox('newevent_type', 'info', fhq.getEventTypes()));
+	pt.row('Message:', fhqgui.textedit('newevent_message', ''));
+	pt.right(fhqgui.btn('Create', 'insertEvent();'));
+	fhqgui.showModalDialog(pt.render());
 }
 
 function insertEvent()
@@ -79,7 +48,7 @@ function deleteEvent(id)  {
 
 function deleteConfirmEvent(id) {
 	var content = 'Are you sure that want remove this News?<br>';
-	content += '<div class="button3 ad" onclick="deleteEvent(' + id + ');">YES!!!</div>';
+	content += '<div class="fhqbtn" onclick="deleteEvent(' + id + ');">YES!!!</div>';
 	showModalDialog(content);
 };
 
@@ -113,14 +82,11 @@ function formEditEvent(id, type, message)  {
 		createUrlFromObj(params),
 		function (obj) {
 			if (obj.result == "ok") {
-				var content = '<div class="fhq_game_info">';
-				content += '<div class="fhq_game_info_table">\n';
-				content += createDivRowEvent('Type:', createComboBoxEvents('editevent_type', obj.data.type, g_eventsTypes));
-				content += createDivRowEvent('Message:', '<textarea id="editevent_message">' + obj.data.message + '</textarea>');
-				content += createDivRowEvent('', '<div class="button3 ad" onclick="saveEvent(' + id + ');">Save</div>');
-				content += '</div>'; // game_info_table
-				content += '</div>\n'; // game_info
-				showModalDialog(content);
+				var pt = new FHQParamTable();
+				pt.row('Type:', fhqgui.combobox('editevent_type', obj.data.type, fhq.getEventTypes()));
+				pt.row('Message:', fhqgui.textedit('editevent_message', obj.data.message));
+				pt.right(fhqgui.btn('Save', 'saveEvent(' + id + ');'));
+				fhqgui.showModalDialog(pt.render());
 			} else {
 				alert(obj.error.message);
 			}
@@ -142,7 +108,7 @@ function loadEvents() {
 			} else {
 				var content = '';
 				if (obj.access == true)
-					content += '<div class="button3 ad" onclick="formCreateEvent();">Create News</div><br>';
+					content += '<div class="fhqbtn" onclick="formCreateEvent();">Create News</div><br>';
 				
 				for (var k in obj.data.events) {
 					content += '';
@@ -167,8 +133,8 @@ function loadEvents() {
 						content += '			<div class="fhq_event_score">' + e.message + '</div>';
 						if (obj.access == true) {
 							content += '			<div class="fhq_event_caption">'; 
-							content += '				<div class="button3 ad" onclick="deleteConfirmEvent(' + e.id + ');">Delete</div>';
-							content += '				<div class="button3 ad" onclick="formEditEvent(' + e.id + ');">Edit</div>';
+							content += '				<div class="fhqbtn" onclick="deleteConfirmEvent(' + e.id + ');">Delete</div>';
+							content += '				<div class="fhqbtn" onclick="formEditEvent(' + e.id + ');">Edit</div>';
 							content += '			</div>';
 						}
 						
