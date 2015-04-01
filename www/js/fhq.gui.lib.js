@@ -56,6 +56,60 @@ function FHQGuiLib() {
 		document.onkeydown = null;
 		document.getElementById('modal_dialog_content').innerHTML = "";
 	}
+	
+	this.paginator = function(min,max,onpage,page, setfuncname, updatefuncname) {
+		if (min == max || page > max || page < min )
+			return " Paging Error ";
+		
+		var pages = Math.ceil(max / onpage);
+
+		var pagesInt = [];
+		var leftp = 5;
+		var rightp = leftp + 1;
+
+		if (pages > (leftp + rightp + 2)) {
+			pagesInt.push(min);
+			if (page - leftp > min + 1) {
+				pagesInt.push(-1);
+				for (var i = (page - leftp); i <= page; i++) {
+					pagesInt.push(i);
+				}
+			} else {
+				for (var i = min+1; i <= page; i++) {
+					pagesInt.push(i);
+				}
+			}
+			
+			if (page + rightp < pages-1) {
+				for (var i = page+1; i < (page + rightp); i++) {
+					pagesInt.push(i);
+				}
+				pagesInt.push(-1);
+			} else {
+				for (var i = page+1; i < pages-1; i++) {
+					pagesInt.push(i);
+				}
+			}
+			if (page != pages-1)
+				pagesInt.push(pages-1);
+		} else {
+			for (var i = 0; i < pages; i++) {
+				pagesInt.push(i);
+			}
+		}
+
+		var pagesHtml = [];
+		for (var i = 0; i < pagesInt.length; i++) {
+			if (pagesInt[i] == -1) {
+				pagesHtml.push("...");
+			} else if (pagesInt[i] == page) {
+				pagesHtml.push('<div class="selected_user_page">[' + (pagesInt[i]+1) + ']</div>');
+			} else {
+				pagesHtml.push('<div class="button3 ad" onclick="' + setfuncname + '(' + pagesInt[i] + '); ' + updatefuncname + '();">[' + (pagesInt[i]+1) + ']</div>');
+			}
+		}
+		return pagesHtml.join(' ');
+	}
 };
 
 function FHQParamTable() {

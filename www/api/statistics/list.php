@@ -16,7 +16,11 @@ APIHelpers::checkAuth();
 
 $gameid = APIHelpers::getParam("gameid", 0);
 
-// todo check integer value
+if (!is_numeric($gameid))
+	APIHelpers::showerror(1077, 'parameter "gameid" must be numeric');
+
+if ($gameid == 0)
+	APIHelpers::showerror(1076, "Game was not selected.");
 
 $result = array(
 	'result' => 'fail',
@@ -25,15 +29,55 @@ $result = array(
 
 $result['result'] = 'ok';
 
-if ($gameid == 0)
-	APIHelpers::showerror(1076, "Game was not selected.");
+$filter_where = [];
+$filter_values = [];
+
+$filter_values[] = 0;
+$filter_values[] = intval($gameid);
+
+// page
+$page = APIHelpers::getParam('page', 0);
+if (!is_numeric($page))
+	APIHelpers::showerror(1072, 'Parameter "page" must be numeric');
+$result['data']['page'] = intval($page);
+
+// onpage
+$onpage = APIHelpers::getParam('onpage', 25);
+if (!is_numeric($onpage))
+	APIHelpers::showerror(1073, 'parameter "onpage" must be numeric');
+$result['data']['onpage'] = intval($onpage);
+
+// questid
+$questid = APIHelpers::getParam('questid', '');
+if ($questid != '' && is_numeric($questid)) {
+	$filter_where[] = '(idquest = ?)';
+	$filter_values[] = intval($questid);
+} else if ($questid != '' && !is_numeric($questid)) {
+	APIHelpers::showerror(1073, 'Parameter "questid" must be numeric or empty');
+}
+
+// questname
+$questname = APIHelpers::getParam('questname', '');
+if ($questname != '') {
+	$filter_where[] = '(name like ?)';
+	$filter_values[] = '%'.$questname.'%';
+}
+
+// questsubject
+$questsubject = APIHelpers::getParam('questsubject', '');
+if ($questsubject != '') {
+	$filter_where[] = 'subject = ?';
+	$filter_values[] = $questsubject;
+}
+
+$where = implode(' AND ', $filter_where);
+if ($where != '') {
+	$where = ' AND '.$where;
+}
 
 $conn = APIHelpers::createConnection($config);
 
 $result['data']['gameid'] = $gameid;
-
-if (!is_numeric($gameid))
-	APIHelpers::showerror(1077, 'parameter "gameid" must be numeric');
 
 // count quests
 try {
@@ -45,8 +89,9 @@ try {
 			WHERE
 				for_person = ?
 				AND gameid = ?
+				'.$where.'
 	');
-	$stmt->execute(array(0,intval($gameid)));
+	$stmt->execute($filter_values);
 	if($row = $stmt->fetch()) {
 		$result['data']['count'] = $row['cnt'];
 	}
@@ -94,10 +139,12 @@ try {
 			WHERE
 				for_person = ?
 				AND gameid = ?
+				'.$where.'
 			ORDER BY
 				subject, score ASC, min_score
+			LIMIT '.($page*$onpage).','.$onpage.'
 	');
-	$stmt->execute(array(0,intval($gameid)));
+	$stmt->execute($filter_values);
 	$result['data']['quests'] = array();
 	$id = -1;
 	while ($row = $stmt->fetch()) {

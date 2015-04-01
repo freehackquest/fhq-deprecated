@@ -1,20 +1,62 @@
 
-function loadStatistics(gameid) {
+
+function resetStatisticsPage() {
+	document.getElementById('statistics_page').value = 0;
+}
+
+function setStatisticsPage(val) {
+	document.getElementById('statistics_page').value = val;
+}
+
+function createPageStatistics(gameid) {
+	var pt = new FHQParamTable();
+	pt.row('Quest Name:', '<input type="text" id="statistics_questname" value="" onkeydown="if (event.keyCode == 13) {resetStatisticsPage(' + gameid + '); updateStatistics();};"/>');
+	pt.row('Quest ID:', '<input type="text" id="statistics_questid" value="" onkeydown="if (event.keyCode == 13) {resetStatisticsPage(' + gameid + '); updateStatistics();};"/>');
+	pt.row('Quest Subject:', fhqgui.combobox('statistics_questsubject', '', fhq.getQuestTypesFilter()));
+	pt.row('On Page:', fhqgui.combobox('statistics_onpage', '15', fhq.getOnPage()));
+	pt.row('', fhqgui.btn('Search', 'resetStatisticsPage(' + gameid + '); updateStatistics();'));
+	pt.skip();
+	pt.row('Found:', '<font id="statistics_found">0</font>');
+	var cp = new FHQContentPage();
+	cp.clear();
+	cp.append(pt.render());
+	cp.append('<input type="hidden" id="statistics_page" value="0"/>'
+		+ '<input type="hidden" id="statistics_gameid" value="' + gameid + '"/>'
+		+ '<div id="error_search"></div>'
+		+ '<hr/>'
+		+ '<div id="listStatistics"></div>');
+}
+
+function updateStatistics() {
+
+	var ls = document.getElementById("listStatistics");
+	ls.innerHTML = "Loading...";
+	
 	var params = {};
-	params.gameid = gameid;
-	var el = document.getElementById("content_page");
-	el.innerHTML = "Loading...";
+	params.gameid = document.getElementById('statistics_gameid').value;
+	params.questname = document.getElementById('statistics_questname').value;
+	params.questid = document.getElementById('statistics_questid').value;
+	params.questsubject = document.getElementById('statistics_questsubject').value;
+	params.page = document.getElementById('statistics_page').value;
+	params.onpage = document.getElementById('statistics_onpage').value;
 
 	send_request_post(
 		'api/statistics/list.php',
 		createUrlFromObj(params),
 		function (obj) {
 			if (obj.result == "fail") {
-				el.innerHTML = obj.error.message;
+				ls.innerHTML = obj.error.message;
 			} else {
 				
+				var found = parseInt(obj.data.count, 10);
+				document.getElementById("statistics_found").innerHTML = found;
+				var onpage = parseInt(obj.data.onpage, 10);
+				var page = parseInt(obj.data.page, 10);
+				
 				var content = '';
-				content += 'Processed ' + obj.lead_time_sec + ' sec <br>';
+				
+				// content += 'Processed ' + obj.lead_time_sec + ' sec <br>';
+				content += fhqgui.paginator(0, found, onpage, page, 'setStatisticsPage', 'updateStatistics');
 				content += '<table id="customers">';
 				content += '<tr class="alt">';
 				content += '	<th width=10%>Quest</th>';
@@ -29,7 +71,6 @@ function loadStatistics(gameid) {
 						var q = obj.data.quests[k];
 
 						content += '<tr ' + (bColor == true ? 'class="alt"' : '') + '>';
-						
 						content += '	<td align=center valign=top>';
 						content += '<div class="button3 ad" onclick="showQuest(' + q.id + ');">';
 						content += q.id + ' ' + q.name + '<br>';
@@ -47,65 +88,10 @@ function loadStatistics(gameid) {
 						bColor = !bColor;
 					}
 				}
-				el.innerHTML = content;
+				ls.innerHTML = content;
 			}
 		}
 	);	
-}
-
-// this same function to getHTMLPaging1
-function getHTMLPaging2(min,max,onpage,page) {
-	if (min == max || page > max || page < min )
-		return " Paging Error ";
-	
-	var pages = Math.ceil(max / onpage);
-
-	var pagesInt = [];
-	var leftp = 5;
-	var rightp = leftp + 1;
-
-	if (pages > (leftp + rightp + 2)) {
-		pagesInt.push(min);
-		if (page - leftp > min + 1) {
-			pagesInt.push(-1);
-			for (var i = (page - leftp); i <= page; i++) {
-				pagesInt.push(i);
-			}
-		} else {
-			for (var i = min+1; i <= page; i++) {
-				pagesInt.push(i);
-			}
-		}
-		
-		if (page + rightp < pages-1) {
-			for (var i = page+1; i < (page + rightp); i++) {
-				pagesInt.push(i);
-			}
-			pagesInt.push(-1);
-		} else {
-			for (var i = page+1; i < pages-1; i++) {
-				pagesInt.push(i);
-			}
-		}
-		if (page != pages-1)
-			pagesInt.push(pages-1);
-	} else {
-		for (var i = 0; i < pages; i++) {
-			pagesInt.push(i);
-		}
-	}
-
-	var pagesHtml = [];
-	for (var i = 0; i < pagesInt.length; i++) {
-		if (pagesInt[i] == -1) {
-			pagesHtml.push("...");
-		} else if (pagesInt[i] == page) {
-			pagesHtml.push('<div class="selected_user_page">[' + (pagesInt[i]+1) + ']</div>');
-		} else {
-			pagesHtml.push('<div class="button3 ad" onclick="setPageAnswerList(' + pagesInt[i] + '); updateAnswerList();">[' + (pagesInt[i]+1) + ']</div>');
-		}
-	}
-	return pagesHtml.join(' ');
 }
 
 function hatchAnswer(answer) {
@@ -181,8 +167,8 @@ function updateAnswerList() {
 				document.getElementById("answerlist_found").innerHTML = found;
 				var onpage = parseInt(obj.data.onpage, 10);
 				var page = parseInt(obj.data.page, 10);
-				var table = parseInt(obj.data.table, 10);
-				al.innerHTML = '<div id="answerlist_paging">' + getHTMLPaging2(0,found, onpage, page) + '</div>';
+
+				al.innerHTML = '<div id="answerlist_paging">' + fhqgui.paginator(0,found, onpage, page, 'setPageAnswerList', 'updateAnswerList') + '</div>';
 
 				var content = '';
 				content += '<table id="customers">';

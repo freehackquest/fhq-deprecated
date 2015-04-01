@@ -28,7 +28,6 @@ if (!isset($_SESSION['user']))
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/menu.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/button3.css?ver=1" />
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/user_info.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/games.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/quest_info.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/overlay.css?ver=1" />
@@ -183,7 +182,7 @@ if (!isset($_SESSION['user']))
 		'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
 	);
 	
-	$arrmenu[] = array(
+	/*$arrmenu[] = array(
 		'name' => 'advisers',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="Advisers" onclick="load_content_page2(\'advisers\');">
@@ -201,7 +200,7 @@ if (!isset($_SESSION['user']))
 			</div>
 		',
 		'show' => ($game_type == 'attack-defence'),
-	);
+	);*/
 
 
 	$arrmenu[] = array(
@@ -217,7 +216,7 @@ if (!isset($_SESSION['user']))
 	$arrmenu[] = array(
 		'name' => 'stats',
 		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Statistics" onclick="loadStatistics('.$gameid.');">
+			<div class="fhq_btn_menu hint--bottom" data-hint="Statistics" onclick="createPageStatistics('.$gameid.'); updateStatistics();">
 				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/stats.png"/><br>
 			</div>
 		',

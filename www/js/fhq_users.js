@@ -279,63 +279,6 @@ function showUserIP(id) {
 	);
 }
 
-function getHTMLPaging1(min,max,onpage,page) {
-	if (min == max || page > max || page < min )
-		return " Paging Error ";
-	
-	var pages = Math.ceil(max / onpage);
-
-	var pagesInt = [];
-	var leftp = 5;
-	var rightp = leftp + 1;
-	
-	
-	
-	if (pages > (leftp + rightp + 2)) {
-		pagesInt.push(min);
-		if (page - leftp > min + 1) {
-			pagesInt.push(-1);
-			for (var i = (page - leftp); i <= page; i++) {
-				pagesInt.push(i);
-			}
-		} else {
-			for (var i = min+1; i <= page; i++) {
-				pagesInt.push(i);
-			}
-		}
-		
-		if (page + rightp < pages-1) {
-			for (var i = page+1; i < (page + rightp); i++) {
-				pagesInt.push(i);
-			}
-			pagesInt.push(-1);
-		} else {
-			for (var i = page+1; i < pages-1; i++) {
-				pagesInt.push(i);
-			}
-		}
-		if (page != pages-1)
-			pagesInt.push(pages-1);
-	} else {
-		for (var i = 0; i < pages; i++) {
-			pagesInt.push(i);
-		}
-	}
-
-	var pagesHtml = [];
-	for (var i = 0; i < pagesInt.length; i++) {
-		if (pagesInt[i] == -1) {
-			pagesHtml.push("...");
-		} else if (pagesInt[i] == page) {
-			pagesHtml.push('<div class="selected_user_page">[' + (pagesInt[i]+1) + ']</div>');
-		} else {
-			pagesHtml.push(fhqgui.btn('[' + (pagesInt[i]+1) + ']', 'setUsersPage(' + pagesInt[i] + '); updateUsers();'));
-		}
-	}
-
-	return pagesHtml.join(' ');
-}
-
 function updateUsers() {
 	var lu = document.getElementById("listUsers");
 	lu.innerHTML = "Please wait...";
@@ -366,7 +309,7 @@ function updateUsers() {
 			var onpage = parseInt(obj.onpage, 10);
 			var page = parseInt(obj.page, 10);
 			
-			lu.innerHTML += '<div id="user_paging">' + getHTMLPaging1(0,found, onpage, page) + '</div>';
+			lu.innerHTML += '<div id="user_paging">' + fhqgui.paginator(0,found, onpage, page, 'setUsersPage', 'updateUsers') + '</div>';
 			var content = '<div class="users_table">';
 			content += '<div class="users_row">';
 			content += '	<div class="users_cell">Logo</div>';
