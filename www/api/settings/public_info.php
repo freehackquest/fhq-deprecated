@@ -47,7 +47,7 @@ try {
 	}
 
 } catch(PDOException $e) {
- 	APIHelpers::showerror(1283, $e->getMessage());
+ 	APIHelpers::showerror(1290, $e->getMessage());
 }
 
 // tryanswers and succsessuful
@@ -60,7 +60,7 @@ try {
 	}
 
 } catch(PDOException $e) {
- 	APIHelpers::showerror(1283, $e->getMessage());
+ 	APIHelpers::showerror(1291, $e->getMessage());
 }
 
 try {
@@ -72,7 +72,7 @@ try {
 	}
 
 } catch(PDOException $e) {
- 	APIHelpers::showerror(1283, $e->getMessage());
+ 	APIHelpers::showerror(1288, $e->getMessage());
 }
 
 try {
@@ -84,7 +84,7 @@ try {
 	}
 
 } catch(PDOException $e) {
- 	APIHelpers::showerror(1283, $e->getMessage());
+ 	APIHelpers::showerror(1289, $e->getMessage());
 }
 
 
@@ -126,7 +126,7 @@ try {
 	}
 
 } catch(PDOException $e) {
- 	APIHelpers::showerror(1283, $e->getMessage());
+ 	APIHelpers::showerror(1282, $e->getMessage());
 }
 
 echo json_encode($result);
