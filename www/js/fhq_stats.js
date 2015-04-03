@@ -146,7 +146,7 @@ function updateAnswerList() {
 	
 	var params = {};
 	params.userid = document.getElementById('answerlist_userid').value;
-	params.username = document.getElementById('answerlist_user').value;
+	params.user = document.getElementById('answerlist_user').value;
 	params.gameid = document.getElementById('answerlist_gameid').value;
 	params.gamename = document.getElementById('answerlist_gamename').value;
 	params.questid = document.getElementById('answerlist_questid').value;
