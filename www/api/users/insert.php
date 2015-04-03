@@ -65,14 +65,11 @@ if ($row = $stmt->fetch())
 
 // same code exists in api/security/registration.php
 $email = strtolower($email);
-$username = base64_encode(strtoupper($email));
-
 $password_hash = APISecurity::generatePassword2($email, $password);
 				
 $stmt_insert = $conn->prepare('
 	INSERT INTO user(
 		uuid_user,
-		username,
 		pass,
 		status,
 		email,
@@ -83,12 +80,11 @@ $stmt_insert = $conn->prepare('
 		date_last_signup,
 		date_create
 	)
-	VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW());
+	VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW());
 ');
 
 $stmt_insert->execute(array(
 	$uuid,
-	$username,
 	$password_hash, // pass
 	$status,
 	$email,
