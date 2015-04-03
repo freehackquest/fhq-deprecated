@@ -300,6 +300,13 @@ function updateUsers() {
 				return;
 			}
 			
+			var ud = document.getElementById("usersdump");
+			ud.innerHTML = '';
+			for (var k in obj.dumps) {
+				// ud.innerHTML += obj.dumps[k] + '<a class="fhqbtn" href="files/dumps/' + obj.dumps[k] + '">' + download + '</a><a class="fhqbtn" href="files/dumps/' + obj.dumps[k] + '">' + download + '</a><br>';
+				ud.innerHTML += obj.dumps[k] + ' <a class="fhqbtn" href="files/dumps/' + obj.dumps[k] + '">Download</a><div class="fhqbtn" onclick="removeDumpUsers(\'' + obj.dumps[k] + '\');">Remove</div><br>';
+			}
+
 			var lu = document.getElementById("listUsers");
 			lu.innerHTML = '';
 
@@ -308,7 +315,7 @@ function updateUsers() {
 
 			var onpage = parseInt(obj.onpage, 10);
 			var page = parseInt(obj.page, 10);
-			
+
 			lu.innerHTML += '<div id="user_paging">' + fhqgui.paginator(0,found, onpage, page, 'setUsersPage', 'updateUsers') + '</div>';
 			var content = '<div class="users_table">';
 			content += '<div class="users_row">';
@@ -384,6 +391,41 @@ function createUser() {
 	);
 }
 
+function prepareDumpUsers() {
+	var params = {};
+	// alert(createUrlFromObj(params));
+	send_request_post(
+		'api/users/export.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "ok") {
+				updateUsers();
+				return;
+			} else {
+				alert(obj.error.message);
+			}
+		}
+	);
+}
+
+function removeDumpUsers(filename) {
+	var params = {};
+	params.filename = filename;
+	// alert(createUrlFromObj(params));
+	send_request_post(
+		'api/users/export_remove.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "ok") {
+				updateUsers();
+				return;
+			} else {
+				alert(obj.error.message);
+			}
+		}
+	);
+}
+
 function formCreateUser() {
 	var pt = new FHQParamTable();
 	pt.row('Uuid:', '<input type="text" id="newuser_uuid" value="' + guid() + '"/>');
@@ -401,7 +443,9 @@ function formCreateUser() {
 
 function createPageUsers() {
 	var pt = new FHQParamTable();
-	pt.row('', fhqgui.btn('Create User', 'formCreateUser();'));
+	pt.row('',fhqgui.btn('Create User', 'formCreateUser();'));
+	pt.row('',fhqgui.btn('Prepare dump of users (export)', 'prepareDumpUsers();') + '<div id="usersdump"></div>');
+	pt.row('',fhqgui.btn('Import Users', 'importUsers();'));
 	pt.skip();
 	pt.row('E-mail or Nick:', '<input type="text" id="user_search" value="" onkeydown="if (event.keyCode == 13) {resetUsersPage(); updateUsers();};"/>');
 	pt.row('Role:', fhqgui.combobox('user_role', '', fhq.getUserRolesFilter()));

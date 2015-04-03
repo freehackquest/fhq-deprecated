@@ -47,8 +47,6 @@ if ($row = $stmt->fetch())
 
 $nickname = "hacker-".substr(md5(rand().rand()), 0, 7);
 $email = strtolower($email);
-$username = base64_encode(strtoupper($email));
-
 $uuid = APIHelpers::gen_guid();
 
 $password = substr(md5(rand().rand()), 0, 8);
@@ -59,7 +57,6 @@ $password_hash = APISecurity::generatePassword2($email, $password);
 $stmt_insert = $conn->prepare('
 	INSERT INTO user(
 		uuid_user,
-		username,
 		pass,
 		status,
 		email,
@@ -70,12 +67,11 @@ $stmt_insert = $conn->prepare('
 		date_last_signup,
 		date_create
 	)
-	VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW());
+	VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW());
 ');
 
 $stmt_insert->execute(array(
 	$uuid,
-	$username,
 	$password_hash, // pass
 	'activated',
 	$email,
@@ -85,6 +81,16 @@ $stmt_insert->execute(array(
 	$_SERVER['REMOTE_ADDR'],
 	'0000-00-00 00:00:00',
 ));
+
+$stmt = $conn->prepare('select count(*) as cnt from user where email = ?');
+$stmt->execute(array($email));
+if ($row = $stmt->fetch())
+{
+	if (intval($row['cnt']) == 0) {
+		APIEvents::addPublicEvents($conn, 'errors', 'Admin, registration is broken!');
+		APIHelpers::showerror(1287, '[Registration] Sorry registration is broken. Please send report to the admin about this.');
+	}
+}
 
 $email_subject = "Registration on FreeHackQuest.";
 

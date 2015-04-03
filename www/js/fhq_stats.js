@@ -146,7 +146,7 @@ function updateAnswerList() {
 	
 	var params = {};
 	params.userid = document.getElementById('answerlist_userid').value;
-	params.username = document.getElementById('answerlist_user').value;
+	params.user = document.getElementById('answerlist_user').value;
 	params.gameid = document.getElementById('answerlist_gameid').value;
 	params.gamename = document.getElementById('answerlist_gamename').value;
 	params.questid = document.getElementById('answerlist_questid').value;
@@ -207,11 +207,10 @@ function updateAnswerList() {
 						content += ' <font size=3> ' + ans.questsubject + ' ' + ans.questscore + '</font><br>';
 						content += 'Solved ' + ans.questsolved + ' ';
 						content += '	</div></td>';
-						
 						content += '	<td align=center>' + (ans.passed == 'Yes' ? hatchAnswer(ans.answer_try) : ans.answer_try) + '</td>';
 						content += '	<td align=center>' + hatchAnswer(ans.answer_real) + '</td>';
 						content += '	<td align=center>' + ans.passed + '</td>';
-						content += '	<td align=center><div class="button3 ad" onclick="showUserInfo(' + ans.userid + ');">' + ans.userid + ', ' + ans.usernick + ', ' + ans.username + ' </div></td>';
+						content += '	<td align=center><div class="button3 ad" onclick="showUserInfo(' + ans.userid + ');">' + ans.userid + ', ' + ans.usernick + ', ' + ans.email + ' </div></td>';
 						content += '</tr>\n';
 						bColor = !bColor;
 					}

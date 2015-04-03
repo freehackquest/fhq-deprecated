@@ -58,6 +58,9 @@ function FHQGuiLib() {
 	}
 	
 	this.paginator = function(min,max,onpage,page, setfuncname, updatefuncname) {
+		if (max == 0) 
+			return "";
+
 		if (min == max || page > max || page < min )
 			return " Paging Error ";
 		

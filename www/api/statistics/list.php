@@ -181,8 +181,7 @@ try {
 		$stmt_users = $conn->prepare('
 				select 
 				t0.iduser, 
-				t0.nick, 
-				t0.username 
+				t0.nick
 			from 
 				user t0
 			inner join userquest t1 on t0.iduser = t1.iduser 
