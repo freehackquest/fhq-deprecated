@@ -111,6 +111,17 @@ try {
 		if ($status == 'current' || $status == 'completed')
 		{
 			$result['data']['text'] = $row['text'];
+			
+			$result['data']['files'] = array();
+			$stmt_files = $conn->prepare('select * from quests_files WHERE questid = ?');
+			$stmt_files->execute(array(intval($questid)));
+			while ($row_files = $stmt_files->fetch())
+				$result['data']['files'][] = array(
+					'filename' => $row_files['filename'],
+					'filepath' => $row_files['filepath'],
+					'size' => $row_files['size'],
+					'id' => $row_files['id'],
+				);
 		}
 
 		if (isset($_SESSION['game']))

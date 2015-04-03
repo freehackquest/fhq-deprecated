@@ -80,5 +80,22 @@ try {
 	APIHelpers::showerror(1083, $e->getMessage());
 }
 
+try {
+	$stmt = $conn->prepare('SELECT * FROM quests_files WHERE questid = ?');
+	$stmt->execute(array(intval($questid)));
+	$result['data']['files'] = array();
+	while($row = $stmt->fetch())
+		$result['data']['files'][] = array(
+			'id' => $row['id'],
+			'size' => $row['size'],
+			'filename' => $row['filename'],
+			'filepath' => $row['filepath'],
+		);
+	$result['result'] = 'ok';
+	
+} catch(PDOException $e) {
+	APIHelpers::showerror(1314, $e->getMessage());
+}
+
 include_once ($curdir."/../api.lib/savetoken.php");
 echo json_encode($result);

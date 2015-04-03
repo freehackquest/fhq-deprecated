@@ -259,6 +259,76 @@ function updateQuest(id)
 	);
 }
 
+// http://stackoverflow.com/questions/11076975/insert-text-into-textarea-at-cursor-position-javascript
+function editQuestAddLink(filepath, filename, as) {
+	var t = document.getElementById('editquest_text');
+	var val = '';
+	if (as == 'asfile')
+		val = '<a class="fhqbtn" target="_ablank" href="' + filepath + '">Download ' + filename + '</a>';
+	else if (as == 'asimg')
+		val = '<img width="250px" src="' + filepath + '"/>';
+	else
+		val = filename;
+		
+	//IE support
+    if (document.selection) {
+        t.focus();
+        sel = document.selection.createRange();
+        sel.text = val;
+    }
+    //MOZILLA and others
+    else if (t.selectionStart || t.selectionStart == '0') {
+        var startPos = t.selectionStart;
+        var endPos = t.selectionEnd;
+        t.value = t.value.substring(0, startPos)
+            + val
+            + t.value.substring(endPos, t.value.length);
+    } else {
+        t.value += val;
+    }
+};
+
+function uploadQuestFiles(questid) {
+	var files = document.getElementById('editquest_upload_files').files;
+	/*for(i = 0; i < files.length; i++)
+		alert(files[i].name);*/
+	
+	send_request_post_files(
+		files,
+		'api/quests/files_upload.php',
+		createUrlFromObj({"questid": questid}),
+		function (obj) {
+			if (obj.result == "fail") {
+				alert(obj.error.message);
+				return;
+			}
+			// document.getElementById('user_logo').src = obj.data.logo + '?' + new Date().getTime();
+			formEditQuest(questid);
+			alert('uploaded');
+		}
+	);
+}
+
+function removeQuestFile(id, questid)
+{
+	var params = {};
+	params["fileid"] = id;
+	// alert(createUrlFromObj(params));
+
+	send_request_post(
+		'api/quests/files_remove.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "ok") {
+				alert("removed!");
+				formEditQuest(questid);
+			} else {
+				alert(obj.error.message);
+			}
+		}
+	);
+}
+
 function formEditQuest(id)
 {
 	closeModalDialog();
@@ -272,7 +342,6 @@ function formEditQuest(id)
 				showModalDialog(obj.error.message);
 				return;
 			}
-			
 			var content = '\n';
 
 			/*content += createQuestRow('Quest UUID:', '<input type="text" id="newquest_quest_uuid" value="' + guid() + '"/>');
@@ -288,6 +357,9 @@ function formEditQuest(id)
 			content += createQuestRow('Game: ', obj.data.game_title);
 			content += createQuestRow('Name:', '<input type="text" id="editquest_name" value="' + obj.data.name + '"/>');
 			content += createQuestRow('Text:', '<textarea id="editquest_text">' + obj.data.text + '</textarea>');
+			content += createQuestRow('Files:', '<div id="editquest_files"></div>');
+			content += createQuestRow('', '<input id="editquest_upload_files" multiple required="" type="file">' 
+				+ '<div class="fhqbtn" onclick="uploadQuestFiles(' + obj.quest + ');">Uplaod files</div>');
 			content += createQuestRow('Score(+):', '<input type="text" id="editquest_score" value="' + obj.data.score + '"/>');
 			content += createQuestRow('Min Score(>):', '<input type="text" id="editquest_min_score" value="' + obj.data.min_score + '"/>');
 			content += createQuestRow('Subject:', fhqgui.combobox('editquest_subject', obj.data.subject, fhq.getQuestTypes()));
@@ -304,6 +376,14 @@ function formEditQuest(id)
 			content += '<div id="quest_error"><div>';
 			content += '\n';
 			showModalDialog(content);
+			for (var k in obj.data.files) {
+				var f = document.getElementById('editquest_files');
+				f.innerHTML += obj.data.files[k].filename + ' '
+				+ '<div class="fhqbtn" onclick="editQuestAddLink(\'' + obj.data.files[k].filepath + '\', \'' + obj.data.files[k].filename + '\', \'asfile\');">Add link as file</div> '
+				+ '<div class="fhqbtn" onclick="editQuestAddLink(\'' + obj.data.files[k].filepath + '\', \'' + obj.data.files[k].filename + '\', \'asimg\');">Add link as img</div> '
+				+ ' <a class="fhqbtn" href="' + obj.data.files[k].filepath + '">Download</a>' 
+				+ ' <div class="fhqbtn" onclick="removeQuestFile(' + obj.data.files[k].id + ', ' + obj.quest + ');">Remove</div><br>';
+			}
 		}
 	);
 }
@@ -345,14 +425,23 @@ function showQuest(id)
 			} else if (obj.data.date_stop == null || obj.data.date_stop == '0000-00-00 00:00:00') {
 				if (obj.data.text)
 					content += createQuestRow('Text: ', '<pre>' + obj.data.text + '</pre>');
+				
+				if (obj.data.files && obj.data.files.length > 0) {
+					var files1 = '';						
+					for (var k in obj.data.files) {
+						files1 += '<a class="fhqbtn" href="' + obj.data.files[k].filepath + '" target="_ablank"> Download '+ obj.data.files[k].filename + '</a><br>';
+					}
+					content += createQuestRow('Attachmnet files: ', files1);
+				}
+						
 				if (obj.data.date_start)
 					content += createQuestRow('Date Start: ', obj.data.date_start);
 				content += createQuestRow('', '<input id="quest_answer" type="text" onkeydown="if (event.keyCode == 13) passQuest(' + obj.quest + ');"/>'
 					+ '<div class="button3 ad" onclick="passQuest(' + obj.quest + ');">Pass quest</div>'
-					);
+				);
 				content += createQuestRow('', '<div class="button3 ad" onclick="showMyAnswers(' + obj.quest + ');">Show/Hide my answers</div><br>'
 					+ '<div id="user_answers"></div>'
-					);					
+				);					
 			} else {
 				if (obj.data.text)
 					content += createQuestRow('Text: ', '<pre>' + obj.data.text + '</pre>');
