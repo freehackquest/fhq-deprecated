@@ -29,11 +29,6 @@ $result = array(
 	'data' => array(),
 );
 
-
-$conn = APIHelpers::createConnection($config);
-
-$keys = array_keys($_FILES);
-
 function normalizefilename($filename) {
 	$converter = array(
 		'а' => 'a',   'б' => 'b',   'в' => 'v',
@@ -63,7 +58,7 @@ function normalizefilename($filename) {
 
 	$filename1 = strtr($filename, $converter);
 	$result = '';
-	$allowCharacters = 'QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm_1234567890';
+	$allowCharacters = 'QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm_1234567890.';
 	for ($i = 0; $i < strlen($filename1); $i++) {
 		if (strpos($allowCharacters,$filename1[$i]) !== false) {
 			$result .= $filename1[$i];
@@ -71,6 +66,10 @@ function normalizefilename($filename) {
 	}
 	return $result;
 }
+
+$conn = APIHelpers::createConnection($config);
+
+$keys = array_keys($_FILES);
 
 for($i = 0; $i < count($keys); $i++)
 {
@@ -83,7 +82,7 @@ for($i = 0; $i < count($keys); $i++)
 	{
 		$uuid = APIHelpers::gen_guid();
 		// $filename2 = 'files/quests/quest'.$questid.'_'.normalizefilename($filename);
-		$filepath = 'files/quests/'.$uuid.'_'.normalizefilename($filename);
+		$filepath = 'files/quests/'.$uuid.'_'.normalizefilename($_FILES[$filename]["name"]);
 		$full_filename = $curdir_upload_logo.'/../../'.$filepath;
 
 		// chmod($curdir_upload_logo.'/../../files/users/',0755);
@@ -96,7 +95,7 @@ for($i = 0; $i < count($keys); $i++)
 				$stmt = $conn->prepare($query);
 				$size = filesize($full_filename);
 				
-				if ($stmt->execute(array($uuid, $questid, $filepath, $filename, $size))) {
+				if ($stmt->execute(array($uuid, $questid, $filepath, $_FILES[$filename]["name"], $size))) {
 					$result['result'] = 'ok';
 					$result['data']['filename'] = $filename;
 					$result['data']['filepath'] = $filepath;
