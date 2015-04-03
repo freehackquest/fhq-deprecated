@@ -60,7 +60,6 @@ $stmt_insert = $conn->prepare('
 	INSERT INTO user(
 		uuid_user,
 		username,
-		password,
 		pass,
 		status,
 		email,
@@ -71,13 +70,12 @@ $stmt_insert = $conn->prepare('
 		date_last_signup,
 		date_create
 	)
-	VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW());
+	VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW());
 ');
 
 $stmt_insert->execute(array(
 	$uuid,
 	$username,
-	'', // password
 	$password_hash, // pass
 	'activated',
 	$email,

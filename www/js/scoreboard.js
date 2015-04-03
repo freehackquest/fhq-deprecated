@@ -73,9 +73,9 @@ function updateScoreboard(gameid) {
 
 						var arr = [];
 						for (var k2 in obj.data[k]) {
-							arr.push(obj.data[k][k2].nick);
+							arr.push(' <div class="fhqmiddelouter"> <img class="fhqmiddelinner" width=25px src="' + obj.data[k][k2].logo + '"/> ' + obj.data[k][k2].nick + ' </div> ');
 						}
-						var users = '<div>' + arr.join('</div><div>') + '</div>';
+						var users = arr.join(' &nbsp;&nbsp;&nbsp;&nbsp; ');
 						el.innerHTML = users;
 					}
 					lastPlace = k;

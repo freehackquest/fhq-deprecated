@@ -15,6 +15,7 @@
 	content: '';
     position: absolute;
     z-index:-2;
+    text-decoration: none;
 }
 
 .fhqbtn:hover{
@@ -23,6 +24,15 @@
 	text-decoration: none;
 }
 
+.fhqmiddelouter {
+	display: inline-block;
+	position:relative;
+}
+ 
+.fhqmiddelinner {
+	vertical-align: middle;
+}
+                   
 .fhqinfo {
 	display: inline-block;
 	margin: 10px;
