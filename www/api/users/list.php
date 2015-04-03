@@ -2,10 +2,10 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
-$curdir = dirname(__FILE__);
-include_once ($curdir."/../api.lib/api.base.php");
-include_once ($curdir."/../api.lib/api.game.php");
-include_once ($curdir."/../../config/config.php");
+$curdir_users_list = dirname(__FILE__);
+include_once ($curdir_users_list."/../api.lib/api.base.php");
+include_once ($curdir_users_list."/../api.lib/api.game.php");
+include_once ($curdir_users_list."/../../config/config.php");
 
 APIHelpers::checkAuth();
 
@@ -96,6 +96,16 @@ try {
 	}
 } catch(PDOException $e) {
 	APIHelpers::showerror(1093, $e->getMessage());
+}
+
+$dir = $curdir_users_list."/../../files/dumps/";
+$dh  = opendir($dir);
+$result['dumps'] = array();
+while (false !== ($filename = readdir($dh))) {
+	if (preg_match('/^users\_.*\.zip$/', $filename)) {
+		$result['dumps'][] = $filename;
+	}
+	sort($result['dumps']);
 }
 
 echo json_encode($result);
