@@ -123,12 +123,6 @@ if (!isset($_SESSION['user']))
 	}
 	
 	$arrmenu = array();
-
-	/*<a href="?"><img src="templates/base/images/minilogo.png"/></a><br><br>
-				<center>'.$game_info.'<br>
-				<div class="button3 ad" onclick="">change game</div>
-				</center>
-	*/
 	
 	$arrmenu[] = array(
 		'name' => 'logo',
@@ -139,15 +133,6 @@ if (!isset($_SESSION['user']))
 		',
 		'show' => true,
 	);
-	
-	/*$arrmenu[] = array(
-		'name' => 'splitter',
-		'html' => '
-			<div class="fhq_btn_menu_splitter">
-			</div>
-		',
-		'show' => true,
-	);*/
 	
 	$arrmenu[] = array(
 		'name' => 'game_info',
@@ -180,27 +165,6 @@ if (!isset($_SESSION['user']))
 		',
 		'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
 	);
-	
-	/*$arrmenu[] = array(
-		'name' => 'advisers',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Advisers" onclick="load_content_page2(\'advisers\');">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_advisers.png"/>
-			</div>
-		',
-		'show' => ($game_type == 'attack-defence'),
-	);
-	
-	$arrmenu[] = array(
-		'name' => 'send_flag',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Send Flag" onclick="window.open(\'send_flag.php\', \'_blank\');">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_send_flag.png"/>
-			</div>
-		',
-		'show' => ($game_type == 'attack-defence'),
-	);*/
-
 
 	$arrmenu[] = array(
 		'name' => 'quests',
