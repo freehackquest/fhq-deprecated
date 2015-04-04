@@ -38,7 +38,7 @@
 	$str = rc(4);
 	session_start();
 	$_SESSION['captcha_reg'] = $str;
-	$captcha = create_capcha_image($str,"templates/base/fonts/Bleeding_Cowboys.ttf","templates/base/images/background_captcha.png");
+	$captcha = create_capcha_image($str,"../templates/base/fonts/Bleeding_Cowboys.ttf","../templates/base/images/background_captcha.png");
 	header('Expires: Sat, 31 May 2008 05:00:00 GMT'); 
 	header('Last-Modified: '.gmdate("D, d M Y H:i:s").' GMT');
 	header('Cache-Control: no-store, no-cache, must-revalidate'); 

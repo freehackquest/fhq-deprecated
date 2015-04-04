@@ -27,10 +27,10 @@ function show_index_element(idelem) {
 
   // refresh captcha
   if (idelem == 'indexcontent_restore')
-    document.getElementById('captcha_image_restore').src = 'captcha.php?rid=' + Math.random();
+    document.getElementById('captcha_image_restore').src = 'api/captcha.php?rid=' + Math.random();
        
   if (idelem == 'indexcontent_registration') 
-    document.getElementById('captcha_image_reg').src = 'captcha.php?rid=' + Math.random();
+    document.getElementById('captcha_image_reg').src = 'api/captcha.php?rid=' + Math.random();
 } 
 
 function send_request(url, callbackf) {
@@ -69,7 +69,7 @@ function restore()
 				document.getElementById("captcha_restore").value = "";
 				document.getElementById("email_restore").value = "";
 			}
-			document.getElementById('captcha_image_restore').src = 'captcha.php?rid=' + Math.random();
+			document.getElementById('captcha_image_restore').src = 'api/captcha.php?rid=' + Math.random();
 		}
 	);
 }
@@ -93,7 +93,7 @@ function registration()
 				document.getElementById("captcha_reg").value = "";
 				document.getElementById("email_reg").value = "";
 			}
-			document.getElementById('captcha_image_reg').src = 'captcha.php?rid=' + Math.random();
+			document.getElementById('captcha_image_reg').src = 'api/captcha.php?rid=' + Math.random();
 		}
 	);
 }
