@@ -1,0 +1,21 @@
+{
+	"name": "?",
+	"description": "?",
+	"uri": "api/?",
+	"access": "?",
+	"input": {
+		"?": {
+			"type": "?",
+			"description": "?"
+		}
+	},
+	"output": {
+		"errors": {
+			"?": "?"
+		},
+		"successfull": {
+			"result": "ok",
+			"data": [ "?" ]
+		}
+	}
+}
