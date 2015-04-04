@@ -4,12 +4,13 @@ header('Content-Type: application/json');
 
 $httpname = 'http://'.$_SERVER['HTTP_HOST'].dirname(dirname(dirname($_SERVER['PHP_SELF']))).'/';
 
-$curdir_registration = dirname(__FILE__);
-include_once ($curdir_registration."/../api.lib/api.base.php");
-include_once ($curdir_registration."/../api.lib/api.helpers.php");
-include_once ($curdir_registration."/../api.lib/api.security.php");
-include_once ($curdir_registration."/../../config/config.php");
-include_once ($curdir_registration."/../api.lib/api.mail.php");
+$curdir_security_registration = dirname(__FILE__);
+include_once ($curdir_security_registration."/../api.lib/api.base.php");
+include_once ($curdir_security_registration."/../api.lib/api.helpers.php");
+include_once ($curdir_security_registration."/../api.lib/api.security.php");
+include_once ($curdir_security_registration."/../api.lib/api.user.php");
+include_once ($curdir_security_registration."/../../config/config.php");
+include_once ($curdir_security_registration."/../api.lib/api.mail.php");
 
 $result = array(
 	'result' => 'fail',
@@ -82,14 +83,13 @@ $stmt_insert->execute(array(
 	'0000-00-00 00:00:00',
 ));
 
-$stmt = $conn->prepare('select count(*) as cnt from user where email = ?');
-$stmt->execute(array($email));
-if ($row = $stmt->fetch())
-{
-	if (intval($row['cnt']) == 0) {
-		APIEvents::addPublicEvents($conn, 'errors', 'Admin, registration is broken!');
-		APIHelpers::showerror(1287, '[Registration] Sorry registration is broken. Please send report to the admin about this.');
-	}
+if( !APISecurity::login($conn, $email, $password_hash)) {
+	APIEvents::addPublicEvents($conn, 'errors', 'Admin, registration is broken!');
+	APIHelpers::showerror(1287, '[Registration] Sorry registration is broken. Please send report to the admin about this.');
+} else {
+	APISecurity::insertLastIp($conn, APIHelpers::getParam('client', 'none'));
+	APIUser::loadUserProfile($conn);
+	APISecurity::logout();
 }
 
 $email_subject = "Registration on FreeHackQuest.";

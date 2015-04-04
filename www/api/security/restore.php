@@ -4,12 +4,13 @@ header('Content-Type: application/json');
 
 $httpname = 'http://'.$_SERVER['HTTP_HOST'].dirname(dirname(dirname($_SERVER['PHP_SELF']))).'/';
 
-$curdir_registration = dirname(__FILE__);
-include_once ($curdir_registration."/../api.lib/api.base.php");
-include_once ($curdir_registration."/../api.lib/api.helpers.php");
-include_once ($curdir_registration."/../api.lib/api.security.php");
-include_once ($curdir_registration."/../../config/config.php");
-include_once ($curdir_registration."/../api.lib/api.mail.php");
+$curdir_security_restore = dirname(__FILE__);
+include_once ($curdir_security_restore."/../api.lib/api.base.php");
+include_once ($curdir_security_restore."/../api.lib/api.helpers.php");
+include_once ($curdir_security_restore."/../api.lib/api.security.php");
+include_once ($curdir_security_restore."/../api.lib/api.user.php");
+include_once ($curdir_security_restore."/../../config/config.php");
+include_once ($curdir_security_restore."/../api.lib/api.mail.php");
 
 $result = array(
 	'result' => 'fail',
@@ -55,16 +56,23 @@ $password_hash = APISecurity::generatePassword2($email, $password);
 $query = "";
 $stmt_update = $conn->prepare('
 	UPDATE user SET
-		pass = ?,
-		last_ip = ?
+		pass = ?
 	WHERE email = ?;
 ');
 
 $stmt_update->execute(array(
-	$password_hash, // pass
-	$_SERVER['REMOTE_ADDR'],
+	$password_hash,
 	$email,
 ));
+
+if( !APISecurity::login($conn, $email, $password_hash)) {
+	APIEvents::addPublicEvents($conn, 'errors', 'Admin, restore password is broken!');
+	APIHelpers::showerror(1315, '[Restore] Sorry restore is broken. Please send report to the admin about this.');
+} else {
+	APISecurity::insertLastIp($conn, APIHelpers::getParam('client', 'none'));
+	APIUser::loadUserProfile($conn);
+	APISecurity::logout();
+}
 
 $email_subject = "Restore password to your account on FreeHackQuest.";
 

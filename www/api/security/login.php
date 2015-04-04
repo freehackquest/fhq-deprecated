@@ -34,7 +34,6 @@ if (APIHelpers::issetParam('email') && APIHelpers::issetParam('password')) {
 }
 
 if ($result['result'] == 'ok') {
-	
 	APISecurity::insertLastIp($conn, APIHelpers::getParam('client', 'none'));
 	APIUser::loadUserProfile($conn);
 	// APIUser::loadUserScore($conn);
