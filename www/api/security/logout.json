@@ -1,0 +1,18 @@
+{ 
+	"name": "Logout",
+	"description": "Methods for change user password",
+	"uri": "api/security/logout.php",
+	"access": "authorized users",
+	"input": {
+		"token": {
+			"type": "string",
+			"description": "access token for user"
+		}
+	},
+	"output": {
+		"errors": [ ],
+		"successfull": {
+			"result": "ok"
+		}
+	}
+}

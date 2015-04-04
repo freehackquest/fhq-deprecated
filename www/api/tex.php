@@ -59,20 +59,32 @@ function indent($json) {
 }
 
 function convert_to_html($doc) {
-  $result = "
-     <h1>API</h1>
-     This chapter will talk about what external functions exist to work with<br>
-     the system. Also presented are various examples for the job. Also,<br>
-     this chapter is devoted to the frontend developers using kernel of fhq.<br>
-     <br>
-     Also sometimes you will be need captcha: api/captcha.php
-  ";
+	$result = '';
+	$result .= '<table cellspacing=1px cellpadding=10px bgcolor=black>';
 	
+	$result .= '
+		<tr>
+			<td colspan=4 bgcolor=white><h1>API</h1>
+				This chapter will talk about what external functions exist to work with<br>
+				the system. Also presented are various examples for the job. Also,<br>
+				this chapter is devoted to the frontend developers using kernel of fhq.<br>
+				<br>
+				Also sometimes you will be need captcha: api/captcha.php
+			</td>
+		</tr>
+	';
+
+	$i = 0;
 	foreach ($doc as $section_key => $section)
 	{
-		$result .= '<h2>'.$section['name'].'</h2>'.$section['description'].' <br><br>';
+		$i++;
 		$result .= '
-			<table cellspacing=1px cellpadding=10px bgcolor=black>
+				<tr>
+					<td colspan=4 bgcolor=white><h2>'.$i.' '.$section['name'].'</h2>'.$section['description'].'</td>
+				</tr>
+		';
+
+		$result .= '
 				<tr>
 					<td bgcolor=white><b>Name</b></td>
 					<td bgcolor=white><b>Input parameters</b></td>
@@ -80,9 +92,11 @@ function convert_to_html($doc) {
 					<td bgcolor=white><b>Code Errors</b></td>
 				</tr>
 		';
+		$i1 = 0;
 		foreach ($section['methods'] as $method_key => $method)
 		{
-			$name = '<h3>'.$method['name'].'</h3><pre>'.$method['description'].'</pre>Path: <pre>'.$method['uri'].'</pre>'.
+			$i1++;
+			$name = '<h3>'.$i.'.'.$i1.' '.$method['name'].'</h3><pre>'.$method['description'].'</pre>Path: <pre>'.$method['uri'].'</pre>'.
 			'This function access for '.$method['access'];
 			$input = '';
 			$response = '<pre>'.indent(json_encode($method['output']['successfull'])).'</pre>';
@@ -105,9 +119,8 @@ function convert_to_html($doc) {
 				</tr>
 			';
 		}
-		$result .= '</table>';
 	}
-
+	$result .= '</table>';
 	return $result;
 }
 

@@ -1,0 +1,34 @@
+{
+	"name": "Restore Password",
+	"description": "Methods for restore user password.",
+	"uri": "api/security/restore.php",
+	"access": "all",
+	"input": {
+		"email": {
+			"type": "string",
+			"description": "User's email"
+		},
+		"captcha": {
+			"type": "string",
+			"description": "here -> api/captcha.php"
+		},
+		"client": {
+			"type": "string",
+			"description": "indentifier of frontend"
+		}
+	},
+	"output": {
+		"errors": {
+			"1038": "Parameter email was not found",
+			"1039": "Parameter captcha was not found",
+			"1040": "[Restore] Captcha is not correct, please \"Refresh captcha\" and try again",
+			"1041": "[Restore] Invalid e-mail address.",
+			"1042": "[Restore] This e-mail was not registered.",
+			"1315": "[Restore] Sorry restore is broken. Please send report to the admin about this."
+		},
+		"successfull": {
+			"result": "ok",
+			"data": [ ]
+		}
+	}
+}
