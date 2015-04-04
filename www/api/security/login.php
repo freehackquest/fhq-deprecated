@@ -2,6 +2,16 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Login
+ * API_DESCRIPTION: Method for login user in the system
+ * API_ACCESS: all
+ * API_INPUT: email - string, Identificator of the user
+ * API_INPUT: password - string, Password of a user
+ * API_INPUT: client - string, Indentifier for frontend
+ * API_OKRESPONSE: { "result":"ok", "token":"76558894-0AA9-11E4-09F0-D353D3CF86D5" }
+ */
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.helpers.php");

@@ -2,127 +2,187 @@
 
 $curdir = dirname(__FILE__);
 
+function hasSubString($line, $substring) {
+	$pos = strpos($line, $substring);
+	return ($pos !== false);
+}
+
+function getSubString($line, $substring) {
+	$pos = strpos($line, $substring);
+	if ($pos !== false) {
+		return substr($line, $pos + strlen($substring));
+	}
+	return '';
+}
+
+function parseErrorCode($line) {
+	$pos = strpos($line, 'APIHelpers::showerror');
+	$str = substr($line, $pos + strlen('APIHelpers::showerror'));
+	$pos = strpos($str, '(');
+	$str = substr($str, $pos);
+	$str = substr($str, 1, strpos($str, ',') - 1);
+	return $str;
+}
+
+function parseErrorMessage($line) {
+	$pos = strpos($line, 'APIHelpers::showerror');
+	$str = substr($line, $pos + strlen('APIHelpers::showerror'));
+	$pos = strpos($str, '(');
+	$str = substr($str, $pos);
+	$str = substr($str, strpos($str, ',') + 1);
+	if (strpos($str, '\'') !== false) {
+		$str = substr($str, strpos($str, '\''));
+		$str = substr($str, 1, strpos($str, '\');')  - 1);
+	} else {
+		$str = substr($str, 1, strpos($str, ');')  - 1);
+		if ($str == '$e->getMessage()') {
+			return 'Errors in database';
+		}
+	}
+	return $str;
+}
+
+function parseInputName($line) {
+	$pos = strpos($line, 'API_INPUT:');
+	$str = substr($line, $pos + strlen('API_INPUT:'));
+	$str = substr($str, 1, strpos($str, '-') - 1);
+	return $str;
+}
+
+function parseInputType($line) {
+	$pos = strpos($line, 'API_INPUT:');
+	$str = substr($line, $pos + strlen('API_INPUT:'));
+	$str = substr($str, strpos($str, '-'));
+	$str = substr($str, 1, strpos($str, ',') - 1);
+	return $str;
+}
+
+function parseInputDescription($line) {
+	$pos = strpos($line, 'API_INPUT:');
+	$str = substr($line, $pos + strlen('API_INPUT:'));
+	$str = substr($str, strpos($str, '-'));
+	$str = substr($str, strpos($str, ',') + 1);
+	return $str;
+}
+
+function scanfolder($dir) {
+	$result = array();
+
+	$files = scandir($dir, 1);
+	sort($files);
+	foreach ($files as $key => $value)
+	{
+		if ($value != 'index.php' && strpos($value, '.php') !== false)  {
+			$method = array(
+				'name' => '',
+				'description' => '',
+				'uri' => 'api/'.$dir.'/'.$value,
+				'access' => '?',
+				'input' => array(),
+				'output' => array(
+					'errors' => array(
+					),				
+					'successfull' => array (
+						'result' => 'ok',
+						'data' => array(),
+					),
+				),
+			);
+			// echo $key.' => '.$value.' <br>';
+			
+			$handle = fopen($dir.'/'.$value, "r");
+			if ($handle) {
+				while (($line = fgets($handle)) !== false) {
+					
+					if (hasSubString($line, 'API_NAME:')) {
+						$method['name'] = getSubString($line, 'API_NAME:');
+					}
+					if (hasSubString($line, 'API_DESCRIPTION:')) {
+						$method['description'] .= getSubString($line, 'API_DESCRIPTION:');
+					}
+					if (hasSubString($line, 'API_ACCESS:')) {
+						$method['access'] = getSubString($line, 'API_ACCESS:');
+					}
+					
+					if (hasSubString($line, 'API_INPUT:')) {
+						$method['input'][parseInputName($line)] = array(
+							'type' => parseInputType($line),
+							'description' => parseInputDescription($line),
+						);
+					}
+					
+					if (hasSubString($line, 'APIHelpers::showerror')) {
+						$method['output']['errors'][parseErrorCode($line)] = parseErrorMessage($line);
+					}
+				}
+				fclose($handle);
+			} else {
+				// error opening the file.
+			} 
+
+			
+			$result[] = $method;
+		}
+	}
+	return $result;
+};
+
 $doc = array();
 
 $doc['security'] = array(
 	'name' => 'Security',
 	'description' => 'Methods for login, logout, registration and restore password.',
-	'methods' => array(),
+	'methods' => scanfolder('security'),
 );
-$doc['security']['methods'][] = json_decode(file_get_contents('security/login.json'), true);
-$doc['security']['methods'][] = json_decode(file_get_contents('security/logout.json'), true);
-$doc['security']['methods'][] = json_decode(file_get_contents('security/registration.json'), true);
-$doc['security']['methods'][] = json_decode(file_get_contents('security/restore.json'), true);
-
 
 $doc['updates'] = array(
 	'name' => 'Updates',
 	'description' => '?',
-	'methods' => array(),
+	'methods' => scanfolder('updates'),
 );
-$doc['updates']['methods'][] = json_decode(file_get_contents('updates/install_updates.json'), true);
 
 $doc['users'] = array(
 	'name' => 'Users',
 	'description' => '?',
-	'methods' => array(),
+	'methods' => scanfolder('users'),
 );
-$doc['users']['methods'][] = json_decode(file_get_contents('users/change_password.json'), true);
-$doc['users']['methods'][] = json_decode(file_get_contents('users/delete.json'), true);
-$doc['users']['methods'][] = json_decode(file_get_contents('users/export.json'), true);
-$doc['users']['methods'][] = json_decode(file_get_contents('users/export_remove.json'), true);
-$doc['users']['methods'][] = json_decode(file_get_contents('users/get.json'), true);
-$doc['users']['methods'][] = json_decode(file_get_contents('users/get_ips.json'), true);
-$doc['users']['methods'][] = json_decode(file_get_contents('users/insert.json'), true);
-$doc['users']['methods'][] = json_decode(file_get_contents('users/list.json'), true);
-$doc['users']['methods'][] = json_decode(file_get_contents('users/update.json'), true);
-$doc['users']['methods'][] = json_decode(file_get_contents('users/update_events_last_id.json'), true);
-$doc['users']['methods'][] = json_decode(file_get_contents('users/update_location.json'), true);
-$doc['users']['methods'][] = json_decode(file_get_contents('users/update_logo.json'), true);
-$doc['users']['methods'][] = json_decode(file_get_contents('users/update_nick.json'), true);
-$doc['users']['methods'][] = json_decode(file_get_contents('users/update_password.json'), true);
-$doc['users']['methods'][] = json_decode(file_get_contents('users/update_role.json'), true);
-$doc['users']['methods'][] = json_decode(file_get_contents('users/update_status.json'), true);
-$doc['users']['methods'][] = json_decode(file_get_contents('users/update_style.json'), true);
-$doc['users']['methods'][] = json_decode(file_get_contents('users/upload_logo.json'), true);
-
 
 $doc['games'] = array(
 	'name' => 'Games',
 	'description' => '?',
-	'methods' => array(),
+	'methods' => scanfolder('games'),
 );
-$doc['games']['methods'][] = json_decode(file_get_contents('games/choose.json'), true);
-$doc['games']['methods'][] = json_decode(file_get_contents('games/delete.json'), true);
-$doc['games']['methods'][] = json_decode(file_get_contents('games/get.json'), true);
-$doc['games']['methods'][] = json_decode(file_get_contents('games/insert.json'), true);
-$doc['games']['methods'][] = json_decode(file_get_contents('games/list.json'), true);
-$doc['games']['methods'][] = json_decode(file_get_contents('games/scoreboard.json'), true);
-$doc['games']['methods'][] = json_decode(file_get_contents('games/update.json'), true);
-$doc['games']['methods'][] = json_decode(file_get_contents('games/update_score.json'), true);
-$doc['games']['methods'][] = json_decode(file_get_contents('games/upload_logo.json'), true);
 
 $doc['quests'] = array(
 	'name' => 'Quests',
 	'description' => '?',
-	'methods' => array(),
+	'methods' => scanfolder('quests'),
 );
-$doc['quests']['methods'][] = json_decode(file_get_contents('quests/delete.json'), true);
-$doc['quests']['methods'][] = json_decode(file_get_contents('quests/files_remove.json'), true);
-$doc['quests']['methods'][] = json_decode(file_get_contents('quests/files_upload.json'), true);
-$doc['quests']['methods'][] = json_decode(file_get_contents('quests/get.json'), true);
-$doc['quests']['methods'][] = json_decode(file_get_contents('quests/get_all.json'), true);
-$doc['quests']['methods'][] = json_decode(file_get_contents('quests/insert.json'), true);
-$doc['quests']['methods'][] = json_decode(file_get_contents('quests/list.json'), true);
-$doc['quests']['methods'][] = json_decode(file_get_contents('quests/pass.json'), true);
-$doc['quests']['methods'][] = json_decode(file_get_contents('quests/take.json'), true);
-$doc['quests']['methods'][] = json_decode(file_get_contents('quests/update.json'), true);
-$doc['quests']['methods'][] = json_decode(file_get_contents('quests/user_answers.json'), true);
 
 $doc['events'] = array(
 	'name' => 'Events',
 	'description' => '?',
-	'methods' => array(),
+	'methods' => scanfolder('events'),
 );
-$doc['events']['methods'][] = json_decode(file_get_contents('events/count.json'), true);
-$doc['events']['methods'][] = json_decode(file_get_contents('events/delete.json'), true);
-$doc['events']['methods'][] = json_decode(file_get_contents('events/get.json'), true);
-$doc['events']['methods'][] = json_decode(file_get_contents('events/insert.json'), true);
-$doc['events']['methods'][] = json_decode(file_get_contents('events/list.json'), true);
-$doc['events']['methods'][] = json_decode(file_get_contents('events/types.json'), true);
-$doc['events']['methods'][] = json_decode(file_get_contents('events/update.json'), true);
 
 $doc['feedback'] = array(
 	'name' => 'Feedback',
 	'description' => '?',
-	'methods' => array(),
+	'methods' => scanfolder('feedback'),
 );
-$doc['feedback']['methods'][] = json_decode(file_get_contents('feedback/delete.json'), true);
-$doc['feedback']['methods'][] = json_decode(file_get_contents('feedback/deletemessage.json'), true);
-$doc['feedback']['methods'][] = json_decode(file_get_contents('feedback/get.json'), true);
-$doc['feedback']['methods'][] = json_decode(file_get_contents('feedback/getmessage.json'), true);
-$doc['feedback']['methods'][] = json_decode(file_get_contents('feedback/insert.json'), true);
-$doc['feedback']['methods'][] = json_decode(file_get_contents('feedback/insertmessage.json'), true);
-$doc['feedback']['methods'][] = json_decode(file_get_contents('feedback/list.json'), true);
-$doc['feedback']['methods'][] = json_decode(file_get_contents('feedback/update.json'), true);
-$doc['feedback']['methods'][] = json_decode(file_get_contents('feedback/updatemessage.json'), true);
 
 $doc['settings'] = array(
 	'name' => 'Settings',
-	'description' => '?',
-	'methods' => array(),
+	'description' => 'Methods for get settings, public info, and enums',
+	'methods' => scanfolder('settings'),
 );
-$doc['settings']['methods'][] = json_decode(file_get_contents('settings/get.json'), true);
-$doc['settings']['methods'][] = json_decode(file_get_contents('settings/public_info.json'), true);
-$doc['settings']['methods'][] = json_decode(file_get_contents('settings/types.json'), true);
+
 
 $doc['statistics'] = array(
 	'name' => 'Statistics',
 	'description' => '?',
-	'methods' => array(),
+	'methods' => scanfolder('statistics'),
 );
-$doc['statistics']['methods'][] = json_decode(file_get_contents('statistics/answerlist.json'), true);
-$doc['statistics']['methods'][] = json_decode(file_get_contents('statistics/list.json'), true);
 
 /**
  * Indents a flat JSON string to make it more human-readable.
@@ -218,8 +278,10 @@ function convert_to_html($doc) {
 		foreach ($section['methods'] as $method_key => $method)
 		{
 			$i1++;
-			$name = '<h3>'.$i.'.'.$i1.' '.$method['name'].'</h3><pre>'.$method['description'].'</pre>Path: <pre>'.$method['uri'].'</pre>'.
-			'This function access for '.$method['access'];
+			$name = '<h3>'.$i.'.'.$i1.' '.$method['name'].'</h3>'.
+			'This function access for '.$method['access'].'.<br>'.
+			'Description:<pre>'.$method['description'].'</pre>Path: <pre>'.$method['uri'].'</pre>'
+			;
 			$input = '';
 			$response = '<pre>'.indent(json_encode($method['output']['successfull'])).'</pre>';
 			$codeerrors = '';

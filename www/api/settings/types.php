@@ -2,6 +2,14 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Enums
+ * API_DESCRIPTION: list of some types, for example:
+ * API_DESCRIPTION: questTypes, questStates, userStatuses and etc.
+ * API_ACCESS: all
+ */
+
+
 $result = array(
 	'result' => 'ok',
 	'data' => array(

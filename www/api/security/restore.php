@@ -2,6 +2,16 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Restore password
+ * API_DESCRIPTION: Methods for restore user password.
+ * API_ACCESS: all
+ * API_INPUT: email - string, User's email
+ * API_INPUT: captcha - string, here -> api/captcha.php
+ * API_INPUT: client - string, indentifier of frontend
+ */
+ 
+
 $httpname = 'http://'.$_SERVER['HTTP_HOST'].dirname(dirname(dirname($_SERVER['PHP_SELF']))).'/';
 
 $curdir_security_restore = dirname(__FILE__);

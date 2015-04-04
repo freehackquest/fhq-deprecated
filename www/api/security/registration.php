@@ -2,6 +2,15 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Registration
+ * API_DESCRIPTION: Method for registration in the system.
+ * API_ACCESS: all
+ * API_INPUT: email - string, user's email
+ * API_INPUT: client - string, indentifier of frontend
+ * API_INPUT: captcha - string, here -> api/captcha.php
+ */
+
 $httpname = 'http://'.$_SERVER['HTTP_HOST'].dirname(dirname(dirname($_SERVER['PHP_SELF']))).'/';
 
 $curdir_security_registration = dirname(__FILE__);

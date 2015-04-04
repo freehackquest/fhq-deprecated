@@ -2,6 +2,13 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Public info
+ * API_DESCRIPTION: this is method send public information, for example:
+ * API_DESCRIPTION: cities, quests, winners
+ * API_ACCESS: all
+ */
+
 $curdir_settings_get = dirname(__FILE__);
 include_once ($curdir_settings_get."/../api.lib/api.base.php");
 include_once ($curdir_settings_get."/../api.lib/api.security.php");

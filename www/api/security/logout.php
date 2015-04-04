@@ -2,6 +2,14 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Logout
+ * API_DESCRIPTION: Methods for logout from system
+ * API_ACCESS: authorized users
+ * API_INPUT: token - string, access token for user
+ */
+ 
+
 $curdir_logout = dirname(__FILE__);
 include_once ($curdir_logout."/../api.lib/api.base.php");
 include_once ($curdir_logout."/../api.lib/api.helpers.php");
