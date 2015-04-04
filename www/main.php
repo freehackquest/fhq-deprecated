@@ -175,7 +175,7 @@ if (!isset($_SESSION['user']))
 		'name' => 'rules',
 		'html' => '
 			<div class="fhq_btn_menu" data-hint="Rules" onclick="loadGameRules('.$gameid.');">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_rules.png"/><br>
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/rules.png"/><br>
 			</div>
 		',
 		'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
@@ -206,7 +206,7 @@ if (!isset($_SESSION['user']))
 		'name' => 'quests',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="Quests" onclick="loadQuests();">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_quests.png"/>
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/quests.png"/>
 			</div>
 		',
 		'show' => ($game_type == 'jeopardy'),
@@ -284,7 +284,7 @@ if (!isset($_SESSION['user']))
 		'name' => 'games',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="Games" onclick="loadGames();">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_games.png"/>
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/games.png"/>
 			</div>
 		',
 		'show' => true,
@@ -294,7 +294,7 @@ if (!isset($_SESSION['user']))
 		'name' => 'news',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="News" onclick="loadEvents();">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_news.png"/>
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/news.png"/>
 			</div>
 		',
 		'show' => true,
@@ -314,7 +314,7 @@ if (!isset($_SESSION['user']))
 		'name' => 'user_info',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="User profile"  onclick="loadUserProfile('.$userid.');">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_default_logo_user.png"/> <div style="display: inline-block;" id="btn_user_info">'.$nick.'</div>
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/user.png"/> <div style="display: inline-block;" id="btn_user_info">'.$nick.'</div>
 			</div>
 		',
 		'show' => true,
@@ -334,7 +334,7 @@ if (!isset($_SESSION['user']))
 		'name' => 'logout',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="Logout" onclick="logout();">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_logout.png"/><br>
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/logout.png"/><br>
 			</div>
 		',
 		'show' => true,

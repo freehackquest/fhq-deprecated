@@ -117,11 +117,15 @@ function loadEvents() {
 						
 						var imgpath = '';
 						if (e.type == 'users')
-							imgpath = 'templates/base/images/menu_btn_default_logo_user.png';
+							imgpath = 'templates/base/images/menu/user.png';
 						else if (e.type == 'quests')
-							imgpath = 'templates/base/images/menu_btn_quests.png';
+							imgpath = 'templates/base/images/menu/quests.png';
+						else if (e.type == 'warning')
+							imgpath = 'templates/base/images/menu/warning.png';
 						else if (e.type == 'info')
-							imgpath = 'templates/base/images/menu_btn_news.png';
+							imgpath = 'templates/base/images/menu/news.png';
+						else if (e.type == 'games')
+							imgpath = 'templates/base/images/menu/games.png';
 						else
 							imgpath = 'templates/base/images/menu_btn_default.png'; // default
 
