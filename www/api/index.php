@@ -5,9 +5,9 @@ $curdir = dirname(__FILE__);
 $doc = array();
 
 $doc['captcha'] = array(
-  'name' => 'Captcha',
+	'name' => 'Captcha',
 	'description' => 'For some methods you need set captcha. Please use this url for get captcha-image.',
-  'uri' => 'captcha.php',
+	'uri' => 'api/captcha.php',
 	'methods' => array(),  
 );
 

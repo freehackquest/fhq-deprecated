@@ -61,152 +61,64 @@ function indent($json) {
 function convert_to_html($doc) {
   $result = "
      <h1>API</h1>
-     This chapter will talk about what external functions exist to work with
-     the system. Also presented are various examples for the job. Also,
-     this chapter is devoted to the frontend developers using kernel of fhq.	
+     This chapter will talk about what external functions exist to work with<br>
+     the system. Also presented are various examples for the job. Also,<br>
+     this chapter is devoted to the frontend developers using kernel of fhq.<br>
      <br>
+     Also sometimes you will be need captcha: api/captcha.php
   ";
 	
 	foreach ($doc as $section_key => $section)
 	{
-		$result .= "
-      <h2>".$section['name']."</h2>
-      ".$section['description']." <br>
-    ";
-
-    if (isset($section['uri'])) {
-      $result .= "
-        <pre>".$section['uri']."</pre><br>
-      ";
-    }
-
+		$result .= '<h2>'.$section['name'].'</h2>'.$section['description'].' <br><br>';
+		$result .= '
+			<table cellspacing=1px cellpadding=10px bgcolor=black>
+				<tr>
+					<td bgcolor=white><b>Name</b></td>
+					<td bgcolor=white><b>Input parameters</b></td>
+					<td bgcolor=white><b>Successfully response</b></td>
+					<td bgcolor=white><b>Code Errors</b></td>
+				</tr>
+		';
 		foreach ($section['methods'] as $method_key => $method)
 		{
+			$name = '<h3>'.$method['name'].'</h3><pre>'.$method['description'].'</pre>Path: <pre>'.$method['uri'].'</pre>'.
+			'This function access for '.$method['access'];
+			$input = '';
+			$response = '<pre>'.indent(json_encode($method['output']['successfull'])).'</pre>';
+			$codeerrors = '';
 			
-			$result .= "
-        <h3>".$method['name']."</h3>
-        ".$method['description']." <br>
-        This function access for ".$method['access'].".<br>
-URI:
-<pre>
-".$method['uri']."
-</pre>
-<br>
-Input parameters (GET or POST):
-<ul>";
-			foreach ($method['input'] as $input_key => $input)
+			foreach ($method['input'] as $input_key => $input_p)
 			{
-				$result .= "
-          <li> <b>".$input_key."</b> - ".$input['type'].", ".$input['description']."</li>";
-
+				$input .= '<b>'.$input_key.'</b> - '.$input_p['type'].', '.$input_p['description'].'<br>';
 			};
-			$result .= "
-</ul>
-
-        Successfully response:
-        <pre>
-        ".indent(json_encode($method['output']['successfull']))."
-        </pre>
-      <br>
-      Code errors: <ul>";
-
-			foreach ($method['output']['errors'] as $error_key => $error)
-				$result .= "<li> <b>".$error_key."</b> ".$error." </li>";
-      $result .= "</ul>";
-		}
-		
-	}
-
-	return $result;
-}
-
-function convert_to_tex($doc) {
-	$result = "
-\\chapter{API}
-This chapter will talk about what external functions exist to work with
-the system. Also presented are various examples for the job. Also,
-this chapter is devoted to the frontend developers using kernel of fhq.	
-";
-	
-	foreach ($doc as $section_key => $section)
-	{
-		$result .= "
-\\newpage
-\\section{".$section['name']."}
-".$section['description']." \\\\
-";
-
-    if (isset($section['uri'])) {
-      $result .= "
-URI:
-\\begin{Verbatim}[frame=single]
-".$section['uri']."
-\\end{Verbatim}
-";
-    }
-
-		foreach ($section['methods'] as $method_key => $method)
-		{
 			
-			$result .= "
-
-\\subsection{".$method['name']."}
-\\par
-".$method['description']." \\\\
-This function access for ".$method['access'].".\\\\
-
-URI:
-\\begin{Verbatim}[frame=single]
-".$method['uri']."
-\\end{Verbatim}
-
-Input parameters (GET or POST):
-\\begin{itemize}";
-			foreach ($method['input'] as $input_key => $input)
-			{
-				 // TODO encode _ => \_
-				$result .= "
-  \\item \\textbf{".$input_key."} - ".$input['type'].", ".$input['description']."";
-
-			};
-			$result .= "
-\\end{itemize}
-
-Successfully response:
-\\begin{Verbatim}[frame=single]
-".indent(json_encode($method['output']['successfull']))."
-\\end{Verbatim}
-
-Code errors:
-\\begin{itemize}";
-
 			foreach ($method['output']['errors'] as $error_key => $error)
-			{
-				$result .= "
-  \\item \\textbf{".$error_key."} - ".$error."";
-			}
-
-$result .= "
-\\end{itemize}
-";
+				$codeerrors .= "<b>".$error_key."</b> ".$error.'<br/>';
+			
+			$result .= '
+				<tr>
+					<td valign=top bgcolor=white>'.$name.'</td>
+					<td valign=top bgcolor=white>'.$input.'</td>
+					<td valign=top bgcolor=white>'.$response.'</td>
+					<td valign=top bgcolor=white>'.$codeerrors.'</td>
+				</tr>
+			';
 		}
-		
+		$result .= '</table>';
 	}
 
 	return $result;
 }
 
 function print_doc($doc) {
-	
-	if (isset($_GET['tex'])) {
-		header('Content-Type: text');
-		echo convert_to_tex($doc);
-	} else if (isset($_GET['json'])) {
-		header('Content-Type: text');
+	if (isset($_GET['json'])) {
+		header("Access-Control-Allow-Origin: *");
+		header('Content-Type: application/json');
 		echo json_encode($doc);
 	} else if (isset($_GET['html'])) {
 		echo convert_to_html($doc);
 	} else {
-		echo "<a href='?html'>HTML</a> <a href='?json'>JSON</a> <a href='?tex'>LaTeX</a>";
+		echo "<a href='?html'>HTML</a> <a href='?json'>JSON</a>";
 	}
 }

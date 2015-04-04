@@ -35,7 +35,7 @@ if (strtoupper($captcha) != strtoupper($orig_captcha))
 	APIHelpers::showerror(1012, '[Registration] Captcha is not correct, please "Refresh captcha" and try again');
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-	APIHelpers::showerror(1011, '[Registration] Invalid e-mail address. ');
+	APIHelpers::showerror(1011, '[Registration] Invalid e-mail address.');
 
 $conn = APIHelpers::createConnection($config);
 $stmt = $conn->prepare('select count(*) as cnt from user where email = ?');

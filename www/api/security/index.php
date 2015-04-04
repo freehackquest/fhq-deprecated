@@ -8,14 +8,11 @@ if (!isset($doc)) {
 	$doc = array();
 }
 
-$doc['auth'] = array(
+$doc['security'] = array(
 	'name' => 'Security',
-	'description' => 'Methods for authorization, registration and restore password.',
-  'uri' => 'api/security/',
+	'description' => 'Methods for login, logout, registration and restore password.',
 	'methods' => array(
-
-    // sign in
-    'sign_in' => array(
+		'login' => array(
 			'name' => 'Login',
 			'description' => 'Methods for login user in the system',
 			'uri' => 'api/security/login.php',
@@ -31,13 +28,14 @@ $doc['auth'] = array(
 				),
 				'client' => array(
 					'type' => 'string',
-					'description' => 'Indentifier for client (fhq-web or other frontends)',
+					'description' => 'Indentifier for frontend',
 				),
 			),
 			'output' => array(
 				'errors' => array(
-					'1001' => 'Parameters was not found email or password',
-					'1002' => 'Email or password was not found in system',
+					'1001' => 'Parameter email was not found',
+					'1316' => 'Parameter password was not found',
+					'1002' => 'email {%email%} and password was not found in system ',
 				),
 				'successfull' => array(
 					'result' => 'ok',
@@ -45,17 +43,17 @@ $doc['auth'] = array(
 				),
 			),
 		),
-    'logout' => array(
+		'logout' => array(
 			'name' => 'Logout',
 			'description' => 'Methods for change user password',
 			'uri' => 'api/security/logout.php',
 			'access' => 'authorized users',
 			'input' => array(
-        'token' => array(
+				'token' => array(
 					'type' => 'string',
-					'description' => 'Access token for user',
+					'description' => 'access token for user',
 				),
-      ),
+			),
 			'output' => array(
 				'errors' => array(
 				),
@@ -64,30 +62,33 @@ $doc['auth'] = array(
 				),
 			),
 		),
-
-
-    // registration
-    'registration' => array(
-			'name' => 'Change User Password',
-			'description' => 'Methods for change user password',
+		'registration' => array(
+			'name' => 'Registration',
+			'description' => 'Method for registration in the system.',
 			'uri' => 'api/security/registration.php',
 			'access' => 'all',
 			'input' => array(
-  			'email' => array(
+				'email' => array(
 					'type' => 'string',
-					'description' => 'User\'s email',
+					'description' => 'user\'s email',
 				),
 				'captcha' => array(
 					'type' => 'string',
-					'description' => 'See section about captcha.',
+					'description' => 'here -> api/captcha.php',
+				),
+				'client' => array(
+					'type' => 'string',
+					'description' => 'indentifier of frontend',
 				),
 			),
 			'output' => array(
 				'errors' => array(
-					'1010' => 'Problem with registration',
-					'1011' => 'Invalid e-mail address',
-					'1012' => 'Captcha is not correct, please "Refresh captcha"',
-					'1013' => 'Incorrect input parameters email or captcha',
+					'1013' => 'Parameter email was not found',
+					'1043' => 'Parameter captcha was not found',
+					'1012' => '[Registration] Captcha is not correct, please "Refresh captcha" and try again',
+					'1011' => '[Registration] Invalid e-mail address.',
+					'1192' => '[Registration] This e-mail was already registered.',
+					'1287' => '[Registration] Sorry registration is broken. Please send report to the admin about this.',
 				),
 				'successfull' => array(
 					'result' => 'ok',
@@ -95,12 +96,9 @@ $doc['auth'] = array(
 				),
 			),
 		),
-
-
-    // restore
-    'restore' => array(
+		'restore' => array(
 			'name' => 'Restore Password',
-			'description' => 'Methods for restore user password',
+			'description' => 'Methods for restore user password.',
 			'uri' => 'api/security/restore.php',
 			'access' => 'all',
 			'input' => array(
@@ -110,16 +108,21 @@ $doc['auth'] = array(
 				),
 				'captcha' => array(
 					'type' => 'string',
-					'description' => 'See section about captcha.',
+					'description' => 'here -> api/captcha.php',
+				),
+				'client' => array(
+					'type' => 'string',
+					'description' => 'indentifier of frontend',
 				),
 			),
 			'output' => array(
 				'errors' => array(
-					'1003' => 'Captcha is not correct, please "Refresh captcha" and try again',
-					'1004' => 'Invalid e-mail address',
-					'1005' => 'This e-mail was not registered',
-					'1006' => 'Restore is denied',
-					'1007' => 'Problem with sending email',
+					'1038' => 'Parameter email was not found',
+					'1039' => 'Parameter captcha was not found',
+					'1040' => '[Restore] Captcha is not correct, please "Refresh captcha" and try again',
+					'1041' => '[Restore] Invalid e-mail address.',
+					'1042' => '[Restore] This e-mail was not registered.',
+					'1315' => '[Restore] Sorry restore is broken. Please send report to the admin about this.',
 				),
 				'successfull' => array(
 					'result' => 'ok',
