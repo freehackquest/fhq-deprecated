@@ -2,12 +2,17 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Types
+ * API_DESCRIPTION: Method returned list of types for public events
+ * API_ACCESS: all
+ */
+
 $curdir_events_count = dirname(__FILE__);
 include_once ($curdir_events_count."/../api.lib/api.base.php");
 include_once ($curdir_events_count."/../api.lib/api.security.php");
 include_once ($curdir_events_count."/../api.lib/api.helpers.php");
 include_once ($curdir_events_count."/../../config/config.php");
-
 
 $result = array(
 	'result' => 'fail',

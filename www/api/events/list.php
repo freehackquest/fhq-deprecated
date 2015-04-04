@@ -2,6 +2,15 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: List of events
+ * API_DESCRIPTION: Method returned list of last events
+ * API_ACCESS: authorized users
+ * API_INPUT: token - string, access token for user
+ * API_INPUT: id - integer, all events after 'id' (or -1 = last 50 records)
+ * API_INPUT: type - string, filter by type (or empty)
+ */
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.security.php");

@@ -161,7 +161,7 @@ $doc['quests'] = array(
 
 $doc['events'] = array(
 	'name' => 'Events',
-	'description' => '?',
+	'description' => 'Events/News from the system or by admin',
 	'methods' => scanfolder('events'),
 );
 

@@ -2,6 +2,16 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Update event
+ * API_DESCRIPTION: Method for update event
+ * API_ACCESS: admin
+ * API_INPUT: token - string, access token for user
+ * API_INPUT: id - integer, identificztor of event
+ * API_INPUT: type - string, type of event
+ * API_INPUT: message - string, message of event
+ */
+
 $curdir_events_insert = dirname(__FILE__);
 include_once ($curdir_events_insert."/../api.lib/api.helpers.php");
 include_once ($curdir_events_insert."/../../config/config.php");
@@ -29,7 +39,7 @@ if (!APIHelpers::issetParam('message'))
 
 $id = APIHelpers::getParam('id', 0);
 $type = APIHelpers::getParam('type', 'info');
-$message = APIHelpers::getParam('message', 0);
+$message = APIHelpers::getParam('message', '');
 
 if (!is_numeric($id))
   APIHelpers::showerror(1257, 'incorrect id');

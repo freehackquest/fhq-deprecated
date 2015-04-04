@@ -2,6 +2,14 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Delete event
+ * API_DESCRIPTION: Method for remove event
+ * API_ACCESS: admin
+ * API_INPUT: token - string, access token
+ * API_INPUT: id - integer, id of event
+ */
+
 $curdir_events_insert = dirname(__FILE__);
 include_once ($curdir_events_insert."/../api.lib/api.helpers.php");
 include_once ($curdir_events_insert."/../../config/config.php");

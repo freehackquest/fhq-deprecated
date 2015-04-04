@@ -2,6 +2,15 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Insert event
+ * API_DESCRIPTION: Method for insert event
+ * API_ACCESS: admin
+ * API_INPUT: token - string, token
+ * API_INPUT: type - string, type of event
+ * API_INPUT: message - string, message of event
+ */
+
 $curdir_events_insert = dirname(__FILE__);
 include_once ($curdir_events_insert."/../api.lib/api.helpers.php");
 include_once ($curdir_events_insert."/../../config/config.php");
