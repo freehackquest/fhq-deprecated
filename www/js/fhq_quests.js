@@ -302,9 +302,8 @@ function uploadQuestFiles(questid) {
 				alert(obj.error.message);
 				return;
 			}
-			// document.getElementById('user_logo').src = obj.data.logo + '?' + new Date().getTime();
+			alert('uploaded!');
 			formEditQuest(questid);
-			alert('uploaded');
 		}
 	);
 }
@@ -359,7 +358,7 @@ function formEditQuest(id)
 			content += createQuestRow('Text:', '<textarea id="editquest_text">' + obj.data.text + '</textarea>');
 			content += createQuestRow('Files:', '<div id="editquest_files"></div>');
 			content += createQuestRow('', '<input id="editquest_upload_files" multiple required="" type="file">' 
-				+ '<div class="fhqbtn" onclick="uploadQuestFiles(' + obj.quest + ');">Uplaod files</div>');
+				+ ' <div class="fhqbtn" onclick="uploadQuestFiles(' + obj.quest + ');">Upload files</div>');
 			content += createQuestRow('Score(+):', '<input type="text" id="editquest_score" value="' + obj.data.score + '"/>');
 			content += createQuestRow('Min Score(>):', '<input type="text" id="editquest_min_score" value="' + obj.data.min_score + '"/>');
 			content += createQuestRow('Subject:', fhqgui.combobox('editquest_subject', obj.data.subject, fhq.getQuestTypes()));
@@ -381,7 +380,7 @@ function formEditQuest(id)
 				f.innerHTML += obj.data.files[k].filename + ' '
 				+ '<div class="fhqbtn" onclick="editQuestAddLink(\'' + obj.data.files[k].filepath + '\', \'' + obj.data.files[k].filename + '\', \'asfile\');">Add link as file</div> '
 				+ '<div class="fhqbtn" onclick="editQuestAddLink(\'' + obj.data.files[k].filepath + '\', \'' + obj.data.files[k].filename + '\', \'asimg\');">Add link as img</div> '
-				+ ' <a class="fhqbtn" href="' + obj.data.files[k].filepath + '">Download</a>' 
+				+ ' <a class="fhqbtn" target="_ablank" href="' + obj.data.files[k].filepath + '">Download</a>' 
 				+ ' <div class="fhqbtn" onclick="removeQuestFile(' + obj.data.files[k].id + ', ' + obj.quest + ');">Remove</div><br>';
 			}
 		}
@@ -445,6 +444,15 @@ function showQuest(id)
 			} else {
 				if (obj.data.text)
 					content += createQuestRow('Text: ', '<pre>' + obj.data.text + '</pre>');
+				
+				if (obj.data.files && obj.data.files.length > 0) {
+					var files1 = '';						
+					for (var k in obj.data.files) {
+						files1 += '<a class="fhqbtn" href="' + obj.data.files[k].filepath + '" target="_ablank"> Download '+ obj.data.files[k].filename + '</a><br>';
+					}
+					content += createQuestRow('Attachmnet files: ', files1);
+				}
+				
 				if (obj.data.date_start)
 					content += createQuestRow('Date Start: ', obj.data.date_start);
 				if (obj.data.date_stop)

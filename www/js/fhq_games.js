@@ -125,7 +125,7 @@ function deleteGame(id)
 				loadGames();
 			} else {
 				alert(obj.error.message);
-				document.getElementById('captcha_delete_game_img').src = 'captcha.php?rid=' + Math.random();
+				document.getElementById('captcha_delete_game_img').src = 'api/captcha.php?rid=' + Math.random();
 			}
 		}
 	);
@@ -135,8 +135,8 @@ function formDeleteGame(id)
 {
 	var content = '<b>If are you sure that you want to delete game with id=' + id + '.<br> Please fill in the captcha below.</b><br><br><br>';
 	content += '<input type="text" id="captcha_delete_game"/><br><br>';
-	content += '<img src="captcha.php" id="captcha_delete_game_img"/><br>';
-	content += '<a href="javascript:void(0);" onclick="document.getElementById(\'captcha_delete_game_img\').src = \'captcha.php?rid=\' + Math.random();">Refresh captcha</a><br><br>';
+	content += '<img src="api/captcha.php" id="captcha_delete_game_img"/><br>';
+	content += '<a href="javascript:void(0);" onclick="document.getElementById(\'captcha_delete_game_img\').src = \'api/captcha.php?rid=\' + Math.random();">Refresh captcha</a><br><br>';
 	content += '<div class="button3 ad" onclick="deleteGame(\'' + id + '\');">Delete</div><br>';
 	showModalDialog(content);
 };

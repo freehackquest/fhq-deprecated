@@ -2,6 +2,14 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Calculate events after some id
+ * API_DESCRIPTION: Method for calculate last events
+ * API_ACCESS: all
+ * API_INPUT: id - integer, after this id will be calculate count of events
+ * API_INPUT: type - string, filter by type
+ */
+ 
 $curdir_events_count = dirname(__FILE__);
 include_once ($curdir_events_count."/../api.lib/api.base.php");
 include_once ($curdir_events_count."/../api.lib/api.security.php");

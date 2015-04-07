@@ -2,6 +2,13 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Get event
+ * API_DESCRIPTION: Method for get event info
+ * API_ACCESS: all
+ * API_INPUT: id - integer, id of event
+ */
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.security.php");

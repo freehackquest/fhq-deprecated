@@ -2,14 +2,24 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Registration
+ * API_DESCRIPTION: Method for registration in the system.
+ * API_ACCESS: all
+ * API_INPUT: email - string, user's email
+ * API_INPUT: client - string, indentifier of frontend
+ * API_INPUT: captcha - string, here -> api/captcha.php
+ */
+
 $httpname = 'http://'.$_SERVER['HTTP_HOST'].dirname(dirname(dirname($_SERVER['PHP_SELF']))).'/';
 
-$curdir_registration = dirname(__FILE__);
-include_once ($curdir_registration."/../api.lib/api.base.php");
-include_once ($curdir_registration."/../api.lib/api.helpers.php");
-include_once ($curdir_registration."/../api.lib/api.security.php");
-include_once ($curdir_registration."/../../config/config.php");
-include_once ($curdir_registration."/../api.lib/api.mail.php");
+$curdir_security_registration = dirname(__FILE__);
+include_once ($curdir_security_registration."/../api.lib/api.base.php");
+include_once ($curdir_security_registration."/../api.lib/api.helpers.php");
+include_once ($curdir_security_registration."/../api.lib/api.security.php");
+include_once ($curdir_security_registration."/../api.lib/api.user.php");
+include_once ($curdir_security_registration."/../../config/config.php");
+include_once ($curdir_security_registration."/../api.lib/api.mail.php");
 
 $result = array(
 	'result' => 'fail',
@@ -34,7 +44,7 @@ if (strtoupper($captcha) != strtoupper($orig_captcha))
 	APIHelpers::showerror(1012, '[Registration] Captcha is not correct, please "Refresh captcha" and try again');
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-	APIHelpers::showerror(1011, '[Registration] Invalid e-mail address. ');
+	APIHelpers::showerror(1011, '[Registration] Invalid e-mail address.');
 
 $conn = APIHelpers::createConnection($config);
 $stmt = $conn->prepare('select count(*) as cnt from user where email = ?');
@@ -82,14 +92,13 @@ $stmt_insert->execute(array(
 	'0000-00-00 00:00:00',
 ));
 
-$stmt = $conn->prepare('select count(*) as cnt from user where email = ?');
-$stmt->execute(array($email));
-if ($row = $stmt->fetch())
-{
-	if (intval($row['cnt']) == 0) {
-		APIEvents::addPublicEvents($conn, 'errors', 'Admin, registration is broken!');
-		APIHelpers::showerror(1287, '[Registration] Sorry registration is broken. Please send report to the admin about this.');
-	}
+if( !APISecurity::login($conn, $email, $password_hash)) {
+	APIEvents::addPublicEvents($conn, 'errors', 'Admin, registration is broken!');
+	APIHelpers::showerror(1287, '[Registration] Sorry registration is broken. Please send report to the admin about this.');
+} else {
+	APISecurity::insertLastIp($conn, APIHelpers::getParam('client', 'none'));
+	APIUser::loadUserProfile($conn);
+	APISecurity::logout();
 }
 
 $email_subject = "Registration on FreeHackQuest.";

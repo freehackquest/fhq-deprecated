@@ -26,7 +26,6 @@ Evgenii Sopov, Igor Polyakov, Maxim Samoilov (Nitive)<br>
 <h2>source code</h2>
 <a href="http://github.com/sea-kg/fhq">main</a>,
 <a href="http://gitlab.keva.su/keva/kevactfplatform">fork</a>, 
-<a href="https://github.com/Nitive/StarsDesign">front-end by Nitive</a><br>
 
 <h2>contacts</h2>
 see us in <a href="http://vk.com/freehackquest">VKontakte</a><br>

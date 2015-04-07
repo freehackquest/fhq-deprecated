@@ -88,8 +88,8 @@ if (isset($_SESSION['user']))
 
 							<div class="indexcontent" id="indexcontent_registration">
 								<input placeholder="your@email.com" id="email_reg" value="" type="text" onkeydown="if (event.keyCode == 13) registration();"/><br><br>
-								<img src="captcha.php" id="captcha_image_reg"/>
-								<a href="javascript:void(0);" onclick="document.getElementById('captcha_image_reg').src ='captcha.php?rid=' + Math.random();">
+								<img src="api/captcha.php" id="captcha_image_reg"/>
+								<a href="javascript:void(0);" onclick="document.getElementById('captcha_image_reg').src ='api/captcha.php?rid=' + Math.random();">
 									<img src="templates/base/images/index/refresh_captcha.png"/>
 								</a>
 								<br><br>
@@ -100,8 +100,8 @@ if (isset($_SESSION['user']))
 							<div class="indexcontent" id="indexcontent_restore">
 								<input placeholder="your@email.com" id="email_restore" value="" type="text" onkeydown="if (event.keyCode == 13) restore();"><br><br>
 								
-								<img src="captcha.php" id="captcha_image_restore"/>
-								<a href="javascript:void(0);" onclick="document.getElementById('captcha_image_restore').src = 'captcha.php?rid=' + Math.random();">
+								<img src="api/captcha.php" id="captcha_image_restore"/>
+								<a href="javascript:void(0);" onclick="document.getElementById('captcha_image_restore').src = 'api/captcha.php?rid=' + Math.random();">
 									<img src="templates/base/images/index/refresh_captcha.png"/>
 								</a><br><br>
 
