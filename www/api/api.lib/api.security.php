@@ -21,7 +21,6 @@ class APISecurity {
 				$_SESSION['user']['email'] = $row['email'];
 				$_SESSION['user']['nick'] = $row['nick'];
 				$_SESSION['user']['role'] = $row['role'];
-
 				return true;
 			}
 		// } catch(PDOException $e) {
@@ -79,7 +78,7 @@ class APISecurity {
 	}
 
 	static function userid() { 
-		return (APISecurity::isLogged() && is_numeric($_SESSION['user']['id'])) ? $_SESSION['user']['id'] : ''; 
+		return (APISecurity::isLogged() && isset($_SESSION['user']['id'])) ? $_SESSION['user']['id'] : ''; 
 	}
 		
 	static function insertLastIp($conn, $client) { 

@@ -38,7 +38,7 @@ if (strlen($role) <= 3)
   APIHelpers::showerror(1132, '"role" must be more then 3 characters');
 
 try {
-	$query = 'UPDATE user SET role = ? WHERE iduser = ?';
+	$query = 'UPDATE users SET role = ? WHERE id = ?';
 	$stmt = $conn->prepare($query);
 	if ($stmt->execute(array($role, $userid)))
 		$result['result'] = 'ok';

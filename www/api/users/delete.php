@@ -29,7 +29,7 @@ if (!is_numeric($userid))
 $nick = '';
 // check user
 try {
-	$stmt = $conn->prepare('SELECT iduser, nick FROM user WHERE iduser = ?');
+	$stmt = $conn->prepare('SELECT id, nick FROM users WHERE id = ?');
 	$stmt->execute(array($userid));
 	if ($row = $stmt->fetch()) {
 		$nick = $row['nick'];
@@ -43,7 +43,7 @@ try {
 
 try {
 	$params = array($userid);
- 	$conn->prepare('DELETE FROM user WHERE iduser = ?')->execute($params);
+ 	$conn->prepare('DELETE FROM users WHERE id = ?')->execute($params);
  	$conn->prepare('DELETE FROM users_games WHERE userid = ?')->execute($params);
  	$conn->prepare('DELETE FROM feedback WHERE userid = ?')->execute($params);
  	$conn->prepare('DELETE FROM feedback_msg WHERE userid = ?')->execute($params);

@@ -114,7 +114,7 @@ function getCountStatBy($conn, $table, $questid, $passed)
 					count(id) as cnt 
 				from 
 					'.$table.' t0
-				inner join user t1 on t0.iduser = t1.iduser
+				inner join users t1 on t0.iduser = t1.id
 				where 
 					t0.idquest = ?
 					and t0.passed = ?
@@ -176,15 +176,15 @@ try {
 		$result['data']['quests'][$id]['solved'] = $solved;
 		$result['data']['quests'][$id]['tries'] = $tries;
 		$result['data']['quests'][$id]['users'] = array();
+
 		// how solved this quest
-		
 		$stmt_users = $conn->prepare('
-				select 
-				t0.iduser, 
+			select 
+				t0.id, 
 				t0.nick
 			from 
-				user t0
-			inner join userquest t1 on t0.iduser = t1.iduser 
+				users t0
+			inner join userquest t1 on t0.id = t1.iduser 
 			where
 				t0.role = ?
 				and t1.idquest = ?
@@ -194,7 +194,7 @@ try {
 	
 		while ($row_user = $stmt_users->fetch()) {
 			$result['data']['quests'][$id]['users'][] = array(
-				'userid' => $row_user['iduser'],
+				'userid' => $row_user['id'],
 				'nick' => $row_user['nick'],
 			);
 		}

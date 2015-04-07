@@ -356,7 +356,7 @@ function updateUsers() {
 				// TODO: if not activated can allow edit email and send mail again 
 				content += '<div class="users_cell">' + userinfo.status + '</div> ';
 
-				content += '<div class="users_cell">' + userinfo.date_last_signup + '</div>';				
+				content += '<div class="users_cell">' + userinfo.dt_last_login + '</div>';				
 				content += '</div>'; // users_row
 			}
 			content += '</div>'; // users_table

@@ -50,7 +50,7 @@ if (strlen($password) <= 3)
   APIHelpers::showerror(1126, '"password" must be more then 3 characters');
 
 try {
-	$query = 'UPDATE user SET pass = ? WHERE iduser = ? AND email = ?';
+	$query = 'UPDATE users SET pass = ? WHERE id = ? AND email = ?';
 	$stmt = $conn->prepare($query);
 	if ($stmt->execute(array($password, $userid, $email)))
 		$result['result'] = 'ok';

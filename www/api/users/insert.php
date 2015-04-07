@@ -55,7 +55,7 @@ $status = APIHelpers::getParam('status', 'activated');
 if (!filter_var($email, FILTER_VALIDATE_EMAIL))
 	APIHelpers::showerror(1036, 'Invalid e-mail address.');
 
-$stmt = $conn->prepare('select count(*) as cnt from user where email = ?');
+$stmt = $conn->prepare('select count(*) as cnt from users where email = ?');
 $stmt->execute(array($email));
 if ($row = $stmt->fetch())
 {
@@ -68,8 +68,8 @@ $email = strtolower($email);
 $password_hash = APISecurity::generatePassword2($email, $password);
 				
 $stmt_insert = $conn->prepare('
-	INSERT INTO user(
-		uuid_user,
+	INSERT INTO users(
+		uuid,
 		pass,
 		status,
 		email,
@@ -77,8 +77,8 @@ $stmt_insert = $conn->prepare('
 		role,
 		logo,
 		last_ip,
-		date_last_signup,
-		date_create
+		dt_last_login,
+		dt_create
 	)
 	VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW());
 ');

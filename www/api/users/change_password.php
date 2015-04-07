@@ -48,7 +48,7 @@ $result['data']['userid'] = $userid;*/
 
 // check old password
 try {
-	$query = 'SELECT iduser FROM user WHERE iduser = ? AND email = ? AND pass = ?';
+	$query = 'SELECT id FROM users WHERE id = ? AND email = ? AND pass = ?';
 	$stmt = $conn->prepare($query);
 	$stmt->execute(array($userid, $email, $hash_old_password));
 	if (!$row = $stmt->fetch()) {
@@ -60,7 +60,7 @@ try {
 
 // set new password
 try {
-	$query = 'UPDATE user SET pass = ? WHERE iduser = ? AND email = ? AND pass = ?';
+	$query = 'UPDATE users SET pass = ? WHERE id = ? AND email = ? AND pass = ?';
 	$stmt = $conn->prepare($query);
 	if ($stmt->execute(array($hash_new_password, $userid, $email, $hash_old_password)))
 		$result['result'] = 'ok';

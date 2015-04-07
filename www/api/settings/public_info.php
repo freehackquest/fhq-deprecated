@@ -106,14 +106,14 @@ try {
 		FROM
 			users_games t0
 		INNER JOIN games g0 ON g0.id = t0.gameid
-		INNER JOIN user u0 ON t0.userid = u0.iduser
+		INNER JOIN users u0 ON t0.userid = u0.id
 		WHERE
 			t0.score = (
 				SELECT
 					max( score )
 				FROM
 					users_games t1
-				INNER JOIN user u1 ON t1.userid = u1.iduser
+				INNER JOIN users u1 ON t1.userid = u1.id
 				WHERE t1.gameid = t0.gameid
 				AND u1.role = ?
 			) AND t0.score > 0

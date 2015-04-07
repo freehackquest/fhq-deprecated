@@ -59,7 +59,7 @@ try {
 				count(*) as cnt
 			FROM 
 				feedback fb
-			INNER JOIN user u ON fb.userid = u.iduser 
+			INNER JOIN users u ON fb.userid = u.id 
 			'.$where.'
 	');
 	$stmt->execute($filter_values);
@@ -80,10 +80,10 @@ try {
 				u.email,
 				u.nick,
 				u.logo,
-				u.iduser
+				fb.userid
 			FROM 
 				feedback fb
-			INNER JOIN user u ON fb.userid = u.iduser 
+			INNER JOIN users u ON fb.userid = u.id 
 				'.$where.'
 			ORDER BY
 				fb.id DESC
@@ -101,7 +101,7 @@ try {
 			'text' => htmlspecialchars($row['text']),
 			'email' => htmlspecialchars($row['email']),
 			'nick' => htmlspecialchars($row['nick']),
-			'userid' => htmlspecialchars($row['iduser']),
+			'userid' => htmlspecialchars($row['userid']),
 			'logo' => htmlspecialchars($row['logo']),
 			'dt' => $row['dt'],
 			'messages' => array(),
@@ -114,13 +114,13 @@ try {
 				fbm.feedbackid,
 				fbm.text,
 				fbm.dt,
-				u.iduser,
+				fbm.userid,
 				u.nick,
 				u.logo,
 				u.email
 			from 
 				feedback_msg fbm
-			INNER JOIN user u ON fbm.userid = u.iduser
+			INNER JOIN users u ON fbm.userid = u.id
 			WHERE
 				feedbackid = ?
 			ORDER BY id DESC
@@ -131,7 +131,7 @@ try {
 			$result['data']['feedback'][$id]['messages'][] = array(
 				'id' => htmlspecialchars($row_message['id']),
 				'feedbackid' => htmlspecialchars($row_message['feedbackid']),
-				'userid' => $row_message['iduser'],
+				'userid' => $row_message['userid'],
 				'nick' => htmlspecialchars($row_message['nick']),
 				'logo' => htmlspecialchars($row_message['logo']),
 				'email' => htmlspecialchars($row_message['email']),
