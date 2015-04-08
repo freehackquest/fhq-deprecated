@@ -37,9 +37,10 @@
 }
 
 .fhq_event_score {
-	font-size: 25px;
-	text-align: center;
-	padding: 10px;
+	font-size: 18px;
+	font-weight: bold;
+	text-align: left;
+	padding: 20px;
 }
 
 .fhq_feedback_text {

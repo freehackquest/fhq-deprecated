@@ -95,7 +95,7 @@ function updateScoreboard(gameid) {
 	);	
 }
 
-var g_maxRows = 25;
+var g_maxRows = 15;
 
 function initNewsPanel() {
 	document.getElementById("events_panel").innerHTML = '';
@@ -134,7 +134,8 @@ function updateNews() {
 				for (var k in obj.data.events) {
 					if (obj.data.events.hasOwnProperty(k)) {
 						var e = obj.data.events[k];
-						arr.push('[' + e.type + ', ' + e.dt + ']<br>' + e.message);
+						// arr.push('[' + e.type + ', ' + e.dt + ']<br>' + e.message);
+						arr.push(fhqgui.eventView(e, false));
 					}
 				}
 				arr = arr.reverse();
