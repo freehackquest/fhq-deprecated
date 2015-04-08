@@ -13,7 +13,7 @@
 		$result = $db->query("select iduser, idquest from tryanswer where passed = 'Yes'");
 		while ($row = mysql_fetch_row($result, MYSQL_ASSOC)) // Data
 		{   
-			$iduser = $row['iduser'];
+			$iduser = $row['id'];
 			$idquest = $row['idquest'];
 			echo $iduser." ".$idquest."<br>";
 			$answer_list->movedToBackup($iduser, $idquest);

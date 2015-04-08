@@ -42,6 +42,8 @@
 	echo '<link rel="stylesheet" type="text/css" href="templates/'.$colors.'/styles/colors.css?ver='.$versioncontent.'" />';
 ?>
 
+	<script type="text/javascript" src="js/fhq.frontend.lib.js?ver=1"></script>
+	<script type="text/javascript" src="js/fhq.gui.lib.js?ver=1"></script>
 	<script type="text/javascript" src="js/fhq_send_request.js?ver=<?php echo $versioncontent; ?>"></script>
 	<script type="text/javascript" src="js/fhq_echo_head.js?ver=<?php echo $versioncontent; ?>"></script>
 	<script type="text/javascript" src="js/fhq_modal_dialog.js?ver=<?php echo $versioncontent; ?>"></script>
@@ -53,6 +55,19 @@
 	<script type="text/javascript" src="js/fhq_updates.js?ver=<?php echo $versioncontent; ?>"></script>
 	<script type="text/javascript" src="js/fhq_events.js?ver=<?php echo $versioncontent; ?>"></script>
 	<script type="text/javascript" src="js/scoreboard.js?ver=<?php echo $versioncontent; ?>"></script>
+	
+	<script type="text/javascript">
+		var fhq = new FHQFrontEndLib();
+		var fhqgui = new FHQGuiLib();
+
+		fhq.client = "web-fhq2014";
+		fhq.baseUrl = fhq.getCurrentApiPath(); // or another path
+		// fhq.token = fhq.getTokenFromCookie();
+		//javascript:
+/*function playSound( url ){   
+  document.getElementById("sound").innerHTML="<embed src='"+url+"' hidden=true autostart=true loop=false>";
+}*/
+	</script>
 </head>
 	<body class="main" onload="updateInfo(<?php echo $gameid;?>);">
 			<table width="100%" height="100%">

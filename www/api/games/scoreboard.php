@@ -33,24 +33,24 @@ $result['gameid'] = $gameid;
 
 $params[] = intval($gameid);
 
-$filter_by_role = APISecurity::isAdmin() == false ? ' AND user.role = "user" ' : '';
+$filter_by_role = APISecurity::isAdmin() == false ? ' AND u.role = "user" ' : '';
 
 $query = '
 			SELECT 
-				user.iduser,
-				user.nick,
-				user.role,
-				user.logo,
-				users_games.score
+				u.nick,
+				u.role,
+				u.logo,
+				ug.userid,
+				ug.score
 			FROM 
-				users_games
+				users_games ug
 			LEFT JOIN 
-				user ON user.iduser = users_games.userid
+				users u ON u.id = ug.userid
 			WHERE
-				users_games.gameid = ?
+				ug.gameid = ?
 				'.$filter_by_role.'
 			ORDER BY
-				users_games.score DESC
+				ug.score DESC
 		';
 
 try {
@@ -73,7 +73,7 @@ try {
 		}
 		
 		$result['data'][$i][] = array(
-			'userid' => $row['iduser'],
+			'userid' => $row['userid'],
 			'nick' => htmlspecialchars($row['nick']),
 			'logo' => $row['logo'],
 			'score' => $row['score'],

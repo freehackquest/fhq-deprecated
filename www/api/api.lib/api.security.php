@@ -6,7 +6,7 @@ class APISecurity {
 	
 	static function login($conn, $email, $hash_password) {
 		// try {
-			$query = 'SELECT * FROM user WHERE email = ? AND pass = ?';
+			$query = 'SELECT * FROM users WHERE email = ? AND pass = ?';
 			$email = strtolower($email);
 			$params = array(
 				$email,
@@ -17,11 +17,10 @@ class APISecurity {
 			if ($row = $stmt->fetch())
 			{
 				$_SESSION['user'] = array();
-				$_SESSION['user']['iduser'] = $row['iduser'];
+				$_SESSION['user']['id'] = $row['id'];
 				$_SESSION['user']['email'] = $row['email'];
 				$_SESSION['user']['nick'] = $row['nick'];
 				$_SESSION['user']['role'] = $row['role'];
-
 				return true;
 			}
 		// } catch(PDOException $e) {
@@ -79,7 +78,7 @@ class APISecurity {
 	}
 
 	static function userid() { 
-		return (APISecurity::isLogged() && is_numeric($_SESSION['user']['iduser'])) ? $_SESSION['user']['iduser'] : ''; 
+		return (APISecurity::isLogged() && isset($_SESSION['user']['id'])) ? $_SESSION['user']['id'] : ''; 
 	}
 		
 	static function insertLastIp($conn, $client) { 
@@ -105,7 +104,7 @@ class APISecurity {
 			$stmt = $conn->prepare($query);
 			$stmt->execute($params);
 
-			$stmt_dls = $conn->prepare('UPDATE user SET date_last_signup = NOW() WHERE iduser = ?');
+			$stmt_dls = $conn->prepare('UPDATE users SET dt_last_login = NOW() WHERE id = ?');
 			$stmt_dls->execute(array(APISecurity::userid()));
 		} catch(PDOException $e) {
 			APIHelpers::showerror(1198, $e->getMessage());

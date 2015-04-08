@@ -36,10 +36,10 @@ try {
 				games.logo,
 				games.owner,
 				games.organizators,
-				user.nick
+				users.nick
 			FROM
 				games
-			INNER JOIN user ON games.owner = user.iduser
+			INNER JOIN users ON games.owner = users.id
 			ORDER BY games.date_start
 			DESC LIMIT 0,10;';
 

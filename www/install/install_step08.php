@@ -42,7 +42,7 @@
 		
 		
 		$conn->query("DELETE FROM user WHERE username='$username'");
-		$conn->query("INSERT INTO user( username, password, nick, role, score )
+		$conn->query("INSERT INTO users( email, password, nick, role, score )
 			VALUES ('$username','$pass_hash','$nickname','admin', 0);");
 
 		$config['owner'] = $conn->lastInsertId();

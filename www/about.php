@@ -20,8 +20,7 @@ Evgenii Sopov, Igor Polyakov, Maxim Samoilov (Nitive)<br>
 
 <h2>api</h2>
 <a href="api/?html">HTML</a>, 
-<a href="api/?json">JSON</a>, 
-<a href="api/?tex">LaTeX</a><br>
+<a href="api/?json">JSON</a><br>
 
 <h2>source code</h2>
 <a href="http://github.com/sea-kg/fhq">main</a>,

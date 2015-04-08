@@ -47,9 +47,9 @@ $status = '%'.$status.'%';
 try {
 	$stmt = $conn->prepare('
 			SELECT
-				COUNT(iduser) as cnt
+				COUNT(id) as cnt
 			FROM
-				user
+				users
 			WHERE 
 				(email LIKE ? OR nick LIKE ?)
 				AND (role LIKE ?)
@@ -66,30 +66,30 @@ try {
 try {
 	$stmt2 = $conn->prepare('
 			SELECT
-				iduser, email, role,
+				id, email, role,
 				nick, logo, status,
-				date_last_signup
+				dt_last_login
 			FROM
-				user
+				users
 			WHERE 
 				(email LIKE ? OR nick LIKE ?)
 				AND (role LIKE ?)
 				AND (status LIKE ?)
 			ORDER BY
-				date_last_signup DESC
+				dt_last_login DESC
 			LIMIT '.$start.','.$onpage.'
 	');
 	$stmt2->execute(array($search, $search, $role, $status));
 	$i = 0;
 	while ($row2 = $stmt2->fetch()) {
-		$userid = $row2['iduser'];
+		$userid = $row2['id'];
 		$result['data'][$i] = array(
 			'userid' => $userid,
 			'email' => $row2['email'],
 			'role' => $row2['role'],
 			'nick' => $row2['nick'],
 			'logo' => $row2['logo'],
-			'date_last_signup' => $row2['date_last_signup'],
+			'dt_last_login' => $row2['dt_last_login'],
 			'status' => $row2['status'],
 		);
     $i++;

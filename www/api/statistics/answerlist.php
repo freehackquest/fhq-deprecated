@@ -130,7 +130,7 @@ try {
 			count(*) as cnt
 		FROM 
 			'.$table.' ta
-		INNER JOIN user u ON u.iduser = ta.iduser
+		INNER JOIN users u ON u.id = ta.iduser
 		INNER JOIN quest q ON q.idquest = ta.idquest
 		INNER JOIN games g ON g.id = q.gameid
 		'.$where.'
@@ -162,7 +162,7 @@ try {
 			g.title
 		FROM 
 			'.$table.' ta
-		INNER JOIN user u ON u.iduser = ta.iduser
+		INNER JOIN users u ON u.id = ta.iduser
 		INNER JOIN quest q ON q.idquest = ta.idquest
 		INNER JOIN games g ON g.id = q.gameid
 		'.$where.'

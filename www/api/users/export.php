@@ -27,9 +27,9 @@ $conn = APIHelpers::createConnection($config);
 try {
 	$stmt = $conn->prepare('
 			SELECT
-				COUNT(iduser) as cnt
+				COUNT(id) as cnt
 			FROM
-				user
+				users
 	');
 	$stmt->execute();
 	if ($row = $stmt->fetch()) {
@@ -59,14 +59,14 @@ try {
 			SELECT
 				*
 			FROM
-				user
+				users
 			ORDER BY
-				iduser ASC
+				id ASC
 	');
 	$stmt2->execute();
 	while ($row2 = $stmt2->fetch()) {
-		$userid = $row2['iduser'];
-		$uuid = $row2['uuid_user'];
+		$userid = $row2['id'];
+		$uuid = $row2['uuid'];
 		$oldlogoname = $curdir_users_export.'/../../'.$row2['logo'];
 		if (file_exists($oldlogoname) && $uuid) {
 			$newlogoname = 'files/users/'.$uuid.'.png';
@@ -76,15 +76,15 @@ try {
 		}
 		
 		$userarr = [
-			'uuid' => $row2['uuid_user'],
+			'uuid' => $row2['uuid'],
 			'email' => $row2['email'],
 			'pass' => $row2['pass'],
 			'role' => $row2['role'],
 			'nick' => $row2['nick'],
 			'logo' => $newlogoname,
 			'last_ip' => $row2['last_ip'],
-			'date_create' => $row2['date_create'],
-			'date_last_signup' => $row2['date_last_signup'],
+			'dt_create' => $row2['dt_create'],
+			'dt_last_login' => $row2['dt_last_login'],
 			'status' => $row2['status'],
 		];
 			

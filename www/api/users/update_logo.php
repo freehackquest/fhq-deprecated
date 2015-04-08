@@ -32,7 +32,7 @@ $result['data']['logo'] = $logo;
 $result['data']['userid'] = $userid;
 
 try {
-	$query = 'UPDATE user SET logo = ? WHERE iduser = ?';
+	$query = 'UPDATE users SET logo = ? WHERE id = ?';
 	$stmt = $conn->prepare($query);
 	if ($stmt->execute(array($logo, $userid)))
 		$result['result'] = 'ok';

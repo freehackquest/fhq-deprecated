@@ -52,7 +52,7 @@ if (strlen($nick) <= 3)
 try {
 	
 
-	$query = 'UPDATE user SET nick = ? WHERE iduser = ?';
+	$query = 'UPDATE users SET nick = ? WHERE id = ?';
 	$stmt = $conn->prepare($query);
 	if ($stmt->execute(array($nick, $userid)))
 	{

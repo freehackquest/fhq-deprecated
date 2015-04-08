@@ -33,12 +33,12 @@ $bAllow = APISecurity::isAdmin() || APISecurity::isTester() || APISecurity::user
 $result['access']['edit'] = $bAllow;
 $result['currentUser'] = APISecurity::userid() == $userid;
 
-$columns = array('iduser', 'email', 'status', 'role', 'nick', 'logo');
+$columns = array('id', 'email', 'status', 'role', 'nick', 'logo');
 
 $query = '
 		SELECT '.implode(', ', $columns).' FROM
-			user
-		WHERE iduser = ?
+			users
+		WHERE id = ?
 ';
 
 $result['userid'] = $userid;
@@ -49,7 +49,7 @@ try {
 	$stmt->execute(array($userid));
 	if ($row = $stmt->fetch())
 	{
-		$result['data']['userid'] = $row['iduser'];
+		$result['data']['userid'] = $row['id'];
 		$result['data']['nick'] = $row['nick'];
 		$result['data']['logo'] = $row['logo'];
 		

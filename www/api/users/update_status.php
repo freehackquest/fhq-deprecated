@@ -35,7 +35,7 @@ if (strlen($status) <= 3)
   APIHelpers::showerror(1137, '"status" must be more then 3 characters');
 
 try {
-	$query = 'UPDATE user SET status = ? WHERE iduser = ?';
+	$query = 'UPDATE users SET status = ? WHERE id = ?';
 	$stmt = $conn->prepare($query);
 	if ($stmt->execute(array($status, $userid)))
 		$result['result'] = 'ok';

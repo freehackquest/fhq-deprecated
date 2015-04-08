@@ -95,7 +95,7 @@ function updateScoreboard(gameid) {
 	);	
 }
 
-var g_maxRows = 25;
+var g_maxRows = 15;
 
 function initNewsPanel() {
 	document.getElementById("events_panel").innerHTML = '';
@@ -104,6 +104,8 @@ function initNewsPanel() {
 	}
 }
 
+var audio_event = new Audio('files/sound/event.mp3');
+
 function pushNews(text) {
 	// move to down one rows
 	for(var i = g_maxRows-1; i > 0; i--) {
@@ -111,7 +113,10 @@ function pushNews(text) {
 		var el2 = document.getElementById("news" + (i-1));
 		el1.innerHTML = el2.innerHTML;
 	}
-	document.getElementById("news0").innerHTML = text;	
+	document.getElementById("news0").innerHTML = text;
+	
+	if (audio_event.paused)
+		audio_event.play();
 };
 
 var lastNewsID = 0;
@@ -134,7 +139,8 @@ function updateNews() {
 				for (var k in obj.data.events) {
 					if (obj.data.events.hasOwnProperty(k)) {
 						var e = obj.data.events[k];
-						arr.push('[' + e.type + ', ' + e.dt + ']<br>' + e.message);
+						// arr.push('[' + e.type + ', ' + e.dt + ']<br>' + e.message);
+						arr.push(fhqgui.eventView(e, false));
 					}
 				}
 				arr = arr.reverse();

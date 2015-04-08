@@ -114,37 +114,7 @@ function loadEvents() {
 					content += '';
 					if (obj.data.events.hasOwnProperty(k)) {
 						var e = obj.data.events[k];
-						
-						var imgpath = '';
-						if (e.type == 'users')
-							imgpath = 'templates/base/images/menu/user.png';
-						else if (e.type == 'quests')
-							imgpath = 'templates/base/images/menu/quests.png';
-						else if (e.type == 'warning')
-							imgpath = 'templates/base/images/menu/warning.png';
-						else if (e.type == 'info')
-							imgpath = 'templates/base/images/menu/news.png';
-						else if (e.type == 'games')
-							imgpath = 'templates/base/images/menu/games.png';
-						else
-							imgpath = 'templates/base/images/menu_btn_default.png'; // default
-
-						content += '\n<div class="fhq_event_info">\n';
-						content += '	<div class="fhq_event_info_row">\n';
-						content += '		<div class="fhq_event_info_cell_img"><img src="' + imgpath + '" width="100px"></div>\n';
-						content += '		<div class="fhq_event_info_cell_content">\n';
-						content += '			<div class="fhq_event_caption">[' + e.type + ', ' + e.dt + ']</div>';
-						content += '			<div class="fhq_event_score">' + e.message + '</div>';
-						if (obj.access == true) {
-							content += '			<div class="fhq_event_caption">'; 
-							content += '				<div class="fhqbtn" onclick="deleteConfirmEvent(' + e.id + ');">Delete</div>';
-							content += '				<div class="fhqbtn" onclick="formEditEvent(' + e.id + ');">Edit</div>';
-							content += '			</div>';
-						}
-						
-						content += '		</div>'; // fhq_event_info_cell_content
-						content += '	</div>'; // fhq_event_info_row
-						content += '</div><br>'; // fhq_event_info
+						content += fhqgui.eventView(e, obj.access);
 					}
 					content += '';
 				}

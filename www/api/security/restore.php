@@ -48,14 +48,14 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL))
 	APIHelpers::showerror(1041, '[Restore] Invalid e-mail address. ');
 
 $conn = APIHelpers::createConnection($config);
-$stmt = $conn->prepare('select iduser, nick from user where email = ?');
+$stmt = $conn->prepare('select id, nick from users where email = ?');
 $stmt->execute(array($email));
 $nick = '';
 $userid = 0;
 
 if ($row = $stmt->fetch()) {
 	$nick = $row['nick'];
-	$userid = $row['iduser'];
+	$userid = $row['id'];
 } else {
 	APIHelpers::showerror(1042, '[Restore] This e-mail was not registered.');
 }
@@ -65,7 +65,7 @@ $password_hash = APISecurity::generatePassword2($email, $password);
 
 $query = "";
 $stmt_update = $conn->prepare('
-	UPDATE user SET
+	UPDATE users SET
 		pass = ?
 	WHERE email = ?;
 ');

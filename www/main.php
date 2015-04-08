@@ -107,7 +107,7 @@ if (!isset($_SESSION['user']))
 <?php
 	$role = isset($_SESSION['user']['role']) ? $_SESSION['user']['role'] : 'user';
 	$score = isset($_SESSION['user']['score']) ? $_SESSION['user']['score'] : 0;
-	$userid = isset($_SESSION['user']['iduser']) ? $_SESSION['user']['iduser'] : 0;
+	$userid = isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : 0;
 	$nick = isset($_SESSION['user']['nick']) ? $_SESSION['user']['nick'] : '';
 	$nick = htmlspecialchars($nick);
 	$template = 'base';

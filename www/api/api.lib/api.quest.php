@@ -11,10 +11,10 @@ class APIQuest {
 						COUNT(*)
 					FROM
 						userquest
-					INNER JOIN user ON user.iduser = userquest.iduser
+					INNER JOIN users ON users.id = userquest.iduser
 					WHERE
 						idquest = ? AND stopdate <> \'0000-00-00 00:00:00\'
-						AND user.role = "user"
+						AND users.role = "user"
 				)
 			WHERE
 				idquest = ?;';
