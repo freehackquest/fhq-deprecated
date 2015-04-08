@@ -25,6 +25,7 @@ $result = array(
 			array( 'value' => 'web', 'caption' => 'Web' ),
 			// array( 'value' => 'admin', 'caption' => 'Admin' ),
 			array( 'value' => 'enjoy', 'caption' => 'Enjoy' ),
+			array( 'value' => 'other', 'caption' => 'Other' ),
 		),
 		'questTypesFilter' => array(
 			array( 'value' => '', 'caption' => '*' ),
