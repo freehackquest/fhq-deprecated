@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="200"
+   height="200"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="ppc.svg"
+   inkscape:export-filename="hashes.png"
+   inkscape:export-xdpi="67.083908"
+   inkscape:export-ydpi="67.083908">
+  <defs
+     id="defs4">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3963">
+      <stop
+         style="stop-color:#9f9f9f;stop-opacity:1;"
+         offset="0"
+         id="stop3965" />
+      <stop
+         style="stop-color:#9f9f9f;stop-opacity:0;"
+         offset="1"
+         id="stop3967" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3955">
+      <stop
+         style="stop-color:#9f9f9f;stop-opacity:1;"
+         offset="0"
+         id="stop3957" />
+      <stop
+         style="stop-color:#9f9f9f;stop-opacity:0;"
+         offset="1"
+         id="stop3959" />
+    </linearGradient>
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Mend"
+       style="overflow:visible;">
+      <path
+         id="path3780"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;"
+         transform="scale(0.4) rotate(180) translate(10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lstart"
+       style="overflow:visible">
+      <path
+         id="path3771"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt"
+         transform="scale(0.8) translate(12.5,0)" />
+    </marker>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3955"
+       id="linearGradient3961"
+       x1="29.297277"
+       y1="975.21418"
+       x2="179.03798"
+       y2="975.21418"
+       gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3963"
+       id="radialGradient3971"
+       cx="104.16763"
+       cy="975.21417"
+       fx="104.16763"
+       fy="975.21417"
+       r="74.870354"
+       gradientTransform="matrix(1,0,0,0.3355721,0,647.95952)"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="350.40254"
+     inkscape:cy="-0.36007154"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1320"
+     inkscape:window-height="927"
+     inkscape:window-x="140"
+     inkscape:window-y="56"
+     inkscape:window-maximized="0"
+     inkscape:snap-grids="true" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-852.36218)"
+     style="display:inline">
+    <rect
+       style="fill:none;stroke:#9f9f9f;stroke-width:10.80000019;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect2990"
+       width="177.28177"
+       height="178.29193"
+       x="12.10266"
+       y="862.96057"
+       ry="22.728432"
+       transform="matrix(1,-2.0135378e-5,2.0135378e-5,1,0,0)" />
+    <text
+       xml:space="preserve"
+       style="font-size:52.43388367px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#9f9f9f;fill-opacity:1;stroke:#9f9f9f;stroke-width:0.82397813;stroke-opacity:1;font-family:Sans"
+       x="96.914696"
+       y="928.69122"
+       id="text3947"
+       sodipodi:linespacing="125%"
+       transform="scale(1.0408204,0.96078056)"><tspan
+         sodipodi:role="line"
+         x="96.914696"
+         y="928.69122"
+         style="font-size:22.43388367px;text-align:center;text-anchor:middle;fill:#9f9f9f;fill-opacity:1;stroke:#9f9f9f;stroke-width:0.82397813;stroke-opacity:1"
+         id="tspan3021">python c++</tspan><tspan
+         sodipodi:role="line"
+         x="96.914696"
+         y="956.73358"
+         style="font-size:22.43388367px;text-align:center;text-anchor:middle;fill:#9f9f9f;fill-opacity:1;stroke:#9f9f9f;stroke-width:0.82397813;stroke-opacity:1"
+         id="tspan3025">java groovy</tspan><tspan
+         sodipodi:role="line"
+         x="96.914696"
+         y="984.77594"
+         style="font-size:22.43388367px;text-align:center;text-anchor:middle;fill:#9f9f9f;fill-opacity:1;stroke:#9f9f9f;stroke-width:0.82397813;stroke-opacity:1"
+         id="tspan3029">c# ruby php</tspan><tspan
+         sodipodi:role="line"
+         x="96.914696"
+         y="1012.8183"
+         style="font-size:22.43388367px;text-align:center;text-anchor:middle;fill:#9f9f9f;fill-opacity:1;stroke:#9f9f9f;stroke-width:0.82397813;stroke-opacity:1"
+         id="tspan3035">javascript lisp</tspan><tspan
+         sodipodi:role="line"
+         x="96.914696"
+         y="1040.8606"
+         style="font-size:22.43388367px;text-align:center;text-anchor:middle;fill:#9f9f9f;fill-opacity:1;stroke:#9f9f9f;stroke-width:0.82397813;stroke-opacity:1"
+         id="tspan3031">php obj-c bf</tspan><tspan
+         sodipodi:role="line"
+         x="96.914696"
+         y="1068.903"
+         style="font-size:22.43388367px;text-align:center;text-anchor:middle;fill:#9f9f9f;fill-opacity:1;stroke:#9f9f9f;stroke-width:0.82397813;stroke-opacity:1"
+         id="tspan3037">haskell pearl</tspan></text>
+  </g>
+</svg>
