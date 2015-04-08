@@ -55,7 +55,7 @@ if ($row = $stmt->fetch())
 		APIHelpers::showerror(1192, '[Registration] This e-mail was already registered.');	
 }
 
-$nickname = "hacker-".substr(md5(rand().rand()), 0, 7);
+$nick = "hacker-".substr(md5(rand().rand()), 0, 7);
 $email = strtolower($email);
 $uuid = APIHelpers::gen_guid();
 
@@ -65,7 +65,7 @@ $password_hash = APISecurity::generatePassword2($email, $password);
 // same code exists in api/users/insert.php
 				
 $stmt_insert = $conn->prepare('
-	INSERT INTO user(
+	INSERT INTO users(
 		uuid,
 		pass,
 		status,
@@ -73,11 +73,10 @@ $stmt_insert = $conn->prepare('
 		nick,
 		role,
 		logo,
-		last_ip,
 		dt_last_login,
 		dt_create
 	)
-	VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW());
+	VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, NOW());
 ');
 
 $stmt_insert->execute(array(
@@ -85,15 +84,14 @@ $stmt_insert->execute(array(
 	$password_hash, // pass
 	'activated',
 	$email,
-	$nickname,
+	$nick,
 	'user',
 	'files/users/0.png',
-	$_SERVER['REMOTE_ADDR'],
 	'0000-00-00 00:00:00',
 ));
 
 if( !APISecurity::login($conn, $email, $password_hash)) {
-	APIEvents::addPublicEvents($conn, 'errors', 'Admin, registration is broken!');
+	APIEvents::addPublicEvents($conn, 'errors', 'Alert! Admin, registration is broken!');
 	APIHelpers::showerror(1287, '[Registration] Sorry registration is broken. Please send report to the admin about this.');
 } else {
 	APISecurity::insertLastIp($conn, APIHelpers::getParam('client', 'none'));
@@ -136,8 +134,8 @@ $stmt_insert2->execute(array(
 ));
 
 
-// $nickname
-APIEvents::addPublicEvents($conn, 'users', 'Joined new user {'.htmlspecialchars($nickname).'}!');
+// $nick
+APIEvents::addPublicEvents($conn, 'users', 'New player {'.htmlspecialchars($nick).'}. Welcome!');
 
 $error = '';
 // this option must be moved to db

@@ -63,6 +63,10 @@
 		fhq.client = "web-fhq2014";
 		fhq.baseUrl = fhq.getCurrentApiPath(); // or another path
 		// fhq.token = fhq.getTokenFromCookie();
+		//javascript:
+/*function playSound( url ){   
+  document.getElementById("sound").innerHTML="<embed src='"+url+"' hidden=true autostart=true loop=false>";
+}*/
 	</script>
 </head>
 	<body class="main" onload="updateInfo(<?php echo $gameid;?>);">
