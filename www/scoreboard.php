@@ -81,7 +81,7 @@
 					</td>
 					<td width="50%" valign="top" >
 						<center>
-							<img width=85px src="templates/base/images/menu_btn_scoreboard.png" />
+							<img width=85px src="templates/base/images/menu/scoreboard.png" />
 							<div id="game_info_panel">Loading...</div>
 							<h1>Scoreboard</h1>
 							<div id="scoreboard_table" class="fhq_scoreboard_table"></div>
