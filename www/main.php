@@ -127,7 +127,7 @@ if (!isset($_SESSION['user']))
 	$arrmenu[] = array(
 		'name' => 'logo',
 		'html' => '
-			<div class="fhq_btn_menu fhq_btn_menu_color_none hint--bottom" data-hint="Free-Hack-Quest" onclick="window.location.href = \'?\';">
+			<div class="fhq_btn_menu fhq_btn_menu_color_none hint--bottom" data-hint="About" onclick="loadAbout();">
 				<img class="fhq_btn_menu_img" src="templates/base/images/logo/fhq_2015_small.png"/>
 			</div>
 		',
@@ -150,7 +150,7 @@ if (!isset($_SESSION['user']))
 		'name' => 'scoreboard',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="Scoreboard" onclick="loadScoreboard('.$gameid.');">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_scoreboard.png"/>  <div style="display: inline-block;" id="view_score">'.$score.'</div>
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/scoreboard.png"/>  <div style="display: inline-block;" id="view_score">'.$score.'</div>
 			</div>
 		',
 		'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
@@ -199,7 +199,7 @@ if (!isset($_SESSION['user']))
 		'name' => 'system_menu',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="Settings" onclick="loadSettings();">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_system.png"/>
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/settings.png"/>
 			</div>
 		',
 		'show' => $role == 'admin',
@@ -209,7 +209,7 @@ if (!isset($_SESSION['user']))
 		'name' => 'users',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="Users" onclick="createPageUsers(); updateUsers();">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_users.png"/>
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/users.png"/>
 			</div>
 		',
 		'show' => $role == 'admin',
@@ -268,7 +268,7 @@ if (!isset($_SESSION['user']))
 		'name' => 'feedback',
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="Feedback" onclick="loadFeedback();">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu_btn_feedback.png"/>
+				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/feedback.png"/>
 			</div>
 		',
 		'show' => true,
@@ -279,16 +279,6 @@ if (!isset($_SESSION['user']))
 		'html' => '
 			<div class="fhq_btn_menu hint--bottom" data-hint="User profile"  onclick="loadUserProfile('.$userid.');">
 				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/user.png"/> <div style="display: inline-block;" id="btn_user_info">'.$nick.'</div>
-			</div>
-		',
-		'show' => true,
-	);
-	
-	$arrmenu[] = array(
-		'name' => 'about',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="About" onclick="loadAbout();">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/about.png"/><br>
 			</div>
 		',
 		'show' => true,
