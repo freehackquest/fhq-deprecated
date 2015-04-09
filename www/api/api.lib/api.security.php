@@ -77,10 +77,15 @@ class APISecurity {
 			$_SESSION['user']['nick'] = $nick;
 	}
 
-	static function userid() { 
-		return (APISecurity::isLogged() && isset($_SESSION['user']['id'])) ? $_SESSION['user']['id'] : ''; 
+	static function userid() {
+		$userid = (APISecurity::isLogged() && isset($_SESSION['user']['id'])) ? $_SESSION['user']['id'] : '';
+		if (intval($userid) == 0) {
+			session_destroy();
+			APIHelpers::showerror(1317, 'Please relogon');
+		}
+		return $userid;
 	}
-		
+
 	static function insertLastIp($conn, $client) { 
 		try {
 			$query = 'INSERT INTO users_ips (userid, ip, country, city, browser, client, date_sign_in) VALUES(?,?,?,?,?,?,NOW())';
