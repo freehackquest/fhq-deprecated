@@ -11,7 +11,7 @@ Short Manual:
 
 3. change access (linux 777) to folders:
 	files/games
-	files/dump
+	files/dumps
 	files/quests
 	files/users
 
@@ -52,8 +52,6 @@ and execute next queries:
 # git clone https://github.com/sea-kg/fhq.git fhq.git
 # cd fhq.git
 # mysql -u root -p freehackquest < freehackquest.sql
-
-
 # cp -R www/* /var/www/
 # rm /var/www/index.html
 # cd /var/www/config
@@ -61,4 +59,26 @@ and execute next queries:
 
 -> here configure config.php
 
+# cd /var/www/files
+# chmod 777 /var/www/dumps
+# chmod 777 /var/www/users
+# chmod 777 /var/www/games
+# chmod 777 /var/www/quests
 
+Please change in /etc/php5/apache2/php.ini
+	upload_max_filesize = 2M
+->
+	upload_max_filesize = 100M
+
+and
+
+	post_max_size = 8M
+->
+	post_max_size = 100M
+
+
+Login in the FHQ (admin:admin123).
+Create new user with role 'admin' and with correct email
+Relogon with new user and remove old admin.
+Create new game.
+Create new quest and check it.
