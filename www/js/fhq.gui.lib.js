@@ -130,11 +130,15 @@ function FHQGuiLib() {
 		else
 			imgpath = 'templates/base/images/menu_btn_default.png'; // default
 
+		var marknew = '';
+		if (event.marknew && event.marknew == true)
+			marknew = '*** NEW!!! ***,';
+
 		content += '\n<div class="fhq_event_info">\n';
 		content += '	<div class="fhq_event_info_row">\n';
 		content += '		<div class="fhq_event_info_cell_img"><img src="' + imgpath + '" width="100px"></div>\n';
 		content += '		<div class="fhq_event_info_cell_content">\n';
-		content += '			<div class="fhq_event_caption"> [' + event.type + ', ' + event.dt + ']</div>';
+		content += '			<div class="fhq_event_caption"> [' + marknew + event.type + ', ' + event.dt + ']</div>';
 		content += '			<div class="fhq_event_score">' + event.message + '</div>';
 		if (access == true) {
 			content += '			<div class="fhq_event_caption">'; 
@@ -142,7 +146,6 @@ function FHQGuiLib() {
 			content += '				<div class="fhqbtn" onclick="formEditEvent(' + event.id + ');">Edit</div>';
 			content += '			</div>';
 		}
-		
 		content += '		</div>'; // fhq_event_info_cell_content
 		content += '	</div>'; // fhq_event_info_row
 		content += '</div><br>'; // fhq_event_info

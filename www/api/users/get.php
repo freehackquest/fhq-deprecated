@@ -18,10 +18,10 @@ $result = array(
 
 $conn = APIHelpers::createConnection($config);
 
-if (!APIHelpers::issetParam('userid'))
-	APIHelpers::showerror(1177, 'Not found parameter userid');
+/*if (!APIHelpers::issetParam('userid'))
+	APIHelpers::showerror(1177, 'Not found parameter userid');*/
 
-$userid = APIHelpers::getParam('userid', 0);
+$userid = APIHelpers::getParam('userid', APISecurity::userid());
 
 if (!is_numeric($userid))
 	APIHelpers::showerror(1181, 'Parameter userid must be integer');

@@ -36,6 +36,10 @@ function FHQFrontEndLib() {
 	this.baseUrl = "http://fhq.keva.su/";
 	this.token = this.getTokenFromCookie();
 	this.client = "FHQFrontEndLib.js";
+	this.profile = {
+		lastEventId: 0,
+		bInitUserProfile: false
+	};
 
 	// post request to server Async
 	this.sendPostRequest_Async = function(page, params, callbackf) {
@@ -51,9 +55,12 @@ function FHQFrontEndLib() {
 					obj = { "result" : "fail" };
 				else
 				{
-					alert(tmpXMLhttp.responseText);
-					var obj = JSON.parse(tmpXMLhttp.responseText);
-					callbackf(obj);
+					try {
+						var obj = JSON.parse(tmpXMLhttp.responseText);
+						callbackf(obj);
+					} catch(e) {
+						alert(tmpXMLhttp.responseText);
+					}
 					delete obj;
 					delete tmpXMLhttp;
 				}
@@ -274,6 +281,51 @@ function FHQFrontEndLib() {
 		};
 	})(this);
 	
+	this.events = new (function(t) {
+		this.fhq = t;
+		this.count = function(callback) {
+			var params = {};
+			params['id'] = this.fhq.users.getLastEventId();
+			this.fhq.sendPostRequest_Async('api/events/count.php', params, callback);
+		};
+	})(this);
+
+	this.users = new (function(t) {
+		this.fhq = t;
+		this.initProfile = function() {
+			if (this.fhq.profile.bInitUserProfile == true)
+				return;
+			var params = {};
+			var obj = this.fhq.sendPostRequest_Sync('api/users/get.php', params);
+			if (obj.result == 'ok') {
+				if (obj.currentUser == true) {
+					this.fhq.profile.lastEventId = obj.profile.lasteventid;
+					this.fhq.profile.template = obj.profile.template;
+					this.fhq.profile.university = obj.profile.university;
+					this.fhq.profile.country = obj.profile.country;
+					this.fhq.profile.city = obj.profile.city;
+					this.fhq.profile.game = obj.profile.game;
+					this.fhq.userid = obj.data.userid;
+					this.fhq.nick = obj.data.nick;
+					this.fhq.email = obj.data.email;
+					this.fhq.role = obj.data.role;
+					this.fhq.status = obj.data.status;
+				}
+			};
+		};
+
+		this.getLastEventId = function() {
+			this.fhq.users.initProfile();
+			return this.fhq.profile.lastEventId;
+		};
+		this.setLastEventId = function(id) {
+			var params = {};
+			params['id'] = id;
+			this.fhq.sendPostRequest_Async('api/users/update_lasteventid.php', params, function(obj) {});
+			this.fhq.profile.lastEventId = id;
+		};
+	})(this);
+
 	this.enums = null;
 	
 	this.initTypes = function() {
