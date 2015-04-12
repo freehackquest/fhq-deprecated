@@ -109,17 +109,51 @@ function loadEvents() {
 				var content = '';
 				if (obj.access == true)
 					content += '<div class="fhqbtn" onclick="formCreateEvent();">Create News</div><br>';
-				
+
+				var tmpLastEventId = fhq.users.getLastEventId();
+				var maxLastEventId = fhq.users.getLastEventId();
 				for (var k in obj.data.events) {
 					content += '';
 					if (obj.data.events.hasOwnProperty(k)) {
 						var e = obj.data.events[k];
-						content += fhqgui.eventView(e, obj.access);
+						if (e.id > maxLastEventId) {
+							maxLastEventId = e.id;
+						}
+						e.marknew = false;
+						if (e.id > tmpLastEventId) {
+							e.marknew = true;
+						}
+						content += fhqgui.eventView(e, obj.access); // TODO mark events which new
 					}
 					content += '';
 				}
 				el.innerHTML = content;
+				if (tmpLastEventId != maxLastEventId)
+					fhq.users.setLastEventId(maxLastEventId);
 			}
 		}
 	);
+}
+
+function updateCountOfEvents() {
+	// alert(1);
+	// alert(fhq.users.getLastEventId());
+	fhq.events.count(function (obj) {
+		if (obj.result == 'ok') {
+			var el = document.getElementById('plus_events');		
+			if (obj.data.count == 0) {
+				if (el.style.visibility != 'hidden')
+					el.style.visibility = 'hidden';
+				el.innerHTML = '0';
+			} else {
+				if (el.style.visibility == 'hidden') {
+					el.style.visibility = 'visible';
+				}
+				el.innerHTML = obj.data.count;
+			}
+		} else {
+			// el.innerHTML = obj.error.message;
+		}
+		setTimeout(function(){ updateCountOfEvents(); }, 5000);
+	});
 }

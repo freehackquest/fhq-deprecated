@@ -9,6 +9,7 @@ include_once ($curdir."/../../config/config.php");
 APIHelpers::checkAuth();
 
 // TODO only for admins
+// really ???
 
 $result = array(
 	'result' => 'fail',
@@ -31,12 +32,13 @@ if (!is_numeric($id))
   APIHelpers::showerror(1203, 'id must be integer');
 
 try {
-	$_SESSION['user']['profile']['events_last_id'] = $id;
-	
+	$_SESSION['user']['profile']['lasteventid'] = $id; // todo must be renamed to lasteventid!
+
 	$query = 'UPDATE users_profile SET value = ?, date_change = NOW() WHERE name = ? AND userid = ?';
 	$stmt = $conn->prepare($query);
-	$stmt->execute(array(htmlspecialchars($id), 'events_last_id', APISecurity::userid()));
-
+	$stmt->execute(array("" + $id, 'lasteventid', APISecurity::userid()));
+	$result['data']['lasteventid'] = $id;
+	$result['data']['userid'] = APISecurity::userid();
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
 	APIHelpers::showerror(1204, $e->getMessage());

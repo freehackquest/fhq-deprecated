@@ -10,7 +10,7 @@ class APIUser {
 			$defaults['city'] = '?';
 			$defaults['university'] = '?';
 			$defaults['game'] = '0';
-			$defaults['events_last_id'] = '0';
+			$defaults['lasteventid'] = '0';
 
 			$query = 'SELECT * FROM users_profile WHERE userid = ?';
 			$stmt = $conn->prepare($query);
