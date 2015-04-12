@@ -49,11 +49,9 @@ and execute next queries:
 	GRANT ALL PRIVILEGES ON freehackquest.* TO 'freehackquest_u'@'localhost' WITH GRANT OPTION;
 	FLUSH PRIVILEGES;
 
-# mysql -u root -p -h freehackquest < freehackquest.sql
-
 # git clone https://github.com/sea-kg/fhq.git fhq.git
 # cd fhq.git
-
+# mysql -u root -p freehackquest < freehackquest.sql
 
 
 # cp -R www/* /var/www/
