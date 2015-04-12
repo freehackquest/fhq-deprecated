@@ -8,24 +8,7 @@
 	$config['db']['userpass'] = "freehackquest_u";
 	$config['db']['dbname'] = "freehackquest";
 
-	$config['nfs_share'] = '/var/www/test';
-
-	$config['targetDate'] = array();
-	$config['targetDate']['day'] = 7;
-	$config['targetDate']['month'] = 10;
-	$config['targetDate']['year'] = 2013;
-	$config['targetDate']['hour'] = 10;
-	$config['targetDate']['minute'] = 0;
-	$config['targetDate']['second'] = 0;
-
-	$config['finishDate'] = array();
-	$config['finishDate']['day'] = 18;
-	$config['finishDate']['month'] = 10;
-	$config['finishDate']['year'] = 2015;
-	$config['finishDate']['hour'] = 21;
-	$config['finishDate']['minute'] = 0;
-	$config['finishDate']['second'] = 0;
-
+	// configure mail
 	$config['mail'] = array();
 	$config['mail']['from'] = "test@gmail.com";
 	$config['mail']['host'] = "ssl://smtp.gmail.com";
@@ -35,13 +18,11 @@
 	$config['mail']['password'] = "test";
 	$config['mail']['allow'] = 'yes';
 	
-	// install 
-	$config['install']['admin'] = "admin";
-	$config['install']['pass'] = "admin";
-	
+	// configure registration
 	$config['registration'] = array();
 	$config['registration']['allow'] = 'yes';
 	$config['registration']['type'] = 'simple';
 	
+	// configure profile
 	$config['profile']['change_nick'] = 'yes';
 ?>
