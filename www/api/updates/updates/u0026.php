@@ -2,8 +2,8 @@
 
 $updates['u0026'] = array(
 	'to_version' => 'u0027',
-	'name' => 'new table emails',
-	'description' => 'new table emails',
+	'name' => 'drop columns user.activation_code, date_activated, rating',
+	'description' => 'drop columns user.activation_code, date_activated, rating',
 );
 
 function update_u0026($conn) {

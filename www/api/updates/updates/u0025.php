@@ -2,8 +2,8 @@
 
 $updates['u0025'] = array(
 	'to_version' => 'u0026',
-	'name' => 'new table emails',
-	'description' => 'new table emails',
+	'name' => 'new table email_delivery',
+	'description' => 'new table email_delivery',
 );
 
 function update_u0025($conn) {
