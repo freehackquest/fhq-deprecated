@@ -30,23 +30,24 @@ FreeHackQuest installation
 10. Create new quest and check it.
 
 
-Full manual for debian (apache2 + php5 + mysql5):
+# Full manual for debian (apache2 + php5 + mysql5):
 
-$ sudo apt-get install git-core
-$ sudo apt-get install php5
-$ sudo apt-get install apache2
-$ sudo apt-get install mysql-server
-$ sudo apt-get install mysql-client
-$ sudo apt-get install php5-mysql
-$ sudo apt-get install php5-gd
-$ sudo apt-get install libapache2-mod-php5
-$ sudo apt-get install php-pear
-$ sudo pear install Mail-1.2.0
-$ sudo pear install Net_SMTP
-$ sudo /etc/init.d/apache2 restart
-$ sudo mysql -p -u root
+	$ sudo apt-get install git-core
+	$ sudo apt-get install php5
+	$ sudo apt-get install apache2
+	$ sudo apt-get install mysql-server
+	$ sudo apt-get install mysql-client
+	$ sudo apt-get install php5-mysql
+	$ sudo apt-get install php5-gd
+	$ sudo apt-get install libapache2-mod-php5
+	$ sudo apt-get install php-pear
+	$ sudo pear install Mail-1.2.0
+	$ sudo pear install Net_SMTP
+	$ sudo /etc/init.d/apache2 restart
+	$ sudo mysql -p -u root
 
 and execute next queries:
+
 	CREATE DATABASE `freehackquest` CHARACTER SET utf8 COLLATE utf8_general_ci;
 	CREATE USER 'freehackquest_u'@'localhost' IDENTIFIED BY 'freehackquest_u';
 	GRANT ALL PRIVILEGES ON freehackquest.* TO 'freehackquest_u'@'localhost' WITH GRANT OPTION;
@@ -62,21 +63,25 @@ and execute next queries:
 
 -> here configure config.php
 
-$ sudo cd /var/www/files
-$ sudo chmod 777 /var/www/dumps
-$ sudo chmod 777 /var/www/users
-$ sudo chmod 777 /var/www/games
-$ sudo chmod 777 /var/www/quests
+	$ sudo cd /var/www/files
+	$ sudo chmod 777 /var/www/dumps
+	$ sudo chmod 777 /var/www/users
+	$ sudo chmod 777 /var/www/games
+	$ sudo chmod 777 /var/www/quests
 
 Please change in /etc/php5/apache2/php.ini
+
 	upload_max_filesize = 2M
+
 ->
+
 	upload_max_filesize = 100M
 
 and
 
 	post_max_size = 8M
 ->
+
 	post_max_size = 100M
 
 
