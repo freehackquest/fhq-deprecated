@@ -61,7 +61,7 @@ if (isset($_SESSION['user']))
 
 			<table width="100%" height="100%">
 				<tr>
-					<td width="8%" class="fhq_index_column" valign="top" align="center" id="cities">
+					<td width="5%" class="fhq_index_column" valign="top" align="center">
 					</td>
 					<td align="center" valign="middle">
 						
@@ -116,12 +116,16 @@ if (isset($_SESSION['user']))
 							<font id="error_message" color='#ff0000'></font>
 
 					</td>
-					<td width="30%" class="fhq_index_column" id="about">
+					<td width="30%" class="fhq_index_column">
 						<center>
-							<?php
-				include("about.php");
-			?>					
-					
+							<div>
+								<h1>free-hack-quest</h1>
+								This is an open source platform for competitions in computer security.
+							</div>
+							<div id="cities">
+							</div>
+							<div id="about">
+							</div>
 					</td>
 				</tr>
 				<tr>
