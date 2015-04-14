@@ -3,7 +3,7 @@ FreeHackQuest installation
 
 "free-hack-quest" of "fhq" it is a web-engine for running CTF-challenges
 
-Short Manual:
+# Short Manual:
 
 1. Download sources.
 
@@ -32,16 +32,19 @@ Short Manual:
 
 Full manual for debian (apache2 + php5 + mysql5):
 
-# apt-get install git-core
-# apt-get install php5
-# apt-get install apache2
-# apt-get install mysql-server
-# apt-get install mysql-client
-# apt-get install php5-mysql
-# apt-get install php5-gd
-# apt-get install libapache2-mod-php5
-# /etc/init.d/apache2 restart
-# mysql -p -u root
+$ sudo apt-get install git-core
+$ sudo apt-get install php5
+$ sudo apt-get install apache2
+$ sudo apt-get install mysql-server
+$ sudo apt-get install mysql-client
+$ sudo apt-get install php5-mysql
+$ sudo apt-get install php5-gd
+$ sudo apt-get install libapache2-mod-php5
+$ sudo apt-get install php-pear
+$ sudo pear install Mail-1.2.0
+$ sudo pear install Net_SMTP
+$ sudo /etc/init.d/apache2 restart
+$ sudo mysql -p -u root
 
 and execute next queries:
 	CREATE DATABASE `freehackquest` CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -49,21 +52,21 @@ and execute next queries:
 	GRANT ALL PRIVILEGES ON freehackquest.* TO 'freehackquest_u'@'localhost' WITH GRANT OPTION;
 	FLUSH PRIVILEGES;
 
-# git clone https://github.com/sea-kg/fhq.git fhq.git
-# cd fhq.git
-# mysql -u root -p freehackquest < freehackquest.sql
-# cp -R www/* /var/www/
-# rm /var/www/index.html
-# cd /var/www/config
-# cp config.php.inc config.php
+	$ sudo git clone https://github.com/sea-kg/fhq.git fhq.git
+	$ sudo cd fhq.git
+	$ sudo mysql -u root -p freehackquest < freehackquest.sql
+	$ sudo cp -R www/* /var/www/
+	$ sudo rm /var/www/index.html
+	$ sudo cd /var/www/config
+	$ sudo cp config.php.inc config.php
 
 -> here configure config.php
 
-# cd /var/www/files
-# chmod 777 /var/www/dumps
-# chmod 777 /var/www/users
-# chmod 777 /var/www/games
-# chmod 777 /var/www/quests
+$ sudo cd /var/www/files
+$ sudo chmod 777 /var/www/dumps
+$ sudo chmod 777 /var/www/users
+$ sudo chmod 777 /var/www/games
+$ sudo chmod 777 /var/www/quests
 
 Please change in /etc/php5/apache2/php.ini
 	upload_max_filesize = 2M
@@ -82,3 +85,8 @@ Create new user with role 'admin' and with correct email
 Relogon with new user and remove old admin.
 Create new game.
 Create new quest and check it.
+
+
+
+Examples for 
+
