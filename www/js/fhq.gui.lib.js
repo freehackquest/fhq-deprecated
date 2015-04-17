@@ -151,6 +151,27 @@ function FHQGuiLib() {
 		content += '</div><br>'; // fhq_event_info
 		return content;
 	}
+	
+	this.questIcon = function(questid, name, subject, score, solved) {
+		solved = solved == null ? "?" : solved;
+
+		var content = '\n\n<div class="fhq_quest_info" onclick="showQuest(' + questid + ');"><div class="fhq_quest_info_row">\n';
+		content += '<div class="fhq_quest_info_cell_img">';
+		content += '<img  width="100px" src="templates/base/images/quests/' + subject + '.png">';
+		content += '</div>';
+		
+		content += '<div class="fhq_quest_info_cell_content">';
+		content += '<div class="fhq_quest_caption">' + questid + ' ' + name + '</div>';
+		content += '<div class="fhq_quest_score">' + subject + ' +' + score + '</div>';
+		content += '<div class="fhq_quest_caption">solved: ' + solved + '</div>';
+		content += '</div>';
+		content += '</div></div>\n';
+		return content;
+	}
+	
+	this.userIcon = function(userid, logo, nick) {
+		return '<div class="fhqbtn" onclick="showUserInfo(' + userid + ')"> <img class="fhqmiddelinner" width=25px src="' + logo + '"/> ' + nick + '</div>'
+	}
 };
 
 function FHQParamTable() {
@@ -259,3 +280,32 @@ function FHQFeedback() {
 	};
 };
 
+function FHQTable() {
+	this.table = [];
+
+	this.openrow = function() {
+		this.table.push(
+			'<div class="fhqrow">'
+		);
+	};
+	
+	this.closerow = function() {
+		this.table.push(
+			'</div>'
+		);
+	};
+	
+	this.cell = function(text) {
+		this.table.push(
+			'<div class="fhqcell">' + text + '</div>'
+		);
+	};
+
+	this.render = function() {
+		var result = '\n';
+		result += '<div class="fhqtable">\n';
+		result += this.table.join('\n');
+		result += '</div>\n <!-- fhqtable -->';
+		return result;
+	};
+}

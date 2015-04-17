@@ -181,6 +181,7 @@ try {
 		$stmt_users = $conn->prepare('
 			select 
 				t0.id, 
+				t0.logo,
 				t0.nick
 			from 
 				users t0
@@ -195,6 +196,7 @@ try {
 		while ($row_user = $stmt_users->fetch()) {
 			$result['data']['quests'][$id]['users'][] = array(
 				'userid' => $row_user['id'],
+				'logo' => $row_user['logo'],
 				'nick' => $row_user['nick'],
 			);
 		}

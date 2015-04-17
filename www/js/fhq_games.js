@@ -372,7 +372,7 @@ function loadScoreboard(gameid) {
 					content += '<div class="fhq_scoreboard_cell">' + k + '</div>';
 					var arr = [];
 					for (var k2 in place) {
-						arr.push('<div class="fhqbtn" onclick="showUserInfo(' + place[k2].userid + ')"> <img class="fhqmiddelinner" width=25px src="' + place[k2].logo + '"/> ' + place[k2].nick + '</div>');
+						arr.push(fhqgui.userIcon(place[k2].userid, place[k2].logo, place[k2].nick));
 					}
 					content += '<div class="fhq_scoreboard_cell">' + place[0].score + '</div>';
 					content += '<div class="fhq_scoreboard_cell"><div>' + arr.join('</div><div>') + '</div></div>';

@@ -13,7 +13,7 @@ function createPageStatistics(gameid) {
 	pt.row('Quest Name:', '<input type="text" id="statistics_questname" value="" onkeydown="if (event.keyCode == 13) {resetStatisticsPage(' + gameid + '); updateStatistics();};"/>');
 	pt.row('Quest ID:', '<input type="text" id="statistics_questid" value="" onkeydown="if (event.keyCode == 13) {resetStatisticsPage(' + gameid + '); updateStatistics();};"/>');
 	pt.row('Quest Subject:', fhqgui.combobox('statistics_questsubject', '', fhq.getQuestTypesFilter()));
-	pt.row('On Page:', fhqgui.combobox('statistics_onpage', '15', fhq.getOnPage()));
+	pt.row('On Page:', fhqgui.combobox('statistics_onpage', '5', fhq.getOnPage()));
 	pt.row('', fhqgui.btn('Search', 'resetStatisticsPage(' + gameid + '); updateStatistics();'));
 	pt.skip();
 	pt.row('Found:', '<font id="statistics_found">0</font>');
@@ -54,14 +54,38 @@ function updateStatistics() {
 				var page = parseInt(obj.data.page, 10);
 				
 				var content = '';
-				
 				// content += 'Processed ' + obj.lead_time_sec + ' sec <br>';
 				content += fhqgui.paginator(0, found, onpage, page, 'setStatisticsPage', 'updateStatistics');
+				
+				var tbl = new FHQTable();
+				tbl.openrow();
+				tbl.cell('Quest');
+				tbl.cell('Attempts');
+				tbl.cell('Users who solved quest');
+				tbl.closerow();
+				
+				for (var k in obj.data.quests) {
+					if (obj.data.quests.hasOwnProperty(k)) {
+						var q = obj.data.quests[k];
+						tbl.openrow();
+						tbl.cell(fhqgui.questIcon(q.id, q.name, q.subject, q.score, q.solved));
+						tbl.cell('<font size=4>' + q.tries + '</font>');
+						var usrs = [];
+						for (var u in q.users) {
+							usrs.push(fhqgui.userIcon(q.users[u].userid, q.users[u].logo, q.users[u].nick));
+						}
+						tbl.cell(usrs.join(" "));
+						tbl.closerow();
+					}
+				}
+				content += tbl.render();
+
+/*
 				content += '<table id="customers">';
 				content += '<tr class="alt">';
-				content += '	<th width=10%>Quest</th>';
+				content += '	<th>Quest</th>';
 				content += '	<th width=5%>Attempts</th>';
-				content += '	<th>Users who solved quest</th>';
+				content += '	<th width=70%>Users who solved quest</th>';
 				content += '</tr>\n';
 				var bColor = false;
 				
@@ -71,23 +95,20 @@ function updateStatistics() {
 						var q = obj.data.quests[k];
 
 						content += '<tr ' + (bColor == true ? 'class="alt"' : '') + '>';
-						content += '	<td align=center valign=top>';
-						content += '<div class="button3 ad" onclick="showQuest(' + q.id + ');">';
-						content += q.id + ' ' + q.name + '<br>';
-						content += ' <font size=3> ' + q.subject + ' ' + q.score + '</font><br>';
-						content += 'Solved ' + q.solved + ' ';
-						content += '	</div></td>';
-
-						content += '	<td align=center>' + q.tries + '</td>';					
+						content += '	<td align=right valign=top>';
+						content += fhqgui.questIcon(q.id, q.name, q.subject, q.score, q.solved);
+						content += '</td>';
+						content += '	<td align=center><font size=4>' + q.tries + '</font></td>';
 						content += '	<td>';
 							for (var u in q.users) {
-								content += ' <div class="button3 ad" onclick="showUserInfo(' + q.users[u].userid + ');">' + q.users[u].nick + '</div> ';
+								content += fhqgui.userIcon(q.users[u].userid, q.users[u].logo, q.users[u].nick);
 							}
 						content += '</td>';
 						content += '</tr>\n';
 						bColor = !bColor;
 					}
 				}
+				* */
 				ls.innerHTML = content;
 			}
 		}
