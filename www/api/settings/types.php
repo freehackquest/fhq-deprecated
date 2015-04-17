@@ -26,7 +26,7 @@ $result = array(
 			array( 'value' => 'ppc', 'caption' => 'PPC' ),
 			array( 'value' => 'admin', 'caption' => 'Admin' ),
 			array( 'value' => 'enjoy', 'caption' => 'Enjoy' ),
-			array( 'value' => 'other', 'caption' => 'Other' ),
+			array( 'value' => 'unknown', 'caption' => 'Unknown' ),
 		),
 		'questTypesFilter' => array(
 			array( 'value' => '', 'caption' => '*' ),
@@ -42,7 +42,7 @@ $result = array(
 			array( 'value' => 'ppc', 'caption' => 'PPC' ),
 			array( 'value' => 'admin', 'caption' => 'Admin' ),
 			array( 'value' => 'enjoy', 'caption' => 'Enjoy' ),
-			array( 'value' => 'other', 'caption' => 'Other' ),
+			array( 'value' => 'unknown', 'caption' => 'Unknown' ),
 		),		
 		'questStates' => array(
 			array( 'value' => 'open', 'caption' => 'Open' ),
