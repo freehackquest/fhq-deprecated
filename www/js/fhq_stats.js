@@ -67,7 +67,7 @@ function updateStatistics() {
 						var q = obj.data.quests[k];
 						tbl.openrow();
 						tbl.cell(fhqgui.questIcon(q.id, q.name, q.subject, q.score, q.solved));
-						tbl.cell('<canvas id="questChart' + q.id + '" width="200" height="200"></canvas>');
+						tbl.cell('<canvas id="questChart' + q.id + '" width="300" height="200"></canvas>');
 						var usrs = [];
 						for (var u in q.users) {
 							usrs.push(fhqgui.userIcon(q.users[u].userid, q.users[u].logo, q.users[u].nick));
