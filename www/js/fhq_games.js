@@ -236,6 +236,22 @@ function formEditGame(id)
 				showModalDialog(pt.render());
 				document.getElementById('editgame_rules').innerHTML = obj.data.rules;
 				document.getElementById('editgame_description').innerHTML = obj.data.description;
+				
+				$('#editgame_date_start').datetimepicker({
+					format:'Y-m-d H:i:s',
+					inline:false
+				});
+
+				$('#editgame_date_stop').datetimepicker({
+					format:'Y-m-d H:i:s',
+					inline:false
+				});
+
+				$('#editgame_date_restart').datetimepicker({
+					format:'Y-m-d H:i:s',
+					inline:false
+				});
+				
 			} else {
 				alert(obj.error.message);
 			}
@@ -293,6 +309,22 @@ function formCreateGame()
 	// pt.row('Author ID:', '<input type="text" id="newgame_author_id" value=""/>');
 	pt.row('', '<div class="button3 ad" onclick="createGame();">Create</div>');
 	showModalDialog(pt.render());
+	
+	$('#newgame_date_start').datetimepicker({
+		format:'Y-m-d H:i:s',
+		inline:false
+	});
+	
+	$('#newgame_date_stop').datetimepicker({
+		format:'Y-m-d H:i:s',
+		inline:false
+	});
+	
+	$('#newgame_date_restart').datetimepicker({
+		format:'Y-m-d H:i:s',
+		inline:false
+	});
+				
 }
 
 function loadGameRules(gameid) {
