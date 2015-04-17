@@ -20,7 +20,7 @@ if (!is_numeric($gameid))
 	APIHelpers::showerror(1077, 'parameter "gameid" must be numeric');
 
 if ($gameid == 0)
-	APIHelpers::showerror(1076, "Game was not selected.");
+	APIHelpers::showerror(1076, "Parameter gameid must be not 0.");
 
 $result = array(
 	'result' => 'fail',
@@ -111,10 +111,10 @@ function getCountStatBy($conn, $table, $questid, $passed)
 	try {
 		$stmt = $conn->prepare('
 				select 
-					count(id) as cnt 
+					count(t0.id) as cnt 
 				from 
 					'.$table.' t0
-				inner join users t1 on t0.iduser = t1.id
+				inner join users t1 on t1.id = t0.iduser
 				where 
 					t0.idquest = ?
 					and t0.passed = ?
