@@ -13,35 +13,6 @@ function createQuestFilters() {
 	+ '<div id="quests"></div> \n';
 }
 
-function createQuestInfo(quest) {
-
-	var questid = quest.questid;
-	var name = quest.name
-	var score = quest.score;
-	var subject = quest.subject;
-	var status = quest.status;
-	var solved = quest.count_user_solved;
-	solved = solved == null ? "?" : solved;
-
-	var content = '\n\n<div class="fhq_quest_info" onclick="showQuest(' + questid + ');"><div class="fhq_quest_info_row">\n';
-	content += '<div class="fhq_quest_info_cell_img">';
-	content += '<img  width="100px" src="templates/base/images/quests/' + subject + '.png">';
-	content += '</div>';
-	
-	content += '<div class="fhq_quest_info_cell_content">';
-	content += '<div class="fhq_quest_caption">' + questid + ' ' + name + '</div>';
-	content += '<div class="fhq_quest_score">' + subject + ' +' + score + '</div>';
-	content += '<div class="fhq_quest_caption">solved: ' + solved + '</div>';
-	
-	/*if (status == 'open')
-		content += '<div class="fhq_quest_score">take quest</div>';*/
-					
-	// content += '<font class="fhq_task" size="1">Status: ' + status + '</font>\n';
-	content += '</div>';
-	content += '</div></div>\n';
-	return content;
-}
-
 function reloadQuests()
 {
 	var quests = document.getElementById("quests");
@@ -110,26 +81,16 @@ function reloadQuests()
 			var completed_quests = document.getElementById("completed_quests");
 			
 			for (var k in obj.data) {
-				// var questid = obj.data[k]['questid'];
-				// var name = obj.data[k]['name'];
-				// var score = obj.data[k]['score'];
-				// var subject = obj.data[k]['subject'];
-				var status = obj.data[k]['status'];
-
-				var content = createQuestInfo(obj.data[k]);
-				/*'\n\n<div class="fhq_task_info" onclick="showQuest(' + questid + ');">\n';
-				content += '<font class="fhq_task" size="2">' + questid + ' ' + name + '</font>\n';
-				content += '<font class="fhq_task" size="5">' + subject + ' +' + score + '</font>\n';
-				// content += '<font class="fhq_task" size="1">Status: ' + status + '</font>\n';
-				content += '</div>\n';*/
+				var q = obj.data[k];
+				var content = fhqgui.questIcon(q.questid, q.name, q.subject, q.score, q.solved);
 				
-				if (status == 'current' && current_quests)
+				if (q.status == 'current' && current_quests)
 					current_quests.innerHTML += content;
 
-				if (status == 'open' && open_quests)
+				if (q.status == 'open' && open_quests)
 					open_quests.innerHTML += content;
 
-				if (status == 'completed' && completed_quests)
+				if (q.status == 'completed' && completed_quests)
 					completed_quests.innerHTML += content;
 				
 				// quests.innerHTML += content;

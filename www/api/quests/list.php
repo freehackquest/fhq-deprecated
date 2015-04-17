@@ -253,7 +253,7 @@ try {
 			'date_start' => $row['startdate'],
 			'date_stop' => $row['stopdate'],
 			'state' => $row['state'],
-			'count_user_solved' => $row['count_user_solved'],
+			'solved' => $row['count_user_solved'],
 			'status' => $status,
 		);
 	}

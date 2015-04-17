@@ -93,3 +93,24 @@ textarea {
 	background: #9f9f9f;
 	color: black;
 }
+
+.fhqtable {
+	display: table;
+	width: 90%;
+}
+
+.fhqrow {
+	display: table-row;
+	padding: 3px;
+	text-decoration: none;
+	margin: 3px 3px 3px 3px;
+}
+
+.fhqcell {
+	width: 20%;
+	display: table-cell;
+	padding: 5px 5px 5px 5px;
+	text-align: center;
+	vertical-align: middle;
+	border: 1px solid #9f9f9f;
+}

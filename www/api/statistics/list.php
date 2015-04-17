@@ -20,7 +20,7 @@ if (!is_numeric($gameid))
 	APIHelpers::showerror(1077, 'parameter "gameid" must be numeric');
 
 if ($gameid == 0)
-	APIHelpers::showerror(1076, "Game was not selected.");
+	APIHelpers::showerror(1076, "Parameter gameid must be not 0.");
 
 $result = array(
 	'result' => 'fail',
@@ -111,10 +111,10 @@ function getCountStatBy($conn, $table, $questid, $passed)
 	try {
 		$stmt = $conn->prepare('
 				select 
-					count(id) as cnt 
+					count(t0.id) as cnt 
 				from 
 					'.$table.' t0
-				inner join users t1 on t0.iduser = t1.id
+				inner join users t1 on t1.id = t0.iduser
 				where 
 					t0.idquest = ?
 					and t0.passed = ?
@@ -164,23 +164,20 @@ try {
 		);
 		// subquesry
 		// users how solved this quest
-		
-		$solved = 0;
-		$tries = 0;
-		
-		$solved += getCountStatBy($conn, 'tryanswer', $questid, 'Yes');
-		$tries += getCountStatBy($conn, 'tryanswer', $questid, 'No');
-		$solved += getCountStatBy($conn, 'tryanswer_backup', $questid, 'Yes');
-		$tries += getCountStatBy($conn, 'tryanswer_backup', $questid, 'No');
+		$tries_nosolved = getCountStatBy($conn, 'tryanswer', $questid, 'No');
+		$solved = getCountStatBy($conn, 'tryanswer_backup', $questid, 'Yes');
+		$tries_solved = getCountStatBy($conn, 'tryanswer_backup', $questid, 'No');
 
 		$result['data']['quests'][$id]['solved'] = $solved;
-		$result['data']['quests'][$id]['tries'] = $tries;
+		$result['data']['quests'][$id]['tries_nosolved'] = $tries_nosolved;
+		$result['data']['quests'][$id]['tries_solved'] = $tries_solved;
 		$result['data']['quests'][$id]['users'] = array();
 
 		// how solved this quest
 		$stmt_users = $conn->prepare('
 			select 
 				t0.id, 
+				t0.logo,
 				t0.nick
 			from 
 				users t0
@@ -195,6 +192,7 @@ try {
 		while ($row_user = $stmt_users->fetch()) {
 			$result['data']['quests'][$id]['users'][] = array(
 				'userid' => $row_user['id'],
+				'logo' => $row_user['logo'],
 				'nick' => $row_user['nick'],
 			);
 		}
