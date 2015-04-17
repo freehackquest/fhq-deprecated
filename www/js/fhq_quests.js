@@ -25,7 +25,7 @@ function createQuestInfo(quest) {
 
 	var content = '\n\n<div class="fhq_quest_info" onclick="showQuest(' + questid + ');"><div class="fhq_quest_info_row">\n';
 	content += '<div class="fhq_quest_info_cell_img">';
-	content += '<img  width="100px" src="templates/base/images/quest_icons/' + subject + '.png">';
+	content += '<img  width="100px" src="templates/base/images/quests/' + subject + '.png">';
 	content += '</div>';
 	
 	content += '<div class="fhq_quest_info_cell_content">';
