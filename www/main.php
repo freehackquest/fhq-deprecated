@@ -36,7 +36,7 @@ if (!isset($_SESSION['user']))
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/quests.css?ver=1">
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/users.css?ver=1">
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/events.css?ver=1">
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/jquery.datetimepicker.css"/>
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/jquery.datetimepicker.css?ver=1"/>
 
 		<!-- todo -->
 		<?php
@@ -64,6 +64,7 @@ if (!isset($_SESSION['user']))
 		<script type="text/javascript" src="js/fhq_stats.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_feedback.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_settings.js?ver=1"></script>
+		<script type="text/javascript" src="js/Chart.js?ver=1"></script>
 		
 
 		<script type="text/javascript">

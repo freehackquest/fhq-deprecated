@@ -164,17 +164,13 @@ try {
 		);
 		// subquesry
 		// users how solved this quest
-		
-		$solved = 0;
-		$tries = 0;
-		
-		$solved += getCountStatBy($conn, 'tryanswer', $questid, 'Yes');
-		$tries += getCountStatBy($conn, 'tryanswer', $questid, 'No');
-		$solved += getCountStatBy($conn, 'tryanswer_backup', $questid, 'Yes');
-		$tries += getCountStatBy($conn, 'tryanswer_backup', $questid, 'No');
+		$tries_nosolved = getCountStatBy($conn, 'tryanswer', $questid, 'No');
+		$solved = getCountStatBy($conn, 'tryanswer_backup', $questid, 'Yes');
+		$tries_solved = getCountStatBy($conn, 'tryanswer_backup', $questid, 'No');
 
 		$result['data']['quests'][$id]['solved'] = $solved;
-		$result['data']['quests'][$id]['tries'] = $tries;
+		$result['data']['quests'][$id]['tries_nosolved'] = $tries_nosolved;
+		$result['data']['quests'][$id]['tries_solved'] = $tries_solved;
 		$result['data']['quests'][$id]['users'] = array();
 
 		// how solved this quest

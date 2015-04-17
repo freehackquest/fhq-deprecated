@@ -56,20 +56,18 @@ function updateStatistics() {
 				var content = '';
 				// content += 'Processed ' + obj.lead_time_sec + ' sec <br>';
 				content += fhqgui.paginator(0, found, onpage, page, 'setStatisticsPage', 'updateStatistics');
-				
 				var tbl = new FHQTable();
 				tbl.openrow();
 				tbl.cell('Quest');
-				tbl.cell('Attempts');
+				tbl.cell('Chart');
 				tbl.cell('Users who solved quest');
 				tbl.closerow();
-				
 				for (var k in obj.data.quests) {
 					if (obj.data.quests.hasOwnProperty(k)) {
 						var q = obj.data.quests[k];
 						tbl.openrow();
 						tbl.cell(fhqgui.questIcon(q.id, q.name, q.subject, q.score, q.solved));
-						tbl.cell('<font size=4>' + q.tries + '</font>');
+						tbl.cell('<canvas id="questChart' + q.id + '" width="200" height="200"></canvas>');
 						var usrs = [];
 						for (var u in q.users) {
 							usrs.push(fhqgui.userIcon(q.users[u].userid, q.users[u].logo, q.users[u].nick));
@@ -80,36 +78,49 @@ function updateStatistics() {
 				}
 				content += tbl.render();
 
-/*
-				content += '<table id="customers">';
-				content += '<tr class="alt">';
-				content += '	<th>Quest</th>';
-				content += '	<th width=5%>Attempts</th>';
-				content += '	<th width=70%>Users who solved quest</th>';
-				content += '</tr>\n';
-				var bColor = false;
+				ls.innerHTML = content;
 				
+				var options = {
+					segmentShowStroke : true,
+					segmentStrokeColor : "#606060",
+					segmentStrokeWidth : 1,
+					percentageInnerCutout : 35, // This is 0 for Pie charts
+					animationSteps : 100,
+					animationEasing : "easeOutBounce",
+					animateRotate : false,
+					animateScale : false,
+					legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+				};
+				
+				// update charts
 				for (var k in obj.data.quests) {
-					content += '';
 					if (obj.data.quests.hasOwnProperty(k)) {
 						var q = obj.data.quests[k];
-
-						content += '<tr ' + (bColor == true ? 'class="alt"' : '') + '>';
-						content += '	<td align=right valign=top>';
-						content += fhqgui.questIcon(q.id, q.name, q.subject, q.score, q.solved);
-						content += '</td>';
-						content += '	<td align=center><font size=4>' + q.tries + '</font></td>';
-						content += '	<td>';
-							for (var u in q.users) {
-								content += fhqgui.userIcon(q.users[u].userid, q.users[u].logo, q.users[u].nick);
+						var chartid = 'questChart' + q.id;
+						var data = [
+							{
+								value: q.solved,
+								color: "#9f9f9f",
+								highlight: "#606060",
+								label: "Solved"
+							},
+							{
+								value: q.tries_solved,
+								color: "#9f9f9f",
+								highlight: "#606060",
+								label: "Tried (who solved)"
+							},
+							{
+								value: q.tries_nosolved,
+								color:"#9f9f9f",
+								highlight: "#606060",
+								label: "Tried (who didn't solve)"
 							}
-						content += '</td>';
-						content += '</tr>\n';
-						bColor = !bColor;
+						];
+						var ctx = document.getElementById(chartid).getContext("2d");
+						var myNewChart = new Chart(ctx).Doughnut(data, options);
 					}
 				}
-				* */
-				ls.innerHTML = content;
 			}
 		}
 	);	
