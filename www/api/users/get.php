@@ -69,7 +69,7 @@ try {
 	}
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
-	APIHelpers::showerror(1184, 'Error 822: ' + $e->getMessage());
+	APIHelpers::showerror(1184, $e->getMessage());
 }
 
 // users_profile
@@ -81,7 +81,7 @@ try {
 		$result['profile'][$row['name']] = $row['value'];
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1183, 'Error 822: ' + $e->getMessage());
+	APIHelpers::showerror(1183, $e->getMessage());
 }
 
 // users_games
