@@ -317,50 +317,70 @@ function updateUsers() {
 			var page = parseInt(obj.page, 10);
 
 			lu.innerHTML += '<div id="user_paging">' + fhqgui.paginator(0,found, onpage, page, 'setUsersPage', 'updateUsers') + '</div>';
-			var content = '<div class="users_table">';
-			content += '<div class="users_row">';
-			content += '	<div class="users_cell">Logo</div>';
-			content += '	<div class="users_cell">ID</div>';
-			content += '	<div class="users_cell">E-mail</div>';
-			content += '	<div class="users_cell">Nick</div>';
-			content += '	<div class="users_cell">Role</div>';
-			content += '	<div class="users_cell">Status</div>';
-			content += '	<div class="users_cell">Last Sign in</div>';
-			content += '</div>'; // users_row
 			
+			
+			var tbl = new FHQTable();
+			
+			tbl.openrow();
+			tbl.cell('Logo');
+			tbl.cell('ID / E-mail');
+			tbl.cell('Nick / info');
+			tbl.cell('Status / Role ');
+			tbl.cell('Last Sign in');
+			tbl.closerow();
+
+		
 			for (var k in obj.data) {
 				var userinfo = obj.data[k];
 
+
+				tbl.openrow();
+				if (userinfo.logo != null) 
+					tbl.cell('<img height="100px" src="' + userinfo.logo + '"/>');
+				else
+					tbl.cell('');
+
+				tbl.cell( '#' + userinfo.userid + ') ' + userinfo.email + ' <br> ');
+				tbl.cell(userinfo.nick + ' ' + fhqgui.btn('Info', 'showUserInfo(' + userinfo.userid + ');')
+					+ fhqgui.btn('IP', 'showUserIP(' + userinfo.userid + ');'));
+
+				// TODO: if not activated can allow edit email and send mail again
+				tbl.cell(userinfo.status + ' / ' + userinfo.role);
+				tbl.cell(userinfo.dt_last_login);
+				tbl.closerow();
+
+/*			
 				content += '<div class="users_row">';
 
 				// logo
 				content += '<div class="users_cell users_cell_logo">';
-				if (userinfo.logo != null) 
-					content += ' <img height="100px" src="' + userinfo.logo + '"/>'
+				
+					content += ' '
 				else
 					content += ' '
 				content += '</div>'; // users_cell_logo
 
 				// id
-				content += '<div class="users_cell">' + userinfo.userid + '</div>';
+				content += '<div class="users_cell">' +  + '</div>';
 
 				// email
-				content += '<div class="users_cell"> ' + userinfo.email;
-				content += '	' + fhqgui.btn('Info', 'showUserInfo(' + userinfo.userid + ');');
-				content += '	' + fhqgui.btn('IP', 'showUserIP(' + userinfo.userid + ');');
+				content += '<div class="users_cell"> ' + ;
+				content += '	' + );
+				content += '	' + ;
 				content += '</div>';
-				content += '<div class="users_cell">' + userinfo.nick + '</div>';
-				content += '<div class="users_cell">' + userinfo.role + '</div>';
+				content += '<div class="users_cell">' +  + '</div>';
+				content += '<div class="users_cell">' +  + '</div>';
 
 				// status
-				// TODO: if not activated can allow edit email and send mail again 
-				content += '<div class="users_cell">' + userinfo.status + '</div> ';
+				 
+				content += '<div class="users_cell">' +  + '</div> ';
 
-				content += '<div class="users_cell">' + userinfo.dt_last_login + '</div>';				
+				content += '<div class="users_cell">' +  + '</div>';				
 				content += '</div>'; // users_row
+				* */
 			}
-			content += '</div>'; // users_table
-			lu.innerHTML += content;
+
+			lu.innerHTML += tbl.render();
 			// lu.innerHTML += JSON.stringify(obj);
 		}
 	);
