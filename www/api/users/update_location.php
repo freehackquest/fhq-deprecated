@@ -2,6 +2,17 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+
+/*
+ * API_NAME: Update Location
+ * API_DESCRIPTION: Method for update user profile
+ * API_ACCESS: authorized users
+ * API_INPUT: country - string, Country
+ * API_INPUT: city - string, City
+ * API_INPUT: university - string, Univercity
+ * API_OKRESPONSE: { "result":"ok" }
+ */
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../../config/config.php");

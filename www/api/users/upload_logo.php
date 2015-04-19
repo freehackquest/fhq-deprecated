@@ -2,6 +2,15 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Upload user logo 
+ * API_DESCRIPTION: Method for upload user logo (only POST request with file)
+ * API_ACCESS: admin, authorized user
+ * API_INPUT: userid - integer, default value: current user
+ * API_INPUT: file - file, default value: current user
+ * API_OKRESPONSE: { "result":"ok" }
+ */
+
 $curdir_upload_logo = dirname(__FILE__);
 include_once ($curdir_upload_logo."/../api.lib/api.base.php");
 include_once ($curdir_upload_logo."/../../config/config.php");
@@ -17,7 +26,7 @@ if (!APISecurity::isAdmin() && $userid != APISecurity::userid())
 	APIHelpers::showerror(1045, 'you what change logo for another user, it can do only admin');
 
 if (count($_FILES) <= 0)
-	APIHelpers::showerror(1046, 'Not found files '.count($_FILES));
+	APIHelpers::showerror(1046, 'Not found file');
 
 $result = array(
 	'result' => 'fail',

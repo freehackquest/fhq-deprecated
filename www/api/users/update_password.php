@@ -2,6 +2,16 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Update User's Password
+ * API_DESCRIPTION: Method for update user avatar
+ * API_ACCESS: admin only
+ * API_INPUT: userid - integer, userid
+ * API_INPUT: email - string, user email
+ * API_INPUT: password - string, new password
+ * API_OKRESPONSE: { "result":"ok" }
+ */
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.security.php");

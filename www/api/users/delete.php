@@ -2,6 +2,14 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Delete user
+ * API_DESCRIPTION: Method for delete user
+ * API_ACCESS: admin only
+ * API_INPUT: userid - integer, user id
+ * API_OKRESPONSE: { "result":"ok" }
+ */
+
 $curdir_users_delete = dirname(__FILE__);
 include_once ($curdir_users_delete."/../api.lib/api.base.php");
 include_once ($curdir_users_delete."/../../config/config.php");
@@ -16,10 +24,10 @@ $result = array(
 $conn = APIHelpers::createConnection($config);
 
 if (!APISecurity::isAdmin()) 
-	APIHelpers::showerror(1107, 'only for admin');
+	APIHelpers::showerror(1107, 'access only for admin');
 
 if (!APIHelpers::issetParam('userid'))
-  APIHelpers::showerror(1108, 'not found parameter "userid"');
+  APIHelpers::showerror(1108, 'Not found parameter "userid"');
 
 $userid = APIHelpers::getParam('userid', 0);
 
@@ -34,7 +42,7 @@ try {
 	if ($row = $stmt->fetch()) {
 		$nick = $row['nick'];
 	} else {
-		APIHelpers::showerror(1111, "User with id ".$userid.' did not found' );
+		APIHelpers::showerror(1111, 'Userid did not found');
 	}
 } catch(PDOException $e) {
 	APIHelpers::showerror(1110, $e->getMessage());

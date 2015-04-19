@@ -2,6 +2,18 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: List of users
+ * API_DESCRIPTION: Method returned page with users
+ * API_ACCESS: admin only
+ * API_INPUT: search - string, filter by email and nick
+ * API_INPUT: page - integer, current page
+ * API_INPUT: onpage - integer, users on page
+ * API_INPUT: role - string, filter by role (""/"user"/"admin")
+ * API_INPUT: status - string, filter by status (""/"activated"/"blocked")
+ * API_OKRESPONSE: { "result":"ok" }
+ */
+
 $curdir_users_list = dirname(__FILE__);
 include_once ($curdir_users_list."/../api.lib/api.base.php");
 include_once ($curdir_users_list."/../api.lib/api.game.php");
@@ -12,7 +24,7 @@ APIHelpers::checkAuth();
 $message = '';
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(1091, "This function allowed only for admin");
+	APIHelpers::showerror(1091, 'This function allowed only for admin');
 
 $result = array(
 	'result' => 'fail',

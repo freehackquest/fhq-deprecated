@@ -2,6 +2,15 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Update LastEventID
+ * API_DESCRIPTION: Method for update user profile
+ * API_ACCESS: authorized users
+ * API_INPUT: id - integer, Identificator of last event
+ * API_OKRESPONSE: { "result":"ok" }
+ */
+
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../../config/config.php");

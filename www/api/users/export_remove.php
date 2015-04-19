@@ -2,6 +2,14 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Remove dump of users
+ * API_DESCRIPTION: Method will be remove zip-archive
+ * API_ACCESS: admin only
+ * API_INPUT: filename - string, filename for removing
+ * API_OKRESPONSE: { "result":"ok", "data" : { "filename" : "files/dumps/users_XXXX.zip" } }
+ */
+
 $curdir_users_export_remove = dirname(__FILE__);
 include_once ($curdir_users_export_remove."/../api.lib/api.base.php");
 include_once ($curdir_users_export_remove."/../api.lib/api.game.php");
@@ -12,7 +20,7 @@ APIHelpers::checkAuth();
 $message = '';
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(1297, "This function allowed only for admin");
+	APIHelpers::showerror(1297, 'This function allowed only for admin');
 
 $result = array(
 	'result' => 'fail',
@@ -27,7 +35,7 @@ if (!APIHelpers::issetParam('filename'))
 $filename = $curdir_users_export_remove.'/../../files/dumps/'.APIHelpers::getParam('filename', '');
 
 if (!file_exists($filename))
-	APIHelpers::showerror(1299, 'File '.$filename.' did not found');
+	APIHelpers::showerror(1299, 'File did not found');
 
 unlink($filename);
 $result['result'] = 'ok';

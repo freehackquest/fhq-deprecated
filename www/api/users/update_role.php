@@ -2,6 +2,15 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Update User's Role
+ * API_DESCRIPTION: Method for update user role
+ * API_ACCESS: admin only
+ * API_INPUT: userid - integer, userid
+ * API_INPUT: role - string, new user role ("user"/"admin"/"tester")
+ * API_OKRESPONSE: { "result":"ok" }
+ */
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../../config/config.php");

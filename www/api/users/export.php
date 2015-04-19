@@ -2,6 +2,13 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Export users
+ * API_DESCRIPTION: Method returned link to zip-archive of users
+ * API_ACCESS: admin only
+ * API_OKRESPONSE: { "result":"ok", "data" : { "filename" : "files/dumps/users_XXXX.zip" } }
+ */
+
 $curdir_users_export = dirname(__FILE__);
 include_once ($curdir_users_export."/../api.lib/api.base.php");
 include_once ($curdir_users_export."/../api.lib/api.game.php");
@@ -12,7 +19,7 @@ APIHelpers::checkAuth();
 $message = '';
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(1294, "This function allowed only for admin");
+	APIHelpers::showerror(1294, 'This function allowed only for admin');
 
 $result = array(
 	'result' => 'fail',
@@ -43,14 +50,14 @@ $zipname = $curdir_users_export.'/../../files/dumps/users_'.date('YmdHis').'.zip
 
 $zip = new ZipArchive();
 if ($zip->open($zipname,  ZIPARCHIVE::CREATE) !== TRUE)
-	APIHelpers::showerror(1292, 'Could not create '.$zipname.' (Please check access t folder files/dumps/)');
+	APIHelpers::showerror(1292, 'Could not create zip-file (Please check access t folder files/dumps/)');
 
 $zip->addEmptyDir('files');
 $zip->addEmptyDir('files/users');
 $zip->close();
 
 if (!file_exists($zipname))
-	APIHelpers::showerror(1293, 'Could not create '.$zipname.' (Please check access t folder files/dumps/)');
+	APIHelpers::showerror(1293, 'Could not create zip-file (Please check access t folder files/dumps/)');
 
 $zip->open($zipname,  ZIPARCHIVE::CREATE);
 
