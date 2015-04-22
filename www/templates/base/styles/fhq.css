@@ -114,3 +114,53 @@ textarea {
 	vertical-align: middle;
 	border: 1px solid #9f9f9f;
 }
+
+.fhqtopmenu {
+	position: fixed;
+	width: 100%;
+	text-align: left;
+	z-index: 555;
+	height: 60px;
+	vertical-align: middle;
+}
+
+.fhqtopmenu_leftpanel {
+	padding: 10px 10px 10px 10px;
+	background: #e4e4e4;
+	position: absolute;
+	display: inline-block;
+	left: 0px;
+	-webkit-border-bottom-right-radius: 15px;
+	-moz-border-radius-bottomright: 15px;
+	border-bottom-right-radius: 15px;
+	/*opacity: 0.9;*/
+}
+
+.fhqtopmenu_rightpanel {
+	padding: 10px 10px 10px 10px;
+	background: #e4e4e4;
+	position: absolute;
+	display: inline-block;
+	right: 0px;
+	-webkit-border-bottom-left-radius: 15px;
+	-moz-border-radius-bottomleft: 15px;
+	border-bottom-left-radius: 15px;
+	/*opacity: 0.9;*/
+	
+}
+
+.fhqleftmenu {
+	background: #e4e4e4;
+	padding: 10px 10px 10px 10px;
+	position: fixed;
+	width: 65px;
+	top: 86px;
+	text-align: left;
+	z-index: 556;
+	-webkit-border-bottom-right-radius: 15px;
+	-moz-border-radius-bottomright: 15px;
+	border-bottom-right-radius: 15px;
+	/*opacity: 0.9;*/
+}
+
+
