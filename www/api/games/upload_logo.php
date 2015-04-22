@@ -2,6 +2,15 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Upload logo
+ * API_DESCRIPTION: 
+ * API_ACCESS: admin only
+ * API_INPUT: gameid - string, Identificator of the game
+ * API_INPUT: files - POST-FILES, files
+ * API_INPUT: token - string, token
+ */
+
 $curdir_upload_logo = dirname(__FILE__);
 include_once ($curdir_upload_logo."/../api.lib/api.base.php");
 include_once ($curdir_upload_logo."/../../config/config.php");

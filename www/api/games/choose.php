@@ -2,6 +2,14 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Choose Game
+ * API_DESCRIPTION: select game and it will be write to user session.
+ * API_ACCESS: authorized users
+ * API_INPUT: id - string, Identificator of the game
+ * API_INPUT: token - string, token
+ */
+
 $curdir_games_choose = dirname(__FILE__);
 include_once ($curdir_games_choose."/../api.lib/api.base.php");
 include_once ($curdir_games_choose."/../api.lib/api.security.php");

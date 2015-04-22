@@ -2,6 +2,12 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: List Game Info
+ * API_DESCRIPTION: Method will be returned list of the games
+ * API_ACCESS: authorized users
+ */
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.security.php");
