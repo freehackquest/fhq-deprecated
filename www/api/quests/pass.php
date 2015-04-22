@@ -2,6 +2,15 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Try Pass Quest
+ * API_DESCRIPTION: Method for check user answer for the quest
+ * API_ACCESS: authorized users
+ * API_INPUT: questid - integer, Identificator of the quest
+ * API_INPUT: answer - string, answer
+ * API_INPUT: token - string, token
+ */
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");

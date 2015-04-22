@@ -2,6 +2,17 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Quest List
+ * API_DESCRIPTION: Method will be returned quest list
+ * API_ACCESS: authorized users
+ * API_INPUT: filter_open - boolean, filter by open quests (it not taked)
+ * API_INPUT: filter_current - boolean, filter by in progress quests (taked)
+ * API_INPUT: filter_completed - boolean, filter by completed quest (finished quests)
+ * API_INPUT: filter_subjects - string, filter by subjects quests (for example: "hashes,trivia" and etc. also look types)
+ * API_INPUT: token - string, token
+ */
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.security.php");
