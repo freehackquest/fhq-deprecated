@@ -118,17 +118,17 @@ function FHQGuiLib() {
 		var content = '';
 		var imgpath = '';
 		if (event.type == 'users')
-			imgpath = 'templates/base/images/menu/user.png';
+			imgpath = 'images/menu/user.png';
 		else if (event.type == 'quests')
-			imgpath = 'templates/base/images/menu/quests.png';
+			imgpath = 'images/menu/quests.png';
 		else if (event.type == 'warning')
-			imgpath = 'templates/base/images/menu/warning.png';
+			imgpath = 'images/menu/warning.png';
 		else if (event.type == 'info')
-			imgpath = 'templates/base/images/menu/news.png';
+			imgpath = 'images/menu/news.png';
 		else if (event.type == 'games')
-			imgpath = 'templates/base/images/menu/games.png';
+			imgpath = 'images/menu/games.png';
 		else
-			imgpath = 'templates/base/images/menu_btn_default.png'; // default
+			imgpath = 'images/menu/default.png'; // default
 
 		var marknew = '';
 		if (event.marknew && event.marknew == true)
@@ -157,7 +157,7 @@ function FHQGuiLib() {
 
 		var content = '\n\n<div class="fhq_quest_info" onclick="showQuest(' + questid + ');"><div class="fhq_quest_info_row">\n';
 		content += '<div class="fhq_quest_info_cell_img">';
-		content += '<img  width="100px" src="templates/base/images/quests/' + subject + '.png">';
+		content += '<img  width="100px" src="images/quests/' + subject + '.png">';
 		content += '</div>';
 		
 		content += '<div class="fhq_quest_info_cell_content">';
@@ -172,6 +172,103 @@ function FHQGuiLib() {
 	this.userIcon = function(userid, logo, nick) {
 		return '<div class="fhqbtn" onclick="showUserInfo(' + userid + ')"> <img class="fhqmiddelinner" width=25px src="' + logo + '"/> ' + nick + '</div>'
 	}
+	
+	this.makeSystemPanel = function() {
+		/*var cp = new FHQContentPage();
+
+		var submenu = new FHQDynamicContent('submenu');
+		submenu.clear();
+		*/
+		/*submenu.append(
+			'<div class="fhq_btn_menu hint--bottom" data-hint="Settings" onclick="fhqgui.loadSettings(\'content_page\');">' 
+			+ '<img class="fhq_btn_menu_img" src="images/menu/settings.png"/>'
+			+ '</div><br>'
+		);*/
+		
+		/*submenu.append(
+			'<div class="fhq_btn_menu hint--bottom" data-hint="Users" onclick="alert(\'todo\');">' 
+			+ '<img class="fhq_btn_menu_img" src="images/menu/users.png"/>'
+			+ '</div><br>'
+		);
+		
+		submenu.append(
+			'<div class="fhq_btn_menu hint--bottom" data-hint="Answer List" onclick="alert(\'todo\');">' 
+			+ '<img class="fhq_btn_menu_img" src="images/menu/answerlist.png"/>'
+			+ '</div><br>'
+		);
+		
+		submenu.append(
+			'<div class="fhq_btn_menu hint--bottom" data-hint="Update DB" onclick="alert(\'todo\');">' 
+			+ '<img class="fhq_btn_menu_img" src="images/menu/updates.png"/>'
+			+ '</div><br>'
+		);
+		
+		submenu.append(
+			'<div class="fhq_btn_menu hint--bottom" data-hint="Dumps" onclick="alert(\'todo\');">' 
+			+ '<img class="fhq_btn_menu_img" src="images/menu/dumps.png"/>'
+			+ '</div><br>'
+		);*/
+		
+		
+		
+		// init first menu
+		fhqgui.loadSettings('content_page');
+	}
+
+	this.loadSettings = function(idelem) {
+		var scp = new FHQDynamicContent(idelem);
+		send_request_post(
+			'api/settings/get.php',
+			'',
+			function (obj) {
+				if (obj.result == "fail") {
+					scp.set(obj.error.message);
+					return;
+				}
+				var pt = new FHQParamTable();
+				for (var k in obj.data) {
+					for (var k1 in obj.data[k]) {
+						pt.row(k+'.'+k1, obj.data[k][k1]);
+					}
+					pt.skip();
+				}
+				pt.skip();
+				scp.clear();
+				scp.append(pt.render());
+			}
+		);
+	}
+	
+	this.gameView = function(game, currentGameId) {
+		var content = '';
+		content += '\n<div class="fhq_event_info">\n';
+		content += '	<div class="fhq_event_info_row">\n';
+		content += '		<div class="fhq_event_info_cell_img"><img src="' + game.logo + '" width="100px"></div>\n';
+		content += '		<div class="fhq_event_info_cell_content">\n';
+		content += '			<div class="fhq_event_caption"> [' + game.type_game + ', ' + game.state + ', ' + game.form + ', ' + ' by <b>{' + game.organizators + '}</b></div>';
+		content += '			<div class="fhq_event_caption"> ' + game.date_start + ' - ' + game.date_stop + ', restart: ' + game.date_restart + ']</div>';
+		content += '			<div class="fhq_event_score"><b><h1>' + game.title + '</h1></b></div>';
+		content += '			<div class="fhq_event_score">' + game.description + ' </div>';
+		content += '			<div class="fhq_event_caption">'; 
+		var perms = game.permissions;
+
+		if (currentGameId != game.id)
+			content += '<div class="fhqbtn" onclick="chooseGame(' + game.id + ');">Choose</div> ';
+		else
+			content += 'Current Game';
+		
+		if (perms['delete'] == true)
+			content += '<div class="fhqbtn" onclick="formDeleteGame(' + game.id + ');">Delete</div>';
+			
+		if (perms['update'] == true)
+			content += '<div class="fhqbtn" onclick="formEditGame(' + game.id + ');">Edit</div>';
+		
+		content += '			</div>';
+		content += '		</div>'; // fhq_event_info_cell_content
+		content += '	</div>'; // fhq_event_info_row
+		content += '</div><br>'; // fhq_event_info
+		return content;
+	}
 };
 
 function FHQParamTable() {
@@ -179,6 +276,14 @@ function FHQParamTable() {
 	this.row = function(name,param) {
 		this.paramtable.push( '\n'
 			+ '\t<div class="fhqparamtbl_row">\n'
+			+ '\t\t<div class="fhqparamtbl_param">' + name + '</div>\n'
+			+ '\t\t<div class="fhqparamtbl_value">' + param + '</div>\n'
+			+ '\t</div>\n'
+		);
+	};
+	this.rowid = function(id,name,param) {
+		this.paramtable.push( '\n'
+			+ '\t<div id="' + id + '" class="fhqparamtbl_row">\n'
 			+ '\t\t<div class="fhqparamtbl_param">' + name + '</div>\n'
 			+ '\t\t<div class="fhqparamtbl_value">' + param + '</div>\n'
 			+ '\t</div>\n'
@@ -227,6 +332,25 @@ function FHQContentPage() {
 
 	this.append = function(str) {
 		this.cp.innerHTML += str;
+	};
+	this.clear = function() {
+		this.cp.innerHTML = '';
+	};
+}
+
+// work with content page
+function FHQDynamicContent(idelem) {
+	this.cp = document.getElementById(idelem);
+	if (this.cp)
+		this.cp.innerHTML = 'Loading...';
+	else
+		throw 'Not found ' + idelem;
+
+	this.append = function(str) {
+		this.cp.innerHTML += str;
+	};
+	this.set = function(str) {
+		this.cp.innerHTML = str;
 	};
 	this.clear = function() {
 		this.cp.innerHTML = '';

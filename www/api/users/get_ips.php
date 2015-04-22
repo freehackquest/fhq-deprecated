@@ -2,6 +2,14 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Users IP-Addresses
+ * API_DESCRIPTION: Method returned last 50 ip-addresses for user
+ * API_ACCESS: admin only
+ * API_INPUT: userid - integer, user id
+ * API_OKRESPONSE: { "result":"ok", "data" : { "id" : 1, "ip" : "127.0.0.1", "country" : "RU", "city" : "Tomsk", "date" : "2015-04-19 00:01:01", "browser" : "Firefox ..." } }
+ */
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../../config/config.php");
@@ -20,7 +28,6 @@ if (!APISecurity::isAdmin())
 
 // TODO: added pagginator
 $conn = APIHelpers::createConnection($config);
-
 
 if (!APIHelpers::issetParam('userid'))
   APIHelpers::showerror(1144, 'Not found parameter userid');

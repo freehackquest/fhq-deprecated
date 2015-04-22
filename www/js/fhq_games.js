@@ -71,39 +71,9 @@ function loadGames() {
 				el.innerHTML += '<div class="fhqinfo"><div class="button3 ad" onclick="formCreateGame();">Create Game</div></div><br>';
 
 			for (var k in obj.data) {
-				var pt = new FHQParamTable();
-								
 				if (obj.data.hasOwnProperty(k)) {
-					
-					pt.row('Logo:', '<img class="fhq_game_img" src="' + obj.data[k]['logo'] + '"/>');
-					pt.row('Name:', obj.data[k]['title'].trim());
-					pt.row('State:', obj.data[k]['state'].trim());
-					pt.row('Form:', obj.data[k]['form'].trim());
-					pt.row('Type:', obj.data[k]['type_game'].trim());
-					pt.row('Date Start:', obj.data[k]['date_start'].trim());
-					pt.row('Date Stop:', obj.data[k]['date_stop'].trim());
-					pt.row('Date Restart:', (obj.data[k]['date_restart'] + '').trim());
-					pt.row('Description:', (obj.data[k]['description'] + '').trim());
-					pt.row('Organizators:', obj.data[k]['organizators'].trim());				
-
-					var btns = '';
-					if (current_game != obj.data[k]['id'])
-						btns += '<div class="button3 ad" onclick="chooseGame(\'' + obj.data[k]['id'] + '\');">Choose</div> ';
-					else
-						btns += 'Current Game';
-
-					var perms = obj.data[k]['permissions'];
-					
-					if (perms['delete'] == true)
-						btns += '<div class="button3 ad" onclick="formDeleteGame(\'' + obj.data[k]['id'] + '\');">Delete</div>';
-						
-					if (perms['update'] == true)
-						btns += '<div class="button3 ad" onclick="formEditGame(\'' + obj.data[k]['id'] + '\');">Edit</div>';
-
-					pt.row(' ', btns);
+					el.innerHTML += fhqgui.gameView(obj.data[k], current_game);
 				}
-				pt.skip();
-				el.innerHTML += pt.render();
 			}
 			el.innerHTML += '';
 		}

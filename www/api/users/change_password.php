@@ -2,6 +2,16 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Change password
+ * API_DESCRIPTION: Method for change password
+ * API_ACCESS: authorized users
+ * API_INPUT: old_password - string, old password
+ * API_INPUT: new_password - string, new password
+ * API_INPUT: new_password_confirm - string, new password confirm
+ * API_OKRESPONSE: { "result":"ok" }
+ */
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.security.php");
@@ -65,7 +75,7 @@ try {
 	if ($stmt->execute(array($hash_new_password, $userid, $email, $hash_old_password)))
 		$result['result'] = 'ok';
 	else
-		APIHelpers::showerror(1021, "Problem with set new password");
+		APIHelpers::showerror(1021, 'Problem with set new password');
 } catch(PDOException $e) {
 	APIHelpers::showerror(1022, $e->getMessage());
 }

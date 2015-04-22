@@ -2,6 +2,14 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Get user info
+ * API_DESCRIPTION: Method returned user info
+ * API_ACCESS: admin, tester and authorized user
+ * API_INPUT: userid - integer, user id
+ * API_OKRESPONSE: { "result":"ok" }
+ */
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");
@@ -61,7 +69,7 @@ try {
 	}
 	$result['result'] = 'ok';
 } catch(PDOException $e) {
-	APIHelpers::showerror(1184, 'Error 822: ' + $e->getMessage());
+	APIHelpers::showerror(1184, $e->getMessage());
 }
 
 // users_profile
@@ -73,7 +81,7 @@ try {
 		$result['profile'][$row['name']] = $row['value'];
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1183, 'Error 822: ' + $e->getMessage());
+	APIHelpers::showerror(1183, $e->getMessage());
 }
 
 // users_games

@@ -2,6 +2,13 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Install Updates
+ * API_DESCRIPTION: Method for install updates for database
+ * API_ACCESS: admin only
+ * API_OKRESPONSE: { "result":"ok", "data" : { "u0010" : "installed" } }
+ */
+ 
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");
@@ -11,7 +18,7 @@ include_once ($curdir."/../../config/config.php");
 APIHelpers::checkAuth();
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(1007, "This function allowed only for admin");
+	APIHelpers::showerror(1007, 'This function allowed only for admin');
 
 $result = array(
 	'result' => 'fail',

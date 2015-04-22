@@ -13,6 +13,17 @@ header('Content-Type: application/json');
 $result = array(
 	'result' => 'ok',
 	'data' => array(
+		'questUserStatus' => array(
+			array( 'value' => 'open', 'caption' => 'Open' ),
+			array( 'value' => 'in_progress', 'caption' => 'In Progress' ),
+			array( 'value' => 'completed', 'caption' => 'Completed' ),
+		),
+		'questUserStatusFilter' => array(
+			array( 'value' => '', 'caption' => '*' ),
+			array( 'value' => 'open', 'caption' => 'Open' ),
+			array( 'value' => 'in_progress', 'caption' => 'In Progress' ),
+			array( 'value' => 'completed', 'caption' => 'Completed' ),
+		),		
 		'questTypes' => array(
 			array( 'value' => 'hashes', 'caption' => 'Hashes' ),
 			array( 'value' => 'stego', 'caption' => 'Stego' ),
@@ -63,6 +74,14 @@ $result = array(
 			array( 'value' => 'unlicensed-copy', 'caption' => 'Unlicensed copy' ),
 		),
 		'eventTypes' => array(
+			array( 'value' => 'info', 'caption' => 'Information' ),
+			array( 'value' => 'users', 'caption' => 'Users' ),
+			array( 'value' => 'games', 'caption' => 'Games' ),
+			array( 'value' => 'quests', 'caption' => 'Quests' ),
+			array( 'value' => 'warning', 'caption' => 'Warning' ),
+		),
+		'eventTypesFilter' => array(
+			array( 'value' => '', 'caption' => '*' ),
 			array( 'value' => 'info', 'caption' => 'Information' ),
 			array( 'value' => 'users', 'caption' => 'Users' ),
 			array( 'value' => 'games', 'caption' => 'Games' ),

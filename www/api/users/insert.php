@@ -2,6 +2,20 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Create user (by admin)
+ * API_DESCRIPTION: Method will be add new user
+ * API_ACCESS: admin only
+ * API_INPUT: uuid - guid, uniq identifier
+ * API_INPUT: logo - string, link to user logo
+ * API_INPUT: email - string, email
+ * API_INPUT: role - string, role (user/admin)
+ * API_INPUT: nick - string, nick
+ * API_INPUT: password - string, password
+ * API_INPUT: status - string, status (activated, blocked)
+ * API_OKRESPONSE: { "result":"ok" }
+ */
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");
@@ -12,7 +26,7 @@ APIHelpers::checkAuth();
 $message = '';
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(1090, "This function allowed only for admin");
+	APIHelpers::showerror(1090, 'This function allowed only for admin');
 
 $result = array(
 	'result' => 'fail',
@@ -23,25 +37,25 @@ $conn = APIHelpers::createConnection($config);
 
 
 if (!APIHelpers::issetParam('uuid'))
-	APIHelpers::showerror(1029, "Not found parameter uuid");
+	APIHelpers::showerror(1029, 'Not found parameter uuid');
 	
 if (!APIHelpers::issetParam('logo'))
-	APIHelpers::showerror(1030, "Not found parameter logo");
+	APIHelpers::showerror(1030, 'Not found parameter logo');
 	
 if (!APIHelpers::issetParam('email'))
-	APIHelpers::showerror(1031, "Not found parameter email");
+	APIHelpers::showerror(1031, 'Not found parameter email');
 	
 if (!APIHelpers::issetParam('role'))
-	APIHelpers::showerror(1032, "Not found parameter role");
+	APIHelpers::showerror(1032, 'Not found parameter role');
 	
 if (!APIHelpers::issetParam('nick'))
-	APIHelpers::showerror(1033, "Not found parameter nick");
+	APIHelpers::showerror(1033, 'Not found parameter nick');
 	
 if (!APIHelpers::issetParam('password'))
-	APIHelpers::showerror(1034, "Not found parameter password");
+	APIHelpers::showerror(1034, 'Not found parameter password');
 	
 if (!APIHelpers::issetParam('status'))
-	APIHelpers::showerror(1035, "Not found parameter status");
+	APIHelpers::showerror(1035, 'Not found parameter status');
 
 $uuid = APIHelpers::getParam('uuid', APIHelpers::gen_guid());
 $logo = APIHelpers::getParam('logo', 'files/users/0.png');

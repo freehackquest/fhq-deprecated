@@ -57,7 +57,19 @@ body.main
 	background-color: #303030;
 }
 
-.fhq_menucolor {
+.fhqtopmenu:hover {
+    background-color: #3e3e3e;
+} 
+
+.fhqleftmenu {
+	background: #3e3e3e;
+}
+
+.fhqtopmenu_rightpanel {
+	background: #3e3e3e;
+}
+
+.fhqtopmenu_leftpanel {
 	background: #3e3e3e;
 }
 

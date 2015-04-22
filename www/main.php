@@ -49,9 +49,9 @@ if (!isset($_SESSION['user']))
 
 		<script type="text/javascript" src="js/fhq.frontend.lib.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq.gui.lib.js?ver=1"></script>
-		<script src="js/jquery.js"></script>
-		<script src="js/jquery.datetimepicker.js"></script>
-		
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/jquery.datetimepicker.js"></script>
+		<script type="text/javascript" src="js/Chart.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_send_request.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_echo_head.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_modal_dialog.js?ver=1"></script>
@@ -63,8 +63,7 @@ if (!isset($_SESSION['user']))
 		<script type="text/javascript" src="js/fhq_events.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_stats.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_feedback.js?ver=1"></script>
-		<script type="text/javascript" src="js/fhq_settings.js?ver=1"></script>
-		<script type="text/javascript" src="js/Chart.js?ver=1"></script>
+
 		
 
 		<script type="text/javascript">
@@ -107,213 +106,218 @@ if (!isset($_SESSION['user']))
 			</div>
 		</div>
 		<center>
-			<table cellspacing=10px cellpadding=10px width="100%" height="100%">
-				<tr class="fhq_menucolor">
-					<td align="left" valign = "top" width="82%">
-<?php
-	$role = isset($_SESSION['user']['role']) ? $_SESSION['user']['role'] : 'user';
-	$score = isset($_SESSION['user']['score']) ? $_SESSION['user']['score'] : 0;
-	$userid = isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : 0;
-	$nick = isset($_SESSION['user']['nick']) ? $_SESSION['user']['nick'] : '';
-	$nick = htmlspecialchars($nick);
-	$template = 'base';
 
-	$game_type = "";
-	$game_title = "";
-	$gameid = 0;
-	if (isset($_SESSION['game']))
-	{
-		$game_type = $_SESSION['game']['type_game'];
-		$game_title = $_SESSION['game']['title'];
-		$gameid = $_SESSION['game']['id'];
-	}
-	
-	$arrmenu = array();
-	
-	$arrmenu[] = array(
-		'name' => 'logo',
-		'html' => '
-			<div class="fhq_btn_menu fhq_btn_menu_color_none hint--bottom" data-hint="About" onclick="loadAbout();">
-				<img class="fhq_btn_menu_img" src="templates/base/images/logo/fhq_2015_small.png"/>
-			</div>
-		',
-		'show' => true,
-	);
-	
-	$arrmenu[] = array(
-		'name' => 'game_info',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Please click to change a curent game."  onclick="changeGame();">
-				<div class="fhq_btn_menu_img">
-					'.($game_type == '' ? 'Unknown<br>Game' : '<b>'.$game_title.'<br>'.$game_type.'</b>').'
+			<div class="fhqtopmenu_leftpanel">
+				<?php
+
+			$role = isset($_SESSION['user']['role']) ? $_SESSION['user']['role'] : 'user';
+			$score = isset($_SESSION['user']['score']) ? $_SESSION['user']['score'] : 0;
+			$userid = isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : 0;
+			$nick = isset($_SESSION['user']['nick']) ? $_SESSION['user']['nick'] : '';
+			$nick = htmlspecialchars($nick);
+			$template = 'base';
+
+			$game_type = "";
+			$game_title = "";
+			$gameid = 0;
+			if (isset($_SESSION['game']))
+			{
+				$game_type = $_SESSION['game']['type_game'];
+				$game_title = $_SESSION['game']['title'];
+				$gameid = $_SESSION['game']['id'];
+			}
+			
+			$arrmenu = array();
+			
+			$arrmenu[] = array(
+				'name' => 'logo',
+				'html' => '
+					<div class="fhq_btn_menu fhq_btn_menu_color_none hint--right" data-hint="About" onclick="loadAbout();">
+						<img class="fhq_btn_menu_img" src="templates/base/images/logo/fhq_2015_small.png"/>
+					</div>
+				',
+				'show' => true,
+			);
+			
+			$arrmenu[] = array(
+				'name' => 'game_info',
+				'html' => '
+					<div class="fhq_btn_menu hint--bottom" data-hint="Please click to change a curent game."  onclick="changeGame();">
+						<div class="fhq_btn_menu_img">
+							'.($game_type == '' ? 'Unknown<br>Game' : '<b>'.$game_title.'<br>'.$game_type.'</b>').'
+						</div>
+					</div>
+				',
+				'show' => true,
+			);
+
+			$arrmenu[] = array(
+				'name' => 'scoreboard',
+				'html' => '
+					<div class="fhq_btn_menu hint--bottom" data-hint="Scoreboard" onclick="loadScoreboard('.$gameid.');">
+						<img class="fhq_btn_menu_img" src="images/menu/scoreboard.png"/>
+						<div class="fhqredcircle" id="view_score">'.$score.'</div>
+					</div>
+				',
+				'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
+			);
+
+			$arrmenu[] = array(
+				'name' => 'rules',
+				'html' => '
+					<div class="fhq_btn_menu" data-hint="Rules" onclick="loadGameRules('.$gameid.');">
+						<img class="fhq_btn_menu_img" src="images/menu/rules.png"/><br>
+					</div>
+				',
+				'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
+			);
+
+			$arrmenu[] = array(
+				'name' => 'quests',
+				'html' => '
+					<div class="fhq_btn_menu hint--bottom" data-hint="Quests" onclick="loadQuests();">
+						<img class="fhq_btn_menu_img" src="images/menu/quests.png"/>
+					</div>
+				',
+				'show' => ($game_type == 'jeopardy'),
+			);
+
+			$arrmenu[] = array(
+				'name' => 'stats',
+				'html' => '
+					<div class="fhq_btn_menu hint--bottom" data-hint="Statistics" onclick="createPageStatistics('.$gameid.'); updateStatistics();">
+						<img class="fhq_btn_menu_img" src="images/menu/stats.png"/><br>
+					</div>
+				',
+				'show' => ($game_type == 'jeopardy'),
+			);	
+
+			// echo menu
+			foreach ($arrmenu as $menu) {
+				if ($menu['show']) {
+					echo $menu['html'];
+				}
+			}
+	?>		</div>
+		
+			<div class="fhqtopmenu_rightpanel">
+				<div class="fhq_btn_menu hint--bottom" data-hint="User profile"  onclick="loadUserProfile(<?php echo $userid; ?>);">
+					<img class="fhq_btn_menu_img" src="images/menu/user.png"/>
+					<div style="display: inline-block;" id="btn_user_info"><?php echo $nick; ?></div>
+				</div>
+				<div class="fhq_btn_menu hint--bottom" data-hint="Logout" onclick="logout();">
+					<img class="fhq_btn_menu_img" src="images/menu/logout.png"/><br>
 				</div>
 			</div>
-		',
-		'show' => true,
-	);
+			
+			
+			
+			<div class="fhqleftmenu">
+				
+<?php
+						$arrmenu2 = array();
 
-	$arrmenu[] = array(
-		'name' => 'scoreboard',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Scoreboard" onclick="loadScoreboard('.$gameid.');">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/scoreboard.png"/>
-				<div class="fhqredcircle" id="view_score">'.$score.'</div>
-			</div>
-		',
-		'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
-	);
-
-	$arrmenu[] = array(
-		'name' => 'rules',
-		'html' => '
-			<div class="fhq_btn_menu" data-hint="Rules" onclick="loadGameRules('.$gameid.');">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/rules.png"/><br>
-			</div>
-		',
-		'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
-	);
-
-	$arrmenu[] = array(
-		'name' => 'quests',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Quests" onclick="loadQuests();">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/quests.png"/>
-			</div>
-		',
-		'show' => ($game_type == 'jeopardy'),
-	);
-
-	$arrmenu[] = array(
-		'name' => 'stats',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Statistics" onclick="createPageStatistics('.$gameid.'); updateStatistics();">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/stats.png"/><br>
-			</div>
-		',
-		'show' => ($game_type == 'jeopardy'),
-	);	
-
-	$arrmenu[] = array(
-		'name' => 'splitter',
-		'html' => '
-			<div class="fhq_btn_menu_splitter">
-			</div>
-		',
-		'show' => true,
-	);
-	
-	$arrmenu[] = array(
-		'name' => 'system_menu',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Settings" onclick="loadSettings();">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/settings.png"/>
-			</div>
-		',
-		'show' => $role == 'admin',
-	);
-	
-	$arrmenu[] = array(
-		'name' => 'users',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Users" onclick="createPageUsers(); updateUsers();">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/users.png"/>
-			</div>
-		',
-		'show' => $role == 'admin',
-	);
-	
-	$arrmenu[] = array(
-		'name' => 'answerlist',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Answer List" onclick="createPageAnswerList(); updateAnswerList();">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/answerlist.png"/>
-			</div>
-		',
-		'show' => $role == 'admin',
-	);
-
-	$arrmenu[] = array(
-		'name' => 'install_updates',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Install Updates" onclick="installUpdates();">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/updates.png"/>
-			</div>
-		',
-		'show' => $role == 'admin',
-	);
+		$arrmenu2[] = array(
+			'name' => 'games',
+			'html' => '
+				<div class="fhq_btn_menu hint--right" data-hint="Games" onclick="loadGames();">
+					<img class="fhq_btn_menu_img" src="images/menu/games.png"/>
+				</div>
+			',
+			'show' => true,
+		);
 		
-	$arrmenu[] = array(
-		'name' => 'splitter',
-		'html' => '
-			<div class="fhq_btn_menu_splitter">
-			</div>
-		',
-		'show' => $role == 'admin',
-	);
-	
-	$arrmenu[] = array(
-		'name' => 'news',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="News" onclick="loadEvents();">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/news.png"/>
-				<div class="fhqredcircle" id="plus_events">0</div>
-			</div>
-		',
-		'show' => true,
-	);
+		$arrmenu2[] = array(
+			'name' => 'news',
+			'html' => '
+				<div class="fhq_btn_menu hint--right" data-hint="News" onclick="createPageEvents(); updateEvents();">
+					<img class="fhq_btn_menu_img" src="images/menu/news.png"/>
+					<div class="fhqredcircle" id="plus_events">0</div>
+				</div>
+			',
+			'show' => true,
+		);
 
-	$arrmenu[] = array(
-		'name' => 'feedback',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Feedback" onclick="loadFeedback();">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/feedback.png"/>
-				<!-- div class="fhqredcircle" id="plus_feedback">0</div -->
-			</div>
-		',
-		'show' => true,
-	);
-	
-	$arrmenu[] = array(
-		'name' => 'games',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Games" onclick="loadGames();">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/games.png"/>
-			</div>
-		',
-		'show' => true,
-	);
-	
-	$arrmenu[] = array(
-		'name' => 'user_info',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="User profile"  onclick="loadUserProfile('.$userid.');">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/user.png"/>
-				<div style="display: inline-block;" id="btn_user_info">'.$nick.'</div>
-			</div>
-		',
-		'show' => true,
-	);
-	
-	$arrmenu[] = array(
-		'name' => 'logout',
-		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Logout" onclick="logout();">
-				<img class="fhq_btn_menu_img" src="templates/'.$template.'/images/menu/logout.png"/><br>
-			</div>
-		',
-		'show' => true,
-	);
+		$arrmenu2[] = array(
+			'name' => 'feedback',
+			'html' => '
+				<div class="fhq_btn_menu hint--right" data-hint="Feedback" onclick="loadFeedback();">
+					<img class="fhq_btn_menu_img" src="images/menu/feedback.png"/>
+					<!-- div class="fhqredcircle" id="plus_feedback">0</div -->
+				</div>
+			',
+			'show' => true,
+		);
+		
+		
+			
+		$arrmenu2[] = array(
+			'name' => 'users',
+			'html' => '
+				<div class="fhq_btn_menu hint--right" data-hint="Settings" onclick="fhqgui.loadSettings(\'content_page\');">
+					<img class="fhq_btn_menu_img" src="images/menu/settings.png"/>
+				</div>
+			',
+			'show' => $role == 'admin',
+		);
+		
+		$arrmenu2[] = array(
+			'name' => 'users',
+			'html' => '
+				<div class="fhq_btn_menu hint--right" data-hint="Users" onclick="createPageUsers(); updateUsers();">
+					<img class="fhq_btn_menu_img" src="images/menu/users.png"/>
+				</div>
+			',
+			'show' => $role == 'admin',
+		);
+		
+		$arrmenu2[] = array(
+			'name' => 'answerlist',
+			'html' => '
+				<div class="fhq_btn_menu hint--right" data-hint="Answer List" onclick="createPageAnswerList(); updateAnswerList();">
+					<img class="fhq_btn_menu_img" src="images/menu/answerlist.png"/>
+				</div>
+			',
+			'show' => $role == 'admin',
+		);
 
-	// echo menu
-	foreach ($arrmenu as $menu) {
-		if ($menu['show']) {
-			echo $menu['html'];
-		}
-	}
-?>
-					</td>
+		$arrmenu2[] = array(
+			'name' => 'install_updates',
+			'html' => '
+				<div class="fhq_btn_menu hint--right" data-hint="Install Updates" onclick="installUpdates();">
+					<img class="fhq_btn_menu_img" src="images/menu/updates.png"/>
+				</div>
+			',
+			'show' => $role == 'admin',
+		);
+		
+		$arrmenu2[] = array(
+			'name' => 'dumps',
+			'html' => '
+				<div class="fhq_btn_menu hint--right" data-hint="Dumps" onclick="alert(\'todo\')">
+					<img class="fhq_btn_menu_img" src="images/menu/dumps.png"/>
+				</div>
+			',
+			'show' => $role == 'admin',
+		);
+
+		// echo menu
+		foreach ($arrmenu2 as $menu) {
+			if ($menu['show']) {
+				echo $menu['html'];
+			}
+		}	
+						
+						?>
+			</div>
+			
+
+			<table cellspacing=10px cellpadding=10px width="100%" height="100%">
+				<tr>
+					<td colspan=2 align=left valign=top height=85px></td>
 				</tr>
 				<tr>
+					<td width=70px id="submenu" valign="top" align=right></td>
 					<td height="100%" valign="top">
 						<center>
 							<div id="content_page">
@@ -322,7 +326,7 @@ if (!isset($_SESSION['user']))
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2">
+					<td colspan=2>
 			<?php 
 				include('copyright.php');
 			?>

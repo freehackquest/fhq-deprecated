@@ -1,26 +1,15 @@
 body.main
 {
+	background: url(../../../images/background.png) no-repeat left top fixed;
 	background-color: #FFFFFF;
 	line-height:40px;
 	font: 12pt/10pt Arial;
-	color: #333333;
+	color: #333333;	
 }
 
 p {
   line-height: 40px;
 }
-
-/*цвет ссылок */
-/*body a:link
-{
-	color: #333333;
-}*/
-
-/*цвет посещенных ссылок */
-/*body a:visited
-{
-	color: #333333;
-}*/
 
 .fhq_index_column {
 	background-color: #E4E4E4;
@@ -29,7 +18,6 @@ p {
 .fhq_index_logo {
 	cursor: pointer;
 }
-
 
 #customers
 {

@@ -2,6 +2,15 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Update User Status
+ * API_DESCRIPTION: Method for update user status
+ * API_ACCESS: admin only
+ * API_INPUT: userid - integer, userid
+ * API_INPUT: status - string, new user status ("activated"/"blocked")
+ * API_OKRESPONSE: { "result":"ok" }
+ */
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../../config/config.php");
@@ -9,7 +18,7 @@ include_once ($curdir."/../../config/config.php");
 APIHelpers::checkAuth();
 
 if (APIHelpers::issetParam('userid') && !APISecurity::isAdmin()) 
-	APIHelpers::showerror(1134, 'you what change status for another user, it can do only admin');
+	APIHelpers::showerror(1134, 'you want change status for another user, it can do only admin');
 
 $userid = APIHelpers::getParam('userid', APISecurity::userid());
 // $userid = intval($userid);

@@ -41,7 +41,7 @@ if( APISecurity::login($conn, $email, $hash_password2)) {
 	$token = APIHelpers::gen_guid();
 	$result['data']['token'] = $token;
 } else {
-	APIHelpers::showerror(1002, 'email {'.$email.'} and password was not found in system ');
+	APIHelpers::showerror(1002, 'email or/and password was not found in system ');
 }
 
 

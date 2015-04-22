@@ -82,10 +82,6 @@ function scanfolder($dir) {
 				'output' => array(
 					'errors' => array(
 					),				
-					'successfull' => array (
-						'result' => 'ok',
-						'data' => array(),
-					),
 				),
 			);
 			// echo $key.' => '.$value.' <br>';
@@ -137,25 +133,25 @@ $doc['security'] = array(
 
 $doc['updates'] = array(
 	'name' => 'Updates',
-	'description' => '?',
+	'description' => 'Methods for update database',
 	'methods' => scanfolder('updates'),
 );
 
 $doc['users'] = array(
 	'name' => 'Users',
-	'description' => '?',
+	'description' => 'Methods for work with users',
 	'methods' => scanfolder('users'),
 );
 
 $doc['games'] = array(
 	'name' => 'Games',
-	'description' => '?',
+	'description' => 'Methods for work with games',
 	'methods' => scanfolder('games'),
 );
 
 $doc['quests'] = array(
 	'name' => 'Quests',
-	'description' => '?',
+	'description' => 'Methods for work with quests',
 	'methods' => scanfolder('quests'),
 );
 
@@ -167,7 +163,7 @@ $doc['events'] = array(
 
 $doc['feedback'] = array(
 	'name' => 'Feedback',
-	'description' => '?',
+	'description' => 'Methods for work with feedback',
 	'methods' => scanfolder('feedback'),
 );
 
@@ -180,7 +176,7 @@ $doc['settings'] = array(
 
 $doc['statistics'] = array(
 	'name' => 'Statistics',
-	'description' => '?',
+	'description' => 'Methods for work with statistics',
 	'methods' => scanfolder('statistics'),
 );
 
@@ -262,7 +258,7 @@ function convert_to_html($doc) {
 		$i++;
 		$result .= '
 				<tr>
-					<td colspan=4 bgcolor=white><h2>'.$i.' '.$section['name'].'</h2>'.$section['description'].'</td>
+					<td colspan=3 bgcolor=white><h2>'.$i.' '.$section['name'].'</h2>'.$section['description'].'</td>
 				</tr>
 		';
 
@@ -270,7 +266,6 @@ function convert_to_html($doc) {
 				<tr>
 					<td bgcolor=white><b>Name</b></td>
 					<td bgcolor=white><b>Input parameters</b></td>
-					<td bgcolor=white><b>Successfully response</b></td>
 					<td bgcolor=white><b>Code Errors</b></td>
 				</tr>
 		';
@@ -283,7 +278,6 @@ function convert_to_html($doc) {
 			'Description:<pre>'.$method['description'].'</pre>Path: <pre>'.$method['uri'].'</pre>'
 			;
 			$input = '';
-			$response = '<pre>'.indent(json_encode($method['output']['successfull'])).'</pre>';
 			$codeerrors = '';
 			
 			foreach ($method['input'] as $input_key => $input_p)
@@ -298,7 +292,6 @@ function convert_to_html($doc) {
 				<tr>
 					<td valign=top bgcolor=white>'.$name.'</td>
 					<td valign=top bgcolor=white>'.$input.'</td>
-					<td valign=top bgcolor=white>'.$response.'</td>
 					<td valign=top bgcolor=white>'.$codeerrors.'</td>
 				</tr>
 			';

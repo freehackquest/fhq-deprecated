@@ -26,18 +26,6 @@
 	background: inherit;
 }
 
-.fhq_btn_menu_splitter {
-	padding: 5px;
-	display: inline-block;
-	min-height: 50px;
-	background-color: #ffffff;
-	border-radius: 10px;
-	margin-bottom: 5px;
-	padding: 5px;
-	vertical-align:middle;
-	background: rgba(255, 255, 255, 0.5);
-}
-
 .fhq_btn_menu_img {
 	display: inline-block;
 	vertical-align: middle;
@@ -57,9 +45,3 @@
 	background-color: #ffffff;
 	border-radius: 10px;
 }
-
-.fhq_menucolor {
-	background: #e4e4e4;
-}
-
-/*img{max-width:100%;width:auto\9;height:auto;vertical-align:middle;border:0;-ms-interpolation-mode:bicubic;}*/s

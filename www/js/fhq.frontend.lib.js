@@ -310,6 +310,7 @@ function FHQFrontEndLib() {
 					this.fhq.email = obj.data.email;
 					this.fhq.role = obj.data.role;
 					this.fhq.status = obj.data.status;
+					this.fhq.profile.bInitUserProfile == true;
 				}
 			};
 		};
@@ -336,6 +337,16 @@ function FHQFrontEndLib() {
 	}
 
 	// enums
+	this.getQuestUserStatus = function() {
+		this.initTypes();
+		return this.enums.questUserStatus;
+	};
+	
+	this.getQuestUserStatusFilter = function() {
+		this.initTypes();
+		return this.enums.questUserStatusFilter;
+	};
+	
 	this.getQuestTypes = function() {
 		this.initTypes();
 		return this.enums.questTypes;
@@ -369,6 +380,11 @@ function FHQFrontEndLib() {
 	this.getEventTypes = function() {
 		this.initTypes();
 		return this.enums.eventTypes;
+	};
+	
+	this.getEventTypesFilter = function() {
+		this.initTypes();
+		return this.enums.eventTypesFilter;
 	};
 
 	this.getUserRoles = function() {

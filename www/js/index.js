@@ -108,26 +108,24 @@ function loadCities() {
 			} else {
 				var c = document.getElementById('cities');
 				
-				c.innerHTML += "<br><font size=1><b>Quests in the system:</b></font><br>";
-				c.innerHTML += "<font size=1>" + obj.data.quests.count + "</font><br>";
-				
-				c.innerHTML += "<br><font size=1><b>The number of attempts:</b></font><br>";
-				c.innerHTML += "<font size=1>" + obj.data.quests.attempts + "</font><br>";
-				
-				c.innerHTML += "<br><font size=1><b>The number of solved:</b></font><br>";
-				c.innerHTML += "<font size=1>" + obj.data.quests.solved + "</font><br>";
+				c.innerHTML += "<br><b>Quests:</b><br>" + obj.data.quests.count + "<br>";
+				c.innerHTML += "<b>All attempts:</b><br>" + obj.data.quests.attempts + "<br>";
+				c.innerHTML += "<b>Already solved:</b><br>" + obj.data.quests.solved + "<br><br>";
 
-				c.innerHTML += "<br><font size=1><b>Playing with us:</b></font><br>";
+				c.innerHTML += "<h2>Playing with us</h2>";
+				
+				var cities = [];
 				for (var k in obj.data.cities) {
 					if (obj.data.cities[k].cnt > 1) {
-						c.innerHTML += '<font size=1>[' + obj.data.cities[k].city + ' (' + obj.data.cities[k].cnt + ')]</font><br>';
+						cities.push(obj.data.cities[k].city + ' (' + obj.data.cities[k].cnt + ')');
 					}
 				}
+				c.innerHTML += cities.join(", ");
 				
 				var a = document.getElementById('about');
 				var content = '<center>';
 				for (var k in obj.data.winners) {
-					
+
 					content += '<br><b>Winner(s) of ' + k + ':</b><br>';
 					var us = []
 					for (var k1 in obj.data.winners[k]) {
