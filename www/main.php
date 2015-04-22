@@ -106,9 +106,8 @@ if (!isset($_SESSION['user']))
 			</div>
 		</div>
 		<center>
-			
-			<div class="fhqtopmenu">
-				<div class="fhqtopmenu_leftpanel">
+
+			<div class="fhqtopmenu_leftpanel">
 				<?php
 
 			$role = isset($_SESSION['user']['role']) ? $_SESSION['user']['role'] : 'user';
@@ -199,18 +198,18 @@ if (!isset($_SESSION['user']))
 					echo $menu['html'];
 				}
 			}
-		?>		</div>
-			
-				<div class="fhqtopmenu_rightpanel">
-					<div class="fhq_btn_menu hint--bottom" data-hint="User profile"  onclick="loadUserProfile(<?php echo $userid; ?>);">
-						<img class="fhq_btn_menu_img" src="images/menu/user.png"/>
-						<div style="display: inline-block;" id="btn_user_info"><?php echo $nick; ?></div>
-					</div>
-					<div class="fhq_btn_menu hint--bottom" data-hint="Logout" onclick="logout();">
-						<img class="fhq_btn_menu_img" src="images/menu/logout.png"/><br>
-					</div>
+	?>		</div>
+		
+			<div class="fhqtopmenu_rightpanel">
+				<div class="fhq_btn_menu hint--bottom" data-hint="User profile"  onclick="loadUserProfile(<?php echo $userid; ?>);">
+					<img class="fhq_btn_menu_img" src="images/menu/user.png"/>
+					<div style="display: inline-block;" id="btn_user_info"><?php echo $nick; ?></div>
+				</div>
+				<div class="fhq_btn_menu hint--bottom" data-hint="Logout" onclick="logout();">
+					<img class="fhq_btn_menu_img" src="images/menu/logout.png"/><br>
 				</div>
 			</div>
+			
 			
 			
 			<div class="fhqleftmenu">
@@ -231,7 +230,7 @@ if (!isset($_SESSION['user']))
 		$arrmenu2[] = array(
 			'name' => 'news',
 			'html' => '
-				<div class="fhq_btn_menu hint--right" data-hint="News" onclick="loadEvents();">
+				<div class="fhq_btn_menu hint--right" data-hint="News" onclick="createPageEvents(); updateEvents();">
 					<img class="fhq_btn_menu_img" src="images/menu/news.png"/>
 					<div class="fhqredcircle" id="plus_events">0</div>
 				</div>

@@ -36,7 +36,7 @@ if ($id != -1) {
 }
 
 $search = APIHelpers::getParam('search', '');
-$result['search'] = $search;
+$result['data']['search'] = $search;
 $search = '%'.$search.'%';
 
 $where[] = 'message like ?';
@@ -45,11 +45,11 @@ $params[] = $search;
 
 $page = APIHelpers::getParam('page', 0);
 $page = intval($page);
-$result['page'] = $page;
+$result['data']['page'] = $page;
 
 $onpage = APIHelpers::getParam('onpage', 5);
 $onpage = intval($onpage);
-$result['onpage'] = $onpage;
+$result['data']['onpage'] = $onpage;
 
 $start = $page * $onpage;
 
@@ -65,13 +65,11 @@ try {
 
 	if (count($where) > 0)
 		$query .= ' WHERE '.implode(' AND ', $where);
-	$query .= ' ORDER BY id DESC LIMIT '.$start.','.$onpage; 
 
-	$result['query'] = $query;
 	$stmt = $conn->prepare($query);
 	$stmt->execute($params);
 	if($row = $stmt->fetch())
-		$result['data']['count'] = $row['cnt'];
+		$result['data']['found'] = $row['cnt'];
 } catch(PDOException $e) {
 	APIHelpers::showerror(1185, $e->getMessage());
 }
@@ -90,6 +88,7 @@ try {
 
 	$result['result'] = 'ok';
 	$result['access'] = $bAdmin;
+	$result['data']['maxid'] = -1;
 	$new_id = $id;
 	$result['data']['events'] = array();
 	while($row = $stmt->fetch())
@@ -104,7 +103,7 @@ try {
 			'dt' => $row['dt'],
 		);
 	}
-	$result['data']['new_id'] = $new_id;
+	$result['data']['maxid'] = $new_id;
 } catch(PDOException $e) {
 	APIHelpers::showerror(1229, $e->getMessage());
 }

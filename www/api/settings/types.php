@@ -69,6 +69,14 @@ $result = array(
 			array( 'value' => 'quests', 'caption' => 'Quests' ),
 			array( 'value' => 'warning', 'caption' => 'Warning' ),
 		),
+		'eventTypesFilter' => array(
+			array( 'value' => '', 'caption' => '*' ),
+			array( 'value' => 'info', 'caption' => 'Information' ),
+			array( 'value' => 'users', 'caption' => 'Users' ),
+			array( 'value' => 'games', 'caption' => 'Games' ),
+			array( 'value' => 'quests', 'caption' => 'Quests' ),
+			array( 'value' => 'warning', 'caption' => 'Warning' ),
+		),
 		'userRoles' => array(
 			array( 'value' => 'user', 'caption' => 'User' ),
 			array( 'value' => 'tester', 'caption' => 'Tester' ),

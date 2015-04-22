@@ -328,7 +328,6 @@ function updateUsers() {
 			tbl.cell('Status / Role ');
 			tbl.cell('Last Sign in');
 			tbl.closerow();
-
 		
 			for (var k in obj.data) {
 				var userinfo = obj.data[k];
@@ -348,36 +347,6 @@ function updateUsers() {
 				tbl.cell(userinfo.status + ' / ' + userinfo.role);
 				tbl.cell(userinfo.dt_last_login);
 				tbl.closerow();
-
-/*			
-				content += '<div class="users_row">';
-
-				// logo
-				content += '<div class="users_cell users_cell_logo">';
-				
-					content += ' '
-				else
-					content += ' '
-				content += '</div>'; // users_cell_logo
-
-				// id
-				content += '<div class="users_cell">' +  + '</div>';
-
-				// email
-				content += '<div class="users_cell"> ' + ;
-				content += '	' + );
-				content += '	' + ;
-				content += '</div>';
-				content += '<div class="users_cell">' +  + '</div>';
-				content += '<div class="users_cell">' +  + '</div>';
-
-				// status
-				 
-				content += '<div class="users_cell">' +  + '</div> ';
-
-				content += '<div class="users_cell">' +  + '</div>';				
-				content += '</div>'; // users_row
-				* */
 			}
 
 			lu.innerHTML += tbl.render();

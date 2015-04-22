@@ -310,6 +310,7 @@ function FHQFrontEndLib() {
 					this.fhq.email = obj.data.email;
 					this.fhq.role = obj.data.role;
 					this.fhq.status = obj.data.status;
+					this.fhq.profile.bInitUserProfile == true;
 				}
 			};
 		};
@@ -369,6 +370,11 @@ function FHQFrontEndLib() {
 	this.getEventTypes = function() {
 		this.initTypes();
 		return this.enums.eventTypes;
+	};
+	
+	this.getEventTypesFilter = function() {
+		this.initTypes();
+		return this.enums.eventTypesFilter;
 	};
 
 	this.getUserRoles = function() {
