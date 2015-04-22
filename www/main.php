@@ -281,7 +281,7 @@ if (!isset($_SESSION['user']))
 	$arrmenu2[] = array(
 		'name' => 'users',
 		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Settings" onclick="fhqgui.loadSettings(\'content_page\');">
+			<div class="fhq_btn_menu hint--right" data-hint="Settings" onclick="fhqgui.loadSettings(\'content_page\');">
 				<img class="fhq_btn_menu_img" src="images/menu/settings.png"/>
 			</div>
 		',
@@ -291,7 +291,7 @@ if (!isset($_SESSION['user']))
 	$arrmenu2[] = array(
 		'name' => 'users',
 		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Users" onclick="createPageUsers(); updateUsers();">
+			<div class="fhq_btn_menu hint--right" data-hint="Users" onclick="createPageUsers(); updateUsers();">
 				<img class="fhq_btn_menu_img" src="images/menu/users.png"/>
 			</div>
 		',
@@ -301,7 +301,7 @@ if (!isset($_SESSION['user']))
 	$arrmenu2[] = array(
 		'name' => 'answerlist',
 		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Answer List" onclick="createPageAnswerList(); updateAnswerList();">
+			<div class="fhq_btn_menu hint--right" data-hint="Answer List" onclick="createPageAnswerList(); updateAnswerList();">
 				<img class="fhq_btn_menu_img" src="images/menu/answerlist.png"/>
 			</div>
 		',
@@ -311,7 +311,7 @@ if (!isset($_SESSION['user']))
 	$arrmenu2[] = array(
 		'name' => 'install_updates',
 		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Install Updates" onclick="installUpdates();">
+			<div class="fhq_btn_menu hint--right" data-hint="Install Updates" onclick="installUpdates();">
 				<img class="fhq_btn_menu_img" src="images/menu/updates.png"/>
 			</div>
 		',
@@ -321,7 +321,7 @@ if (!isset($_SESSION['user']))
 	$arrmenu2[] = array(
 		'name' => 'dumps',
 		'html' => '
-			<div class="fhq_btn_menu hint--bottom" data-hint="Dumps" onclick="alert(\'todo\')">
+			<div class="fhq_btn_menu hint--right" data-hint="Dumps" onclick="alert(\'todo\')">
 				<img class="fhq_btn_menu_img" src="images/menu/dumps.png"/>
 			</div>
 		',

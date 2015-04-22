@@ -238,6 +238,37 @@ function FHQGuiLib() {
 			}
 		);
 	}
+	
+	this.gameView = function(game, currentGameId) {
+		var content = '';
+		content += '\n<div class="fhq_event_info">\n';
+		content += '	<div class="fhq_event_info_row">\n';
+		content += '		<div class="fhq_event_info_cell_img"><img src="' + game.logo + '" width="100px"></div>\n';
+		content += '		<div class="fhq_event_info_cell_content">\n';
+		content += '			<div class="fhq_event_caption"> [' + game.type_game + ', ' + game.state + ', ' + game.form + ', ' + ' by <b>{' + game.organizators + '}</b>]</div>';
+		content += '			<div class="fhq_event_caption"> [' + game.date_start + ' - ' + game.date_stop + ', restart: ' + game.date_restart + ']</div>';
+		content += '			<div class="fhq_event_score"><b><h1>' + game.title + '</h1></b></div>';
+		content += '			<div class="fhq_event_score">' + game.description + ' </div>';
+		content += '			<div class="fhq_event_caption">'; 
+		var perms = game.permissions;
+
+		if (currentGameId != game.id)
+			content += '<div class="fhqbtn" onclick="chooseGame(' + game.id + ');">Choose</div> ';
+		else
+			content += 'Current Game';
+		
+		if (perms['delete'] == true)
+			content += '<div class="fhqbtn" onclick="formDeleteGame(' + game.id + ');">Delete</div>';
+			
+		if (perms['update'] == true)
+			content += '<div class="fhqbtn" onclick="formEditGame(' + game.id + ');">Edit</div>';
+		
+		content += '			</div>';
+		content += '		</div>'; // fhq_event_info_cell_content
+		content += '	</div>'; // fhq_event_info_row
+		content += '</div><br>'; // fhq_event_info
+		return content;
+	}
 };
 
 function FHQParamTable() {
