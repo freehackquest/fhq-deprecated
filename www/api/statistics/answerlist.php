@@ -3,6 +3,23 @@ $statistics_list_start = microtime(true);
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Answer List
+ * API_DESCRIPTION: Method will be returned answer list for monitoring by users
+ * API_ACCESS: admin only
+ * API_INPUT: page - integer, number of page - need for pagging
+ * API_INPUT: onpage - integer, records on page - need for pagging
+ * API_INPUT: table - string, (active or backup)
+ * API_INPUT: userid - string, filter by user id or empty
+ * API_INPUT: user - string, filter by user nick or email or empty
+ * API_INPUT: gameid - string, filter by game id or empty
+ * API_INPUT: gamename - string, filter by gamename or empty
+ * API_INPUT: questid - string, filter by questid or empty
+ * API_INPUT: questname - string, filter by questname or empty
+ * API_INPUT: questsubject - string, filter by questsubject or empty
+ * API_INPUT: passed - string, filter by passed or empty
+ */
+
 $curdir_statistics_list = dirname(__FILE__);
 include_once ($curdir_statistics_list."/../api.lib/api.base.php");
 include_once ($curdir_statistics_list."/../api.lib/api.security.php");
@@ -39,7 +56,7 @@ if (!is_numeric($gameid))
 // table
 $table = APIHelpers::getParam('table', 'active');
 if ($table != 'active' && $table != 'backup')
-	APIHelpers::showerror(1071, 'parameter "active" must be "current" or "backup"');
+	APIHelpers::showerror(1071, 'parameter "table" must be "active" or "backup"');
 $result['data']['table'] = $table;
 $table = $table == 'active' ? 'tryanswer' : 'tryanswer_backup';
 

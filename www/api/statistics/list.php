@@ -3,6 +3,18 @@ $statistics_list_start = microtime(true);
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Statistics List
+ * API_DESCRIPTION: Method will be returned statistics info
+ * API_ACCESS: authorized users
+ * API_INPUT: page - integer, number of page - need for pagging
+ * API_INPUT: onpage - integer, records on page - need for pagging
+ * API_INPUT: questid - integer, quest id
+ * API_INPUT: questname - string, search by name or substring from quest name
+ * API_INPUT: questsubject - string, look in types
+ * API_INPUT: token - string, token
+ */
+
 $curdir_statistics_list = dirname(__FILE__);
 include_once ($curdir_statistics_list."/../api.lib/api.base.php");
 include_once ($curdir_statistics_list."/../api.lib/api.security.php");
