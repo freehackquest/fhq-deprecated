@@ -2,6 +2,14 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Delete Feedback Submessage
+ * API_DESCRIPTION: delete submesage for feedback 
+ * API_ACCESS: admin only
+ * API_INPUT: id - string, Identificator of the feedback message
+ * API_INPUT: token - string, token
+ */
+
 $curdir_events_insert = dirname(__FILE__);
 include_once ($curdir_events_insert."/../api.lib/api.helpers.php");
 include_once ($curdir_events_insert."/../../config/config.php");

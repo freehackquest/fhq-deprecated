@@ -2,6 +2,15 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Feedback Message Insert
+ * API_DESCRIPTION: Method will be add feedback message to feedback
+ * API_ACCESS: authorized users
+ * API_INPUT: feedbackid - integer, type of feedback id
+ * API_INPUT: text - string, text message
+ * API_INPUT: token - string, token
+ */
+
 $curdir_events_insert = dirname(__FILE__);
 include_once ($curdir_events_insert."/../api.lib/api.helpers.php");
 include_once ($curdir_events_insert."/../../config/config.php");

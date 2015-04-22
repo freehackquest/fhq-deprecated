@@ -1,5 +1,15 @@
 <?php
+// TODO rename curdir
 $curdir_statistics_list = dirname(__FILE__);
+
+/*
+ * API_NAME: Get Feedback Message Info
+ * API_DESCRIPTION: Method will be returned id, text for feedback message - need for editing
+ * API_ACCESS: admin only
+ * API_INPUT: id - string, Identificator of the feedback message
+ * API_INPUT: token - string, token
+ */
+ 
 include_once ($curdir_statistics_list."/../api.lib/api.base.php");
 include_once ($curdir_statistics_list."/../api.lib/api.security.php");
 include_once ($curdir_statistics_list."/../api.lib/api.helpers.php");

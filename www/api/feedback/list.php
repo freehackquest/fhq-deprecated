@@ -1,5 +1,16 @@
 <?php
 $curdir_statistics_list = dirname(__FILE__);
+
+/*
+ * API_NAME: Feedback List
+ * API_DESCRIPTION: Method will be list feedbacks and feedback messages to them.
+ * API_DESCRIPTION: For admin: will be returned all feedbacks for user only user's feedback
+ * API_ACCESS: authorized users
+ * API_INPUT: feedbackid - integer, type of feedback id
+ * API_INPUT: text - string, text message
+ * API_INPUT: token - string, token
+ */
+
 include_once ($curdir_statistics_list."/../api.lib/api.base.php");
 include_once ($curdir_statistics_list."/../api.lib/api.security.php");
 include_once ($curdir_statistics_list."/../api.lib/api.helpers.php");
