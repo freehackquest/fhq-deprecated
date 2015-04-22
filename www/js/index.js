@@ -125,7 +125,7 @@ function loadCities() {
 				var a = document.getElementById('about');
 				var content = '<center>';
 				for (var k in obj.data.winners) {
-					
+
 					content += '<br><b>Winner(s) of ' + k + ':</b><br>';
 					var us = []
 					for (var k1 in obj.data.winners[k]) {
