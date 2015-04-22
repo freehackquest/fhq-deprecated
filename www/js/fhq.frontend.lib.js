@@ -337,6 +337,16 @@ function FHQFrontEndLib() {
 	}
 
 	// enums
+	this.getQuestUserStatus = function() {
+		this.initTypes();
+		return this.enums.questUserStatus;
+	};
+	
+	this.getQuestUserStatusFilter = function() {
+		this.initTypes();
+		return this.enums.questUserStatusFilter;
+	};
+	
 	this.getQuestTypes = function() {
 		this.initTypes();
 		return this.enums.questTypes;

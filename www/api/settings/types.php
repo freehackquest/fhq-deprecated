@@ -13,6 +13,17 @@ header('Content-Type: application/json');
 $result = array(
 	'result' => 'ok',
 	'data' => array(
+		'questUserStatus' => array(
+			array( 'value' => 'open', 'caption' => 'Open' ),
+			array( 'value' => 'in_progress', 'caption' => 'In Progress' ),
+			array( 'value' => 'completed', 'caption' => 'Completed' ),
+		),
+		'questUserStatusFilter' => array(
+			array( 'value' => '', 'caption' => '*' ),
+			array( 'value' => 'open', 'caption' => 'Open' ),
+			array( 'value' => 'in_progress', 'caption' => 'In Progress' ),
+			array( 'value' => 'completed', 'caption' => 'Completed' ),
+		),		
 		'questTypes' => array(
 			array( 'value' => 'hashes', 'caption' => 'Hashes' ),
 			array( 'value' => 'stego', 'caption' => 'Stego' ),

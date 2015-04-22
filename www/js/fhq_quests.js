@@ -1,16 +1,39 @@
 
 function createQuestFilters() {
-	return '\n\n<div class="fhq_task_filters"> <div>Filter by status quests: \n'
-	+ '<input id="filter_open" class="fhq_task_checkbox" type="checkbox" onclick="reloadQuests();" checked />\n'
-	+ '<label class="fhq_task_label lite_green_check" for="filter_open">open (<font id="filter_open_count">0</font>) </label> \n'
-	+ '<input id="filter_current" class="fhq_task_checkbox" type="checkbox" onclick="reloadQuests();" checked/> \n'
-	+ '<label class="fhq_task_label lite_green_check" for="filter_current">in progress (<font id="filter_current_count">0</font>) </label> \n'
-	+ '<input id="filter_completed" class="fhq_task_checkbox" type="checkbox" onclick="reloadQuests();" />\n'
-	+ '<label class="fhq_task_label lite_green_check" for="filter_completed">completed (<font id="filter_completed_count">0</font>) </label> \n'
-	+ '</div>\n'
-	+ '<div id="filter_by_subject"></div> \n'
-	+ '</div> \n'
-	+ '<div id="quests"></div> \n';
+	
+	var pt = new FHQParamTable();
+	// TODO
+	// pt.row('Filter:', '<input type="text" id="quests_search" value="" onkeydown="if (event.keyCode == 13) {resetEventsPage(); updateEvents();};"/>');
+	pt.rowid('quests_create', '', '<div class="fhqbtn" onclick="formCreateQuest();">Create Quest</div>');
+	pt.row('Status:', fhqgui.combobox('quests_userstatus', '', fhq.getQuestUserStatusFilter()));
+	pt.row('Subject:', fhqgui.combobox('quests_subject', '', fhq.getQuestTypesFilter()));
+	pt.row('', fhqgui.btn('Search', 'reloadQuests();'));
+	pt.skip();
+	pt.row('Open:', '<font id="quests_open">0</font>');
+	pt.row('In_Progress:', '<font id="quests_in_progress">0</font>');
+	pt.row('Completed:', '<font id="quests_completed">0</font>');
+	pt.skip();
+	var tps = fhq.getQuestTypes();
+	for (var k in tps) {
+		pt.row(tps[k].caption, '<font id="quests_type_' + tps[k].value + '">0</font>');		
+	}
+
+	/*var cp = new FHQContentPage();
+	cp.clear();
+	cp.append(pt.render());
+	cp.append('<input type="hidden" id="events_page" value="0"/>'
+		+ '<div id="error_search"></div>'
+		+ '<hr/>'
+		+ '<div id="listEvents"></div>');*/
+
+	var content = '\n'
+	+ '<table width=100%><tr>'
+	+ '<td valign=top width=100%><div id="quests"></div></td>\n'
+	+ '<td valign=top>' + pt.render() + '</td>\n'	
+	+ '</tr></table>\n'
+	+ ' \n';
+
+	return content;
 }
 
 function reloadQuests()
@@ -19,20 +42,31 @@ function reloadQuests()
 	if (!quests)
 		return;
 	quests.innerHTML = "Please wait...";
-	
+
 	var params = {};
-	params.filter_open = document.getElementById("filter_open").checked;
-	params.filter_current = document.getElementById("filter_current").checked;
-	params.filter_completed = document.getElementById("filter_completed").checked;
+	var q_status = document.getElementById("quests_userstatus").value;
+
+	if (q_status == 'open') {
+		params.filter_open = true;
+		params.filter_current = false;
+		params.filter_completed = false;
+	} else if (q_status == 'in_progress') {
+		params.filter_open = false;
+		params.filter_current = true;
+		params.filter_completed = false;
+	} else if (q_status == 'completed') {
+		params.filter_open = false;
+		params.filter_current = false;
+		params.filter_completed = true;
+	} else {
+		params.filter_open = true;
+		params.filter_current = true;
+		params.filter_completed = true;
+	}
+	
 
 	// filter
-	var arr = []
-	var elems = document.getElementsByName("filter_subjects");
-	for (var i = 0; i < elems.length; i++) {
-		if (elems[i].checked)
-			arr.push(elems[i].getAttribute("subject"));
-	}
-	params.filter_subjects = arr.join(",");
+	params.filter_subjects = document.getElementById('quests_subject').value;
 	
 	// alert(createUrlFromObj(params));
 	send_request_post(
@@ -48,24 +82,25 @@ function reloadQuests()
 				return;
 			}
 
+			document.getElementById("quests_open").innerHTML = obj.status.open;
+			document.getElementById("quests_in_progress").innerHTML = obj.status.current;
+			document.getElementById("quests_completed").innerHTML = obj.status.completed;
+
 			// var current_game = obj.current_game;
-			document.getElementById("filter_open_count").innerHTML = obj.status.open;
-			document.getElementById("filter_current_count").innerHTML = obj.status.current;
-			document.getElementById("filter_completed_count").innerHTML = obj.status.completed;
-			var filter_by_subject = document.getElementById('filter_by_subject');
-			if (filter_by_subject.innerHTML == "")
-			{
-				filter_by_subject.innerHTML = 'Filter by subject: \n';
-				for (var k in obj.subjects) {
-					filter_by_subject.innerHTML += '<input name="filter_subjects" subject="' + k + '" id="filter_subject_' + k + '" type="checkbox" class="fhq_task_checkbox" onclick="reloadQuests();" checked/>'
-					+ '<label class="fhq_task_label lite_green_check" for="filter_subject_' + k + '">' + k + ' (' + obj.subjects[k] + ') </label> \n'
+
+			var tps = fhq.getQuestTypes();
+			for (var k in tps) {
+				if (obj.subjects[tps[k].value] != null) {
+					document.getElementById('quests_type_' + tps[k].value).innerHTML = obj.subjects[tps[k].value];
+				} else {
+					document.getElementById('quests_type_' + tps[k].value).innerHTML = 0;
 				}
 			}
-
 			quests.innerHTML = '';
 			var perms = obj['permissions'];
-			if (perms['insert'] == true)
-				quests.innerHTML += '<div class="fhqinfo"><div class="button3 ad" onclick="formCreateQuest();">Create Quest</div></div><br>';
+			if (perms['insert'] == false) {
+				document.getElementById('quests_create').innerHTML = "";
+			}
 
 			if (params.filter_current && obj.status.current > 0)
 				quests.innerHTML += '<hr>In progress:<br><div id="current_quests"></div>';

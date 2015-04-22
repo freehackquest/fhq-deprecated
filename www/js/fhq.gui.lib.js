@@ -281,6 +281,14 @@ function FHQParamTable() {
 			+ '\t</div>\n'
 		);
 	};
+	this.rowid = function(id,name,param) {
+		this.paramtable.push( '\n'
+			+ '\t<div id="' + id + '" class="fhqparamtbl_row">\n'
+			+ '\t\t<div class="fhqparamtbl_param">' + name + '</div>\n'
+			+ '\t\t<div class="fhqparamtbl_value">' + param + '</div>\n'
+			+ '\t</div>\n'
+		);
+	};
 	this.right = function(param) {
 		this.paramtable.push( '\n'
 			+ '\t<div class="fhqparamtbl_row">\n'
