@@ -431,6 +431,7 @@ function formCreateUser() {
 }
 
 function createPageUsers() {
+	fhqgui.setFilter('users');
 	var pt = new FHQParamTable();
 	pt.row('',fhqgui.btn('Create User', 'formCreateUser();'));
 	pt.row('',fhqgui.btn('Prepare dump of users (export)', 'prepareDumpUsers();') + '<div id="usersdump"></div>');

@@ -114,6 +114,59 @@ function FHQGuiLib() {
 		return pagesHtml.join(' ');
 	}
 	
+	this.filter = {
+		'current' : 'quests',
+		'quests' : {
+			'quests_open' : 0,
+			'quests_in_progress' : 0,
+			'quests_completed' : 0,
+			'userstatus' : 'not_completed',
+			'subject' : '',
+			'getParams' : function() {
+				var params = [];
+				return params;
+			}
+		}
+	};
+	
+	this.setFilter = function(current_filter) {
+		this.filter.current = current_filter;
+		if (this.filter[current_filter] == null) {
+			document.getElementById('btnfilter').style.visibility = 'hidden';
+		} else {
+			document.getElementById('btnfilter').style.visibility = 'visible';
+		}
+	}
+	
+	this.showFilter = function() {
+		var current_page = this.filter.current;
+		
+		var pt = new FHQParamTable();
+		
+		if (current_page == 'quests') {
+			// TODO move create quest to another place
+			// pt.rowid('quests_create', '', '<div class="fhqbtn" onclick="formCreateQuest();">Create Quest</div>');
+			pt.row('Status:', fhqgui.combobox('quests_userstatus', this.filter.quests.userstatus, fhq.getQuestUserStatusFilter()));
+			pt.row('Subject:', fhqgui.combobox('quests_subject', this.filter.quests.subject, fhq.getQuestTypesFilter()));
+			pt.right(this.btn('Apply', 'fhqgui.applyQuestsFilter(); reloadQuests(); fhqgui.closeModalDialog();'));
+		} else {
+			pt.row('TODO', current_page);
+		}
+		this.showModalDialog(pt.render());
+	}
+
+	this.applyQuestsFilter = function() {
+		this.filter.quests.userstatus = document.getElementById("quests_userstatus").value;
+		this.filter.quests.subject = document.getElementById('quests_subject').value;
+	}
+
+	this.loadAbout = function() {
+		this.setFilter('about');
+		send_request_post_html('about.php', '', function(html) {
+			document.getElementById('content_page').innerHTML = html;
+		});
+	}
+
 	this.eventView = function(event, access) {
 		var content = '';
 		var imgpath = '';
@@ -216,6 +269,7 @@ function FHQGuiLib() {
 	}
 
 	this.loadSettings = function(idelem) {
+		this.setFilter('settings');
 		var scp = new FHQDynamicContent(idelem);
 		send_request_post(
 			'api/settings/get.php',
@@ -268,6 +322,11 @@ function FHQGuiLib() {
 		content += '	</div>'; // fhq_event_info_row
 		content += '</div><br>'; // fhq_event_info
 		return content;
+	}
+	
+	this.createPageDumps = function() {
+		this.setFilter('dumps');
+		alert('todo');
 	}
 };
 

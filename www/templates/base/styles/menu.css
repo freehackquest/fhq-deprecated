@@ -11,6 +11,7 @@
 	margin-bottom: 5px;
 	padding: 5px;
 	vertical-align:middle;
+	transition: 0s;
 }
 
 .fhq_btn_menu:hover {

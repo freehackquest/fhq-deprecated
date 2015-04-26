@@ -55,6 +55,8 @@ function updateScore() {
 }
 
 function loadGames() {
+	fhqgui.setFilter('games');
+	
 	var el = document.getElementById("content_page");
 	el.innerHTML = "Please wait...";
 	
@@ -298,6 +300,7 @@ function formCreateGame()
 }
 
 function loadGameRules(gameid) {
+	fhqgui.setFilter('rules');
 	var params = {};
 	params["id"] = gameid;
 	var el = document.getElementById("content_page");
@@ -318,6 +321,8 @@ function loadGameRules(gameid) {
 }
 
 function loadScoreboard(gameid) {
+	fhqgui.setFilter('scoreboard');
+	
 	var params = {};
 	params["gameid"] = gameid;
 	

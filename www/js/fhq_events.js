@@ -169,6 +169,8 @@ function setEventsPage(val) {
 }
 
 function createPageEvents() {
+	fhqgui.setFilter('events');
+	
 	var pt = new FHQParamTable();
 	// TODO
 	/*pt.row('',fhqgui.btn('Create News', 'formCreateEvent();'));

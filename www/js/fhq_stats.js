@@ -9,6 +9,7 @@ function setStatisticsPage(val) {
 }
 
 function createPageStatistics(gameid) {
+	fhqgui.setFilter('stats');
 	var pt = new FHQParamTable();
 	pt.row('Quest Name:', '<input type="text" id="statistics_questname" value="" onkeydown="if (event.keyCode == 13) {resetStatisticsPage(' + gameid + '); updateStatistics();};"/>');
 	pt.row('Quest ID:', '<input type="text" id="statistics_questid" value="" onkeydown="if (event.keyCode == 13) {resetStatisticsPage(' + gameid + '); updateStatistics();};"/>');
@@ -135,6 +136,7 @@ function hatchAnswer(answer) {
 }
 
 function createPageAnswerList() {
+	fhqgui.setFilter('answerlist');
 	var cp = document.getElementById('content_page');
 	cp.innerHTML = '';
 

@@ -169,6 +169,7 @@ function formEditFeedbackMessage(id)  {
 }
 
 function loadFeedback() {
+	fhqgui.setFilter('feedback');
 	var params = {};
 	var el = document.getElementById("content_page");
 	el.innerHTML = "Please wait...";

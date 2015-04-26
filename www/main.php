@@ -78,13 +78,6 @@ if (!isset($_SESSION['user']))
 				fhq.security.logout();			
 				window.location.href = "index.php";
 			}
-
-			function loadAbout() {
-				send_request_post_html('about.php', '', function(html) {
-					document.getElementById('content_page').innerHTML = html;
-				});
-			}
-
 		</script>
 		
 	</head>
@@ -132,7 +125,7 @@ if (!isset($_SESSION['user']))
 			$arrmenu[] = array(
 				'name' => 'logo',
 				'html' => '
-					<div class="fhq_btn_menu fhq_btn_menu_color_none hint--right" data-hint="About" onclick="loadAbout();">
+					<div class="fhq_btn_menu fhq_btn_menu_color_none hint--right" data-hint="About" onclick="fhqgui.loadAbout();">
 						<img class="fhq_btn_menu_img" src="templates/base/images/logo/fhq_2015_small.png"/>
 					</div>
 				',
@@ -190,6 +183,16 @@ if (!isset($_SESSION['user']))
 					</div>
 				',
 				'show' => ($game_type == 'jeopardy'),
+			);
+
+			$arrmenu[] = array(
+				'name' => 'filter',
+				'html' => '
+					<div class="fhq_btn_menu hint--bottom" data-hint="Filter" id="btnfilter" onclick="fhqgui.showFilter();">
+						<img class="fhq_btn_menu_img" src="images/menu/filter.png"/><br>
+					</div>
+				',
+				'show' => true,
 			);	
 
 			// echo menu
@@ -294,7 +297,7 @@ if (!isset($_SESSION['user']))
 		$arrmenu2[] = array(
 			'name' => 'dumps',
 			'html' => '
-				<div class="fhq_btn_menu hint--right" data-hint="Dumps" onclick="alert(\'todo\')">
+				<div class="fhq_btn_menu hint--right" data-hint="Dumps" onclick="fhqgui.createPageDumps();">
 					<img class="fhq_btn_menu_img" src="images/menu/dumps.png"/>
 				</div>
 			',

@@ -1,5 +1,6 @@
 
 function installUpdates() {
+	fhqgui.setFilter('updates');
 	document.getElementById("content_page").innerHTML = "Install updates. Please wait...";
 	var params = {};
 	send_request_post(
