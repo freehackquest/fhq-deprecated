@@ -170,6 +170,7 @@ try {
 			ta.answer_try,
 			ta.answer_real,
 			u.nick,
+			u.logo,
 			u.email,
 			q.name,
 			q.subject,
@@ -193,20 +194,27 @@ try {
 	while ($row = $stmt->fetch()) {
 		$id++;
 		$result['data']['answers'][] = array(
-			'datetime_try' => $row['datetime_try'],
-			'gameid' => $row['gameid'],
-			'gametitle' => $row['title'],
-			'questid' => $row['idquest'],
-			'questname' => $row['name'],
-			'questscore' => $row['score'],
-			'questsubject' => $row['subject'],
-			'questsolved' => $row['count_user_solved'],
-			'userid' => $row['iduser'],
-			'usernick' => $row['nick'],
-			'email' => $row['email'],
+			'dt' => $row['datetime_try'],
 			'answer_try' => htmlspecialchars($row['answer_try']),
 			'answer_real' => htmlspecialchars($row['answer_real']),
 			'passed' => $row['passed'],
+			'game' => array(
+				'id' => $row['gameid'],
+				'title' => $row['title'],
+			),
+			'quest' => array(
+				'id' => $row['idquest'],
+				'name' => $row['name'],
+				'score' => $row['score'],
+				'subject' => $row['subject'],
+				'solved' => $row['count_user_solved'],
+			),
+			'user' => array(
+				'id' => $row['iduser'],
+				'logo' => $row['logo'],
+				'nick' => $row['nick'],
+				'email' => $row['email'],
+			),
 		);
 	}
 } catch(PDOException $e) {

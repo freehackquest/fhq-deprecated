@@ -446,15 +446,6 @@ function createPageUsers() {
 	pt.row('Found:', '<font id="search_found">0</font>');
 	var cp = new FHQContentPage();
 	cp.clear();
-
-/*
-	// alternative:
-	var pt0 = new FHQParamTable();
-	pt0.row(pt.render(), '<input type="hidden" id="user_page" value="0"/>'
-		+ '<div id="error_search"></div>'
-		+ '<div id="listUsers"></div>');
-	cp.append(pt0.render());
-*/
 	cp.append(pt.render());
 	cp.append('<input type="hidden" id="user_page" value="0"/>'
 		+ '<div id="error_search"></div>'

@@ -467,9 +467,11 @@ function FHQFeedback() {
 function FHQTable() {
 	this.table = [];
 
-	this.openrow = function() {
+	this.openrow = function(stl) {
+		if (stl == null)
+			stl = '';
 		this.table.push(
-			'<div class="fhqrow">'
+			'<div class="fhqrow ' + stl + '">'
 		);
 	};
 	

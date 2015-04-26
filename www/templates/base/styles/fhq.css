@@ -129,6 +129,12 @@ textarea {
 	margin: 3px 3px 3px 3px;
 }
 
+.fhqrow_yellow {
+	background-color: yellow;
+	opacity: 0.5;
+	color: black;
+}
+
 .fhqcell {
 	width: 20%;
 	display: table-cell;

@@ -142,7 +142,7 @@ function createPageAnswerList() {
 
 	var content = '';
 	var onkeydown_ = 'onkeydown="if (event.keyCode == 13) {resetPageAnswerList(); updateAnswerList();};"';
-	
+
 	var pt = new FHQParamTable();
 	pt.row('UserID:', '<input type="text" id="answerlist_userid" value="" ' + onkeydown_ + '/>');
 	pt.row('E-mail or Nick:', '<input type="text" id="answerlist_user" value="" ' + onkeydown_ + '/>');
@@ -204,51 +204,37 @@ function updateAnswerList() {
 
 				al.innerHTML = '<div id="answerlist_paging">' + fhqgui.paginator(0,found, onpage, page, 'setPageAnswerList', 'updateAnswerList') + '</div>';
 
-				var content = '';
-				content += '<table id="customers">';
-				content += '<tr class="alt">';
-				content += '	<th width=10%>Date Time</th>';
-				content += '	<th width=10%>Game</th>';
-				content += '	<th>Quest</th>';
-				content += '	<th>Answer Try</th>';
-				content += '	<th>Answer Real</th>';
-				content += '	<th>Passed</th>';
-				content += '	<th>User</th>';
-				content += '</tr>\n';
-				var bColor = false;
+				var tbl = new FHQTable();
+				tbl.openrow();
+				tbl.cell('Date Time / Game');
+				tbl.cell('Quest');
+				tbl.cell('Answer');
+				tbl.cell('Passed');
+				tbl.cell('User');
+				tbl.closerow();
 
 				for (var k in obj.data.answers) {
 					content += '';
 					if (obj.data.answers.hasOwnProperty(k)) {
 						var ans = obj.data.answers[k];
-
-						// style
-						content += '<tr ';
+						
 						if (ans.passed == 'Yes')
-							content += 'class="alt2"';
-						else if (bColor == true)
-							content += 'class="alt"';
+							tbl.openrow('fhqrow_yellow');
 						else
-							content += '';
-						content += '>';
+							tbl.openrow('');
 
-						content += '	<td align=center>' + ans.datetime_try + '</td>';
-						content += '	<td align=center>' + ans.gametitle + '</td>';
-
-						content += '	<td align=center valign=top>';
-						content += '<div class="button3 ad" onclick="showQuest(' + ans.questid + ');">';
-						content += ans.questid + ' ' + ans.questname + '<br>';
-						content += ' <font size=3> ' + ans.questsubject + ' ' + ans.questscore + '</font><br>';
-						content += 'Solved ' + ans.questsolved + ' ';
-						content += '	</div></td>';
-						content += '	<td align=center>' + (ans.passed == 'Yes' ? hatchAnswer(ans.answer_try) : ans.answer_try) + '</td>';
-						content += '	<td align=center>' + hatchAnswer(ans.answer_real) + '</td>';
-						content += '	<td align=center>' + ans.passed + '</td>';
-						content += '	<td align=center><div class="button3 ad" onclick="showUserInfo(' + ans.userid + ');">' + ans.userid + ', ' + ans.usernick + ', ' + ans.email + ' </div></td>';
-						content += '</tr>\n';
-						bColor = !bColor;
+						tbl.cell(ans.dt + ' / ' + ans.game.title);
+						tbl.cell(fhqgui.questIcon(ans.quest.id, ans.quest.name, ans.quest.subject, ans.quest.score, ans.quest.solved));
+						tbl.cell('Try:<br>' + (ans.passed == 'Yes' ? hatchAnswer(ans.answer_try) : ans.answer_try)
+							+ '<br><br>Real:<br>' + hatchAnswer(ans.answer_real)
+						);
+						tbl.cell(ans.passed);
+						tbl.cell(fhqgui.userIcon(ans.user.id, ans.user.logo, ans.user.nick));
+						tbl.closerow();
+						
 					}
 				}
+				content = tbl.render();
 				al.innerHTML += content;
 			}
 		}
