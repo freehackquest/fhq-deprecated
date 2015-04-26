@@ -200,16 +200,18 @@ function updateAnswerList() {
 					content += '';
 					if (obj.data.answers.hasOwnProperty(k)) {
 						var ans = obj.data.answers[k];
-						
-						if (ans.passed == 'Yes')
+						if (ans.levenshtein == 0)
 							tbl.openrow('fhqrow_yellow');
+						else if (ans.levenshtein > 0 && ans.levenshtein < 4)
+							tbl.openrow('fhqrow_red');
 						else
 							tbl.openrow('');
 
 						tbl.cell(ans.dt + ' / ' + ans.game.title);
 						tbl.cell(fhqgui.questIcon(ans.quest.id, ans.quest.name, ans.quest.subject, ans.quest.score, ans.quest.solved));
-						tbl.cell('Try:<br>' + (ans.passed == 'Yes' ? hatchAnswer(ans.answer_try) : ans.answer_try)
-							+ '<br><br>Real:<br>' + hatchAnswer(ans.answer_real)
+						tbl.cell('Try: <br>' + (ans.passed == 'Yes' ? hatchAnswer(ans.answer_try) : ans.answer_try)
+							+ '<br><br>Real: <br>' + hatchAnswer(ans.answer_real)
+							+ '<br>Levenstein: ' + ans.levenshtein
 						);
 						tbl.cell(ans.passed);
 						tbl.cell(fhqgui.userIcon(ans.user.id, ans.user.logo, ans.user.nick));

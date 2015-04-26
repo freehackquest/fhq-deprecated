@@ -169,6 +169,7 @@ try {
 			ta.iduser,
 			ta.answer_try,
 			ta.answer_real,
+			ta.levenshtein,
 			u.nick,
 			u.logo,
 			u.email,
@@ -197,6 +198,7 @@ try {
 			'dt' => $row['datetime_try'],
 			'answer_try' => htmlspecialchars($row['answer_try']),
 			'answer_real' => htmlspecialchars($row['answer_real']),
+			'levenshtein' => $row['levenshtein'],
 			'passed' => $row['passed'],
 			'game' => array(
 				'id' => $row['gameid'],

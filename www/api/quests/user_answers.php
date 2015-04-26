@@ -49,7 +49,8 @@ $params[] = intval($questid);
 $query = '
 			SELECT 
 				answer_try,
-				datetime_try
+				datetime_try,
+				levenshtein
 			FROM 
 				tryanswer
 			WHERE
@@ -67,6 +68,7 @@ try {
 		$result['data'][] = array(
 			'datetime_try' => $row['datetime_try'],
 			'answer_try' => htmlspecialchars($row['answer_try']),
+			'levenshtein' => $row['levenshtein'],
 		);
 	}
 	$result['result'] = 'ok';

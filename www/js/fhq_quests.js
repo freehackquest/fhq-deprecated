@@ -505,7 +505,7 @@ function updateMyAnswers(id)
 				var el = document.getElementById('user_answers');
 				el.innerHTML = " Answers: <br>";
 				for (var i = 0; i < obj.data.length; ++i) {
-					el.innerHTML += '<div class="fhq_task_tryanswer">[' + obj.data[i].datetime_try + '] ' + obj.data[i].answer_try + '</div>';
+					el.innerHTML += '<div class="fhq_task_tryanswer">[' + obj.data[i].datetime_try + ', levenshtein: ' + obj.data[i].levenshtein + '] ' + obj.data[i].answer_try + '</div>';
 				}
 			} else {
 				

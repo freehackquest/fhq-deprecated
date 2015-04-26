@@ -2,23 +2,24 @@
 
 class APIAnswerList {
 
-	static function addTryAnswer($conn, $questid, $user_answer, $real_answer,  $passed) {
+	static function addTryAnswer($conn, $questid, $user_answer, $real_answer, $levenshtein, $passed) {
 		$answer_try = $user_answer;
 		$answer_real = $real_answer;
-		$query = 'INSERT INTO tryanswer(iduser, idquest, answer_try, answer_real, passed, datetime_try) VALUES (?, ?, ?, ?, ?, NOW());';
+		$query = 'INSERT INTO tryanswer(iduser, idquest, answer_try, answer_real, passed, levenshtein, datetime_try) VALUES (?, ?, ?, ?, ?, ?, NOW());';
 		$params[] = APISecurity::userid();
 		$params[] = intval($questid);
 		$params[] = $answer_try;
 		$params[] = $answer_real;
 		$params[] = $passed;
+		$params[] = $levenshtein;
 		$stmt = $conn->prepare($query);
 		$stmt->execute($params);
 		return true;
 	}
-	
+
 	static function movedToBackup($conn, $questid) {
-		$query = 'INSERT INTO tryanswer_backup (iduser, idquest, answer_try, answer_real, passed, datetime_try) 
-				SELECT iduser, idquest, answer_try, answer_real, passed, datetime_try FROM tryanswer WHERE iduser = ? and idquest = ?';
+		$query = 'INSERT INTO tryanswer_backup (iduser, idquest, answer_try, answer_real, passed, levenshtein, datetime_try) 
+				SELECT iduser, idquest, answer_try, answer_real, passed, levenshtein, datetime_try FROM tryanswer WHERE iduser = ? and idquest = ?';
 		$params[] = APISecurity::userid();
 		$params[] = intval($questid);
 		$stmt = $conn->prepare($query);

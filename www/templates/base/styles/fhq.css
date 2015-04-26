@@ -135,6 +135,12 @@ textarea {
 	color: black;
 }
 
+.fhqrow_red {
+	background-color: red;
+	opacity: 0.5;
+	color: black;
+}
+
 .fhqcell {
 	width: 20%;
 	display: table-cell;
