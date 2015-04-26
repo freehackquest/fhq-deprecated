@@ -79,7 +79,7 @@ $params['idauthor'] = intval($params['idauthor']);
 // $params['state'] = $params['state'];
 // $params['description_state'] = $params['description_state'];
 // $params['quest_uuid'] = $params['quest_uuid'];
-$params['gameid'] = APIGame::id();
+// $params['gameid'] = APIGame::id();
 $params['userid'] = APISecurity::userid();
 
 $conn = APIHelpers::createConnection($config);
@@ -114,6 +114,8 @@ $values[] = $questid;
 // } catch(PDOException $e) {
 //	APIHelpers::showerror(1028,$e->getMessage());
 //}
+
+APIQuest::updateMaxGameScore($conn, APIGame::id());
 
 include_once ($curdir."/../api.lib/savetoken.php");
 echo json_encode($result);

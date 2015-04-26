@@ -127,7 +127,7 @@ function updateNews() {
 	if (lastNewsID > 0) {
 		params['id'] = lastNewsID;
 	};
-	
+
 	send_request_post(
 		'api/events/list.php',
 		createUrlFromObj(params),

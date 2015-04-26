@@ -51,5 +51,7 @@ try {
 	APIHelpers::showerror(1063, $e->getMessage());
 }
 
+APIQuest::updateMaxGameScore($conn, APIGame::id());
+
 include_once ($curdir."/../api.lib/savetoken.php");
 echo json_encode($result);
