@@ -13,7 +13,6 @@ if (isset($_SESSION['user']))
 };
 
 ?>
-
 <html>
 	<head>
 		<title>Free Hack Quest</title>
@@ -22,6 +21,7 @@ if (isset($_SESSION['user']))
 		<meta name="copyright" lang="ru" content="sea-kg" />
 		<meta name="description" content="competition information security" />
 		<meta name="keywords" content="security, fhq, fhq 2012, fhq 2013, fhq 2014, free, hack, quest, competition, information security, ctf, joepardy" />		
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/fhq.css?version=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css?version=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css?version=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/button3.css?version=1" />
@@ -57,7 +57,7 @@ if (isset($_SESSION['user']))
 		?>
 		
 	</head>
-	<body class="main" onload="show_index_element('indexcontent_sign_in'); loadCities();">
+	<body class="fhqbody" onload="show_index_element('indexcontent_sign_in'); loadCities();">
 
 			<table width="100%" height="100%">
 				<tr>

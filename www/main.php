@@ -81,7 +81,7 @@ if (!isset($_SESSION['user']))
 		</script>
 		
 	</head>
-	<body onload="loadQuests(); updateCountOfEvents();" class="main">
+	<body onload="loadQuests(); updateCountOfEvents();" class="fhqbody fhqearth">
 		<div id="modal_dialog" class="overlay">
 			<div class="overlay_table">
 				<div class="overlay_cell">

@@ -69,7 +69,7 @@
 }*/
 	</script>
 </head>
-	<body class="main" onload="updateInfo(<?php echo $gameid;?>);">
+	<body class="fhqbody" onload="updateInfo(<?php echo $gameid;?>);">
 			<table width="100%" height="100%">
 				<tr>
 					<td align="center" valign="top" class="fhq_index_column">
