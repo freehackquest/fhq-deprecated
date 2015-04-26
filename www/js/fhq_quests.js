@@ -5,7 +5,7 @@ function createQuestFilters() {
 	// TODO
 	// pt.row('Filter:', '<input type="text" id="quests_search" value="" onkeydown="if (event.keyCode == 13) {resetEventsPage(); updateEvents();};"/>');
 	pt.rowid('quests_create', '', '<div class="fhqbtn" onclick="formCreateQuest();">Create Quest</div>');
-	pt.row('Status:', fhqgui.combobox('quests_userstatus', '', fhq.getQuestUserStatusFilter()));
+	pt.row('Status:', fhqgui.combobox('quests_userstatus', 'not_completed', fhq.getQuestUserStatusFilter()));
 	pt.row('Subject:', fhqgui.combobox('quests_subject', '', fhq.getQuestTypesFilter()));
 	pt.row('', fhqgui.btn('Search', 'reloadQuests();'));
 	pt.skip();
@@ -46,7 +46,11 @@ function reloadQuests()
 	var params = {};
 	var q_status = document.getElementById("quests_userstatus").value;
 
-	if (q_status == 'open') {
+	if (q_status == 'not_completed') {
+		params.filter_open = true;
+		params.filter_current = true;
+		params.filter_completed = false;
+	} else if (q_status == 'open') {
 		params.filter_open = true;
 		params.filter_current = false;
 		params.filter_completed = false;

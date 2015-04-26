@@ -19,10 +19,11 @@ $result = array(
 			array( 'value' => 'completed', 'caption' => 'Completed' ),
 		),
 		'questUserStatusFilter' => array(
-			array( 'value' => '', 'caption' => '*' ),
+			array( 'value' => 'not_completed', 'caption' => 'Open or In Progress' ),
 			array( 'value' => 'open', 'caption' => 'Open' ),
 			array( 'value' => 'in_progress', 'caption' => 'In Progress' ),
 			array( 'value' => 'completed', 'caption' => 'Completed' ),
+			array( 'value' => '', 'caption' => '*' ),
 		),		
 		'questTypes' => array(
 			array( 'value' => 'hashes', 'caption' => 'Hashes' ),
