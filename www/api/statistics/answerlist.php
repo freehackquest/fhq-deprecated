@@ -1,8 +1,4 @@
 <?php
-$statistics_list_start = microtime(true);
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: Answer List
  * API_DESCRIPTION: Method will be returned answer list for monitoring by users
@@ -27,50 +23,33 @@ include_once ($curdir_statistics_list."/../api.lib/api.helpers.php");
 include_once ($curdir_statistics_list."/../api.lib/api.game.php");
 include_once ($curdir_statistics_list."/../../config/config.php");
 
-include_once ($curdir_statistics_list."/../api.lib/loadtoken.php");
+$response = APIHelpers::startpage($config);
 
 APIHelpers::checkAuth();
 
 if(!APISecurity::isAdmin())
   APIHelpers::showerror(1068, 'access denie. you must be admin.');
 
-// $gameid = APIHelpers::getParam("gameid", APIGame::id());
-
-// todo check integer value
-
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
-
-$result['result'] = 'ok';
-
-/*if ($gameid == 0)
-	APIHelpers::showerror(1069, "Game was not selected.");
-
-if (!is_numeric($gameid))
-	APIHelpers::showerror(1070, 'parameter "gameid" must be numeric');*/
-
-// $result['data']['gameid'] = $gameid;
+$response['result'] = 'ok';
 
 // table
 $table = APIHelpers::getParam('table', 'active');
 if ($table != 'active' && $table != 'backup')
 	APIHelpers::showerror(1071, 'parameter "table" must be "active" or "backup"');
-$result['data']['table'] = $table;
+$response['data']['table'] = $table;
 $table = $table == 'active' ? 'tryanswer' : 'tryanswer_backup';
 
 // page
 $page = APIHelpers::getParam('page', 0);
 if (!is_numeric($page))
 	APIHelpers::showerror(1072, 'parameter "page" must be numeric');
-$result['data']['page'] = intval($page);
+$response['data']['page'] = intval($page);
 
 // onpage
-$onpage = APIHelpers::getParam('onpage', 25);
+$onpage = APIHelpers::getParam('onpage', 10);
 if (!is_numeric($onpage))
 	APIHelpers::showerror(1073, 'parameter "onpage" must be numeric');
-$result['data']['onpage'] = intval($onpage);
+$response['data']['onpage'] = intval($onpage);
 
 
 $filter_where = [];
@@ -154,7 +133,7 @@ try {
 	');
 	$stmt->execute($filter_values);
 	if($row = $stmt->fetch()) {
-		$result['data']['count'] = intval($row['cnt']);
+		$response['data']['count'] = intval($row['cnt']);
 	}
 } catch(PDOException $e) {
 	APIHelpers::showerror(1074, $e->getMessage());
@@ -190,11 +169,11 @@ try {
 		LIMIT '.($page*$onpage).','.$onpage.'
 	');
 	$stmt->execute($filter_values);
-	$result['data']['answers'] = array();
+	$response['data']['answers'] = array();
 	$id = -1;
 	while ($row = $stmt->fetch()) {
 		$id++;
-		$result['data']['answers'][] = array(
+		$response['data']['answers'][] = array(
 			'dt' => $row['datetime_try'],
 			'answer_try' => htmlspecialchars($row['answer_try']),
 			'answer_real' => htmlspecialchars($row['answer_real']),
@@ -223,8 +202,4 @@ try {
 	APIHelpers::showerror(1075, $e->getMessage());
 }
 
-// not needed here
-// include_once ($curdir."/../api.lib/savetoken.php");
-
-$result['lead_time_sec'] = microtime(true) - $statistics_list_start;
-echo json_encode($result);
+APIHelpers::endpage($response);

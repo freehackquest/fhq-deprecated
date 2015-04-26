@@ -51,7 +51,7 @@ class APIHelpers {
 		APIHelpers::endpage($result);
 		exit;
 	}
-	
+
 	static function calculateScore($conn)
 	{
 		// calculate score
@@ -95,22 +95,46 @@ class APIHelpers {
 	
 	static $TIMESTART = null;
 	static $FHQSESSION = null;
-	static $FHQSESSION_CHANGED = false;
+	static $FHQSESSION_ORIG = null;
 	static $CONN = null;
 
 	static function startpage($config) {
 		header("Access-Control-Allow-Origin: *");
 		header('Content-Type: application/json');
-		APIHelpers::$TIMESTART = microtime(true);	
+		APIHelpers::$TIMESTART = microtime(true);
+
+		$issetToken = APIHelpers::issetParam('token');
+		if ($issetToken) {
+			$token = APIHelpers::getParam('token', '');
+			$conn = APIHelpers::createConnection($config);
+			try {
+				$stmt = $conn->prepare('SELECT data FROM users_tokens WHERE token = ? AND status = ? AND end_date > NOW()');
+				$stmt->execute(array($token,'active'));
+				if ($row = $stmt->fetch())
+				{
+					APIHelpers::$FHQSESSION = json_decode($row['data'],true);
+					APIHelpers::$FHQSESSION_ORIG = json_decode($row['data'],true);
+				}
+			} catch(PDOException $e) {
+				APIHelpers::showerror(1197, $e->getMessage());
+			}
+		}
+		
+		$response = array(
+			'result' => 'fail',
+			'lead_time_sec' => 0,
+			'data' => array(),
+		);
+		return $response;
 	}
 	
-	static function endpage($result) {
+	static function endpage($response) {
 		if (APIHelpers::$TIMESTART != null)
 			$result['lead_time_sec'] = microtime(true) - APIHelpers::$TIMESTART;
-		if (APIHelpers::$FHQSESSION_CHANGED) {
+		if (APIHelpers::$FHQSESSION_ORIG != APIHelpers::$FHQSESSION) { // TODO equals
 			// TODO save session
 		}
-		echo json_encode($result);
+		echo json_encode($response);
 	}
 }
 

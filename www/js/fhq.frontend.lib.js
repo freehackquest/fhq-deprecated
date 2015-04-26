@@ -45,6 +45,8 @@ function FHQFrontEndLib() {
 	this.sendPostRequest_Async = function(page, params, callbackf) {
 		var tmpXMLhttp = null;
 		params.token = this.token;
+		// alert(this.createUrlFromObj(params));
+
 		if (window.XMLHttpRequest) {
 			// code for IE7+, Firefox, Chrome, Opera, Safari
 			tmpXMLhttp = new window.XMLHttpRequest();
@@ -327,6 +329,17 @@ function FHQFrontEndLib() {
 		};
 	})(this);
 
+
+	this.statistics = new (function(t) {
+		this.p = t;
+		this.answerlist = function(params, callback) {
+			if (callback)
+				this.p.sendPostRequest_Async('api/statistics/answerlist.php', params, callback);
+			else
+				return this.p.sendPostRequest_Sync('api/statistics/answerlist.php', params);
+		};
+	})(this);
+	
 	this.enums = null;
 	
 	this.initTypes = function() {

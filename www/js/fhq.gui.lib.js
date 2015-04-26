@@ -124,7 +124,7 @@ function FHQGuiLib() {
 			'subject' : '',
 			'getParams' : function() {
 				// TODO
-				var params = [];
+				var params = {};
 				return params;
 			}
 		},
@@ -139,7 +139,22 @@ function FHQGuiLib() {
 			'passed' : '',
 			'table' : 'active',
 			'onpage' : 10,
-			'page' : 0
+			'page' : 0,
+			'getParams' : function() {
+				var params = {};
+				params.userid = this.userid;
+				params.user = this.user;
+				params.gameid = this.gameid;
+				params.gamename = this.gamename;
+				params.questid = this.questid;
+				params.questname = this.questname;
+				params.questsubject = this.questsubject;
+				params.passed = this.passed;
+				params.table = this.table;
+				params.page = this.page;
+				params.onpage = this.onpage;
+				return params;
+			}
 		}
 	};
 

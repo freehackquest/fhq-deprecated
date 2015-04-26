@@ -161,21 +161,9 @@ function updateAnswerList() {
 	fhqgui.closeModalDialog();
 
 	al.innerHTML = "Loading...";
-	var params = {};
-	params.userid = fhqgui.filter.answerlist.userid;
-	params.user = fhqgui.filter.answerlist.user;
-	params.gameid = fhqgui.filter.answerlist.gameid;
-	params.gamename = fhqgui.filter.answerlist.gamename;
-	params.questid = fhqgui.filter.answerlist.questid;
-	params.questname = fhqgui.filter.answerlist.questname;
-	params.questsubject = fhqgui.filter.answerlist.questsubject;
-	params.passed = fhqgui.filter.answerlist.passed;
-	params.table = fhqgui.filter.answerlist.table;
-	params.page = fhqgui.filter.answerlist.page;
-	params.onpage = fhqgui.filter.answerlist.onpage;
-	send_request_post(
-		'api/statistics/answerlist.php',
-		createUrlFromObj(params),
+
+	fhq.statistics.answerlist(
+		fhqgui.filter.answerlist.getParams(),
 		function (obj) {
 			if (obj.result == "fail") {
 				el.innerHTML = obj.error.message;

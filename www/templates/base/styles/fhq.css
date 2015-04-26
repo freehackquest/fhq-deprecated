@@ -130,13 +130,13 @@ textarea {
 }
 
 .fhqrow_yellow {
-	background-color: yellow;
+	background-color: #FFFFCC;
 	opacity: 0.5;
 	color: black;
 }
 
 .fhqrow_red {
-	background-color: red;
+	background-color: #FF6666;
 	opacity: 0.5;
 	color: black;
 }
