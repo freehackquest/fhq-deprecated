@@ -3,6 +3,7 @@
  * API_NAME: Answer List
  * API_DESCRIPTION: Method will be returned answer list for monitoring by users
  * API_ACCESS: admin only
+ * API_INPUT: token - guid, secret token
  * API_INPUT: page - integer, number of page - need for pagging
  * API_INPUT: onpage - integer, records on page - need for pagging
  * API_INPUT: table - string, (active or backup)
