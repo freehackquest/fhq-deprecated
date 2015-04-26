@@ -248,7 +248,7 @@ function FHQGuiLib() {
 		content += '			<div class="fhq_event_caption"> [' + game.type_game + ', ' + game.state + ', ' + game.form + ', ' + ' by <b>{' + game.organizators + '}</b></div>';
 		content += '			<div class="fhq_event_caption"> ' + game.date_start + ' - ' + game.date_stop + ', restart: ' + game.date_restart + ']</div>';
 		content += '			<div class="fhq_event_score"><b><h1>' + game.title + '</h1></b></div>';
-		content += '			<div class="fhq_event_score">' + game.description + ' </div>';
+		content += '			<div class="fhq_event_score"><pre>' + game.description + '</pre></div>';
 		content += '			<div class="fhq_event_caption">'; 
 		var perms = game.permissions;
 
