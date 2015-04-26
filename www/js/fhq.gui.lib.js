@@ -123,12 +123,26 @@ function FHQGuiLib() {
 			'userstatus' : 'not_completed',
 			'subject' : '',
 			'getParams' : function() {
+				// TODO
 				var params = [];
 				return params;
 			}
+		},
+		'answerlist' : {
+			'userid' : '',
+			'user' : '',
+			'gameid' : '',
+			'gamename' : '',
+			'questid' : '',
+			'questname' : '',
+			'questsubject' : '',
+			'passed' : '',
+			'table' : 'active',
+			'onpage' : 10,
+			'page' : 0
 		}
 	};
-	
+
 	this.setFilter = function(current_filter) {
 		this.filter.current = current_filter;
 		if (this.filter[current_filter] == null) {
@@ -149,15 +163,50 @@ function FHQGuiLib() {
 			pt.row('Status:', fhqgui.combobox('quests_userstatus', this.filter.quests.userstatus, fhq.getQuestUserStatusFilter()));
 			pt.row('Subject:', fhqgui.combobox('quests_subject', this.filter.quests.subject, fhq.getQuestTypesFilter()));
 			pt.right(this.btn('Apply', 'fhqgui.applyQuestsFilter(); reloadQuests(); fhqgui.closeModalDialog();'));
+		} else if (current_page == 'answerlist') {
+			pt.row('User ID:', '<input type="text" id="answerlist_userid" value=""/>');
+			pt.row('E-mail or Nick:', '<input type="text" id="answerlist_user" value=""/>');
+			pt.row('Game ID:', '<input type="text" id="answerlist_gameid" value=""/>');
+			pt.row('Game Name:', '<input type="text" id="answerlist_gamename" value=""/>');
+			pt.row('Quest ID:', '<input type="text" id="answerlist_questid" value=""/>');
+			pt.row('Quest Name:', '<input type="text" id="answerlist_questname" value=""/>');
+			pt.row('Quest Subject:', fhqgui.combobox('answerlist_questsubject', this.filter.answerlist.questsubject, fhq.getQuestTypesFilter()));
+			pt.row('Passed:', fhqgui.combobox('answerlist_passed', this.filter.answerlist.passed, fhq.getAnswerlistPassedFilter()));
+			pt.row('Table:', fhqgui.combobox('answerlist_table', this.filter.answerlist.table, fhq.getAnswerlistTable()));
+			pt.row('On Page:', fhqgui.combobox('answerlist_onpage', this.filter.answerlist.onpage, fhq.getOnPage()));
+			pt.right(this.btn('Apply', 'fhqgui.applyAnswerListFilter(); resetPageAnswerList(); updateAnswerList();'));
 		} else {
 			pt.row('TODO', current_page);
 		}
+
 		this.showModalDialog(pt.render());
+
+		if (current_page == 'answerlist') {
+			document.getElementById('answerlist_userid').value = this.filter.answerlist.userid;
+			document.getElementById('answerlist_user').value = this.filter.answerlist.user;
+			document.getElementById('answerlist_gameid').value = this.filter.answerlist.gameid;
+			document.getElementById('answerlist_gamename').value = this.filter.answerlist.gamename;
+			document.getElementById('answerlist_questid').value = this.filter.answerlist.questid;
+			document.getElementById('answerlist_questname').value = this.filter.answerlist.questname;
+		}
 	}
 
 	this.applyQuestsFilter = function() {
 		this.filter.quests.userstatus = document.getElementById("quests_userstatus").value;
 		this.filter.quests.subject = document.getElementById('quests_subject').value;
+	}
+	
+	this.applyAnswerListFilter = function() {
+		this.filter.answerlist.userid = document.getElementById('answerlist_userid').value;
+		this.filter.answerlist.user = document.getElementById('answerlist_user').value;
+		this.filter.answerlist.gameid = document.getElementById('answerlist_gameid').value;
+		this.filter.answerlist.gamename = document.getElementById('answerlist_gamename').value;
+		this.filter.answerlist.questid = document.getElementById('answerlist_questid').value;
+		this.filter.answerlist.questname = document.getElementById('answerlist_questname').value;
+		this.filter.answerlist.onpage = document.getElementById('answerlist_onpage').value;
+		this.filter.answerlist.table = document.getElementById('answerlist_table').value;
+		this.filter.answerlist.passed = document.getElementById('answerlist_passed').value;
+		this.filter.answerlist.questsubject = document.getElementById('answerlist_questsubject').value;
 	}
 
 	this.loadAbout = function() {
