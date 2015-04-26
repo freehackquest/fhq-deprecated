@@ -378,6 +378,17 @@ example run 'update.sh':
 	echo "link to $WWWFOLDER"
 	sudo ln -s "`pwd`/www" "$WWWFOLDER"
 
+# other platforms for ctf
+
+http://phptrends.com/dig_in/ctf
+
+https://github.com/Nakiami/mellivora
+
+https://github.com/Hazelwire/Hazelwire
+
+https://github.com/echothrust/athcon-ctf
+
+http://openinfreno.sourceforge.net/
 
 # PS Biography platform
 
