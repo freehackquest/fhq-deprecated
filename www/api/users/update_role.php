@@ -5,7 +5,7 @@
  * API_ACCESS: admin only
  * API_INPUT: token - guid, secret token
  * API_INPUT: userid - integer, userid
- * API_INPUT: role - string, new user role ("user"/"admin"/"tester")
+ * API_INPUT: role - string, new user role ("user" or "admin" or "tester")
  */
 
 $curdir_users_update_role = dirname(__FILE__);
@@ -39,8 +39,7 @@ $response['data']['role'] = $role;
 $response['data']['userid'] = $userid;
 
 $response['data']['possible_roles'] = array();
-foreach (APITypes::$types['userRoles'] as $key => $value)
-{
+foreach (APITypes::$types['userRoles'] as $key => $value) {
 	$response['data']['possible_roles'][] = APITypes::$types['userRoles'][$key]['value'];
 }
 
