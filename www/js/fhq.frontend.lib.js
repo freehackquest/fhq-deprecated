@@ -345,7 +345,7 @@ function FHQFrontEndLib() {
 	this.initTypes = function() {
 		if (this.enums != null)
 			return;
-		var obj = this.sendPostRequest_Sync('api/settings/types.php', {});
+		var obj = this.sendPostRequest_Sync('api/public/types.php', {});
 		this.enums = obj.data;
 	}
 

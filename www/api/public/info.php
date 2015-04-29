@@ -9,17 +9,15 @@ header('Content-Type: application/json');
  * API_ACCESS: all
  */
 
-$curdir_settings_get = dirname(__FILE__);
-include_once ($curdir_settings_get."/../api.lib/api.base.php");
-include_once ($curdir_settings_get."/../api.lib/api.security.php");
-include_once ($curdir_settings_get."/../api.lib/api.helpers.php");
-include_once ($curdir_settings_get."/../../config/config.php");
+$curdir_public_info = dirname(__FILE__);
+include_once ($curdir_public_info."/../api.lib/api.base.php");
+include_once ($curdir_public_info."/../api.lib/api.security.php");
+include_once ($curdir_public_info."/../api.lib/api.helpers.php");
+include_once ($curdir_public_info."/../../config/config.php");
 
+$response = APIHelpers::startpage($config);
 
-$result = array(
-	'result' => 'ok',
-	'data' => array(),
-);
+$response['result'] = 'ok';
 
 $conn = APIHelpers::createConnection($config);
 
@@ -28,11 +26,11 @@ try {
  	$stmt = $conn->prepare('SELECT city, count(userid) cnt FROM users_ips GROUP BY city ORDER BY cnt DESC');
  	$stmt->execute();
 	
-	$result['data']['cities'] = array();
+	$response['data']['cities'] = array();
  	while ($row = $stmt->fetch()) {
 		$result['result'] = 'ok';
 		if ($row['city'] != "" && $row['city'] != "localhost") {
-			$result['data']['cities'][] = array(
+			$response['data']['cities'][] = array(
 				"city" => htmlspecialchars($row['city']),
 				"cnt" => htmlspecialchars($row['cnt']),
 			);
@@ -43,14 +41,14 @@ try {
 }
 
 // quests
-$result['data']['quests'] = array();
+$response['data']['quests'] = array();
 
 try {
  	$stmt = $conn->prepare('SELECT count(*) cnt FROM quest WHERE for_person = 0');
  	$stmt->execute();
 
  	if ($row = $stmt->fetch()) {
-		$result['data']['quests']['count'] = intval($row['cnt']);
+		$response['data']['quests']['count'] = intval($row['cnt']);
 	}
 
 } catch(PDOException $e) {
@@ -63,7 +61,7 @@ try {
  	$stmt->execute();
 
  	if ($row = $stmt->fetch()) {
-		$result['data']['quests']['attempts'] = intval($row['cnt']);
+		$response['data']['quests']['attempts'] = intval($row['cnt']);
 	}
 
 } catch(PDOException $e) {
@@ -75,7 +73,7 @@ try {
  	$stmt->execute();
 
  	if ($row = $stmt->fetch()) {
-		$result['data']['quests']['attempts'] += intval($row['cnt']);
+		$response['data']['quests']['attempts'] += intval($row['cnt']);
 	}
 
 } catch(PDOException $e) {
@@ -87,7 +85,7 @@ try {
  	$stmt->execute();
 
  	if ($row = $stmt->fetch()) {
-		$result['data']['quests']['solved'] = intval($row['cnt']);
+		$response['data']['quests']['solved'] = intval($row['cnt']);
 	}
 
 } catch(PDOException $e) {
@@ -122,10 +120,10 @@ try {
 	');
  	$stmt->execute(array('user','user', 'original', 'copy'));
 	
-	$result['data']['winners'] = array();
+	$response['data']['winners'] = array();
 
  	while ($row = $stmt->fetch()) {
-		$result['data']['winners'][$row['title']][] = array(
+		$response['data']['winners'][$row['title']][] = array(
 			'game' => $row['title'],
 			'user' => htmlspecialchars($row['nick']),
 			'score' => $row['score'],
@@ -136,4 +134,4 @@ try {
  	APIHelpers::showerror(1282, $e->getMessage());
 }
 
-echo json_encode($result);
+APIHelpers::endpage($response);
