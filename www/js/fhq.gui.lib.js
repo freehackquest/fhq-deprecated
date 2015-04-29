@@ -155,6 +155,22 @@ function FHQGuiLib() {
 				params.onpage = this.onpage;
 				return params;
 			}
+		},
+		'stats' : {
+			'questname' : '',
+			'questid' : '',
+			'questsubject' : '',
+			'onpage' : 10,
+			'page' : 0,
+			'getParams' : function() {
+				var params = {};
+				params.questname = this.questname;
+				params.questid = this.questid;
+				params.questsubject = this.questsubject;
+				params.onpage = this.onpage;
+				params.page = this.page;
+				return params;
+			}
 		}
 	};
 
@@ -173,8 +189,6 @@ function FHQGuiLib() {
 		var pt = new FHQParamTable();
 		
 		if (current_page == 'quests') {
-			// TODO move create quest to another place
-			// pt.rowid('quests_create', '', '<div class="fhqbtn" onclick="formCreateQuest();">Create Quest</div>');
 			pt.row('Status:', fhqgui.combobox('quests_userstatus', this.filter.quests.userstatus, fhq.getQuestUserStatusFilter()));
 			pt.row('Subject:', fhqgui.combobox('quests_subject', this.filter.quests.subject, fhq.getQuestTypesFilter()));
 			pt.right(this.btn('Apply', 'fhqgui.applyQuestsFilter(); reloadQuests(); fhqgui.closeModalDialog();'));
@@ -189,7 +203,13 @@ function FHQGuiLib() {
 			pt.row('Passed:', fhqgui.combobox('answerlist_passed', this.filter.answerlist.passed, fhq.getAnswerlistPassedFilter()));
 			pt.row('Table:', fhqgui.combobox('answerlist_table', this.filter.answerlist.table, fhq.getAnswerlistTable()));
 			pt.row('On Page:', fhqgui.combobox('answerlist_onpage', this.filter.answerlist.onpage, fhq.getOnPage()));
-			pt.right(this.btn('Apply', 'fhqgui.applyAnswerListFilter(); resetPageAnswerList(); updateAnswerList();'));
+			pt.right(this.btn('Apply', 'fhqgui.applyAnswerListFilter(); resetPageAnswerList(); updateAnswerList(); fhqgui.closeModalDialog();'));
+		} else if (current_page == 'stats') {
+			pt.row('Quest Name:', '<input type="text" id="statistics_questname" value=""/>');
+			pt.row('Quest ID:', '<input type="text" id="statistics_questid" value=""/>');
+			pt.row('Quest Subject:', fhqgui.combobox('statistics_questsubject', this.filter.stats.questsubject, fhq.getQuestTypesFilter()));
+			pt.row('On Page:', fhqgui.combobox('statistics_onpage', this.filter.stats.onpage, fhq.getOnPage()));
+			pt.right(this.btn('Apply', 'fhqgui.applyStatsFilter(); resetStatisticsPage(); updateStatistics(); fhqgui.closeModalDialog();'));
 		} else {
 			pt.row('TODO', current_page);
 		}
@@ -203,6 +223,10 @@ function FHQGuiLib() {
 			document.getElementById('answerlist_gamename').value = this.filter.answerlist.gamename;
 			document.getElementById('answerlist_questid').value = this.filter.answerlist.questid;
 			document.getElementById('answerlist_questname').value = this.filter.answerlist.questname;
+		} else if (current_page == 'stats') {
+			document.getElementById('statistics_questname').value = this.filter.stats.questname;
+			document.getElementById('statistics_questid').value = this.filter.stats.questid;
+			document.getElementById('statistics_questsubject').value = this.filter.stats.questsubject;
 		}
 	}
 
@@ -222,6 +246,13 @@ function FHQGuiLib() {
 		this.filter.answerlist.table = document.getElementById('answerlist_table').value;
 		this.filter.answerlist.passed = document.getElementById('answerlist_passed').value;
 		this.filter.answerlist.questsubject = document.getElementById('answerlist_questsubject').value;
+	}
+
+	this.applyStatsFilter = function() {
+		this.filter.stats.onpage = document.getElementById('statistics_onpage').value;	
+		this.filter.stats.questname = document.getElementById('statistics_questname').value;
+		this.filter.stats.questid = document.getElementById('statistics_questid').value;
+		this.filter.stats.questsubject = document.getElementById('statistics_questsubject').value;
 	}
 
 	this.loadAbout = function() {

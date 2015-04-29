@@ -1,30 +1,27 @@
 
 
 function resetStatisticsPage() {
-	document.getElementById('statistics_page').value = 0;
+	fhqgui.filter.stats.page = 0;
 }
 
 function setStatisticsPage(val) {
-	document.getElementById('statistics_page').value = val;
+	fhqgui.filter.stats.page = val;
 }
 
 function createPageStatistics(gameid) {
 	fhqgui.setFilter('stats');
 	var pt = new FHQParamTable();
-	pt.row('Quest Name:', '<input type="text" id="statistics_questname" value="" onkeydown="if (event.keyCode == 13) {resetStatisticsPage(' + gameid + '); updateStatistics();};"/>');
+	/*pt.row('Quest Name:', '<input type="text" id="statistics_questname" value="" onkeydown="if (event.keyCode == 13) {resetStatisticsPage(' + gameid + '); updateStatistics();};"/>');
 	pt.row('Quest ID:', '<input type="text" id="statistics_questid" value="" onkeydown="if (event.keyCode == 13) {resetStatisticsPage(' + gameid + '); updateStatistics();};"/>');
 	pt.row('Quest Subject:', fhqgui.combobox('statistics_questsubject', '', fhq.getQuestTypesFilter()));
 	pt.row('On Page:', fhqgui.combobox('statistics_onpage', '5', fhq.getOnPage()));
-	pt.row('', fhqgui.btn('Search', 'resetStatisticsPage(' + gameid + '); updateStatistics();'));
-	pt.skip();
+	pt.row('', fhqgui.btn('Search', 'resetStatisticsPage(); updateStatistics();'));
+	pt.skip();*/
 	pt.row('Found:', '<font id="statistics_found">0</font>');
 	var cp = new FHQContentPage();
 	cp.clear();
 	cp.append(pt.render());
-	cp.append('<input type="hidden" id="statistics_page" value="0"/>'
-		+ '<input type="hidden" id="statistics_gameid" value="' + gameid + '"/>'
-		+ '<div id="error_search"></div>'
-		+ '<hr/>'
+	cp.append('<hr/>'
 		+ '<div id="listStatistics"></div>');
 }
 
@@ -33,14 +30,7 @@ function updateStatistics() {
 	var ls = document.getElementById("listStatistics");
 	ls.innerHTML = "Loading...";
 	
-	var params = {};
-	params.gameid = document.getElementById('statistics_gameid').value;
-	params.questname = document.getElementById('statistics_questname').value;
-	params.questid = document.getElementById('statistics_questid').value;
-	params.questsubject = document.getElementById('statistics_questsubject').value;
-	params.page = document.getElementById('statistics_page').value;
-	params.onpage = document.getElementById('statistics_onpage').value;
-
+	var params = fhqgui.filter.stats.getParams();
 	send_request_post(
 		'api/statistics/list.php',
 		createUrlFromObj(params),

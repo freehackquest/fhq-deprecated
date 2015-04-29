@@ -23,7 +23,7 @@ $response = APIHelpers::startpage($config);
 
 APIHelpers::checkAuth();
 
-$gameid = APIHelpers::getParam("gameid", 0);
+$gameid = APIHelpers::getParam("gameid", APIGame::id());
 
 if (!is_numeric($gameid))
 	APIHelpers::showerror(1077, 'parameter "gameid" must be numeric');
