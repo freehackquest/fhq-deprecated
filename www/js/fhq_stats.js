@@ -10,18 +10,9 @@ function setStatisticsPage(val) {
 
 function createPageStatistics(gameid) {
 	fhqgui.setFilter('stats');
-	var pt = new FHQParamTable();
-	/*pt.row('Quest Name:', '<input type="text" id="statistics_questname" value="" onkeydown="if (event.keyCode == 13) {resetStatisticsPage(' + gameid + '); updateStatistics();};"/>');
-	pt.row('Quest ID:', '<input type="text" id="statistics_questid" value="" onkeydown="if (event.keyCode == 13) {resetStatisticsPage(' + gameid + '); updateStatistics();};"/>');
-	pt.row('Quest Subject:', fhqgui.combobox('statistics_questsubject', '', fhq.getQuestTypesFilter()));
-	pt.row('On Page:', fhqgui.combobox('statistics_onpage', '5', fhq.getOnPage()));
-	pt.row('', fhqgui.btn('Search', 'resetStatisticsPage(); updateStatistics();'));
-	pt.skip();*/
-	pt.row('Found:', '<font id="statistics_found">0</font>');
 	var cp = new FHQContentPage();
 	cp.clear();
-	cp.append(pt.render());
-	cp.append('<hr/>'
+	cp.append('Found: <font id="statistics_found">0</font><hr/>'
 		+ '<div id="listStatistics"></div>');
 }
 

@@ -157,7 +157,7 @@ if (!isset($_SESSION['user']))
 			$arrmenu[] = array(
 				'name' => 'rules',
 				'html' => '
-					<div class="fhq_btn_menu" data-hint="Rules" onclick="loadGameRules('.$gameid.');">
+					<div class="fhq_btn_menu" data-hint="Rules" onclick="fhqgui.loadRules();">
 						<img class="fhq_btn_menu_img" src="images/menu/rules.png"/><br>
 					</div>
 				',

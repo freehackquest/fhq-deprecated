@@ -388,6 +388,25 @@ function FHQGuiLib() {
 		);
 	}
 	
+	this.loadRules = function() {
+		this.setFilter('rules');
+		var el = document.getElementById("content_page");
+		el.innerHTML = 'Loading...';
+		send_request_post(
+			'api/games/get.php',
+			'',
+			function (obj) {
+				if (obj.result == "fail") {
+					el.innerHTML = obj.error.message;
+				} else {
+					el.innerHTML = '<h1>Rules</h1><h2>' + obj.data.title + '</h2><br><div id="game_rules" class="fhqrules"></div>';
+					var rules = document.getElementById("game_rules");
+					rules.innerHTML = obj.data.rules;
+				}
+			}
+		);
+	}
+	
 	this.gameView = function(game, currentGameId) {
 		var content = '';
 		content += '\n<div class="fhq_event_info">\n';

@@ -1,40 +1,25 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: Get Game Info
  * API_DESCRIPTION: Mthod returned information about game
- * API_ACCESS: auhtorized users
- * API_INPUT: id - string, Identificator of the game
+ * API_ACCESS: all
+ * API_INPUT: gameid - integer, Identificator of the game (defualt current id)
  * API_INPUT: token - guid, token
  */
 
-$curdir = dirname(__FILE__);
-include_once ($curdir."/../api.lib/api.base.php");
-include_once ($curdir."/../api.lib/api.security.php");
-include_once ($curdir."/../api.lib/api.helpers.php");
-include_once ($curdir."/../../config/config.php");
+$curdir_games_get = dirname(__FILE__);
+include_once ($curdir_games_get."/../api.lib/api.base.php");
+include_once ($curdir_games_get."/../api.lib/api.game.php");
+include_once ($curdir_games_get."/../../config/config.php");
 
-include_once ($curdir."/../api.lib/loadtoken.php");
+$response = APIHelpers::startpage($config);
 
-// APIHelpers::checkAuth();
+$conn = APIHelpers::createConnection($config);
 
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
+$gameid = APIHelpers::getParam('gameid', APIGame::id());
 
-if ($conn == null)
-	$conn = APIHelpers::createConnection($config);
-
-if (!APIHelpers::issetParam('id'))
-	APIHelpers::showerror(1170, 'not found parameter id');
-
-$game_id = APIHelpers::getParam('id', 0);
-
-if (!is_numeric($game_id))
-	APIHelpers::showerror(1171, 'incorrect id');
+if (!is_numeric($gameid))
+	APIHelpers::showerror(1171, '"gameid" must be numeric');
 
 try {
 
@@ -47,18 +32,19 @@ try {
 	$columns = array('id', 'type_game', 'state', 'form', 'title', 'date_start', 'date_stop', 'date_restart', 'description', 'logo', 'owner', 'organizators', 'rules', 'maxscore');
 
 	$stmt = $conn->prepare($query);
-	$stmt->execute(array(intval($game_id)));
+	$stmt->execute(array(intval($gameid)));
 	if($row = $stmt->fetch())
 	{
-		$result['data'] = array();
+		$response['data'] = array();
 		foreach ( $columns as $k) {
-			$result['data'][$k] = $row[$k];
+			$response['data'][$k] = $row[$k];
 		}
+		$response['result'] = 'ok';
+	} else {
+		APIHelpers::showerror(1171, 'Did not found game with this id');
 	}
-	$result['result'] = 'ok';
 } catch(PDOException $e) {
 	APIHelpers::showerror(1169, $e->getMessage());
 }
 
-include_once ($curdir."/../api.lib/savetoken.php");
-echo json_encode($result);
+APIHelpers::endpage($response);
