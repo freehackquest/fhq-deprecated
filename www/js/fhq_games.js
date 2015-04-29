@@ -13,7 +13,7 @@ function changeGame() {
 						content += '\t<img class="fhq_game_img" src="' + obj.data[k]['logo'] + '" /> '
 						content += '\t<div class="fhq_game_text">\n';
 						// content += ' ( ' + obj.data[k]['nick'].trim() + ') ';
-						content += obj.data[k]['title'].trim() + ' (' + obj.data[k]['type_game'] + ')';
+						content += obj.data[k]['title'].trim();
 						content += '\t</div>\n';
 						content += '<br><div class="fhq_game_text">' + obj.data[k]['date_start'].trim() + ' - ' + obj.data[k]['date_stop'].trim() + '</div><br>\n';
 						content += '</div>\n';

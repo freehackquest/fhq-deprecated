@@ -64,8 +64,6 @@ if (!isset($_SESSION['user']))
 		<script type="text/javascript" src="js/fhq_stats.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_feedback.js?ver=1"></script>
 
-		
-
 		<script type="text/javascript">
 			var fhq = new FHQFrontEndLib();
 			var fhqgui = new FHQGuiLib();
