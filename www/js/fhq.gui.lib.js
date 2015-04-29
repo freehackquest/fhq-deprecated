@@ -367,7 +367,7 @@ function FHQGuiLib() {
 		this.setFilter('settings');
 		var scp = new FHQDynamicContent(idelem);
 		send_request_post(
-			'api/settings/get.php',
+			'api/admin/settings.php',
 			'',
 			function (obj) {
 				if (obj.result == "fail") {

@@ -1,4 +1,4 @@
-<?
+<?php
 
 $curdir = dirname(__FILE__);
 
@@ -173,11 +173,16 @@ $doc['settings'] = array(
 	'methods' => scanfolder('settings'),
 );
 
-
 $doc['statistics'] = array(
 	'name' => 'Statistics',
 	'description' => 'Methods for work with statistics',
 	'methods' => scanfolder('statistics'),
+);
+
+$doc['admin'] = array(
+	'name' => 'Admin',
+	'description' => 'Methods for admin only',
+	'methods' => scanfolder('admin'),
 );
 
 /**
