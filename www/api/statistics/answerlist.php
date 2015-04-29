@@ -17,12 +17,12 @@
  * API_INPUT: passed - string, filter by passed or empty
  */
 
-$curdir_statistics_list = dirname(__FILE__);
-include_once ($curdir_statistics_list."/../api.lib/api.base.php");
-include_once ($curdir_statistics_list."/../api.lib/api.security.php");
-include_once ($curdir_statistics_list."/../api.lib/api.helpers.php");
-include_once ($curdir_statistics_list."/../api.lib/api.game.php");
-include_once ($curdir_statistics_list."/../../config/config.php");
+$curdir_statistics_answerlist = dirname(__FILE__);
+include_once ($curdir_statistics_answerlist."/../api.lib/api.base.php");
+include_once ($curdir_statistics_answerlist."/../api.lib/api.security.php");
+include_once ($curdir_statistics_answerlist."/../api.lib/api.helpers.php");
+include_once ($curdir_statistics_answerlist."/../api.lib/api.game.php");
+include_once ($curdir_statistics_answerlist."/../../config/config.php");
 
 $response = APIHelpers::startpage($config);
 
@@ -57,9 +57,9 @@ $filter_where = [];
 $filter_values = [];
 
 // userid
-$userid = APIHelpers::getParam('userid', '');
+$userid = APIHelpers::getParam('userid', 'ff');
 if (is_numeric($userid)) {
-	$filter_where[] = 'u.iduser = ?';
+	$filter_where[] = '(u.id = ?)';
 	$filter_values[] = intval($userid);
 }
 
