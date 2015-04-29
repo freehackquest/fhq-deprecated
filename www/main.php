@@ -110,14 +110,15 @@ if (!isset($_SESSION['user']))
 			$nick = htmlspecialchars($nick);
 			$template = 'base';
 
-			$game_type = "";
-			$game_title = "";
 			$gameid = 0;
-			if (isset($_SESSION['game']))
-			{
-				$game_type = $_SESSION['game']['type_game'];
+			$hint_on_game = 'Please click to change a curent game';
+			if (isset($_SESSION['game'])) {
 				$game_title = $_SESSION['game']['title'];
+				$game_logo = $_SESSION['game']['logo'];
 				$gameid = $_SESSION['game']['id'];
+				$hint_on_game = $game_title.' ('.$hint_on_game.') ';
+			} else {
+				$game_logo = 'images/menu/unknown.png';
 			}
 			
 			$arrmenu = array();
@@ -135,9 +136,9 @@ if (!isset($_SESSION['user']))
 			$arrmenu[] = array(
 				'name' => 'game_info',
 				'html' => '
-					<div class="fhq_btn_menu hint--bottom" data-hint="Please click to change a curent game."  onclick="changeGame();">
+					<div class="fhq_btn_menu hint--bottom" data-hint="'.$hint_on_game.'"  onclick="changeGame();">
 						<div class="fhq_btn_menu_img">
-							'.($game_type == '' ? 'Unknown<br>Game' : '<b>'.$game_title.'<br>'.$game_type.'</b>').'
+							<img class="fhq_btn_menu_img" src="'.$game_logo.'"/>
 						</div>
 					</div>
 				',
@@ -152,7 +153,7 @@ if (!isset($_SESSION['user']))
 						<div class="fhqredcircle" id="view_score">'.$score.'</div>
 					</div>
 				',
-				'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
+				'show' => ($gameid != 0),
 			);
 
 			$arrmenu[] = array(
@@ -162,7 +163,7 @@ if (!isset($_SESSION['user']))
 						<img class="fhq_btn_menu_img" src="images/menu/rules.png"/><br>
 					</div>
 				',
-				'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
+				'show' => ($gameid != 0),
 			);
 
 			$arrmenu[] = array(
@@ -172,7 +173,7 @@ if (!isset($_SESSION['user']))
 						<img class="fhq_btn_menu_img" src="images/menu/quests.png"/>
 					</div>
 				',
-				'show' => ($game_type == 'jeopardy'),
+				'show' => ($gameid != 0),
 			);
 
 			$arrmenu[] = array(
@@ -182,7 +183,7 @@ if (!isset($_SESSION['user']))
 						<img class="fhq_btn_menu_img" src="images/menu/stats.png"/><br>
 					</div>
 				',
-				'show' => ($game_type == 'jeopardy'),
+				'show' => ($gameid != 0),
 			);
 
 			$arrmenu[] = array(
