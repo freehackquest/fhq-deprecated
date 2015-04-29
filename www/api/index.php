@@ -312,7 +312,22 @@ function print_doc($doc) {
 		header('Content-Type: application/json');
 		echo json_encode($doc);
 	} else if (isset($_GET['html'])) {
+		echo '
+			<html>
+			<head>
+				<title>Free Hack Quest</title>
+				<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+				<meta name="author" content="sea-kg" />
+				<meta name="copyright" lang="ru" content="sea-kg" />
+				<meta name="description" content="competition information security" />
+				<meta name="keywords" content="security, fhq, fhq 2012, fhq 2013, fhq 2014, free, hack, quest, competition, information security, ctf, joepardy" />		
+			</head>
+			<body>
+		';
+		include "../copyright.php";
 		echo convert_to_html($doc);
+		echo '</body>';
+		
 	} else {
 		echo "<a href='?html'>HTML</a> <a href='?json'>JSON</a>";
 	}
