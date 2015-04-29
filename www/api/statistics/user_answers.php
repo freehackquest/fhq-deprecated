@@ -1,21 +1,19 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: User Answer List
- * API_DESCRIPTION: Method will be returned answer list for current user
+ * API_DESCRIPTION: Method will be returned answer list for current user and questid
  * API_ACCESS: authorized users
- * API_INPUT: questid - integer, Identificator of the quest
  * API_INPUT: token - string, token
+ * API_INPUT: questid - integer, Identificator of the quest
  */
 
-$curdir = dirname(__FILE__);
-include_once ($curdir."/../api.lib/api.base.php");
-include_once ($curdir."/../api.lib/api.game.php");
-include_once ($curdir."/../../config/config.php");
-include_once ($curdir."/../api.lib/loadtoken.php");
+$curdir_statistics_user_answers = dirname(__FILE__);
+include_once ($curdir_statistics_user_answers."/../api.lib/api.base.php");
+include_once ($curdir_statistics_user_answers."/../api.lib/api.game.php");
+include_once ($curdir_statistics_user_answers."/../../config/config.php");
+include_once ($curdir_statistics_user_answers."/../api.lib/loadtoken.php");
 
+$response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
 
 $message = '';
@@ -31,17 +29,12 @@ $questid = APIHelpers::getParam('questid', 0);
 if (!is_numeric($questid))
 	APIHelpers::showerror(1087, 'parameter "questid" must be numeric');
 
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
-
-$result['result'] = 'ok';
+$response['result'] = 'ok';
 
 $conn = APIHelpers::createConnection($config);
 
-$result['userid'] = APISecurity::userid();
-$result['questid'] = $questid;
+$response['userid'] = APISecurity::userid();
+$response['questid'] = $questid;
 
 $params[] = APISecurity::userid();
 $params[] = intval($questid);
@@ -65,17 +58,16 @@ try {
 	$stmt->execute($params);
 	while($row = $stmt->fetch())
 	{
-		$result['data'][] = array(
+		$response['data'][] = array(
 			'datetime_try' => $row['datetime_try'],
 			'answer_try' => htmlspecialchars($row['answer_try']),
 			'levenshtein' => $row['levenshtein'],
 		);
 	}
-	$result['result'] = 'ok';
+	$response['result'] = 'ok';
 	
 } catch(PDOException $e) {
 	APIHelpers::showerror(1084, $e->getMessage());
 }
 
-include_once ($curdir."/../api.lib/savetoken.php");
-echo json_encode($result);
+APIHelpers::endpage($response);

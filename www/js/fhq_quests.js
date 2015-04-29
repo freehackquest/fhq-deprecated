@@ -498,7 +498,7 @@ function updateMyAnswers(id)
 
 	// alert(createUrlFromObj(params));
 	send_request_post(
-		'api/quests/user_answers.php',
+		'api/statistics/user_answers.php',
 		createUrlFromObj(params),
 		function (obj) {
 			if (obj.result == "ok") {
