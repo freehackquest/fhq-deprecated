@@ -1,6 +1,6 @@
 <?php
 session_start();
-$curdir = dirname(__FILE__);
-include_once ($curdir."/api.security.php");
-include_once ($curdir."/api.helpers.php");
-include_once ($curdir."/api.events.php");
+$curdir_api_base = dirname(__FILE__);
+include_once ($curdir_api_base."/api.security.php");
+include_once ($curdir_api_base."/api.helpers.php");
+include_once ($curdir_api_base."/api.events.php");

@@ -125,6 +125,12 @@ function scanfolder($dir) {
 
 $doc = array();
 
+$doc['public'] = array(
+	'name' => 'Public',
+	'description' => 'Methods for get public info',
+	'methods' => scanfolder('public'),
+);
+
 $doc['security'] = array(
 	'name' => 'Security',
 	'description' => 'Methods for login, logout, registration and restore password.',
@@ -165,12 +171,6 @@ $doc['feedback'] = array(
 	'name' => 'Feedback',
 	'description' => 'Methods for work with feedback',
 	'methods' => scanfolder('feedback'),
-);
-
-$doc['settings'] = array(
-	'name' => 'Settings',
-	'description' => 'Methods for get settings, public info, and enums',
-	'methods' => scanfolder('settings'),
 );
 
 $doc['statistics'] = array(

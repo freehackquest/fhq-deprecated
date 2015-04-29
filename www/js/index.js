@@ -121,7 +121,7 @@ function loadCities() {
 					}
 				}
 				c.innerHTML += cities.join(", ");
-				
+
 				var a = document.getElementById('about');
 				var content = '<center>';
 				for (var k in obj.data.winners) {

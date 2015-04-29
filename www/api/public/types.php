@@ -12,6 +12,9 @@ header('Content-Type: application/json');
 $curdir_public_types = dirname(__FILE__);
 include_once ($curdir_public_types."/../api.lib/api.types.php");
 
-$result = APITypes::$types;
+$result = array(
+	'result' => 'ok',
+	'data' => APITypes::$types,
+);
 
 echo json_encode($result);
