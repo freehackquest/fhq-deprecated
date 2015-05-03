@@ -248,7 +248,6 @@ function FHQGuiLib() {
 			pt.row('Type:', fhqgui.combobox('events_type', this.filter.events.type, fhq.getEventTypesFilter()));
 			pt.row('On Page:', fhqgui.combobox('events_onpage', this.filter.events.onpage, fhq.getOnPage()));
 			pt.right(this.btn('Apply', 'fhqgui.applyEventsFilter(); fhqgui.resetEventsPage(); updateEvents(); fhqgui.closeModalDialog();'));
-			
 		} else {
 			pt.row('TODO', current_page);
 		}
@@ -274,7 +273,7 @@ function FHQGuiLib() {
 	}
 
 	this.applyQuestsFilter = function() {
-		this.filter.quests.user = document.getElementById("quests_user").value;
+		this.filter.quests.userstatus = document.getElementById("quests_userstatus").value;
 		this.filter.quests.subject = document.getElementById('quests_subject').value;
 	}
 	
@@ -454,9 +453,51 @@ function FHQGuiLib() {
 				if (obj.result == "fail") {
 					el.innerHTML = obj.error.message;
 				} else {
-					el.innerHTML = '<h1>Rules</h1><h2>' + obj.data.title + '</h2><br><div id="game_rules" class="fhqrules"></div>';
+					el.innerHTML = '<h1>Rules</h1><h2>' + obj.data.title + '</h2>';
+					if (obj.access.edit == true) {
+						el.innerHTML += '<div class="fhqbtn" onclick="fhqgui.formEditRule(' + obj.data.id + ');">Edit</div>';
+					}
+					el.innerHTML += '<br><div id="game_rules" class="fhqrules"></div>';
 					var rules = document.getElementById("game_rules");
 					rules.innerHTML = obj.data.rules;
+				}
+			}
+		);
+	}
+	
+	this.formEditRule = function(gameid) {
+		var params = {};
+		params.gameid = gameid;
+		send_request_post(
+			'api/games/get.php',
+			createUrlFromObj(params),
+			function (obj) {
+				if (obj.result == "fail") {
+					el.innerHTML = obj.error.message;
+				} else {
+					var content = '<textarea id="edit_game_rules"></textarea><br>';
+					content += '<div class="fhqbtn" onclick="fhqgui.saveGameRule(' + gameid + ');">Save</div>';
+					
+					this.showModalDialog(content);
+					document.getElementById('edit_game_rules').innerHTML = obj.data.rules;
+				}
+			}
+		);
+	}
+	
+	this.saveGameRule = function(gameid) {
+		var params = {};
+		params.id = gameid;
+		params.rules = document.getElementById('edit_game_rules').value;
+		send_request_post(
+			'api/games/update_rules.php',
+			createUrlFromObj(params),
+			function (obj) {
+				if (obj.result == "fail") {
+					alert(obj.error.message);
+				} else {
+					fhqgui.closeModalDialog();
+					fhqgui.loadRules();
 				}
 			}
 		);

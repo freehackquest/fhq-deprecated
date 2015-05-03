@@ -188,7 +188,7 @@ function updateEvents() {
 				
 				el.innerHTML = "";
 				if (obj.access == true)
-					el.innerHTML += '<div class="fhqbtn" onclick="formCreateEvent();">Create News</div><br>';
+					el.innerHTML += '<div class="fhqbtn" onclick="formCreateEvent();">Create News</div><hr>';
 				
 				var found = parseInt(obj.data.found, 10);
 				document.getElementById("events_found").innerHTML = found;
@@ -197,7 +197,7 @@ function updateEvents() {
 				var onpage = parseInt(obj.data.onpage, 10);
 				var page = parseInt(obj.data.page, 10);
 				
-				el.innerHTML += fhqgui.paginator(0, found, onpage, page, 'fhqgui.setEventsPage', 'updateEvents') + '<br>';
+				el.innerHTML += fhqgui.paginator(0, found, onpage, page, 'fhqgui.setEventsPage', 'updateEvents') + '<br/>';
 				var nLastEventId = fhq.users.getLastEventId();
 				var maxid = parseInt(obj.data.maxid, 10);
 				for (var k in obj.data.events) {

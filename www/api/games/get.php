@@ -17,9 +17,10 @@ $response = APIHelpers::startpage($config);
 $conn = APIHelpers::createConnection($config);
 
 $gameid = APIHelpers::getParam('gameid', APIGame::id());
+$response['access']['edit'] = APISecurity::isAdmin();
 
 if (!is_numeric($gameid))
-	APIHelpers::showerror(1171, '"gameid" must be numeric');
+	APIHelpers::showerror(1170, '"gameid" must be numeric');
 
 try {
 

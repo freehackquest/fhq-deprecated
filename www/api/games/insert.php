@@ -17,7 +17,6 @@ header('Content-Type: application/json');
  * API_INPUT: state - string, look types (copy, unlicensed copy and etc.)
  * API_INPUT: form - string, look types (online or offline)
  * API_INPUT: organizators - string, who make this game
- * API_INPUT: rules - string, some rules
  */
   
 $curdir_games_insert = dirname(__FILE__);
@@ -51,7 +50,6 @@ $columns = array(
   'form' => 'online',
   'owner' => APISecurity::userid(),
   'organizators' => '',
-  'rules' => '',
 );
 
 $param_values = array(); 

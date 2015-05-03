@@ -116,7 +116,7 @@ class APIHelpers {
 					APIHelpers::$FHQSESSION_ORIG = json_decode($row['data'],true);
 				}
 			} catch(PDOException $e) {
-				APIHelpers::showerror(1197, $e->getMessage());
+				APIHelpers::showerror(1188, $e->getMessage());
 			}
 		}
 		

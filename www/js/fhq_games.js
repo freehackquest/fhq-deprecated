@@ -150,7 +150,6 @@ function updateGame(id) {
 	params["date_restart"] = document.getElementById("editgame_date_restart").value;
 	params["description"] = document.getElementById("editgame_description").value; // TODO may be innerHTML
 	params["organizators"] = document.getElementById("editgame_organizators").value; // TODO may be innerHTML
-	params["rules"] = document.getElementById("editgame_rules").value; // TODO may be innerHTML
 	params["id"] = id;
 
 	// alert(createUrlFromObj(params));
@@ -202,11 +201,9 @@ function formEditGame(id)
 				pt.row('Date Restart:', '<input type="text" id="editgame_date_restart" value="' + obj.data.date_restart + '"/>');
 				pt.row('Description:', '<textarea id="editgame_description"></textarea>');
 				pt.row('Organizators:', '<input type="text" id="editgame_organizators" value="' + obj.data.organizators + '"/>');
-				pt.row('Rules:', '<textarea id="editgame_rules"></textarea>');
 				pt.row('', '<div class="button3 ad" onclick="updateGame(' + id + ');">Update</div>');
 				
 				showModalDialog(pt.render());
-				document.getElementById('editgame_rules').innerHTML = obj.data.rules;
 				document.getElementById('editgame_description').innerHTML = obj.data.description;
 				
 				$('#editgame_date_start').datetimepicker({
@@ -245,7 +242,6 @@ function createGame()
 	params["date_restart"] = document.getElementById("newgame_date_restart").value;
 	params["description"] = document.getElementById("newgame_description").value;
 	params["organizators"] = document.getElementById("newgame_organizators").value;
-	params["rules"] = document.getElementById("newgame_rules").value;
 	// params["author_id"] = document.getElementById("newgame_author_id").value;
 	// alert(createUrlFromObj(params));
 
@@ -277,7 +273,6 @@ function formCreateGame()
 	pt.row('Date Restart:', '<input type="text" id="newgame_date_restart" value="0000-00-00 00:00:00"/>');
 	pt.row('Description:', '<textarea id="newgame_description"></textarea>');
 	pt.row('Organizators:', '<input type="text" id="newgame_organizators" value=""/>');
-	pt.row('Rules:', '<textarea id="newgame_rules"></textarea>');
 	// pt.row('Author ID:', '<input type="text" id="newgame_author_id" value=""/>');
 	pt.row('', '<div class="button3 ad" onclick="createGame();">Create</div>');
 	showModalDialog(pt.render());
