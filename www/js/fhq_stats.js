@@ -37,7 +37,7 @@ function updateStatistics() {
 				
 				var content = '';
 				// content += 'Processed ' + obj.lead_time_sec + ' sec <br>';
-				content += fhqgui.paginator(0, found, onpage, page, 'setStatisticsPage', 'updateStatistics');
+				content += fhqgui.paginator(0, found, onpage, page, 'setStatisticsPage', 'fhqgui.updatePageSkills()');
 				var tbl = new FHQTable();
 				tbl.openrow();
 				tbl.cell('Quest');

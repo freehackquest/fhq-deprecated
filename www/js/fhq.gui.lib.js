@@ -171,6 +171,20 @@ function FHQGuiLib() {
 				params.page = this.page;
 				return params;
 			}
+		},
+		'skills' : {
+			'subject' : '',
+			'user' : '',			
+			'onpage' : 10,
+			'page' : 0,
+			'getParams' : function() {
+				var params = {};
+				params.subject = this.subject;
+				params.user = this.user;				
+				params.onpage = this.onpage;
+				params.page = this.page;
+				return params;
+			}
 		}
 	};
 
@@ -210,6 +224,11 @@ function FHQGuiLib() {
 			pt.row('Quest Subject:', fhqgui.combobox('statistics_questsubject', this.filter.stats.questsubject, fhq.getQuestTypesFilter()));
 			pt.row('On Page:', fhqgui.combobox('statistics_onpage', this.filter.stats.onpage, fhq.getOnPage()));
 			pt.right(this.btn('Apply', 'fhqgui.applyStatsFilter(); resetStatisticsPage(); updateStatistics(); fhqgui.closeModalDialog();'));
+		} else if (current_page == 'skills') {
+			pt.row('Subject:', fhqgui.combobox('skills_subject', this.filter.skills.subject, fhq.getQuestTypesFilter()));
+			pt.row('User:', '<input type="text" id="skills_user" value=""/>');
+			pt.row('On Page:', fhqgui.combobox('skills_onpage', this.filter.skills.onpage, fhq.getOnPage()));
+			pt.right(this.btn('Apply', 'fhqgui.applySkillsFilter(); fhqgui.resetSkillsPage(); fhqgui.updatePageSkills(); fhqgui.closeModalDialog();'));
 		} else {
 			pt.row('TODO', current_page);
 		}
@@ -227,13 +246,20 @@ function FHQGuiLib() {
 			document.getElementById('statistics_questname').value = this.filter.stats.questname;
 			document.getElementById('statistics_questid').value = this.filter.stats.questid;
 			document.getElementById('statistics_questsubject').value = this.filter.stats.questsubject;
+		} else if (current_page == 'skills') {
+			document.getElementById('skills_user').value = this.filter.skills.user;
 		}
 	}
 
 	this.applyQuestsFilter = function() {
-		this.filter.quests.userstatus = document.getElementById("quests_userstatus").value;
+		this.filter.quests.user = document.getElementById("quests_user").value;
 		this.filter.quests.subject = document.getElementById('quests_subject').value;
 	}
+	
+	this.applySkillsFilter = function() {
+		this.filter.skills.user = document.getElementById("skills_user").value;
+		this.filter.skills.subject = document.getElementById('skills_subject').value;
+	}	
 	
 	this.applyAnswerListFilter = function() {
 		this.filter.answerlist.userid = document.getElementById('answerlist_userid').value;
@@ -442,6 +468,91 @@ function FHQGuiLib() {
 	this.createPageDumps = function() {
 		this.setFilter('dumps');
 		alert('todo');
+	}
+	
+	
+	this.resetSkillsPage = function() {
+		this.filter.skills.page = 0;
+	}
+	
+	this.setSkillsPage = function(p) {
+		this.filter.skills.page = p;
+	}
+	
+	this.createPageSkills = function() {
+		this.setFilter('skills');
+		var el = document.getElementById("content_page");
+		el.innerHTML = '<h1>User\'s Skills</h1>Found:<font id="skills_found">0</font><hr><div id="skills_page"></div>';
+	}
+	
+	this.updatePageSkills = function() {
+		var el = document.getElementById("skills_page");
+		el.innerHTML = 'Loading...';
+		
+		var filter = createUrlFromObj(this.filter.skills.getParams());
+		
+		send_request_post(
+			'api/statistics/skills.php',
+			filter,
+			function (obj) {
+				if (obj.result == "fail") {
+					el.innerHTML = obj.error.message;
+					alert(obj.error.message);
+
+				} else {
+					document.getElementById('skills_found').innerHTML = obj.data.found;
+					var onpage = parseInt(obj.data.onpage, 10);
+					var page = parseInt(obj.data.page, 10);
+					el.innerHTML = fhqgui.paginator(0, obj.data.found, onpage, page, 'fhqgui.setSkillsPage', 'fhqgui.updatePageSkills()');
+
+					var tbl = new FHQTable();
+					tbl.openrow();
+					tbl.cell('User');
+					tbl.cell('Skills');
+					tbl.closerow();
+					
+					for (var userid in obj.data.skills) {
+						var sk = obj.data.skills[userid];
+						tbl.openrow();
+						var u = sk.user;
+						tbl.cell(fhqgui.userIcon(u.userid, u.logo, u.nick));
+						var h = fhqgui.filter.skills.subject == '' ? 170 : 25;
+						tbl.cell('<canvas id="skill' + u.userid + '" width="450" height="' + h + '"></canvas><br>');
+						tbl.closerow();
+					}
+					el.innerHTML += '<br>' + tbl.render();
+
+					// update charts
+					for (var userid in obj.data.skills) {
+						var sk = obj.data.skills[userid];
+						var u = sk.user;
+						var chartid = 'skill' + u.userid;
+						var ctx = document.getElementById(chartid).getContext("2d");
+						ctx.font = "12px Arial";
+						ctx.fillStyle = "#CCC";
+						ctx.strokeStyle = "#CCC";
+						
+						// ctx.strokeRect(0,0,300,140);
+						
+						var y = 10;
+						for (var sub in sk.subjects) {
+							// data.labels.push(sub);
+							var max = sk.subjects[sub].max;
+							var score = sk.subjects[sub].score;
+							var percent = 0;
+							if (max != 0) {
+								percent = Math.round((score/max)*100);
+							}
+							ctx.fillText(sub, 10, y);
+							ctx.fillText('' + percent + '% ', 80, y);
+							ctx.strokeRect(120, y-9, 200, 8);
+							ctx.fillRect (120, y-9, percent*2, 9);
+							y += 12;
+						}
+					}
+				}
+			}
+		);
 	}
 };
 

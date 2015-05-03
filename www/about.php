@@ -38,6 +38,7 @@ email: freehackquest@gmail.com<br>
 
 
 <h2>thanks for</h2>
+<a href="http://www.chartjs.org/docs/" target="_ablank">Charts.js</a>,
 Sergey Belov (xss!),
 Igor Polyakov,
 Maxim Samoilov (Nitive),
@@ -47,4 +48,5 @@ Alexey Gulyaev,
 Alexander Menschikov,
 Ilya Bokov, 
 Extrim Code,
-Taisiya Lebedeva<br>
+Taisiya Lebedeva
+<br>
