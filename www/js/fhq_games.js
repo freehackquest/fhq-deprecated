@@ -173,7 +173,7 @@ function updateGame(id) {
 function formEditGame(id)
 {
 	var params = {};
-	params["id"] = id;
+	params.gameid = id;
 	
 	send_request_post(
 		'api/games/get.php',
