@@ -185,6 +185,20 @@ function FHQGuiLib() {
 				params.page = this.page;
 				return params;
 			}
+		},
+		'events' : {
+			'search' : '',
+			'type' : '',			
+			'onpage' : 10,
+			'page' : 0,
+			'getParams' : function() {
+				var params = {};
+				params.search = this.search;
+				params.type = this.type;				
+				params.onpage = this.onpage;
+				params.page = this.page;
+				return params;
+			}
 		}
 	};
 
@@ -229,6 +243,12 @@ function FHQGuiLib() {
 			pt.row('User:', '<input type="text" id="skills_user" value=""/>');
 			pt.row('On Page:', fhqgui.combobox('skills_onpage', this.filter.skills.onpage, fhq.getOnPage()));
 			pt.right(this.btn('Apply', 'fhqgui.applySkillsFilter(); fhqgui.resetSkillsPage(); fhqgui.updatePageSkills(); fhqgui.closeModalDialog();'));
+		} else if (current_page == 'events') {
+			pt.row('Search:', '<input type="text" id="events_search" value=""/>');
+			pt.row('Type:', fhqgui.combobox('events_type', this.filter.events.type, fhq.getEventTypesFilter()));
+			pt.row('On Page:', fhqgui.combobox('events_onpage', this.filter.events.onpage, fhq.getOnPage()));
+			pt.right(this.btn('Apply', 'fhqgui.applyEventsFilter(); fhqgui.resetEventsPage(); updateEvents(); fhqgui.closeModalDialog();'));
+			
 		} else {
 			pt.row('TODO', current_page);
 		}
@@ -248,6 +268,8 @@ function FHQGuiLib() {
 			document.getElementById('statistics_questsubject').value = this.filter.stats.questsubject;
 		} else if (current_page == 'skills') {
 			document.getElementById('skills_user').value = this.filter.skills.user;
+		} else if (current_page == 'events') {
+			document.getElementById('events_search').value = this.filter.events.search;
 		}
 	}
 
@@ -259,8 +281,15 @@ function FHQGuiLib() {
 	this.applySkillsFilter = function() {
 		this.filter.skills.user = document.getElementById("skills_user").value;
 		this.filter.skills.subject = document.getElementById('skills_subject').value;
-	}	
+		this.filter.skills.onpage = document.getElementById('skills_onpage').value;
+	}
 	
+	this.applyEventsFilter = function() {
+		this.filter.events.search = document.getElementById('events_search').value;
+		this.filter.events.type = document.getElementById("events_type").value;
+		this.filter.events.onpage = document.getElementById('events_onpage').value;
+	}
+
 	this.applyAnswerListFilter = function() {
 		this.filter.answerlist.userid = document.getElementById('answerlist_userid').value;
 		this.filter.answerlist.user = document.getElementById('answerlist_user').value;
@@ -470,6 +499,14 @@ function FHQGuiLib() {
 		alert('todo');
 	}
 	
+	
+	this.resetEventsPage = function() {
+		this.filter.events.page = 0;
+	}
+
+	this.setEventsPage = function(val) {
+		this.filter.events.page = val;
+	}
 	
 	this.resetSkillsPage = function() {
 		this.filter.skills.page = 0;

@@ -160,71 +160,47 @@ function updateCountOfEvents() {
 	});
 }
 
-function resetEventsPage() {
-	document.getElementById('events_page').value = 0;
-}
 
-function setEventsPage(val) {
-	document.getElementById('events_page').value = val;
-}
 
 function createPageEvents() {
 	fhqgui.setFilter('events');
 	
 	var pt = new FHQParamTable();
-	// TODO
-	/*pt.row('',fhqgui.btn('Create News', 'formCreateEvent();'));
-	pt.skip();*/
-	pt.row('Search:', '<input type="text" id="events_search" value="" onkeydown="if (event.keyCode == 13) {resetEventsPage(); updateEvents();};"/>');
-	pt.row('Type:', fhqgui.combobox('events_type', '', fhq.getEventTypesFilter()));
-	pt.row('On Page:', fhqgui.combobox('events_onpage', '15', fhq.getOnPage()));
-	pt.row('', fhqgui.btn('Search', 'resetEventsPage(); updateEvents();'));
-	pt.skip();
-	pt.row('Found:', '<font id="search_found">0</font>');
 	var cp = new FHQContentPage();
 	cp.clear();
-	cp.append(pt.render());
-	cp.append('<input type="hidden" id="events_page" value="0"/>'
-		+ '<div id="error_search"></div>'
+	cp.append('Found: <font id="events_found"></font>'
 		+ '<hr/>'
 		+ '<div id="listEvents"></div>');
 }
 
 function updateEvents() {
-	var lu = document.getElementById("listEvents");
-	lu.innerHTML = "Please wait...";
-	
-	var params = {};
-	params.search = document.getElementById('events_search').value;
-	params.type = document.getElementById('events_type').value;
-	params.page = document.getElementById('events_page').value;
-	params.onpage = document.getElementById('events_onpage').value;
+	var el = document.getElementById("listEvents");
+	el.innerHTML = "Please wait...";
 
-	// alert(createUrlFromObj(params));
+	
 	send_request_post(
 		'api/events/list.php',
-		createUrlFromObj(params),
+		createUrlFromObj(fhqgui.filter.events.getParams()),
 		function (obj) {
 			if (obj.result == "fail") {
 				el.innerHTML = obj.error.message;
 			} else {
-				var content = '';
 				
+				el.innerHTML = "";
 				if (obj.access == true)
-					content += '<div class="fhqbtn" onclick="formCreateEvent();">Create News</div><br>';
-
+					el.innerHTML += '<div class="fhqbtn" onclick="formCreateEvent();">Create News</div><br>';
+				
 				var found = parseInt(obj.data.found, 10);
-				document.getElementById("search_found").innerHTML = found;
+				document.getElementById("events_found").innerHTML = found;
 
+				
 				var onpage = parseInt(obj.data.onpage, 10);
 				var page = parseInt(obj.data.page, 10);
-
-				content += '<div id="events_paging">' + fhqgui.paginator(0, found, onpage, page, 'setEventsPage', 'updateEvents') + '</div>';
 				
+				el.innerHTML += fhqgui.paginator(0, found, onpage, page, 'fhqgui.setEventsPage', 'updateEvents') + '<br>';
 				var nLastEventId = fhq.users.getLastEventId();
 				var maxid = parseInt(obj.data.maxid, 10);
 				for (var k in obj.data.events) {
-					content += '';
 					if (obj.data.events.hasOwnProperty(k)) {
 						var e = obj.data.events[k];
 
@@ -232,12 +208,10 @@ function updateEvents() {
 						if (e.id > nLastEventId) {
 							e.marknew = true;
 						}
-						content += fhqgui.eventView(e, obj.access); // TODO mark events which new
+						el.innerHTML += fhqgui.eventView(e, obj.access); // TODO mark events which new
 					}
-					content += '';
 				}
-				lu.innerHTML = content;
-				lu.innerHTML += "obj.data.maxid: " + maxid + ", lastEventId: " + nLastEventId;
+				// el.innerHTML += "obj.data.maxid: " + maxid + ", lastEventId: " + nLastEventId;
 				if (maxid > nLastEventId) {
 					fhq.users.setLastEventId(maxid);
 				}
