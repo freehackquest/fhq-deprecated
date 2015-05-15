@@ -10,9 +10,11 @@ $curdir_admin_settings = dirname(__FILE__);
 include_once ($curdir_admin_settings."/../api.lib/api.base.php");
 include_once ($curdir_admin_settings."/../api.lib/api.security.php");
 include_once ($curdir_admin_settings."/../api.lib/api.helpers.php");
+include_once ($curdir_admin_settings."/../api.lib/api.updates.php");
 include_once ($curdir_admin_settings."/../../config/config.php");
 
 $response = APIHelpers::startpage($config);
+$conn = APIHelpers::createConnection($config);
 
 APIHelpers::checkAuth();
 
@@ -24,5 +26,7 @@ $response['data'] = $config;
 
 unset($response['data']['mail']['password']);
 unset($response['data']['db']['userpass']);
+
+$response['data']['db']['version'] = APIUpdates::getVersion($conn);
 
 APIHelpers::endpage($response);
