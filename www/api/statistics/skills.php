@@ -87,19 +87,15 @@ foreach ($max_score as $key => $value) {
 $page = APIHelpers::getParam('page', 0);
 if (!is_numeric($page))
 	APIHelpers::showerror(1070, 'Parameter "page" must be numeric');
-$response['data']['page'] = intval($page);
+$page = intval($page);
+$response['data']['page'] = $page;
 
 // onpage
 $onpage = APIHelpers::getParam('onpage', 25);
 if (!is_numeric($onpage))
 	APIHelpers::showerror(1186, 'parameter "onpage" must be numeric');
+$onpage = intval($onpage);
 $response['data']['onpage'] = intval($onpage);
-
-$filter_where[] = 'u.role = ?';
-$filter_values[] = 'user';
-
-$filter_where[] = 'u.status = ?';
-$filter_values[] = 'activated';
 
 $filter_where[] = 'uq.startdate <> ?';
 $filter_values[] = '0000-00-00 00:00:00';
@@ -107,10 +103,18 @@ $filter_values[] = '0000-00-00 00:00:00';
 $filter_where[] = 'uq.stopdate <> ?';
 $filter_values[] = '0000-00-00 00:00:00';
 
+$filter_user_where = [];
+$filter_user_values = [];
+
+$filter_user_where[] = 'u.role = ?';
+$filter_user_values[] = 'user';
+
+$filter_user_where[] = 'u.status = ?';
+$filter_user_values[] = 'activated';
 
 if (APIHelpers::issetParam('user')) {
-	$filter_where[] = 'u.nick LIKE ?';
-	$filter_values[] = '%'.APIHelpers::getParam('user', '').'%';
+	$filter_user_where[] = 'u.nick LIKE ?';
+	$filter_user_values[] = '%'.APIHelpers::getParam('user', '').'%';
 }
 
 $where = implode(' AND ', $filter_where);
@@ -118,74 +122,90 @@ if ($where != '') {
 	$where = ' AND '.$where;
 }
 
-// count quests
+$where_users = implode(' AND ', $filter_user_where);
+$filter_userids = "";
+
 try {
 	$response['data']['found'] = 0;
 	$stmt_count = $conn->prepare('
-			SELECT count(*) as cnt FROM (
-				SELECT
-					uq.iduser
-				FROM
-					userquest uq
-				INNER JOIN quest q ON
-					uq.idquest = q.idquest
-				INNER JOIN users u ON
-					u.id = uq.iduser
-				WHERE
-					! ISNULL( q.subject )
-					'.$where.'
-				GROUP BY
-					uq.iduser
-			) f;
+		SELECT
+			count(*) as cnt
+		FROM
+			users u
+		WHERE
+			'.$where_users.'
 	');
-	$stmt_count->execute($filter_values);
+	$stmt_count->execute($filter_user_values);
 	if ($row_count = $stmt_count->fetch()) {
 		$response['data']['found'] = intval($row_count['cnt']);
 	}
 
+	$userids = [];
+	$stmt = $conn->prepare('SELECT
+				u.id,
+				u.nick,
+				u.logo
+			FROM
+				users u
+			WHERE
+				'.$where_users.'
+			LIMIT '.($page*$onpage).','.$onpage.';'
+	);
+	$stmt->execute($filter_user_values);
+
 	$response['data']['skills'] = array();
+	while ($row = $stmt->fetch()) {
+		$userid = intval($row['id']);
+		$userids[] = 'uq.iduser = '.$userid;
+		$response['data']['skills'][$userid] = array(
+			'user' => array(
+				'userid' => intval($row['id']),
+				'nick' => $row['nick'],
+				'logo' => $row['logo'],
+			),
+		);
+
+		foreach ($max_score as $key => $value) {
+			$response['data']['skills'][$userid]['subjects'][$key] = array(
+				'max' => intval($value),
+				'score' => 0
+			);
+		}
+	}
+	
+	if (count($userids) > 0) {
+		$filter_userids = ' AND ('.implode(' OR ', $userids).')';
+	}
+
+} catch(PDOException $e) {
+	APIHelpers::showerror(1187, $e->getMessage());
+}
+
+// count quests
+try {
 	$stmt = $conn->prepare('
 			SELECT
 				uq.iduser,
-				u.nick,
-				u.logo,
 				q.subject,
 				SUM( q.score ) as sum_score
 			FROM
 				userquest uq
 			INNER JOIN quest q ON
 				uq.idquest = q.idquest
-			INNER JOIN users u ON
-				u.id = uq.iduser
 			WHERE
 				! ISNULL( q.subject )
 				'.$where.'
-			GROUP BY
+				'.$filter_userids.'
+			GROUP BY 
 				uq.iduser, q.subject
-			LIMIT '.($page*$onpage).','.$onpage.'
 	');
 	$stmt->execute($filter_values);
-	$response['data']['skills'] = array();
 	while ($row = $stmt->fetch()) {
-		$userid = $row['iduser'];
-		if (!isset($response['data']['skills'][$userid])) {
-			$response['data']['skills'][$userid] = array(
-				'user' => array(
-					'userid' => $row['iduser'],
-					'nick' => $row['nick'],
-					'logo' => $row['logo'],
-				),
-			);
-			
-			foreach ($max_score as $key => $value) {
-				$response['data']['skills'][$userid]['subjects'][$key] = array(
-					'max' => intval($value),
-					'score' => 0
-				);
-			}
+		$userid = intval($row['iduser']);
+		if (isset($response['data']['skills'][$userid])) {
+			$subject = $row['subject'];
+			$response['data']['skills'][$userid]['subjects'][$row['subject']]['score'] = intval($row['sum_score']);	
 		}
-		$subject = $row['subject'];
-		$response['data']['skills'][$userid]['subjects'][$row['subject']]['score'] = intval($row['sum_score']);
 	}
 } catch(PDOException $e) {
 	APIHelpers::showerror(1187, $e->getMessage());
