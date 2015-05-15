@@ -221,6 +221,9 @@ $query = '
 				quest.score,
 				quest.subject,
 				quest.state,
+				quest.gameid,
+				quest.author,
+				quest.text,
 				quest.count_user_solved,
 				userquest.startdate,
 				userquest.stopdate
@@ -255,11 +258,14 @@ try {
 			$status = 'current';
 		else
 			$status = 'completed';
-
+				
 		$result['data'][] = array(
 			'questid' => $row['idquest'],
 			'score' => $row['score'],
 			'name' => $row['name'],
+			'text' => $row['text'],
+			'author' => $row['author'],
+			'gameid' => $row['gameid'],
 			'subject' => $row['subject'],
 			'date_start' => $row['startdate'],
 			'date_stop' => $row['stopdate'],
