@@ -1,39 +1,6 @@
 
 function createQuestFilters() {
-	
-	var pt = new FHQParamTable();
-	// TODO
-	// pt.row('Filter:', '<input type="text" id="quests_search" value="" onkeydown="if (event.keyCode == 13) {resetEventsPage(); updateEvents();};"/>');
-	pt.rowid('quests_create', '', '<div class="fhqbtn" onclick="formCreateQuest();">Create Quest</div>');
-	pt.row('Status:', fhqgui.combobox('quests_userstatus', '', fhq.getQuestUserStatusFilter()));
-	pt.row('Subject:', fhqgui.combobox('quests_subject', '', fhq.getQuestTypesFilter()));
-	pt.row('', fhqgui.btn('Search', 'reloadQuests();'));
-	pt.skip();
-	pt.row('Open:', '<font id="quests_open">0</font>');
-	pt.row('In_Progress:', '<font id="quests_in_progress">0</font>');
-	pt.row('Completed:', '<font id="quests_completed">0</font>');
-	pt.skip();
-	var tps = fhq.getQuestTypes();
-	for (var k in tps) {
-		pt.row(tps[k].caption, '<font id="quests_type_' + tps[k].value + '">0</font>');		
-	}
-
-	/*var cp = new FHQContentPage();
-	cp.clear();
-	cp.append(pt.render());
-	cp.append('<input type="hidden" id="events_page" value="0"/>'
-		+ '<div id="error_search"></div>'
-		+ '<hr/>'
-		+ '<div id="listEvents"></div>');*/
-
-	var content = '\n'
-	+ '<table width=100%><tr>'
-	+ '<td valign=top width=100%><div id="quests"></div></td>\n'
-	+ '<td valign=top>' + pt.render() + '</td>\n'	
-	+ '</tr></table>\n'
-	+ ' \n';
-
-	return content;
+	return '<div id="quests"></div>';
 }
 
 function reloadQuests()
@@ -44,9 +11,13 @@ function reloadQuests()
 	quests.innerHTML = "Please wait...";
 
 	var params = {};
-	var q_status = document.getElementById("quests_userstatus").value;
+	var q_status = fhqgui.filter.quests.userstatus;
 
-	if (q_status == 'open') {
+	if (q_status == 'not_completed') {
+		params.filter_open = true;
+		params.filter_current = true;
+		params.filter_completed = false;
+	} else if (q_status == 'open') {
 		params.filter_open = true;
 		params.filter_current = false;
 		params.filter_completed = false;
@@ -63,10 +34,9 @@ function reloadQuests()
 		params.filter_current = true;
 		params.filter_completed = true;
 	}
-	
 
 	// filter
-	params.filter_subjects = document.getElementById('quests_subject').value;
+	params.filter_subjects = fhqgui.filter.quests.subject;
 	
 	// alert(createUrlFromObj(params));
 	send_request_post(
@@ -81,40 +51,38 @@ function reloadQuests()
 				}
 				return;
 			}
+			
+			quests.innerHTML = '';
+			
+			var perms = obj['permissions'];
+			if (perms['insert'] == true)
+				quests.innerHTML += '<center><div class="fhqbtn" onclick="formCreateQuest();">Create Quest</div></center><hr>';
 
-			document.getElementById("quests_open").innerHTML = obj.status.open;
-			document.getElementById("quests_in_progress").innerHTML = obj.status.current;
-			document.getElementById("quests_completed").innerHTML = obj.status.completed;
-
-			// var current_game = obj.current_game;
-
+			var stats = [];
 			var tps = fhq.getQuestTypes();
-			for (var k in tps) {
-				if (obj.subjects[tps[k].value] != null) {
-					document.getElementById('quests_type_' + tps[k].value).innerHTML = obj.subjects[tps[k].value];
-				} else {
-					document.getElementById('quests_type_' + tps[k].value).innerHTML = 0;
+			if (obj.subjects != null) {
+				for (var k in tps) {
+					var quest_sub_count = obj.subjects[tps[k].value];
+					if (quest_sub_count != null) {
+						stats.push(tps[k].caption + ': ' + quest_sub_count);
+					}
 				}
 			}
-			quests.innerHTML = '';
-			var perms = obj['permissions'];
-			if (perms['insert'] == false) {
-				document.getElementById('quests_create').innerHTML = "";
-			}
+			quests.innerHTML += '<center>' + stats.join(', ') + '</center>';
 
 			if (params.filter_current && obj.status.current > 0)
-				quests.innerHTML += '<hr>In progress:<br><div id="current_quests"></div>';
+				quests.innerHTML += '<hr><h3>In progress (' + obj.status.current + ')</h3><br><div id="current_quests"></div>';
 
 			if (params.filter_open && obj.status.open > 0)
-				quests.innerHTML += '<hr>Open Quests:<br><div id="open_quests"></div>'
+				quests.innerHTML += '<hr><h3>Open (' + obj.status.completed + ')</h3><br><div id="open_quests"></div>'
 
 			if (params.filter_completed && obj.status.completed > 0)
-				quests.innerHTML += '<hr>Completed Quests:<br><div id="completed_quests"></div>';
+				quests.innerHTML += '<hr><h3>Completed (' + obj.status.open + ')</h3><br><div id="completed_quests"></div>';
 
 			var open_quests = document.getElementById("open_quests");
 			var current_quests = document.getElementById("current_quests");
 			var completed_quests = document.getElementById("completed_quests");
-			
+
 			for (var k in obj.data) {
 				var q = obj.data[k];
 				var content = fhqgui.questIcon(q.questid, q.name, q.subject, q.score, q.solved);
@@ -127,8 +95,6 @@ function reloadQuests()
 
 				if (q.status == 'completed' && completed_quests)
 					completed_quests.innerHTML += content;
-				
-				// quests.innerHTML += content;
 			}
 		}
 	);	
@@ -136,6 +102,7 @@ function reloadQuests()
 
 function loadQuests()
 {
+	fhqgui.setFilter('quests');
 	var el = document.getElementById("content_page");
 	el.innerHTML = createQuestFilters();
 	reloadQuests();
@@ -531,14 +498,14 @@ function updateMyAnswers(id)
 
 	// alert(createUrlFromObj(params));
 	send_request_post(
-		'api/quests/user_answers.php',
+		'api/statistics/user_answers.php',
 		createUrlFromObj(params),
 		function (obj) {
 			if (obj.result == "ok") {
 				var el = document.getElementById('user_answers');
 				el.innerHTML = " Answers: <br>";
 				for (var i = 0; i < obj.data.length; ++i) {
-					el.innerHTML += '<div class="fhq_task_tryanswer">[' + obj.data[i].datetime_try + '] ' + obj.data[i].answer_try + '</div>';
+					el.innerHTML += '<div class="fhq_task_tryanswer">[' + obj.data[i].datetime_try + ', levenshtein: ' + obj.data[i].levenshtein + '] ' + obj.data[i].answer_try + '</div>';
 				}
 			} else {
 				

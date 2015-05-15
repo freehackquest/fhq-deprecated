@@ -2,6 +2,22 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Update Game Info
+ * API_DESCRIPTION: Method for update game info
+ * API_ACCESS: admin only
+ * API_INPUT: id - string, Identificator of the game
+ * API_INPUT: title - string, name of the game
+ * API_INPUT: type_game - string, type of the game, currently only possible: jeopardy
+ * API_INPUT: date_start - datetime, when game will be started
+ * API_INPUT: date_stop - datetime, when game will be stoped
+ * API_INPUT: date_restart - datetime, when game will be restarted
+ * API_INPUT: description - string, some description of the game
+ * API_INPUT: state - string, look types (copy, unlicensed copy and etc.)
+ * API_INPUT: form - string, look types (online or offline)
+ * API_INPUT: organizators - string, who make this game
+ */
+
 $curdir_games_update = dirname(__FILE__);
 include_once ($curdir_games_update."/../api.lib/api.helpers.php");
 include_once ($curdir_games_update."/../../config/config.php");
@@ -30,7 +46,6 @@ $columns = array(
   'state' => 'Unlicensed copy',
   'form' => 'online',
   'organizators' => '',
-  'rules' => '',
 );
 
 if (!APIHelpers::issetParam('id'))

@@ -1,68 +1,65 @@
 <?php
-$statistics_list_start = microtime(true);
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
+/*
+ * API_NAME: Answer List
+ * API_DESCRIPTION: Method will be returned answer list for monitoring by users
+ * API_ACCESS: admin only
+ * API_INPUT: token - guid, secret token
+ * API_INPUT: page - integer, number of page - need for pagging
+ * API_INPUT: onpage - integer, records on page - need for pagging
+ * API_INPUT: table - string, (active or backup)
+ * API_INPUT: userid - string, filter by user id or empty
+ * API_INPUT: user - string, filter by user nick or email or empty
+ * API_INPUT: gameid - string, filter by game id or empty
+ * API_INPUT: gamename - string, filter by gamename or empty
+ * API_INPUT: questid - string, filter by questid or empty
+ * API_INPUT: questname - string, filter by questname or empty
+ * API_INPUT: questsubject - string, filter by questsubject or empty
+ * API_INPUT: passed - string, filter by passed or empty
+ */
 
-$curdir_statistics_list = dirname(__FILE__);
-include_once ($curdir_statistics_list."/../api.lib/api.base.php");
-include_once ($curdir_statistics_list."/../api.lib/api.security.php");
-include_once ($curdir_statistics_list."/../api.lib/api.helpers.php");
-include_once ($curdir_statistics_list."/../api.lib/api.game.php");
-include_once ($curdir_statistics_list."/../../config/config.php");
+$curdir_statistics_answerlist = dirname(__FILE__);
+include_once ($curdir_statistics_answerlist."/../api.lib/api.base.php");
+include_once ($curdir_statistics_answerlist."/../api.lib/api.security.php");
+include_once ($curdir_statistics_answerlist."/../api.lib/api.helpers.php");
+include_once ($curdir_statistics_answerlist."/../api.lib/api.game.php");
+include_once ($curdir_statistics_answerlist."/../../config/config.php");
 
-include_once ($curdir_statistics_list."/../api.lib/loadtoken.php");
+$response = APIHelpers::startpage($config);
 
 APIHelpers::checkAuth();
 
 if(!APISecurity::isAdmin())
   APIHelpers::showerror(1068, 'access denie. you must be admin.');
 
-// $gameid = APIHelpers::getParam("gameid", APIGame::id());
-
-// todo check integer value
-
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
-
-$result['result'] = 'ok';
-
-/*if ($gameid == 0)
-	APIHelpers::showerror(1069, "Game was not selected.");
-
-if (!is_numeric($gameid))
-	APIHelpers::showerror(1070, 'parameter "gameid" must be numeric');*/
-
-// $result['data']['gameid'] = $gameid;
+$response['result'] = 'ok';
 
 // table
 $table = APIHelpers::getParam('table', 'active');
 if ($table != 'active' && $table != 'backup')
-	APIHelpers::showerror(1071, 'parameter "active" must be "current" or "backup"');
-$result['data']['table'] = $table;
+	APIHelpers::showerror(1071, 'parameter "table" must be "active" or "backup"');
+$response['data']['table'] = $table;
 $table = $table == 'active' ? 'tryanswer' : 'tryanswer_backup';
 
 // page
 $page = APIHelpers::getParam('page', 0);
 if (!is_numeric($page))
 	APIHelpers::showerror(1072, 'parameter "page" must be numeric');
-$result['data']['page'] = intval($page);
+$response['data']['page'] = intval($page);
 
 // onpage
-$onpage = APIHelpers::getParam('onpage', 25);
+$onpage = APIHelpers::getParam('onpage', 10);
 if (!is_numeric($onpage))
 	APIHelpers::showerror(1073, 'parameter "onpage" must be numeric');
-$result['data']['onpage'] = intval($onpage);
+$response['data']['onpage'] = intval($onpage);
 
 
 $filter_where = [];
 $filter_values = [];
 
 // userid
-$userid = APIHelpers::getParam('userid', '');
+$userid = APIHelpers::getParam('userid', 'ff');
 if (is_numeric($userid)) {
-	$filter_where[] = 'u.iduser = ?';
+	$filter_where[] = '(u.id = ?)';
 	$filter_values[] = intval($userid);
 }
 
@@ -137,7 +134,7 @@ try {
 	');
 	$stmt->execute($filter_values);
 	if($row = $stmt->fetch()) {
-		$result['data']['count'] = intval($row['cnt']);
+		$response['data']['count'] = intval($row['cnt']);
 	}
 } catch(PDOException $e) {
 	APIHelpers::showerror(1074, $e->getMessage());
@@ -152,7 +149,9 @@ try {
 			ta.iduser,
 			ta.answer_try,
 			ta.answer_real,
+			ta.levenshtein,
 			u.nick,
+			u.logo,
 			u.email,
 			q.name,
 			q.subject,
@@ -171,33 +170,37 @@ try {
 		LIMIT '.($page*$onpage).','.$onpage.'
 	');
 	$stmt->execute($filter_values);
-	$result['data']['answers'] = array();
+	$response['data']['answers'] = array();
 	$id = -1;
 	while ($row = $stmt->fetch()) {
 		$id++;
-		$result['data']['answers'][] = array(
-			'datetime_try' => $row['datetime_try'],
-			'gameid' => $row['gameid'],
-			'gametitle' => $row['title'],
-			'questid' => $row['idquest'],
-			'questname' => $row['name'],
-			'questscore' => $row['score'],
-			'questsubject' => $row['subject'],
-			'questsolved' => $row['count_user_solved'],
-			'userid' => $row['iduser'],
-			'usernick' => $row['nick'],
-			'email' => $row['email'],
+		$response['data']['answers'][] = array(
+			'dt' => $row['datetime_try'],
 			'answer_try' => htmlspecialchars($row['answer_try']),
 			'answer_real' => htmlspecialchars($row['answer_real']),
+			'levenshtein' => $row['levenshtein'],
 			'passed' => $row['passed'],
+			'game' => array(
+				'id' => $row['gameid'],
+				'title' => $row['title'],
+			),
+			'quest' => array(
+				'id' => $row['idquest'],
+				'name' => $row['name'],
+				'score' => $row['score'],
+				'subject' => $row['subject'],
+				'solved' => $row['count_user_solved'],
+			),
+			'user' => array(
+				'id' => $row['iduser'],
+				'logo' => $row['logo'],
+				'nick' => $row['nick'],
+				'email' => $row['email'],
+			),
 		);
 	}
 } catch(PDOException $e) {
 	APIHelpers::showerror(1075, $e->getMessage());
 }
 
-// not needed here
-// include_once ($curdir."/../api.lib/savetoken.php");
-
-$result['lead_time_sec'] = microtime(true) - $statistics_list_start;
-echo json_encode($result);
+APIHelpers::endpage($response);

@@ -2,6 +2,17 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Quest List
+ * API_DESCRIPTION: Method will be returned quest list
+ * API_ACCESS: authorized users
+ * API_INPUT: filter_open - boolean, filter by open quests (it not taked)
+ * API_INPUT: filter_current - boolean, filter by in progress quests (taked)
+ * API_INPUT: filter_completed - boolean, filter by completed quest (finished quests)
+ * API_INPUT: filter_subjects - string, filter by subjects quests (for example: "hashes,trivia" and etc. also look types)
+ * API_INPUT: token - string, token
+ */
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.security.php");
@@ -210,6 +221,9 @@ $query = '
 				quest.score,
 				quest.subject,
 				quest.state,
+				quest.gameid,
+				quest.author,
+				quest.text,
 				quest.count_user_solved,
 				userquest.startdate,
 				userquest.stopdate
@@ -244,11 +258,14 @@ try {
 			$status = 'current';
 		else
 			$status = 'completed';
-
+				
 		$result['data'][] = array(
 			'questid' => $row['idquest'],
 			'score' => $row['score'],
 			'name' => $row['name'],
+			'text' => $row['text'],
+			'author' => $row['author'],
+			'gameid' => $row['gameid'],
 			'subject' => $row['subject'],
 			'date_start' => $row['startdate'],
 			'date_stop' => $row['stopdate'],

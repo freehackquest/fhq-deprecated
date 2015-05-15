@@ -1,7 +1,16 @@
 <?php
-$statistics_list_start = microtime(true);
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
+/*
+ * API_NAME: Statistics List
+ * API_DESCRIPTION: Method will be returned statistics info
+ * API_ACCESS: authorized users
+ * API_INPUT: token - guid, secret token
+ * API_INPUT: page - integer, number of page - need for pagging
+ * API_INPUT: onpage - integer, records on page - need for pagging
+ * API_INPUT: questid - integer, quest id
+ * API_INPUT: questname - string, search by name or substring from quest name
+ * API_INPUT: questsubject - string, look in types
+ * API_INPUT: token - string, token
+ */
 
 $curdir_statistics_list = dirname(__FILE__);
 include_once ($curdir_statistics_list."/../api.lib/api.base.php");
@@ -10,11 +19,11 @@ include_once ($curdir_statistics_list."/../api.lib/api.helpers.php");
 include_once ($curdir_statistics_list."/../api.lib/api.game.php");
 include_once ($curdir_statistics_list."/../../config/config.php");
 
-include_once ($curdir_statistics_list."/../api.lib/loadtoken.php");
+$response = APIHelpers::startpage($config);
 
 APIHelpers::checkAuth();
 
-$gameid = APIHelpers::getParam("gameid", 0);
+$gameid = APIHelpers::getParam("gameid", APIGame::id());
 
 if (!is_numeric($gameid))
 	APIHelpers::showerror(1077, 'parameter "gameid" must be numeric');
@@ -22,12 +31,7 @@ if (!is_numeric($gameid))
 if ($gameid == 0)
 	APIHelpers::showerror(1076, "Parameter gameid must be not 0.");
 
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
-
-$result['result'] = 'ok';
+$response['result'] = 'ok';
 
 $filter_where = [];
 $filter_values = [];
@@ -39,13 +43,13 @@ $filter_values[] = intval($gameid);
 $page = APIHelpers::getParam('page', 0);
 if (!is_numeric($page))
 	APIHelpers::showerror(1284, 'Parameter "page" must be numeric');
-$result['data']['page'] = intval($page);
+$response['data']['page'] = intval($page);
 
 // onpage
 $onpage = APIHelpers::getParam('onpage', 25);
 if (!is_numeric($onpage))
 	APIHelpers::showerror(1285, 'parameter "onpage" must be numeric');
-$result['data']['onpage'] = intval($onpage);
+$response['data']['onpage'] = intval($onpage);
 
 // questid
 $questid = APIHelpers::getParam('questid', '');
@@ -82,7 +86,7 @@ if ($where != '') {
 
 $conn = APIHelpers::createConnection($config);
 
-$result['data']['gameid'] = $gameid;
+$response['data']['gameid'] = $gameid;
 
 // count quests
 try {
@@ -98,7 +102,7 @@ try {
 	');
 	$stmt->execute($filter_values);
 	if($row = $stmt->fetch()) {
-		$result['data']['count'] = $row['cnt'];
+		$response['data']['count'] = $row['cnt'];
 	}
 } catch(PDOException $e) {
 	APIHelpers::showerror(1078, $e->getMessage());
@@ -107,7 +111,7 @@ try {
 
 function getCountStatBy($conn, $table, $questid, $passed)
 {
-	$result = 0;
+	$res = 0;
 	try {
 		$stmt = $conn->prepare('
 				select 
@@ -122,12 +126,12 @@ function getCountStatBy($conn, $table, $questid, $passed)
 		');
 		$stmt->execute(array(intval($questid), $passed, 'user'));
 		if($row = $stmt->fetch()) {
-			$result = $row['cnt'];
+			$res = $row['cnt'];
 		}
 	} catch(PDOException $e) {
 		APIHelpers::showerror(1079, $e->getMessage());
 	}
-	return $result;
+	return $res;
 }
 
 
@@ -150,12 +154,12 @@ try {
 			LIMIT '.($page*$onpage).','.$onpage.'
 	');
 	$stmt->execute($filter_values);
-	$result['data']['quests'] = array();
+	$response['data']['quests'] = array();
 	$id = -1;
 	while ($row = $stmt->fetch()) {
 		$id++;
 		$questid = $row['idquest'];
-		$result['data']['quests'][$id] = array(
+		$response['data']['quests'][$id] = array(
 			'id' => $row['idquest'],
 			'name' => $row['name'],
 			'subject' => $row['subject'],
@@ -168,10 +172,10 @@ try {
 		$solved = getCountStatBy($conn, 'tryanswer_backup', $questid, 'Yes');
 		$tries_solved = getCountStatBy($conn, 'tryanswer_backup', $questid, 'No');
 
-		$result['data']['quests'][$id]['solved'] = $solved;
-		$result['data']['quests'][$id]['tries_nosolved'] = $tries_nosolved;
-		$result['data']['quests'][$id]['tries_solved'] = $tries_solved;
-		$result['data']['quests'][$id]['users'] = array();
+		$response['data']['quests'][$id]['solved'] = $solved;
+		$response['data']['quests'][$id]['tries_nosolved'] = $tries_nosolved;
+		$response['data']['quests'][$id]['tries_solved'] = $tries_solved;
+		$response['data']['quests'][$id]['users'] = array();
 
 		// how solved this quest
 		$stmt_users = $conn->prepare('
@@ -190,7 +194,7 @@ try {
 		$stmt_users->execute(array('user',intval($questid), '0000-00-00 00:00:00'));
 	
 		while ($row_user = $stmt_users->fetch()) {
-			$result['data']['quests'][$id]['users'][] = array(
+			$response['data']['quests'][$id]['users'][] = array(
 				'userid' => $row_user['id'],
 				'logo' => $row_user['logo'],
 				'nick' => $row_user['nick'],
@@ -201,8 +205,6 @@ try {
 	APIHelpers::showerror(1102, $e->getMessage());
 }
 
-// not needed here
-// include_once ($curdir."/../api.lib/savetoken.php");
+APIHelpers::endpage($response);
 
-$result['lead_time_sec'] = microtime(true) - $statistics_list_start;
-echo json_encode($result);
+

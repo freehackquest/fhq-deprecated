@@ -2,6 +2,14 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Delete Quest
+ * API_DESCRIPTION: Method for delete quest
+ * API_ACCESS: admin only
+ * API_INPUT: questid - string, Identificator of the quest
+ * API_INPUT: token - string, token
+ */
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");
@@ -42,6 +50,8 @@ try {
 } catch(PDOException $e) {
 	APIHelpers::showerror(1063, $e->getMessage());
 }
+
+APIQuest::updateMaxGameScore($conn, APIGame::id());
 
 include_once ($curdir."/../api.lib/savetoken.php");
 echo json_encode($result);

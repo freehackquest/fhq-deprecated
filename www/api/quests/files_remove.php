@@ -2,6 +2,14 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Delete File
+ * API_DESCRIPTION: Method for delete file from the quest
+ * API_ACCESS: admin only
+ * API_INPUT: fileid - string, Identificator of the file
+ * API_INPUT: token - string, token
+ */
+
 $curdir_quests_files_remove = dirname(__FILE__);
 include_once ($curdir_quests_files_remove."/../api.lib/api.base.php");
 include_once ($curdir_quests_files_remove."/../../config/config.php");

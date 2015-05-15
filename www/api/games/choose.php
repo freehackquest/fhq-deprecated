@@ -1,21 +1,19 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
+/*
+ * API_NAME: Choose Game
+ * API_DESCRIPTION: select game and it will be write to user session.
+ * API_ACCESS: authorized users
+ * API_INPUT: token - guid, secret token
+ * API_INPUT: id - string, Identificator of the game
+ */
 
 $curdir_games_choose = dirname(__FILE__);
 include_once ($curdir_games_choose."/../api.lib/api.base.php");
-include_once ($curdir_games_choose."/../api.lib/api.security.php");
-include_once ($curdir_games_choose."/../api.lib/api.helpers.php");
 include_once ($curdir_games_choose."/../../config/config.php");
 
-include_once ($curdir_games_choose."/../api.lib/loadtoken.php");
+$response = APIHelpers::startpage($config);
 
 APIHelpers::checkAuth();
-
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
 
 /*$errmsg = "";
 if (!checkGameDates($security, &$message))
@@ -31,7 +29,8 @@ if (APIHelpers::issetParam('id')) {
 
 	// try {
 		$query = '
-			SELECT *
+			SELECT
+				*
 			FROM
 				games
 			WHERE id = ?';
@@ -43,12 +42,12 @@ if (APIHelpers::issetParam('id')) {
 		if($row = $stmt->fetch())
 		{
 			$_SESSION['game'] = array();
-			$result['data'] = array();
+			$response['data'] = array();
 			foreach ( $columns as $k) {
 				$_SESSION['game'][$k] = $row[$k];
-				$result['data'][$k] = $row[$k];
+				$response['data'][$k] = $row[$k];
 			}
-			$result['result'] = 'ok';
+			$response['result'] = 'ok';
 		}
 		else
 		{
@@ -61,8 +60,8 @@ if (APIHelpers::issetParam('id')) {
 		if($row2 = $stmt2->fetch())
 		{
 			$_SESSION['user']['score'] = $row2['score'];
-			$result['user'] = array();
-			$result['user']['score'] = $row2['score'];
+			$response['user'] = array();
+			$response['user']['score'] = $row2['score'];
 		}
 		else
 		{
@@ -88,8 +87,8 @@ if (APIHelpers::issetParam('id')) {
 			$stmt3->execute(array(intval(APISecurity::userid()), intval($game_id), intval($score)));
 			
 			$_SESSION['user']['score'] = $score;
-			$result['user'] = array();
-			$result['user']['score'] = $score;
+			$response['user'] = array();
+			$response['user']['score'] = $score;
 		}	
 	// } catch(PDOException $e) {
 //		APIHelpers::showerror(1179, $e->getMessage());
@@ -98,5 +97,4 @@ if (APIHelpers::issetParam('id')) {
 	APIHelpers::showerror(1180, 'not found parameter id');
 }
 
-include_once ($curdir."/../api.lib/savetoken.php");
-echo json_encode($result);
+APIHelpers::endpage($response);

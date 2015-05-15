@@ -1,28 +1,18 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
 
-/*
- * API_NAME: Enums
- * API_DESCRIPTION: list of some types, for example:
- * API_DESCRIPTION: questTypes, questStates, userStatuses and etc.
- * API_ACCESS: all
- */
-
-
-$result = array(
-	'result' => 'ok',
-	'data' => array(
+class APITypes {
+	static $types = array(
 		'questUserStatus' => array(
 			array( 'value' => 'open', 'caption' => 'Open' ),
 			array( 'value' => 'in_progress', 'caption' => 'In Progress' ),
 			array( 'value' => 'completed', 'caption' => 'Completed' ),
 		),
 		'questUserStatusFilter' => array(
-			array( 'value' => '', 'caption' => '*' ),
+			array( 'value' => 'not_completed', 'caption' => 'Open or In Progress' ),
 			array( 'value' => 'open', 'caption' => 'Open' ),
 			array( 'value' => 'in_progress', 'caption' => 'In Progress' ),
 			array( 'value' => 'completed', 'caption' => 'Completed' ),
+			array( 'value' => '', 'caption' => '*' ),
 		),		
 		'questTypes' => array(
 			array( 'value' => 'hashes', 'caption' => 'Hashes' ),
@@ -139,7 +129,5 @@ $result = array(
 			array( 'value' => 'Yes', 'caption' => 'Yes' ),
 			array( 'value' => 'No', 'caption' => 'No' ),
 		),
-	),
-);
-
-echo json_encode($result);
+	);
+}

@@ -2,6 +2,24 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Quest Update
+ * API_DESCRIPTION: Method will be update quest info
+ * API_ACCESS: admin only
+ * API_INPUT: questid - integer, Identificator of the quest
+ * API_INPUT: name - string, name of the quest
+ * API_INPUT: text - string, description of the quest
+ * API_INPUT: score - string, how much +score for user after solve quest by user
+ * API_INPUT: min_score - string, condition for opened quest for user
+ * API_INPUT: subject - string, subject msut be one from types (look types)
+ * API_INPUT: idauthor - integer, will be depricated
+ * API_INPUT: author - string, who make this quest
+ * API_INPUT: answer - string, answer for this quest
+ * API_INPUT: state - string, state of the quest, can be: open, broken, closed
+ * API_INPUT: description_state - string, you can add some descriptions for quest state
+ * API_INPUT: token - string, token
+ */
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");
@@ -61,7 +79,7 @@ $params['idauthor'] = intval($params['idauthor']);
 // $params['state'] = $params['state'];
 // $params['description_state'] = $params['description_state'];
 // $params['quest_uuid'] = $params['quest_uuid'];
-$params['gameid'] = APIGame::id();
+// $params['gameid'] = APIGame::id();
 $params['userid'] = APISecurity::userid();
 
 $conn = APIHelpers::createConnection($config);
@@ -96,6 +114,8 @@ $values[] = $questid;
 // } catch(PDOException $e) {
 //	APIHelpers::showerror(1028,$e->getMessage());
 //}
+
+APIQuest::updateMaxGameScore($conn, APIGame::id());
 
 include_once ($curdir."/../api.lib/savetoken.php");
 echo json_encode($result);

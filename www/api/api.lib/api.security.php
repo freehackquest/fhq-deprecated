@@ -1,9 +1,12 @@
 <?php
 class APISecurity {
 	static function isLogged() {
+		if (APIHelpers::$FHQSESSION != NULL) {
+			return isset(APIHelpers::$FHQSESSION['user']);
+		}
 		return isset($_SESSION['user']);
 	}
-	
+
 	static function login($conn, $email, $hash_password) {
 		// try {
 			$query = 'SELECT * FROM users WHERE email = ? AND pass = ?';
@@ -28,56 +31,71 @@ class APISecurity {
 		// }
 		return false;
 	}
-	
+
 	static function logout() {
 		if(APISecurity::isLogged()) {
 			unset($_SESSION['user']);
 			unset($_SESSION['game']);
+			
+			if (APIHelpers::$FHQSESSION != NULL) {
+				unset(APIHelpers::$FHQSESSION['user']);
+				unset(APIHelpers::$FHQSESSION['game']);
+			}
 		}
 	}
 	
-	static function role() { 
-		return (APISecurity::isLogged()) ? $_SESSION['user']['role'] : ''; 
-	}
 	
-	static function isAdmin() { 
-		return (APISecurity::isLogged() && $_SESSION['user']['role'] == 'admin' ); 
-	}
 
 	static function generatePassword2($email, $password) {
 		return sha1(strtoupper($email).$password);
 	}
 	
-	static function isUser() { 
-		return (APISecurity::isLogged() && $_SESSION['user']['role'] == 'user' ); 
+	static function role() { 
+		if (APIHelpers::$FHQSESSION != NULL)
+			return (APISecurity::isLogged() ? APIHelpers::$FHQSESSION['user']['role'] : '' ); 
+		return (APISecurity::isLogged()) ? $_SESSION['user']['role'] : '';
 	}
 	
-	static function isTester() { 
-		return (APISecurity::isLogged() && $_SESSION['user']['role'] == 'tester' ); 
+	static function isAdmin() {
+		return (APISecurity::role() == 'admin');
 	}
 	
-	static function isGod() { 
-		return (APISecurity::isLogged() && $_SESSION['user']['role'] == 'god' ); 
+	static function isUser() {
+		return (APISecurity::role() == 'user');
+	}
+	
+	static function isTester() {
+		return (APISecurity::role() == 'tester');
+	}
+	
+	static function isGod() {
+		return (APISecurity::role() == 'god');
 	}
 	
 	static function score() { 
+		// TODO $FHQSESSION
 		return (APISecurity::isLogged() && is_numeric($_SESSION['user']['score'])) ? $_SESSION['user']['score'] : 0; 
 	}
 	
 	static function nick() { 
+		// TODO $FHQSESSION
 		return (APISecurity::isLogged()) ? $_SESSION['user']['nick'] : ''; 
 	}
 	
-	static function email() { 
+	static function email() {
+		// TODO $FHQSESSION
 		return (APISecurity::isLogged()) ? strtolower($_SESSION['user']['email']) : '';
 	}
   
-	static function setNick($nick) { 
+	static function setNick($nick) {
+		// TODO $FHQSESSION
 		if(APISecurity::isLogged())
 			$_SESSION['user']['nick'] = $nick;
 	}
 
 	static function userid() {
+		// TODO $FHQSESSION
+
 		$userid = (APISecurity::isLogged() && isset($_SESSION['user']['id'])) ? $_SESSION['user']['id'] : '';
 		if (intval($userid) == 0) {
 			session_destroy();
@@ -86,7 +104,7 @@ class APISecurity {
 		return $userid;
 	}
 
-	static function insertLastIp($conn, $client) { 
+	static function insertLastIp($conn, $client) {
 		try {
 			$query = 'INSERT INTO users_ips (userid, ip, country, city, browser, client, date_sign_in) VALUES(?,?,?,?,?,?,NOW())';
 			$ip = $_SERVER['REMOTE_ADDR'];

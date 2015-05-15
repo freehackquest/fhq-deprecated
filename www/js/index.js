@@ -101,7 +101,7 @@ function registration()
 function loadCities() {
 	var params = {};
 	send_request(
-		'api/settings/public_info.php',
+		'api/public/info.php',
 		function (obj) {
 			if (obj.result == "fail") {
 				// el.innerHTML = obj.error.message;
@@ -121,7 +121,7 @@ function loadCities() {
 					}
 				}
 				c.innerHTML += cities.join(", ");
-				
+
 				var a = document.getElementById('about');
 				var content = '<center>';
 				for (var k in obj.data.winners) {

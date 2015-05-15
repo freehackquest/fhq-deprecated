@@ -114,6 +114,208 @@ function FHQGuiLib() {
 		return pagesHtml.join(' ');
 	}
 	
+	this.filter = {
+		'current' : 'quests',
+		'quests' : {
+			'quests_open' : 0,
+			'quests_in_progress' : 0,
+			'quests_completed' : 0,
+			'userstatus' : 'not_completed',
+			'subject' : '',
+			'getParams' : function() {
+				// TODO
+				var params = {};
+				return params;
+			}
+		},
+		'answerlist' : {
+			'userid' : '',
+			'user' : '',
+			'gameid' : '',
+			'gamename' : '',
+			'questid' : '',
+			'questname' : '',
+			'questsubject' : '',
+			'passed' : '',
+			'table' : 'active',
+			'onpage' : 10,
+			'page' : 0,
+			'getParams' : function() {
+				var params = {};
+				params.userid = this.userid;
+				params.user = this.user;
+				params.gameid = this.gameid;
+				params.gamename = this.gamename;
+				params.questid = this.questid;
+				params.questname = this.questname;
+				params.questsubject = this.questsubject;
+				params.passed = this.passed;
+				params.table = this.table;
+				params.page = this.page;
+				params.onpage = this.onpage;
+				return params;
+			}
+		},
+		'stats' : {
+			'questname' : '',
+			'questid' : '',
+			'questsubject' : '',
+			'onpage' : 10,
+			'page' : 0,
+			'getParams' : function() {
+				var params = {};
+				params.questname = this.questname;
+				params.questid = this.questid;
+				params.questsubject = this.questsubject;
+				params.onpage = this.onpage;
+				params.page = this.page;
+				return params;
+			}
+		},
+		'skills' : {
+			'subject' : '',
+			'user' : '',			
+			'onpage' : 10,
+			'page' : 0,
+			'getParams' : function() {
+				var params = {};
+				params.subject = this.subject;
+				params.user = this.user;				
+				params.onpage = this.onpage;
+				params.page = this.page;
+				return params;
+			}
+		},
+		'events' : {
+			'search' : '',
+			'type' : '',			
+			'onpage' : 10,
+			'page' : 0,
+			'getParams' : function() {
+				var params = {};
+				params.search = this.search;
+				params.type = this.type;				
+				params.onpage = this.onpage;
+				params.page = this.page;
+				return params;
+			}
+		}
+	};
+
+	this.setFilter = function(current_filter) {
+		this.filter.current = current_filter;
+		if (this.filter[current_filter] == null) {
+			document.getElementById('btnfilter').style.visibility = 'hidden';
+		} else {
+			document.getElementById('btnfilter').style.visibility = 'visible';
+		}
+	}
+	
+	this.showFilter = function() {
+		var current_page = this.filter.current;
+		
+		var pt = new FHQParamTable();
+		
+		if (current_page == 'quests') {
+			pt.row('Status:', fhqgui.combobox('quests_userstatus', this.filter.quests.userstatus, fhq.getQuestUserStatusFilter()));
+			pt.row('Subject:', fhqgui.combobox('quests_subject', this.filter.quests.subject, fhq.getQuestTypesFilter()));
+			pt.right(this.btn('Apply', 'fhqgui.applyQuestsFilter(); reloadQuests(); fhqgui.closeModalDialog();'));
+		} else if (current_page == 'answerlist') {
+			pt.row('User ID:', '<input type="text" id="answerlist_userid" value=""/>');
+			pt.row('E-mail or Nick:', '<input type="text" id="answerlist_user" value=""/>');
+			pt.row('Game ID:', '<input type="text" id="answerlist_gameid" value=""/>');
+			pt.row('Game Name:', '<input type="text" id="answerlist_gamename" value=""/>');
+			pt.row('Quest ID:', '<input type="text" id="answerlist_questid" value=""/>');
+			pt.row('Quest Name:', '<input type="text" id="answerlist_questname" value=""/>');
+			pt.row('Quest Subject:', fhqgui.combobox('answerlist_questsubject', this.filter.answerlist.questsubject, fhq.getQuestTypesFilter()));
+			pt.row('Passed:', fhqgui.combobox('answerlist_passed', this.filter.answerlist.passed, fhq.getAnswerlistPassedFilter()));
+			pt.row('Table:', fhqgui.combobox('answerlist_table', this.filter.answerlist.table, fhq.getAnswerlistTable()));
+			pt.row('On Page:', fhqgui.combobox('answerlist_onpage', this.filter.answerlist.onpage, fhq.getOnPage()));
+			pt.right(this.btn('Apply', 'fhqgui.applyAnswerListFilter(); resetPageAnswerList(); updateAnswerList(); fhqgui.closeModalDialog();'));
+		} else if (current_page == 'stats') {
+			pt.row('Quest Name:', '<input type="text" id="statistics_questname" value=""/>');
+			pt.row('Quest ID:', '<input type="text" id="statistics_questid" value=""/>');
+			pt.row('Quest Subject:', fhqgui.combobox('statistics_questsubject', this.filter.stats.questsubject, fhq.getQuestTypesFilter()));
+			pt.row('On Page:', fhqgui.combobox('statistics_onpage', this.filter.stats.onpage, fhq.getOnPage()));
+			pt.right(this.btn('Apply', 'fhqgui.applyStatsFilter(); resetStatisticsPage(); updateStatistics(); fhqgui.closeModalDialog();'));
+		} else if (current_page == 'skills') {
+			pt.row('Subject:', fhqgui.combobox('skills_subject', this.filter.skills.subject, fhq.getQuestTypesFilter()));
+			pt.row('User:', '<input type="text" id="skills_user" value=""/>');
+			pt.row('On Page:', fhqgui.combobox('skills_onpage', this.filter.skills.onpage, fhq.getOnPage()));
+			pt.right(this.btn('Apply', 'fhqgui.applySkillsFilter(); fhqgui.resetSkillsPage(); fhqgui.updatePageSkills(); fhqgui.closeModalDialog();'));
+		} else if (current_page == 'events') {
+			pt.row('Search:', '<input type="text" id="events_search" value=""/>');
+			pt.row('Type:', fhqgui.combobox('events_type', this.filter.events.type, fhq.getEventTypesFilter()));
+			pt.row('On Page:', fhqgui.combobox('events_onpage', this.filter.events.onpage, fhq.getOnPage()));
+			pt.right(this.btn('Apply', 'fhqgui.applyEventsFilter(); fhqgui.resetEventsPage(); updateEvents(); fhqgui.closeModalDialog();'));
+		} else {
+			pt.row('TODO', current_page);
+		}
+
+		this.showModalDialog(pt.render());
+
+		if (current_page == 'answerlist') {
+			document.getElementById('answerlist_userid').value = this.filter.answerlist.userid;
+			document.getElementById('answerlist_user').value = this.filter.answerlist.user;
+			document.getElementById('answerlist_gameid').value = this.filter.answerlist.gameid;
+			document.getElementById('answerlist_gamename').value = this.filter.answerlist.gamename;
+			document.getElementById('answerlist_questid').value = this.filter.answerlist.questid;
+			document.getElementById('answerlist_questname').value = this.filter.answerlist.questname;
+		} else if (current_page == 'stats') {
+			document.getElementById('statistics_questname').value = this.filter.stats.questname;
+			document.getElementById('statistics_questid').value = this.filter.stats.questid;
+			document.getElementById('statistics_questsubject').value = this.filter.stats.questsubject;
+		} else if (current_page == 'skills') {
+			document.getElementById('skills_user').value = this.filter.skills.user;
+		} else if (current_page == 'events') {
+			document.getElementById('events_search').value = this.filter.events.search;
+		}
+	}
+
+	this.applyQuestsFilter = function() {
+		this.filter.quests.userstatus = document.getElementById("quests_userstatus").value;
+		this.filter.quests.subject = document.getElementById('quests_subject').value;
+	}
+	
+	this.applySkillsFilter = function() {
+		this.filter.skills.user = document.getElementById("skills_user").value;
+		this.filter.skills.subject = document.getElementById('skills_subject').value;
+		this.filter.skills.onpage = document.getElementById('skills_onpage').value;
+	}
+	
+	this.applyEventsFilter = function() {
+		this.filter.events.search = document.getElementById('events_search').value;
+		this.filter.events.type = document.getElementById("events_type").value;
+		this.filter.events.onpage = document.getElementById('events_onpage').value;
+	}
+
+	this.applyAnswerListFilter = function() {
+		this.filter.answerlist.userid = document.getElementById('answerlist_userid').value;
+		this.filter.answerlist.user = document.getElementById('answerlist_user').value;
+		this.filter.answerlist.gameid = document.getElementById('answerlist_gameid').value;
+		this.filter.answerlist.gamename = document.getElementById('answerlist_gamename').value;
+		this.filter.answerlist.questid = document.getElementById('answerlist_questid').value;
+		this.filter.answerlist.questname = document.getElementById('answerlist_questname').value;
+		this.filter.answerlist.onpage = document.getElementById('answerlist_onpage').value;
+		this.filter.answerlist.table = document.getElementById('answerlist_table').value;
+		this.filter.answerlist.passed = document.getElementById('answerlist_passed').value;
+		this.filter.answerlist.questsubject = document.getElementById('answerlist_questsubject').value;
+	}
+
+	this.applyStatsFilter = function() {
+		this.filter.stats.onpage = document.getElementById('statistics_onpage').value;	
+		this.filter.stats.questname = document.getElementById('statistics_questname').value;
+		this.filter.stats.questid = document.getElementById('statistics_questid').value;
+		this.filter.stats.questsubject = document.getElementById('statistics_questsubject').value;
+	}
+
+	this.loadAbout = function() {
+		this.setFilter('about');
+		send_request_post_html('about.php', '', function(html) {
+			document.getElementById('content_page').innerHTML = html;
+		});
+	}
+
 	this.eventView = function(event, access) {
 		var content = '';
 		var imgpath = '';
@@ -216,9 +418,10 @@ function FHQGuiLib() {
 	}
 
 	this.loadSettings = function(idelem) {
+		this.setFilter('settings');
 		var scp = new FHQDynamicContent(idelem);
 		send_request_post(
-			'api/settings/get.php',
+			'api/admin/settings.php',
 			'',
 			function (obj) {
 				if (obj.result == "fail") {
@@ -239,6 +442,67 @@ function FHQGuiLib() {
 		);
 	}
 	
+	this.loadRules = function() {
+		this.setFilter('rules');
+		var el = document.getElementById("content_page");
+		el.innerHTML = 'Loading...';
+		send_request_post(
+			'api/games/get.php',
+			'',
+			function (obj) {
+				if (obj.result == "fail") {
+					el.innerHTML = obj.error.message;
+				} else {
+					el.innerHTML = '<h1>Rules</h1><h2>' + obj.data.title + '</h2>';
+					if (obj.access.edit == true) {
+						el.innerHTML += '<div class="fhqbtn" onclick="fhqgui.formEditRule(' + obj.data.id + ');">Edit</div>';
+					}
+					el.innerHTML += '<br><div id="game_rules" class="fhqrules"></div>';
+					var rules = document.getElementById("game_rules");
+					rules.innerHTML = obj.data.rules;
+				}
+			}
+		);
+	}
+	
+	this.formEditRule = function(gameid) {
+		var params = {};
+		params.gameid = gameid;
+		send_request_post(
+			'api/games/get.php',
+			createUrlFromObj(params),
+			function (obj) {
+				if (obj.result == "fail") {
+					el.innerHTML = obj.error.message;
+				} else {
+					var content = '<textarea id="edit_game_rules"></textarea><br>';
+					content += '<div class="fhqbtn" onclick="fhqgui.saveGameRule(' + gameid + ');">Save</div>';
+					
+					this.showModalDialog(content);
+					document.getElementById('edit_game_rules').innerHTML = obj.data.rules;
+				}
+			}
+		);
+	}
+	
+	this.saveGameRule = function(gameid) {
+		var params = {};
+		params.id = gameid;
+		params.rules = document.getElementById('edit_game_rules').value;
+		send_request_post(
+			'api/games/update_rules.php',
+			createUrlFromObj(params),
+			function (obj) {
+				if (obj.result == "fail") {
+					alert(obj.error.message);
+				} else {
+					fhqgui.closeModalDialog();
+					fhqgui.loadRules();
+				}
+			}
+		);
+	}
+	
 	this.gameView = function(game, currentGameId) {
 		var content = '';
 		content += '\n<div class="fhq_event_info">\n';
@@ -248,7 +512,8 @@ function FHQGuiLib() {
 		content += '			<div class="fhq_event_caption"> [' + game.type_game + ', ' + game.state + ', ' + game.form + ', ' + ' by <b>{' + game.organizators + '}</b></div>';
 		content += '			<div class="fhq_event_caption"> ' + game.date_start + ' - ' + game.date_stop + ', restart: ' + game.date_restart + ']</div>';
 		content += '			<div class="fhq_event_score"><b><h1>' + game.title + '</h1></b></div>';
-		content += '			<div class="fhq_event_score">' + game.description + ' </div>';
+		content += '			<div class="fhq_event_caption"><font size="5">Maximal score in this game: <b>' + game.maxscore + '</b></font></div>';
+		content += '			<div class="fhq_event_score"><pre>' + game.description + '</pre></div>';
 		content += '			<div class="fhq_event_caption">'; 
 		var perms = game.permissions;
 
@@ -268,6 +533,104 @@ function FHQGuiLib() {
 		content += '	</div>'; // fhq_event_info_row
 		content += '</div><br>'; // fhq_event_info
 		return content;
+	}
+	
+	this.createPageDumps = function() {
+		this.setFilter('dumps');
+		alert('todo');
+	}
+	
+	
+	this.resetEventsPage = function() {
+		this.filter.events.page = 0;
+	}
+
+	this.setEventsPage = function(val) {
+		this.filter.events.page = val;
+	}
+	
+	this.resetSkillsPage = function() {
+		this.filter.skills.page = 0;
+	}
+	
+	this.setSkillsPage = function(p) {
+		this.filter.skills.page = p;
+	}
+	
+	this.createPageSkills = function() {
+		this.setFilter('skills');
+		var el = document.getElementById("content_page");
+		el.innerHTML = '<h1>User\'s Skills</h1>Found:<font id="skills_found">0</font><hr><div id="skills_page"></div>';
+	}
+	
+	this.updatePageSkills = function() {
+		var el = document.getElementById("skills_page");
+		el.innerHTML = 'Loading...';
+		
+		var filter = createUrlFromObj(this.filter.skills.getParams());
+		
+		send_request_post(
+			'api/statistics/skills.php',
+			filter,
+			function (obj) {
+				if (obj.result == "fail") {
+					el.innerHTML = obj.error.message;
+					alert(obj.error.message);
+
+				} else {
+					document.getElementById('skills_found').innerHTML = obj.data.found;
+					var onpage = parseInt(obj.data.onpage, 10);
+					var page = parseInt(obj.data.page, 10);
+					el.innerHTML = fhqgui.paginator(0, obj.data.found, onpage, page, 'fhqgui.setSkillsPage', 'fhqgui.updatePageSkills()');
+
+					var tbl = new FHQTable();
+					tbl.openrow();
+					tbl.cell('User');
+					tbl.cell('Skills');
+					tbl.closerow();
+					
+					for (var userid in obj.data.skills) {
+						var sk = obj.data.skills[userid];
+						tbl.openrow();
+						var u = sk.user;
+						tbl.cell(fhqgui.userIcon(u.userid, u.logo, u.nick));
+						var h = fhqgui.filter.skills.subject == '' ? 170 : 25;
+						tbl.cell('<canvas id="skill' + u.userid + '" width="450" height="' + h + '"></canvas><br>');
+						tbl.closerow();
+					}
+					el.innerHTML += '<br>' + tbl.render();
+
+					// update charts
+					for (var userid in obj.data.skills) {
+						var sk = obj.data.skills[userid];
+						var u = sk.user;
+						var chartid = 'skill' + u.userid;
+						var ctx = document.getElementById(chartid).getContext("2d");
+						ctx.font = "12px Arial";
+						ctx.fillStyle = "#CCC";
+						ctx.strokeStyle = "#CCC";
+						
+						// ctx.strokeRect(0,0,300,140);
+						
+						var y = 10;
+						for (var sub in sk.subjects) {
+							// data.labels.push(sub);
+							var max = sk.subjects[sub].max;
+							var score = sk.subjects[sub].score;
+							var percent = 0;
+							if (max != 0) {
+								percent = Math.round((score/max)*100);
+							}
+							ctx.fillText(sub, 10, y);
+							ctx.fillText('' + percent + '% ', 80, y);
+							ctx.strokeRect(120, y-9, 200, 8);
+							ctx.fillRect (120, y-9, percent*2, 9);
+							y += 12;
+						}
+					}
+				}
+			}
+		);
 	}
 };
 
@@ -407,9 +770,11 @@ function FHQFeedback() {
 function FHQTable() {
 	this.table = [];
 
-	this.openrow = function() {
+	this.openrow = function(stl) {
+		if (stl == null)
+			stl = '';
 		this.table.push(
-			'<div class="fhqrow">'
+			'<div class="fhqrow ' + stl + '">'
 		);
 	};
 	

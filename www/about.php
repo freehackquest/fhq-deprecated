@@ -4,6 +4,10 @@
 <h1>free-hack-quest</h1>
 This is an open source platform for competitions in computer security.<br>
 
+<h2>
+<a href="http://files.sea-kg.com/fhq-ova/" target="_ablank">Download virtual machine (ova)</a>
+</h2> <br>
+
 <!-- <h1></h1>
 if you wish public your quest please send me email with 7z archiv to mrseakg@gmail.com with structure:<br>
  
@@ -34,6 +38,7 @@ email: freehackquest@gmail.com<br>
 
 
 <h2>thanks for</h2>
+<a href="http://www.chartjs.org/docs/" target="_ablank">Charts.js</a>,
 Sergey Belov (xss!),
 Igor Polyakov,
 Maxim Samoilov (Nitive),
@@ -43,4 +48,5 @@ Alexey Gulyaev,
 Alexander Menschikov,
 Ilya Bokov, 
 Extrim Code,
-Taisiya Lebedeva<br>
+Taisiya Lebedeva
+<br>

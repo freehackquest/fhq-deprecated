@@ -1,3 +1,26 @@
+/*body {
+	margin:0;
+	font-family:proxima-nova,"Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size:14px;
+	line-height:20px;
+	color:#333333;
+	background-color:#ffffff;
+}*/
+
+.fhqbody {
+	margin: 0;
+	padding: 0;
+	background-color: #FFFFFF;
+	line-height:40px;
+	font: 12pt/10pt Arial;
+	color: #333333;	
+	text-align: center;
+}
+
+.fhqearth {
+	background: url(../../../images/background.png) no-repeat left top fixed;
+}
+
 .fhqbtn {
 	display: inline-block;
 	background: #ccc;
@@ -106,6 +129,18 @@ textarea {
 	margin: 3px 3px 3px 3px;
 }
 
+.fhqrow_yellow {
+	background-color: #FFFFCC;
+	opacity: 0.5;
+	color: black;
+}
+
+.fhqrow_red {
+	background-color: #FF6666;
+	opacity: 0.5;
+	color: black;
+}
+
 .fhqcell {
 	width: 20%;
 	display: table-cell;
@@ -154,6 +189,16 @@ textarea {
 	-moz-border-radius-bottomright: 15px;
 	border-bottom-right-radius: 15px;
 	opacity: 0.95;
+}
+
+.fhqrules {
+	white-space: pre-wrap;       /* css-3 */
+	white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+	white-space: -pre-wrap;      /* Opera 4-6 */
+	white-space: -o-pre-wrap;    /* Opera 7 */
+	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+	line-height: 1.5;
+	font-size: 12pt;
 }
 
 

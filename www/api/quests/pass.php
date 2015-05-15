@@ -2,6 +2,15 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Try Pass Quest
+ * API_DESCRIPTION: Method for check user answer for the quest
+ * API_ACCESS: authorized users
+ * API_INPUT: questid - integer, Identificator of the quest
+ * API_INPUT: answer - string, answer
+ * API_INPUT: token - string, token
+ */
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");
@@ -94,18 +103,9 @@ try {
 		);
 		$result['quest'] = $row['idquest'];
 		$real_answer = $row['answer'];
+		$levenshtein = levenshtein(strtoupper($real_answer), strtoupper($answer));		
+		
 		if ($status == 'in_progress') {
-
-			// check already try pass
-			$stmt_check_tryanswer = $conn->prepare('select count(*) as cnt from tryanswer where answer_try = ? and iduser = ? and idquest = ?');
-			$stmt_check_tryanswer->execute(array($answer, $userid, intval($questid)));
-			if($row_check_tryanswer = $stmt_check_tryanswer->fetch()) {
-				$count = intval($row_check_tryanswer['cnt']);
-				$result['checkanswer'] = array($answer, $userid, intval($questid));
-				if ($count > 0) {
-					APIHelpers::showerror(1318, 'Your already try this answer');
-				}
-			}
 
 			// check answer
 			if (md5(strtoupper($real_answer)) == md5(strtoupper($answer))) {
@@ -127,16 +127,26 @@ try {
 				}
 				APIQuest::updateCountUserSolved($conn, $questid);
 
-				APIAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, 'Yes');
+				APIAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, $levenshtein, 'Yes');
 				APIAnswerList::movedToBackup($conn, $questid);
 
 				// add to public events
 				if (!APISecurity::isAdmin())
 					APIEvents::addPublicEvents($conn, "users", 'User {'.APISecurity::nick().'} passed quest #'.$questid.' {'.$questname.'} from game #'.APIGame::id().' {'.APIGame::title().'} (new user score: '.$new_user_score.')');
 			} else {
-				APIAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, 'No');
-				$p = levenshtein(strtoupper($real_answer), strtoupper($answer));
-				APIHelpers::showerror(1216, 'Answer incorrect. Levenshtein distance between your answer and real answer: '.$p);
+				// check already try pass
+				$stmt_check_tryanswer = $conn->prepare('select count(*) as cnt from tryanswer where answer_try = ? and iduser = ? and idquest = ?');
+				$stmt_check_tryanswer->execute(array($answer, $userid, intval($questid)));
+				if($row_check_tryanswer = $stmt_check_tryanswer->fetch()) {
+					$count = intval($row_check_tryanswer['cnt']);
+					$result['checkanswer'] = array($answer, $userid, intval($questid));
+					if ($count > 0) {
+						APIHelpers::showerror(1318, 'Your already try this answer. Levenshtein distance: '.$levenshtein);
+					}
+				}
+			
+				APIAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, $levenshtein, 'No');
+				APIHelpers::showerror(1216, 'Answer incorrect. Levenshtein distance: '.$levenshtein);
 			};
 		}
 		else

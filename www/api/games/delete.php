@@ -2,6 +2,14 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Delete Game
+ * API_DESCRIPTION: remove game from system
+ * API_ACCESS: admin only
+ * API_INPUT: id - string, Identificator of the game
+ * API_INPUT: captcha - string, captcha
+ */
+
 $curdir_games_delete = dirname(__FILE__);
 include_once ($curdir_games_delete."/../api.lib/api.helpers.php");
 include_once ($curdir_games_delete."/../../config/config.php");

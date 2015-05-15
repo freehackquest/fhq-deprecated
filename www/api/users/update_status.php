@@ -1,19 +1,19 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: Update User Status
  * API_DESCRIPTION: Method for update user status
  * API_ACCESS: admin only
  * API_INPUT: userid - integer, userid
- * API_INPUT: status - string, new user status ("activated"/"blocked")
+ * API_INPUT: status - string, new user status ("activated" or "blocked")
  * API_OKRESPONSE: { "result":"ok" }
  */
 
-$curdir = dirname(__FILE__);
-include_once ($curdir."/../api.lib/api.base.php");
-include_once ($curdir."/../../config/config.php");
+$curdir_users_update_status = dirname(__FILE__);
+include_once ($curdir_users_update_status."/../api.lib/api.base.php");
+include_once ($curdir_users_update_status."/../api.lib/api.types.php");
+include_once ($curdir_users_update_status."/../../config/config.php");
+
+$response = APIHelpers::startpage($config);
 
 APIHelpers::checkAuth();
 
@@ -25,11 +25,6 @@ $userid = APIHelpers::getParam('userid', APISecurity::userid());
 if (!is_numeric($userid))
 	APIHelpers::showerror(1135, 'userid must be numeric');
 
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
-
 $conn = APIHelpers::createConnection($config);
 
 if (!APIHelpers::issetParam('status'))
@@ -37,21 +32,27 @@ if (!APIHelpers::issetParam('status'))
 
 $status = APIHelpers::getParam('status', '');
 
-$result['data']['status'] = $status;
-$result['data']['userid'] = $userid;
+$response['data']['status'] = $status;
+$response['data']['userid'] = $userid;
 
-if (strlen($status) <= 3)
-  APIHelpers::showerror(1137, '"status" must be more then 3 characters');
+$response['data']['possible_status'] = array();
+foreach (APITypes::$types['userStatuses'] as $key => $value) {
+	$response['data']['possible_status'][] = APITypes::$types['userStatuses'][$key]['value'];
+}
+
+if (!in_array($status, $response['data']['possible_status'])) {
+  APIHelpers::showerror(1137, '"status" must have value from userStatuses: "'.implode('", "', $response['data']['possible_status']).'"');
+}
 
 try {
 	$query = 'UPDATE users SET status = ? WHERE id = ?';
 	$stmt = $conn->prepare($query);
 	if ($stmt->execute(array($status, $userid)))
-		$result['result'] = 'ok';
+		$response['result'] = 'ok';
 	else
-		$result['result'] = 'fail';
+		$response['result'] = 'fail';
 } catch(PDOException $e) {
 	APIHelpers::showerror(1138, $e->getMessage());
 }
 
-echo json_encode($result);
+APIHelpers::endpage($response);

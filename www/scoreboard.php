@@ -69,7 +69,7 @@
 }*/
 	</script>
 </head>
-	<body class="main" onload="updateInfo(<?php echo $gameid;?>);">
+	<body class="fhqbody" onload="updateInfo(<?php echo $gameid;?>);">
 			<table width="100%" height="100%">
 				<tr>
 					<td align="center" valign="top" class="fhq_index_column">
@@ -81,7 +81,7 @@
 					</td>
 					<td width="50%" valign="top" >
 						<center>
-							<img width=85px src="templates/base/images/menu/scoreboard.png" />
+							<img width=85px src="images/menu/scoreboard.png" />
 							<div id="game_info_panel">Loading...</div>
 							<h1>Scoreboard</h1>
 							<div id="scoreboard_table" class="fhq_scoreboard_table"></div>

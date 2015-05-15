@@ -117,6 +117,7 @@ function pushNews(text) {
 	
 	if (audio_event.paused)
 		audio_event.play();
+	// alert(1);
 };
 
 var lastNewsID = 0;
@@ -126,7 +127,7 @@ function updateNews() {
 	if (lastNewsID > 0) {
 		params['id'] = lastNewsID;
 	};
-	
+
 	send_request_post(
 		'api/events/list.php',
 		createUrlFromObj(params),
@@ -134,7 +135,7 @@ function updateNews() {
 			if (obj.result == "fail") {
 				// el.innerHTML = obj.error.message;
 			} else {
-				lastNewsID = obj.data.new_id;
+				lastNewsID = obj.data.maxid;
 				// el.innerHTML += lastNewsID + '<br>';
 				var arr = [];
 				for (var k in obj.data.events) {

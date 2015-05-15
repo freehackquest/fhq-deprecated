@@ -1,5 +1,15 @@
 <?php
 $curdir_feedback_insert = dirname(__FILE__);
+
+/*
+ * API_NAME: Feedback Insert
+ * API_DESCRIPTION: Method will be add feedback
+ * API_ACCESS: authorized users
+ * API_INPUT: type - string, type of feedback - look in types
+ * API_INPUT: text - string, text message
+ * API_INPUT: token - string, token
+ */
+
 include_once ($curdir_feedback_insert."/../api.lib/api.helpers.php");
 include_once ($curdir_feedback_insert."/../../config/config.php");
 include_once ($curdir_feedback_insert."/../api.lib/api.base.php");

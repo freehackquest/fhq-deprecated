@@ -1,5 +1,14 @@
 <?php
 $curdir_statistics_list = dirname(__FILE__);
+
+/*
+ * API_NAME: Get Feedback Info
+ * API_DESCRIPTION: Method will be returned id, type and text - need for editing
+ * API_ACCESS: admin only
+ * API_INPUT: id - string, Identificator of the feedback
+ * API_INPUT: token - string, token
+ */
+
 include_once ($curdir_statistics_list."/../api.lib/api.base.php");
 include_once ($curdir_statistics_list."/../api.lib/api.security.php");
 include_once ($curdir_statistics_list."/../api.lib/api.helpers.php");

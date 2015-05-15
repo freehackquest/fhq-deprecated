@@ -64,8 +64,6 @@ if (!isset($_SESSION['user']))
 		<script type="text/javascript" src="js/fhq_stats.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_feedback.js?ver=1"></script>
 
-		
-
 		<script type="text/javascript">
 			var fhq = new FHQFrontEndLib();
 			var fhqgui = new FHQGuiLib();
@@ -78,17 +76,10 @@ if (!isset($_SESSION['user']))
 				fhq.security.logout();			
 				window.location.href = "index.php";
 			}
-
-			function loadAbout() {
-				send_request_post_html('about.php', '', function(html) {
-					document.getElementById('content_page').innerHTML = html;
-				});
-			}
-
 		</script>
 		
 	</head>
-	<body onload="loadQuests(); updateCountOfEvents();" class="main">
+	<body onload="loadQuests(); updateCountOfEvents();" class="fhqbody fhqearth">
 		<div id="modal_dialog" class="overlay">
 			<div class="overlay_table">
 				<div class="overlay_cell">
@@ -117,14 +108,15 @@ if (!isset($_SESSION['user']))
 			$nick = htmlspecialchars($nick);
 			$template = 'base';
 
-			$game_type = "";
-			$game_title = "";
 			$gameid = 0;
-			if (isset($_SESSION['game']))
-			{
-				$game_type = $_SESSION['game']['type_game'];
+			$hint_on_game = 'Please click to change a curent game';
+			if (isset($_SESSION['game'])) {
 				$game_title = $_SESSION['game']['title'];
+				$game_logo = $_SESSION['game']['logo'];
 				$gameid = $_SESSION['game']['id'];
+				$hint_on_game = $game_title.' ('.$hint_on_game.') ';
+			} else {
+				$game_logo = 'images/menu/unknown.png';
 			}
 			
 			$arrmenu = array();
@@ -132,7 +124,7 @@ if (!isset($_SESSION['user']))
 			$arrmenu[] = array(
 				'name' => 'logo',
 				'html' => '
-					<div class="fhq_btn_menu fhq_btn_menu_color_none hint--right" data-hint="About" onclick="loadAbout();">
+					<div class="fhq_btn_menu fhq_btn_menu_color_none hint--right" data-hint="About" onclick="fhqgui.loadAbout();">
 						<img class="fhq_btn_menu_img" src="templates/base/images/logo/fhq_2015_small.png"/>
 					</div>
 				',
@@ -142,9 +134,9 @@ if (!isset($_SESSION['user']))
 			$arrmenu[] = array(
 				'name' => 'game_info',
 				'html' => '
-					<div class="fhq_btn_menu hint--bottom" data-hint="Please click to change a curent game."  onclick="changeGame();">
+					<div class="fhq_btn_menu hint--bottom" data-hint="'.$hint_on_game.'"  onclick="changeGame();">
 						<div class="fhq_btn_menu_img">
-							'.($game_type == '' ? 'Unknown<br>Game' : '<b>'.$game_title.'<br>'.$game_type.'</b>').'
+							<img class="fhq_btn_menu_img" src="'.$game_logo.'"/>
 						</div>
 					</div>
 				',
@@ -159,17 +151,17 @@ if (!isset($_SESSION['user']))
 						<div class="fhqredcircle" id="view_score">'.$score.'</div>
 					</div>
 				',
-				'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
+				'show' => ($gameid != 0),
 			);
 
 			$arrmenu[] = array(
 				'name' => 'rules',
 				'html' => '
-					<div class="fhq_btn_menu" data-hint="Rules" onclick="loadGameRules('.$gameid.');">
+					<div class="fhq_btn_menu" data-hint="Rules" onclick="fhqgui.loadRules();">
 						<img class="fhq_btn_menu_img" src="images/menu/rules.png"/><br>
 					</div>
 				',
-				'show' => ($game_type == 'jeopardy' || $game_type == 'attack-defence'),
+				'show' => ($gameid != 0),
 			);
 
 			$arrmenu[] = array(
@@ -179,7 +171,7 @@ if (!isset($_SESSION['user']))
 						<img class="fhq_btn_menu_img" src="images/menu/quests.png"/>
 					</div>
 				',
-				'show' => ($game_type == 'jeopardy'),
+				'show' => ($gameid != 0),
 			);
 
 			$arrmenu[] = array(
@@ -189,7 +181,19 @@ if (!isset($_SESSION['user']))
 						<img class="fhq_btn_menu_img" src="images/menu/stats.png"/><br>
 					</div>
 				',
-				'show' => ($game_type == 'jeopardy'),
+				'show' => ($gameid != 0),
+			);
+			
+			
+			
+			$arrmenu[] = array(
+				'name' => 'filter',
+				'html' => '
+					<div class="fhq_btn_menu hint--bottom" data-hint="Filter" id="btnfilter" onclick="fhqgui.showFilter();">
+						<img class="fhq_btn_menu_img" src="images/menu/filter.png"/><br>
+					</div>
+				',
+				'show' => true,
 			);	
 
 			// echo menu
@@ -228,6 +232,16 @@ if (!isset($_SESSION['user']))
 		);
 		
 		$arrmenu2[] = array(
+			'name' => 'skills',
+			'html' => '
+				<div class="fhq_btn_menu hint--bottom" data-hint="Skills" onclick="fhqgui.createPageSkills(); fhqgui.updatePageSkills();">
+					<img class="fhq_btn_menu_img" src="images/menu/skills.png"/><br>
+				</div>
+			',
+			'show' => true,
+		);
+
+		$arrmenu2[] = array(
 			'name' => 'news',
 			'html' => '
 				<div class="fhq_btn_menu hint--right" data-hint="News" onclick="createPageEvents(); updateEvents();">
@@ -248,8 +262,6 @@ if (!isset($_SESSION['user']))
 			',
 			'show' => true,
 		);
-		
-		
 			
 		$arrmenu2[] = array(
 			'name' => 'users',
@@ -294,7 +306,7 @@ if (!isset($_SESSION['user']))
 		$arrmenu2[] = array(
 			'name' => 'dumps',
 			'html' => '
-				<div class="fhq_btn_menu hint--right" data-hint="Dumps" onclick="alert(\'todo\')">
+				<div class="fhq_btn_menu hint--right" data-hint="Dumps" onclick="fhqgui.createPageDumps();">
 					<img class="fhq_btn_menu_img" src="images/menu/dumps.png"/>
 				</div>
 			',

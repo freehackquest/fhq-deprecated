@@ -1,4 +1,4 @@
-<?
+<?php
 
 $curdir = dirname(__FILE__);
 
@@ -125,6 +125,12 @@ function scanfolder($dir) {
 
 $doc = array();
 
+$doc['public'] = array(
+	'name' => 'Public',
+	'description' => 'Methods for get public info',
+	'methods' => scanfolder('public'),
+);
+
 $doc['security'] = array(
 	'name' => 'Security',
 	'description' => 'Methods for login, logout, registration and restore password.',
@@ -167,17 +173,16 @@ $doc['feedback'] = array(
 	'methods' => scanfolder('feedback'),
 );
 
-$doc['settings'] = array(
-	'name' => 'Settings',
-	'description' => 'Methods for get settings, public info, and enums',
-	'methods' => scanfolder('settings'),
-);
-
-
 $doc['statistics'] = array(
 	'name' => 'Statistics',
 	'description' => 'Methods for work with statistics',
 	'methods' => scanfolder('statistics'),
+);
+
+$doc['admin'] = array(
+	'name' => 'Admin',
+	'description' => 'Methods for admin only',
+	'methods' => scanfolder('admin'),
 );
 
 /**
@@ -307,7 +312,22 @@ function print_doc($doc) {
 		header('Content-Type: application/json');
 		echo json_encode($doc);
 	} else if (isset($_GET['html'])) {
+		echo '
+			<html>
+			<head>
+				<title>Free Hack Quest</title>
+				<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+				<meta name="author" content="sea-kg" />
+				<meta name="copyright" lang="ru" content="sea-kg" />
+				<meta name="description" content="competition information security" />
+				<meta name="keywords" content="security, fhq, fhq 2012, fhq 2013, fhq 2014, free, hack, quest, competition, information security, ctf, joepardy" />		
+			</head>
+			<body>
+		';
+		include "../copyright.php";
 		echo convert_to_html($doc);
+		echo '</body>';
+		
 	} else {
 		echo "<a href='?html'>HTML</a> <a href='?json'>JSON</a>";
 	}

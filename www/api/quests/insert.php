@@ -2,6 +2,24 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Quest Insert
+ * API_DESCRIPTION: Method will be add quest to the system
+ * API_ACCESS: admin only
+ * API_INPUT: quest_uuid - uuid, Global Identificator of the quest
+ * API_INPUT: name - string, name of the quest
+ * API_INPUT: text - string, description of the quest
+ * API_INPUT: score - integer, how much +score for user after solve quest by user
+ * API_INPUT: min_score - integer, condition for opened quest for user
+ * API_INPUT: subject - string, subject msut be one from types (look types)
+ * API_INPUT: idauthor - integer, will be depricated
+ * API_INPUT: author - string, who make this quest
+ * API_INPUT: answer - string, answer for this quest
+ * API_INPUT: state - enum, state of the quest, can be: open, broken, closed
+ * API_INPUT: description_state - string, you can add some descriptions for quest state
+ * API_INPUT: token - string, token
+ */
+
 $curdir_quests_insert = dirname(__FILE__);
 include_once ($curdir_quests_insert."/../api.lib/api.base.php");
 include_once ($curdir_quests_insert."/../api.lib/api.game.php");
@@ -93,6 +111,8 @@ try {
 } catch(PDOException $e) {
 	APIHelpers::showerror(1167,$e->getMessage());
 }
+
+APIQuest::updateMaxGameScore($conn, APIGame::id());
 
 include_once ($curdir_quests_insert."/../api.lib/savetoken.php");
 echo json_encode($result);

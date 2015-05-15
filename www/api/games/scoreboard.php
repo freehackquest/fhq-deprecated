@@ -2,6 +2,13 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
+/*
+ * API_NAME: Scoreboard
+ * API_DESCRIPTION: Method will be returned scoreboard for game
+ * API_ACCESS: all
+ * API_INPUT: gameid - string, Identificator of the game (or will be used selected game)
+ */
+
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");
