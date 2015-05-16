@@ -73,17 +73,23 @@ class APISecurity {
 	}
 	
 	static function score() { 
-		// TODO $FHQSESSION
+		if (APIHelpers::$FHQSESSION != NULL && APISecurity::isLogged() && isset(APIHelpers::$FHQSESSION['user']['score'])) {
+			return is_numeric($FHQSESSION['user']['score']) ? intval($FHQSESSION['user']['score']) : 0;
+		}
 		return (APISecurity::isLogged() && is_numeric($_SESSION['user']['score'])) ? $_SESSION['user']['score'] : 0; 
 	}
 	
 	static function nick() { 
-		// TODO $FHQSESSION
+		if (APIHelpers::$FHQSESSION != NULL && APISecurity::isLogged()) {
+			return isset(APIHelpers::$FHQSESSION['user']['nick']) ? $FHQSESSION['user']['nick'] : '';
+		}
 		return (APISecurity::isLogged()) ? $_SESSION['user']['nick'] : ''; 
 	}
 	
 	static function email() {
-		// TODO $FHQSESSION
+		if (APIHelpers::$FHQSESSION != NULL && APISecurity::isLogged()) {
+			return isset(APIHelpers::$FHQSESSION['user']['email']) ? $FHQSESSION['user']['email'] : '';
+		}
 		return (APISecurity::isLogged()) ? strtolower($_SESSION['user']['email']) : '';
 	}
   
@@ -94,9 +100,12 @@ class APISecurity {
 	}
 
 	static function userid() {
-		// TODO $FHQSESSION
-
-		$userid = (APISecurity::isLogged() && isset($_SESSION['user']['id'])) ? $_SESSION['user']['id'] : '';
+		$userid = 0;
+		if (APIHelpers::$FHQSESSION != NULL && APISecurity::isLogged() && isset($FHQSESSION['user']['id'])) {
+			$userid = intval($FHQSESSION['user']['id']);
+		} else {
+			$userid = (APISecurity::isLogged() && isset($_SESSION['user']['id'])) ? $_SESSION['user']['id'] : intval('');
+		}
 		if (intval($userid) == 0) {
 			session_destroy();
 			APIHelpers::showerror(1317, 'Please relogon');
