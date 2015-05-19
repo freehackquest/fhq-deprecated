@@ -24,6 +24,14 @@ class APISecurity {
 				$_SESSION['user']['email'] = $row['email'];
 				$_SESSION['user']['nick'] = $row['nick'];
 				$_SESSION['user']['role'] = $row['role'];
+				APIHelpers::$FHQSESSION = array(
+					'user' => array(
+						'id' => $row['id'],
+						'email' => $row['email'],
+						'nick' => $row['nick'],
+						'role' => $row['role'],
+					),
+				);
 				return true;
 			}
 		// } catch(PDOException $e) {
@@ -43,8 +51,6 @@ class APISecurity {
 			}
 		}
 	}
-	
-	
 
 	static function generatePassword2($email, $password) {
 		return sha1(strtoupper($email).$password);
@@ -74,7 +80,7 @@ class APISecurity {
 	
 	static function score() { 
 		if (APIHelpers::$FHQSESSION != NULL && APISecurity::isLogged() && isset(APIHelpers::$FHQSESSION['user']['score'])) {
-			return is_numeric($FHQSESSION['user']['score']) ? intval($FHQSESSION['user']['score']) : 0;
+			return is_numeric(APIHelpers::$FHQSESSION['user']['score']) ? intval(APIHelpers::$FHQSESSION['user']['score']) : 0;
 		}
 		return (APISecurity::isLogged() && is_numeric($_SESSION['user']['score'])) ? $_SESSION['user']['score'] : 0; 
 	}
@@ -101,8 +107,8 @@ class APISecurity {
 
 	static function userid() {
 		$userid = 0;
-		if (APIHelpers::$FHQSESSION != NULL && APISecurity::isLogged() && isset($FHQSESSION['user']['id'])) {
-			$userid = intval($FHQSESSION['user']['id']);
+		if (APIHelpers::$FHQSESSION != NULL && APISecurity::isLogged() && isset(APIHelpers::$FHQSESSION['user']['id'])) {
+			$userid = intval(APIHelpers::$FHQSESSION['user']['id']);
 		} else {
 			$userid = (APISecurity::isLogged() && isset($_SESSION['user']['id'])) ? $_SESSION['user']['id'] : intval('');
 		}

@@ -42,10 +42,13 @@ if (APIHelpers::issetParam('id')) {
 		if($row = $stmt->fetch())
 		{
 			$_SESSION['game'] = array();
+			APIHelpers::$FHQSESSION['game'] = array();
+
 			$response['data'] = array();
 			foreach ( $columns as $k) {
 				$_SESSION['game'][$k] = $row[$k];
 				$response['data'][$k] = $row[$k];
+				APIHelpers::$FHQSESSION['game'][$k] = $row[$k];
 			}
 			$response['result'] = 'ok';
 		}
@@ -55,11 +58,14 @@ if (APIHelpers::issetParam('id')) {
 		}
 
 		// loading score
+		// APIHelpers::showerror(9999, 'test '.json_encode(APIHelpers::$FHQSESSION));
 		$stmt2 = $conn->prepare('select * from users_games where userid= ? AND gameid = ?');
 		$stmt2->execute(array(intval(APISecurity::userid()), intval($game_id)));
+		
 		if($row2 = $stmt2->fetch())
 		{
 			$_SESSION['user']['score'] = $row2['score'];
+			APIHelpers::$FHQSESSION['user']['score'] = $row2['score'];
 			$response['user'] = array();
 			$response['user']['score'] = $row2['score'];
 		}
@@ -87,6 +93,7 @@ if (APIHelpers::issetParam('id')) {
 			$stmt3->execute(array(intval(APISecurity::userid()), intval($game_id), intval($score)));
 			
 			$_SESSION['user']['score'] = $score;
+			APIHelpers::$FHQSESSION['user']['score'] = $score;
 			$response['user'] = array();
 			$response['user']['score'] = $score;
 		}	
