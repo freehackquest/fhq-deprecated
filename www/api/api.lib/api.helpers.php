@@ -32,7 +32,7 @@ class APIHelpers {
 		);
 		return APIHelpers::$CONN;
 	}
-	
+
 	static function issetParam($name) {
 		return isset($_GET[$name]) || isset($_POST[$name]);
 	}
@@ -96,6 +96,7 @@ class APIHelpers {
 	static $TIMESTART = null;
 	static $FHQSESSION = null;
 	static $FHQSESSION_ORIG = null;
+	static $TOKEN = null;
 	static $CONN = null;
 
 	static function startpage($config) {
@@ -105,11 +106,11 @@ class APIHelpers {
 
 		$issetToken = APIHelpers::issetParam('token');
 		if ($issetToken) {
-			$token = APIHelpers::getParam('token', '');
+			APIHelpers::$TOKEN = APIHelpers::getParam('token', '');
 			$conn = APIHelpers::createConnection($config);
 			try {
 				$stmt = $conn->prepare('SELECT data FROM users_tokens WHERE token = ? AND status = ? AND end_date > NOW()');
-				$stmt->execute(array($token,'active'));
+				$stmt->execute(array(APIHelpers::$TOKEN,'active'));
 				if ($row = $stmt->fetch())
 				{
 					APIHelpers::$FHQSESSION = json_decode($row['data'],true);
@@ -118,8 +119,11 @@ class APIHelpers {
 			} catch(PDOException $e) {
 				APIHelpers::showerror(1188, $e->getMessage());
 			}
+		} else {
+			APIHelpers::$FHQSESSION = $_SESSION;
+			APIHelpers::$FHQSESSION_ORIG = $_SESSION;
 		}
-		
+
 		$response = array(
 			'result' => 'fail',
 			'lead_time_sec' => 0,
@@ -131,9 +135,17 @@ class APIHelpers {
 	static function endpage($response) {
 		if (APIHelpers::$TIMESTART != null)
 			$result['lead_time_sec'] = microtime(true) - APIHelpers::$TIMESTART;
-		if (APIHelpers::$FHQSESSION_ORIG != APIHelpers::$FHQSESSION) { // TODO equals
-			// TODO save session
+
+		$hash_session = null;
+		$hash_session_orig = null;
+		if (APIHelpers::$FHQSESSION != null && APIHelpers::$FHQSESSION_ORIG != null)
+			$hash_session = md5(json_encode(APIHelpers::$FHQSESSION));
+			$hash_session_orig = md5(json_encode(APIHelpers::$FHQSESSION_ORIG));
+		
+		if ($hash_session != $hash_session_orig && $hash_session_orig != null) {
+			APISecurity::updateByToken();
 		}
+		
 		echo json_encode($response);
 	}
 }

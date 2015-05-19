@@ -14,17 +14,11 @@ include_once ($curdir."/../api.lib/api.security.php");
 include_once ($curdir."/../api.lib/api.helpers.php");
 include_once ($curdir."/../../config/config.php");
 
-include_once ($curdir."/../api.lib/loadtoken.php");
+$response = APIHelpers::startpage($config);
 
 APIHelpers::checkAuth();
 
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
-
-if ($conn == null)
-	$conn = APIHelpers::createConnection($config);
+$conn = APIHelpers::createConnection($config);
 
 try {
   // TODO paging
@@ -58,23 +52,21 @@ try {
 	while($row = $stmt->fetch())
 	{
 		$id = $row['uuid_game'];
-		$result['data'][$id] = array();
+		$response['data'][$id] = array();
 		foreach ( $columns as $k) {
-			$result['data'][$id][$k] = $row[$k];
+			$response['data'][$id][$k] = $row[$k];
 		}
 
 		$bAllows = APISecurity::isAdmin();
-		$result['data'][$id]['permissions']['delete'] = $bAllows;
-		$result['data'][$id]['permissions']['update'] = $bAllows;
+		$response['data'][$id]['permissions']['delete'] = $bAllows;
+		$response['data'][$id]['permissions']['update'] = $bAllows;
 	}
-	$result['current_game'] = isset($_SESSION['game']) ? $_SESSION['game']['id'] : 0;
+	$response['current_game'] = isset($_SESSION['game']) ? $_SESSION['game']['id'] : 0;
 	
-	$result['permissions']['insert'] = APISecurity::isAdmin();
-	$result['result'] = 'ok';
+	$response['permissions']['insert'] = APISecurity::isAdmin();
+	$response['result'] = 'ok';
 } catch(PDOException $e) {
 	APIHelpers::showerror(1193, $e->getMessage());
 }
 
-include_once ($curdir."/../api.lib/savetoken.php");
-
-echo json_encode($result);
+APIHelpers::endpage($response);
