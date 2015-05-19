@@ -32,7 +32,7 @@ class APIHelpers {
 		);
 		return APIHelpers::$CONN;
 	}
-	
+
 	static function issetParam($name) {
 		return isset($_GET[$name]) || isset($_POST[$name]);
 	}
@@ -110,7 +110,7 @@ class APIHelpers {
 			$conn = APIHelpers::createConnection($config);
 			try {
 				$stmt = $conn->prepare('SELECT data FROM users_tokens WHERE token = ? AND status = ? AND end_date > NOW()');
-				$stmt->execute(array($token,'active'));
+				$stmt->execute(array(APIHelpers::$TOKEN,'active'));
 				if ($row = $stmt->fetch())
 				{
 					APIHelpers::$FHQSESSION = json_decode($row['data'],true);
@@ -136,14 +136,14 @@ class APIHelpers {
 		if (APIHelpers::$TIMESTART != null)
 			$result['lead_time_sec'] = microtime(true) - APIHelpers::$TIMESTART;
 
-		$session = null;
-		$session_orig = null;
+		$hash_session = null;
+		$hash_session_orig = null;
 		if (APIHelpers::$FHQSESSION != null && APIHelpers::$FHQSESSION_ORIG != null)
 			$hash_session = md5(json_encode(APIHelpers::$FHQSESSION));
 			$hash_session_orig = md5(json_encode(APIHelpers::$FHQSESSION_ORIG));
 		
-		if (APIHelpers::$TOKEN != null && $hash_session != $hash_session_orig) {
-			APIHelpers::updateByToken(APIHelpers::$CONN, APIHelpers::$TOKEN);
+		if ($hash_session != $hash_session_orig && $hash_session_orig != null) {
+			APISecurity::updateByToken();
 		}
 		
 		echo json_encode($response);

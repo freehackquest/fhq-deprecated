@@ -149,51 +149,49 @@ class APISecurity {
 		}
 	}
 	
-	static function saveByToken($conn, $token) { 
+	static function saveByToken() { 
 		try {
 			$query = 'INSERT INTO users_tokens (userid, token, status, data, start_date, end_date) VALUES(?, ?, ?, ?, NOW(), NOW() + INTERVAL 1 DAY)';
 			$params = array(
 				APISecurity::userid(),
-				$token,
+				APIHelpers::$TOKEN,
 				'active',
-				json_encode($_SESSION)
+				json_encode(APIHelpers::$FHQSESSION)
 			);
-			$stmt = $conn->prepare($query);
+			$stmt = APIHelpers::$CONN->prepare($query);
 			$stmt->execute($params);
 		} catch(PDOException $e) {
 			APIHelpers::showerror(1196, $e->getMessage());
 		}
 	}
 
-	static function loadByToken($conn, $token) { 
+	static function loadByToken() { 
 		try {
-			$query = 'SELECT data FROM users_tokens WHERE token = ? AND status = ? AND end_date > NOW()';
+			$query = 'SELECT data FROM users_tokens WHERE token = ? AND status = ?'; // AND end_date > NOW()
 			$params = array(
-				$token,
+				APIHelpers::$TOKEN,
 				'active'
 			);
 			$stmt = $conn->prepare($query);
 			$stmt->execute($params);
 			if ($row = $stmt->fetch())
-				$_SESSION = json_decode($row['data'],true);
+				APIHelpers::$FHQSESSION = json_decode($row['data'],true);
 		} catch(PDOException $e) {
 			APIHelpers::showerror(1197, $e->getMessage());
 		}
 	}
 	
-	static function updateByToken($conn, $token) { 
-		// try {
-			
-			$query = 'UPDATE users_tokens SET data = ?, end_date = DATE_ADD(NOW(), INTERVAL 1 DAY) WHERE token = ?';
-			$params = array(
-				json_encode($_SESSION),
-				$token,
-			);
-			$stmt = $conn->prepare($query);
-			$stmt->execute($params);
-		// } catch(PDOException $e) {
-//			APIHelpers::showerror(1200, $e->getMessage());
-		//}
+	static function updateByToken() { 
+		if (APIHelpers::$TOKEN == null || APIHelpers::$FHQSESSION == null || APIHelpers::$CONN == null)
+			return;
+		
+		$query = 'UPDATE users_tokens SET data = ?, end_date = DATE_ADD(NOW(), INTERVAL 1 DAY) WHERE token = ?';
+		$params = array(
+			json_encode(APIHelpers::$FHQSESSION),
+			APIHelpers::$TOKEN,
+		);
+		$stmt = APIHelpers::$CONN->prepare($query);
+		$stmt->execute($params);
 	}
 	
 	static function removeByToken($conn, $token) { 

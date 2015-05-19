@@ -38,8 +38,8 @@ $conn = APIHelpers::createConnection($config);
 $hash_password2 = APISecurity::generatePassword2($email, $password);
 if( APISecurity::login($conn, $email, $hash_password2)) {
 	$result['result'] = 'ok';
-	$token = APIHelpers::gen_guid();
-	$result['data']['token'] = $token;
+	APIHelpers::$TOKEN = APIHelpers::gen_guid();
+	$result['data']['token'] = APIHelpers::$TOKEN;
 	$result['data']['session'] = APIHelpers::$FHQSESSION;
 } else {
 	APIHelpers::showerror(1002, 'email or/and password was not found in system ');
@@ -50,7 +50,7 @@ if ($result['result'] == 'ok') {
 	APISecurity::insertLastIp($conn, APIHelpers::getParam('client', 'none'));
 	APIUser::loadUserProfile($conn);
 	// APIUser::loadUserScore($conn);
-	APISecurity::saveByToken($conn, $token);
+	APISecurity::saveByToken();
 }
 
 echo json_encode($result);
