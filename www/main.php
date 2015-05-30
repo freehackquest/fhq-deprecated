@@ -88,7 +88,7 @@ if (!isset($_SESSION['user']))
 							text
 						</div>
 						<div class="overlay_close">
-							<a class="button3 ad" href="javascript:void(0);" onclick="closeModalDialog();">
+							<a class="fhqbtn" href="javascript:void(0);" onclick="closeModalDialog();">
 								Close
 							</a>
 						</div>

@@ -108,7 +108,7 @@ function FHQGuiLib() {
 			} else if (pagesInt[i] == page) {
 				pagesHtml.push('<div class="selected_user_page">[' + (pagesInt[i]+1) + ']</div>');
 			} else {
-				pagesHtml.push('<div class="button3 ad" onclick="' + setfuncname + '(' + pagesInt[i] + '); ' + updatefuncname + '();">[' + (pagesInt[i]+1) + ']</div>');
+				pagesHtml.push('<div class="fhqbtn" onclick="' + setfuncname + '(' + pagesInt[i] + '); ' + updatefuncname + '();">[' + (pagesInt[i]+1) + ']</div>');
 			}
 		}
 		return pagesHtml.join(' ');

@@ -307,7 +307,7 @@ function formEditQuest(id)
 			var content = '\n';
 
 			/*content += createQuestRow('Quest UUID:', '<input type="text" id="newquest_quest_uuid" value="' + guid() + '"/>');
-			content += createQuestRow('', '<div class="button3 ad" onclick="createQuest();">Create</div>');*/
+			content += createQuestRow('', '<div class="fhqbtn" onclick="createQuest();">Create</div>');*/
 			
 			if (!obj.quest) {
 				showModalDialog("error");
@@ -330,8 +330,8 @@ function formEditQuest(id)
 			content += createQuestRow('Answer:', '<input type="text" id="editquest_answer" value="' + obj.data.answer + '"/>');
 			content += createQuestRow('State:', fhqgui.combobox('editquest_state', obj.data.state, fhq.getQuestStates()));
 			content += createQuestRow('Description State:', '<textarea id="editquest_description_state">' + obj.data.description_state + '</textarea>');
-			content += createQuestRow('', '<div class="button3 ad" onclick="updateQuest(' + obj.quest + ');">Update</div>'
-				+ '<div class="button3 ad" onclick="showQuest(' + obj.quest + ');">Cancel</div>'
+			content += createQuestRow('', '<div class="fhqbtn" onclick="updateQuest(' + obj.quest + ');">Update</div>'
+				+ '<div class="fhqbtn" onclick="showQuest(' + obj.quest + ');">Cancel</div>'
 			);
 
 			content += '</div>';
@@ -383,7 +383,7 @@ function showQuest(id)
 				content += createQuestRow('Author: ', obj.data.author);
 
 			if (obj.data.date_start == null && obj.data.date_stop == null) {
-				content += createQuestRow('', '<div class="button3 ad" onclick="takeQuest(' + obj.quest + ');">Take quest</div>');
+				content += createQuestRow('', '<div class="fhqbtn" onclick="takeQuest(' + obj.quest + ');">Take quest</div>');
 			} else if (obj.data.date_stop == null || obj.data.date_stop == '0000-00-00 00:00:00') {
 				if (obj.data.text)
 					content += createQuestRow('Text: ', '<pre>' + obj.data.text + '</pre>');
@@ -399,9 +399,9 @@ function showQuest(id)
 				if (obj.data.date_start)
 					content += createQuestRow('Date Start: ', obj.data.date_start);
 				content += createQuestRow('', '<input id="quest_answer" type="text" onkeydown="if (event.keyCode == 13) passQuest(' + obj.quest + ');"/>'
-					+ '<div class="button3 ad" onclick="passQuest(' + obj.quest + ');">Pass quest</div>'
+					+ '<div class="fhqbtn" onclick="passQuest(' + obj.quest + ');">Pass quest</div>'
 				);
-				content += createQuestRow('', '<div class="button3 ad" onclick="showMyAnswers(' + obj.quest + ');">Show/Hide my answers</div><br>'
+				content += createQuestRow('', '<div class="fhqbtn" onclick="showMyAnswers(' + obj.quest + ');">Show/Hide my answers</div><br>'
 					+ '<div id="user_answers"></div>'
 				);					
 			} else {
@@ -424,11 +424,11 @@ function showQuest(id)
 			
 			if (obj.permissions.edit == true && obj.permissions['delete'] == true) {
 				content += createQuestRow('',
-					'<div class="button3 ad" onclick="formEditQuest(' + obj.quest + ');">Edit</div>'
-					+ '<div class="button3 ad" onclick="deleteQuest(' + obj.quest + ');">Delete</div>'
+					'<div class="fhqbtn" onclick="formEditQuest(' + obj.quest + ');">Edit</div>'
+					+ '<div class="fhqbtn" onclick="deleteQuest(' + obj.quest + ');">Delete</div>'
 				);
 			}
-			content += createQuestRow('','<div class="button3 ad" onclick="fhqgui.openQuestInNewTab(' + obj.quest + ');">Open in new tab</div>');
+			content += createQuestRow('','<div class="fhqbtn" onclick="fhqgui.openQuestInNewTab(' + obj.quest + ');">Open in new tab</div>');
 			content += '</div>';
 			content += '<div id="quest_error"><div>';
 			content += '\n';
@@ -482,7 +482,7 @@ function formCreateQuest()
 	content += createQuestRow('Answer:', '<input type="text" id="newquest_answer" value=""/>');
 	content += createQuestRow('State:', fhqgui.combobox('newquest_state', 'open', fhq.getQuestStates()));
 	content += createQuestRow('Description State:', '<textarea id="newquest_description_state"></textarea>');
-	content += createQuestRow('', '<div class="button3 ad" onclick="createQuest();">Create</div>');
+	content += createQuestRow('', '<div class="fhqbtn" onclick="createQuest();">Create</div>');
 	content += '</div>'; // quest_info_table
 	showModalDialog(content);
 }

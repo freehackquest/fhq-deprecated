@@ -83,7 +83,7 @@ if (isset($_SESSION['user']))
 							<div class="indexcontent" id="indexcontent_sign_in">
 								<input placeholder="your@email.com" id="email" value="" type="text" onkeydown="if (event.keyCode == 13) login();"><br><br>
 								<input placeholder="*****" id="password" value="" type="password"  onkeydown="if (event.keyCode == 13) login();"><br><br>
-								<div class="button3 ad" onclick="login();">sign in</div>
+								<div class="fhqbtn" onclick="login();">sign in</div>
 							</div>
 
 							<div class="indexcontent" id="indexcontent_registration">
@@ -94,7 +94,7 @@ if (isset($_SESSION['user']))
 								</a>
 								<br><br>
 								<input placeholder="captcha" id="captcha_reg" value="" type="text" onkeydown="if (event.keyCode == 13) registration();"/><br><br>
-								<div class="button3 ad" onclick="registration();">Register</div>
+								<div class="fhqbtn" onclick="registration();">Register</div>
 							</div>
 		
 							<div class="indexcontent" id="indexcontent_restore">
@@ -107,7 +107,7 @@ if (isset($_SESSION['user']))
 
 								<input placeholder="captcha" id="captcha_restore" value="" type="text" onkeydown="if (event.keyCode == 13) restore();">
 								<br><br>
-								<div class="button3 ad" onclick="restore();">Restore password</div>
+								<div class="fhqbtn" onclick="restore();">Restore password</div>
 							</div>
 		
 							<br><br>
