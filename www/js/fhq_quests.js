@@ -428,6 +428,7 @@ function showQuest(id)
 					+ '<div class="button3 ad" onclick="deleteQuest(' + obj.quest + ');">Delete</div>'
 				);
 			}
+			content += createQuestRow('','<div class="button3 ad" onclick="fhqgui.openQuestInNewTab(' + obj.quest + ');">Open in new tab</div>');
 			content += '</div>';
 			content += '<div id="quest_error"><div>';
 			content += '\n';
