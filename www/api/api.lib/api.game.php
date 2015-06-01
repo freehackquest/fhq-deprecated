@@ -3,9 +3,16 @@ class APIGame {
 
 	static function checkGameDates(&$message) {
 
-		if (!isset($_SESSION['game'])) {
-			$message = 'Select game please';
-			return false;
+		if (APIHelpers::$FHQSESSION != NULL) {
+			if (!isset(APIHelpers::$FHQSESSION['game'])) {
+				$message = 'Select game please';
+				return false;
+			}
+		} else {
+			if (!isset($_SESSION['game'])) {
+				$message = 'Select game please';
+				return false;
+			}
 		}
 
 		if (APISecurity::isAdmin() || APISecurity::isTester())
@@ -46,6 +53,9 @@ class APIGame {
 	}
 	
 	static function id() {
+		if (APIHelpers::$FHQSESSION != NULL) {
+			return (isset(APIHelpers::$FHQSESSION['game']) && isset(APIHelpers::$FHQSESSION['game']['id'])) ? APIHelpers::$FHQSESSION['game']['id'] : 0;
+		}
 		return (isset($_SESSION['game']) && isset($_SESSION['game']['id'])) ? $_SESSION['game']['id'] : 0;
 	}
 	

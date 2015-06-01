@@ -1,7 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: Delete Quest
  * API_DESCRIPTION: Method for delete quest
@@ -10,18 +7,15 @@ header('Content-Type: application/json');
  * API_INPUT: token - string, token
  */
 
-$curdir = dirname(__FILE__);
-include_once ($curdir."/../api.lib/api.base.php");
-include_once ($curdir."/../api.lib/api.game.php");
-include_once ($curdir."/../../config/config.php");
-include_once ($curdir."/../api.lib/loadtoken.php");
+$curdir_quests_delete = dirname(__FILE__);
+include_once ($curdir_quests_delete."/../api.lib/api.base.php");
+include_once ($curdir_quests_delete."/../api.lib/api.game.php");
+include_once ($curdir_quests_delete."/../api.lib/api.quest.php");
+include_once ($curdir_quests_delete."/../../config/config.php");
+
+$response = APIHelpers::startpage($config);
 
 APIHelpers::checkAuth();
-
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
 
 $message = '';
 
@@ -43,15 +37,19 @@ $conn = APIHelpers::createConnection($config);
 
 $query = 'DELETE FROM quest WHERE idquest = ?';
 
+// todo delete from userquest
+// todo recalculate score for users
+// todo delete from tryanswer
+// todo delete from tryanswer_backup
+
 try {
 	$stmt = $conn->prepare($query);
 	$stmt->execute(array(intval($questid)));
-	$result['result'] = 'ok';
+	$response['result'] = 'ok';
 } catch(PDOException $e) {
 	APIHelpers::showerror(1063, $e->getMessage());
 }
 
 APIQuest::updateMaxGameScore($conn, APIGame::id());
 
-include_once ($curdir."/../api.lib/savetoken.php");
-echo json_encode($result);
+APIHelpers::endpage($response);
