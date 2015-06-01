@@ -20,7 +20,7 @@ function updateStatistics() {
 
 	var ls = document.getElementById("listStatistics");
 	ls.innerHTML = "Loading...";
-	
+
 	var params = fhqgui.filter.stats.getParams();
 	send_request_post(
 		'api/statistics/list.php',
@@ -37,7 +37,7 @@ function updateStatistics() {
 				
 				var content = '';
 				// content += 'Processed ' + obj.lead_time_sec + ' sec <br>';
-				content += fhqgui.paginator(0, found, onpage, page, 'setStatisticsPage', 'fhqgui.updatePageSkills()');
+				content += fhqgui.paginator(0, found, onpage, page, 'setStatisticsPage', 'updateStatistics');
 				var tbl = new FHQTable();
 				tbl.openrow();
 				tbl.cell('Quest');
