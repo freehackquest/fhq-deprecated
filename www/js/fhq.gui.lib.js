@@ -601,7 +601,7 @@ function FHQGuiLib() {
 					document.getElementById('skills_found').innerHTML = obj.data.found;
 					var onpage = parseInt(obj.data.onpage, 10);
 					var page = parseInt(obj.data.page, 10);
-					el.innerHTML = fhqgui.paginator(0, obj.data.found, onpage, page, 'fhqgui.setSkillsPage', 'fhqgui.updatePageSkills()');
+					el.innerHTML = fhqgui.paginator(0, obj.data.found, onpage, page, 'fhqgui.setSkillsPage', 'fhqgui.updatePageSkills');
 
 					var tbl = new FHQTable();
 					tbl.openrow();
