@@ -208,7 +208,7 @@ try {
 		}
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1187, $e->getMessage());
+	APIHelpers::showerror(1189, $e->getMessage());
 }
 
 APIHelpers::endpage($response);
