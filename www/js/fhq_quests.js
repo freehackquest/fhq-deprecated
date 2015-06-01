@@ -74,10 +74,10 @@ function reloadQuests()
 				quests.innerHTML += '<hr><h3>In progress (' + obj.status.current + ')</h3><br><div id="current_quests"></div>';
 
 			if (params.filter_open && obj.status.open > 0)
-				quests.innerHTML += '<hr><h3>Open (' + obj.status.completed + ')</h3><br><div id="open_quests"></div>'
+				quests.innerHTML += '<hr><h3>Open (' + obj.status.open + ')</h3><br><div id="open_quests"></div>'
 
 			if (params.filter_completed && obj.status.completed > 0)
-				quests.innerHTML += '<hr><h3>Completed (' + obj.status.open + ')</h3><br><div id="completed_quests"></div>';
+				quests.innerHTML += '<hr><h3>Completed (' + obj.status.completed + ')</h3><br><div id="completed_quests"></div>';
 
 			var open_quests = document.getElementById("open_quests");
 			var current_quests = document.getElementById("current_quests");
