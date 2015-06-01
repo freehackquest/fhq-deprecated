@@ -81,7 +81,7 @@ function deleteFeedback(id)  {
 
 function deleteConfirmFeedback(id) {
 	var content = 'Are you sure that want remove this Feedback (and all answers)?<br>';
-	content += '<div class="button3 ad" onclick="deleteFeedback(' + id + ');">YES!!!</div>';
+	content += '<div class="fhqbtn" onclick="deleteFeedback(' + id + ');">YES!!!</div>';
 	showModalDialog(content);
 };
 
@@ -124,7 +124,7 @@ function deleteFeedbackMessage(id)  {
 
 function deleteConfirmFeedbackMessage(id) {
 	var content = 'Are you sure that want remove this Feedback Message?<br>';
-	content += '<div class="button3 ad" onclick="deleteFeedbackMessage(' + id + ');">YES!!!</div>';
+	content += '<div class="fhqbtn" onclick="deleteFeedbackMessage(' + id + ');">YES!!!</div>';
 	showModalDialog(content);
 };
 
@@ -182,7 +182,7 @@ function loadFeedback() {
 				el.innerHTML = obj.error.message;
 			} else {
 				var content = '';
-				content += '<div class="button3 ad" onclick="new FHQFeedback().show();">Create Feedback</div><br>';
+				content += '<div class="fhqbtn" onclick="new FHQFeedback().show();">Create Feedback</div><br>';
 				
 				for (var k in obj.data.feedback) {
 					content += '';
@@ -196,16 +196,16 @@ function loadFeedback() {
 						content += '			<div class="fhq_event_caption">[' + f.type + ', ' + f.dt + ', {' + f.nick + '}, {' + f.email + '}]</div>';
 						content += '			<div class="fhq_feedback_text"><pre>' + f.text + '</pre></div>';
 						content += '			<div class="fhq_event_caption">'; 
-						content += '				<div class="button3 ad" onclick="formInsertFeedbackMessage(' + f.id + ');">Add message</div>';
+						content += '				<div class="fhqbtn" onclick="formInsertFeedbackMessage(' + f.id + ');">Add message</div>';
 						if (obj.access == true) {
-							content += '				<div class="button3 ad" onclick="deleteConfirmFeedback(' + f.id + ');">Delete</div>';
-							content += '				<div class="button3 ad" onclick="formEditFeedback(' + f.id + ');">Edit</div>';
+							content += '				<div class="fhqbtn" onclick="deleteConfirmFeedback(' + f.id + ');">Delete</div>';
+							content += '				<div class="fhqbtn" onclick="formEditFeedback(' + f.id + ');">Edit</div>';
 						}
 						content += '			</div>';
 						
 						content += '			<div class="fhq_event_caption">'; 
-						/*content += '				<div class="button3 ad" onclick="deleteConfirmEvent(' + f.id + ');">Delete</div>';
-						content += '				<div class="button3 ad" onclick="formEditEvent(' + f.id + ');">Edit</div>';*/
+						/*content += '				<div class="fhqbtn" onclick="deleteConfirmEvent(' + f.id + ');">Delete</div>';
+						content += '				<div class="fhqbtn" onclick="formEditEvent(' + f.id + ');">Edit</div>';*/
 						
 						for (var k1 in f.messages) {
 							var m = f.messages[k1];
@@ -217,15 +217,15 @@ function loadFeedback() {
 							content += '			<div class="fhq_feedback_text"><pre>' + m.text + '</pre></div>';
 							if (obj.access == true) {
 								content += '			<div class="fhq_event_caption">'; 
-								content += '				<div class="button3 ad" onclick="deleteConfirmFeedbackMessage(' + m.id + ');">Delete</div>';
-								content += '				<div class="button3 ad" onclick="formEditFeedbackMessage(' + m.id + ');">Edit</div>';
+								content += '				<div class="fhqbtn" onclick="deleteConfirmFeedbackMessage(' + m.id + ');">Delete</div>';
+								content += '				<div class="fhqbtn" onclick="formEditFeedbackMessage(' + m.id + ');">Edit</div>';
 								content += '			</div>';
 							}
 							content += '		</div>'; // fhq_event_info_cell_content
 							content += '	</div>'; // fhq_event_info_row
 							content += '</div><br>'; // fhq_event_info
-							/*content += '				<div class="button3 ad" onclick="deleteConfirmEvent(' + f.id + ');">Delete</div>';
-							content += '				<div class="button3 ad" onclick="formEditEvent(' + f.id + ');">Edit</div>';*/
+							/*content += '				<div class="fhqbtn" onclick="deleteConfirmEvent(' + f.id + ');">Delete</div>';
+							content += '				<div class="fhqbtn" onclick="formEditEvent(' + f.id + ');">Edit</div>';*/
 						}
 						content += '			</div>';
 

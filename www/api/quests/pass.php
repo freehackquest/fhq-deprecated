@@ -17,7 +17,8 @@ include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../api.lib/api.answerlist.php");
 include_once ($curdir."/../api.lib/api.quest.php");
 include_once ($curdir."/../../config/config.php");
-include_once ($curdir."/../api.lib/loadtoken.php");
+
+$response = APIHelpers::startpage($config);
 
 APIHelpers::checkAuth();
 
@@ -41,18 +42,11 @@ if ($answer == "")
 if (!is_numeric($questid))
 	APIHelpers::showerror(1215, 'Parameter "questid" must be numeric');
 
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
-
-$result['result'] = 'ok';
-
-// TODO: must be added filters
+$response['result'] = 'ok';
 $conn = APIHelpers::createConnection($config);
 
-$result['gameid'] = APIGame::id(); 
-$result['userid'] = APISecurity::userid();
+$response['gameid'] = APIGame::id(); 
+$response['userid'] = APISecurity::userid();
 
 $filter_by_state = APISecurity::isAdmin() ? '' : ' AND quest.state = "open" ';
 $filter_by_score = APISecurity::isAdmin() ? '' : ' AND quest.min_score <= '.APISecurity::score().' ';
@@ -96,12 +90,12 @@ try {
 		else
 			$status = 'completed';
 
-		$result['data'] = array(
+		$response['data'] = array(
 			'questid' => $row['idquest'],
 			'date_start' => $row['startdate'],
 			'date_stop' => $row['stopdate'],
 		);
-		$result['quest'] = $row['idquest'];
+		$response['quest'] = $row['idquest'];
 		$real_answer = $row['answer'];
 		$levenshtein = levenshtein(strtoupper($real_answer), strtoupper($answer));		
 		
@@ -110,17 +104,17 @@ try {
 			// check answer
 			if (md5(strtoupper($real_answer)) == md5(strtoupper($answer))) {
 				
-				$result['result'] = 'ok';
+				$response['result'] = 'ok';
 
 				$nowdate = date('Y-m-d H:i:s');
 				$query1 = 'UPDATE userquest SET stopdate = NOW() WHERE idquest = ? AND iduser = ?;';
 				$stmt1 = $conn->prepare($query1);
 				$stmt1->execute(array(intval($questid), APISecurity::userid()));
 				$new_user_score = APIHelpers::calculateScore($conn);			
-				$result['new_user_score'] = $new_user_score;
-				if ($_SESSION['user']['score'] != $result['new_user_score'])
+				$response['new_user_score'] = intval($new_user_score);
+				if (APISecurity::score() != $response['new_user_score'])
 				{
-					$_SESSION['user']['score'] = $result['new_user_score'];
+					APISecurity::setUserScore($response['new_user_score']);
 					$query2 = 'UPDATE users_games SET date_change = NOW(), score = ? WHERE userid = ? AND gameid = ?;';
 					$stmt2 = $conn->prepare($query2);
 					$stmt2->execute(array(intval($new_user_score), APISecurity::userid(), APIGame::id()));
@@ -139,12 +133,11 @@ try {
 				$stmt_check_tryanswer->execute(array($answer, $userid, intval($questid)));
 				if($row_check_tryanswer = $stmt_check_tryanswer->fetch()) {
 					$count = intval($row_check_tryanswer['cnt']);
-					$result['checkanswer'] = array($answer, $userid, intval($questid));
+					$response['checkanswer'] = array($answer, $userid, intval($questid));
 					if ($count > 0) {
 						APIHelpers::showerror(1318, 'Your already try this answer. Levenshtein distance: '.$levenshtein);
 					}
 				}
-			
 				APIAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, $levenshtein, 'No');
 				APIHelpers::showerror(1216, 'Answer incorrect. Levenshtein distance: '.$levenshtein);
 			};
@@ -155,16 +148,15 @@ try {
 		}
 
 		/*if ($status == 'current' || $status == 'completed')
-			$result['data']['text'] = $row['text'];*/
+			$response['data']['text'] = $row['text'];*/
 	}
 	else
 	{
 		APIHelpers::showerror(1218, 'Not found quest');
 	}
-	
+
 } catch(PDOException $e) {
 	APIHelpers::showerror(1219, $e->getMessage());
 }
 
-include_once ($curdir."/../api.lib/savetoken.php");
-echo json_encode($result);
+APIHelpers::endpage($response);

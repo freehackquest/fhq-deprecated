@@ -85,6 +85,14 @@ class APISecurity {
 		return (APISecurity::isLogged() && is_numeric($_SESSION['user']['score'])) ? $_SESSION['user']['score'] : 0; 
 	}
 	
+	static function setUserScore($newScore) {
+		if (isset($_SESSION['user']['score']))
+			$_SESSION['user']['score'] = $newScore;
+		if (APIHelpers::$FHQSESSION != NULL && APISecurity::isLogged() ) {
+			APIHelpers::$FHQSESSION['user']['score'] = $newScore;
+		}
+	}	
+	
 	static function nick() { 
 		if (APIHelpers::$FHQSESSION != NULL && APISecurity::isLogged()) {
 			return isset(APIHelpers::$FHQSESSION['user']['nick']) ? $FHQSESSION['user']['nick'] : '';

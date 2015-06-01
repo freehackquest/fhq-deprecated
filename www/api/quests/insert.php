@@ -1,7 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: Quest Insert
  * API_DESCRIPTION: Method will be add quest to the system
@@ -25,14 +22,10 @@ include_once ($curdir_quests_insert."/../api.lib/api.base.php");
 include_once ($curdir_quests_insert."/../api.lib/api.game.php");
 include_once ($curdir_quests_insert."/../api.lib/api.quest.php");
 include_once ($curdir_quests_insert."/../../config/config.php");
-include_once ($curdir_quests_insert."/../api.lib/loadtoken.php");
+
+$response = APIHelpers::startpage($config);
 
 APIHelpers::checkAuth();
-
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
 
 $message = '';
 
@@ -71,10 +64,6 @@ $params['for_person'] = 0;
 $params['gameid'] = APIGame::id();
 $params['idauthor'] = intval($params['idauthor']);
 $params['author'] = $params['author'];
-// $params['state'] = $params['state'];
-// $params['description_state'] = $params['description_state'];
-// $params['subject'] = $params['subject'];
-// $params['quest_uuid'] = $params['quest_uuid'];
 $params['gameid'] = APIGame::id();
 $params['userid'] = APISecurity::userid();
 $params['count_user_solved'] = 0;
@@ -89,21 +78,16 @@ foreach ( $params as $k => $v) {
 $query = 'INSERT INTO quest('.implode(', ', array_keys($params)).', date_change, date_create) 
   VALUES('.implode(', ', $values_q).', NOW(), NOW());';
 
-// echo $query;
-
-// $result['params'] = $params;
-// $result['query'] = $query;
-
 try {
 	$stmt = $conn->prepare($query);
 	if($stmt->execute(array_values($params))) {
-		$result['data']['quest']['id'] = $conn->lastInsertId();
-		$result['result'] = 'ok';
-		APIQuest::updateCountUserSolved($conn, $result['data']['quest']['id']);
-		
+		$response['data']['quest']['id'] = $conn->lastInsertId();
+		$response['result'] = 'ok';
+		APIQuest::updateCountUserSolved($conn, $response['data']['quest']['id']);
+
 		// to public evants
 		if ($params['state'] == 'open') {
-			APIEvents::addPublicEvents($conn, "quests", "New quest #".$result['data']['quest']['id']." ".$questname." (subject: ".$params['subject'].")");
+			APIEvents::addPublicEvents($conn, "quests", "New quest #".$response['data']['quest']['id']." ".$questname." (subject: ".$params['subject'].")");
 		}
 	} else {
 		APIHelpers::showerror(1168,'Could not insert. PDO: '.$conn->errorInfo());
@@ -114,5 +98,4 @@ try {
 
 APIQuest::updateMaxGameScore($conn, APIGame::id());
 
-include_once ($curdir_quests_insert."/../api.lib/savetoken.php");
-echo json_encode($result);
+APIHelpers::endpage($response);

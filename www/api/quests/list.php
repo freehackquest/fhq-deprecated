@@ -1,16 +1,13 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: Quest List
  * API_DESCRIPTION: Method will be returned quest list
  * API_ACCESS: authorized users
+ * API_INPUT: token - string, token
  * API_INPUT: filter_open - boolean, filter by open quests (it not taked)
  * API_INPUT: filter_current - boolean, filter by in progress quests (taked)
  * API_INPUT: filter_completed - boolean, filter by completed quest (finished quests)
  * API_INPUT: filter_subjects - string, filter by subjects quests (for example: "hashes,trivia" and etc. also look types)
- * API_INPUT: token - string, token
  */
 
 $curdir = dirname(__FILE__);
@@ -20,21 +17,17 @@ include_once ($curdir."/../api.lib/api.helpers.php");
 include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../../config/config.php");
 
-include_once ($curdir."/../api.lib/loadtoken.php");
+
+$response = APIHelpers::startpage($config);
 
 APIHelpers::checkAuth();
+
+$conn = APIHelpers::createConnection($config);
 
 $message = '';
 
 if (!APIGame::checkGameDates($message))
 	APIHelpers::showerror(1094, $message);
-
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
-
-$result['result'] = 'ok';
 
 if (APIGame::id() == 0)
 	APIHelpers::showerror(1095, "Game was not selected.");
@@ -42,20 +35,22 @@ if (APIGame::id() == 0)
 // TODO: must be added filters
 $conn = APIHelpers::createConnection($config);
 
-$result['status']['open'] = 0;
-$result['status']['current'] = 0;
-$result['status']['completed'] = 0;
+$response['result'] = 'ok';
 
-$result['filter']['open'] = APIHelpers::getParam('filter_open', true);
-$result['filter']['current'] = APIHelpers::getParam('filter_current', true);
-$result['filter']['completed'] = APIHelpers::getParam('filter_completed', false);
+$response['status']['open'] = 0;
+$response['status']['current'] = 0;
+$response['status']['completed'] = 0;
 
-$result['filter']['open'] = filter_var($result['filter']['open'], FILTER_VALIDATE_BOOLEAN);
-$result['filter']['current'] = filter_var($result['filter']['current'], FILTER_VALIDATE_BOOLEAN);
-$result['filter']['completed'] = filter_var($result['filter']['completed'], FILTER_VALIDATE_BOOLEAN);
+$response['filter']['open'] = APIHelpers::getParam('filter_open', true);
+$response['filter']['current'] = APIHelpers::getParam('filter_current', true);
+$response['filter']['completed'] = APIHelpers::getParam('filter_completed', false);
 
-$result['gameid'] = APIGame::id();
-$result['userid'] = APISecurity::userid();
+$response['filter']['open'] = filter_var($response['filter']['open'], FILTER_VALIDATE_BOOLEAN);
+$response['filter']['current'] = filter_var($response['filter']['current'], FILTER_VALIDATE_BOOLEAN);
+$response['filter']['completed'] = filter_var($response['filter']['completed'], FILTER_VALIDATE_BOOLEAN);
+
+$response['gameid'] = APIGame::id();
+$response['userid'] = APISecurity::userid();
 
 $filter_by_state = APISecurity::isAdmin() ? '' : ' AND quest.state = "open" ';
 
@@ -77,7 +72,7 @@ try {
 	');
 	$stmt->execute(array(APIGame::id(),APISecurity::userid()));
 	if($row = $stmt->fetch())
-		$result['status']['summary'] = $row['cnt'];
+		$response['status']['summary'] = $row['cnt'];
 } catch(PDOException $e) {
 	APIHelpers::showerror(1096, $e->getMessage());
 }
@@ -98,11 +93,11 @@ try {
 				AND isnull(userquest.stopdate)
 				AND isnull(userquest.startdate)
 	';
-	// $result['query_open'] = $query;
+	// $response['query_open'] = $query;
 	$stmt1 = $conn->prepare($query);
 	$stmt1->execute(array(APISecurity::userid(),APIGame::id(), APISecurity::userid()));
 	if($row = $stmt1->fetch())
-		$result['status']['open'] = $row['cnt'];
+		$response['status']['open'] = $row['cnt'];
 } catch(PDOException $e) {
 	APIHelpers::showerror(1097, $e->getMessage());
 }
@@ -126,7 +121,7 @@ try {
 	');
 	$stmt->execute(array(APISecurity::userid(),APIGame::id(),APISecurity::userid()));
 	if($row = $stmt->fetch())
-		$result['status']['current'] = $row['cnt'];
+		$response['status']['current'] = $row['cnt'];
 } catch(PDOException $e) {
 	APIHelpers::showerror(1098, $e->getMessage());
 }
@@ -150,7 +145,7 @@ try {
 	');
 	$stmt->execute(array(APISecurity::userid(),APIGame::id(), APISecurity::userid()));
 	if($row = $stmt->fetch())
-		$result['status']['completed'] = $row['cnt'];
+		$response['status']['completed'] = $row['cnt'];
 } catch(PDOException $e) {
 	APIHelpers::showerror(1099, $e->getMessage());
 }
@@ -174,7 +169,7 @@ try {
 	$stmt->execute(array(APIGame::id(), APISecurity::userid()));
 	while($row = $stmt->fetch())
 	{
-		$result['subjects'][$row['subject']] = $row['cnt'];
+		$response['subjects'][$row['subject']] = $row['cnt'];
 	}
 } catch(PDOException $e) {
 	APIHelpers::showerror(1100, $e->getMessage());
@@ -186,13 +181,13 @@ $params = array(APISecurity::userid(), APIGame::id());
 // filter by status
 $arrWhere_status = array();
 
-if ($result['filter']['open'])
+if ($response['filter']['open'])
 	$arrWhere_status[] = '(isnull(userquest.startdate) AND isnull(userquest.stopdate))';
 				
-if ($result['filter']['current'])
+if ($response['filter']['current'])
 	$arrWhere_status[] = '(userquest.startdate <> \'0000-00-00 00:00:00\' AND userquest.stopdate = \'0000-00-00 00:00:00\')';
 
-if ($result['filter']['completed'])
+if ($response['filter']['completed'])
 	$arrWhere_status[] = '(userquest.stopdate <> \'0000-00-00 00:00:00\' AND userquest.stopdate <> \'0000-00-00 00:00:00\')';
 
 $where_status = '';
@@ -241,9 +236,9 @@ $query = '
 				quest.subject, quest.score ASC, quest.score
 		';
 
-// $result['where_status'] = $where_status;
-// $result['params'] = $params;
-// $result['query'] = $query;
+// $response['where_status'] = $where_status;
+// $response['params'] = $params;
+// $response['query'] = $query;
 $params[] =  APISecurity::userid();
 try {
 	$stmt = $conn->prepare($query);
@@ -259,7 +254,7 @@ try {
 		else
 			$status = 'completed';
 				
-		$result['data'][] = array(
+		$response['data'][] = array(
 			'questid' => $row['idquest'],
 			'score' => $row['score'],
 			'name' => $row['name'],
@@ -274,12 +269,12 @@ try {
 			'status' => $status,
 		);
 	}
-	$result['result'] = 'ok';
-	$result['permissions']['insert'] = APISecurity::isAdmin();
+	$response['result'] = 'ok';
+	$response['permissions']['insert'] = APISecurity::isAdmin();
 	
 } catch(PDOException $e) {
 	APIHelpers::showerror(1101, $e->getMessage());
 }
 
-include_once ($curdir."/../api.lib/savetoken.php");
-echo json_encode($result);
+APIHelpers::endpage($response);
+

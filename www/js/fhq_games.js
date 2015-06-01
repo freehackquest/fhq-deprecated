@@ -70,7 +70,7 @@ function loadGames() {
 			
 			var perms = obj['permissions'];
 			if (perms['insert'] == true)
-				el.innerHTML += '<div class="fhqinfo"><div class="button3 ad" onclick="formCreateGame();">Create Game</div></div><br>';
+				el.innerHTML += '<div class="fhqinfo"><div class="fhqbtn" onclick="formCreateGame();">Create Game</div></div><br>';
 
 			for (var k in obj.data) {
 				if (obj.data.hasOwnProperty(k)) {
@@ -109,7 +109,7 @@ function formDeleteGame(id)
 	content += '<input type="text" id="captcha_delete_game"/><br><br>';
 	content += '<img src="api/captcha.php" id="captcha_delete_game_img"/><br>';
 	content += '<a href="javascript:void(0);" onclick="document.getElementById(\'captcha_delete_game_img\').src = \'api/captcha.php?rid=\' + Math.random();">Refresh captcha</a><br><br>';
-	content += '<div class="button3 ad" onclick="deleteGame(\'' + id + '\');">Delete</div><br>';
+	content += '<div class="fhqbtn" onclick="deleteGame(\'' + id + '\');">Delete</div><br>';
 	showModalDialog(content);
 };
 
@@ -184,7 +184,7 @@ function formEditGame(id)
 				var pt = new FHQParamTable();
 				pt.row('', '<img class="fhq_game_img" id="editgame_logo" src="' + obj.data.logo + '"/>');
 				pt.row('Update logo:', 'PNG: <input id="editgame_new_logo" type="file" accept="image/png" required/>');
-				pt.row('', '<div class="button3 ad" onclick="updateGameLogo(' + id + ');">Upload</div>');
+				pt.row('', '<div class="fhqbtn" onclick="updateGameLogo(' + id + ');">Upload</div>');
 				pt.skip();
 				pt.row('Name (Type):',
 					'<input type="text" id="editgame_title" value="' + obj.data.title + '"/> '
@@ -201,7 +201,7 @@ function formEditGame(id)
 				pt.row('Date Restart:', '<input type="text" id="editgame_date_restart" value="' + obj.data.date_restart + '"/>');
 				pt.row('Description:', '<textarea id="editgame_description"></textarea>');
 				pt.row('Organizators:', '<input type="text" id="editgame_organizators" value="' + obj.data.organizators + '"/>');
-				pt.row('', '<div class="button3 ad" onclick="updateGame(' + id + ');">Update</div>');
+				pt.row('', '<div class="fhqbtn" onclick="updateGame(' + id + ');">Update</div>');
 				
 				showModalDialog(pt.render());
 				document.getElementById('editgame_description').innerHTML = obj.data.description;
@@ -274,7 +274,7 @@ function formCreateGame()
 	pt.row('Description:', '<textarea id="newgame_description"></textarea>');
 	pt.row('Organizators:', '<input type="text" id="newgame_organizators" value=""/>');
 	// pt.row('Author ID:', '<input type="text" id="newgame_author_id" value=""/>');
-	pt.row('', '<div class="button3 ad" onclick="createGame();">Create</div>');
+	pt.row('', '<div class="fhqbtn" onclick="createGame();">Create</div>');
 	showModalDialog(pt.render());
 	
 	$('#newgame_date_start').datetimepicker({

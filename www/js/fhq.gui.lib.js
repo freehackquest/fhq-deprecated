@@ -108,7 +108,7 @@ function FHQGuiLib() {
 			} else if (pagesInt[i] == page) {
 				pagesHtml.push('<div class="selected_user_page">[' + (pagesInt[i]+1) + ']</div>');
 			} else {
-				pagesHtml.push('<div class="button3 ad" onclick="' + setfuncname + '(' + pagesInt[i] + '); ' + updatefuncname + '();">[' + (pagesInt[i]+1) + ']</div>');
+				pagesHtml.push('<div class="fhqbtn" onclick="' + setfuncname + '(' + pagesInt[i] + '); ' + updatefuncname + '();">[' + (pagesInt[i]+1) + ']</div>');
 			}
 		}
 		return pagesHtml.join(' ');
@@ -357,7 +357,8 @@ function FHQGuiLib() {
 	this.questIcon = function(questid, name, subject, score, solved) {
 		solved = solved == null ? "?" : solved;
 
-		var content = '\n\n<div class="fhq_quest_info" onclick="showQuest(' + questid + ');"><div class="fhq_quest_info_row">\n';
+		var content = '\n\n<div class="fhq_quest_info" onclick="showQuest(' + questid + ');">';
+		content += '<div class="fhq_quest_info_row">\n';
 		content += '<div class="fhq_quest_info_cell_img">';
 		content += '<img  width="100px" src="images/quests/' + subject + '.png">';
 		content += '</div>';
@@ -374,7 +375,26 @@ function FHQGuiLib() {
 	this.userIcon = function(userid, logo, nick) {
 		return '<div class="fhqbtn" onclick="showUserInfo(' + userid + ')"> <img class="fhqmiddelinner" width=25px src="' + logo + '"/> ' + nick + '</div>'
 	}
-	
+
+	this.getUrlParameterByName = function(name) {
+		name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+			results = regex.exec(location.search);
+		return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
+  
+	this.processParams = function() {
+		var questid = this.getUrlParameterByName("questid");
+		if (questid) {
+			showQuest(questid);
+		};
+	}
+
+	this.openQuestInNewTab = function(questid) {
+		var win = window.open('?questid=' + questid, '_blank');
+		win.focus();
+	}
+
 	this.makeSystemPanel = function() {
 		/*var cp = new FHQContentPage();
 
@@ -581,7 +601,7 @@ function FHQGuiLib() {
 					document.getElementById('skills_found').innerHTML = obj.data.found;
 					var onpage = parseInt(obj.data.onpage, 10);
 					var page = parseInt(obj.data.page, 10);
-					el.innerHTML = fhqgui.paginator(0, obj.data.found, onpage, page, 'fhqgui.setSkillsPage', 'fhqgui.updatePageSkills()');
+					el.innerHTML = fhqgui.paginator(0, obj.data.found, onpage, page, 'fhqgui.setSkillsPage', 'fhqgui.updatePageSkills');
 
 					var tbl = new FHQTable();
 					tbl.openrow();

@@ -14,7 +14,8 @@ $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../../config/config.php");
-include_once ($curdir."/../api.lib/loadtoken.php");
+
+$response = APIHelpers::startpage($config);
 
 APIHelpers::checkAuth();
 
@@ -31,18 +32,13 @@ $questid = APIHelpers::getParam('questid', 0);
 if (!is_numeric($questid))
 	APIHelpers::showerror(1206, 'parameter "questid" must be numeric');
 
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
-
-$result['result'] = 'ok';
+$response['result'] = 'ok';
 
 // TODO: must be added filters
 $conn = APIHelpers::createConnection($config);
 
-$result['gameid'] = APIGame::id(); 
-$result['userid'] = APISecurity::userid();
+$response['gameid'] = APIGame::id(); 
+$response['userid'] = APISecurity::userid();
 
 $filter_by_state = APISecurity::isAdmin() ? '' : ' AND quest.state = "open" ';
 $filter_by_score = APISecurity::isAdmin() ? '' : ' AND quest.min_score <= '.APISecurity::score().' ';
@@ -80,15 +76,15 @@ try {
 		else
 			$status = 'completed';
 
-		$result['data'] = array(
+		$response['data'] = array(
 			'questid' => $row['idquest'],
 			'date_start' => $row['startdate'],
 			'date_stop' => $row['stopdate'],
 		);
-		$result['quest'] = $row['idquest'];
+		$response['quest'] = $row['idquest'];
 		
 		if ($status == 'open') {
-			$result['result'] = 'ok';
+			$response['result'] = 'ok';
 			// echo 'INSERT INTO userquest(iduser,idquest,startdate,stopdate) (?,?,NOW(),\'0000-00-00 00:00:00\');';
 			
 			$stmt2 = $conn->prepare('INSERT INTO userquest(iduser,idquest,startdate,stopdate) VALUES (?,?,NOW(),\'0000-00-00 00:00:00\');');
@@ -104,7 +100,7 @@ try {
 		}
 
 		/*if ($status == 'current' || $status == 'completed')
-			$result['data']['text'] = $row['text'];*/
+			$response['data']['text'] = $row['text'];*/
 	}
 	else
 	{
@@ -115,5 +111,4 @@ try {
 	APIHelpers::showerror(1209, $e->getMessage());
 }
 
-include_once ($curdir."/../api.lib/savetoken.php");
-echo json_encode($result);
+APIHelpers::endpage($response);

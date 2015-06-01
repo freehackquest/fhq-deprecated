@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import requests
+import uuid 
 
 class FHQFrontEndLib:
 	def __init__(self, url):
@@ -11,13 +12,18 @@ class FHQFrontEndLib:
 	def sendrequest(self, path, params):
 		# token
 		if self.token != '':
-			params['token'] = '81C45C52-FC4E-504B-D0DB-3BE65E3487A3' # self.token
+			params['token'] = self.token
 
+		# print params
 		# todo: try catch	
 		resp = {'result' : 'fail'}
 		r = requests.post(self.url + path, params)
 		if r.headers['content-type'] == 'application/json':
-			resp = r.json()
+			try:
+				resp = r.json()
+			except ValueError:
+				print r.text
+				raise Exception('invalid json')
 
 		if resp['result'] == 'fail':
 			print(resp['error']['code'])
@@ -42,16 +48,37 @@ class FHQFrontEndLib:
 	def quests_list(self):
 		resp = self.sendrequest('/api/quests/list.php', {})
 		return resp
+		
+	def quests_insert(self, params):
+		resp = self.sendrequest('/api/quests/insert.php', params)
+		return resp
+
+	def quests_get(self, questid):
+		resp = self.sendrequest('/api/quests/get.php', { 'taskid' : questid })
+		return resp
+
+	def quests_take(self, questid):
+		resp = self.sendrequest('/api/quests/take.php', { 'questid' : questid})
+		return resp
+		
+	def quests_pass(self, questid, answer):
+		resp = self.sendrequest('/api/quests/pass.php', { 'questid' : questid, 'answer' : answer })
+		return resp
+		
+	def quests_delete(self, questid):
+		resp = self.sendrequest('/api/quests/delete.php', { 'questid' : questid })
+		return resp
 
 email = 'admin@fhq.keva.su'
 password = 'admin'
 
+# login
 api = FHQFrontEndLib('http://localhost/fhq')
 if not api.login(email, password):
 	exit(1)
-
 print(api.token)
 
+# game list
 glist = api.games_list()
 gameid = glist['current_game']
 
@@ -60,9 +87,46 @@ for key, value in glist['data'].iteritems():
 	if gameid == 0:
 		gameid = value['id']
 
+# game choose
 game = api.games_choose(gameid)
-
 print('Choosed game ' + game['data']['title'])
 
+# quest list
+quests = api.quests_list()
 
-print(api.quests_list())
+for key, value in enumerate(quests['data']):
+	print(value['questid'] + ': ' + value['name'])
+
+# create new quest
+new_quest = api.quests_insert({ 'quest_uuid' : str(uuid.uuid4()),
+	'name' : 'test',
+	'text' : 'test',
+	'score' : 100,
+	'min_score' : 0,
+	'subject' : 'trivia',
+	'idauthor' : 0,
+	'author' : 'admin',
+	'answer' : 'test',
+	'state' : 'open',
+	'description_state' : 'ddd'
+});
+
+# print new_quest
+questid = new_quest['data']['quest']['id']
+
+# quest get
+print api.quests_get(questid)
+
+# quests_update todo
+
+# quest take
+print api.quests_take(questid)
+
+# quest pass
+api.quests_pass(questid, 'test1')
+api.quests_pass(questid, 'test')
+
+# quest delete
+print api.quests_delete(questid)
+
+# scoreboard

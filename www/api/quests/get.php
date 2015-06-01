@@ -6,7 +6,7 @@ header('Content-Type: application/json');
  * API_NAME: Get Quest Info (users method)
  * API_DESCRIPTION: Method will be returned quest info 
  * API_ACCESS: authorized users
- * API_INPUT: taskid - integer, Identificator of the quest
+ * API_INPUT: taskid - integer, Identificator of the quest (in future will be questid)
  * API_INPUT: token - string, token
  */
 
@@ -14,7 +14,8 @@ $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../../config/config.php");
-include_once ($curdir."/../api.lib/loadtoken.php");
+
+$response = APIHelpers::startpage($config);
 
 APIHelpers::checkAuth();
 
@@ -31,18 +32,11 @@ $questid = APIHelpers::getParam('taskid', 0);
 if (!is_numeric($questid))
 	APIHelpers::showerror(1066, 'parameter "taskid" must be numeric');
 
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
+$response['result'] = 'ok';
 
-$result['result'] = 'ok';
+$conn = APIHelpers::createConnection($config);
 
-// TODO: must be added filters
-if ($conn == null)
-	$conn = APIHelpers::createConnection($config);
-
-$result['userid'] = APISecurity::userid();
+$response['userid'] = APISecurity::userid();
 
 $params = array();
 $params[] = APISecurity::userid();
@@ -101,7 +95,7 @@ try {
 		else
 			$status = 'completed';
 
-		$result['data'] = array(
+		$response['data'] = array(
 			'questid' => $row['idquest'],
 			'score' => $row['score'],
 			'min_score' => $row['min_score'],
@@ -113,18 +107,18 @@ try {
 			'author' => $row['author'],
 			'status' => $status,
 		);
-		$result['quest'] = $row['idquest'];
-		$result['gameid'] = $row['gameid'];
+		$response['quest'] = $row['idquest'];
+		$response['gameid'] = $row['gameid'];
 
 		if ($status == 'current' || $status == 'completed')
 		{
-			$result['data']['text'] = $row['text'];
+			$response['data']['text'] = $row['text'];
 			
-			$result['data']['files'] = array();
+			$response['data']['files'] = array();
 			$stmt_files = $conn->prepare('select * from quests_files WHERE questid = ?');
 			$stmt_files->execute(array(intval($questid)));
 			while ($row_files = $stmt_files->fetch())
-				$result['data']['files'][] = array(
+				$response['data']['files'][] = array(
 					'filename' => $row_files['filename'],
 					'filepath' => $row_files['filepath'],
 					'size' => $row_files['size'],
@@ -133,17 +127,16 @@ try {
 		}
 
 		if (isset($_SESSION['game']))
-			$result['data']['game_title'] = $_SESSION['game']['title'];
+			$response['data']['game_title'] = $_SESSION['game']['title'];
 	} else {
 		APIHelpers::showerror(1148, 'Problem... may be incorrect game are selected?');
 	}
 	
-	$result['result'] = 'ok';
-	$result['permissions']['edit'] = APISecurity::isAdmin();
-	$result['permissions']['delete'] = APISecurity::isAdmin();
+	$response['result'] = 'ok';
+	$response['permissions']['edit'] = APISecurity::isAdmin();
+	$response['permissions']['delete'] = APISecurity::isAdmin();
 } catch(PDOException $e) {
 	APIHelpers::showerror(1067, $e->getMessage());
 }
 
-include_once ($curdir."/../api.lib/savetoken.php");
-echo json_encode($result);
+APIHelpers::endpage($response);
