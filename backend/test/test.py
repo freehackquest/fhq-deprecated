@@ -3,12 +3,76 @@
 import requests
 import uuid 
 
+# api for work security
+class FHQSecurity:
+	def  __init__(self, parent):
+		self.parent = parent
+	def login(self, email, password):
+		resp = self.parent.sendrequest('/security/login.php', {"email": email, "password": password})
+		if resp['result'] == 'fail':
+			return False
+		self.parent.token = resp['data']['token']
+		return True
+	#def logoff(self):
+
+# api for work with games
+class FHQGames:
+	def  __init__(self, parent):
+		self.parent = parent
+	
+	def list(self):
+		resp = self.parent.sendrequest('/games/list.php', {})
+		return resp
+		
+	def choose(self, gameid):
+		resp = self.parent.sendrequest('/games/choose.php', {'id' : gameid})
+		return resp
+
+	# def get
+	# def insert
+	# def update
+	# def scoreboard
+	# def updaterules
+	# def update_score
+	# def upload_logo
+
+class FHQQuests:
+	def  __init__(self, parent):
+		self.parent = parent
+
+	def list(self):
+		resp = self.parent.sendrequest('/quests/list.php', {})
+		return resp
+		
+	def insert(self, params):
+		resp = self.parent.sendrequest('/quests/insert.php', params)
+		return resp
+
+	def get(self, questid):
+		resp = self.parent.sendrequest('/quests/get.php', { 'taskid' : questid })
+		return resp
+
+	def take(self, questid):
+		resp = self.parent.sendrequest('/quests/take.php', { 'questid' : questid})
+		return resp
+		
+	def trypass(self, questid, answer):
+		resp = self.parent.sendrequest('/quests/pass.php', { 'questid' : questid, 'answer' : answer })
+		return resp
+		
+	def delete(self, questid):
+		resp = self.parent.sendrequest('/quests/delete.php', { 'questid' : questid })
+		return resp
+
 class FHQFrontEndLib:
 	def __init__(self, url):
 		self.token = ""
 		self.url = url
 		self.gameid = 0
-
+		self.security = FHQSecurity(self)
+		self.games = FHQGames(self)
+		self.quests = FHQQuests(self)
+		
 	def sendrequest(self, path, params):
 		# token
 		if self.token != '':
@@ -31,55 +95,17 @@ class FHQFrontEndLib:
 			return resp
 		return resp
 
-	def login(self, email, password):
-		resp = self.sendrequest('/api/security/login.php', {"email": email, "password": password})
-		if resp['result'] == 'fail':
-			return False
-		self.token = resp['data']['token']
-		return True
-
-	def games_list(self):
-		resp = self.sendrequest('/api/games/list.php', {})
-		return resp
-		
-	def games_choose(self, gameid):
-		resp = self.sendrequest('/api/games/choose.php', {'id' : gameid})
-		return resp
-	def quests_list(self):
-		resp = self.sendrequest('/api/quests/list.php', {})
-		return resp
-		
-	def quests_insert(self, params):
-		resp = self.sendrequest('/api/quests/insert.php', params)
-		return resp
-
-	def quests_get(self, questid):
-		resp = self.sendrequest('/api/quests/get.php', { 'taskid' : questid })
-		return resp
-
-	def quests_take(self, questid):
-		resp = self.sendrequest('/api/quests/take.php', { 'questid' : questid})
-		return resp
-		
-	def quests_pass(self, questid, answer):
-		resp = self.sendrequest('/api/quests/pass.php', { 'questid' : questid, 'answer' : answer })
-		return resp
-		
-	def quests_delete(self, questid):
-		resp = self.sendrequest('/api/quests/delete.php', { 'questid' : questid })
-		return resp
-
 email = 'admin@fhq.keva.su'
 password = 'admin'
 
 # login
-api = FHQFrontEndLib('http://localhost/fhq')
-if not api.login(email, password):
+api = FHQFrontEndLib('http://localhost/fhq/api/')
+if not api.security.login(email, password):
 	exit(1)
 print(api.token)
 
 # game list
-glist = api.games_list()
+glist = api.games.list()
 gameid = glist['current_game']
 
 for key, value in glist['data'].iteritems():
@@ -88,17 +114,17 @@ for key, value in glist['data'].iteritems():
 		gameid = value['id']
 
 # game choose
-game = api.games_choose(gameid)
+game = api.games.choose(gameid)
 print('Choosed game ' + game['data']['title'])
 
 # quest list
-quests = api.quests_list()
+quests = api.quests.list()
 
 for key, value in enumerate(quests['data']):
 	print(value['questid'] + ': ' + value['name'])
 
 # create new quest
-new_quest = api.quests_insert({ 'quest_uuid' : str(uuid.uuid4()),
+new_quest = api.quests.insert({ 'quest_uuid' : str(uuid.uuid4()),
 	'name' : 'test',
 	'text' : 'test',
 	'score' : 100,
@@ -115,18 +141,18 @@ new_quest = api.quests_insert({ 'quest_uuid' : str(uuid.uuid4()),
 questid = new_quest['data']['quest']['id']
 
 # quest get
-print api.quests_get(questid)
+print api.quests.get(questid)
 
-# quests_update todo
+# quests.update todo
 
 # quest take
-print api.quests_take(questid)
+print api.quests.take(questid)
 
 # quest pass
-api.quests_pass(questid, 'test1')
-api.quests_pass(questid, 'test')
+api.quests.trypass(questid, 'test1')
+api.quests.trypass(questid, 'test')
 
 # quest delete
-print api.quests_delete(questid)
+print api.quests.delete(questid)
 
 # scoreboard
