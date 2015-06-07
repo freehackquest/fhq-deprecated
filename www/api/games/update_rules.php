@@ -1,7 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: Update Game Rules
  * API_DESCRIPTION: Method for update game rules
@@ -38,10 +35,27 @@ if (!APIHelpers::issetParam('rules'))
 
 $rules = APIHelpers::getParam('rules', '');
 
+// check game
+$title = '';
+try {
+	$stmt = $conn->prepare('SELECT * FROM games WHERE id = ?');
+	$stmt->execute(array(intval($gameid)));
+	if ($row = $stmt->fetch()) {
+		$title = $row['title'];
+	} else {
+		APIHelpers::showerror(1326, 'Game #'.$gameid.' does not exists.');
+	}
+} catch(PDOException $e) {
+ 	APIHelpers::showerror(1327, $e->getMessage());
+}
+
 try {
 	$stmt = $conn->prepare('UPDATE games SET rules = ?, date_change = NOW() WHERE id = ?');
 	$stmt->execute(array($rules, $gameid));
 	$response['result'] = 'ok';
+	
+	APIEvents::addPublicEvents($conn, 'games', "Updated rules for game #".$gameid.' '.htmlspecialchars($title));
+	
 } catch(PDOException $e) {
 	APIHelpers::showerror(1323, $e->getMessage());
 }

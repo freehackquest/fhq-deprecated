@@ -3,8 +3,8 @@
  * API_NAME: Get Game Info
  * API_DESCRIPTION: Mthod returned information about game
  * API_ACCESS: all
- * API_INPUT: gameid - integer, Identificator of the game (defualt current id)
  * API_INPUT: token - guid, token
+ * API_INPUT: gameid - integer, Identificator of the game (defualt current id)
  */
 
 $curdir_games_get = dirname(__FILE__);
@@ -42,7 +42,7 @@ try {
 		}
 		$response['result'] = 'ok';
 	} else {
-		APIHelpers::showerror(1171, 'Did not found game with this id');
+		APIHelpers::showerror(1171, 'Does not found game with this id');
 	}
 } catch(PDOException $e) {
 	APIHelpers::showerror(1169, $e->getMessage());

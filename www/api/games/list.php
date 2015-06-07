@@ -1,11 +1,9 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
- * API_NAME: List Game Info
+ * API_NAME: List Of Games
  * API_DESCRIPTION: Method will be returned list of the games
  * API_ACCESS: authorized users
+ * API_INPUT: token - guid, token
  */
 
 $curdir = dirname(__FILE__);

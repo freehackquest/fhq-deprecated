@@ -1,11 +1,9 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: Insert Game Info
  * API_DESCRIPTION: Method for insert game
  * API_ACCESS: admin only
+ * API_INPUT: token - guid, token
  * API_INPUT: uuid_game - string, Global Identificator of the game
  * API_INPUT: title - string, name of the game
  * API_INPUT: logo - string, link to the picture (will be depricated)
@@ -24,14 +22,8 @@ include_once ($curdir_games_insert."/../api.lib/api.helpers.php");
 include_once ($curdir_games_insert."/../../config/config.php");
 include_once ($curdir_games_insert."/../api.lib/api.base.php");
 
-include_once ($curdir_games_insert."/../api.lib/loadtoken.php");
+$response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
-
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
-
 $conn = APIHelpers::createConnection($config);
 
 if(!APISecurity::isAdmin())
@@ -54,14 +46,15 @@ $columns = array(
 
 $param_values = array(); 
 $values_q = array();
+$title = '';
 
 foreach ( $columns as $k => $v) {
   $values_q[] = '?';
   if ($k == 'owner')
 	$param_values[$k] = $v;
-  else if (APIHelpers::issetParam($k))
+  else if (APIHelpers::issetParam($k)) {
     $param_values[$k] = APIHelpers::getParam($k, $v);
-  else
+  } else
     APIHelpers::showerror(1161, 'not found parameter "'.$k.'"');
 }
 
@@ -74,16 +67,17 @@ $query = 'INSERT INTO games('.implode(',', array_keys($param_values)).', date_ch
   VALUES('.implode(',', $values_q).', NOW(), NOW());';
 
 $values = array_values($param_values);
-$result['param_values'] = $param_values;
-$result['query'] = $query;
+// $response['param_values'] = $param_values;
+// $response['query'] = $query;
 
 try {
 	$stmt = $conn->prepare($query);
 	$stmt->execute($values);
-	$result['data']['game']['id'] = $conn->lastInsertId();
-	$result['result'] = 'ok';
+	$response['data']['game']['id'] = $conn->lastInsertId();
+	$response['result'] = 'ok';
+	APIEvents::addPublicEvents($conn, 'games', "New game #".$response['data']['game']['id'].' '.htmlspecialchars($param_values['title']));
 } catch(PDOException $e) {
 	APIHelpers::showerror(1163, $e->getMessage());
 }
 
-echo json_encode($result);
+APIHelpers::endpage($response);
