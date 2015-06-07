@@ -16,11 +16,13 @@ $response = APIHelpers::startpage($config);
 
 $conn = APIHelpers::createConnection($config);
 
-$gameid = APIHelpers::getParam('gameid', APIGame::id());
+$gameid = APIHelpers::getParam('gameid', 0);
 $response['access']['edit'] = APISecurity::isAdmin();
 
 if (!is_numeric($gameid))
 	APIHelpers::showerror(1170, '"gameid" must be numeric');
+
+$gameid = intval($gameid);
 
 try {
 
