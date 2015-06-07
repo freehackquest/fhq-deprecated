@@ -1,11 +1,9 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: Update Game Info
  * API_DESCRIPTION: Method for update game info
  * API_ACCESS: admin only
+ * API_INPUT: token - guid, token
  * API_INPUT: id - string, Identificator of the game
  * API_INPUT: title - string, name of the game
  * API_INPUT: type_game - string, type of the game, currently only possible: jeopardy
@@ -23,13 +21,8 @@ include_once ($curdir_games_update."/../api.lib/api.helpers.php");
 include_once ($curdir_games_update."/../../config/config.php");
 include_once ($curdir_games_update."/../api.lib/api.base.php");
 
-include_once ($curdir_games_update."/../api.lib/loadtoken.php");
+$response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
-
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
 
 $conn = APIHelpers::createConnection($config);
 
@@ -51,12 +44,12 @@ $columns = array(
 if (!APIHelpers::issetParam('id'))
   APIHelpers::showerror(1155, 'not found parameter "id"');
 
-$game_id = getParam('id', 0);
+$gameid = getParam('id', 0);
 
-if (!is_numeric($game_id))
+if (!is_numeric($gameid))
 	APIHelpers::showerror(1156, 'incorrect "id"');
 
-$game_id = intval($game_id);
+$gameid = intval($gameid);
 
 $param_values = array(); 
 $values_q = array();
@@ -66,14 +59,27 @@ foreach ( $columns as $k => $v) {
   if (APIHelpers::issetParam($k))
     $param_values[$k] = APIHelpers::getParam($k, $v);
   else
-    APIHelpers::showerror(1157, 'Error 758: not found parameter "'.$k.'"');
+    APIHelpers::showerror(1157, 'Does not found parameter "'.$k.'"');
+}
+
+// check game
+try {
+	$stmt = $conn->prepare('SELECT * FROM games WHERE id = ?');
+	$stmt->execute(array(intval($gameid)));
+	if ($row = $stmt->fetch()) {
+		// $title = $row['title'];
+	} else {
+		APIHelpers::showerror(1324, 'Game #'.$gameid.' does not exists.');
+	}
+} catch(PDOException $e) {
+ 	APIHelpers::showerror(1325, $e->getMessage());
 }
 
 $query = 'UPDATE games SET '.implode(',', $values_q).', date_change = NOW()
   WHERE id = ?';
 
 $values = array_values($param_values);
-$values[] = $game_id; 
+$values[] = $gameid;
 
 // $result['query'] = $query;
 // $result['values'] = $values;
@@ -81,10 +87,10 @@ $values[] = $game_id;
 try {
 	$stmt = $conn->prepare($query);
 	$stmt->execute($values);
-	$result['result'] = 'ok';
+	$response['result'] = 'ok';
+	APIEvents::addPublicEvents($conn, 'games', "Updated game #".$gameid.' '.htmlspecialchars($param_values['title']));
 } catch(PDOException $e) {
 	APIHelpers::showerror(1158, $e->getMessage());
 }
 
-
-echo json_encode($result);
+APIHelpers::endpage($response);

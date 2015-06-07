@@ -1,13 +1,11 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
 
 /*
  * API_NAME: Delete Game
- * API_DESCRIPTION: remove game from system
+ * API_DESCRIPTION: remove game from system (and all requaried records)
  * API_ACCESS: admin only
- * API_INPUT: id - string, Identificator of the game
- * API_INPUT: captcha - string, captcha
+ * API_INPUT: token - guid, token
+ * API_INPUT: gameid - integer, Identificator of the game
  */
 
 $curdir_games_delete = dirname(__FILE__);
@@ -15,14 +13,8 @@ include_once ($curdir_games_delete."/../api.lib/api.helpers.php");
 include_once ($curdir_games_delete."/../../config/config.php");
 include_once ($curdir_games_delete."/../api.lib/api.base.php");
 
-include_once ($curdir_games_delete."/../api.lib/loadtoken.php");
+$response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
-
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
-
 $conn = APIHelpers::createConnection($config);
 
 if(!APISecurity::isAdmin())
@@ -31,29 +23,58 @@ if(!APISecurity::isAdmin())
 if (!APIHelpers::issetParam('id'))
   APIHelpers::showerror(1150, 'not found parameter "id"');
 
-if (!APIHelpers::issetParam('captcha'))
-  APIHelpers::showerror(1151, 'not found parameter "captcha"');
+$gameid = APIHelpers::getParam('id', 0);
 
-$captcha = APIHelpers::getParam('captcha', '');
-$orig_captcha = $_SESSION['captcha_reg'];
-$_SESSION['captcha_reg'] = md5(rand().rand());
-
-if( strtoupper($captcha) != strtoupper($orig_captcha))
-	APIHelpers::showerror(1152, 'captcha incorrect');
-
-$game_id = APIHelpers::getParam('id', 0);
-
-if (!is_numeric($game_id))
+if (!is_numeric($gameid))
   APIHelpers::showerror(1153, 'incorrect id');
-		
-$query = 'DELETE FROM games WHERE id = ?';
+
+$title = '';
+
+// check game
+try {
+	$stmt = $conn->prepare('SELECT * FROM games WHERE id = ?');
+	$stmt->execute(array(intval($gameid)));
+	if ($row = $stmt->fetch()) {
+		$title = $row['title'];
+	} else {
+		APIHelpers::showerror(1200, 'Game #'.$gameid.' does not exists.');
+	}
+} catch(PDOException $e) {
+ 	APIHelpers::showerror(1151, $e->getMessage());
+}
 
 try {
- 	$stmt = $conn->prepare($query);
- 	$stmt->execute(array(intval($game_id)));
- 	$result['result'] = 'ok';
+ 	$stmt_games = $conn->prepare('DELETE FROM games WHERE id = ?');
+ 	$stmt_games->execute(array(intval($gameid)));
+
+	// remove from users_games
+ 	$stmt_users_games = $conn->prepare('DELETE FROM users_games WHERE gameid = ?');
+ 	$stmt_users_games->execute(array(intval($gameid)));
+
+	// remove from tryanswer
+	$stmt_tryanswer = $conn->prepare('DELETE FROM tryanswer WHERE idquest IN (SELECT idquest FROM quest q WHERE q.gameid = ?)');
+ 	$stmt_tryanswer->execute(array(intval($gameid)));
+ 	
+	// remove from tryanswer_backup
+	$stmt_tryanswer_backup = $conn->prepare('DELETE FROM tryanswer_backup WHERE idquest IN (SELECT idquest FROM quest q WHERE q.gameid = ?)');
+ 	$stmt_tryanswer_backup->execute(array(intval($gameid)));
+
+	// remove from userquest
+	$stmt_userquest = $conn->prepare('DELETE FROM userquest WHERE idquest IN (SELECT idquest FROM quest q WHERE q.gameid = ?)');
+ 	$stmt_userquest->execute(array(intval($gameid)));
+ 	
+ 	// remove from users_quests
+	$stmt_users_quests = $conn->prepare('DELETE FROM users_quests WHERE questid IN (SELECT idquest FROM quest q WHERE q.gameid = ?)');
+ 	$stmt_users_quests->execute(array(intval($gameid)));
+
+	// remove from quest
+	$stmt_quest = $conn->prepare('DELETE FROM quest WHERE gameid = ?');
+ 	$stmt_quest->execute(array(intval($gameid)));
+
+ 	$response['result'] = 'ok';
+ 	APIEvents::addPublicEvents($conn, 'games', "Removed game #".$gameid.' '.htmlspecialchars($title));
 } catch(PDOException $e) {
  	APIHelpers::showerror(1154, $e->getMessage());
 }
 
-echo json_encode($result);
+APIHelpers::endpage($response);
