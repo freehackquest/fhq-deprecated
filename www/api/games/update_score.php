@@ -3,6 +3,7 @@
  * API_NAME: Recalculate Score (helpers method)
  * API_DESCRIPTION: It's helpers method for update score for current user for selected game
  * API_ACCESS: authorized users
+ * API_INPUT: gameid - Integer, Identificator of game
  * API_INPUT: token - guid, token
  */
 
@@ -17,6 +18,15 @@ APIHelpers::checkAuth();
 
 $message = '';
 
+if (!APIHelpers::issetParam('gameid'))
+	APIHelpers::showerror(1328, 'Not found parameter "gameid"');
+
+$conn = APIHelpers::createConnection($config);
+$gameid = APIHelpers::getParam('gameid', 0);
+
+if (!is_numeric($gameid))
+	APIHelpers::showerror(1172, 'gameid must be numeric');
+
 /*
 // TODO
 $errmsg = "";
@@ -24,33 +34,26 @@ if (!checkGameDates($security, &$message))
 	APIHelpers::showerror(1191, $errmsg);
 */
 
-$conn = APIHelpers::createConnection($config);
-
-$gameid = APIGame::id();
-if ($gameid == 0)
-	APIHelpers::showerror(1172, 'Please choose game');
 
 $query = '
 	SELECT 
 		ifnull(SUM(quest.score),0) as sum_score 
 	FROM 
-		userquest 
-	INNER JOIN 
-		quest ON quest.idquest = userquest.idquest AND quest.gameid = ?
-	WHERE 
-		(userquest.iduser = ?) 
-		AND ( userquest.stopdate <> \'0000-00-00 00:00:00\' );
+		users_quests
+	INNER JOIN
+		quest ON quest.idquest = users_quests.questid AND quest.gameid = ?
+	WHERE
+		users_quests.userid = ?
 ';
 
 try {
 
 	$score = 0;
 	// loading score
-	$stmt2 = $conn->prepare('select * from users_games where userid= ? AND gameid = ?');
+	$stmt2 = $conn->prepare('select * from users_games where userid = ? AND gameid = ?');
 	$stmt2->execute(array(intval(APISecurity::userid()), intval($gameid)));
 	if($row2 = $stmt2->fetch())
 	{
-		$_SESSION['user']['score'] = $row2['score'];
 		$response['user'] = array();
 		$response['user']['score'] = $row2['score'];
 	}
@@ -58,7 +61,6 @@ try {
 	{
 		$stmt3 = $conn->prepare('INSERT INTO users_games (userid, gameid, score, date_change) VALUES(?,?,0,NOW())');
 		$stmt3->execute(array(intval(APISecurity::userid()), intval($gameid)));
-		$_SESSION['user']['score'] = 0;
 		$response['user'] = array();
 		$response['user']['score'] = 0;
 	}
@@ -67,7 +69,6 @@ try {
 	$stmt->execute(array(intval($gameid), intval(APISecurity::userid())));
 	if($row = $stmt->fetch())
 	{
-		$_SESSION['user']['score'] = $row['sum_score'];
 		$response['user'] = array();
 		$response['user']['score'] = $row['sum_score'];
 		$response['result'] = 'ok';
