@@ -16,7 +16,7 @@ print(api.token)
 
 # insert new game
 new_game = api.games.insert({
-	'uuid_game' : str(uuid.uuid4()),
+	'uuid' : str(uuid.uuid4()),
 	'title' : 'test',
 	'logo' : '',
 	'type_game' : 'jeopardy',

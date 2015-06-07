@@ -22,7 +22,7 @@ try {
   // TODO paging
 	$query = 'SELECT 
 				games.id,
-				games.uuid_game,
+				games.uuid,
 				games.title,
 				games.type_game,
 				games.date_start,
@@ -49,7 +49,7 @@ try {
 	$i = 0;
 	while($row = $stmt->fetch())
 	{
-		$id = $row['uuid_game'];
+		$id = $row['uuid'];
 		$response['data'][$id] = array();
 		foreach ( $columns as $k) {
 			$response['data'][$id][$k] = $row[$k];
