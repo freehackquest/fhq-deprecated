@@ -113,12 +113,10 @@ function loadCities() {
 				c.innerHTML += "<b>Already solved:</b><br>" + obj.data.quests.solved + "<br><br>";
 
 				c.innerHTML += "<h2>Playing with us</h2>";
-				
+
 				var cities = [];
 				for (var k in obj.data.cities) {
-					if (obj.data.cities[k].cnt > 1) {
-						cities.push(obj.data.cities[k].city + ' (' + obj.data.cities[k].cnt + ')');
-					}
+					cities.push(obj.data.cities[k].city + ' (' + obj.data.cities[k].cnt + ')');
 				}
 				c.innerHTML += cities.join(", ");
 
