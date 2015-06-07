@@ -42,6 +42,8 @@ if ($answer == "")
 if (!is_numeric($questid))
 	APIHelpers::showerror(1215, 'Parameter "questid" must be numeric');
 
+$questid = intval($questid);
+
 $response['result'] = 'ok';
 $conn = APIHelpers::createConnection($config);
 
@@ -105,11 +107,17 @@ try {
 			if (md5(strtoupper($real_answer)) == md5(strtoupper($answer))) {
 				
 				$response['result'] = 'ok';
-
 				$nowdate = date('Y-m-d H:i:s');
 				$query1 = 'UPDATE userquest SET stopdate = NOW() WHERE idquest = ? AND iduser = ?;';
 				$stmt1 = $conn->prepare($query1);
 				$stmt1->execute(array(intval($questid), APISecurity::userid()));
+				
+				// insert record
+				{
+					$stmt_users_quests = $conn->prepare("INSERT INTO users_quests(userid, questid, dt_passed) VALUES(?,?,NOW())");
+					$stmt_users_quests->execute(array(APISecurity::userid(), $questid));
+				}
+				
 				$new_user_score = APIHelpers::calculateScore($conn);			
 				$response['new_user_score'] = intval($new_user_score);
 				if (APISecurity::score() != $response['new_user_score'])
@@ -126,7 +134,7 @@ try {
 
 				// add to public events
 				if (!APISecurity::isAdmin())
-					APIEvents::addPublicEvents($conn, "users", 'User {'.APISecurity::nick().'} passed quest #'.$questid.' {'.$questname.'} from game #'.APIGame::id().' {'.APIGame::title().'} (new user score: '.$new_user_score.')');
+					APIEvents::addPublicEvents($conn, "users", 'User #'.APISecurity::userid().' {'.APISecurity::nick().'} passed quest #'.$questid.' {'.$questname.'} from game #'.APIGame::id().' {'.APIGame::title().'} (new user score: '.$new_user_score.')');
 			} else {
 				// check already try pass
 				$stmt_check_tryanswer = $conn->prepare('select count(*) as cnt from tryanswer where answer_try = ? and iduser = ? and idquest = ?');
