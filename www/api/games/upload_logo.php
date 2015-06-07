@@ -42,7 +42,7 @@ for($i = 0; $i < count($keys); $i++)
 	$filename = $keys[$i];
 	if ($_FILES[$filename]['error'] > 0)
 	{
-		APIHelpers::showerror(1054, 'Error with files '.$_FILES[$filename]["error"]);
+		APIHelpers::showerror(1329, 'Error with files '.$_FILES[$filename]["error"]);
 	}
 	else
 	{
