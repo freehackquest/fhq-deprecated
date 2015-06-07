@@ -102,4 +102,4 @@ api.quests.delete(questid)
 # scoreboard
 
 # game delete
-# api.games.delete(gameid)
+api.games.delete(gameid)
