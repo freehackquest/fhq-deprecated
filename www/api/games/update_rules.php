@@ -23,7 +23,7 @@ $conn = APIHelpers::createConnection($config);
 if (!APIHelpers::issetParam('id'))
   APIHelpers::showerror(1320, 'not found parameter "id"');
 
-$gameid = getParam('id', 0);
+$gameid = APIHelpers::getParam('id', 0);
 
 if (!is_numeric($gameid))
 	APIHelpers::showerror(1321, '"id" must be numeric');

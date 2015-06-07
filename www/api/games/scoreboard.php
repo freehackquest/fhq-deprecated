@@ -17,7 +17,7 @@ $response = APIHelpers::startpage($config);
 $message = '';
 
 if (!APIHelpers::issetParam('gameid'))
-	APIHelpers::showerror(1088, 'Parameter "gameid" does not found');
+	APIHelpers::showerror(1331, 'Parameter "gameid" does not found');
 
 $gameid = APIHelpers::getParam('gameid', 0);
 
