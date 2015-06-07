@@ -51,11 +51,10 @@ class FHQGames:
 		return resp
 		
 	def update_score(self, gameid):
-		resp = self.parent.sendrequest('/games/update_score.php', {'id' : gameid})
+		resp = self.parent.sendrequest('/games/update_score.php', {'gameid' : gameid})
 		return resp
 
 	# def scoreboard
-	# def update_score
 	# def upload_logo
 
 class FHQQuests:
@@ -112,8 +111,11 @@ class FHQFrontEndLib:
 				raise Exception('invalid json')
 
 		if resp['result'] == 'fail':
-			print r.text
+			print ' *** FAIL *** '
+			print ' * URL: ' + self.url + path
+			print ' * Response:' + r.text
 			print(' * Error.Code: ' + str(resp['error']['code']))
 			print(' * Error.Message: ' + str(resp['error']['message']))
+			print ' *************'
 			return resp
 		return resp

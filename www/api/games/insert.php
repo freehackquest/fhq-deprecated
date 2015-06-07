@@ -4,7 +4,7 @@
  * API_DESCRIPTION: Method for insert game
  * API_ACCESS: admin only
  * API_INPUT: token - guid, token
- * API_INPUT: uuid_game - string, Global Identificator of the game
+ * API_INPUT: uuid - string, Global Identificator of the game
  * API_INPUT: title - string, name of the game
  * API_INPUT: logo - string, link to the picture (will be depricated)
  * API_INPUT: type_game - string, type of the game, currently only possible: jeopardy
@@ -30,7 +30,7 @@ if(!APISecurity::isAdmin())
   APIHelpers::showerror(1160, 'access denie. you must be admin.');
 
 $columns = array(
-  'uuid_game' => 'none',
+  'uuid' => 'generate',
   'title' => 'Unknown',
   'logo' => '',
   'type_game' => 'jeopardy',

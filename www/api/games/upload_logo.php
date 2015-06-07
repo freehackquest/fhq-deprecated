@@ -8,12 +8,14 @@ header('Content-Type: application/json');
  * API_ACCESS: admin only
  * API_INPUT: gameid - string, Identificator of the game
  * API_INPUT: files - POST-FILES, files
- * API_INPUT: token - string, token
+ * API_INPUT: token - guid, token
  */
 
 $curdir_upload_logo = dirname(__FILE__);
 include_once ($curdir_upload_logo."/../api.lib/api.base.php");
 include_once ($curdir_upload_logo."/../../config/config.php");
+
+$response = APIHelpers::startpage($config);
 
 APIHelpers::checkAuth();
 
@@ -31,11 +33,6 @@ if (!APISecurity::isAdmin())
 if (count($_FILES) <= 0)
 	APIHelpers::showerror(1054, 'Not found files '.count($_FILES));
 
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
-
 $keys = array_keys($_FILES);
 
 // $prefix = 'quest'.$id.'_';
@@ -45,7 +42,7 @@ for($i = 0; $i < count($keys); $i++)
 	$filename = $keys[$i];
 	if ($_FILES[$filename]['error'] > 0)
 	{
-		echo "Error: " . $_FILES[$filename]["error"] . "<br>";
+		APIHelpers::showerror(1329, 'Error with files '.$_FILES[$filename]["error"]);
 	}
 	else
 	{
@@ -64,8 +61,8 @@ for($i = 0; $i < count($keys); $i++)
 				
 			try {
 				// set_error_handler("warning_handler", E_WARNING);
-				
-				// получение нового размера
+
+				// new size
 				list($width, $height) = getimagesize($full_filename);
 				$newwidth = 100;
 				$newheight = 100;
@@ -97,12 +94,12 @@ try {
 	$query = 'UPDATE games SET logo = ? WHERE id = ?';
 	$stmt = $conn->prepare($query);
 	if ($stmt->execute(array('files/games/'.$gameid.'.png', $gameid))) {
-		$result['result'] = 'ok';
-		$result['data']['logo'] = 'files/games/'.$gameid.'.png';
+		$response['result'] = 'ok';
+		$response['data']['logo'] = 'files/games/'.$gameid.'.png';
 	} else
-		$result['result'] = 'fail';
+		$response['result'] = 'fail';
 } catch(PDOException $e) {
 	APIHelpers::showerror(1058, $e->getMessage());
 }
 
-echo json_encode($result);
+APIHelpers::endpage($response);

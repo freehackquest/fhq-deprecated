@@ -36,24 +36,6 @@ function chooseGame(id) {
 	);
 }
 
-// todo deprecated
-function updateScore() {
-	send_request_post(
-		'api/games/update_score.php',
-		'',
-		function (obj) {
-			if(obj.result == "ok") {
-				var el1 = document.getElementById('view_score');
-				var el2 = document.getElementById('user_score');
-				if (el1)
-					el1.innerHTML = obj.user.score;
-				if (el2)
-					el2.innerHTML = obj.user.score;
-			}
-		}
-	);
-}
-
 function loadGames() {
 	fhqgui.setFilter('games');
 	
@@ -226,7 +208,7 @@ function formEditGame(id)
 function createGame() 
 {
 	var params = {};
-	params["uuid_game"] = document.getElementById("newgame_uuid_game").value;
+	params["uuid"] = document.getElementById("newgame_uuid").value;
 	params["logo"] = document.getElementById("newgame_logo").value;
 	params["title"] = document.getElementById("newgame_title").value;
 	params["state"] = document.getElementById("newgame_state").value;
@@ -257,7 +239,7 @@ function createGame()
 function formCreateGame() 
 {
 	var pt = new FHQParamTable();
-	pt.row('UUID Game:', '<input type="text" id="newgame_uuid_game" value="' + guid() + '"/>');
+	pt.row('UUID Game:', '<input type="text" id="newgame_uuid" value="' + guid() + '"/>');
 	pt.row('Logo:', '<input type="text" id="newgame_logo" value="http://fhq.keva.su/templates/base/images/minilogo.png"/>');
 	pt.row('Name:', '<input type="text" id="newgame_title"/>');
 	pt.row('State:', fhqgui.combobox('newgame_state', 'original', fhq.getGameStates()));
