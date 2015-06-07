@@ -35,7 +35,22 @@ if (!is_numeric($questid))
 
 $conn = APIHelpers::createConnection($config);
 
-$query = 'DELETE FROM quest WHERE idquest = ?';
+$name = '';
+$subject = '';
+
+// check quest
+try {
+	$stmt = $conn->prepare('SELECT * FROM quest WHERE idquest = ?');
+	$stmt->execute(array(intval($questid)));
+	if ($row = $stmt->fetch()) {
+		$name = $row['name'];
+		$subject = $row['subject'];
+	} else {
+		APIHelpers::showerror(1190, 'Quest #'.$gameid.' does not exists.');
+	}
+} catch(PDOException $e) {
+ 	APIHelpers::showerror(1152, $e->getMessage());
+}
 
 // todo delete from userquest
 // todo recalculate score for users
@@ -43,9 +58,27 @@ $query = 'DELETE FROM quest WHERE idquest = ?';
 // todo delete from tryanswer_backup
 
 try {
-	$stmt = $conn->prepare($query);
-	$stmt->execute(array(intval($questid)));
+	$stmt_quest = $conn->prepare('DELETE FROM quest WHERE idquest = ?');
+	$stmt_quest->execute(array(intval($questid)));
+	
+	// remove from tryanswer
+	$stmt_tryanswer = $conn->prepare('DELETE FROM tryanswer WHERE idquest = ?');
+ 	$stmt_tryanswer->execute(array(intval($questid)));
+ 	
+	// remove from tryanswer_backup
+	$stmt_tryanswer_backup = $conn->prepare('DELETE FROM tryanswer_backup WHERE idquest = ?');
+ 	$stmt_tryanswer_backup->execute(array(intval($questid)));
+
+	// remove from userquest
+	$stmt_userquest = $conn->prepare('DELETE FROM userquest WHERE idquest = ?');
+ 	$stmt_userquest->execute(array(intval($questid)));
+ 	
+ 	// remove from users_quests
+	$stmt_users_quests = $conn->prepare('DELETE FROM users_quests WHERE questid = ?');
+ 	$stmt_users_quests->execute(array(intval($questid)));
+	
 	$response['result'] = 'ok';
+	APIEvents::addPublicEvents($conn, "quests", "Removed quest #".$questid.' '.htmlspecialchars($name).' (subject: '.htmlspecialchars($subject).') ');
 } catch(PDOException $e) {
 	APIHelpers::showerror(1063, $e->getMessage());
 }
