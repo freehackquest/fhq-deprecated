@@ -157,7 +157,7 @@ if (!isset($_SESSION['user']))
 			$arrmenu[] = array(
 				'name' => 'rules',
 				'html' => '
-					<div class="fhq_btn_menu" data-hint="Rules" onclick="fhqgui.loadRules();">
+					<div class="fhq_btn_menu" data-hint="Rules" onclick="fhqgui.loadRules('.$gameid.');">
 						<img class="fhq_btn_menu_img" src="images/menu/rules.png"/><br>
 					</div>
 				',
@@ -177,7 +177,7 @@ if (!isset($_SESSION['user']))
 			$arrmenu[] = array(
 				'name' => 'stats',
 				'html' => '
-					<div class="fhq_btn_menu hint--bottom" data-hint="Statistics" onclick="createPageStatistics('.$gameid.'); updateStatistics();">
+					<div class="fhq_btn_menu hint--bottom" data-hint="Statistics" onclick="createPageStatistics('.$gameid.'); updateStatistics('.$gameid.');">
 						<img class="fhq_btn_menu_img" src="images/menu/stats.png"/><br>
 					</div>
 				',

@@ -21,10 +21,38 @@ $response['result'] = 'ok';
 
 $conn = APIHelpers::createConnection($config);
 
+$more_than = 2;
+$cities_limit = 20;
+
+if (isset($config['public_info'])) {
+	if (isset($config['public_info']['cities_more_than']))
+		$more_than = intval($config['public_info']['cities_more_than']);
+		
+	if (isset($config['public_info']['cities_limit']))
+		$cities_limit = intval($config['public_info']['cities_limit']);
+}
+
 // cities
 try {
- 	$stmt = $conn->prepare('SELECT city, count(userid) cnt FROM users_ips GROUP BY city ORDER BY cnt DESC');
- 	$stmt->execute();
+ 	$stmt = $conn->prepare('
+		SELECT * FROM (
+			SELECT
+				city,
+				count(userid) cnt
+			FROM
+				users_ips
+			GROUP BY
+				city
+			ORDER BY
+				cnt DESC
+		) as cities
+		WHERE
+			cities.cnt > ?
+			AND cities.city <> ?
+			AND cities.city <> ?
+		LIMIT 0,'.$cities_limit.'
+	');
+ 	$stmt->execute(array($more_than, 'localhost', ''));
 	
 	$response['data']['cities'] = array();
  	while ($row = $stmt->fetch()) {

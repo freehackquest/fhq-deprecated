@@ -462,13 +462,15 @@ function FHQGuiLib() {
 		);
 	}
 	
-	this.loadRules = function() {
+	this.loadRules = function(gameid) {
 		this.setFilter('rules');
 		var el = document.getElementById("content_page");
 		el.innerHTML = 'Loading...';
+		var params = {};
+		params.gameid = gameid;
 		send_request_post(
 			'api/games/get.php',
-			'',
+			createUrlFromObj(params),
 			function (obj) {
 				if (obj.result == "fail") {
 					el.innerHTML = obj.error.message;
@@ -517,7 +519,7 @@ function FHQGuiLib() {
 					alert(obj.error.message);
 				} else {
 					fhqgui.closeModalDialog();
-					fhqgui.loadRules();
+					fhqgui.loadRules(gameid);
 				}
 			}
 		);

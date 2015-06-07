@@ -2,7 +2,7 @@
 function updateInfo(gameid) {
 	
 	var params = {};
-	params["id"] = gameid;
+	params['gameid'] = gameid;
 	send_request_post(
 		'api/games/get.php',
 		createUrlFromObj(params),
@@ -16,8 +16,7 @@ function updateInfo(gameid) {
 			}
 		}
 	);
-	
-	
+
 	// init scoreboard
 	var tblscore = document.getElementById('scoreboard_table');
 	var content = '';
@@ -88,9 +87,9 @@ function updateScoreboard(gameid) {
 				}
 
 			} else {
-				// el.innerHTML = obj.error.message;
+				el.innerHTML = obj.error.message;
 			}
-			setTimeout(function(){ updateScoreboard(gameid); }, 1000);
+			setTimeout(function(){ updateScoreboard(gameid); }, 2000);
 		}
 	);	
 }
@@ -150,7 +149,7 @@ function updateNews() {
 					pushNews(arr[i]);
 				};
 			}
-			setTimeout(function(){ updateNews(); }, 1000);
+			setTimeout(function(){ updateNews(); }, 2000);
 		}
 	);
 }

@@ -16,12 +16,21 @@ function createPageStatistics(gameid) {
 		+ '<div id="listStatistics"></div>');
 }
 
-function updateStatistics() {
+var tmp_gameid = 0;
+
+function updateStatistics(gameid) {
 
 	var ls = document.getElementById("listStatistics");
 	ls.innerHTML = "Loading...";
 
 	var params = fhqgui.filter.stats.getParams();
+
+	if (gameid) {
+		params.gameid = gameid;
+		tmp_gameid = gameid
+	} else {
+		params.gameid = tmp_gameid;
+	}
 	send_request_post(
 		'api/statistics/list.php',
 		createUrlFromObj(params),

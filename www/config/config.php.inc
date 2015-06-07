@@ -25,4 +25,8 @@
 	
 	// configure profile
 	$config['profile']['change_nick'] = 'yes';
+	
+	// playing with us show if value more then..
+	$config['public_info']['cities_more_than'] = 10;
+	$config['public_info']['cities_limit'] = 25;
 ?>

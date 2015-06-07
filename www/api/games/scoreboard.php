@@ -1,12 +1,10 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: Scoreboard
  * API_DESCRIPTION: Method will be returned scoreboard for game
  * API_ACCESS: all
- * API_INPUT: gameid - string, Identificator of the game (or will be used selected game)
+ * API_INPUT: gameid - string, Identificator of the game
+ * API_INPUT: token - guid, token
  */
 
 $curdir = dirname(__FILE__);
@@ -14,31 +12,27 @@ include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../../config/config.php");
 
-// APIHelpers::checkAuth();
+$response = APIHelpers::startpage($config);
 
 $message = '';
 
+if (!APIHelpers::issetParam('gameid'))
+	APIHelpers::showerror(1331, 'Parameter "gameid" does not found');
+
 $gameid = APIHelpers::getParam('gameid', 0);
 
-if (!APIHelpers::issetParam('gameid'))
-	$gameid = APIGame::id();
-
 if (!is_numeric($gameid))
-	APIHelpers::showerror(1088, 'parameter "gameid" must be numeric');
+	APIHelpers::showerror(1088, 'Parameter "gameid" must be numeric');
 
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
 
-$result['result'] = 'ok';
+$response['result'] = 'ok';
 
 // TODO: must be added filters
 $conn = APIHelpers::createConnection($config);
 
-$result['gameid'] = $gameid;
+$response['gameid'] = $gameid;
 
-$params[] = intval($gameid);
+$params[] = $gameid;
 
 $filter_by_role = APISecurity::isAdmin() == false ? ' AND u.role = "user" ' : '';
 
@@ -65,7 +59,7 @@ try {
 	$stmt->execute($params);
 	$i = 1;
 	$score = 0;
-	$result['data'] = array();
+	$response['data'] = array();
 	
 	while($row = $stmt->fetch())
 	{
@@ -78,8 +72,8 @@ try {
 			$score = $user_score;
 			$i++;
 		}
-		
-		$result['data'][$i][] = array(
+
+		$response['data'][$i][] = array(
 			'userid' => $row['userid'],
 			'nick' => htmlspecialchars($row['nick']),
 			'logo' => $row['logo'],
@@ -92,4 +86,4 @@ try {
 	APIHelpers::showerror(1089, $e->getMessage());
 }
 
-echo json_encode($result);
+APIHelpers::endpage($response);

@@ -3,13 +3,12 @@
  * API_NAME: Statistics List
  * API_DESCRIPTION: Method will be returned statistics info
  * API_ACCESS: authorized users
- * API_INPUT: token - guid, secret token
+ * API_INPUT: token - guid, token
  * API_INPUT: page - integer, number of page - need for pagging
  * API_INPUT: onpage - integer, records on page - need for pagging
  * API_INPUT: questid - integer, quest id
  * API_INPUT: questname - string, search by name or substring from quest name
  * API_INPUT: questsubject - string, look in types
- * API_INPUT: token - string, token
  */
 
 $curdir_statistics_list = dirname(__FILE__);
@@ -23,10 +22,13 @@ $response = APIHelpers::startpage($config);
 
 APIHelpers::checkAuth();
 
-$gameid = APIHelpers::getParam("gameid", APIGame::id());
+if (!APIHelpers::issetParam('gameid'))
+	APIHelpers::showerror(1330, 'Parameter "gameid" does not found');
+	
+$gameid = APIHelpers::getParam('gameid', 0);
 
 if (!is_numeric($gameid))
-	APIHelpers::showerror(1077, 'parameter "gameid" must be numeric');
+	APIHelpers::showerror(1077, 'Parameter "gameid" must be numeric');
 
 if ($gameid == 0)
 	APIHelpers::showerror(1076, "Parameter gameid must be not 0.");
