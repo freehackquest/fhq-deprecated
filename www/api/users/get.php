@@ -41,7 +41,7 @@ $bAllow = APISecurity::isAdmin() || APISecurity::isTester() || APISecurity::user
 $result['access']['edit'] = $bAllow;
 $result['currentUser'] = APISecurity::userid() == $userid;
 
-$columns = array('id', 'email', 'status', 'role', 'nick', 'logo');
+$columns = array('id', 'email', 'dt_last_login', 'uuid', 'status', 'role', 'nick', 'logo');
 
 $query = '
 		SELECT '.implode(', ', $columns).' FROM
@@ -60,7 +60,9 @@ try {
 		$result['data']['userid'] = $row['id'];
 		$result['data']['nick'] = $row['nick'];
 		$result['data']['logo'] = $row['logo'];
-		
+		$result['data']['uuid'] = $row['uuid'];
+		$result['data']['dt_last_login'] = $row['dt_last_login'];
+
 		if ($bAllow) {
 			 $result['data']['email'] = $row['email'];
 			 $result['data']['role'] = $row['role'];
