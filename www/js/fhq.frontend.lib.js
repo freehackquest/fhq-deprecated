@@ -201,8 +201,8 @@ function FHQFrontEndLib() {
 			var bRes = obj.result == "ok";
 			return bRes ? obj.data : obj.error;
 		};
-    // insert quest if you are admin
-    this.insert = function(quest_uuid, name, short_text, text, score, min_score, subject, idauthor, author, answer, state, description_state) {
+		// insert quest if you are admin
+		this.insert = function(quest_uuid, name, short_text, text, score, min_score, subject, idauthor, author, answer, state, description_state) {
 			var params = {};
 			params.quest_uuid = quest_uuid;
 			params.name = name;
@@ -220,8 +220,8 @@ function FHQFrontEndLib() {
 			var bRes = obj.result == "ok";
 			return bRes ? obj.data : obj.error;
 		};
-    // update quest info if you are admin
-    this.update = function(questid, name, short_text, text, score, min_score, subject, idauthor, author, answer, state, description_state) {
+		// update quest info if you are admin
+		this.update = function(questid, name, short_text, text, score, min_score, subject, idauthor, author, answer, state, description_state) {
 			var params = {};
 			params.questid = questid;
 			params.name = name;
@@ -239,8 +239,8 @@ function FHQFrontEndLib() {
 			var bRes = obj.result == "ok";
 			return bRes ? obj.data : obj.error;
 		};
-    // update quest info if you are admin
-    this.user_answers = function(questid) {
+		// update quest info if you are admin
+		this.user_answers = function(questid) {
 			var params = {};
 			params.questid = questid;
 			var obj = this.p.sendPostRequest_Sync('api/quests/user_answers.php', params);
@@ -327,8 +327,19 @@ function FHQFrontEndLib() {
 			this.fhq.sendPostRequest_Async('api/users/update_lasteventid.php', params, function(obj) {});
 			this.fhq.profile.lastEventId = id;
 		};
+		this.get = function(userid, callback) {
+			var obj = null;
+			var params = {};
+			params.userid = userid;
+			this.fhq.sendPostRequest_Async('api/users/get.php', params, callback);
+		}
+		this.skills = function(userid, callback) {
+			var obj = null;
+			var params = {};
+			params.userid = userid;
+			this.fhq.sendPostRequest_Async('api/statistics/skills.php', params, callback);
+		}
 	})(this);
-
 
 	this.statistics = new (function(t) {
 		this.p = t;

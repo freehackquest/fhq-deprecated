@@ -7,7 +7,8 @@
  * API_INPUT: page - integer, number of page - need for pagging
  * API_INPUT: onpage - integer, records on page - need for pagging
  * API_INPUT: questsubject - string, look in types
- * API_INPUT: username - string, filter by user nick
+ * API_INPUT: user - string, filter by user nick
+ * API_INPUT: userid - integer, filter by userid
  * API_INPUT: token - string, token
  */
 
@@ -115,6 +116,11 @@ $filter_user_values[] = 'activated';
 if (APIHelpers::issetParam('user')) {
 	$filter_user_where[] = 'u.nick LIKE ?';
 	$filter_user_values[] = '%'.APIHelpers::getParam('user', '').'%';
+}
+
+if (APIHelpers::issetParam('userid')) {
+	$filter_user_where[] = 'u.id = ?';
+	$filter_user_values[] = intval(APIHelpers::getParam('userid', '0'));
 }
 
 $where = implode(' AND ', $filter_where);

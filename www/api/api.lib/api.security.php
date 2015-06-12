@@ -95,7 +95,7 @@ class APISecurity {
 	
 	static function nick() { 
 		if (APIHelpers::$FHQSESSION != NULL && APISecurity::isLogged()) {
-			return isset(APIHelpers::$FHQSESSION['user']['nick']) ? $FHQSESSION['user']['nick'] : '';
+			return isset(APIHelpers::$FHQSESSION['user']['nick']) ? APIHelpers::$FHQSESSION['user']['nick'] : '';
 		}
 		return (APISecurity::isLogged()) ? $_SESSION['user']['nick'] : ''; 
 	}

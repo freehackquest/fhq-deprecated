@@ -385,14 +385,108 @@ function FHQGuiLib() {
   
 	this.processParams = function() {
 		var questid = this.getUrlParameterByName("questid");
+		var userid = this.getUrlParameterByName("userid");
 		if (questid) {
 			showQuest(questid);
+		} else if (userid) {
+			this.showFullUserProfile(userid);
 		};
+		// else 
 	}
 
 	this.openQuestInNewTab = function(questid) {
 		var win = window.open('?questid=' + questid, '_blank');
 		win.focus();
+	}
+
+	this.openUserInNewTab = function(userid) {
+		var win = window.open('?userid=' + userid, '_blank');
+		win.focus();
+	}
+
+	this.showFullUserProfile = function(userid) {
+		var content = '';
+		content += '<div class="fhquser_table">';
+		content += '<div class="fhquser_row">';
+		content += '<div class="fhquser_nick" id="user_baseinfo">?</div>';
+		content += '</div>';
+		
+		content += '<div class="fhquser_row_skip"></div>';
+		
+		content += '<div class="fhquser_row">';
+		content += '<div class="fhquser_logo"><img width="100px" height="100px" src="files/users/0.png" id="user_logo" align="left"></img></div>';
+		content += '<div class="fhquser_info">';
+		content += '<div class="fhquser_nick" id="user_nick">[team] usernick</div><br>';
+		content += '<div class="fhquser_county" id="user_county">country ? </div><br>';
+		content += '<div class="fhquser_county" id="user_city">city ? </div><br>';
+		content += '<div class="fhquser_county" id="user_university">university ? </div><br>';
+		content += '<div class="fhquser_county" id="user_email"></div><br>';
+		content += '</div>';
+		
+		content += '<div class="fhquser_row_skip"></div>';
+		
+		content += '<div class="fhquser_row" id="user_games"></div>';
+		content += '<div class="fhquser_row_skip"></div>';
+		content += '<div class="fhquser_row" id="user_skills"></div>';
+		
+		content += '<div class="fhquser_row_skip"></div>';
+		content += '</div>';
+		content += '</div>';
+		
+		var cp = new FHQContentPage();
+		cp.clear();
+		cp.append(content);
+		
+		// info
+		fhq.users.get(userid, function(obj) {
+			document.getElementById("user_baseinfo").innerHTML = obj.data.status + ' ' + obj.data.role + ' #' + obj.data.userid + '<br>'
+			 // + 'UUID: ' + obj.data.uuid + '<br>'
+			 + 'Last visit: ' + obj.data.dt_last_login;
+			document.getElementById("user_nick").innerHTML = obj.data.nick;
+			document.getElementById("user_logo").src = obj.data.logo;
+			document.getElementById("user_county").innerHTML = obj.profile.country;
+			document.getElementById("user_city").innerHTML = obj.profile.city;
+			document.getElementById("user_university").innerHTML = obj.profile.university;
+
+			if (obj.data.email) {
+				document.getElementById("user_email").innerHTML = obj.data.email;
+			}
+			
+			
+			for (var k in obj.games) {
+				document.getElementById("user_games").innerHTML += 'Game "' + obj.games[k].title + '" (' + obj.games[k].type_game + '): ' + obj.games[k].score + " / " + obj.games[k].maxscore
+					+ "<br>";
+			}
+			// cp.append('<div>' + JSON.stringify(obj) + '</div>');
+		});
+		
+		// skills
+		fhq.users.skills(userid, function(obj) {
+			
+			document.getElementById("user_skills").innerHTML = '<canvas id="skill' + userid + '" width="450" height="170"></canvas>';
+			// document.getElementById("user_skills").innerHTML += '<br>' + JSON.stringify(obj);
+
+			var ctx = document.getElementById('skill' + userid).getContext("2d");
+			ctx.font = "12px Arial";
+			ctx.fillStyle = "#CCC";
+			ctx.strokeStyle = "#CCC";
+
+			var y = 10;
+			for (var sub in obj.data.skills[userid].subjects) {
+				// data.labels.push(sub);
+				var max = obj.data.skills[userid].subjects[sub].max;
+				var score = obj.data.skills[userid].subjects[sub].score;
+				var percent = 0;
+				if (max != 0) {
+					percent = Math.round((score/max)*100);
+				}
+				ctx.fillText(sub, 10, y);
+				ctx.fillText('' + percent + '% ', 80, y);
+				ctx.strokeRect(120, y-9, 200, 8);
+				ctx.fillRect (120, y-9, percent*2, 9);
+				y += 12;
+			}
+		});	
 	}
 
 	this.makeSystemPanel = function() {

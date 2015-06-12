@@ -1,7 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: Get user info
  * API_DESCRIPTION: Method returned user info
@@ -10,19 +7,16 @@ header('Content-Type: application/json');
  * API_OKRESPONSE: { "result":"ok" }
  */
 
-$curdir = dirname(__FILE__);
-include_once ($curdir."/../api.lib/api.base.php");
-include_once ($curdir."/../api.lib/api.game.php");
-include_once ($curdir."/../../config/config.php");
+$curdir_users_get = dirname(__FILE__);
+include_once ($curdir_users_get."/../api.lib/api.base.php");
+include_once ($curdir_users_get."/../api.lib/api.game.php");
+include_once ($curdir_users_get."/../../config/config.php");
 
+$response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
 
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-	'profile' => array(),
-	'access' => array(),
-);
+$response['profile'] = array();
+$response['access'] = array();
 
 $conn = APIHelpers::createConnection($config);
 
@@ -38,10 +32,10 @@ $userid = intval($userid);
 
 $bAllow = APISecurity::isAdmin() || APISecurity::isTester() || APISecurity::userid() == $userid;
 
-$result['access']['edit'] = $bAllow;
-$result['currentUser'] = APISecurity::userid() == $userid;
+$response['access']['edit'] = $bAllow;
+$response['currentUser'] = APISecurity::userid() == $userid;
 
-$columns = array('id', 'email', 'status', 'role', 'nick', 'logo');
+$columns = array('id', 'email', 'dt_last_login', 'uuid', 'status', 'role', 'nick', 'logo');
 
 $query = '
 		SELECT '.implode(', ', $columns).' FROM
@@ -57,17 +51,19 @@ try {
 	$stmt->execute(array($userid));
 	if ($row = $stmt->fetch())
 	{
-		$result['data']['userid'] = $row['id'];
-		$result['data']['nick'] = $row['nick'];
-		$result['data']['logo'] = $row['logo'];
-		
+		$response['data']['userid'] = $row['id'];
+		$response['data']['nick'] = $row['nick'];
+		$response['data']['logo'] = $row['logo'];
+		$response['data']['uuid'] = $row['uuid'];
+		$response['data']['dt_last_login'] = $row['dt_last_login'];
+
 		if ($bAllow) {
-			 $result['data']['email'] = $row['email'];
-			 $result['data']['role'] = $row['role'];
-			 $result['data']['status'] = $row['status'];
+			 $response['data']['email'] = $row['email'];
+			 $response['data']['role'] = $row['role'];
+			 $response['data']['status'] = $row['status'];
 		}
 	}
-	$result['result'] = 'ok';
+	$response['result'] = 'ok';
 } catch(PDOException $e) {
 	APIHelpers::showerror(1184, $e->getMessage());
 }
@@ -78,7 +74,7 @@ try {
 	$stmt->execute(array($userid));
 	while ($row = $stmt->fetch())
 	{
-		$result['profile'][$row['name']] = $row['value'];
+		$response['profile'][$row['name']] = $row['value'];
 	}
 } catch(PDOException $e) {
 	APIHelpers::showerror(1183, $e->getMessage());
@@ -86,13 +82,25 @@ try {
 
 // users_games
 try {
-	$stmt = $conn->prepare('SELECT games.title, games.type_game, users_games.score FROM users_games INNER JOIN games ON users_games.gameid = games.id WHERE users_games.userid = ?');
+	$stmt = $conn->prepare('
+		SELECT
+			g.maxscore,
+			g.logo,
+			g.title,
+			g.type_game,
+			ug.score
+		FROM users_games ug
+		INNER JOIN games g ON ug.gameid = g.id
+		WHERE ug.userid = ?
+	');
 	$stmt->execute(array($userid));
 	while ($row = $stmt->fetch())
 	{
-		$result['games'][] = array(
+		$response['games'][] = array(
 			'title' => $row['title'],
 			'type_game' => $row['type_game'],
+			'maxscore' => $row['maxscore'],
+			'logo' => $row['logo'],
 			'score' => $row['score'],
 		);
 	}
@@ -100,4 +108,4 @@ try {
 	APIHelpers::showerror(1182, $e->getMessage());
 }
 
-echo json_encode($result);
+APIHelpers::endpage($response);
