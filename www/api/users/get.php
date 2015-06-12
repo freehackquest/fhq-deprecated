@@ -88,13 +88,25 @@ try {
 
 // users_games
 try {
-	$stmt = $conn->prepare('SELECT games.title, games.type_game, users_games.score FROM users_games INNER JOIN games ON users_games.gameid = games.id WHERE users_games.userid = ?');
+	$stmt = $conn->prepare('
+		SELECT
+			g.maxscore,
+			g.logo,
+			g.title,
+			g.type_game,
+			ug.score
+		FROM users_games ug
+		INNER JOIN games g ON ug.gameid = g.id
+		WHERE ug.userid = ?
+	');
 	$stmt->execute(array($userid));
 	while ($row = $stmt->fetch())
 	{
 		$result['games'][] = array(
 			'title' => $row['title'],
 			'type_game' => $row['type_game'],
+			'maxscore' => $row['maxscore'],
+			'logo' => $row['logo'],
 			'score' => $row['score'],
 		);
 	}
