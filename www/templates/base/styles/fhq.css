@@ -201,4 +201,44 @@ textarea {
 	font-size: 12pt;
 }
 
+.fhquser_table {
+	padding: 10px 10px 10px 10px;
+	display: table;
+}
+
+.fhquser_row {
+	display: table-row;
+}
+
+.fhquser_row_skip {
+	display: table-row;
+	height: 10px;
+}
+
+.fhquser_logo {
+	font-size: 12pt;
+	display: inline-block;
+	margin: 0px 0px 0px 0px;
+	float: left;
+}
+
+.fhquser_info {
+	font-size: 12pt;
+	display: inline-block;
+	margin: 0px 0px 0px 0px;
+}
+
+.fhquser_nick {
+	font-size: 14pt;
+	display: inline-block;
+	margin: 5px 5px 5px 0px;
+}
+
+.fhquser_county {
+	font-size: 11pt;
+	display: inline-block;
+	margin: 0px 0px 0px 10px;
+	display: inline-block;
+}
+
 

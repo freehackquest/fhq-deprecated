@@ -234,11 +234,12 @@ function showUserInfo(id) {
 					pt.row('Profile "' + k + '":', obj.profile[k]);
 				}
 			}
-
 			pt.skip();
 			for (var k in obj.games) {
 				pt.row('Game "' + obj.games[k].title + '" (' + obj.games[k].type_game + '):', obj.games[k].score);
 			}
+			pt.skip();
+			pt.row('', fhqgui.btn('Open in New Tab', 'fhqgui.openUserInNewTab(' + obj.data.userid + ');'));
 			pt.skip();
 			ui.innerHTML = pt.render();
 			// ui.innerHTML += JSON.stringify(obj);
