@@ -269,7 +269,7 @@ function showUserIP(id) {
 			var content = '<pre>';
 
 			for (var k in obj.data) {
-				content += obj.data[k].date + '\t'+ obj.data[k].ip + ' (' + obj.data[k].country + ', ' + obj.data[k].city + ') \t' + obj.data[k].browser + '\n';
+				content += obj.data[k].date + '\t'+ obj.data[k].ip + ' (' + obj.data[k].country + ', ' + obj.data[k].city + ')\n';
 			}
 			
 			// content += JSON.stringify(obj);
