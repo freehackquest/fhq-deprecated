@@ -1,6 +1,3 @@
-body {
-  font: 16px Arial;
-}
 .userpanel {
   position: absolute;
   height: 400px;
@@ -71,11 +68,11 @@ body {
   font-size: 29px;
   cursor: default;
 }
-.bg {
-  z-index: -1;
-  position: absolute;
-  background: url("bg.png");
-  background-size: cover;
-  height: 400px;
-  width: 500px;
+.gamespanel__game p:before,
+.gamespanel__game p:after {
+  content: '%';
+  font-size: 10px;
+}
+.gamespanel__game p:before {
+  color: rgba(0,0,0,0);
 }

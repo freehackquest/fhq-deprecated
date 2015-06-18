@@ -1,5 +1,5 @@
-body
-	font 16px Arial
+// body
+// 	font 16px Arial
 
 .userpanel
 	position absolute
@@ -70,13 +70,19 @@ body
 		p
 			font-size 29px
 			cursor default
+			&:before,
+			&:after
+				content '%'
+				font-size 10px
+			&:before
+				color rgba(0,0,0,0)
 
 
-.bg
-	// display none
-	z-index -1
-	position absolute
-	background url(bg.png)
-	background-size cover
-	height 400px
-	width 500px
+// .bg
+// 	// display none
+// 	z-index -1
+// 	position absolute
+// 	background url(bg.png)
+// 	background-size cover
+// 	height 400px
+// 	width 500px

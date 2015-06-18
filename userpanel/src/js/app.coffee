@@ -1,5 +1,5 @@
-ProgressBar = require 'progressbar.js'
-$ = require 'jquery'
+# ProgressBar = require 'progressbar.js'
+# $ = require 'jquery'
 
 gameWidth = 415 / 4
 $games = $('.gamespanel__games')
@@ -7,11 +7,11 @@ $games.css 'left', 0
 
 $('.gamespanel__arrow--left').click ->
 	left = Math.min(0, parseFloat($games.css 'left') + gameWidth * 3)
-	$games.animate 'left': left, 400
+	$games.stop().animate 'left': left, 400
 
 $('.gamespanel__arrow--right').click ->
 	left = Math.max(-gameWidth * $games.length, parseFloat($games.css 'left') - gameWidth * 3)
-	$games.animate 'left': left, 400
+	$games.stop().animate 'left': left, 400
 
 
 for element in document.getElementsByClassName('gamespanel__game')

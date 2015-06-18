@@ -15,6 +15,9 @@ sourcemaps = require 'gulp-sourcemaps'
 rename = require 'gulp-rename'
 plumber = require 'gulp-plumber'
 
+streamify = require 'gulp-streamify'
+uglify = require 'gulp-uglify'
+
 # production = false
 # or you can get it with yargs or another the simular thing
 args = require('yargs').argv
@@ -28,36 +31,38 @@ paths =
 
 gulp.task 'watch', ['browser-sync', 'watchjs', 'watchstylus']
 
-gulp.task 'default', ['browserify']
+gulp.task 'default', ['browserify', 'stylus']
 
 buildScript = (files, watch) ->
   rebundle = (callback) ->
     stream = bundler.bundle()
     stream
-      .on 'error', notify.onError         # optional (for gulp-notify)
-        title: 'Compile Error'            #
+      .on "error", notify.onError         # optional (for gulp-notify)
+        title: "Compile Error"            #
         message: "<%= error.message %>"   #
       .pipe source paths.output
+      .pipe gulpif production, streamify do uglify # optional (for gulp-uglify)
+      .pipe gulpif production, rename (path) -> path.basename += '.min'
       .pipe gulp.dest paths.dest
       .pipe sync.reload stream: true      # optional (for browser-sync)
 
     stream.on 'end', ->
-      do callback if typeof callback is 'function'
+      do callback if typeof callback == "function"
 
   props = watchify.args
   props.entries = files
   props.debug = not production
 
   bundler = if watch then watchify(browserify props) else browserify props
-  bundler.transform 'coffee-reactify' # 'coffeeify' or whatever or comment it
-  bundler.on 'update', ->
+  bundler.transform "coffee-reactify" # "coffeeify" or whatever or comment it
+  bundler.on "update", ->
     now = new Date().toTimeString()[..7]
-    console.log "[#{now}] Starting #{"'browserify'"}..."
+    console.log "[#{now.gray}] Starting #{"'browserify'".cyan}..."
     startTime = new Date().getTime()
     rebundle ->
       time = (new Date().getTime() - startTime) / 1000
       now = new Date().toTimeString()[..7]
-      console.log "[#{now}] Finished #{"'browserify'"} after #{(time + 's')}"
+      console.log "[#{now.gray}] Finished #{"'browserify'".cyan} after #{(time + 's').magenta}"
 
   rebundle()
 
@@ -90,6 +95,7 @@ gulp.task 'stylus', ->
     .pipe gulpif production, cmq()
     .pipe autoprefixer browsers: ['last 2 version', '> 1%']
     .pipe gulpif production, cssmin()
+    .pipe gulpif production, rename (path) -> path.basename += '.min'
     .pipe gulp.dest paths.dest
     .pipe sync.reload stream: true
 
