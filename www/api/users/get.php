@@ -84,11 +84,11 @@ try {
 try {
 	$stmt = $conn->prepare('
 		SELECT
-			g.maxscore,
+			g.maxscore as game_maxscore,
 			g.logo,
 			g.title,
 			g.type_game,
-			ug.score
+			ug.score as user_score
 		FROM users_games ug
 		INNER JOIN games g ON ug.gameid = g.id
 		WHERE ug.userid = ?
@@ -99,9 +99,9 @@ try {
 		$response['games'][] = array(
 			'title' => $row['title'],
 			'type_game' => $row['type_game'],
-			'maxscore' => $row['maxscore'],
+			'maxscore' => $row['game_maxscore'],
 			'logo' => $row['logo'],
-			'score' => $row['score'],
+			'score' => $row['user_score'],
 		);
 	}
 } catch(PDOException $e) {
