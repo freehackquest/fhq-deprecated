@@ -17,15 +17,11 @@ include_once ($curdir."/../api.lib/api.security.php");
 include_once ($curdir."/../api.lib/api.helpers.php");
 include_once ($curdir."/../../config/config.php");
 
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
-
+$response = APIHelpers::startpage($config);
 $conn = APIHelpers::createConnection($config);
 
-$params = [];
-$where = [];
+$params = array();
+$where = array();
 
 $id = APIHelpers::getParam('id', -1);
 if ($id != -1) {
@@ -36,7 +32,7 @@ if ($id != -1) {
 }
 
 $search = APIHelpers::getParam('search', '');
-$result['data']['search'] = $search;
+$response['data']['search'] = $search;
 $search = '%'.$search.'%';
 
 $where[] = 'message like ?';
@@ -45,11 +41,11 @@ $params[] = $search;
 
 $page = APIHelpers::getParam('page', 0);
 $page = intval($page);
-$result['data']['page'] = $page;
+$response['data']['page'] = $page;
 
 $onpage = APIHelpers::getParam('onpage', 5);
 $onpage = intval($onpage);
-$result['data']['onpage'] = $onpage;
+$response['data']['onpage'] = $onpage;
 
 $start = $page * $onpage;
 
@@ -69,7 +65,7 @@ try {
 	$stmt = $conn->prepare($query);
 	$stmt->execute($params);
 	if($row = $stmt->fetch())
-		$result['data']['found'] = $row['cnt'];
+		$response['data']['found'] = $row['cnt'];
 } catch(PDOException $e) {
 	APIHelpers::showerror(1185, $e->getMessage());
 }
@@ -86,26 +82,26 @@ try {
 
 	$bAdmin = APISecurity::isAdmin();
 
-	$result['result'] = 'ok';
-	$result['access'] = $bAdmin;
-	$result['data']['maxid'] = -1;
+	$response['result'] = 'ok';
+	$response['access'] = $bAdmin;
+	$response['data']['maxid'] = -1;
 	$new_id = $id;
-	$result['data']['events'] = array();
+	$response['data']['events'] = array();
 	while($row = $stmt->fetch())
 	{
 		if ($row['id'] > $new_id) {
 			$new_id = $row['id'];
 		}
-		$result['data']['events'][] = array(
+		$response['data']['events'][] = array(
 			'id' => $row['id'],
 			'type' => $row['type'],
 			'message' => $row['message'],
 			'dt' => $row['dt'],
 		);
 	}
-	$result['data']['maxid'] = $new_id;
+	$response['data']['maxid'] = $new_id;
 } catch(PDOException $e) {
 	APIHelpers::showerror(1229, $e->getMessage());
 }
 
-echo json_encode($result);
+APIHelpers::endpage($response);

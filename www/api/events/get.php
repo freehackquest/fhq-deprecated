@@ -1,7 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: Get event
  * API_DESCRIPTION: Method for get event info
@@ -9,21 +6,17 @@ header('Content-Type: application/json');
  * API_INPUT: id - integer, id of event
  */
 
-$curdir = dirname(__FILE__);
-include_once ($curdir."/../api.lib/api.base.php");
-include_once ($curdir."/../api.lib/api.security.php");
-include_once ($curdir."/../api.lib/api.helpers.php");
-include_once ($curdir."/../../config/config.php");
+$curdir_events_get = dirname(__FILE__);
+include_once ($curdir_events_get."/../api.lib/api.base.php");
+include_once ($curdir_events_get."/../api.lib/api.security.php");
+include_once ($curdir_events_get."/../api.lib/api.helpers.php");
+include_once ($curdir_events_get."/../../config/config.php");
 
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
-
+$response = APIHelpers::startpage($config);
 $conn = APIHelpers::createConnection($config);
 
-$params = [];
-$where = [];
+$params = array();
+$where = array();
 
 if (!APIHelpers::issetParam('id'))
   APIHelpers::showerror(1220, 'not found parameter id');
@@ -40,11 +33,10 @@ try {
  	$stmt->execute(array(intval($id)));
  	
  	if ($row = $stmt->fetch()) {
-		$result['result'] = 'ok';
-		$result['data']['id'] = $row['id'];
-		$result['data']['type'] = htmlspecialchars($row['type']);
-		$result['data']['message'] = htmlspecialchars($row['message']);
-		
+		$response['result'] = 'ok';
+		$response['data']['id'] = $row['id'];
+		$response['data']['type'] = htmlspecialchars($row['type']);
+		$response['data']['message'] = htmlspecialchars($row['message']);
 	} else {
 		APIHelpers::showerror(1222, 'not found event with this id');
 	}
@@ -52,4 +44,4 @@ try {
  	APIHelpers::showerror(1223, $e->getMessage());
 }
 
-echo json_encode($result);
+APIHelpers::endpage($response);

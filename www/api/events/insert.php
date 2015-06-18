@@ -1,7 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: Insert event
  * API_DESCRIPTION: Method for insert event
@@ -16,13 +13,8 @@ include_once ($curdir_events_insert."/../api.lib/api.helpers.php");
 include_once ($curdir_events_insert."/../../config/config.php");
 include_once ($curdir_events_insert."/../api.lib/api.base.php");
 
-include_once ($curdir_events_insert."/../api.lib/loadtoken.php");
+$response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
-
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
 
 if(!APISecurity::isAdmin())
   APIHelpers::showerror(1230, 'access denie. you must be admin.');
@@ -41,6 +33,6 @@ if (strlen($message) <= 3)
 
 $conn = APIHelpers::createConnection($config);
 APIEvents::addPublicEvents($conn, $type, $message);
-$result['result'] = 'ok';
+$response['result'] = 'ok';
 
-echo json_encode($result);
+APIHelpers::endpage($response);
