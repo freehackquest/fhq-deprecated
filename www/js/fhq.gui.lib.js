@@ -462,7 +462,7 @@ function FHQGuiLib() {
 			
 			for (var k in obj.games) {
 				var nProgress = Math.floor((obj.games[k].score * 100) / obj.games[k].maxscore);
-				alert(obj.games[k].score + ' / ' + obj.games[k].maxscore + ' = ' + nProgress + '%');
+				// alert(obj.games[k].score + ' / ' + obj.games[k].maxscore + ' = ' + nProgress + '%');
 				document.getElementById("user_games").innerHTML += '\<div title="' + obj.games[k].title + '" data-progress="' + nProgress + '" style="background-image: url(' + obj.games[k].logo + ')" class="gamespanel__game"></div>';
 				// document.getElementById("user_games").innerHTML += 'Game "' +  + '" (' + obj.games[k].type_game + '): ' + obj.games[k].score + " / " + obj.games[k].maxscore
 				//	+ "<br>";
@@ -718,8 +718,7 @@ function FHQGuiLib() {
 		this.setFilter('dumps');
 		alert('todo');
 	}
-	
-	
+
 	this.resetEventsPage = function() {
 		this.filter.events.page = 0;
 	}
