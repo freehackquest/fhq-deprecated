@@ -1,6 +1,4 @@
 <?php
-$curdir_statistics_list = dirname(__FILE__);
-
 /*
  * API_NAME: Feedback List
  * API_DESCRIPTION: Method will be list feedbacks and feedback messages to them.
@@ -11,48 +9,37 @@ $curdir_statistics_list = dirname(__FILE__);
  * API_INPUT: token - string, token
  */
 
+$curdir_statistics_list = dirname(__FILE__);
 include_once ($curdir_statistics_list."/../api.lib/api.base.php");
 include_once ($curdir_statistics_list."/../api.lib/api.security.php");
 include_once ($curdir_statistics_list."/../api.lib/api.helpers.php");
 include_once ($curdir_statistics_list."/../api.lib/api.game.php");
 include_once ($curdir_statistics_list."/../../config/config.php");
 
-APIHelpers::startpage($config);
-/*
-	$conn = null;
-	$session = null;
-*/
-include_once ($curdir_statistics_list."/../api.lib/loadtoken.php");
-
+$response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
-
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
-
 
 // page
 $page = APIHelpers::getParam('page', 0);
 if (!is_numeric($page))
 	APIHelpers::showerror(1234, 'parameter "page" must be numeric');
-$result['data']['page'] = intval($page);
+$response['data']['page'] = intval($page);
 
 // onpage
 $onpage = APIHelpers::getParam('onpage', 25);
 if (!is_numeric($onpage))
 	APIHelpers::showerror(1235, 'parameter "onpage" must be numeric');
-$result['data']['onpage'] = intval($onpage);
+$response['data']['onpage'] = intval($onpage);
 
-$filter_where = [];
-$filter_values = [];
+$filter_where = array();
+$filter_values = array();
 
 if (!APISecurity::isAdmin()) {
 	$filter_where[] = 'fb.userid = ?';
 	$filter_values[] = APISecurity::userid();
 }
 
-$result['access'] = APISecurity::isAdmin();
+$response['access'] = APISecurity::isAdmin();
 
 $where = '';
 if (count($filter_where) > 0) {
@@ -61,7 +48,7 @@ if (count($filter_where) > 0) {
 
 $conn = APIHelpers::createConnection($config);
 
-$result['result'] = 'ok';
+$response['result'] = 'ok';
 
 // count feedback
 try {
@@ -75,7 +62,7 @@ try {
 	');
 	$stmt->execute($filter_values);
 	if($row = $stmt->fetch()) {
-		$result['data']['count'] = $row['cnt'];
+		$response['data']['count'] = $row['cnt'];
 	}
 } catch(PDOException $e) {
 	APIHelpers::showerror(1236, $e->getMessage());
@@ -101,12 +88,12 @@ try {
 			LIMIT '.($page*$onpage).','.$onpage.'
 	');
 	$stmt->execute($filter_values);
-	$result['data']['feedback'] = array();
+	$response['data']['feedback'] = array();
 	$id = -1;
 	while ($row = $stmt->fetch()) {
 		$id++;
 		$feedbackid = $row['id'];
-		$result['data']['feedback'][$id] = array(
+		$response['data']['feedback'][$id] = array(
 			'id' => $row['id'],
 			'type' => htmlspecialchars($row['type']),
 			'text' => htmlspecialchars($row['text']),
@@ -139,7 +126,7 @@ try {
 		$stmt_messages->execute(array($feedbackid));
 	
 		while ($row_message = $stmt_messages->fetch()) {
-			$result['data']['feedback'][$id]['messages'][] = array(
+			$response['data']['feedback'][$id]['messages'][] = array(
 				'id' => htmlspecialchars($row_message['id']),
 				'feedbackid' => htmlspecialchars($row_message['feedbackid']),
 				'userid' => $row_message['userid'],
@@ -155,7 +142,4 @@ try {
 	APIHelpers::showerror(1238, $e->getMessage());
 }
 
-// not needed here
-// include_once ($curdir."/../api.lib/savetoken.php");
-
-APIHelpers::endpage($result);
+APIHelpers::endpage($response);

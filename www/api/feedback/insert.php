@@ -1,6 +1,4 @@
 <?php
-$curdir_feedback_insert = dirname(__FILE__);
-
 /*
  * API_NAME: Feedback Insert
  * API_DESCRIPTION: Method will be add feedback
@@ -9,20 +7,16 @@ $curdir_feedback_insert = dirname(__FILE__);
  * API_INPUT: text - string, text message
  * API_INPUT: token - string, token
  */
-
+ 
+$curdir_feedback_insert = dirname(__FILE__);
 include_once ($curdir_feedback_insert."/../api.lib/api.helpers.php");
-include_once ($curdir_feedback_insert."/../../config/config.php");
+include_once (dirname(__FILE__)."/../../config/config.php");
 include_once ($curdir_feedback_insert."/../api.lib/api.base.php");
 
-APIHelpers::startpage($config);
-
-// include_once ($curdir_events_insert."/../api.lib/loadtoken.php");
+$response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
 
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
+$conn = APIHelpers::createConnection($config);
 
 if (!APIHelpers::issetParam('type'))
   APIHelpers::showerror(1237, 'not found parameter type');
@@ -36,15 +30,13 @@ $text = APIHelpers::getParam('text', '');
 if (strlen($text) <= 3)
   APIHelpers::showerror(1239, 'text must be informative! (more than 3 character)');
 
-$conn = APIHelpers::createConnection($config);
-
 try {
 	// TODO send mail to admin
 
 	$stmt = $conn->prepare('INSERT INTO feedback(type, text, userid, dt) VALUES(?,?,?,NOW());');
 	if($stmt->execute(array($type, $text, APISecurity::userid()))) {
-		$result['data']['feedback']['id'] = $conn->lastInsertId();
-		$result['result'] = 'ok';
+		$response['data']['feedback']['id'] = $conn->lastInsertId();
+		$response['result'] = 'ok';
 	} else {
 		APIHelpers::showerror(1240,'Could not insert. PDO: '.$conn->errorInfo());
 	}
@@ -52,4 +44,4 @@ try {
 	APIHelpers::showerror(1241,$e->getMessage());
 }
 
-echo json_encode($result);
+APIHelpers::endpage($response);
