@@ -1,13 +1,35 @@
 // body
 // 	font 16px Arial
 
+//////////////////////
+/////// reset ////////
+//////////////////////
+
+.fhqbody .userpanel
+	text-align left
+
+div.gamespanel__game,
+div.gamespanel__arrow
+	margin 0
+	float none
+	min-height auto
+
+.gamespanel svg,
+.gamespanel__games,
+.gamespanel__gameswrap
+	margin-left 0
+
+//////////////////////
+//////////////////////
+
 .userpanel
-	position absolute
+	// position absolute
 	height 400px
 	width 500px
 	border 2px solid #424e4b
 	border-radius 5px
 	background-color #fbfbfb
+	margin auto
 
 	&__photo
 		float left
@@ -30,7 +52,7 @@
 
 	&__games
 		height 100px
-		margin auto
+		margin-left 18px
 		margin-top 30px
 
 
@@ -56,7 +78,7 @@
 		height 100px
 		white-space nowrap
 
-	&__game
+	div&__game
 		display inline-block
 		background-size cover
 		width 100px
