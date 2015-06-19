@@ -1,10 +1,24 @@
+.fhqbody .userpanel {
+  text-align: left;
+}
+div.gamespanel__game,
+div.gamespanel__arrow {
+  margin: 0;
+  float: none;
+  min-height: auto;
+}
+.gamespanel svg,
+.gamespanel__games,
+.gamespanel__gameswrap {
+  margin-left: 0;
+}
 .userpanel {
-  position: absolute;
   height: 400px;
   width: 500px;
   border: 2px solid #424e4b;
   border-radius: 5px;
   background-color: #fbfbfb;
+  margin: auto;
 }
 .userpanel__photo {
   float: left;
@@ -27,7 +41,7 @@
 }
 .userpanel__games {
   height: 100px;
-  margin: auto;
+  margin-left: 18px;
   margin-top: 30px;
 }
 .gamespanel {
@@ -52,7 +66,7 @@
   height: 100px;
   white-space: nowrap;
 }
-.gamespanel__game {
+div.gamespanel__game {
   display: inline-block;
   background-size: cover;
   width: 100px;
@@ -61,18 +75,18 @@
   margin: 0 2px;
   border-radius: 50%;
 }
-.gamespanel__game svg {
+div.gamespanel__game svg {
   cursor: default;
 }
-.gamespanel__game p {
+div.gamespanel__game p {
   font-size: 29px;
   cursor: default;
 }
-.gamespanel__game p:before,
-.gamespanel__game p:after {
+div.gamespanel__game p:before,
+div.gamespanel__game p:after {
   content: '%';
   font-size: 10px;
 }
-.gamespanel__game p:before {
+div.gamespanel__game p:before {
   color: rgba(0,0,0,0);
 }
