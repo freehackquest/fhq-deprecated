@@ -53,8 +53,8 @@ if (!is_numeric($onpage))
 $response['data']['onpage'] = intval($onpage);
 
 
-$filter_where = [];
-$filter_values = [];
+$filter_where = array();
+$filter_values = array();
 
 // userid
 $userid = APIHelpers::getParam('userid', 'ff');
