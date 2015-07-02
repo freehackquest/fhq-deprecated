@@ -53,3 +53,6 @@ Ilya Bokov,
 Extrim Code,
 Taisiya Lebedeva
 <br>
+
+<h2>donate</h2>
+<a href="donate.html">form for donate</a><br>
