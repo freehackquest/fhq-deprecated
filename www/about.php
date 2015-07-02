@@ -30,6 +30,9 @@ Evgenii Sopov<br>
 <a href="http://github.com/sea-kg/fhq">main</a>,
 <a href="http://gitlab.keva.su/keva/kevactfplatform">fork</a>, 
 
+<h2>team</h2>
+<a href="https://ctftime.org/team/16804">ctftime</a>
+
 <h2>contacts</h2>
 <a href="http://vk.com/freehackquest" target="_ablank"><img width=30px src="templates/base/images/vk_b.png"/></a>
 <a href="https://twitter.com/freehackquest" target="_ablank"><img width=30px src="templates/base/images/MB_0026_twitter3.png"/></a>

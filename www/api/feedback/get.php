@@ -1,6 +1,4 @@
 <?php
-$curdir_statistics_list = dirname(__FILE__);
-
 /*
  * API_NAME: Get Feedback Info
  * API_DESCRIPTION: Method will be returned id, type and text - need for editing
@@ -9,25 +7,19 @@ $curdir_statistics_list = dirname(__FILE__);
  * API_INPUT: token - string, token
  */
 
-include_once ($curdir_statistics_list."/../api.lib/api.base.php");
-include_once ($curdir_statistics_list."/../api.lib/api.security.php");
-include_once ($curdir_statistics_list."/../api.lib/api.helpers.php");
-include_once ($curdir_statistics_list."/../api.lib/api.game.php");
-include_once ($curdir_statistics_list."/../../config/config.php");
+$curdir_feedback_get = dirname(__FILE__);
+include_once ($curdir_feedback_get."/../api.lib/api.base.php");
+include_once ($curdir_feedback_get."/../api.lib/api.security.php");
+include_once ($curdir_feedback_get."/../api.lib/api.helpers.php");
+include_once ($curdir_feedback_get."/../api.lib/api.game.php");
+include_once ($curdir_feedback_get."/../../config/config.php");
 
-APIHelpers::startpage($config);
-include_once ($curdir_statistics_list."/../api.lib/loadtoken.php");
-
+$response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
 
 if(!APISecurity::isAdmin())
   APIHelpers::showerror(1265, 'access denie. you must be admin.');
  
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
-
 if (!APIHelpers::issetParam('id'))
 	APIHelpers::showerror(1266, 'not found parameter id');
 
@@ -38,7 +30,7 @@ if (!is_numeric($id))
 
 $conn = APIHelpers::createConnection($config);
 
-$result['result'] = 'ok';
+$response['result'] = 'ok';
 
 try {
 	$stmt = $conn->prepare('
@@ -51,9 +43,9 @@ try {
 	');
 	$stmt->execute(array($id));
 	if($row = $stmt->fetch()) {
-		$result['data']['id'] = htmlspecialchars($row['id']);
-		$result['data']['type'] = htmlspecialchars($row['type']);
-		$result['data']['text'] = htmlspecialchars($row['text']);
+		$response['data']['id'] = htmlspecialchars($row['id']);
+		$response['data']['type'] = htmlspecialchars($row['type']);
+		$response['data']['text'] = htmlspecialchars($row['text']);
 	}
 } catch(PDOException $e) {
 	APIHelpers::showerror(1267, $e->getMessage());
@@ -62,4 +54,4 @@ try {
 // not needed here
 // include_once ($curdir."/../api.lib/savetoken.php");
 
-APIHelpers::endpage($result);
+APIHelpers::endpage($response);

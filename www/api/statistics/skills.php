@@ -34,8 +34,8 @@ foreach (APITypes::$types['questTypes'] as $key => $value) {
 }
 
 
-$filter_where = [];
-$filter_values = [];
+$filter_where = array();
+$filter_values = array();
 
 $filter_where[] = 'q.state = ?';
 $filter_values[] = 'open';
@@ -104,8 +104,8 @@ $filter_values[] = '0000-00-00 00:00:00';
 $filter_where[] = 'uq.stopdate <> ?';
 $filter_values[] = '0000-00-00 00:00:00';
 
-$filter_user_where = [];
-$filter_user_values = [];
+$filter_user_where = array();
+$filter_user_values = array();
 
 $filter_user_where[] = 'u.role = ?';
 $filter_user_values[] = 'user';
@@ -146,7 +146,7 @@ try {
 		$response['data']['found'] = intval($row_count['cnt']);
 	}
 
-	$userids = [];
+	$userids = array();
 	$stmt = $conn->prepare('SELECT
 				u.id,
 				u.nick,

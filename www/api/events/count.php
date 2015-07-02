@@ -16,11 +16,7 @@ include_once ($curdir_events_count."/../api.lib/api.security.php");
 include_once ($curdir_events_count."/../api.lib/api.helpers.php");
 include_once ($curdir_events_count."/../../config/config.php");
 
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
-
+$response = APIHelpers::startpage($config);
 $conn = APIHelpers::createConnection($config);
 
 if (!APIHelpers::issetParam('id'))
@@ -34,7 +30,7 @@ if (!is_numeric($id))
   APIHelpers::showerror(1226, 'id must be integer');
 
 try {
-	$params = [];
+	$params = array();
 	$params[] = $id;
 	$query = 'SELECT count(*) as cnt FROM public_events WHERE id > ?';
 	if ($type != '') {
@@ -48,11 +44,11 @@ try {
 	if($row = $stmt->fetch())
 	{
 		$count = $row['cnt'];
-		$result['data']['count'] = $count;
-		$result['result'] = 'ok';		
+		$response['data']['count'] = $count;
+		$response['result'] = 'ok';		
 	}
 } catch(PDOException $e) {
 	APIHelpers::showerror(1227, $e->getMessage());
 }
 
-echo json_encode($result);
+APIHelpers::endpage($response);

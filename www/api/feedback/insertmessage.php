@@ -1,7 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: Feedback Message Insert
  * API_DESCRIPTION: Method will be add feedback message to feedback
@@ -11,18 +8,13 @@ header('Content-Type: application/json');
  * API_INPUT: token - string, token
  */
 
-$curdir_events_insert = dirname(__FILE__);
-include_once ($curdir_events_insert."/../api.lib/api.helpers.php");
-include_once ($curdir_events_insert."/../../config/config.php");
-include_once ($curdir_events_insert."/../api.lib/api.base.php");
+$curdir_events_insertmsg = dirname(__FILE__);
+include_once ($curdir_events_insertmsg."/../api.lib/api.helpers.php");
+include_once ($curdir_events_insertmsg."/../../config/config.php");
+include_once ($curdir_events_insertmsg."/../api.lib/api.base.php");
 
-include_once ($curdir_events_insert."/../api.lib/loadtoken.php");
+$response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
-
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
 
 if (!APIHelpers::issetParam('feedbackid'))
   APIHelpers::showerror(1248, 'not found parameter feedbackid');
@@ -69,9 +61,9 @@ Feedback Answer:
 	 * */
  	$stmt = $conn->prepare('INSERT INTO feedback_msg(feedbackid, text, userid, dt) VALUES(?,?,?,NOW())');
  	$stmt->execute(array($feedbackid, $text, APISecurity::userid()));
- 	$result['result'] = 'ok';
+ 	$response['result'] = 'ok';
 } catch(PDOException $e) {
  	APIHelpers::showerror(1249, $e->getMessage());
 }
 
-echo json_encode($result);
+APIHelpers::endpage($response);

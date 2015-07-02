@@ -1,7 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: Update event
  * API_DESCRIPTION: Method for update event
@@ -12,18 +9,13 @@ header('Content-Type: application/json');
  * API_INPUT: message - string, message of event
  */
 
-$curdir_events_insert = dirname(__FILE__);
-include_once ($curdir_events_insert."/../api.lib/api.helpers.php");
-include_once ($curdir_events_insert."/../../config/config.php");
-include_once ($curdir_events_insert."/../api.lib/api.base.php");
+$curdir_events_update = dirname(__FILE__);
+include_once ($curdir_events_update."/../api.lib/api.helpers.php");
+include_once ($curdir_events_update."/../../config/config.php");
+include_once ($curdir_events_update."/../api.lib/api.base.php");
 
-include_once ($curdir_events_insert."/../api.lib/loadtoken.php");
+$response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
-
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
 
 if(!APISecurity::isAdmin())
   APIHelpers::showerror(1253, 'access denie. you must be admin.');
@@ -49,9 +41,8 @@ $conn = APIHelpers::createConnection($config);
 try {
  	$stmt = $conn->prepare('UPDATE public_events SET type = ?, message = ? WHERE id = ?');
  	$stmt->execute(array($type, $message, intval($id)));
- 	$result['result'] = 'ok';
+ 	$response['result'] = 'ok';
 } catch(PDOException $e) {
  	APIHelpers::showerror(1258, $e->getMessage());
 }
-
-echo json_encode($result);
+APIHelpers::endpage($response);

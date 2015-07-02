@@ -1,7 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: Public info
  * API_DESCRIPTION: this is method send public information, for example:
@@ -151,11 +148,23 @@ try {
 	$response['data']['winners'] = array();
 
  	while ($row = $stmt->fetch()) {
-		$response['data']['winners'][$row['title']][] = array(
-			'game' => $row['title'],
+		
+		$gametitle = $row['title'];
+		$arr = array(
+			'game' => $gametitle,
 			'user' => htmlspecialchars($row['nick']),
 			'score' => $row['score'],
 		);
+		
+		$maximal_winners = 50;
+		if (isset($config['public_info']['maximal_winners']))
+			$maximal_winners = $config['public_info']['maximal_winners'];
+		
+		if (!isset($response['data']['winners'][$gametitle]))
+			$response['data']['winners'][$gametitle] = array();
+			
+		if (count($response['data']['winners'][$gametitle]) < $maximal_winners)
+			$response['data']['winners'][$gametitle][] = $arr;
 	}
 
 } catch(PDOException $e) {

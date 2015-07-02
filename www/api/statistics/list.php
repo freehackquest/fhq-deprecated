@@ -35,8 +35,8 @@ if ($gameid == 0)
 
 $response['result'] = 'ok';
 
-$filter_where = [];
-$filter_values = [];
+$filter_where = array();
+$filter_values = array();
 
 $filter_values[] = 0;
 $filter_values[] = intval($gameid);

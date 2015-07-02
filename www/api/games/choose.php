@@ -12,7 +12,6 @@ include_once ($curdir_games_choose."/../api.lib/api.base.php");
 include_once ($curdir_games_choose."/../../config/config.php");
 
 $response = APIHelpers::startpage($config);
-
 APIHelpers::checkAuth();
 
 /*$errmsg = "";

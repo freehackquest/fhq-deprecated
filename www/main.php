@@ -36,6 +36,7 @@ if (!isset($_SESSION['user']))
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/quests.css?ver=1">
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/users.css?ver=1">
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/events.css?ver=1">
+		<link rel="stylesheet" type="text/css" href="styles/userpanel_by_nitive.css?ver=1"/>
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/jquery.datetimepicker.css?ver=1"/>
 
 		<!-- todo -->
@@ -51,7 +52,8 @@ if (!isset($_SESSION['user']))
 		<script type="text/javascript" src="js/fhq.gui.lib.js?ver=1"></script>
 		<script type="text/javascript" src="js/jquery.js"></script>
 		<script type="text/javascript" src="js/jquery.datetimepicker.js"></script>
-		<script type="text/javascript" src="js/Chart.js?ver=1"></script>
+		<script type="text/javascript" src="js/libs/progressbar-0.8.1.min.js"></script>
+		<script type="text/javascript" src="js/libs/Chart-1.0.2.js"></script>
 		<script type="text/javascript" src="js/fhq_send_request.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_echo_head.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_modal_dialog.js?ver=1"></script>

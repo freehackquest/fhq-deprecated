@@ -405,65 +405,128 @@ function FHQGuiLib() {
 	}
 
 	this.showFullUserProfile = function(userid) {
-		var content = '';
-		content += '<div class="fhquser_table">';
+		/*content += '<div class="fhquser_table">';
 		content += '<div class="fhquser_row">';
 		content += '<div class="fhquser_nick" id="user_baseinfo">?</div>';
 		content += '</div>';
-		
 		content += '<div class="fhquser_row_skip"></div>';
-		
 		content += '<div class="fhquser_row">';
-		content += '<div class="fhquser_logo"><img width="100px" height="100px" src="files/users/0.png" id="user_logo" align="left"></img></div>';
 		content += '<div class="fhquser_info">';
-		content += '<div class="fhquser_nick" id="user_nick">[team] usernick</div><br>';
-		content += '<div class="fhquser_county" id="user_county">country ? </div><br>';
-		content += '<div class="fhquser_county" id="user_city">city ? </div><br>';
-		content += '<div class="fhquser_county" id="user_university">university ? </div><br>';
-		content += '<div class="fhquser_county" id="user_email"></div><br>';
+		content += '<div class="fhquser_nick" ></div><br>';
 		content += '</div>';
-		
 		content += '<div class="fhquser_row_skip"></div>';
-		
 		content += '<div class="fhquser_row" id="user_games"></div>';
 		content += '<div class="fhquser_row_skip"></div>';
 		content += '<div class="fhquser_row" id="user_skills"></div>';
-		
 		content += '<div class="fhquser_row_skip"></div>';
 		content += '</div>';
-		content += '</div>';
+		content += '</div>';*/
 		
 		var cp = new FHQContentPage();
 		cp.clear();
-		cp.append(content);
-		
+		cp.append('\
+			<div class="userpanel"> \
+				<img src="files/users/0.png" id="user_logo" alt="photo" class="userpanel__photo"> \
+				<h3 class="userpanel__title" id="user_nick">[team] usernick</h3> \
+				<div class="userpanel__info" id="user_info">?</div> \
+				<div class="userpanel__games gamespanel"> \
+				<svg class="gamespanel__arrow gamespanel__arrow--left" viewBox="0 0 24 62"><path d="M17.27 31C17.27 21.04 24 0 24 0L.112 31 24 62s-6.73-20.292-6.73-31z" stroke="#50E3C2" fill="#212928" fill-rule="evenodd"/></svg> \
+				<div class="gamespanel__gameswrap"> \
+					<div class="gamespanel__games" id="user_games"> \
+					</div>\
+				</div> \
+				<svg class="gamespanel__arrow gamespanel__arrow--right" viewBox="0 0 24 62" xmlns="http://www.w3.org/2000/svg"><path d="M6.73 31C6.73 40.96 0 62 0 62l23.888-31L0 0s6.73 20.292 6.73 31z" stroke="#50E3C2" fill="#212928" fill-rule="evenodd"/></svg> \
+			</div> \
+			<div class="bg"></div> \
+		</div>');
+
 		// info
 		fhq.users.get(userid, function(obj) {
-			document.getElementById("user_baseinfo").innerHTML = obj.data.status + ' ' + obj.data.role + ' #' + obj.data.userid + '<br>'
+			// document.getElementById("user_baseinfo").innerHTML = obj.data.status + ' ' + obj.data.role + ' #' + obj.data.userid + '<br>'
 			 // + 'UUID: ' + obj.data.uuid + '<br>'
-			 + 'Last visit: ' + obj.data.dt_last_login;
-			document.getElementById("user_nick").innerHTML = obj.data.nick;
+			// + 'Last visit: ' + obj.data.dt_last_login;
+			document.getElementById("user_nick").innerHTML = '#' + obj.data.userid + ' ' + obj.data.nick;
 			document.getElementById("user_logo").src = obj.data.logo;
-			document.getElementById("user_county").innerHTML = obj.profile.country;
-			document.getElementById("user_city").innerHTML = obj.profile.city;
-			document.getElementById("user_university").innerHTML = obj.profile.university;
 
-			if (obj.data.email) {
-				document.getElementById("user_email").innerHTML = obj.data.email;
-			}
-			
+			document.getElementById("user_info").innerHTML = '';
+			var arrProfile = new Array();
+			if (obj.profile.country && obj.profile.country != '')
+				arrProfile.push(obj.profile.country);
+			if (obj.profile.city && obj.profile.city != '')
+				arrProfile.push(obj.profile.city);
+			if (obj.profile.university && obj.profile.university != '')
+				arrProfile.push(obj.profile.university);
+			if (obj.data.email)
+				arrProfile.push(obj.data.email);	
+			document.getElementById("user_info").innerHTML += arrProfile.join('</br>');
 			
 			for (var k in obj.games) {
-				document.getElementById("user_games").innerHTML += 'Game "' + obj.games[k].title + '" (' + obj.games[k].type_game + '): ' + obj.games[k].score + " / " + obj.games[k].maxscore
-					+ "<br>";
+				var nProgress = Math.floor((obj.games[k].score * 100) / obj.games[k].maxscore);
+				// alert(obj.games[k].score + ' / ' + obj.games[k].maxscore + ' = ' + nProgress + '%');
+				document.getElementById("user_games").innerHTML += '\<div title="' + obj.games[k].title + '" data-progress="' + nProgress + '" style="background-image: url(' + obj.games[k].logo + ')" class="gamespanel__game"></div>';
+				// document.getElementById("user_games").innerHTML += 'Game "' +  + '" (' + obj.games[k].type_game + '): ' + obj.games[k].score + " / " + obj.games[k].maxscore
+				//	+ "<br>";
 			}
-			// cp.append('<div>' + JSON.stringify(obj) + '</div>');
+			
+			// --- begin app.js ---
+			(function e(t,n,r) { function s(o,u) {  if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports) {
+				var $games, circle, element, gameWidth, i, len, ref;
+
+				gameWidth = 415 / 4;
+
+				$games = $('.gamespanel__games');
+
+				$games.css('left', 0);
+
+				$('.gamespanel__arrow--left').click(function() {
+				  var left;
+				  left = Math.min(0, parseFloat($games.css('left')) + gameWidth * 3);
+				  return $games.stop().animate({
+					'left': left
+				  }, 400);
+				});
+
+				$('.gamespanel__arrow--right').click(function() {
+				  var left;
+				  left = Math.max(-gameWidth * $games.length, parseFloat($games.css('left')) - gameWidth * 3);
+				  return $games.stop().animate({
+					'left': left
+				  }, 400);
+				});
+
+				ref = document.getElementsByClassName('gamespanel__game');
+				for (i = 0, len = ref.length; i < len; i++) {
+				  element = ref[i];
+				  circle = new ProgressBar.Circle(element, {
+					color: '#50e3c2',
+					strokeWidth: 4,
+					trailColor: 'black',
+					duration: 1500,
+					easing: 'elastic',
+					fill: 'rgba(0,0,0,.7)',
+					text: {
+					  value: '0'
+					},
+					step: function(state, bar) {
+					  return bar.setText((bar.value() * 100).toFixed(0));
+					},
+					click: function() {
+					  return alert('cat');
+					}
+				  });
+				  circle.progress = element.dataset.progress / 100;
+				  setTimeout((function() {
+					return this.animate(this.progress);
+				  }).bind(circle), 1000);
+				}
+			},{}]},{},[1]);
+			// --- end app.js ---
 		});
 		
 		// skills
 		fhq.users.skills(userid, function(obj) {
 			
-			document.getElementById("user_skills").innerHTML = '<canvas id="skill' + userid + '" width="450" height="170"></canvas>';
+			/*document.getElementById("user_skills").innerHTML = '<canvas id="skill' + userid + '" width="450" height="170"></canvas>';
 			// document.getElementById("user_skills").innerHTML += '<br>' + JSON.stringify(obj);
 
 			var ctx = document.getElementById('skill' + userid).getContext("2d");
@@ -485,7 +548,7 @@ function FHQGuiLib() {
 				ctx.strokeRect(120, y-9, 200, 8);
 				ctx.fillRect (120, y-9, percent*2, 9);
 				y += 12;
-			}
+			}*/
 		});	
 	}
 
@@ -655,8 +718,7 @@ function FHQGuiLib() {
 		this.setFilter('dumps');
 		alert('todo');
 	}
-	
-	
+
 	this.resetEventsPage = function() {
 		this.filter.events.page = 0;
 	}
