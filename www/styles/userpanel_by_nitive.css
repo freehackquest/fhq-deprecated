@@ -17,7 +17,8 @@ div.gamespanel__arrow {
   width: 500px;
   border: 2px solid #424e4b;
   border-radius: 5px;
-  background-color: #fbfbfb;
+  /* fixed background color */
+  /*background-color: #fbfbfb;*/ 
   margin: auto;
 }
 .userpanel__photo {
