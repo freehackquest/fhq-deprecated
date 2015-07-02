@@ -1,0 +1,110 @@
+// body
+// 	font 16px Arial
+
+//////////////////////
+/////// reset ////////
+//////////////////////
+
+.fhqbody .userpanel
+	text-align left
+
+div.gamespanel__game,
+div.gamespanel__arrow
+	margin 0
+	float none
+	min-height auto
+
+.gamespanel svg,
+.gamespanel__games,
+.gamespanel__gameswrap
+	margin-left 0
+
+//////////////////////
+//////////////////////
+
+.userpanel
+	// position absolute
+	height 400px
+	width 500px
+	border 2px solid #424e4b
+	border-radius 5px
+	background-color #fbfbfb
+	margin auto
+
+	&__photo
+		float left
+		margin 25px 0 0 25px
+		box-sizing border-box
+		border 2px solid #50e3c2
+		border-radius 7px
+		width 100px
+		height @width
+
+	&__title
+		font-weight 500
+		margin 30px 0 0 10px
+		display inline-table
+		width 360px
+
+	&__info
+		display inline-table
+		margin 10px 20px
+
+	&__games
+		height 100px
+		margin-left 18px
+		margin-top 30px
+
+
+.gamespanel
+	width 465px
+	font-size 0
+
+	&__arrow
+		width 25px
+		height 100px
+		cursor pointer
+
+	&__gameswrap
+		font-size 0
+		display inline-block
+		overflow hidden
+		height 100px
+
+	&__games
+		position relative
+		display inline-block
+		width 415px
+		height 100px
+		white-space nowrap
+
+	div&__game
+		display inline-block
+		background-size cover
+		width 100px
+		height 100px
+		letter-spacing 0
+		margin 0 2px
+		border-radius 50%
+
+		svg
+			cursor default
+		p
+			font-size 29px
+			cursor default
+			&:before,
+			&:after
+				content '%'
+				font-size 10px
+			&:before
+				color rgba(0,0,0,0)
+
+
+// .bg
+// 	// display none
+// 	z-index -1
+// 	position absolute
+// 	background url(bg.png)
+// 	background-size cover
+// 	height 400px
+// 	width 500px
