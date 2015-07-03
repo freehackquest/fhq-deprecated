@@ -1,13 +1,14 @@
 <?php
-
-// TODO
+ini_set('error_reporting', E_ALL & ~E_NOTICE);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 
 exit;
 
-include_once "config/config.php";
-include_once "engine/fhq_class_security.php";
-include_once "engine/fhq_class_database.php";
-include_once "engine/fhq_class_mail.php";
+// include_once "../../config/config.php";
+$curdir_test_mail = dirname(__FILE__);
+include_once ($curdir_test_mail."/../api.lib/api.mail.php");
+include_once ($curdir_test_mail."/../../config/config.php");
 
 if(!isset($_GET['email']))
 {
@@ -17,15 +18,18 @@ if(!isset($_GET['email']))
 
 
 $email = $_GET['email'];
-echo "send to mail: ".$email."<br>";
-$security = new fhq_security();
-$db = new fhq_database();
-$mail = new fhq_mail();
-echo "mail created <br>";
+echo "To: ".$email."<br>";
+$subject = 'Test Mail';
+echo "Subject: ".$subject."<br>";
+
+$body = 'Test Message';
+echo 'Body: '.$body.'<br>';
 
 $error = "";
 echo "try send email<br>";
-$mail->send($email,'','','Test Mail', 'Test messages', $error);
-echo "sended";
-echo $error;
-?>
+
+// send($config, $to_, $cc_, $bcc_, $subject, $body, &$errormsg)
+
+APIMail::send($config, $email,'','',$subject, $body, $error);
+echo "Sended<br>";
+echo "Error: ".$error.'<br>';
