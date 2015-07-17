@@ -9,7 +9,7 @@ function FHQFrontEndLib() {
 		}
 		return str;
 	};
-	
+
 	this.getCurrentApiPath = function() {
 		var path = location.pathname.split("/");
 		path.splice(path.indexOf('index.php'), 1);	

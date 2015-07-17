@@ -682,6 +682,10 @@ function FHQGuiLib() {
 		);
 	}
 	
+	this.exportGame = function(gameid) {
+		alert("todo");
+	}
+	
 	this.gameView = function(game, currentGameId) {
 		var content = '';
 		content += '\n<div class="fhq_event_info">\n';
@@ -706,6 +710,9 @@ function FHQGuiLib() {
 			
 		if (perms['update'] == true)
 			content += '<div class="fhqbtn" onclick="formEditGame(' + game.id + ');">Edit</div>';
+			
+		if (perms['export'] == true)
+			content += '<div class="fhqbtn" onclick="fhqgui.exportGame(' + game.id + ');">Export</div>';
 		
 		content += '			</div>';
 		content += '		</div>'; // fhq_event_info_cell_content
