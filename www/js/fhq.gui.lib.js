@@ -685,7 +685,7 @@ function FHQGuiLib() {
 	this.exportGame = function(gameid) {
 		fhq.games.export(gameid);
 	}
-	
+
 	this.gameView = function(game, currentGameId) {
 		var content = '';
 		content += '\n<div class="fhq_event_info">\n';
