@@ -153,6 +153,10 @@ function FHQFrontEndLib() {
 			var bRes = obj.result == "ok";
 			return bRes ? obj : obj.error;
 		};
+		this.export = function(gameid) {
+			var win = window.open(this.p.baseUrl + 'api/games/export.php?gameid=' + gameid, '_blank');
+			win.focus();
+		};
 	})(this);
 	
 	this.quests = new (function(t) {
@@ -258,7 +262,7 @@ function FHQFrontEndLib() {
 			else
 				return this.p.sendPostRequest_Sync('api/feedback/insert.php', params);
 		};
-		this.get = function(gameid) {
+		/*this.get = function(gameid) {
 			var params = {};
 			params.id = gameid;
 			var obj = this.p.sendPostRequest_Sync('api/games/get.php', params);
@@ -276,11 +280,11 @@ function FHQFrontEndLib() {
 		this.delete = function(gameid) {
 			var params = {};
 			params.id = gameid;
-			var obj = this.p.sendPostRequest_Sync('api/games/choose.php', params);
+			var obj = this.p.sendPostRequest_Sync('api/games/delete.php', params);
 			// alert(JSON.stringify(params));
 			var bRes = obj.result == "ok";
 			return bRes ? obj : obj.error;
-		};
+		};*/
 	})(this);
 	
 	this.events = new (function(t) {

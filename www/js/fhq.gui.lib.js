@@ -683,7 +683,7 @@ function FHQGuiLib() {
 	}
 	
 	this.exportGame = function(gameid) {
-		alert("todo");
+		fhq.games.export(gameid);
 	}
 	
 	this.gameView = function(game, currentGameId) {
