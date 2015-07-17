@@ -58,6 +58,7 @@ try {
 		$bAllows = APISecurity::isAdmin();
 		$response['data'][$id]['permissions']['delete'] = $bAllows;
 		$response['data'][$id]['permissions']['update'] = $bAllows;
+		$response['data'][$id]['permissions']['export'] = $bAllows;
 	}
 	$response['current_game'] = isset($_SESSION['game']) ? $_SESSION['game']['id'] : 0;
 	

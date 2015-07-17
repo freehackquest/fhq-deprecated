@@ -36,6 +36,10 @@ function chooseGame(id) {
 	);
 }
 
+function formImportGame() {
+	alert("todo");
+}
+
 function loadGames() {
 	fhqgui.setFilter('games');
 	
@@ -52,7 +56,10 @@ function loadGames() {
 			
 			var perms = obj['permissions'];
 			if (perms['insert'] == true)
-				el.innerHTML += '<div class="fhqinfo"><div class="fhqbtn" onclick="formCreateGame();">Create Game</div></div><br>';
+				el.innerHTML += '<div class="fhqinfo">'
+					+ '<div class="fhqbtn" onclick="formCreateGame();">Create Game</div>'
+					+ '<div class="fhqbtn" onclick="formImportGame();">Import Game</div>'
+					+ '</div><br>';
 
 			for (var k in obj.data) {
 				if (obj.data.hasOwnProperty(k)) {
