@@ -426,6 +426,7 @@ function showQuest(id)
 				content += createQuestRow('',
 					'<div class="fhqbtn" onclick="formEditQuest(' + obj.quest + ');">Edit</div>'
 					+ '<div class="fhqbtn" onclick="deleteQuest(' + obj.quest + ');">Delete</div>'
+					+ '<div class="fhqbtn" onclick="fhqgui.exportQuest(' + obj.quest + ');">Export</div>'
 				);
 			}
 			content += createQuestRow('','<div class="fhqbtn" onclick="fhqgui.openQuestInNewTab(' + obj.quest + ');">Open in new tab</div>');

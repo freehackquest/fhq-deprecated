@@ -251,8 +251,12 @@ function FHQFrontEndLib() {
 			var bRes = obj.result == "ok";
 			return bRes ? obj.data : obj.error;
 		};
+		this.export = function(questid) {
+			var win = window.open(this.p.baseUrl + 'api/quests/export.php?questid=' + questid, '_blank');
+			win.focus();
+		};
 	})(this);
-	
+
 	this.feedback = new (function(t) {
 		this.p = t;
 		this.insert = function(params, callback) {
