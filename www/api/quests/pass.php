@@ -149,10 +149,10 @@ try {
 				APIAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, $levenshtein, 'No');
 				APIHelpers::showerror(1216, 'Answer incorrect. Levenshtein distance: '.$levenshtein);
 			};
-		}
-		else
-		{
+		} else if ($status == 'completed') {
 			APIHelpers::showerror(1217, 'Quest already passed');
+		} else if ($status == 'open') {
+			APIHelpers::showerror(1344, 'Please take quest before try pass');
 		}
 
 		/*if ($status == 'current' || $status == 'completed')

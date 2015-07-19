@@ -1,14 +1,17 @@
 #!/usr/bin/python
 
 import requests
-import uuid 
+import uuid
+import getpass
 from FHQFrontEndLib import FHQFrontEndLib
 
-email = 'admin@fhq.keva.su'
-password = 'admin'
+url = 'http://localhost/fhq/api/'
+print "URL: " + url
+email = raw_input("Email: ")
+password = getpass.getpass('Password: ')
 
 # login
-api = FHQFrontEndLib('http://localhost/fhq/api/')
+api = FHQFrontEndLib(url)
 if not api.security.login(email, password):
 	exit(1)
 print(api.token)
@@ -58,7 +61,7 @@ print('Choosed game ' + game['data']['title'])
 api.games.get(gameid)
 
 # quest list
-quests = api.quests.list()
+quests = api.quests.list({})
 
 for key, value in enumerate(quests['data']):
 	print(value['questid'] + ': ' + value['name'])

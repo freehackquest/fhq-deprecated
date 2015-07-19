@@ -61,8 +61,8 @@ class FHQQuests:
 	def  __init__(self, parent):
 		self.parent = parent
 
-	def list(self):
-		resp = self.parent.sendrequest('/quests/list.php', {})
+	def list(self, params):
+		resp = self.parent.sendrequest('/quests/list.php', params)
 		return resp
 		
 	def insert(self, params):
