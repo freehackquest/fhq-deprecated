@@ -9,7 +9,7 @@ function changeGame() {
 			for (var k in obj.data) {
 				if (obj.data.hasOwnProperty(k)) {
 					if (current_game != obj.data[k]['id']) {
-						content += '<div class="fhq_game_line" onclick="chooseGame(\'' + obj.data[k]['id'] + '\');">\n';
+						content += '<div class="fhq_game_line" onclick="fhqgui.chooseGame(\'' + obj.data[k]['id'] + '\');">\n';
 						content += '\t<img class="fhq_game_img" src="' + obj.data[k]['logo'] + '" /> '
 						content += '\t<div class="fhq_game_text">\n';
 						// content += ' ( ' + obj.data[k]['nick'].trim() + ') ';
@@ -24,20 +24,6 @@ function changeGame() {
 			showModalDialog(content);
 		}
 	);
-}
-
-function chooseGame(id) {
-	send_request_post(
-		'api/games/choose.php',
-		'id=' + id,
-		function (obj) {
-			window.location.href = "main.php?" + Math.random();
-		}
-	);
-}
-
-function formImportGame() {
-	alert("todo");
 }
 
 function loadGames() {
@@ -58,7 +44,7 @@ function loadGames() {
 			if (perms['insert'] == true)
 				el.innerHTML += '<div class="fhqinfo">'
 					+ '<div class="fhqbtn" onclick="formCreateGame();">Create Game</div>'
-					+ '<div class="fhqbtn" onclick="formImportGame();">Import Game</div>'
+					+ '<div class="fhqbtn" onclick="fhqgui.formImportGame();">Import Game</div>'
 					+ '</div><br>';
 
 			for (var k in obj.data) {

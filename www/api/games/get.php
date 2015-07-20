@@ -32,7 +32,22 @@ try {
 			games
 		WHERE id = ?';
 
-	$columns = array('id', 'type_game', 'state', 'form', 'title', 'date_start', 'date_stop', 'date_restart', 'description', 'logo', 'owner', 'organizators', 'rules', 'maxscore');
+	$columns = array(
+		'id',
+		'type_game',
+		'state',
+		'form',
+		'title',
+		'date_start',
+		'date_stop',
+		'date_restart',
+		'description',
+		'logo',
+		'owner',
+		'organizators',
+		'rules',
+		'maxscore'
+	);
 
 	$stmt = $conn->prepare($query);
 	$stmt->execute(array(intval($gameid)));

@@ -68,7 +68,6 @@ try {
 		'rules',
 		'maxscore'
 	);
-
 	$stmt = $conn->prepare($query);
 	$stmt->execute(array(intval($gameid)));
 	if($row = $stmt->fetch())
