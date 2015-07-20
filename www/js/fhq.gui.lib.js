@@ -686,9 +686,53 @@ function FHQGuiLib() {
 		fhq.games.export(gameid);
 	}
 
-
+	this.formImportGame = function() {
+		var content = "todo import Game";
+		var pt = new FHQParamTable();
+		pt.row('', 'ZIP: <input id="importgame_zip" type="file" required/>');
+		pt.row('', '<div class="fhqbtn" onclick="fhqgui.importGame();">Import</div>');
+		pt.skip();
+		this.showModalDialog(pt.render());
+	}
+	
+	this.importGame = function() {
+		var files = document.getElementById('importgame_zip').files;
+		if (files.length == 0) {
+			alert("Please select file");
+			return;
+		}
+		/*for(i = 0; i < files.length; i++)
+			alert(files[i].name);*/
+		
+		send_request_post_files(
+			files,
+			'api/games/import.php',
+			createUrlFromObj({}),
+			function (obj) {
+				if (obj.result == "fail") {
+					alert(obj.error.message);
+					return;
+				}
+				// document.getElementById('editgame_logo').src = obj.data.logo + '?' + new Date().getTime();
+				fhqgui.closeModalDialog();
+				loadGames();
+			}
+		);
+	}
+		
 	this.exportQuest = function(questid) {
 		fhq.quests.export(questid);
+	}
+
+
+	this.chooseGame = function(id) {
+		send_request_post(
+			'api/games/choose.php',
+			'id=' + id,
+			function (obj) {
+				window.location.href = "main.php?" + Math.random();
+			}
+		);
 	}
 
 	this.gameView = function(game, currentGameId) {
