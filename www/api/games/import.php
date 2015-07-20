@@ -16,10 +16,10 @@ $response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(1053, 'This method only for admin');
+	APIHelpers::showerror(1345, 'This method only for admin');
 
 if (count($_FILES) <= 0)
-	APIHelpers::showerror(1054, 'Not found files '.count($_FILES));
+	APIHelpers::showerror(1346, 'Not found files '.count($_FILES));
 
 $keys = array_keys($_FILES);
 $response['result'] = 'ok';
@@ -31,7 +31,7 @@ for($i = 0; $i < count($keys); $i++)
 	$filename = $keys[$i];
 	if ($_FILES[$filename]['error'] > 0)
 	{
-		APIHelpers::showerror(1329, 'Error with files '.$_FILES[$filename]["error"]);
+		APIHelpers::showerror(1347, 'Error with files '.$_FILES[$filename]["error"]);
 	}
 	else
 	{
@@ -41,7 +41,7 @@ for($i = 0; $i < count($keys); $i++)
 		$filename = $_FILES[$filename]["tmp_name"];
 
 		if ($zip->open($filename)!==TRUE) {
-			APIHelpers::showerror(1329, 'Could not open zip-archive');
+			APIHelpers::showerror(1348, 'Could not open zip-archive');
 		}
 		
 		// print_r($zip);
@@ -126,64 +126,7 @@ for($i = 0; $i < count($keys); $i++)
 		// update logo in db
 		$stmt = $conn->prepare('UPDATE games SET logo = ? WHERE uuid = ?');
 		$stmt->execute(array('files/games/'.$gameid.'.png', $game['uuid']));		
-
-
-		// 
-
-		/*$full_filename = $curdir_upload_logo.'/../../files/games/'.$gameid.'_orig.png'; 
-		$full_filename_new = $curdir_upload_logo.'/../../files/games/'.$gameid.'.png';
-		// chmod($curdir_upload_logo.'/../../files/games/',0755);
-		
-		move_uploaded_file($_FILES[$filename]["tmp_name"],$full_filename);
-		if(!file_exists($full_filename))
-			APIHelpers::showerror(1055, 'File was not loaded');
-		else {
-			if(mime_content_type($full_filename) != 'image/png') {
-				unlink($full_filename);
-				APIHelpers::showerror(1056, 'File are not png-image');
-			}
-				
-			try {
-				// set_error_handler("warning_handler", E_WARNING);
-
-				// new size
-				list($width, $height) = getimagesize($full_filename);
-				$newwidth = 100;
-				$newheight = 100;
-				$source = imagecreatefrompng($full_filename);
-				imagealphablending($source, true);
-				
-				$thumb = imagecreatetruecolor($newwidth, $newheight);
-				imagealphablending($thumb, true);
-				$black = imagecolorallocate($thumb, 0, 0, 0);
-				imagecolortransparent($thumb, $black);
-
-				imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-				imagepng($thumb, $full_filename_new, 9 , PNG_NO_FILTER);
-				imagedestroy($thumb);
-				imagedestroy($source);
-
-				unlink($full_filename);
-			} catch(Exception $e) {
-				unlink($full_filename);
-				APIHelpers::showerror(1057, 'Problem with convert image: '.$e->getMessage());
-			}
-		}*/
 	}
 }
-
-
-
-/*try {
-	$query = 'UPDATE games SET logo = ? WHERE id = ?';
-	$stmt = $conn->prepare($query);
-	if ($stmt->execute(array('files/games/'.$gameid.'.png', $gameid))) {
-		$response['result'] = 'ok';
-		$response['data']['logo'] = 'files/games/'.$gameid.'.png';
-	} else
-		$response['result'] = 'fail';
-} catch(PDOException $e) {
-	APIHelpers::showerror(1058, $e->getMessage());
-}*/
 
 APIHelpers::endpage($response);
