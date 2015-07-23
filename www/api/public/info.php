@@ -69,7 +69,7 @@ try {
 $response['data']['quests'] = array();
 
 try {
- 	$stmt = $conn->prepare('SELECT count(*) cnt FROM quest WHERE for_person = 0');
+ 	$stmt = $conn->prepare('SELECT count(*) cnt FROM quest');
  	$stmt->execute();
 
  	if ($row = $stmt->fetch()) {

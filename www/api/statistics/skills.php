@@ -40,9 +40,6 @@ $filter_values = array();
 $filter_where[] = 'q.state = ?';
 $filter_values[] = 'open';
 
-$filter_where[] = 'q.for_person = ?';
-$filter_values[] = 0;
-
 if (APIHelpers::issetParam('subject')) {
 	$sub = APIHelpers::getParam('subject', '');
 	if ($sub != '') {
@@ -97,12 +94,6 @@ if (!is_numeric($onpage))
 	APIHelpers::showerror(1186, 'parameter "onpage" must be numeric');
 $onpage = intval($onpage);
 $response['data']['onpage'] = intval($onpage);
-
-$filter_where[] = 'uq.startdate <> ?';
-$filter_values[] = '0000-00-00 00:00:00';
-
-$filter_where[] = 'uq.stopdate <> ?';
-$filter_values[] = '0000-00-00 00:00:00';
 
 $filter_user_where = array();
 $filter_user_values = array();
@@ -162,7 +153,7 @@ try {
 	$response['data']['skills'] = array();
 	while ($row = $stmt->fetch()) {
 		$userid = intval($row['id']);
-		$userids[] = 'uq.iduser = '.$userid;
+		$userids[] = 'uq.userid = '.$userid;
 		$response['data']['skills'][$userid] = array(
 			'user' => array(
 				'userid' => intval($row['id']),
@@ -191,23 +182,23 @@ try {
 try {
 	$stmt = $conn->prepare('
 			SELECT
-				uq.iduser,
+				uq.userid,
 				q.subject,
 				SUM( q.score ) as sum_score
 			FROM
-				userquest uq
+				users_quests uq
 			INNER JOIN quest q ON
-				uq.idquest = q.idquest
+				uq.questid = q.idquest
 			WHERE
 				! ISNULL( q.subject )
 				'.$where.'
 				'.$filter_userids.'
-			GROUP BY 
-				uq.iduser, q.subject
+			GROUP BY
+				uq.userid, q.subject
 	');
 	$stmt->execute($filter_values);
 	while ($row = $stmt->fetch()) {
-		$userid = intval($row['iduser']);
+		$userid = intval($row['userid']);
 		if (isset($response['data']['skills'][$userid])) {
 			$subject = $row['subject'];
 			$response['data']['skills'][$userid]['subjects'][$row['subject']]['score'] = intval($row['sum_score']);	

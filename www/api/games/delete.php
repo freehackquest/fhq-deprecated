@@ -59,10 +59,6 @@ try {
 	$stmt_tryanswer_backup = $conn->prepare('DELETE FROM tryanswer_backup WHERE idquest IN (SELECT idquest FROM quest q WHERE q.gameid = ?)');
  	$stmt_tryanswer_backup->execute(array(intval($gameid)));
 
-	// remove from userquest
-	$stmt_userquest = $conn->prepare('DELETE FROM userquest WHERE idquest IN (SELECT idquest FROM quest q WHERE q.gameid = ?)');
- 	$stmt_userquest->execute(array(intval($gameid)));
- 	
  	// remove from users_quests
 	$stmt_users_quests = $conn->prepare('DELETE FROM users_quests WHERE questid IN (SELECT idquest FROM quest q WHERE q.gameid = ?)');
  	$stmt_users_quests->execute(array(intval($gameid)));

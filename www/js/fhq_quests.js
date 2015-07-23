@@ -382,9 +382,8 @@ function showQuest(id)
 			if (obj.data.author)
 				content += createQuestRow('Author: ', obj.data.author);
 
-			if (obj.data.date_start == null && obj.data.date_stop == null) {
-				content += createQuestRow('', '<div class="fhqbtn" onclick="takeQuest(' + obj.quest + ');">Take quest</div>');
-			} else if (obj.data.date_stop == null || obj.data.date_stop == '0000-00-00 00:00:00') {
+			
+			if (obj.data.dt_passed == null) {
 				if (obj.data.text)
 					content += createQuestRow('Text: ', '<pre>' + obj.data.text + '</pre>');
 				
@@ -395,9 +394,7 @@ function showQuest(id)
 					}
 					content += createQuestRow('Attachmnet files: ', files1);
 				}
-						
-				if (obj.data.date_start)
-					content += createQuestRow('Date Start: ', obj.data.date_start);
+
 				content += createQuestRow('', '<input id="quest_answer" type="text" onkeydown="if (event.keyCode == 13) passQuest(' + obj.quest + ');"/>'
 					+ '<div class="fhqbtn" onclick="passQuest(' + obj.quest + ');">Pass quest</div>'
 				);
@@ -415,11 +412,9 @@ function showQuest(id)
 					}
 					content += createQuestRow('Attachmnet files: ', files1);
 				}
-				
-				if (obj.data.date_start)
-					content += createQuestRow('Date Start: ', obj.data.date_start);
-				if (obj.data.date_stop)
-					content += createQuestRow('Date Stop: ', obj.data.date_stop);
+
+				if (obj.data.dt_passed)
+					content += createQuestRow('Date Stop: ', obj.data.dt_passed);
 			}
 			
 			if (obj.permissions.edit == true && obj.permissions['delete'] == true) {

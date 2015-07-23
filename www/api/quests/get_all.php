@@ -70,7 +70,6 @@ try {
 			'text' => $row['text'],
 			'score' => $row['score'],
 			'min_score' => $row['min_score'],
-			'for_person' => $row['for_person'],
 			'authorid' => $row['idauthor'],
 			'author' => $row['author'],
 			'answer' => $row['answer'],

@@ -52,10 +52,7 @@ try {
  	APIHelpers::showerror(1152, $e->getMessage());
 }
 
-// todo delete from userquest
 // todo recalculate score for users
-// todo delete from tryanswer
-// todo delete from tryanswer_backup
 
 try {
 	$stmt_quest = $conn->prepare('DELETE FROM quest WHERE idquest = ?');
@@ -68,10 +65,6 @@ try {
 	// remove from tryanswer_backup
 	$stmt_tryanswer_backup = $conn->prepare('DELETE FROM tryanswer_backup WHERE idquest = ?');
  	$stmt_tryanswer_backup->execute(array(intval($questid)));
-
-	// remove from userquest
-	$stmt_userquest = $conn->prepare('DELETE FROM userquest WHERE idquest = ?');
- 	$stmt_userquest->execute(array(intval($questid)));
  	
  	// remove from users_quests
 	$stmt_users_quests = $conn->prepare('DELETE FROM users_quests WHERE questid = ?');
