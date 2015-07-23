@@ -38,7 +38,6 @@ $response['result'] = 'ok';
 $filter_where = array();
 $filter_values = array();
 
-$filter_values[] = 0;
 $filter_values[] = intval($gameid);
 
 // page
@@ -98,8 +97,7 @@ try {
 			FROM 
 				quest
 			WHERE
-				for_person = ?
-				AND gameid = ?
+				gameid = ?
 				'.$where.'
 	');
 	$stmt->execute($filter_values);
@@ -148,8 +146,7 @@ try {
 			FROM 
 				quest
 			WHERE
-				for_person = ?
-				AND gameid = ?
+				gameid = ?
 				'.$where.'
 			ORDER BY
 				subject, score ASC, min_score

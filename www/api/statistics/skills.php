@@ -40,9 +40,6 @@ $filter_values = array();
 $filter_where[] = 'q.state = ?';
 $filter_values[] = 'open';
 
-$filter_where[] = 'q.for_person = ?';
-$filter_values[] = 0;
-
 if (APIHelpers::issetParam('subject')) {
 	$sub = APIHelpers::getParam('subject', '');
 	if ($sub != '') {

@@ -60,7 +60,6 @@ $questname = $params['name'];
 $params['answer_upper_md5'] = md5(strtoupper($params['answer']));
 $params['score'] = intval($params['score']);
 $params['min_score'] = intval($params['min_score']);
-$params['for_person'] = 0;
 $params['gameid'] = APIGame::id();
 $params['idauthor'] = intval($params['idauthor']);
 $params['author'] = $params['author'];

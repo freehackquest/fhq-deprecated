@@ -40,7 +40,6 @@ class APIQuest {
 						quest
 					WHERE
 						state = "open"
-						AND for_person = 0
 						AND gameid = ?
 				)
 			WHERE

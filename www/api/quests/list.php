@@ -67,10 +67,8 @@ try {
 				gameid = ?
 				'.$filter_by_state.'
 				'.$filter_by_score.'
-				AND (quest.for_person = 0 OR quest.for_person = ?)
-			
 	');
-	$stmt->execute(array(APIGame::id(),APISecurity::userid()));
+	$stmt->execute(array(APIGame::id()));
 	if($row = $stmt->fetch())
 		$response['status']['summary'] = $row['cnt'];
 } catch(PDOException $e) {
@@ -89,12 +87,11 @@ try {
 				gameid = ?
 				'.$filter_by_state.'
 				'.$filter_by_score.'
-				AND (quest.for_person = 0 OR quest.for_person = ?)
 				AND isnull(users_quests.dt_passed)
 	';
 	// $response['query_open'] = $query;
 	$stmt1 = $conn->prepare($query);
-	$stmt1->execute(array(APISecurity::userid(),APIGame::id(), APISecurity::userid()));
+	$stmt1->execute(array(APISecurity::userid(),APIGame::id()));
 	if($row = $stmt1->fetch())
 		$response['status']['open'] = $row['cnt'];
 } catch(PDOException $e) {
@@ -114,9 +111,8 @@ try {
 				gameid = ?
 				'.$filter_by_state.'
 				'.$filter_by_score.'
-				AND (quest.for_person = 0 OR quest.for_person = ?)
 	');
-	$stmt->execute(array(APISecurity::userid(),APIGame::id(), APISecurity::userid()));
+	$stmt->execute(array(APISecurity::userid(),APIGame::id()));
 	if($row = $stmt->fetch())
 		$response['status']['completed'] = $row['cnt'];
 } catch(PDOException $e) {
@@ -135,11 +131,10 @@ try {
 				gameid = ?
 				'.$filter_by_state.'
 				'.$filter_by_score.'
-				AND (quest.for_person = 0 OR quest.for_person = ?)
 			GROUP BY
 				quest.subject
 	');
-	$stmt->execute(array(APIGame::id(), APISecurity::userid()));
+	$stmt->execute(array(APIGame::id()));
 	while($row = $stmt->fetch())
 	{
 		$response['subjects'][$row['subject']] = $row['cnt'];
@@ -200,15 +195,10 @@ $query = '
 				'.$filter_by_state.'
 				'.$filter_by_score.'
 				'.$where_status.'
-				AND (quest.for_person = 0 OR quest.for_person = ?)
 			ORDER BY
 				quest.subject, quest.score ASC, quest.score
 		';
 
-// $response['where_status'] = $where_status;
-// $response['params'] = $params;
-// $response['query'] = $query;
-$params[] =  APISecurity::userid();
 try {
 	$stmt = $conn->prepare($query);
 	$stmt->execute($params);
@@ -220,7 +210,7 @@ try {
 			$status = 'open';
 		else
 			$status = 'completed';
-				
+
 		$response['data'][] = array(
 			'questid' => $row['idquest'],
 			'score' => $row['score'],
