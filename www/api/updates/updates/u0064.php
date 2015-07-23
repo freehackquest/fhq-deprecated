@@ -6,8 +6,6 @@ $updates['u0064'] = array(
 	'description' => 'update quests uuid',
 );
 
-
-
 function update_u0064($conn) {
 	$stmt_users_quests = $conn->prepare('
 		SELECT
@@ -17,9 +15,9 @@ function update_u0064($conn) {
 		WHERE
 			isnull(quest_uuid)
 	');
-	
+
 	function local_gen_guid() {
-		mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
+		mt_srand((double)microtime()*10000); //optional for php 4.2.0 and up.
 		$charid = strtoupper(md5(uniqid(rand(), true)));
 		$hyphen = chr(45);// "-"
 		$uuid = substr($charid, 0, 8).$hyphen
