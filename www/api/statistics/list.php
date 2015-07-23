@@ -187,13 +187,12 @@ try {
 				t0.nick
 			from 
 				users t0
-			inner join userquest t1 on t0.id = t1.iduser 
+			inner join users_quests t1 on t0.id = t1.userid
 			where
 				t0.role = ?
-				and t1.idquest = ?
-				and t1.stopdate <> ?
+				and t1.questid = ?
 		');
-		$stmt_users->execute(array('user',intval($questid), '0000-00-00 00:00:00'));
+		$stmt_users->execute(array('user',intval($questid)));
 	
 		while ($row_user = $stmt_users->fetch()) {
 			$response['data']['quests'][$id]['users'][] = array(

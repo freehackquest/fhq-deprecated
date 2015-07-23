@@ -68,12 +68,11 @@ $query = '
 				quest.subject,
 				quest.author,
 				quest.gameid,
-				userquest.startdate,
-				userquest.stopdate
-			FROM 
+				users_quests.dt_passed
+			FROM
 				quest
 			LEFT JOIN 
-				userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
+				users_quests ON users_quests.questid = quest.idquest AND users_quests.userid = ?
 			WHERE
 				quest.idquest = ?
 				'.$filter_by_state.'
@@ -88,12 +87,10 @@ try {
 	if($row = $stmt->fetch())
 	{
 		$status = '';
-		if ($row['stopdate'] == null)
-			$status = 'open';
-		else if ($row['stopdate'] == '0000-00-00 00:00:00')
-			$status = 'current';
-		else
+		if ($row['dt_passed'] == null)
 			$status = 'completed';
+		else
+			$status = 'open';
 
 		$response['data'] = array(
 			'questid' => $row['idquest'],
@@ -101,8 +98,7 @@ try {
 			'min_score' => $row['min_score'],
 			'name' => $row['name'],
 			'subject' => $row['subject'],
-			'date_start' => $row['startdate'],
-			'date_stop' => $row['stopdate'],
+			'dt_passed' => $row['dt_passed'],
 			'state' => $row['state'],
 			'author' => $row['author'],
 			'status' => $status,

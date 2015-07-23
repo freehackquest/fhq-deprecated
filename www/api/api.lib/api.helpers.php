@@ -59,12 +59,11 @@ class APIHelpers {
 			SELECT 
 				ifnull(SUM(quest.score),0) as sum_score 
 			FROM 
-				userquest 
+				users_quests
 			INNER JOIN 
-				quest ON quest.idquest = userquest.idquest AND quest.gameid = ?
+				quest ON quest.idquest = users_quests.questid AND quest.gameid = ?
 			WHERE 
-				(userquest.iduser = ?) 
-				AND ( userquest.stopdate <> \'0000-00-00 00:00:00\' );
+				(users_quests.userid = ?)
 		';
 		$score = 0;
 		$stmt = $conn->prepare($query);

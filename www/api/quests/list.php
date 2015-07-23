@@ -84,14 +84,13 @@ try {
 				count(quest.idquest) as cnt
 			FROM
 				quest
-			LEFT JOIN userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
+			LEFT JOIN users_quests ON users_quests.questid = quest.idquest AND users_quests.userid = ?
 			WHERE
 				gameid = ?
 				'.$filter_by_state.'
 				'.$filter_by_score.'
 				AND (quest.for_person = 0 OR quest.for_person = ?)
-				AND isnull(userquest.stopdate)
-				AND isnull(userquest.startdate)
+				AND isnull(users_quests.dt_passed)
 	';
 	// $response['query_open'] = $query;
 	$stmt1 = $conn->prepare($query);
@@ -102,30 +101,6 @@ try {
 	APIHelpers::showerror(1097, $e->getMessage());
 }
 
-// calculate current tasks
-try {
-	$stmt = $conn->prepare('
-			SELECT
-				count(quest.idquest) as cnt
-			FROM
-				quest
-			INNER JOIN 
-				userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
-			WHERE
-				gameid = ?
-				'.$filter_by_state.'
-				'.$filter_by_score.'
-				AND (quest.for_person = 0 OR quest.for_person = ?)
-				AND userquest.startdate <> \'0000-00-00 00:00:00\'
-				AND userquest.stopdate = \'0000-00-00 00:00:00\'
-	');
-	$stmt->execute(array(APISecurity::userid(),APIGame::id(),APISecurity::userid()));
-	if($row = $stmt->fetch())
-		$response['status']['current'] = $row['cnt'];
-} catch(PDOException $e) {
-	APIHelpers::showerror(1098, $e->getMessage());
-}
-
 // calculate completed tasks
 try {
 	$stmt = $conn->prepare('
@@ -134,14 +109,12 @@ try {
 			FROM
 				quest
 			INNER JOIN 
-				userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
+				users_quests ON users_quests.questid = quest.idquest AND users_quests.userid = ?
 			WHERE
 				gameid = ?
 				'.$filter_by_state.'
 				'.$filter_by_score.'
 				AND (quest.for_person = 0 OR quest.for_person = ?)
-				AND userquest.startdate <> \'0000-00-00 00:00:00\'
-				AND userquest.stopdate <> \'0000-00-00 00:00:00\' 
 	');
 	$stmt->execute(array(APISecurity::userid(),APIGame::id(), APISecurity::userid()));
 	if($row = $stmt->fetch())
@@ -182,13 +155,10 @@ $params = array(APISecurity::userid(), APIGame::id());
 $arrWhere_status = array();
 
 if ($response['filter']['open'])
-	$arrWhere_status[] = '(isnull(userquest.startdate) AND isnull(userquest.stopdate))';
-				
-if ($response['filter']['current'])
-	$arrWhere_status[] = '(userquest.startdate <> \'0000-00-00 00:00:00\' AND userquest.stopdate = \'0000-00-00 00:00:00\')';
+	$arrWhere_status[] = '(isnull(users_quests.dt_passed))';
 
 if ($response['filter']['completed'])
-	$arrWhere_status[] = '(userquest.stopdate <> \'0000-00-00 00:00:00\' AND userquest.stopdate <> \'0000-00-00 00:00:00\')';
+	$arrWhere_status[] = '(not isnull(users_quests.dt_passed))';
 
 $where_status = '';
 
@@ -220,12 +190,11 @@ $query = '
 				quest.author,
 				quest.text,
 				quest.count_user_solved,
-				userquest.startdate,
-				userquest.stopdate
+				users_quests.dt_passed
 			FROM 
 				quest
 			LEFT JOIN 
-				userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
+				users_quests ON users_quests.questid = quest.idquest AND users_quests.userid = ?
 			WHERE
 				quest.gameid = ?
 				'.$filter_by_state.'
@@ -247,10 +216,8 @@ try {
 	{
 		$status = '';
 		
-		if ($row['stopdate'] == null)
+		if ($row['dt_passed'] == null)
 			$status = 'open';
-		else if ($row['stopdate'] == '0000-00-00 00:00:00')
-			$status = 'current';
 		else
 			$status = 'completed';
 				
@@ -262,8 +229,7 @@ try {
 			'author' => $row['author'],
 			'gameid' => $row['gameid'],
 			'subject' => $row['subject'],
-			'date_start' => $row['startdate'],
-			'date_stop' => $row['stopdate'],
+			'dt_passed' => $row['dt_passed'],
 			'state' => $row['state'],
 			'solved' => $row['count_user_solved'],
 			'status' => $status,

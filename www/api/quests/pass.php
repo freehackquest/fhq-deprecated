@@ -65,12 +65,11 @@ $query = '
 				quest.idquest,
 				quest.name,
 				quest.answer,
-				userquest.startdate,
-				userquest.stopdate
+				users_quests.dt_passed
 			FROM 
 				quest
 			LEFT JOIN 
-				userquest ON userquest.idquest = quest.idquest AND userquest.iduser = ?
+				users_quests ON users_quests.questid = quest.idquest AND users_quests.userid = ?
 			WHERE
 				quest.gameid = ?
 				AND quest.idquest = ?
@@ -85,33 +84,25 @@ try {
 	{
 		$questname = $row['name'];
 		$status = '';
-		if ($row['stopdate'] == null)
+		if ($row['dt_passed'] == null)
 			$status = 'open';
-		else if ($row['stopdate'] == '0000-00-00 00:00:00')
-			$status = 'in_progress';
 		else
 			$status = 'completed';
 
 		$response['data'] = array(
 			'questid' => $row['idquest'],
-			'date_start' => $row['startdate'],
-			'date_stop' => $row['stopdate'],
+			'dt_passed' => $row['dt_passed'],
 		);
 		$response['quest'] = $row['idquest'];
 		$real_answer = $row['answer'];
 		$levenshtein = levenshtein(strtoupper($real_answer), strtoupper($answer));		
 		
-		if ($status == 'in_progress') {
+		if ($status == 'open') {
 
 			// check answer
 			if (md5(strtoupper($real_answer)) == md5(strtoupper($answer))) {
-				
 				$response['result'] = 'ok';
-				$nowdate = date('Y-m-d H:i:s');
-				$query1 = 'UPDATE userquest SET stopdate = NOW() WHERE idquest = ? AND iduser = ?;';
-				$stmt1 = $conn->prepare($query1);
-				$stmt1->execute(array(intval($questid), APISecurity::userid()));
-				
+
 				// insert record
 				{
 					$stmt_users_quests = $conn->prepare("INSERT INTO users_quests(userid, questid, dt_passed) VALUES(?,?,NOW())");
@@ -128,7 +119,6 @@ try {
 					$stmt2->execute(array(intval($new_user_score), APISecurity::userid(), APIGame::id()));
 				}
 				APIQuest::updateCountUserSolved($conn, $questid);
-
 				APIAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, $levenshtein, 'Yes');
 				APIAnswerList::movedToBackup($conn, $questid);
 
@@ -151,8 +141,6 @@ try {
 			};
 		} else if ($status == 'completed') {
 			APIHelpers::showerror(1217, 'Quest already passed');
-		} else if ($status == 'open') {
-			APIHelpers::showerror(1344, 'Please take quest before try pass');
 		}
 
 		/*if ($status == 'current' || $status == 'completed')
