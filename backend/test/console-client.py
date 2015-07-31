@@ -6,13 +6,13 @@ import getpass
 import re
 from FHQFrontEndLib import FHQFrontEndLib
 
-print("1 https://fhq.sea-kg.com")
-print("2 http://fhq.keva.su")
-print("3 http://localhost/fhq")
+print("1 http://fhq.sea-kg.com/api/")
+print("2 http://fhq.keva.su/api/")
+print("3 http://localhost/fhq/api/")
 numsrv = raw_input("Please choose server: ")
 url = ''
 if numsrv == '1':
-	url = 'https://fhq.sea-kg.com/api/'
+	url = 'http://fhq.sea-kg.com/api/'
 elif numsrv == '2':
 	url = 'http://fhq.keva.su/api/'
 elif numsrv == '3':
