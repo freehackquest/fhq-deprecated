@@ -724,6 +724,37 @@ function FHQGuiLib() {
 		fhq.quests.export(questid);
 	}
 
+	this.formImportQuest = function() {
+		var pt = new FHQParamTable();
+		pt.row('', 'ZIP: <input id="importquest_zip" type="file" required/>');
+		pt.row('', '<div class="fhqbtn" onclick="fhqgui.importQuest();">Import</div>');
+		pt.skip();
+		this.showModalDialog(pt.render());
+	}
+
+	this.importQuest = function() {
+		var files = document.getElementById('importquest_zip').files;
+		if (files.length == 0) {
+			alert("Please select file");
+			return;
+		}
+		/*for(i = 0; i < files.length; i++)
+			alert(files[i].name);*/
+		
+		send_request_post_files(
+			files,
+			'api/quests/import.php',
+			createUrlFromObj({}),
+			function (obj) {
+				if (obj.result == "fail") {
+					alert(obj.error.message);
+					return;
+				}
+				fhqgui.closeModalDialog();
+				loadQuests();
+			}
+		);
+	}
 
 	this.chooseGame = function(id) {
 		send_request_post(
