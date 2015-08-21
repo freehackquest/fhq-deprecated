@@ -55,8 +55,13 @@ function reloadQuests()
 			quests.innerHTML = '';
 			
 			var perms = obj['permissions'];
-			if (perms['insert'] == true)
-				quests.innerHTML += '<center><div class="fhqbtn" onclick="formCreateQuest();">Create Quest</div></center><hr>';
+			if (perms['insert'] == true) {
+				var tmp = '<center>';
+				tmp += '<div class="fhqbtn" onclick="formCreateQuest();">Create Quest</div>';
+				tmp += '<div class="fhqbtn" onclick="fhqgui.formImportQuest();">Import Quest</div>';
+				tmp += '</center><hr>';
+				quests.innerHTML += tmp; 
+			}
 
 			var stats = [];
 			var tps = fhq.getQuestTypes();
