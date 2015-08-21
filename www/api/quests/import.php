@@ -7,19 +7,19 @@
  * API_INPUT: token - guid, token
  */
 
-$curdir_import_game = dirname(__FILE__);
-include_once ($curdir_import_game."/../api.lib/api.base.php");
-include_once ($curdir_import_game."/../../config/config.php");
+$curdir_import_quest = dirname(__FILE__);
+include_once ($curdir_import_quest."/../api.lib/api.base.php");
+include_once ($curdir_import_quest."/../../config/config.php");
 
 $response = APIHelpers::startpage($config);
 
 APIHelpers::checkAuth();
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(1345, 'This method only for admin');
+	APIHelpers::showerror(1344, 'This method only for admin');
 
 if (count($_FILES) <= 0)
-	APIHelpers::showerror(1346, 'Not found files '.count($_FILES));
+	APIHelpers::showerror(1349, 'Not found files '.count($_FILES));
 
 $keys = array_keys($_FILES);
 $response['result'] = 'ok';
@@ -31,7 +31,7 @@ for($i = 0; $i < count($keys); $i++)
 	$filename = $keys[$i];
 	if ($_FILES[$filename]['error'] > 0)
 	{
-		APIHelpers::showerror(1347, 'Error with files '.$_FILES[$filename]["error"]);
+		APIHelpers::showerror(1350, 'Error with files '.$_FILES[$filename]["error"]);
 	}
 	else
 	{
@@ -41,7 +41,7 @@ for($i = 0; $i < count($keys); $i++)
 		$filename = $_FILES[$filename]["tmp_name"];
 
 		if ($zip->open($filename)!==TRUE) {
-			APIHelpers::showerror(1348, 'Could not open zip-archive');
+			APIHelpers::showerror(1351, 'Could not open zip-archive');
 		}
 		
 		// print_r($zip);
@@ -54,10 +54,9 @@ for($i = 0; $i < count($keys); $i++)
 			if (substr($name, -strlen('.json')) === '.json') {
 				$jsonfilename = $name;
 			} else {
-				$files[] = $name;
+				$files[$name] = $zip->getFromName($name);
 			}
 		}
-		// $pngdata = $zip->getFromName($pngfilename);
 		$quest = json_decode($zip->getFromName($jsonfilename), true);
 		$zip->close();
 
@@ -72,7 +71,7 @@ for($i = 0; $i < count($keys); $i++)
 			$gameid = $row['id'];
 		}
 		if ($gameid == 0) {
-			APIHelpers::showerror(1348, 'Not found game');
+			APIHelpers::showerror(1352, 'Not found game');
 		}
 
 		$stmt = $conn->prepare('SELECT idquest FROM quest WHERE quest_uuid = ?');
@@ -139,15 +138,37 @@ for($i = 0; $i < count($keys); $i++)
 			APIEvents::addPublicEvents($conn, 'quests', "Updated quest #".$questid.' from game '.htmlspecialchars($quest['game']['title']));
 		}
 
-		// TODO: insert or update files for quest
-		// logo
-		/*$fp = fopen($curdir_import_game.'/../../files/games/'.$gameid.'.png', 'w');
-		fwrite($fp, $pngdata);
-		fclose($fp);
-		
-		// update logo in db
-		$stmt = $conn->prepare('UPDATE games SET logo = ? WHERE uuid = ?');
-		$stmt->execute(array('files/games/'.$gameid.'.png', $game['uuid']));*/
+		// remove all files from quest
+		$stmt = $conn->prepare('SELECT id, filepath FROM quests_files WHERE questid = ?');
+		$stmt->execute(array($questid));
+		while ($row = $stmt->fetch()) {
+			$filepath = $curdir_import_quest.'/../../'.$row['filepath'];
+			if (file_exists($filepath)) {
+				unlink($filepath);
+			}
+			$conn->prepare('DELETE FROM quests_files WHERE id = ?')->execute(array($row['id']));
+		}
+
+		foreach ($quest['files'] as $file) {
+			$fileid = 0;
+			$file_uuid = $file['uuid'];
+			$file_path = $file['filepath'];
+			$stmt = $conn->prepare('SELECT id FROM quests_files WHERE uuid = ?');
+			$stmt->execute(array($file_uuid));
+			if ($row = $stmt->fetch()) {
+				$fileid = $row['id'];
+			}
+			
+			if ($fileid == 0) {
+				if (isset($files[$file_uuid])) {
+					$fp = fopen($curdir_import_quest.'/../../'.$file_path, 'w');
+					fwrite($fp, $files[$file_uuid]);
+					fclose($fp);
+				}
+				$stmt2 = $conn->prepare('INSERT INTO quests_files(uuid, questid, filename, size, dt, filepath) VALUES(?,?,?,?,NOW(),?)');
+				$stmt2->execute(array($file_uuid, $questid, $file['filename'], $file['size'], $file['filepath']));				
+			}
+		}
 	}
 }
 
