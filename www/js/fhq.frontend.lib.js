@@ -61,7 +61,7 @@ function FHQFrontEndLib() {
 						var obj = JSON.parse(tmpXMLhttp.responseText);
 						callbackf(obj);
 					} catch(e) {
-						alert(tmpXMLhttp.responseText);
+						alert(e.name + ":" + e.message + "\n stack:" + e.stack + "\n" + tmpXMLhttp.responseText);
 					}
 					delete obj;
 					delete tmpXMLhttp;
@@ -119,6 +119,19 @@ function FHQFrontEndLib() {
 			}
 			return obj;
 		};
+		this.registration = function(email, captcha, callback) {
+			var params = {};
+			params.email = email;
+			params.captcha = captcha;
+			this.p.sendPostRequest_Async('api/security/registration.php', params, callback);
+		};
+		this.resetPassword = function(email, captcha, callback) {
+			var params = {};
+			params.email = email;
+			params.captcha = captcha;
+			this.p.sendPostRequest_Async('api/security/restore.php', params, callback);
+		};
+		
 		this.logout = function () {
 			var params = {};
 			params.token = this.p.token;
@@ -360,6 +373,10 @@ function FHQFrontEndLib() {
 	})(this);
 	
 	this.enums = null;
+	
+	this.publicInfo = function(callback) {
+		this.sendPostRequest_Async('api/public/info.php', {}, callback);
+	}
 	
 	this.initTypes = function() {
 		if (this.enums != null)

@@ -28,18 +28,26 @@
     z-index: 1001;
 }
 
-.overlay_close {
+.overlay_header{
+	padding: 10px;
+	display: block;
+	font: bold italic 110% serif;
+	text-align: center;
+	border-bottom: 1px solid #C8C8C8;
+}
+
+.overlay_buttons {
+	padding: 10px;
 	display: block;
 	text-align: right;
-	border-top: 1px solid #000000;
-	/* bottom: 0px; */
-    /*vertical-align: bottom;*/
+	border-top: 1px solid #C8C8C8;
 }
 
 .overlay_content {
 	display: inline-block;
 	color: #000000;
 	padding: 15px;
+	margin: 15px;
 	background-color: #ffffff;
 	border: 5px solid #606060;
 	border-radius: 10px;

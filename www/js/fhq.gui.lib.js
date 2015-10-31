@@ -1,4 +1,6 @@
-function FHQGuiLib() {
+function FHQGuiLib(api) {
+	this.fhq = api;
+	this.api = api;
 	this.createComboBox = function(idelem, defaultvalue, arr) {
 		var result = '<select id="' + idelem + '">';
 		for (var k in arr) {
@@ -37,6 +39,8 @@ function FHQGuiLib() {
 		return '<textarea id="' + idelem + '">' + text + '</textarea>';
 	}
 
+	/* Old Modal Dialog */
+	
 	this.showModalDialog = function(content) {
 		// document.getElementById('modal_dialog').style.top = document.body.
 		document.getElementById('modal_dialog').style.visibility = 'visible';
@@ -57,6 +61,214 @@ function FHQGuiLib() {
 		document.getElementById('modal_dialog_content').innerHTML = "";
 	}
 	
+	/* FHQModalDialog */
+	
+	this.showFHQModalDialog = function(obj) {
+		// document.getElementById('modal_dialog').style.top = document.body.
+		document.getElementById('fhqmodaldialog').style.visibility = 'visible';
+		$('#fhqmodaldialog_header').html(obj.header);
+		$('#fhqmodaldialog_content').html(obj.content);
+		$('#fhqmodaldialog_buttons').html(obj.buttons + $('#fhqmodaldialog_btncancel').html());
+		
+		document.documentElement.style.overflow = 'hidden';  // firefox, chrome
+		document.body.scroll = "no"; // ie only
+		this.modalDialog2ClickContent = false;
+		document.onkeydown = function(evt) {
+			if (evt.keyCode == 27)
+				fhqgui.closeModalDialog2();
+		}
+	}
+
+	this.updateFHQModalDialog = function(obj) {
+		$('#fhqmodaldialog_header').html(obj.header);
+		$('#fhqmodaldialog_content').html(obj.content);
+		$('#fhqmodaldialog_buttons').html(obj.buttons + $('#fhqmodaldialog_btncancel').html());
+	}
+
+	this.clickFHQModalDialog_content = function() {
+		this.FHQModalDialog_ClickContent = true;
+	}
+	
+	this.clickFHQModalDialog_dialog = function() {
+		if(this.FHQModalDialog_ClickContent != true){
+			this.closeFHQModalDialog();
+		}else{
+			this.FHQModalDialog_ClickContent = false;
+		}
+	}
+
+	this.closeFHQModalDialog = function() {
+		document.getElementById('fhqmodaldialog').style.visibility = 'hidden';
+		document.documentElement.style.overflow = 'auto';  // firefox, chrome
+		document.body.scroll = "yes"; // ie only
+		document.onkeydown = null;
+		$('#fhqmodaldialog_content').html("");
+	}
+	
+	/* Sign In */
+	
+	this.showSignInForm = function() {
+		this.showFHQModalDialog({
+			'header' : 'Sign In',
+			'content': $("#signin-form").html(),
+			'buttons': $("#signin-form-buttons").html()
+		});
+	}
+
+	this.cleanupSignInMessages = function() {
+		$('#signin-error-message').html('');
+	}
+	
+	this.signin = function() {
+		var email = $("#signin-email").val();
+		var password = $("#signin-password").val();
+
+		var obj = this.fhq.security.login(email,password);
+		if (obj.result == "fail") {
+			$("#signin-error-message").html(obj.error.message + "[" + email + "][" + password + "]");
+		} else {
+			// TODO
+			$('#signin-email').val('');
+			$("#signin-password").val('');
+
+			/* this.updateFHQModalDialog({
+				"header" : "Sign In",
+				"content" : "Good",
+				"buttons" : ""
+			});*/
+			window.location.href = "main.php";
+		}
+	}
+	
+	/* Sign Up */
+	
+	this.showSignUpForm = function() {
+		this.showFHQModalDialog({
+			'header' : 'Sign Up',
+			'content': $("#signup-form").html(),
+			'buttons': $("#signup-form-buttons").html()
+		});
+		this.refreshSignUpCaptcha();
+	}
+
+	this.refreshSignUpCaptcha = function() {
+		$('#signup-captcha-image').attr('src', 'api/captcha.php?rid=' + Math.random());
+	}
+
+	this.cleanupSignUpMessages = function() {
+		$('#signup-error-message').html('');
+		$('#signup-info-message').html('');
+	}
+
+	this.signup = function() {
+		var self = this;
+		$('#signup-error-message').html('');
+		$('#signup-info-message').html('Please wait...');
+		var email = $('#signup-email').val();
+		var captcha = $('#signup-captcha').val();
+
+		this.fhq.security.registration(email,captcha, function(response){
+			if(response.result == "fail"){
+				$('#signup-error-message').html(response.error.message);
+				$('#signup-info-message').html('');
+			}else{
+				
+				$('#signup-email').val('');
+				$('#signup-captcha').val('');
+				$('#signup-info-message').html('');
+				$('#signup-error-message').html('');
+				
+				self.updateFHQModalDialog({
+					'header' : 'Sign Up',
+					'content': response.data.message,
+					'buttons': ''
+				});
+			}
+			self.refreshSignUpCaptcha();
+		});
+	}
+	
+	/* Reset Password */
+
+	this.showResetPasswordForm = function() {
+		this.showFHQModalDialog({
+			'header' : 'Reset Password',
+			'content': $("#reset-password-form").html(),
+			'buttons': $("#reset-password-form-buttons").html()
+		});
+		this.refreshResetPasswordCaptcha();
+	};
+
+	this.refreshResetPasswordCaptcha = function() {
+		$('#reset-password-captcha-image').attr('src', 'api/captcha.php?rid=' + Math.random());
+	}
+
+	this.cleanupResetPasswordMessages = function() {
+		$('#reset-password-info-message').html('');
+		$('#reset-password-error-message').html('');
+	}
+
+	this.resetPassword = function() {
+		var self = this;
+		$('#reset-password-error-message').html('');
+		$('#reset-password-info-message').html('Please wait...');
+		var email = $('#reset-password-email').val();
+		var captcha = $('#reset-password-captcha').val();
+
+		this.fhq.security.resetPassword(email,captcha, function(response){
+			if(response.result == "fail"){
+				$('#reset-password-error-message').html(response.error.message);
+				$('#reset-password-info-message').html('');
+			}else{
+				
+				$('#reset-password-email').val('');
+				$('#reset-password-captcha').val('');
+				$('#reset-password-info-message').html('');
+				$('#reset-password-error-message').html('');
+				
+				self.updateFHQModalDialog({
+					'header' : 'Reset Password',
+					'content': response.data.message,
+					'buttons': ''
+				});
+			}
+			self.refreshResetPasswordCaptcha();
+		});
+	};
+
+	this.loadCities = function() {
+		this.api.publicInfo(function(response){
+			if (response.result == "fail") {
+				$('#cities').html('Fail');
+			} else {
+				var content = '';
+				
+				content += "<br><b>Quests:</b><br>" + response.data.quests.count + "<br>";
+				content += "<b>All attempts:</b><br>" + response.data.quests.attempts + "<br>";
+				content += "<b>Already solved:</b><br>" + response.data.quests.solved + "<br><br>";
+
+				content += "<h2>Playing with us</h2>";
+
+				var cities = [];
+				for (var k in response.data.cities){
+					cities.push(response.data.cities[k].city + ' (' + response.data.cities[k].cnt + ')');
+				}
+				content += cities.join(", ");
+				content += '<center>';
+				for (var k in response.data.winners) {
+					content += '<br><b>Winner(s) of ' + k + ':</b><br>';
+					var us = []
+					for (var k1 in response.data.winners[k]) {
+						us.push(response.data.winners[k][k1].user + ' with +' + response.data.winners[k][k1].score);
+					}
+					content +=  us.join(', ');
+					content += '<br>';
+				}
+				$('#cities').html(content);
+			}
+		});
+	};
+
 	this.paginator = function(min,max,onpage,page, setfuncname, updatefuncname) {
 		if (max == 0) 
 			return "";
@@ -113,7 +325,7 @@ function FHQGuiLib() {
 		}
 		return pagesHtml.join(' ');
 	}
-	
+
 	this.filter = {
 		'current' : 'quests',
 		'quests' : {

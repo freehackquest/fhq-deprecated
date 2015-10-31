@@ -38,6 +38,8 @@ if (!isset($_SESSION['user']))
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/events.css?ver=1">
 		<link rel="stylesheet" type="text/css" href="styles/userpanel_by_nitive.css?ver=1"/>
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/jquery.datetimepicker.css?ver=1"/>
+		<link rel="stylesheet" type="text/css" href="css/fhq.css?ver=1"/>
+		<!-- link rel="stylesheet" type="text/css" href="css/fhq.min.css?ver=1"/-->
 
 		<!-- todo -->
 		<?php
@@ -68,9 +70,9 @@ if (!isset($_SESSION['user']))
 
 		<script type="text/javascript">
 			var fhq = new FHQFrontEndLib();
-			var fhqgui = new FHQGuiLib();
+			var fhqgui = new FHQGuiLib(fhq);
 
-			fhq.client = "web-fhq2014";
+			fhq.client = "web-fhq2015";
 			fhq.baseUrl = fhq.getCurrentApiPath(); // or another path
 			// fhq.token = fhq.getTokenFromCookie();		
 
@@ -89,10 +91,8 @@ if (!isset($_SESSION['user']))
 						<div id="modal_dialog_content">
 							text
 						</div>
-						<div class="overlay_close">
-							<a class="fhqbtn" href="javascript:void(0);" onclick="closeModalDialog();">
-								Close
-							</a>
+						<div class="overlay_buttons">
+							<div class="fhqbtn" onclick="closeModalDialog();">Close</div>
 						</div>
 					</div>
 				</div>
