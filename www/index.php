@@ -128,6 +128,8 @@ if (isset($_SESSION['user']))
 				<div class="fhqmodaldialog_table">
 					<div class="fhqmodaldialog_cell">
 						<div class="fhqmodaldialog_content" onclick="fhqgui.clickFHQModalDialog_content();">
+							<div class="fhqmodaldialog_iconclose" onclick="fhqgui.closeFHQModalDialog();"></div>
+							<div class="fhqmodaldialog_iconfhq"></div>
 							<div id="fhqmodaldialog_header" class="fhqmodaldialog_header"></div>
 							<div id="fhqmodaldialog_content" class="fhqmodaldialog_content2"></div>
 							<div id="fhqmodaldialog_buttons" class="fhqmodaldialog_buttons"></div>
@@ -139,7 +141,24 @@ if (isset($_SESSION['user']))
 				</div>
 			</div>
 
-			<!-- Todo Content Place Here -->
+			<!-- Donate -->
+
+			<div id="donate-form" style="display: none;">
+				<center>
+					<br>
+					<iframe frameborder="0" allowtransparency="true" scrolling="no" src="https://money.yandex.ru/embed/donate.xml?account=41001311490795&quickpay=donate&payment-type-choice=on&default-sum=&targets=%D0%BD%D0%B0+%D0%B4%D0%BE%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D1%83+%D0%BF%D1%80%D0%BE%D0%B5%D1%82%D0%B0+Free-Hack-Quest&target-visibility=on&project-name=Free-Hack-Quest&project-site=http%3A%2F%2Ffhq.sea-kg.com&button-text=01&comment=on&hint=%D0%BE%D1%82+%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F+%3F+%D0%B6%D0%B5%D1%80%D1%82%D0%B2%D1%83%D1%8E+%D0%B4%D0%BB%D1%8F+%D0%B4%D0%BE%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B8%2F%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5+%D0%BA%D0%B2%D0%B5%D1%81%D1%82%D0%BE%D0%B2&mail=on&successURL=fhq.sea-kg.com%2Fdonate-thanks.html" width="526" height="203"></iframe>
+					<br>
+					<div style="padding: 0.6em; background-color: border-radius: 7px; -moz-border-radius: 7px;">
+						<a href="https://money.yandex.ru/embed/?from=sbal" title="Виджеты Яндекс.Денег" style="width: 200px; height: 100px; display: block; margin-bottom: 0.6em; background: url('https://money.yandex.ru/share-balance.xml?id=17819619&key=6DE09B07E089E0AA') 0 0 no-repeat; -background: none; -filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='https://money.yandex.ru/share-balance.xml?id=17819619&key=6DE09B07E089E0AA', sizingMethod = 'crop');"></a>
+						<form action="https://money.yandex.ru/direct-payment.xml" method="post">
+							<input type="hidden" name="receiver" value="41001311490795"/>
+							<input type="hidden" name="sum" value="0"/>
+							<input type="hidden" name="destination" value="Яндекс.Деньги &#8212; на хорошее дело не жалко!"/>
+							<input type="hidden" name="FormComment" value="Пожертвование через виджет &#171Мой баланс&#187;"/>
+						</form>
+					</div>
+				</center>
+			</div>
 
 			<!-- Sign In -->
 
@@ -206,8 +225,8 @@ if (isset($_SESSION['user']))
 				<div class="fhq_btn_menu hint--bottom" data-hint="Restore Password"  onclick="fhqgui.showResetPasswordForm();">
 					<img class="fhq_btn_menu_img" src="images/menu/resetpass.svg"/>
 				</div>
-				<div class="fhq_btn_menu hint--bottom" data-hint="Donate">
-					<a target="_blank" href="http://fhq.sea-kg.com/donate.html"><img class="fhq_btn_menu_img" src="images/menu/donate.svg"/></a>
+				<div class="fhq_btn_menu hint--bottom" data-hint="Donate" onclick="fhqgui.showDonateForm();">
+					<img class="fhq_btn_menu_img" src="images/menu/donate.svg"/>
 				</div>
 			</div>
 			
@@ -247,8 +266,8 @@ if (isset($_SESSION['user']))
 								<img width="100px" src="images/menu/resetpass.svg"/>
 							</div>
 							
-							<div class="index_menu hint--bottom" data-hint="Donate">
-								<a target="_blank" href="http://fhq.sea-kg.com/donate.html"><img width="100px" src="images/menu/donate.svg"/></a>
+							<div class="index_menu hint--bottom" data-hint="Donate" onclick="fhqgui.showDonateForm();">
+								<img width="100px" src="images/menu/donate.svg"/>
 							</div>
 					</td>
 					<td width="30%" class="fhq_index_column">

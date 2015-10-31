@@ -105,6 +105,16 @@ function FHQGuiLib(api) {
 		$('#fhqmodaldialog_content').html("");
 	}
 	
+	/* Donate */
+	
+	this.showDonateForm = function() {
+		this.showFHQModalDialog({
+			'header' : 'Donate',
+			'content': $("#donate-form").html(),
+			'buttons': ''
+		});
+	}
+	
 	/* Sign In */
 	
 	this.showSignInForm = function() {
