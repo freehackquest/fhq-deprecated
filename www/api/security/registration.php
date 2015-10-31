@@ -21,6 +21,8 @@ include_once ($curdir_security_registration."/../api.lib/api.user.php");
 include_once ($curdir_security_registration."/../../config/config.php");
 include_once ($curdir_security_registration."/../api.lib/api.mail.php");
 
+error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE & ~E_STRICT);
+
 $result = array(
 	'result' => 'fail',
 	'data' => array(),

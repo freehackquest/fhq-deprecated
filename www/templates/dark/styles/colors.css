@@ -85,6 +85,12 @@
 	border-color: #3e3e3e;
 }
 
+.fhqmodaldialog_content {
+	color: #C8C8C8;
+	background-color: #303030;
+	border-color: #3e3e3e;
+}
+
 /* tables */
 
 #customers th {
