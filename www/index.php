@@ -20,12 +20,24 @@ if (isset($_SESSION['user']))
 		<meta name="author" content="sea-kg" />
 		<meta name="copyright" lang="ru" content="sea-kg" />
 		<meta name="description" content="competition information security" />
-		<meta name="keywords" content="security, fhq, fhq 2012, fhq 2013, fhq 2014, free, hack, quest, competition, information security, ctf, joepardy" />		
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/fhq.css?version=1" />
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css?version=1" />
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css?version=1" />
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/button3.css?version=1" />
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/hint.css?version=1">
+		<meta name="keywords" content="security, fhq, fhq 2012, fhq 2013, fhq 2014, free, hack, quest, competition, information security, ctf, joepardy" />
+
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/fhq.css?ver=1" />
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css?ver=1" />
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/menu.css?ver=1" />
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css?ver=1" />
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/button3.css?ver=1" />
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/games.css?ver=1" />
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/quest_info.css?ver=1" />
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/overlay.css?ver=1" />
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/hint.css?ver=1">
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/timer.css?ver=1">
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/quests.css?ver=1">
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/users.css?ver=1">
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/events.css?ver=1">
+		<link rel="stylesheet" type="text/css" href="styles/userpanel_by_nitive.css?ver=1"/>
+		<link rel="stylesheet" type="text/css" href="templates/base/styles/jquery.datetimepicker.css?ver=1"/>
+
 		<script type="text/javascript" src="js/fhq.frontend.lib.js?version=1"></script>
 		<script type="text/javascript" src="js/index.js?version=1"></script>
 		<script type="text/javascript">
@@ -55,9 +67,31 @@ if (isset($_SESSION['user']))
 			$hint = isset($_GET['dark']) ? 'You are on the dark side and you can not turning back.' : 'Join the dark side!';
 			echo '<link rel="stylesheet" type="text/css" href="templates/'.$colors.'/styles/colors.css" />';
 		?>
-		
+
 	</head>
 	<body class="fhqbody" onload="show_index_element('indexcontent_sign_in'); loadCities();">
+
+			<div id="rightpanel_unauth" class="fhqtopmenu_rightpanel">
+				<div class="fhq_btn_menu hint--bottom" data-hint="Sign In"  onclick="show_index_element('indexcontent_sign_in');">
+					<img class="fhq_btn_menu_img" src="images/menu/sign_in.svg"/>
+				</div>
+				<div class="fhq_btn_menu hint--bottom" data-hint="Sign Up"  onclick="show_index_element('indexcontent_registration');">
+					<img class="fhq_btn_menu_img" src="images/menu/sign_up.svg"/>
+				</div>
+				<div class="fhq_btn_menu hint--bottom" data-hint="Restore Password"  onclick="show_index_element('indexcontent_restore');">
+					<img class="fhq_btn_menu_img" src="images/menu/restore.svg"/>
+				</div>
+			</div>
+			
+			<div id="rightpanel_user" class="fhqtopmenu_rightpanel" style="display: none;">
+				<div class="fhq_btn_menu hint--bottom" data-hint="User profile"  onclick="">
+					<img class="fhq_btn_menu_img" src="images/menu/user.png"/>
+					<div style="display: inline-block;" id="btn_user_info"></div>
+				</div>
+				<div class="fhq_btn_menu hint--bottom" data-hint="Logout" onclick="logout();">
+					<img class="fhq_btn_menu_img" src="images/menu/logout.png"/><br>
+				</div>
+			</div>
 
 			<table width="100%" height="100%">
 				<tr>
@@ -68,17 +102,6 @@ if (isset($_SESSION['user']))
 							<div class="fhq_index_logo hint--bottom" data-hint="<?php echo $hint; ?>" onclick="window.location.href = '?<?php echo $anticolors; ?>';">
 								<img src="templates/base/images/logo/fhq_2015.png" />
 							</div><br><br>
-							<div class="index_menu">
-								<div class="index_menu hint--bottom" data-hint="Sign in" onclick="show_index_element('indexcontent_sign_in');">
-									<img width="100px" src="templates/base/images/index/sign_in.png"/>
-								</div>
-								<div class="index_menu hint--bottom" data-hint="Registration" onclick="show_index_element('indexcontent_registration');">
-									<img width="100px" src="templates/base/images/index/registration.png"/>
-								</div>
-								<div class="index_menu hint--bottom" data-hint="Restore password" onclick="show_index_element('indexcontent_restore');" >
-									<img width="100px" src="templates/base/images/index/restore.png"/>
-								</div>
-							</div>
 
 							<div class="indexcontent" id="indexcontent_sign_in">
 								<input placeholder="your@email.com" id="email" value="" type="text" onkeydown="if (event.keyCode == 13) login();"><br><br>
