@@ -68,13 +68,42 @@ if (isset($_SESSION['user']))
 				fhq.security.logout();
 
 		</script>
-			
+
 		<?php
 			$anticolors = isset($_GET['dark']) ? 'base' : 'dark';
 			$colors = isset($_GET['dark']) ? 'dark' : 'base';
 			$hint = isset($_GET['dark']) ? 'You are on the dark side and you can not turning back.' : 'Join the dark side!';
 			echo '<link rel="stylesheet" type="text/css" href="templates/'.$colors.'/styles/colors.css" />';
 		?>
+
+		<!-- Yandex.Metrika counter -->
+		<script type="text/javascript">
+			(function (d, w, c) {
+				(w[c] = w[c] || []).push(function() {
+					try {
+						w.yaCounter32831012 = new Ya.Metrika({
+							id:32831012,
+							clickmap:true,
+							trackLinks:true,
+							accurateTrackBounce:true
+						});
+					} catch(e) { }
+				});
+
+				var n = d.getElementsByTagName("script")[0],
+					s = d.createElement("script"),
+					f = function () { n.parentNode.insertBefore(s, n); };
+				s.type = "text/javascript";
+				s.async = true;
+				s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+				if (w.opera == "[object Opera]") {
+					d.addEventListener("DOMContentLoaded", f, false);
+				} else { f(); }
+			})(document, window, "yandex_metrika_callbacks");
+		</script>
+		<noscript><div><img src="https://mc.yandex.ru/watch/32831012" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+		<!-- /Yandex.Metrika counter -->
 
 	</head>
 	<body class="fhqbody" onload="fhqgui.loadCities();">
@@ -110,8 +139,7 @@ if (isset($_SESSION['user']))
 				</div>
 			</div>
 
-			<!-- Todo Content Place -->
-
+			<!-- Todo Content Place Here -->
 
 			<!-- Sign In -->
 
@@ -178,6 +206,9 @@ if (isset($_SESSION['user']))
 				<div class="fhq_btn_menu hint--bottom" data-hint="Restore Password"  onclick="fhqgui.showResetPasswordForm();">
 					<img class="fhq_btn_menu_img" src="images/menu/resetpass.svg"/>
 				</div>
+				<div class="fhq_btn_menu hint--bottom" data-hint="Donate">
+					<a target="_blank" href="http://fhq.sea-kg.com/donate.html"><img class="fhq_btn_menu_img" src="images/menu/donate.svg"/></a>
+				</div>
 			</div>
 			
 			<!-- Right Menu Panel for Athorized Users -->
@@ -189,6 +220,9 @@ if (isset($_SESSION['user']))
 				</div>
 				<div class="fhq_btn_menu hint--bottom" data-hint="Logout" onclick="logout();">
 					<img class="fhq_btn_menu_img" src="images/menu/logout.png"/><br>
+				</div>
+				<div class="fhq_btn_menu hint--bottom" data-hint="Donate">
+					<a target="_blank" href="http://fhq.sea-kg.com/donate.html"><img class="fhq_btn_menu_img" src="images/menu/donate.svg"/></a>
 				</div>
 			</div>
 
@@ -209,8 +243,12 @@ if (isset($_SESSION['user']))
 								<img width="100px" src="images/menu/sign_up.svg"/>
 							</div>
 
-							<div class="index_menu hint--bottom" data-hint="Reset Password"  onclick="fhqgui.showResetPasswordForm();">
+							<div class="index_menu hint--bottom" data-hint="Reset Password" onclick="fhqgui.showResetPasswordForm();">
 								<img width="100px" src="images/menu/resetpass.svg"/>
+							</div>
+							
+							<div class="index_menu hint--bottom" data-hint="Donate">
+								<a target="_blank" href="http://fhq.sea-kg.com/donate.html"><img width="100px" src="images/menu/donate.svg"/></a>
 							</div>
 					</td>
 					<td width="30%" class="fhq_index_column">
