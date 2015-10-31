@@ -40,6 +40,7 @@
 }
 
 .fhqmodaldialog_content {
+	position: relative;
 	display: inline-block;
 	color: #000000;
 	padding: 15px;
@@ -63,4 +64,29 @@
 
 .fhqmodaldialog_btncancel {
 	display: none;
+}
+
+.fhqmodaldialog_iconclose{
+	position: absolute;
+	top: -8;
+	right: -8;
+	background-image: url(../images/close.svg);
+	width: 32px;
+	height: 32px;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	border-radius: 12px;
+}
+.fhqmodaldialog_iconclose:hover{
+	
+	cursor: pointer;
+}
+
+.fhqmodaldialog_iconfhq{
+	position: absolute;
+	top: -8;
+	left: -8;
+	background-image: url(../images/logo_32x32.png);
+	width: 32px;
+	height: 32px;
 }
