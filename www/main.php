@@ -371,16 +371,6 @@ if (!isset($_SESSION['user']))
 			',
 			'show' => $role == 'admin',
 		);
-		
-		$arrmenu2[] = array(
-			'name' => 'dumps',
-			'html' => '
-				<div class="fhq_btn_menu hint--right" data-hint="Dumps" onclick="fhqgui.createPageDumps();">
-					<img class="fhq_btn_menu_img" src="images/menu/dumps.png"/>
-				</div>
-			',
-			'show' => $role == 'admin',
-		);
 
 		// echo menu
 		foreach ($arrmenu2 as $menu) {

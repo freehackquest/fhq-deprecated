@@ -130,3 +130,13 @@
 	color: #fff;
 	text-decoration: none;
 }
+
+.hide{
+	display: none;
+}
+
+.leftimg {
+	float:left; /* Выравнивание по левому краю */
+	margin: 7px 7px 7px 0; /* Отступы вокруг картинки */
+}
+
