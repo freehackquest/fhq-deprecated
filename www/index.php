@@ -217,16 +217,16 @@ if (isset($_SESSION['user']))
 
 			<div id="rightpanel_unauth" class="fhqtopmenu_rightpanel">
 				<div class="fhq_btn_menu hint--bottom" data-hint="Sign In"  onclick="fhqgui.showSignInForm();">
-					<img class="fhq_btn_menu_img" src="images/menu/sign_in.svg"/>
+					<img class="fhq_btn_menu_img" src="images/menu/sign_in_50x50.png"/>
 				</div>
 				<div class="fhq_btn_menu hint--bottom" data-hint="Sign Up"  onclick="fhqgui.showSignUpForm();">
-					<img class="fhq_btn_menu_img" src="images/menu/sign_up.svg"/>
+					<img class="fhq_btn_menu_img" src="images/menu/sign_up_50x50.png"/>
 				</div>
 				<div class="fhq_btn_menu hint--bottom" data-hint="Restore Password"  onclick="fhqgui.showResetPasswordForm();">
-					<img class="fhq_btn_menu_img" src="images/menu/resetpass.svg"/>
+					<img class="fhq_btn_menu_img" src="images/menu/resetpass_50x50.png"/>
 				</div>
 				<div class="fhq_btn_menu hint--bottom" data-hint="Donate" onclick="fhqgui.showDonateForm();">
-					<img class="fhq_btn_menu_img" src="images/menu/donate.svg"/>
+					<img class="fhq_btn_menu_img" src="images/menu/donate_50x50.png"/>
 				</div>
 			</div>
 			
@@ -255,19 +255,19 @@ if (isset($_SESSION['user']))
 							</div>
 							<br><br>
 							<div class="index_menu hint--bottom" data-hint="Sign In"  onclick="fhqgui.showSignInForm();">
-								<img width="100px" src="images/menu/sign_in.svg"/>
+								<img width="100px" src="images/menu/sign_in_100x100.png"/>
 							</div>
 
 							<div class="index_menu hint--bottom" data-hint="Sign Up"  onclick="fhqgui.showSignUpForm();">
-								<img width="100px" src="images/menu/sign_up.svg"/>
+								<img width="100px" src="images/menu/sign_up_100x100.png"/>
 							</div>
 
 							<div class="index_menu hint--bottom" data-hint="Reset Password" onclick="fhqgui.showResetPasswordForm();">
-								<img width="100px" src="images/menu/resetpass.svg"/>
+								<img width="100px" src="images/menu/resetpass_100x100.png"/>
 							</div>
 							
 							<div class="index_menu hint--bottom" data-hint="Donate" onclick="fhqgui.showDonateForm();">
-								<img width="100px" src="images/menu/donate.svg"/>
+								<img width="100px" src="images/menu/donate_100x100.png"/>
 							</div>
 					</td>
 					<td width="30%" class="fhq_index_column">
