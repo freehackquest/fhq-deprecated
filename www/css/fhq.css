@@ -90,3 +90,43 @@
 	width: 32px;
 	height: 32px;
 }
+
+.fhqbody {
+	margin: 0;
+	padding: 0;
+	background-color: #FFFFFF;
+	line-height:40px;
+	font: 12pt/10pt Arial;
+	color: #333333;	
+	text-align: center;
+}
+
+.fhqearth {
+	background: url(../../../images/background.png) no-repeat left top fixed;
+}
+
+.fhqbtn {
+	display: inline-block;
+	background: #ccc;
+	padding: 8px;
+	text-decoration: none;
+	position:relative;
+    color: #000000;
+    margin:3px 3px 3px 3px;
+    cursor: pointer;
+    text-shadow: 0px;
+    border-radius: 5px;
+}
+
+.fhqbtn:before, .fhqbtn:after{
+	content: '';
+    position: absolute;
+    z-index:-2;
+    text-decoration: none;
+}
+
+.fhqbtn:hover{
+	background: #606060;
+	color: #fff;
+	text-decoration: none;
+}

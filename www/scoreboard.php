@@ -13,7 +13,6 @@
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css?ver=<?php echo $versioncontent; ?>" />
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/menu.css?ver=<?php echo $versioncontent; ?>" />
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css?ver=<?php echo $versioncontent; ?>" />
-	<link rel="stylesheet" type="text/css" href="templates/base/styles/button3.css?ver=<?php echo $versioncontent; ?>" />
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/user_info.css?ver=<?php echo $versioncontent; ?>" />
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/games.css?ver=<?php echo $versioncontent; ?>" />
 	<link rel="stylesheet" type="text/css" href="templates/base/styles/quest_info.css?ver=<?php echo $versioncontent; ?>" />

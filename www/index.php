@@ -26,7 +26,6 @@ if (isset($_SESSION['user']))
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/menu.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css?ver=1" />
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/button3.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/games.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/quest_info.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/overlay.css?ver=1" />
@@ -106,7 +105,7 @@ if (isset($_SESSION['user']))
 		<!-- /Yandex.Metrika counter -->
 
 	</head>
-	<body class="fhqbody" onload="fhqgui.loadCities();">
+	<body class="fhqbody fhqearth" onload="fhqgui.loadCities();">
 
 			<div id="modal_dialog" class="overlay">
 				<div class="overlay_table">
@@ -244,6 +243,11 @@ if (isset($_SESSION['user']))
 					<a target="_blank" href="http://fhq.sea-kg.com/donate.html"><img class="fhq_btn_menu_img" src="images/menu/donate.svg"/></a>
 				</div>
 			</div>
+
+			<!-- Vertical Left Panel -->
+			
+			
+
 
 			<table width="100%" height="100%">
 				<tr>
