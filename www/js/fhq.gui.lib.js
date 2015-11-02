@@ -1,6 +1,42 @@
 function FHQGuiLib(api) {
 	this.fhq = api;
 	this.api = api;
+	
+	this.parsePageParams = function() {
+		var loc = location.search.slice(1);
+		var arr = loc.split("&");
+		var result = {};
+		var regex = new RegExp("(.*)=([^&#]*)");
+		for(var i = 0; i < arr.length; i++){
+			if(arr[i].trim() != ""){
+				p = regex.exec(arr[i].trim());
+				console.log("results: " + JSON.stringify(p));
+				if(p == null)
+					result[decodeURIComponent(arr[i].trim().replace(/\+/g, " "))] = '';
+				else
+					result[decodeURIComponent(p[1].replace(/\+/g, " "))] = decodeURIComponent(p[2].replace(/\+/g, " "));
+			}
+		}
+		console.log(JSON.stringify(result));
+		return result;
+	}
+	
+	this.pageParams = this.parsePageParams();
+	
+	this.containsPageParam = function(name){
+		return (typeof this.pageParams['dark'] !== "undefined");
+	}
+	
+	// include dark style
+	if(this.containsPageParam("dark")){
+		var link  = document.createElement('link');
+		link.rel  = 'stylesheet';
+		link.type = 'text/css';
+		link.href = 'templates/dark/styles/colors.css';
+		link.media = 'all';
+		document.head.appendChild(link);
+	};
+
 	this.createComboBox = function(idelem, defaultvalue, arr) {
 		var result = '<select id="' + idelem + '">';
 		for (var k in arr) {

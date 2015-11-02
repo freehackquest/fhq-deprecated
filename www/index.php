@@ -66,14 +66,17 @@ if (isset($_SESSION['user']))
 			if (fhq.token && fhq.token != "")  // todo 
 				fhq.security.logout();
 
-		</script>
+			$(document).ready(function() {
+				if(fhqgui.containsPageParam("dark")){
+					$('#jointothedarkside').attr('data-hint', 'You are on the dark side and you can not turning back.');
+					$('#jointothedarkside').attr('onclick', 'window.location.href = "?base";');
+				}else{
+					$('#jointothedarkside').attr('data-hint', 'Join the dark side!');
+					$('#jointothedarkside').attr('onclick', 'window.location.href = "?dark";');
+				}
+			});
 
-		<?php
-			$anticolors = isset($_GET['dark']) ? 'base' : 'dark';
-			$colors = isset($_GET['dark']) ? 'dark' : 'base';
-			$hint = isset($_GET['dark']) ? 'You are on the dark side and you can not turning back.' : 'Join the dark side!';
-			echo '<link rel="stylesheet" type="text/css" href="templates/'.$colors.'/styles/colors.css" />';
-		?>
+		</script>
 
 		<!-- Yandex.Metrika counter -->
 		<script type="text/javascript">
@@ -245,8 +248,7 @@ if (isset($_SESSION['user']))
 			</div>
 
 			<!-- Vertical Left Panel -->
-			
-			
+			<!-- todo -->
 
 
 			<table width="100%" height="100%">
@@ -254,7 +256,7 @@ if (isset($_SESSION['user']))
 					<td width="5%" class="fhq_index_column" valign="top" align="center">
 					</td>
 					<td align="center" valign="middle">
-							<div class="fhq_index_logo hint--bottom" data-hint="<?php echo $hint; ?>" onclick="window.location.href = '?<?php echo $anticolors; ?>';">
+							<div id="jointothedarkside" class="fhq_index_logo hint--bottom">
 								<img src="templates/base/images/logo/fhq_2015.png" />
 							</div>
 							<br><br>
