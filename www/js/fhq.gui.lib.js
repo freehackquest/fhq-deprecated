@@ -1,6 +1,42 @@
 function FHQGuiLib(api) {
 	this.fhq = api;
 	this.api = api;
+	
+	this.parsePageParams = function() {
+		var loc = location.search.slice(1);
+		var arr = loc.split("&");
+		var result = {};
+		var regex = new RegExp("(.*)=([^&#]*)");
+		for(var i = 0; i < arr.length; i++){
+			if(arr[i].trim() != ""){
+				p = regex.exec(arr[i].trim());
+				console.log("results: " + JSON.stringify(p));
+				if(p == null)
+					result[decodeURIComponent(arr[i].trim().replace(/\+/g, " "))] = '';
+				else
+					result[decodeURIComponent(p[1].replace(/\+/g, " "))] = decodeURIComponent(p[2].replace(/\+/g, " "));
+			}
+		}
+		console.log(JSON.stringify(result));
+		return result;
+	}
+	
+	this.pageParams = this.parsePageParams();
+	
+	this.containsPageParam = function(name){
+		return (typeof this.pageParams['dark'] !== "undefined");
+	}
+	
+	// include dark style
+	if(this.containsPageParam("dark")){
+		var link  = document.createElement('link');
+		link.rel  = 'stylesheet';
+		link.type = 'text/css';
+		link.href = 'templates/dark/styles/colors.css';
+		link.media = 'all';
+		document.head.appendChild(link);
+	};
+
 	this.createComboBox = function(idelem, defaultvalue, arr) {
 		var result = '<select id="' + idelem + '">';
 		for (var k in arr) {
@@ -253,26 +289,26 @@ function FHQGuiLib(api) {
 			} else {
 				var content = '';
 				
-				content += "<br><b>Quests:</b><br>" + response.data.quests.count + "<br>";
-				content += "<b>All attempts:</b><br>" + response.data.quests.attempts + "<br>";
-				content += "<b>Already solved:</b><br>" + response.data.quests.solved + "<br><br>";
-
-				content += "<h2>Playing with us</h2>";
+				content += "<br><b>Quests: </b>" + response.data.quests.count + "<br>";
+				content += "<b>All attempts: </b>" + response.data.quests.attempts + "<br>";
+				content += "<b>Already solved: </b>" + response.data.quests.solved + "<br>";
+				content += "<b>Playing with us: </b>";
 
 				var cities = [];
 				for (var k in response.data.cities){
 					cities.push(response.data.cities[k].city + ' (' + response.data.cities[k].cnt + ')');
 				}
 				content += cities.join(", ");
-				content += '<center>';
+				content += "<br>";
+				
 				for (var k in response.data.winners) {
-					content += '<br><b>Winner(s) of ' + k + ':</b><br>';
+					content += '<br><b>Winner(s) of ' + k + ':</b><br><ul><li>';
 					var us = []
 					for (var k1 in response.data.winners[k]) {
 						us.push(response.data.winners[k][k1].user + ' with +' + response.data.winners[k][k1].score);
 					}
-					content +=  us.join(', ');
-					content += '<br>';
+					content +=  us.join('</li><li>');
+					content += '</li></ul><br>';
 				}
 				$('#cities').html(content);
 			}
@@ -427,9 +463,9 @@ function FHQGuiLib(api) {
 	this.setFilter = function(current_filter) {
 		this.filter.current = current_filter;
 		if (this.filter[current_filter] == null) {
-			document.getElementById('btnfilter').style.visibility = 'hidden';
+			$('#btnfilter').hide();
 		} else {
-			document.getElementById('btnfilter').style.visibility = 'visible';
+			$('#btnfilter').show();
 		}
 	}
 	
@@ -437,7 +473,7 @@ function FHQGuiLib(api) {
 		var current_page = this.filter.current;
 		
 		var pt = new FHQParamTable();
-		
+
 		if (current_page == 'quests') {
 			pt.row('Status:', fhqgui.combobox('quests_userstatus', this.filter.quests.userstatus, fhq.getQuestUserStatusFilter()));
 			pt.row('Subject:', fhqgui.combobox('quests_subject', this.filter.quests.subject, fhq.getQuestTypesFilter()));
@@ -533,9 +569,15 @@ function FHQGuiLib(api) {
 
 	this.loadAbout = function() {
 		this.setFilter('about');
-		send_request_post_html('about.php', '', function(html) {
-			document.getElementById('content_page').innerHTML = html;
+		send_request_post_html('about.html?v=1', '', function(html) {
+			$('#content_page').html(html);
 		});
+	}
+
+	this.loadMainPage = function() {
+		this.setFilter('');
+		$("#content_page").html($('#mainpage').html());
+		this.loadCities();
 	}
 
 	this.eventView = function(event, access) {
@@ -1021,11 +1063,6 @@ function FHQGuiLib(api) {
 		content += '	</div>'; // fhq_event_info_row
 		content += '</div><br>'; // fhq_event_info
 		return content;
-	}
-
-	this.createPageDumps = function() {
-		this.setFilter('dumps');
-		alert('todo');
 	}
 
 	this.resetEventsPage = function() {

@@ -27,7 +27,6 @@ if (!isset($_SESSION['user']))
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/menu.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css?ver=1" />
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/button3.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/games.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/quest_info.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/overlay.css?ver=1" />
@@ -199,7 +198,7 @@ if (!isset($_SESSION['user']))
 				',
 				'show' => true,
 			);
-			
+
 			$arrmenu[] = array(
 				'name' => 'game_info',
 				'html' => '
@@ -368,16 +367,6 @@ if (!isset($_SESSION['user']))
 			'html' => '
 				<div class="fhq_btn_menu hint--right" data-hint="Install Updates" onclick="installUpdates();">
 					<img class="fhq_btn_menu_img" src="images/menu/updates.png"/>
-				</div>
-			',
-			'show' => $role == 'admin',
-		);
-		
-		$arrmenu2[] = array(
-			'name' => 'dumps',
-			'html' => '
-				<div class="fhq_btn_menu hint--right" data-hint="Dumps" onclick="fhqgui.createPageDumps();">
-					<img class="fhq_btn_menu_img" src="images/menu/dumps.png"/>
 				</div>
 			',
 			'show' => $role == 'admin',

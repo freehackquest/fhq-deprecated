@@ -13,11 +13,11 @@
    height="200"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.48.4 r9939"
    sodipodi:docname="sign_in.svg"
-   inkscape:export-filename="/home/seakg/developing/fhq.git/src/img/logo/sign_in.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   inkscape:export-filename="sign_in_100x100.png"
+   inkscape:export-xdpi="45.472984"
+   inkscape:export-ydpi="45.472984">
   <defs
      id="defs4">
     <marker
@@ -62,8 +62,8 @@
      showgrid="false"
      inkscape:window-width="1345"
      inkscape:window-height="652"
-     inkscape:window-x="847"
-     inkscape:window-y="261"
+     inkscape:window-x="270"
+     inkscape:window-y="143"
      inkscape:window-maximized="0"
      inkscape:snap-grids="true" />
   <metadata

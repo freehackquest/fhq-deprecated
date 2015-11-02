@@ -26,7 +26,6 @@ if (isset($_SESSION['user']))
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/menu.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css?ver=1" />
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/button3.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/games.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/quest_info.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/overlay.css?ver=1" />
@@ -42,7 +41,7 @@ if (isset($_SESSION['user']))
 
 		<script type="text/javascript" src="js/fhq.frontend.lib.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq.gui.lib.js?ver=1"></script>
-		<script src="//code.jquery.com/jquery-2.0.0b1.js"></script>
+		<script src="https://code.jquery.com/jquery-2.0.0b1.js"></script>
 		<script type="text/javascript" src="js/jquery.datetimepicker.js"></script>
 		<script type="text/javascript" src="js/libs/progressbar-0.8.1.min.js"></script>
 		<script type="text/javascript" src="js/libs/Chart-1.0.2.js"></script>
@@ -67,14 +66,33 @@ if (isset($_SESSION['user']))
 			if (fhq.token && fhq.token != "")  // todo 
 				fhq.security.logout();
 
-		</script>
+			$(document).ready(function() {
+				if(fhqgui.containsPageParam("dark")){
+					$('#jointothedarkside').attr('data-hint', 'You are on the dark side and you can not turning back.');
+					$('#jointothedarkside').attr('onclick', 'window.location.href = "?base";');
+				}else{
+					$('#jointothedarkside').attr('data-hint', 'Join the dark side!');
+					$('#jointothedarkside').attr('onclick', 'window.location.href = "?dark";');
+				}
+				$("#btnfilter").hide();
+				$("#btnmenu_game").hide();
 
-		<?php
-			$anticolors = isset($_GET['dark']) ? 'base' : 'dark';
-			$colors = isset($_GET['dark']) ? 'dark' : 'base';
-			$hint = isset($_GET['dark']) ? 'You are on the dark side and you can not turning back.' : 'Join the dark side!';
-			echo '<link rel="stylesheet" type="text/css" href="templates/'.$colors.'/styles/colors.css" />';
-		?>
+				$("#btnmenu_rules").hide();
+				$("#btnmenu_quests").hide();
+				$("#btnmenu_stats").hide();
+				
+				$("#btnmenu_games").hide();
+				$("#btnmenu_skills").hide();
+				
+				$("#btnmenu_feedback").hide();
+				$("#btnmenu_settings").hide();
+				$("#btnmenu_users").hide();
+				$("#btnmenu_answer_list").hide();
+				$("#btnmenu_updates").hide();
+				fhqgui.loadMainPage();
+			});
+
+		</script>
 
 		<!-- Yandex.Metrika counter -->
 		<script type="text/javascript">
@@ -106,7 +124,7 @@ if (isset($_SESSION['user']))
 		<!-- /Yandex.Metrika counter -->
 
 	</head>
-	<body class="fhqbody" onload="fhqgui.loadCities();">
+	<body class="fhqbody fhqearth">
 
 			<div id="modal_dialog" class="overlay">
 				<div class="overlay_table">
@@ -217,16 +235,16 @@ if (isset($_SESSION['user']))
 
 			<div id="rightpanel_unauth" class="fhqtopmenu_rightpanel">
 				<div class="fhq_btn_menu hint--bottom" data-hint="Sign In"  onclick="fhqgui.showSignInForm();">
-					<img class="fhq_btn_menu_img" src="images/menu/sign_in.svg"/>
+					<img class="fhq_btn_menu_img" src="images/menu/sign_in_50x50.png"/>
 				</div>
 				<div class="fhq_btn_menu hint--bottom" data-hint="Sign Up"  onclick="fhqgui.showSignUpForm();">
-					<img class="fhq_btn_menu_img" src="images/menu/sign_up.svg"/>
+					<img class="fhq_btn_menu_img" src="images/menu/sign_up_50x50.png"/>
 				</div>
 				<div class="fhq_btn_menu hint--bottom" data-hint="Restore Password"  onclick="fhqgui.showResetPasswordForm();">
-					<img class="fhq_btn_menu_img" src="images/menu/resetpass.svg"/>
+					<img class="fhq_btn_menu_img" src="images/menu/resetpass_50x50.png"/>
 				</div>
 				<div class="fhq_btn_menu hint--bottom" data-hint="Donate" onclick="fhqgui.showDonateForm();">
-					<img class="fhq_btn_menu_img" src="images/menu/donate.svg"/>
+					<img class="fhq_btn_menu_img" src="images/menu/donate_50x50.png"/>
 				</div>
 			</div>
 			
@@ -245,49 +263,109 @@ if (isset($_SESSION['user']))
 				</div>
 			</div>
 
-			<table width="100%" height="100%">
+			<!-- Horizontal Left Panel -->
+			<div class="fhqtopmenu_leftpanel">
+				<div class="fhq_btn_menu hint--right" data-hint="Main Page" onclick="fhqgui.loadMainPage();">
+					<img class="fhq_btn_menu_img" src="templates/base/images/logo/fhq_2015_small.png"/>
+				</div>
+				<div class="fhq_btn_menu hint--right" data-hint="About" onclick="fhqgui.loadAbout();">
+					<img class="fhq_btn_menu_img" src="images/menu/unknown.png"/>
+				</div>
+				<div id="btnmenu_game" class="fhq_btn_menu hint--bottom" data-hint="Please click to change a curent game"  onclick="changeGame();">
+					<div class="fhq_btn_menu_img">
+						<img class="fhq_btn_menu_img" src="images/menu/unknown.png"/>
+					</div>
+				</div>
+				<div id="btnmenu_scoreboard" class="fhq_btn_menu hint--bottom" data-hint="Scoreboard" onclick="loadScoreboard('.$gameid.');">
+					<img class="fhq_btn_menu_img" src="images/menu/scoreboard.png"/>
+					<div class="fhqredcircle hide" id="view_score">'.$score.'</div>
+				</div>
+				<div id="btnmenu_rules" class="fhq_btn_menu" data-hint="Rules" onclick="fhqgui.loadRules('.$gameid.');">
+					<img class="fhq_btn_menu_img" src="images/menu/rules.png"/><br>
+				</div>
+				<div id="btnmenu_quests" class="fhq_btn_menu hint--bottom" data-hint="Quests" onclick="loadQuests();">
+					<img class="fhq_btn_menu_img" src="images/menu/quests.png"/>
+				</div>
+				<div id="btnmenu_stats" class="fhq_btn_menu hint--bottom" data-hint="Statistics" onclick="createPageStatistics('.$gameid.'); updateStatistics('.$gameid.');">
+					<img class="fhq_btn_menu_img" src="images/menu/stats.png"/><br>
+				</div>
+					
+				<div class="fhq_btn_menu hint--bottom" data-hint="Filter" id="btnfilter" onclick="fhqgui.showFilter();">
+					<img class="fhq_btn_menu_img" src="images/menu/filter.png"/><br>
+				</div>
+			</div>
+
+			<!-- Vertical Left Panel -->
+			<div class="fhqleftmenu">
+				<div id="btnmenu_games" class="fhq_btn_menu hint--right" data-hint="Games" onclick="loadGames();">
+					<img class="fhq_btn_menu_img" src="images/menu/games.png"/>
+				</div>
+				<div id="btnmenu_skills" class="fhq_btn_menu hint--bottom" data-hint="Skills" onclick="fhqgui.createPageSkills(); fhqgui.updatePageSkills();">
+					<img class="fhq_btn_menu_img" src="images/menu/skills.png"/><br>
+				</div>
+				<div id="btnmenu_news" class="fhq_btn_menu hint--right" data-hint="News" onclick="createPageEvents(); updateEvents();">
+					<img class="fhq_btn_menu_img" src="images/menu/news.png"/>
+					<div class="fhqredcircle hide" id="plus_events">0</div>
+				</div>
+				<div id="btnmenu_feedback" class="fhq_btn_menu hint--right" data-hint="Feedback" onclick="loadFeedback();">
+					<img class="fhq_btn_menu_img" src="images/menu/feedback.png"/>
+					<!-- div class="fhqredcircle" id="plus_feedback">0</div -->
+				</div>
+				<div id="btnmenu_settings" class="fhq_btn_menu hint--right" data-hint="Settings" onclick="fhqgui.loadSettings('content_page');">
+					<img class="fhq_btn_menu_img" src="images/menu/settings.png"/>
+				</div>
+				<div id="btnmenu_users" class="fhq_btn_menu hint--right" data-hint="Users" onclick="createPageUsers(); updateUsers();">
+					<img class="fhq_btn_menu_img" src="images/menu/users.png"/>
+				</div>
+				<div id="btnmenu_answer_list" class="fhq_btn_menu hint--right" data-hint="Answer List" onclick="createPageAnswerList(); updateAnswerList();">
+					<img class="fhq_btn_menu_img" src="images/menu/answerlist.png"/>
+				</div>
+				<div id="btnmenu_updates" class="fhq_btn_menu hint--right" data-hint="Install Updates" onclick="installUpdates();">
+					<img class="fhq_btn_menu_img" src="images/menu/updates.png"/>
+				</div>
+			</div>
+
+			<table cellspacing=10px cellpadding=10px width="100%" height="100%">
 				<tr>
-					<td width="5%" class="fhq_index_column" valign="top" align="center">
-					</td>
-					<td align="center" valign="middle">
-							<div class="fhq_index_logo hint--bottom" data-hint="<?php echo $hint; ?>" onclick="window.location.href = '?<?php echo $anticolors; ?>';">
-								<img src="templates/base/images/logo/fhq_2015.png" />
-							</div>
-							<br><br>
-							<div class="index_menu hint--bottom" data-hint="Sign In"  onclick="fhqgui.showSignInForm();">
-								<img width="100px" src="images/menu/sign_in.svg"/>
-							</div>
-
-							<div class="index_menu hint--bottom" data-hint="Sign Up"  onclick="fhqgui.showSignUpForm();">
-								<img width="100px" src="images/menu/sign_up.svg"/>
-							</div>
-
-							<div class="index_menu hint--bottom" data-hint="Reset Password" onclick="fhqgui.showResetPasswordForm();">
-								<img width="100px" src="images/menu/resetpass.svg"/>
-							</div>
-							
-							<div class="index_menu hint--bottom" data-hint="Donate" onclick="fhqgui.showDonateForm();">
-								<img width="100px" src="images/menu/donate.svg"/>
-							</div>
-					</td>
-					<td width="30%" class="fhq_index_column">
+					<td colspan=2 align=left valign=top height=85px></td>
+				</tr>
+				<tr>
+					<td width=70px id="submenu" valign="top" align=right></td>
+					<td height="100%" valign="top">
 						<center>
-							<div>
-								<h1>free-hack-quest</h1>
-								This is an open source platform for competitions in computer security.
-							</div>
-							<div id="cities">
-							</div>
-							<div id="about">
-							</div>
+						<div id="content_page">
+							
+						</div>
+						</center>
 					</td>
 				</tr>
 				<tr>
-					<td class="fhq_index_column"></td>
-					<td><?php include('copyright.php'); ?></td>
-					<td class="fhq_index_column"></td>
+					<td id="copyright" colspan=2>
+<center>
+	<font face="Arial" size=2>Copyright © 2011-2015 sea-kg. Source code: <a href="https://github.com/freehackquest/fhq">github.com</a> API: <a href="api/?html">html</a> or <a href="api/?json">json</a> VM: <a href="http://files.sea-kg.com/fhq-ova/" target="_ablank">ova</a> Team: <a href="https://ctftime.org/team/16804">ctftime</a> Donate: <a href="http://fhq.sea-kg.com/donate.html">donate</a><br></font>
+</center>
+					</td>
 				</tr>
 			</table>
+
+
+			<div id="mainpage" style="display: none;">
+				<table>
+					<tr>
+						<td valign="top">
+							<div id="jointothedarkside" class="fhq_index_logo hint--bottom leftimg">
+								<img class="leftimg" src="templates/base/images/logo/fhq_2015.png"/>
+							</div>
+						</td>
+						<td valign="top">
+							<h1>free-hack-quest</h1>
+								This is an open source platform for competitions in computer security.
+							<div id="cities">
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
 		</center>
 	</body>
 </html>
