@@ -61,12 +61,12 @@ if (isset($_SESSION['user']))
 			var fhqgui = new FHQGuiLib(fhq);
 			fhq.client = "web-fhq2015";
 			fhq.baseUrl = fhq.getCurrentApiPath(); // or another path
-			// fhq.token = fhq.getTokenFromCookie();
 
 			if (fhq.token && fhq.token != "")  // todo 
 				fhq.security.logout();
 
 			$(document).ready(function() {
+				// loading cool dark style
 				if(fhqgui.containsPageParam("dark")){
 					$('#jointothedarkside').attr('data-hint', 'You are on the dark side and you can not turning back.');
 					$('#jointothedarkside').attr('onclick', 'window.location.href = "?base";');
@@ -74,6 +74,7 @@ if (isset($_SESSION['user']))
 					$('#jointothedarkside').attr('data-hint', 'Join the dark side!');
 					$('#jointothedarkside').attr('onclick', 'window.location.href = "?dark";');
 				}
+				
 				$("#btnfilter").hide();
 				$("#btnmenu_game").hide();
 
@@ -81,15 +82,41 @@ if (isset($_SESSION['user']))
 				$("#btnmenu_quests").hide();
 				$("#btnmenu_stats").hide();
 				
-				$("#btnmenu_games").hide();
-				$("#btnmenu_skills").hide();
-				
+				// $("#btnmenu_games").hide();
+				// $("#btnmenu_skills").hide();
+
 				$("#btnmenu_feedback").hide();
 				$("#btnmenu_settings").hide();
 				$("#btnmenu_users").hide();
 				$("#btnmenu_answer_list").hide();
 				$("#btnmenu_updates").hide();
-				fhqgui.loadMainPage();
+				
+				if(fhqgui.containsPageParam("page")){
+					var page=fhqgui.pageParams['page'];
+					if(page == "scoreboard"){
+						loadScoreboard(0);
+					}else if(page == "about"){
+						fhqgui.loadAbout();
+					}else if(page == "news"){
+						createPageEvents();
+						updateEvents();
+					}else if(page == "main_page"){
+						fhqgui.loadMainPage();
+					}else if(page == "games"){
+						fhqgui.loadGames();
+					}else if(page == "skills"){
+						fhqgui.createPageSkills();
+						fhqgui.updatePageSkills();
+					}else if(page == "stats"){
+						// todo
+						createPageStatistics('.$gameid.');
+						updateStatistics('.$gameid.');
+					}else{
+						$("#content_page").html('unknown page');
+					}
+				}else{
+					fhqgui.loadMainPage();
+				}
 			});
 
 		</script>
@@ -159,25 +186,6 @@ if (isset($_SESSION['user']))
 				</div>
 			</div>
 
-			<!-- Donate -->
-
-			<div id="donate-form" style="display: none;">
-				<center>
-					<br>
-					<iframe frameborder="0" allowtransparency="true" scrolling="no" src="https://money.yandex.ru/embed/donate.xml?account=41001311490795&quickpay=donate&payment-type-choice=on&default-sum=&targets=%D0%BD%D0%B0+%D0%B4%D0%BE%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D1%83+%D0%BF%D1%80%D0%BE%D0%B5%D1%82%D0%B0+Free-Hack-Quest&target-visibility=on&project-name=Free-Hack-Quest&project-site=http%3A%2F%2Ffhq.sea-kg.com&button-text=01&comment=on&hint=%D0%BE%D1%82+%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F+%3F+%D0%B6%D0%B5%D1%80%D1%82%D0%B2%D1%83%D1%8E+%D0%B4%D0%BB%D1%8F+%D0%B4%D0%BE%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B8%2F%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5+%D0%BA%D0%B2%D0%B5%D1%81%D1%82%D0%BE%D0%B2&mail=on&successURL=fhq.sea-kg.com%2Fdonate-thanks.html" width="526" height="203"></iframe>
-					<br>
-					<div style="padding: 0.6em; background-color: border-radius: 7px; -moz-border-radius: 7px;">
-						<a href="https://money.yandex.ru/embed/?from=sbal" title="Виджеты Яндекс.Денег" style="width: 200px; height: 100px; display: block; margin-bottom: 0.6em; background: url('https://money.yandex.ru/share-balance.xml?id=17819619&key=6DE09B07E089E0AA') 0 0 no-repeat; -background: none; -filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='https://money.yandex.ru/share-balance.xml?id=17819619&key=6DE09B07E089E0AA', sizingMethod = 'crop');"></a>
-						<form action="https://money.yandex.ru/direct-payment.xml" method="post">
-							<input type="hidden" name="receiver" value="41001311490795"/>
-							<input type="hidden" name="sum" value="0"/>
-							<input type="hidden" name="destination" value="Яндекс.Деньги &#8212; на хорошее дело не жалко!"/>
-							<input type="hidden" name="FormComment" value="Пожертвование через виджет &#171Мой баланс&#187;"/>
-						</form>
-					</div>
-				</center>
-			</div>
-
 			<!-- Sign In -->
 
 			<div id="signin-form" style="display: none;">
@@ -195,7 +203,6 @@ if (isset($_SESSION['user']))
 			</div>
 
 			<!-- Sign Up -->
-
 			<div id="signup-form" style="display: none;">
 				<!-- todo replace type="text" to type="password" -->
 				<input placeholder="your@email.com" id="signup-email" value="" type="text" onkeydown="if (event.keyCode == 13) fhqgui.signup(); else fhqgui.cleanupSignUpMessages();"/>
@@ -264,31 +271,34 @@ if (isset($_SESSION['user']))
 			</div>
 
 			<!-- Horizontal Left Panel -->
+
 			<div class="fhqtopmenu_leftpanel">
-				<div class="fhq_btn_menu hint--right" data-hint="Main Page" onclick="fhqgui.loadMainPage();">
+				<a id="btnmenu_main_page" class="fhq_btn_menu hint--right" data-hint="Main Page" href="?page=main_page">
 					<img class="fhq_btn_menu_img" src="templates/base/images/logo/fhq_2015_small.png"/>
-				</div>
-				<div class="fhq_btn_menu hint--right" data-hint="About" onclick="fhqgui.loadAbout();">
+				</a>
+
+				<a id="btnmenu_about" class="fhq_btn_menu hint--bottom" data-hint="About" href="?page=about">
 					<img class="fhq_btn_menu_img" src="images/menu/unknown.png"/>
-				</div>
+				</a>
+
 				<div id="btnmenu_game" class="fhq_btn_menu hint--bottom" data-hint="Please click to change a curent game"  onclick="changeGame();">
 					<div class="fhq_btn_menu_img">
 						<img class="fhq_btn_menu_img" src="images/menu/unknown.png"/>
 					</div>
 				</div>
-				<div id="btnmenu_scoreboard" class="fhq_btn_menu hint--bottom" data-hint="Scoreboard" onclick="loadScoreboard('.$gameid.');">
+				<a id="btnmenu_scoreboard" class="fhq_btn_menu hint--bottom" data-hint="Scoreboard" href="?page=scoreboard">
 					<img class="fhq_btn_menu_img" src="images/menu/scoreboard.png"/>
-					<div class="fhqredcircle hide" id="view_score">'.$score.'</div>
-				</div>
-				<div id="btnmenu_rules" class="fhq_btn_menu" data-hint="Rules" onclick="fhqgui.loadRules('.$gameid.');">
+					<div class="fhqredcircle hide" id="view_score"></div>
+				</a>
+				<div id="btnmenu_rules" class="fhq_btn_menu" data-hint="Rules" onclick="fhqgui.loadRules(0);">
 					<img class="fhq_btn_menu_img" src="images/menu/rules.png"/><br>
 				</div>
 				<div id="btnmenu_quests" class="fhq_btn_menu hint--bottom" data-hint="Quests" onclick="loadQuests();">
 					<img class="fhq_btn_menu_img" src="images/menu/quests.png"/>
 				</div>
-				<div id="btnmenu_stats" class="fhq_btn_menu hint--bottom" data-hint="Statistics" onclick="createPageStatistics('.$gameid.'); updateStatistics('.$gameid.');">
-					<img class="fhq_btn_menu_img" src="images/menu/stats.png"/><br>
-				</div>
+				<a id="btnmenu_stats" class="fhq_btn_menu hint--bottom" data-hint="Statistics" href="?page=stats">
+					<img class="fhq_btn_menu_img" src="images/menu/stats.png"/>
+				</a>
 					
 				<div class="fhq_btn_menu hint--bottom" data-hint="Filter" id="btnfilter" onclick="fhqgui.showFilter();">
 					<img class="fhq_btn_menu_img" src="images/menu/filter.png"/><br>
@@ -297,16 +307,21 @@ if (isset($_SESSION['user']))
 
 			<!-- Vertical Left Panel -->
 			<div class="fhqleftmenu">
-				<div id="btnmenu_games" class="fhq_btn_menu hint--right" data-hint="Games" onclick="loadGames();">
+				
+				<a id="btnmenu_games" class="fhq_btn_menu hint--right" data-hint="Games" href="?page=games">
 					<img class="fhq_btn_menu_img" src="images/menu/games.png"/>
-				</div>
-				<div id="btnmenu_skills" class="fhq_btn_menu hint--bottom" data-hint="Skills" onclick="fhqgui.createPageSkills(); fhqgui.updatePageSkills();">
-					<img class="fhq_btn_menu_img" src="images/menu/skills.png"/><br>
-				</div>
-				<div id="btnmenu_news" class="fhq_btn_menu hint--right" data-hint="News" onclick="createPageEvents(); updateEvents();">
+					<div class="fhqredcircle hide" id="plus_events">0</div>
+				</a>
+				
+				<a id="btnmenu_skills" class="fhq_btn_menu hint--right" data-hint="Skills" href="?page=skills">
+					<img class="fhq_btn_menu_img" src="images/menu/skills.png"/>
+				</a>
+				
+				<a id="btnmenu_news" class="fhq_btn_menu hint--right" data-hint="News" href="?page=news">
 					<img class="fhq_btn_menu_img" src="images/menu/news.png"/>
 					<div class="fhqredcircle hide" id="plus_events">0</div>
-				</div>
+				</a>
+
 				<div id="btnmenu_feedback" class="fhq_btn_menu hint--right" data-hint="Feedback" onclick="loadFeedback();">
 					<img class="fhq_btn_menu_img" src="images/menu/feedback.png"/>
 					<!-- div class="fhqredcircle" id="plus_feedback">0</div -->

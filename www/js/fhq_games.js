@@ -26,37 +26,6 @@ function changeGame() {
 	);
 }
 
-function loadGames() {
-	fhqgui.setFilter('games');
-	
-	var el = document.getElementById("content_page");
-	el.innerHTML = "Please wait...";
-	
-	send_request_post(
-		'api/games/list.php',
-		'',
-		function (obj) {
-			var current_game = obj.current_game;
-
-			el.innerHTML = '';
-			
-			var perms = obj['permissions'];
-			if (perms['insert'] == true)
-				el.innerHTML += '<div class="fhqinfo">'
-					+ '<div class="fhqbtn" onclick="formCreateGame();">Create Game</div>'
-					+ '<div class="fhqbtn" onclick="fhqgui.formImportGame();">Import Game</div>'
-					+ '</div><br>';
-
-			for (var k in obj.data) {
-				if (obj.data.hasOwnProperty(k)) {
-					el.innerHTML += fhqgui.gameView(obj.data[k], current_game);
-				}
-			}
-			el.innerHTML += '';
-		}
-	);	
-};
-
 function deleteGame(id)
 {
 	var params = {};
@@ -68,7 +37,7 @@ function deleteGame(id)
 		function (obj) {
 			if (obj.result == "ok") {
 				closeModalDialog();
-				loadGames();
+				fhqgui.loadGames();
 			} else {
 				alert(obj.error.message);
 			}
@@ -103,7 +72,7 @@ function updateGameLogo(gameid) {
 			}
 			document.getElementById('editgame_logo').src = obj.data.logo + '?' + new Date().getTime();
 			// showModalDialog('updated');
-			loadGames();
+			fhqgui.loadGames();
 		}
 	);
 }
@@ -132,7 +101,7 @@ function updateGame(id) {
 			if (obj.result == "ok") {
 				// alert(2);
 				closeModalDialog();
-				loadGames();
+				fhqgui.loadGames();
 			} else {
 				alert(obj.error.message);
 			}
@@ -221,7 +190,7 @@ function createGame()
 		function (obj) {
 			if (obj.result == "ok") {
 				closeModalDialog();
-				loadGames();
+				fhqgui.loadGames();
 			} else {
 				alert(obj.error.message);
 			}
