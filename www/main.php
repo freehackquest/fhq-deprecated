@@ -293,7 +293,7 @@ if (!isset($_SESSION['user']))
 		$arrmenu2[] = array(
 			'name' => 'games',
 			'html' => '
-				<div class="fhq_btn_menu hint--right" data-hint="Games" onclick="loadGames();">
+				<div class="fhq_btn_menu hint--right" data-hint="Games" onclick="fhqgui.loadGames();">
 					<img class="fhq_btn_menu_img" src="images/menu/games.png"/>
 				</div>
 			',
@@ -381,7 +381,7 @@ if (!isset($_SESSION['user']))
 						
 						?>
 			</div>
-			
+
 
 			<table cellspacing=10px cellpadding=10px width="100%" height="100%">
 				<tr>

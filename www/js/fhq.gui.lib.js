@@ -24,7 +24,7 @@ function FHQGuiLib(api) {
 	this.pageParams = this.parsePageParams();
 	
 	this.containsPageParam = function(name){
-		return (typeof this.pageParams['dark'] !== "undefined");
+		return (typeof this.pageParams[name] !== "undefined");
 	}
 	
 	// include dark style
@@ -111,7 +111,7 @@ function FHQGuiLib(api) {
 		this.modalDialog2ClickContent = false;
 		document.onkeydown = function(evt) {
 			if (evt.keyCode == 27)
-				fhqgui.closeModalDialog2();
+				fhqgui.closeFHQModalDialog();
 		}
 	}
 
@@ -144,10 +144,18 @@ function FHQGuiLib(api) {
 	/* Donate */
 	
 	this.showDonateForm = function() {
-		this.showFHQModalDialog({
-			'header' : 'Donate',
-			'content': $("#donate-form").html(),
-			'buttons': ''
+		var self = this;
+		self.showFHQModalDialog({
+				'header' : 'Donate',
+				'content': 'Loading...',
+				'buttons': ''
+		});
+		$.get('donate.html', function(result){
+			self.updateFHQModalDialog({
+				'header' : 'Donate',
+				'content': result,
+				'buttons': ''
+			});
 		});
 	}
 	
@@ -473,12 +481,15 @@ function FHQGuiLib(api) {
 		var current_page = this.filter.current;
 		
 		var pt = new FHQParamTable();
-
+		var header = '';
+		var buttons = '';
 		if (current_page == 'quests') {
+			header = 'Filter Quests';
 			pt.row('Status:', fhqgui.combobox('quests_userstatus', this.filter.quests.userstatus, fhq.getQuestUserStatusFilter()));
 			pt.row('Subject:', fhqgui.combobox('quests_subject', this.filter.quests.subject, fhq.getQuestTypesFilter()));
-			pt.right(this.btn('Apply', 'fhqgui.applyQuestsFilter(); reloadQuests(); fhqgui.closeModalDialog();'));
+			buttons = this.btn('Apply', 'fhqgui.applyQuestsFilter(); reloadQuests(); fhqgui.closeFHQModalDialog();');
 		} else if (current_page == 'answerlist') {
+			header = 'Filter Answer List';
 			pt.row('User ID:', '<input type="text" id="answerlist_userid" value=""/>');
 			pt.row('E-mail or Nick:', '<input type="text" id="answerlist_user" value=""/>');
 			pt.row('Game ID:', '<input type="text" id="answerlist_gameid" value=""/>');
@@ -489,28 +500,35 @@ function FHQGuiLib(api) {
 			pt.row('Passed:', fhqgui.combobox('answerlist_passed', this.filter.answerlist.passed, fhq.getAnswerlistPassedFilter()));
 			pt.row('Table:', fhqgui.combobox('answerlist_table', this.filter.answerlist.table, fhq.getAnswerlistTable()));
 			pt.row('On Page:', fhqgui.combobox('answerlist_onpage', this.filter.answerlist.onpage, fhq.getOnPage()));
-			pt.right(this.btn('Apply', 'fhqgui.applyAnswerListFilter(); resetPageAnswerList(); updateAnswerList(); fhqgui.closeModalDialog();'));
+			buttons = this.btn('Apply', 'fhqgui.applyAnswerListFilter(); resetPageAnswerList(); updateAnswerList(); fhqgui.closeFHQModalDialog();');
 		} else if (current_page == 'stats') {
+			header = 'Filter Statistics';
 			pt.row('Quest Name:', '<input type="text" id="statistics_questname" value=""/>');
 			pt.row('Quest ID:', '<input type="text" id="statistics_questid" value=""/>');
 			pt.row('Quest Subject:', fhqgui.combobox('statistics_questsubject', this.filter.stats.questsubject, fhq.getQuestTypesFilter()));
 			pt.row('On Page:', fhqgui.combobox('statistics_onpage', this.filter.stats.onpage, fhq.getOnPage()));
-			pt.right(this.btn('Apply', 'fhqgui.applyStatsFilter(); resetStatisticsPage(); updateStatistics(); fhqgui.closeModalDialog();'));
+			buttons = this.btn('Apply', 'fhqgui.applyStatsFilter(); resetStatisticsPage(); updateStatistics(); fhqgui.closeFHQModalDialog();');
 		} else if (current_page == 'skills') {
+			header = 'Filter Skills';
 			pt.row('Subject:', fhqgui.combobox('skills_subject', this.filter.skills.subject, fhq.getQuestTypesFilter()));
 			pt.row('User:', '<input type="text" id="skills_user" value=""/>');
 			pt.row('On Page:', fhqgui.combobox('skills_onpage', this.filter.skills.onpage, fhq.getOnPage()));
-			pt.right(this.btn('Apply', 'fhqgui.applySkillsFilter(); fhqgui.resetSkillsPage(); fhqgui.updatePageSkills(); fhqgui.closeModalDialog();'));
+			buttons = this.btn('Apply', 'fhqgui.applySkillsFilter(); fhqgui.resetSkillsPage(); fhqgui.updatePageSkills(); fhqgui.closeFHQModalDialog();');
 		} else if (current_page == 'events') {
+			header = 'Filter News';
 			pt.row('Search:', '<input type="text" id="events_search" value=""/>');
 			pt.row('Type:', fhqgui.combobox('events_type', this.filter.events.type, fhq.getEventTypesFilter()));
 			pt.row('On Page:', fhqgui.combobox('events_onpage', this.filter.events.onpage, fhq.getOnPage()));
-			pt.right(this.btn('Apply', 'fhqgui.applyEventsFilter(); fhqgui.resetEventsPage(); updateEvents(); fhqgui.closeModalDialog();'));
+			buttons = this.btn('Apply', 'fhqgui.applyEventsFilter(); fhqgui.resetEventsPage(); updateEvents(); fhqgui.closeFHQModalDialog();');
 		} else {
 			pt.row('TODO', current_page);
 		}
 
-		this.showModalDialog(pt.render());
+		this.showFHQModalDialog({
+			'header' : header,
+			'content' : pt.render(),
+			'buttons' : buttons
+		});
 
 		if (current_page == 'answerlist') {
 			document.getElementById('answerlist_userid').value = this.filter.answerlist.userid;
@@ -572,6 +590,42 @@ function FHQGuiLib(api) {
 		send_request_post_html('about.html?v=1', '', function(html) {
 			$('#content_page').html(html);
 		});
+	}
+	
+	this.loadGames = function() {
+		this.setFilter('games');
+		var self = this;
+		$('#content_page').html("Please wait...");
+
+		$.post('api/games/list.php', {},
+			function (obj) {
+				var current_game = obj.current_game;
+				
+				// todo redesign handleFail
+				if(obj.result=="fail"){
+					var content = "";
+					if(obj.error.code == 1224){
+						content = "<div class='fhqbtn' onclick='fhqgui.showSignInForm();'>Sign In</div> or <div class='fhqbtn' onclick='fhqgui.showSignUpForm();'>Sign Up</div>";
+					}
+					$('#content_page').html(obj.error.message + '<br><br>' + content);
+					return;
+				}
+
+				var content = '';
+				if (obj['permissions']['insert'] == true)
+					content += '<div class="fhqinfo">'
+						+ '<div class="fhqbtn" onclick="formCreateGame();">Create Game</div>'
+						+ '<div class="fhqbtn" onclick="fhqgui.formImportGame();">Import Game</div>'
+						+ '</div><br>';
+
+				for (var k in obj.data) {
+					if (obj.data.hasOwnProperty(k)) {
+						content += fhqgui.gameView(obj.data[k], current_game);
+					}
+				}
+				$('#content_page').html(content);
+			}
+		)
 	}
 
 	this.loadMainPage = function() {
@@ -979,7 +1033,7 @@ function FHQGuiLib(api) {
 				}
 				// document.getElementById('editgame_logo').src = obj.data.logo + '?' + new Date().getTime();
 				fhqgui.closeModalDialog();
-				loadGames();
+				fhqgui.loadGames();
 			}
 		);
 	}
@@ -1019,13 +1073,31 @@ function FHQGuiLib(api) {
 			}
 		);
 	}
+	
+	this.handleFail = function(response){
+		if(response.result=='fail'){
+			if(response.error.code == 1224){
+				self.showFHQModalDialog({
+					'header' : '',
+					'content' : 'Please Sing In or Sing Up',
+					'buttons' : ''
+				});
+			}
+			return true;
+		}
+		return false;
+	}
 
 	this.chooseGame = function(id) {
-		send_request_post(
-			'api/games/choose.php',
-			'id=' + id,
-			function (obj) {
-				window.location.href = "main.php?" + Math.random();
+		var self = this;
+		$.post('api/games/choose.php', {'id' : id},
+			function(obj){
+				if(self.handleFail(obj)){
+					return;
+				}
+				if(obj.result=='ok'){
+					window.location.href = "?page=quests";
+				}
 			}
 		);
 	}
@@ -1044,10 +1116,8 @@ function FHQGuiLib(api) {
 		content += '			<div class="fhq_event_caption">'; 
 		var perms = game.permissions;
 
-		if (currentGameId != game.id)
-			content += '<div class="fhqbtn" onclick="chooseGame(' + game.id + ');">Choose</div> ';
-		else
-			content += 'Current Game';
+		if (perms['choose'] == true)
+			content += '<div class="fhqbtn" onclick="fhqgui.chooseGame(' + game.id + ');">Choose</div> ';
 		
 		if (perms['delete'] == true)
 			content += '<div class="fhqbtn" onclick="formDeleteGame(' + game.id + ');">Delete</div>';
@@ -1072,7 +1142,7 @@ function FHQGuiLib(api) {
 	this.setEventsPage = function(val) {
 		this.filter.events.page = val;
 	}
-	
+
 	this.resetSkillsPage = function() {
 		this.filter.skills.page = 0;
 	}
@@ -1131,11 +1201,11 @@ function FHQGuiLib(api) {
 						var chartid = 'skill' + u.userid;
 						var ctx = document.getElementById(chartid).getContext("2d");
 						ctx.font = "12px Arial";
-						ctx.fillStyle = "#CCC";
-						ctx.strokeStyle = "#CCC";
-						
+						ctx.fillStyle = $('#content_page').css( "color" );
+						ctx.strokeStyle = $('#content_page').css( "color" );
+
 						// ctx.strokeRect(0,0,300,140);
-						
+
 						var y = 10;
 						for (var sub in sk.subjects) {
 							// data.labels.push(sub);
