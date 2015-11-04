@@ -2,7 +2,7 @@
 /*
  * API_NAME: List Of Games
  * API_DESCRIPTION: Method will be returned list of the games
- * API_ACCESS: authorized users
+ * API_ACCESS: all
  * API_INPUT: token - guid, token
  */
 
@@ -14,7 +14,7 @@ include_once ($curdir."/../../config/config.php");
 
 $response = APIHelpers::startpage($config);
 
-APIHelpers::checkAuth();
+// APIHelpers::checkAuth();
 
 $conn = APIHelpers::createConnection($config);
 
@@ -56,13 +56,16 @@ try {
 		}
 
 		$bAllows = APISecurity::isAdmin();
+		$bChoose = APISecurity::isAdmin() || APISecurity::isUser();
 		$response['data'][$id]['permissions']['delete'] = $bAllows;
 		$response['data'][$id]['permissions']['update'] = $bAllows;
 		$response['data'][$id]['permissions']['export'] = $bAllows;
+		$response['data'][$id]['permissions']['choose'] = $bChoose;
 	}
 	$response['current_game'] = isset($_SESSION['game']) ? $_SESSION['game']['id'] : 0;
 	
 	$response['permissions']['insert'] = APISecurity::isAdmin();
+	
 	$response['result'] = 'ok';
 } catch(PDOException $e) {
 	APIHelpers::showerror(1193, $e->getMessage());

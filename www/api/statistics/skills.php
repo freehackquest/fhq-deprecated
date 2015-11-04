@@ -2,7 +2,7 @@
 /*
  * API_NAME: Skills List
  * API_DESCRIPTION: Method will be returned skill list
- * API_ACCESS: authorized users
+ * API_ACCESS: all
  * API_INPUT: token - guid, secret token
  * API_INPUT: page - integer, number of page - need for pagging
  * API_INPUT: onpage - integer, records on page - need for pagging
@@ -19,7 +19,7 @@ include_once ($curdir_statistics_skills."/../../config/config.php");
 
 $response = APIHelpers::startpage($config);
 
-APIHelpers::checkAuth();
+// APIHelpers::checkAuth();
 
 $response['result'] = 'ok';
 $questsubject = APIHelpers::getParam('questsubject', '');

@@ -2,7 +2,7 @@
 /*
  * API_NAME: Statistics List
  * API_DESCRIPTION: Method will be returned statistics info
- * API_ACCESS: authorized users
+ * API_ACCESS: all
  * API_INPUT: token - guid, token
  * API_INPUT: page - integer, number of page - need for pagging
  * API_INPUT: onpage - integer, records on page - need for pagging
@@ -20,11 +20,11 @@ include_once ($curdir_statistics_list."/../../config/config.php");
 
 $response = APIHelpers::startpage($config);
 
-APIHelpers::checkAuth();
+// APIHelpers::checkAuth();
 
 if (!APIHelpers::issetParam('gameid'))
 	APIHelpers::showerror(1330, 'Parameter "gameid" does not found');
-	
+
 $gameid = APIHelpers::getParam('gameid', 0);
 
 if (!is_numeric($gameid))
