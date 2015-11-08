@@ -1102,6 +1102,70 @@ function FHQGuiLib(api) {
 		);
 	}
 
+	this.loadTools = function(){
+		$('#content_page').html("<h1>Tools</h1>");
+		var page = this.pageParams['page'];
+		var tools = {
+			'stat-analiz-text': 'Statistical analysis of the text',
+			'replace-in-text': 'Replace in text'
+		};
+		
+		if (!this.containsPageParam('tool')){
+			for(var k in tools){
+				$('#content_page').append('<a class="fhqbtn" href="?page=' + page + '&tool=' + k + '">' + tools[k] + '</a>');	
+			}
+		} else {
+			var tool = this.pageParams['tool'];
+			if(tools[tool]){
+				$('#content_page').append('<a class="fhqbtn" href="?page=' + page + '">&larr;</a>' + tools[tool] + '<br/>');
+				$('#content_page').append($('#' + tool).html());
+			}
+		}
+	}
+
+	this.toolStatAnalizText = function(){
+		$('#stat-analiz-text-output').html("Working...");
+		var text = $('#stat-analiz-text-input').val();		
+		var stat = {};
+		var count = 0;
+		for(var i = 0; i < text.length; i++) {
+			var ch = text[i];
+			count++;
+			if (!stat[ch]) {
+				stat[ch] = 1;
+			} else {
+				stat[ch]++;
+			}
+		}
+
+		$('#stat-analiz-text-output').html("");
+		for(key in stat) {
+			var val = stat[key];
+			$('#stat-analiz-text-output').append('[' + key + '] = ' + val + '/' + count + ' ( ' + ((val*100)/count) + ' %)\n');
+		}
+	}
+	
+	this.toolReplaceInText = function(){
+		$('#replace-in-text-output').html("");
+		// console.log($('#replace-in-text-rules').val());
+		// console.log($('#replace-in-text-input').val());
+
+		var rules = $('#replace-in-text-rules').val().split(",");
+		var replacerules = {};
+		for(var i = 0; i < rules.length; i++)
+		{
+			var arr = rules[i].split(":");
+			replacerules[arr[0]] = arr[1];
+		}
+		
+		var text = $('#replace-in-text-input').val();
+		for(key in replacerules) {
+			text = text.replace(new RegExp(key,'g'),replacerules[key]);
+		}
+		$('#replace-in-text-output').html(text);
+	}
+
+
 	this.gameView = function(game, currentGameId) {
 		var content = '';
 		content += '\n<div class="fhq_event_info">\n';

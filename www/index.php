@@ -104,6 +104,8 @@ if (isset($_SESSION['user']))
 						fhqgui.loadMainPage();
 					}else if(page == "games"){
 						fhqgui.loadGames();
+					}else if(page == "tools"){
+						fhqgui.loadTools();
 					}else if(page == "skills"){
 						fhqgui.createPageSkills();
 						fhqgui.updatePageSkills();
@@ -276,11 +278,12 @@ if (isset($_SESSION['user']))
 				<a id="btnmenu_main_page" class="fhq_btn_menu hint--right" data-hint="Main Page" href="?page=main_page">
 					<img class="fhq_btn_menu_img" src="templates/base/images/logo/fhq_2015_small.png"/>
 				</a>
-
 				<a id="btnmenu_about" class="fhq_btn_menu hint--bottom" data-hint="About" href="?page=about">
 					<img class="fhq_btn_menu_img" src="images/menu/unknown.png"/>
 				</a>
-
+				<a id="btnmenu_tools" class="fhq_btn_menu hint--bottom" data-hint="Tools" href="?page=tools">
+					<img class="fhq_btn_menu_img" src="images/menu/tools_150x150.png"/>
+				</a>
 				<div id="btnmenu_game" class="fhq_btn_menu hint--bottom" data-hint="Please click to change a curent game"  onclick="changeGame();">
 					<div class="fhq_btn_menu_img">
 						<img class="fhq_btn_menu_img" src="images/menu/unknown.png"/>
@@ -298,8 +301,7 @@ if (isset($_SESSION['user']))
 				</div>
 				<a id="btnmenu_stats" class="fhq_btn_menu hint--bottom" data-hint="Statistics" href="?page=stats">
 					<img class="fhq_btn_menu_img" src="images/menu/stats.png"/>
-				</a>
-					
+				</a>				
 				<div class="fhq_btn_menu hint--bottom" data-hint="Filter" id="btnfilter" onclick="fhqgui.showFilter();">
 					<img class="fhq_btn_menu_img" src="images/menu/filter.png"/><br>
 				</div>
@@ -362,8 +364,6 @@ if (isset($_SESSION['user']))
 					</td>
 				</tr>
 			</table>
-
-
 			<div id="mainpage" style="display: none;">
 				<table>
 					<tr>
@@ -382,6 +382,28 @@ if (isset($_SESSION['user']))
 				</table>
 			</div>
 		</center>
+
+		<!-- Tools -->
+		<div id="stat-analiz-text" style="display: none;">
+			<textarea id="stat-analiz-text-input" cols="100" rows="20">Пример текста. " Example text</textarea>
+			</br>
+			<div class="fhqbtn" onclick="fhqgui.toolStatAnalizText();">Go</div>
+			</br>
+			<textarea readonly="true" id="stat-analiz-text-output" cols="100" rows="20"></textarea>
+		</div>
+		
+		<div id="replace-in-text" style="display: none;">
+			<textarea id="replace-in-text-input" cols="100" rows="20">Кимерtтекста.t"tR7aopletye7y</textarea>
+			</br>
+			<!-- Правила замены<input id="rules" value="E:R,m:t,x:7, :t,Пр:К"></br -->
+			Replace rules <input id="replace-in-text-rules" value="R:E,o:m,7:x,t: ,К:Пр,y:t">
+			</br>
+			<i>Note: replacement performed in order to describe the rules</i>
+			<br/>
+			<div class="fhqbtn" onclick="fhqgui.toolReplaceInText();">Go</div></br>
+			<textarea readonly="true" id="replace-in-text-output" cols="100" rows="20"></textarea>
+		</div>
+		
 	</body>
 </html>
 	

@@ -380,7 +380,7 @@ input.span1,textarea.span1,.uneditable-input.span1{width:46px;}
 .controls-row:after{clear:both;}
 .controls-row [class*="span"],.row-fluid .controls-row [class*="span"]{float:left;}
 .controls-row .checkbox[class*="span"],.controls-row .radio[class*="span"]{padding-top:5px;}
-input[disabled],select[disabled],textarea[disabled],input[readonly],select[readonly],textarea[readonly]{cursor:not-allowed;background-color:#eeeeee;}
+input[disabled],select[disabled],textarea[disabled],input[readonly],select[readonly],textarea[readonly]{background-color:#eeeeee;}
 input[type="radio"][disabled],input[type="checkbox"][disabled],input[type="radio"][readonly],input[type="checkbox"][readonly]{background-color:transparent;}
 .control-group.warning .control-label,.control-group.warning .help-block,.control-group.warning .help-inline{color:#b58603;}
 .control-group.warning .checkbox,.control-group.warning .radio,.control-group.warning input,.control-group.warning select,.control-group.warning textarea{color:#b58603;}
