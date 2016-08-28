@@ -2,6 +2,37 @@ function FHQGuiLib(api) {
 	this.fhq = api;
 	this.api = api;
 	
+	this.lang = function(){
+		return this.sLang || this.locale();
+	};
+	
+	this.locale = function() {
+		var langs = ['en', 'ru']
+		self.sLang = 'en';
+		if(this.containsPageParam('lang') && langs.indexOf(this.pageParams['lang']) >= -1){
+			this.sLang = this.pageParams['lang'];
+		} else if (navigator) {
+			var navLang = 'en';
+			navLang = navigator.language ? navigator.language.substring(0,2) : navLang;
+			navLang = navigator.browserLanguage ? navigator.browserLanguage.substring(0,2) : navLang;
+			navLang = navigator.systemLanguage ? navigator.systemLanguage.substring(0,2) : navLang;
+			navLang = navigator.userLanguage ? navigator.userLanguage.substring(0,2) : navLang;
+			this.sLang =  langs.indexOf(navLang) >= -1 ? navLang : self.sLang;
+		} else {
+			this.sLang = 'en';
+		}
+		return this.sLang;
+	};
+	
+	this.t = function(message){
+		if(FHQLocalization[message]){
+			return FHQLocalization[message][this.lang()];
+		}else{
+			console.warn("Not found localization for '" + message + "'");
+		}
+		return message;
+	}
+	
 	this.parsePageParams = function() {
 		var loc = location.search.slice(1);
 		var arr = loc.split("&");
@@ -139,6 +170,55 @@ function FHQGuiLib(api) {
 		document.body.scroll = "yes"; // ie only
 		document.onkeydown = null;
 		$('#fhqmodaldialog_content').html("");
+	}
+	
+	/* top menu */
+	
+	this.loadTopPanel = function(){
+		var toppanel = $('.fhqtopmenu_toppanel');
+		toppanel.html('');
+		toppanel.append('<a id="btnmenu_main_page" class="fhq_btn_menu" href="?about">'
+			+ '<img class="fhq_btn_menu_img" src="images/fhq2016_200x150.png"/> '
+			+ this.t('About')
+			+ '</a>')
+		toppanel.append('<a id="btnmenu_quests" class="fhq_btn_menu" href="?quests">'
+			+ '<img class="fhq_btn_menu_img" src="images/menu/quests_40x40.png"/> '
+			+ this.t('Quests')
+			+ '</a>')
+			
+		toppanel.append('<a id="btnmenu_tools" class="fhq_btn_menu" href="?tools">'
+			+ '<img class="fhq_btn_menu_img" src="images/menu/tools_150x150.png"/> '
+			+ this.t('Tools')
+			+ '</a>')
+			
+		toppanel.append('<a id="btnmenu_news" class="fhq_btn_menu" href="?news">'
+			+ '<img class="fhq_btn_menu_img" src="images/menu/news.png"/>'
+			+ '<div class="fhqredcircle hide" id="plus_events">0</div> '
+			+ this.t('News')
+			+ '</a>');
+
+		toppanel.append('<div id="btnmenu_user" class="fhq_btn_menu" href="javascript:void(0);">'
+			+ '<img class="fhq_btn_menu_img" src="images/menu/user.png"/> '
+			+ this.t('Account')
+			+ '<div class="accout-panel">'
+			+ '<img class="fhq_btn_menu_img" src="images/menu/user.png"/> '
+			+ this.t('Account')
+			+ '<div class="border"></div>'
+			+ '</div> '
+			+ '</div>');
+		
+		// if(!fhq.cache.is_authorized){
+			$('.accout-panel').append('<div id="btnmenu_signin" class="fhq-simple-btn" onclick="fhqgui.showSignInForm();">' + this.t('Sign-in') + '</div>');
+			$('.accout-panel').append('<div id="btnmenu_signup" class="fhq-simple-btn" onclick="fhqgui.showSignUpForm();">' + this.t('Sign-up') + '</div>');
+			$('.accout-panel').append('<div id="btnmenu_restore_password" class="fhq-simple-btn" onclick="fhqgui.showResetPasswordForm();">' + this.t('Forgot password?') + '</div>');
+		/*}else{
+			$('.accout-panel').append('<div id="btnmenu_signin" class="fhq-simple-btn" onclick="fhqgui.signout();">' + this.t('Sign-out') + '</div>');
+		}*/
+		
+		$('#btnmenu_user').unbind().bind('click', function(e){
+			e.preventDefault();
+			$('.accout-panel').show();
+		});
 	}
 	
 	/* Sign In */

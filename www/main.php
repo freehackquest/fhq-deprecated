@@ -25,7 +25,6 @@ if (!isset($_SESSION['user']))
 
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/fhq.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css?ver=1" />
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/menu.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/games.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/quest_info.css?ver=1" />

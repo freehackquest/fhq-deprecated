@@ -24,7 +24,6 @@ if (isset($_SESSION['user']))
 
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/fhq.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css?ver=1" />
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/menu.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/games.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/quest_info.css?ver=1" />
@@ -39,6 +38,7 @@ if (isset($_SESSION['user']))
 		<!-- link rel="stylesheet" type="text/css" href="css/fhq.min.css?ver=1"/-->
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/jquery.datetimepicker.css?ver=1"/>
 
+		<script type="text/javascript" src="js/fhq.localization.lib.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq.frontend.lib.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq.gui.lib.js?ver=1"></script>
 		<script src="https://code.jquery.com/jquery-2.0.0b1.js"></script>
@@ -67,6 +67,8 @@ if (isset($_SESSION['user']))
 
 			$(document).ready(function() {
 				
+				fhqgui.loadTopPanel();
+
 				$("#btnfilter").hide();
 				$("#btnmenu_game").hide();
 
@@ -83,7 +85,19 @@ if (isset($_SESSION['user']))
 				$("#btnmenu_answer_list").hide();
 				$("#btnmenu_updates").hide();
 				
-				if(fhqgui.containsPageParam("page")){
+				if(fhqgui.containsPageParam("news")){
+					createPageEvents();
+					updateEvents();
+				}else if(fhqgui.containsPageParam("quests")){
+					fhqgui.loadQuests();
+				}else if(fhqgui.containsPageParam("tools")){
+					fhqgui.loadTools();
+					if(fhqgui.containsPageParam('toolid')){
+						fhqgui.loadTool(fhqgui.pageParams['toolid']);
+					}
+				}else if(fhqgui.containsPageParam("about")){
+					fhqgui.loadMainPage();
+				}else if(fhqgui.containsPageParam("page")){
 					var page=fhqgui.pageParams['page'];
 					if(page == "scoreboard"){
 						loadScoreboard(0);
@@ -230,98 +244,9 @@ if (isset($_SESSION['user']))
 				<div class="fhqbtn" onclick="fhqgui.resetPassword();">Reset</div>			
 			</div>
 			
-			<!-- Right Menu Panel for Unathorized Users -->
-
-			<div id="rightpanel_unauth" class="fhqtopmenu_rightpanel">
-				<div class="fhq_btn_menu hint--bottom" data-hint="Sign In"  onclick="fhqgui.showSignInForm();">
-					<img class="fhq_btn_menu_img" src="images/menu/sign_in_50x50.png"/>
-				</div>
-				<div class="fhq_btn_menu hint--bottom" data-hint="Sign Up"  onclick="fhqgui.showSignUpForm();">
-					<img class="fhq_btn_menu_img" src="images/menu/sign_up_50x50.png"/>
-				</div>
-				<div class="fhq_btn_menu hint--bottom" data-hint="Restore Password"  onclick="fhqgui.showResetPasswordForm();">
-					<img class="fhq_btn_menu_img" src="images/menu/resetpass_50x50.png"/>
-				</div>
-			</div>
 			
-			<!-- Right Menu Panel for Athorized Users -->
-			
-			<div id="rightpanel_user" class="fhqtopmenu_rightpanel" style="display: none;">
-				<div class="fhq_btn_menu hint--bottom" data-hint="User profile"  onclick="">
-					<img class="fhq_btn_menu_img" src="images/menu/user.png"/>
-					<div style="display: inline-block;" id="btn_user_info"></div>
-				</div>
-				<div class="fhq_btn_menu hint--bottom" data-hint="Logout" onclick="logout();">
-					<img class="fhq_btn_menu_img" src="images/menu/logout.png"/><br>
-				</div>
-			</div>
+			<div class="fhqtopmenu_toppanel"></div>
 
-			<!-- Horizontal Left Panel -->
-
-			<div class="fhqtopmenu_leftpanel">
-				<a id="btnmenu_main_page" class="fhq_btn_menu hint--right" data-hint="Main Page" href="?page=main_page">
-					<img class="fhq_btn_menu_img" src="templates/base/images/logo/fhq_2015_small.png"/>
-				</a>
-				<a id="btnmenu_tools" class="fhq_btn_menu hint--bottom" data-hint="Tools" href="?page=tools">
-					<img class="fhq_btn_menu_img" src="images/menu/tools_150x150.png"/>
-				</a>
-				<div id="btnmenu_game" class="fhq_btn_menu hint--bottom" data-hint="Please click to change a curent game"  onclick="changeGame();">
-					<div class="fhq_btn_menu_img">
-						<img class="fhq_btn_menu_img" src="images/menu/unknown.png"/>
-					</div>
-				</div>
-				<a id="btnmenu_scoreboard" class="fhq_btn_menu hint--bottom" data-hint="Scoreboard" href="?page=scoreboard">
-					<img class="fhq_btn_menu_img" src="images/menu/scoreboard.png"/>
-					<div class="fhqredcircle hide" id="view_score"></div>
-				</a>
-				<div id="btnmenu_rules" class="fhq_btn_menu" data-hint="Rules" onclick="fhqgui.loadRules(0);">
-					<img class="fhq_btn_menu_img" src="images/menu/rules.png"/><br>
-				</div>
-				<div id="btnmenu_quests" class="fhq_btn_menu hint--bottom" data-hint="Quests" onclick="loadQuests();">
-					<img class="fhq_btn_menu_img" src="images/menu/quests.png"/>
-				</div>
-				<a id="btnmenu_stats" class="fhq_btn_menu hint--bottom" data-hint="Statistics" href="?page=stats">
-					<img class="fhq_btn_menu_img" src="images/menu/stats.png"/>
-				</a>				
-				<div class="fhq_btn_menu hint--bottom" data-hint="Filter" id="btnfilter" onclick="fhqgui.showFilter();">
-					<img class="fhq_btn_menu_img" src="images/menu/filter.png"/><br>
-				</div>
-			</div>
-
-			<!-- Vertical Left Panel -->
-			<div class="fhqleftmenu">
-				
-				<a id="btnmenu_games" class="fhq_btn_menu hint--right" data-hint="Games" href="?page=games">
-					<img class="fhq_btn_menu_img" src="images/menu/games.png"/>
-					<div class="fhqredcircle hide" id="plus_events">0</div>
-				</a>
-				
-				<a id="btnmenu_skills" class="fhq_btn_menu hint--right" data-hint="Skills" href="?page=skills">
-					<img class="fhq_btn_menu_img" src="images/menu/skills.png"/>
-				</a>
-				
-				<a id="btnmenu_news" class="fhq_btn_menu hint--right" data-hint="News" href="?page=news">
-					<img class="fhq_btn_menu_img" src="images/menu/news.png"/>
-					<div class="fhqredcircle hide" id="plus_events">0</div>
-				</a>
-
-				<div id="btnmenu_feedback" class="fhq_btn_menu hint--right" data-hint="Feedback" onclick="loadFeedback();">
-					<img class="fhq_btn_menu_img" src="images/menu/feedback.png"/>
-					<!-- div class="fhqredcircle" id="plus_feedback">0</div -->
-				</div>
-				<div id="btnmenu_settings" class="fhq_btn_menu hint--right" data-hint="Settings" onclick="fhqgui.loadSettings('content_page');">
-					<img class="fhq_btn_menu_img" src="images/menu/settings.png"/>
-				</div>
-				<div id="btnmenu_users" class="fhq_btn_menu hint--right" data-hint="Users" onclick="createPageUsers(); updateUsers();">
-					<img class="fhq_btn_menu_img" src="images/menu/users.png"/>
-				</div>
-				<div id="btnmenu_answer_list" class="fhq_btn_menu hint--right" data-hint="Answer List" onclick="createPageAnswerList(); updateAnswerList();">
-					<img class="fhq_btn_menu_img" src="images/menu/answerlist.png"/>
-				</div>
-				<div id="btnmenu_updates" class="fhq_btn_menu hint--right" data-hint="Install Updates" onclick="installUpdates();">
-					<img class="fhq_btn_menu_img" src="images/menu/updates.png"/>
-				</div>
-			</div>
 
 			<div id="copyright">
 				<center>
