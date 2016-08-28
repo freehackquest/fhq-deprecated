@@ -21,6 +21,7 @@ if (isset($_SESSION['user']))
 		<meta name="copyright" lang="ru" content="sea-kg" />
 		<meta name="description" content="competition information security" />
 		<meta name="keywords" content="security, fhq, fhq 2012, fhq 2013, fhq 2014, free, hack, quest, competition, information security, ctf, joepardy" />
+		<link rel="shortcut icon" href="favicon.ico">
 
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/fhq.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css?ver=1" />
@@ -41,6 +42,7 @@ if (isset($_SESSION['user']))
 		<script type="text/javascript" src="js/fhq.localization.lib.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq.frontend.lib.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq.gui.lib.js?ver=1"></script>
+		<script type="text/javascript" src="js/fhq.plugins/plugins.js?ver=1"></script>
 		<script src="https://code.jquery.com/jquery-2.0.0b1.js"></script>
 		<script type="text/javascript" src="js/jquery.datetimepicker.js"></script>
 		<script type="text/javascript" src="js/libs/progressbar-0.8.1.min.js"></script>
@@ -260,7 +262,6 @@ if (isset($_SESSION['user']))
 					<td colspan=2 align=left valign=top height=85px></td>
 				</tr>
 				<tr>
-					<td width=70px id="submenu" valign="top" align=right></td>
 					<td height="100%" valign="top">
 						<center>
 						<div id="content_page">
@@ -271,27 +272,6 @@ if (isset($_SESSION['user']))
 				</tr>
 			</table>
 		</center>
-
-		<!-- Tools -->
-		<div id="stat-analiz-text" style="display: none;">
-			<textarea id="stat-analiz-text-input" cols="100" rows="20">Пример текста. " Example text</textarea>
-			</br>
-			<div class="fhqbtn" onclick="fhqgui.toolStatAnalizText();">Go</div>
-			</br>
-			<textarea readonly="true" id="stat-analiz-text-output" cols="100" rows="20"></textarea>
-		</div>
-		
-		<div id="replace-in-text" style="display: none;">
-			<textarea id="replace-in-text-input" cols="100" rows="20">Кимерtтекста.t"tR7aopletye7y</textarea>
-			</br>
-			<!-- Правила замены<input id="rules" value="E:R,m:t,x:7, :t,Пр:К"></br -->
-			Replace rules <input id="replace-in-text-rules" value="R:E,o:m,7:x,t: ,К:Пр,y:t">
-			</br>
-			<i>Note: replacement performed in order to describe the rules</i>
-			<br/>
-			<div class="fhqbtn" onclick="fhqgui.toolReplaceInText();">Go</div></br>
-			<textarea readonly="true" id="replace-in-text-output" cols="100" rows="20"></textarea>
-		</div>
 		
 	</body>
 </html>

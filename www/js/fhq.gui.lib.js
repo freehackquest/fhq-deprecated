@@ -1,4 +1,5 @@
 function FHQGuiLib(api) {
+	var self = this;
 	this.fhq = api;
 	this.api = api;
 	
@@ -451,6 +452,21 @@ function FHQGuiLib(api) {
 		return pagesHtml.join(' ');
 	}
 
+
+	this.changeLocationState = function(newPageParams){
+		var url = '';
+		var params = [];
+		console.log("changeLocationState");
+		console.log("changeLocationState", newPageParams);
+		for(var p in newPageParams){
+			params.push(encodeURIComponent(p) + "=" + encodeURIComponent(newPageParams[p]));
+		}
+		console.log("changeLocationState", params);
+		console.log("changeLocationState", window.location.pathname + '?' + params.join("&"));
+		window.history.pushState(newPageParams, document.title, window.location.pathname + '?' + params.join("&"));
+		this.pageParams = this.parsePageParams();
+	}
+	
 	this.filter = {
 		'current' : 'quests',
 		'quests' : {
@@ -1268,67 +1284,33 @@ function FHQGuiLib(api) {
 		);
 	}
 
-	this.loadTools = function(){
-		$('#content_page').html("<h1>Tools</h1>");
-		var page = this.pageParams['page'];
-		var tools = {
-			'stat-analiz-text': 'Statistical analysis of the text',
-			'replace-in-text': 'Replace in text'
-		};
-		
-		if (!this.containsPageParam('tool')){
-			for(var k in tools){
-				$('#content_page').append('<a class="fhqbtn" href="?page=' + page + '&tool=' + k + '">' + tools[k] + '</a>');	
-			}
-		} else {
-			var tool = this.pageParams['tool'];
-			if(tools[tool]){
-				$('#content_page').append('<a class="fhqbtn" href="?page=' + page + '">&larr;</a>' + tools[tool] + '<br/>');
-				$('#content_page').append($('#' + tool).html());
-			}
-		}
-	}
-
-	this.toolStatAnalizText = function(){
-		$('#stat-analiz-text-output').html("Working...");
-		var text = $('#stat-analiz-text-input').val();		
-		var stat = {};
-		var count = 0;
-		for(var i = 0; i < text.length; i++) {
-			var ch = text[i];
-			count++;
-			if (!stat[ch]) {
-				stat[ch] = 1;
-			} else {
-				stat[ch]++;
-			}
-		}
-
-		$('#stat-analiz-text-output').html("");
-		for(key in stat) {
-			var val = stat[key];
-			$('#stat-analiz-text-output').append('[' + key + '] = ' + val + '/' + count + ' ( ' + ((val*100)/count) + ' %)\n');
-		}
+	this.loadTool = function(toolid){
+		this.changeLocationState({'tools' : '', 'toolid': toolid});
+		$('.toolinfo').html('Loading...');
+		$.getScript("./js/fhq.plugins/" + toolid + "/index.js", function(){
+			$('.toolinfo').html('');
+			window[toolid].init($('.toolinfo'));
+		});
 	}
 	
-	this.toolReplaceInText = function(){
-		$('#replace-in-text-output').html("");
-		// console.log($('#replace-in-text-rules').val());
-		// console.log($('#replace-in-text-input').val());
-
-		var rules = $('#replace-in-text-rules').val().split(",");
-		var replacerules = {};
-		for(var i = 0; i < rules.length; i++)
-		{
-			var arr = rules[i].split(":");
-			replacerules[arr[0]] = arr[1];
-		}
+	this.loadTools = function(){
+		$('#content_page').html('<div class="toolinfo"></div><div class="toolslist"></div>');
 		
-		var text = $('#replace-in-text-input').val();
-		for(key in replacerules) {
-			text = text.replace(new RegExp(key,'g'),replacerules[key]);
+		var len = FHQPlugins.length;
+		
+		$('.toolslist').html('');
+		$('.toolslist').append('<div class="tools"><div class="icon">Tools</div><div class="content"></div></div>');
+		
+		for(var i = 0; i < len; i++){
+			var tool = FHQPlugins[i];
+			if(tool.type == 'tools'){
+				$('.toolslist .tools .content').append('<div class=toolitem toolid="' + tool.id + '"><div class="name">' + tool.name[this.lang()] + '</div></div>');	
+			}
 		}
-		$('#replace-in-text-output').html(text);
+
+		$('.toolitem').unbind('click').bind('click', function(){
+			self.loadTool($(this).attr('toolid'));
+		});
 	}
 
 

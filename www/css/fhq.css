@@ -316,6 +316,177 @@
 	margin-top: 10px;
 }
 
+.questslist, .toolslist{
+	float: left;
+	display: inline-block;
+	min-height: 100px;
+	background-color: #e4e4e4;
+	opacity: 0.95;
+	margin-left: 0px;
+	width: 200px;
+}
+
+.questslist .icon, .toolslist .icon{
+	width: 170px;
+	height: 50px;
+	background-repeat: no-repeat;
+	background-position: 10px 10px;
+	background-size: 50px 50px;
+	padding: 10px;
+	border-bottom: 1px dashed #3e3e3e;
+	border-top: 1px solid #3e3e3e;
+	text-align: right;
+	font: 12pt/10pt Arial;
+	font-size: 20px;
+	line-height: 50px;
+}
+
+.toolslist .tools .icon{
+	background-image: url("../images/menu/tools_150x150.png");
+}
+
+.questslist .admin .icon{
+	background-image: url("../images/quests/admin.png");
+}
+
+.questslist .crypto .icon{
+	background-image: url("../images/quests/crypto.png");
+}
+
+.questslist .enjoy .icon{
+	background-image: url("../images/quests/enjoy.png");
+}
+
+.questslist .forensics .icon{
+	background-image: url("../images/quests/forensics.png");
+}
+
+.questslist .hashes .icon{
+	background-image: url("../images/quests/hashes.png");
+}
+
+.questslist .network .icon{
+	background-image: url("../images/quests/network.png");
+}
+
+.questslist .ppc .icon{
+	background-image: url("../images/quests/ppc.png");
+}
+
+.questslist .recon .icon{
+	background-image: url("../images/quests/recon.png");
+}
+
+.questslist .reverse .icon{
+	background-image: url("../images/quests/reverse.png");
+}
+
+.questslist .stego .icon{
+	background-image: url("../images/quests/stego.png");
+}
+
+.questslist .trivia .icon{
+	background-image: url("../images/quests/trivia.png");
+}
+
+.questslist .web .icon{
+	background-image: url("../images/quests/web.png");
+}
+
+.questslist.preloading{
+	background-image: url('../images/preloader.gif');
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.questitem, .toolitem {
+	padding: 5px;
+	cursor: pointer;
+	padding-right: 15px;
+	padding-left: 15px;
+	width: 170px;
+	text-align: left;
+	background-color: #e4e4e4;
+	-webkit-transition: width 0.5s ease-out 0s;
+	-moz-transition: width 0.5s ease-out 0s;
+	-o-transition: width 0.5s ease-out 0s;
+	transition: width 0.5s ease-out 0s;
+}
+
+.questitem .name, .toolitem .name{
+	display: inline-block;
+	width: 100px;
+	text-align: left;
+	white-space: nowrap;
+	padding-right: 20px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-webkit-transition: width 0.5s ease-out 0s;
+	-moz-transition: width 0.5s ease-out 0s;
+	-o-transition: width 0.5s ease-out 0s;
+	transition: width 0.5s ease-out 0s;
+}
+
+.toolitem .name {
+	width: 170px;
+}
+
+.questitem .score{
+	display: inline-block;
+	width: 50px;
+	text-align: right;
+}
+
+.questitem:hover , .toolitem:hover{
+	background: #c8c8c8;
+	color: #333;
+	text-decoration: none;
+	width: 270px;
+}
+
+.questitem:hover .name, .toolitem:hover .name{
+	width: 200px;
+}
+
+.toolitem:hover .name{
+	width: 270px;
+}
+
+.questinfo, .toolinfo{
+	display: inline-block;
+	min-height: 100px;
+	width: calc(100% - 220px);
+	left: 220px;
+	position: fixed;
+}
+
+.questblock{
+	margin: 8px;
+	padding: 8px;
+	border-radius: 5px;
+	background: #e4e4e4;
+	opacity: 0.95;
+	display: inline-block;
+	float: left;
+}
+
+.questblock .title{
+	text-align: left;
+	font: 12pt/10pt Arial;
+	font-size: 20px;
+	margin-bottom: 10px;
+	border-bottom: 1px dashed #C8C8C8;
+	padding-bottom: 10px;
+}
+
+.questblock .content{
+	text-align: left;
+	margin: 10px;
+	font: 12pt/10pt Arial;
+	line-height: 19px;
+}
+
+
 /*
 	darkstile
 */
@@ -324,6 +495,14 @@
 {
 	background-color: #303030;
 	color: #C8C8C8;
+}
+
+
+.dark .questitem:hover, .dark .toolitem:hover{
+	background: #c8c8c8;
+	color: #333;
+	text-decoration: none;
+	width: 270px;
 }
 
 .dark .accout-panel {
