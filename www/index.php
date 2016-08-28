@@ -66,14 +66,6 @@ if (isset($_SESSION['user']))
 				fhq.security.logout();
 
 			$(document).ready(function() {
-				// loading cool dark style
-				if(fhqgui.containsPageParam("dark")){
-					$('#jointothedarkside').attr('data-hint', 'You are on the dark side and you can not turning back.');
-					$('#jointothedarkside').attr('onclick', 'window.location.href = "?base";');
-				}else{
-					$('#jointothedarkside').attr('data-hint', 'Join the dark side!');
-					$('#jointothedarkside').attr('onclick', 'window.location.href = "?dark";');
-				}
 				
 				$("#btnfilter").hide();
 				$("#btnmenu_game").hide();
@@ -95,8 +87,6 @@ if (isset($_SESSION['user']))
 					var page=fhqgui.pageParams['page'];
 					if(page == "scoreboard"){
 						loadScoreboard(0);
-					}else if(page == "about"){
-						fhqgui.loadAbout();
 					}else if(page == "news"){
 						createPageEvents();
 						updateEvents();
@@ -252,9 +242,6 @@ if (isset($_SESSION['user']))
 				<div class="fhq_btn_menu hint--bottom" data-hint="Restore Password"  onclick="fhqgui.showResetPasswordForm();">
 					<img class="fhq_btn_menu_img" src="images/menu/resetpass_50x50.png"/>
 				</div>
-				<div class="fhq_btn_menu hint--bottom" data-hint="Donate" onclick="fhqgui.showDonateForm();">
-					<img class="fhq_btn_menu_img" src="images/menu/donate_50x50.png"/>
-				</div>
 			</div>
 			
 			<!-- Right Menu Panel for Athorized Users -->
@@ -267,9 +254,6 @@ if (isset($_SESSION['user']))
 				<div class="fhq_btn_menu hint--bottom" data-hint="Logout" onclick="logout();">
 					<img class="fhq_btn_menu_img" src="images/menu/logout.png"/><br>
 				</div>
-				<div class="fhq_btn_menu hint--bottom" data-hint="Donate">
-					<a target="_blank" href="http://fhq.sea-kg.com/donate.html"><img class="fhq_btn_menu_img" src="images/menu/donate.svg"/></a>
-				</div>
 			</div>
 
 			<!-- Horizontal Left Panel -->
@@ -277,9 +261,6 @@ if (isset($_SESSION['user']))
 			<div class="fhqtopmenu_leftpanel">
 				<a id="btnmenu_main_page" class="fhq_btn_menu hint--right" data-hint="Main Page" href="?page=main_page">
 					<img class="fhq_btn_menu_img" src="templates/base/images/logo/fhq_2015_small.png"/>
-				</a>
-				<a id="btnmenu_about" class="fhq_btn_menu hint--bottom" data-hint="About" href="?page=about">
-					<img class="fhq_btn_menu_img" src="images/menu/unknown.png"/>
 				</a>
 				<a id="btnmenu_tools" class="fhq_btn_menu hint--bottom" data-hint="Tools" href="?page=tools">
 					<img class="fhq_btn_menu_img" src="images/menu/tools_150x150.png"/>
@@ -342,6 +323,13 @@ if (isset($_SESSION['user']))
 				</div>
 			</div>
 
+			<div id="copyright">
+				<center>
+					<font face="Arial" size=2>Copyright © 2011-2016 sea-kg. Source code: <a href="https://github.com/freehackquest/fhq">github.com</a> API: <a href="api/?html">html</a> or <a href="api/?json">json</a> VM: <a href="http://files.sea-kg.com/fhq-ova/" target="_ablank">ova</a> Team: <a href="https://ctftime.org/team/16804">ctftime</a> Donate: <a href="http://fhq.sea-kg.com/donate.html">donate</a><br></font>
+				</center>
+			</div>
+
+
 			<table cellspacing=10px cellpadding=10px width="100%" height="100%">
 				<tr>
 					<td colspan=2 align=left valign=top height=85px></td>
@@ -356,31 +344,7 @@ if (isset($_SESSION['user']))
 						</center>
 					</td>
 				</tr>
-				<tr>
-					<td id="copyright" colspan=2>
-<center>
-	<font face="Arial" size=2>Copyright © 2011-2015 sea-kg. Source code: <a href="https://github.com/freehackquest/fhq">github.com</a> API: <a href="api/?html">html</a> or <a href="api/?json">json</a> VM: <a href="http://files.sea-kg.com/fhq-ova/" target="_ablank">ova</a> Team: <a href="https://ctftime.org/team/16804">ctftime</a> Donate: <a href="http://fhq.sea-kg.com/donate.html">donate</a><br></font>
-</center>
-					</td>
-				</tr>
 			</table>
-			<div id="mainpage" style="display: none;">
-				<table>
-					<tr>
-						<td valign="top">
-							<div id="jointothedarkside" class="fhq_index_logo hint--bottom leftimg">
-								<img class="leftimg" src="templates/base/images/logo/fhq_2015.png"/>
-							</div>
-						</td>
-						<td valign="top">
-							<h1>free-hack-quest</h1>
-								This is an open source platform for competitions in computer security.
-							<div id="cities">
-							</div>
-						</td>
-					</tr>
-				</table>
-			</div>
 		</center>
 
 		<!-- Tools -->

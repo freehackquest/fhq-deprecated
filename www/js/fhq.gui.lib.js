@@ -141,24 +141,6 @@ function FHQGuiLib(api) {
 		$('#fhqmodaldialog_content').html("");
 	}
 	
-	/* Donate */
-	
-	this.showDonateForm = function() {
-		var self = this;
-		self.showFHQModalDialog({
-				'header' : 'Donate',
-				'content': 'Loading...',
-				'buttons': ''
-		});
-		$.get('donate.html', function(result){
-			self.updateFHQModalDialog({
-				'header' : 'Donate',
-				'content': result,
-				'buttons': ''
-			});
-		});
-	}
-	
 	/* Sign In */
 	
 	this.showSignInForm = function() {
@@ -295,30 +277,39 @@ function FHQGuiLib(api) {
 			if (response.result == "fail") {
 				$('#cities').html('Fail');
 			} else {
-				var content = '';
+
+				$('#statistics-count-quests').removeClass('preloading');
+				$('#statistics-count-quests').text(response.data.quests.count);
 				
-				content += "<br><b>Quests: </b>" + response.data.quests.count + "<br>";
-				content += "<b>All attempts: </b>" + response.data.quests.attempts + "<br>";
-				content += "<b>Already solved: </b>" + response.data.quests.solved + "<br>";
-				content += "<b>Playing with us: </b>";
+				$('#statistics-all-attempts').removeClass('preloading');
+				$('#statistics-all-attempts').text(response.data.quests.attempts);
+				
+				$('#statistics-already-solved').removeClass('preloading');
+				$('#statistics-already-solved').text(response.data.quests.solved);
 
 				var cities = [];
 				for (var k in response.data.cities){
 					cities.push(response.data.cities[k].city + ' (' + response.data.cities[k].cnt + ')');
 				}
-				content += cities.join(", ");
-				content += "<br>";
-				
+
+				$('#statistics-playing-with-us').removeClass('preloading');
+				$('#statistics-playing-with-us').text(cities.join(", "));				
+
+				var content = "";
 				for (var k in response.data.winners) {
-					content += '<br><b>Winner(s) of ' + k + ':</b><br><ul><li>';
 					var us = []
+					var score = 0;
 					for (var k1 in response.data.winners[k]) {
-						us.push(response.data.winners[k][k1].user + ' with +' + response.data.winners[k][k1].score);
+						if(us.length < 3){
+							score = response.data.winners[k][k1].score;
+							us.push(response.data.winners[k][k1].user);
+						}
 					}
-					content +=  us.join('</li><li>');
-					content += '</li></ul><br>';
+					content += '<div class="single-line-preloader"> <div class="single-line-name">' + k + ' (+' + score + '):</div> ';
+					content += '<div class="single-line-value">' + us.join(', ') + '</div>';
+					content += '</div>';
 				}
-				$('#cities').html(content);
+				$('#winners').html(content);
 			}
 		});
 	};
@@ -584,13 +575,6 @@ function FHQGuiLib(api) {
 		this.filter.stats.questid = document.getElementById('statistics_questid').value;
 		this.filter.stats.questsubject = document.getElementById('statistics_questsubject').value;
 	}
-
-	this.loadAbout = function() {
-		this.setFilter('about');
-		send_request_post_html('about.html?v=1', '', function(html) {
-			$('#content_page').html(html);
-		});
-	}
 	
 	this.loadGames = function() {
 		this.setFilter('games');
@@ -630,8 +614,110 @@ function FHQGuiLib(api) {
 
 	this.loadMainPage = function() {
 		this.setFilter('');
-		$("#content_page").html($('#mainpage').html());
+		var strVar="";
+		strVar += "<table style=\"display: inline-block;\">";
+		strVar += "					<tr>";
+		strVar += "						<td valign=\"top\">";
+		strVar += "							";
+		strVar += "							<img class=\"leftimg\" src=\"images\/fhq2016_200x150.png\"\/>";
+		strVar += "							<div id=\"jointothedarkside\" class=\"fhq-join-darkside\">";
+		strVar += "								Join the dark side...";
+		strVar += "							<\/div>";
+		strVar += "						<\/td>";
+		strVar += "						<td valign=\"top\">";
+		strVar += "							<div class=\"fhq-topic\">free-hack-quest<\/div>";
+		strVar += "							This is an open source platform for competitions in computer security.";
+		strVar += "							";
+		strVar += "							<div class=\"fhq-topic\">statistics<\/div>";
+		strVar += "							<div class=\"single-line-preloader\">";
+		strVar += "								<div class=\"single-line-name\">Quests:<\/div>";
+		strVar += "								<div class=\"single-line-value preloading\" id=\"statistics-count-quests\">...<\/div>";
+		strVar += "							<\/div>";
+		strVar += "							<div class=\"single-line-preloader\">";
+		strVar += "								<div class=\"single-line-name\">All attempts:<\/div>";
+		strVar += "								<div class=\"single-line-value preloading\" id=\"statistics-all-attempts\">...<\/div>";
+		strVar += "							<\/div>";
+		strVar += "							<div class=\"single-line-preloader\">";
+		strVar += "								<div class=\"single-line-name\">Already solved:<\/div>";
+		strVar += "								<div class=\"single-line-value preloading\" id=\"statistics-already-solved\">...<\/div>";
+		strVar += "							<\/div>";
+		strVar += "							<div class=\"single-line-preloader\">";
+		strVar += "								<div class=\"single-line-name\">Playing with us:<\/div>";
+		strVar += "								<div class=\"single-line-value preloading\" id=\"statistics-playing-with-us\">...<\/div>";
+		strVar += "							<\/div>";
+		strVar += "							<div class=\"fhq-topic\">winners<\/div>";
+		strVar += "							<div id=\"winners\">";
+		strVar += "							<\/div>";
+		strVar += "							<div class=\"fhq-topic\">developers and designers<\/div>";
+		strVar += "							Evgenii Sopov<br>";
+		strVar += "							<div class=\"fhq-topic\">team<\/div>";
+		strVar += "							If you are not in team you can join to FHQ team on <a href=\"https:\/\/ctftime.org\/team\/16804\">ctftime<\/a>";
+		strVar += "							<div class=\"fhq-topic\">thanks for<\/div>";
+		strVar += "							<a href=\"http:\/\/www.chartjs.org\/docs\/\" target=\"_blank\">Charts.js<\/a>,";
+		strVar += "							Sergey Belov (found xss!),";
+		strVar += "							Igor Polyakov,";
+		strVar += "							Maxim Samoilov (Nitive),";
+		strVar += "							Dmitrii Mukovkin,";
+		strVar += "							Team Keva,";
+		strVar += "							Alexey Gulyaev,";
+		strVar += "							Alexander Menschikov,";
+		strVar += "							Ilya Bokov, ";
+		strVar += "							Extrim Code,";
+		strVar += "							Taisiya Lebedeva";
+		strVar += "							<br>";
+		strVar += "							";
+		strVar += "							<div class=\"fhq-topic\">contacts<\/div>";
+		strVar += "							<div class=\"single-line-preloader\">";
+		strVar += "								<div class=\"single-line-name\">Group in VK: <\/div>";
+		strVar += "								<div class=\"single-line-value\"><a href=\"http:\/\/vk.com\/freehackquest\" target=\"_blank\"><img width=30px src=\"images\/vk.png\"\/><\/a><\/div>";
+		strVar += "							<\/div>";
+		strVar += "							<div class=\"single-line-preloader\">";
+		strVar += "								<div class=\"single-line-name\">Twitter: <\/div>";
+		strVar += "								<div class=\"single-line-value\"><a href=\"https:\/\/twitter.com\/freehackquest\" target=\"_blank\"><img width=30px src=\"images\/twitter.png\"\/><\/a><\/div>";
+		strVar += "							<\/div>";
+		strVar += "							<div class=\"single-line-preloader\">";
+		strVar += "								<div class=\"single-line-name\">Telegram: <\/div>";
+		strVar += "								<div class=\"single-line-value\"><a href=\"https:\/\/telegram.me\/freehackquest\" target=\"_blank\"><img width=30px src=\"images\/telegram.png\"\/><\/a><\/div>";
+		strVar += "							<\/div>";
+		strVar += "							<div class=\"single-line-preloader\">";
+		strVar += "								<div class=\"single-line-name\">Email: <\/div>";
+		strVar += "								<div class=\"single-line-value\">freehackquest@gmail.com<\/div>";
+		strVar += "							<\/div>";
+		strVar += "";
+		strVar += "							<div class=\"fhq-topic\">distribution<\/div>";
+		strVar += "							You can download <a href=\"http:\/\/files.sea-kg.com\/fhq-ova\/\" target=\"_blank\">virtual machine (ova)<\/a> and up in local network.";
+		strVar += "";
+		strVar += "							<div class=\"fhq-topic\">source code<\/div>";
+		strVar += "							<a href=\"http:\/\/github.com\/freehackquest\/fhq\" target=\"_blank\">http:\/\/github.com\/freehackquest\/fhq<\/a>";
+		strVar += "";
+		strVar += "							<div class=\"fhq-topic\">api<\/div>";
+		strVar += "							<a href=\"api\/?html\">HTML<\/a>, ";
+		strVar += "							<a href=\"api\/?json\">JSON<\/a><br>";
+		strVar += "";
+		strVar += "							<div class=\"fhq-topic\">donate<\/div>";
+		strVar += "							<div id=\"donate-form\"><\/div>";
+		strVar += "						<\/td>";
+		strVar += "					<\/tr>";
+		strVar += "				<\/table>";
+
+		
+		
+		$("#content_page").html(strVar);
+
 		this.loadCities();
+		$.get('donate.html', function(result){
+			$('#donate-form').html(result);
+		});
+		
+		$('#jointothedarkside').unbind().bind('click', function(){
+			if($('body').hasClass('dark')){
+				$('body').removeClass('dark');
+				$('#jointothedarkside').html('Join the dark side!');
+			}else{
+				$('body').addClass('dark');
+				$('#jointothedarkside').html('You are on the dark side. Turn back?');
+			}
+		});
 	}
 
 	this.eventView = function(event, access) {

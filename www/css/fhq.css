@@ -140,3 +140,298 @@
 	margin: 7px 7px 7px 0; /* Отступы вокруг картинки */
 }
 
+.fhq-join-darkside {
+    color: #333;
+    text-decoration: underline;
+    cursor: pointer;
+    text-align: center;
+}
+
+.dark .fhq-join-darkside{
+	color: #c8c8c8;
+}
+
+/* .dark .fhq-btn-menu-right, .dark .fhq-simple-btn, */
+
+.fhq-topic {
+    text-decoration: underline;
+    font: 12pt/10pt Arial;
+    font-size: 38.5px;
+    line-height: 40px;
+    height: 40px;
+    padding-bottom: 10px;
+    color: #303030;
+    padding-top: 20px;
+}
+
+.single-line-value {
+    display: inline-block;
+    min-height: 25px;
+    line-height: 25px;
+    min-width: 100px;
+}
+
+.single-line-name {
+    display: inline-block;
+    min-height: 25px;
+    line-height: 25px;
+    font-weight: bold;
+}
+
+.single-line-preloader {
+    min-height: 25px;
+}
+
+.single-line-value.preloading{
+	background-image: url('../images/preloader.gif');
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+
+#copyright {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    background: #e4e4e4;
+    padding: 5px;
+    z-index: 100;
+}
+
+/*
+	darkstile
+*/
+
+.fhqbody.dark
+{
+	background-color: #303030;
+	color: #C8C8C8;
+}
+
+.dark .fhq_index_column {
+	background-color: #3E3E3E;
+	color: #C8C8C8;
+}
+
+.dark .button3 {
+	background: #303030;
+	color: #C8C8C8;
+	background: #383838;
+}
+
+.dark .fhqbtn {
+	background: #303030;
+	color: #C8C8C8;
+	background: #383838;
+}
+
+.dark .fhqparamtbl_param {
+    background-color: #3b3b3b;
+    color: #C8C8C8;
+}
+
+.dark .fhqparamtbl_value {
+    background-color: #4f4f4f;
+    color: #C8C8C8;
+}
+
+.dark .fhq-topic{
+	color: #C8C8C8;
+}
+
+
+/* menu */
+.dark .fhq_btn_menu {
+	color: #c8c8c8;
+}
+
+.dark .fhq_btn_menu:hover {
+	background: #606060;
+	color: #C8C8C8;
+}
+
+.dark .fhq_btn_menu_splitter {
+	background-color: #303030;
+}
+
+.dark .fhq_btn_menu_img {
+}
+
+.dark .fhq_btn_menu_user_panel {
+	background-color: #303030;
+}
+
+.dark .fhqtopmenu:hover {
+    background-color: #3e3e3e;
+} 
+
+.dark .fhqleftmenu {
+	background: #3e3e3e;
+}
+
+.dark .fhqtopmenu_rightpanel {
+	background: #3e3e3e;
+}
+
+.dark .fhqtopmenu_toppanel {
+	background: #3e3e3e;
+}
+
+
+
+/* modal dialog */
+
+.dark .overlay {
+	background: rgba(0, 0, 0, 0.8);
+}
+
+.dark .overlay_content {
+	color: #C8C8C8;
+	background-color: #303030;
+	border-color: #3e3e3e;
+}
+
+.dark .fhqmodaldialog_content {
+	color: #C8C8C8;
+	background-color: #303030;
+	border-color: #3e3e3e;
+}
+
+/* tables */
+
+.dark #customers th {
+    background-color: #3e3e3e;
+    color: #C8C8C8;
+}
+
+.dark #customers td, #customers th {
+    border-color: #000;
+}
+
+.dark #customers {
+    border-collapse: collapse;
+}
+
+.dark #customers tr.alt td {
+    color: #C8C8C8;
+    background-color: #3e3e3e;
+}
+
+.dark input[type="text"], .dark input[type="password"], .dark select, .dark textarea {
+  background-color: #9f9f9f;
+  color: #010101;
+}
+
+.dark .questslist, .dark .toolslist{
+	background-color: #3e3e3e;
+}
+
+.dark .questitem, .dark .toolitem {
+	background-color: #3e3e3e;
+}
+
+.dark .questslist .icon, .dark .toolslist .icon{
+	border-color: #C8C8C8;
+}
+
+.dark .questblock{
+	background-color: #3e3e3e;
+}
+
+.dark textarea[readonly] {
+    background-color: #3e3e3e;
+	color: #C8C8C8;
+	border-color: #4e4e4e;
+}
+
+.dark .hint--bottom:before {
+    border-bottom-color: #6f3f3f;
+}
+
+.dark .hint:after, .dark [data-hint]:after {
+    background-color: #6f3f3f;
+    color: #C8C8C8;
+    border-color: #6f3f3f;
+}
+
+.dark hr {
+	background-color: #6f3f3f;
+	border-color: #6f3f3f;
+}
+
+.dark pre {
+    background-color: #4f3f3f;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+}
+.dark code, .dark pre {
+    color: #C8C8C8;
+}
+
+.dark .fhq_task_filters {
+    background-color: #3E3E3E;
+    color: #C8C8C8;
+}
+
+.dark .fhq_quest_info {
+    background-color: #494949;
+    color: #C8C8C8;
+}
+
+.dark .fhq_quest_info:hover{
+	background-color: #4f4f4f;
+}
+
+.dark .fhq_task_info {
+    background-color: #494949;
+    color: #C8C8C8;
+}
+
+.dark .fhq_task_info:hover{
+	background-color: #4f4f4f;
+}
+
+.dark font.fhq_task {
+    color: #C8C8C8;
+}
+
+
+.dark .quest_info_row_admin {
+    background-color: #494949;
+}
+
+.dark .fhq_scoreboard_row {
+	color: #C8C8C8;
+}
+
+.dark .users_cell {
+	color: #C8C8C8;
+	background-color: #494949;
+}
+
+.dark .selected_user_page {
+	color: #C8C8C8;
+	background-color: #494949;
+}
+
+.dark .fhq_event_info {
+    background-color: #494949;
+    color: #C8C8C8;
+}
+
+.dark #copyright{
+	background-color: #3e3e3e;
+	
+}
+
+.dark .fhq_btn_menu {
+    background-color: #303030;
+}
+
+.dark .fhq_btn_menu {
+    background-color: #303030;
+}
+
+.dark .fhqtopmenu_leftpanel {
+    background: #3e3e3e;
+}
