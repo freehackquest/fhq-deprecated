@@ -781,7 +781,7 @@ function FHQGuiLib(api) {
 		strVar += "							<\/div>";
 		strVar += "";
 		strVar += "							<div class=\"fhq-topic\">distribution<\/div>";
-		strVar += "							You can download <a href=\"http:\/\/files.sea-kg.com\/fhq-ova\/\" target=\"_blank\">virtual machine (ova)<\/a> and up in local network.";
+		strVar += '							You can download <a href=\"http://dist.freehackquest.com/" target="_blank">virtual machine (ova)</a> and up in local network.';
 		strVar += "";
 		strVar += "							<div class=\"fhq-topic\">source code<\/div>";
 		strVar += "							<a href=\"http:\/\/github.com\/freehackquest\/fhq\" target=\"_blank\">http:\/\/github.com\/freehackquest\/fhq<\/a>";

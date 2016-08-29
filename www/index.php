@@ -252,7 +252,7 @@ if (isset($_SESSION['user']))
 
 			<div id="copyright">
 				<center>
-					<font face="Arial" size=2>Copyright © 2011-2016 sea-kg. Source code: <a href="https://github.com/freehackquest/fhq">github.com</a> API: <a href="api/?html">html</a> or <a href="api/?json">json</a> VM: <a href="http://files.sea-kg.com/fhq-ova/" target="_ablank">ova</a> Team: <a href="https://ctftime.org/team/16804">ctftime</a> Donate: <a href="http://fhq.sea-kg.com/donate.html">donate</a><br></font>
+					<font face="Arial" size=2>Copyright © 2011-2016 sea-kg. Source code: <a href="https://github.com/freehackquest/fhq">github.com</a> API: <a href="api/?html">html</a> or <a href="api/?json">json</a> VM: <a href="http://dist.freehackquest.com/" target="_ablank">ova</a> Team: <a href="https://ctftime.org/team/16804">ctftime</a> Donate: <a href="http://fhq.sea-kg.com/donate.html">donate</a><br></font>
 				</center>
 			</div>
 
