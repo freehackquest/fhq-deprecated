@@ -42,7 +42,7 @@ if( APISecurity::login($conn, $email, $hash_password2)) {
 	$result['data']['token'] = APIHelpers::$TOKEN;
 	$result['data']['session'] = APIHelpers::$FHQSESSION;
 } else {
-	APIHelpers::showerror(1002, 'email or/and password was not found in system ');
+	APIHelpers::showerror(1002, 'email or/and password was not found in system');
 }
 
 

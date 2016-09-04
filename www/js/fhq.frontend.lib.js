@@ -101,6 +101,13 @@ function FHQFrontEndLib() {
 		tmpXMLhttp.send(this.createUrlFromObj(params));
 		return obj;
 	};
+	this.supportsHtml5Storage = function() {
+		try {
+			return 'localStorage' in window && window['localStorage'] !== null;
+		} catch (e) {
+			return false;
+		}
+	}
 
 	this.security = new (function(t) {
 		this.p = t;

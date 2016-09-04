@@ -230,6 +230,18 @@ function FHQGuiLib(api) {
 			'content': $("#signin-form").html(),
 			'buttons': $("#signin-form-buttons").html()
 		});
+		if(this.fhq.supportsHtml5Storage()){
+			if(localStorage.getItem("email") != null){
+				$("#signin-email").val(localStorage.getItem("email"));
+			}else{
+				$("#signin-email").val("");
+			}
+			if(localStorage.getItem("password") != null){
+				$("#signin-password").val(localStorage.getItem("password"));
+			}else{
+				$("#signin-password").val("");
+			}
+		}
 	}
 
 	this.cleanupSignInMessages = function() {
@@ -242,17 +254,15 @@ function FHQGuiLib(api) {
 
 		var obj = this.fhq.security.login(email,password);
 		if (obj.result == "fail") {
-			$("#signin-error-message").html(obj.error.message + "[" + email + "][" + password + "]");
+			$("#signin-error-message").html(obj.error.message);
 		} else {
 			// TODO
 			$('#signin-email').val('');
 			$("#signin-password").val('');
-
-			/* this.updateFHQModalDialog({
-				"header" : "Sign In",
-				"content" : "Good",
-				"buttons" : ""
-			});*/
+			if(this.fhq.supportsHtml5Storage()){
+				localStorage.setItem("email", email);
+				localStorage.setItem("password", password);
+			}
 			window.location.href = "main.php";
 		}
 	}
