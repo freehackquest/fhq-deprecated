@@ -720,45 +720,43 @@ function FHQGuiLib(api) {
 
 	this.loadMainPage = function() {
 		this.setFilter('');
-		var strVar="";
-		strVar += "<table style=\"display: inline-block;\">";
+		var strVar=''
+		+ '<table style="display: inline-block;">';
 		strVar += "					<tr>";
 		strVar += "						<td valign=\"top\">";
-		strVar += "							";
 		strVar += "							<img class=\"leftimg\" src=\"images\/fhq2016_200x150.png\"\/>";
-		strVar += "							<div id=\"jointothedarkside\" class=\"fhq-join-darkside\">";
-		strVar += "								Join the dark side...";
-		strVar += "							<\/div>";
-		strVar += "						<\/td>";
+		strVar += "							<div id=\"jointothedarkside\" class=\"fhq-join-darkside\">"
+		+ self.t('Join the dark side...');
+		strVar += '							</div>';
+		strVar += '						</td>';
 		strVar += "						<td valign=\"top\">";
-		strVar += "							<div class=\"fhq-topic\">free-hack-quest<\/div>";
-		strVar += "							This is an open source platform for competitions in computer security.";
-		strVar += "							";
-		strVar += "							<div class=\"fhq-topic\">statistics<\/div>";
+		strVar += "							<div class=\"fhq-topic\">free-hack-quest<\/div>"
+		+ self.t('This is an open source platform for competitions in computer security.')
+		+ '							<div class="fhq-topic">' + self.t('statistics') + '</div>';
 		strVar += "							<div class=\"single-line-preloader\">";
-		strVar += "								<div class=\"single-line-name\">Quests:<\/div>";
+		strVar += '								<div class="single-line-name">' + self.t('Quests') + ':</div>';
 		strVar += "								<div class=\"single-line-value preloading\" id=\"statistics-count-quests\">...<\/div>";
 		strVar += "							<\/div>";
 		strVar += "							<div class=\"single-line-preloader\">";
-		strVar += "								<div class=\"single-line-name\">All attempts:<\/div>";
+		strVar += '								<div class="single-line-name">' + self.t('All attempts') + ':</div>';
 		strVar += "								<div class=\"single-line-value preloading\" id=\"statistics-all-attempts\">...<\/div>";
-		strVar += "							<\/div>";
+		strVar += "							</div>";
 		strVar += "							<div class=\"single-line-preloader\">";
-		strVar += "								<div class=\"single-line-name\">Already solved:<\/div>";
-		strVar += "								<div class=\"single-line-value preloading\" id=\"statistics-already-solved\">...<\/div>";
-		strVar += "							<\/div>";
+		strVar += '								<div class="single-line-name">' + self.t('Already solved') + ':</div>';
+		strVar += '								<div class="single-line-value preloading" id="statistics-already-solved">...</div>';
+		strVar += "							</div>";
 		strVar += "							<div class=\"single-line-preloader\">";
-		strVar += "								<div class=\"single-line-name\">Playing with us:<\/div>";
-		strVar += "								<div class=\"single-line-value preloading\" id=\"statistics-playing-with-us\">...<\/div>";
-		strVar += "							<\/div>";
-		strVar += "							<div class=\"fhq-topic\">winners<\/div>";
+		strVar += '								<div class="single-line-name">' + self.t('Playing with us') + ':</div>';
+		strVar += '								<div class="single-line-value preloading" id="statistics-playing-with-us">...</div>';
+		strVar += "							<\/div>"
+		+ '<div class="fhq-topic">' + self.t('leaders') + '<\/div>';
 		strVar += "							<div id=\"winners\">";
-		strVar += "							<\/div>";
-		strVar += "							<div class=\"fhq-topic\">developers and designers<\/div>";
-		strVar += "							Evgenii Sopov<br>";
-		strVar += "							<div class=\"fhq-topic\">team<\/div>";
-		strVar += "							If you are not in team you can join to FHQ team on <a href=\"https:\/\/ctftime.org\/team\/16804\">ctftime<\/a>";
-		strVar += "							<div class=\"fhq-topic\">thanks for<\/div>";
+		strVar += "							<\/div>"
+		+ ' <div class="fhq-topic">' + self.t('developers and designers') + '<\/div>';
+		strVar += "							Evgenii Sopov<br>"
+		+ '<div class="fhq-topic">' + self.t('team') + '</div>'
+		+ self.t('If you are not in team you can join to FHQ team on') + ' <a href="https://ctftime.org/team/16804\">ctftime</a>'
+		+ '<div class="fhq-topic">' + self.t('thanks for') + '</div>';
 		strVar += "							<a href=\"http:\/\/www.chartjs.org\/docs\/\" target=\"_blank\">Charts.js<\/a>,";
 		strVar += "							Sergey Belov (found xss!),";
 		strVar += "							Igor Polyakov,";
@@ -769,10 +767,9 @@ function FHQGuiLib(api) {
 		strVar += "							Alexander Menschikov,";
 		strVar += "							Ilya Bokov, ";
 		strVar += "							Extrim Code,";
-		strVar += "							Taisiya Lebedeva";
-		strVar += "							<br>";
-		strVar += "							";
-		strVar += "							<div class=\"fhq-topic\">contacts<\/div>";
+		strVar += "							Taisiya Lebedeva"
+		+ '<br>'
+		+ '<div class="fhq-topic">' + self.t('contacts') + '</div>';
 		strVar += "							<div class=\"single-line-preloader\">";
 		strVar += "								<div class=\"single-line-name\">Group in VK: <\/div>";
 		strVar += "								<div class=\"single-line-value\"><a href=\"http:\/\/vk.com\/freehackquest\" target=\"_blank\"><img width=30px src=\"images\/vk.png\"\/><\/a><\/div>";
@@ -787,20 +784,16 @@ function FHQGuiLib(api) {
 		strVar += "							<\/div>";
 		strVar += "							<div class=\"single-line-preloader\">";
 		strVar += "								<div class=\"single-line-name\">Email: <\/div>";
-		strVar += "								<div class=\"single-line-value\">freehackquest@gmail.com<\/div>";
-		strVar += "							<\/div>";
-		strVar += "";
-		strVar += "							<div class=\"fhq-topic\">distribution<\/div>";
-		strVar += '							You can download <a href=\"http://dist.freehackquest.com/" target="_blank">virtual machine (ova)</a> and up in local network.';
-		strVar += "";
-		strVar += "							<div class=\"fhq-topic\">source code<\/div>";
+		strVar += "								<div class=\"single-line-value\">freehackquest@gmail.com<\/div>"
+		+ '</div>'
+		+ '<div class="fhq-topic">' + self.t('distribution') + '</div>';
+		strVar += 'You can download <a href=\"http://dist.freehackquest.com/" target="_blank">virtual machine (ova)</a> and up in local network.'
+		+ '<div class="fhq-topic">' + self.t('source code') + '</div>';
 		strVar += "							<a href=\"http:\/\/github.com\/freehackquest\/fhq\" target=\"_blank\">http:\/\/github.com\/freehackquest\/fhq<\/a>";
-		strVar += "";
 		strVar += "							<div class=\"fhq-topic\">api<\/div>";
 		strVar += "							<a href=\"api\/?html\">HTML<\/a>, ";
 		strVar += "							<a href=\"api\/?json\">JSON<\/a><br>";
-		strVar += "";
-		strVar += "							<div class=\"fhq-topic\">donate<\/div>";
+		+ '<div class="fhq-topic">' + self.t('donate') + '</div>';
 		strVar += "							<div id=\"donate-form\"><\/div>";
 		strVar += "						<\/td>";
 		strVar += "					<\/tr>";
@@ -818,10 +811,10 @@ function FHQGuiLib(api) {
 		$('#jointothedarkside').unbind().bind('click', function(){
 			if($('body').hasClass('dark')){
 				$('body').removeClass('dark');
-				$('#jointothedarkside').html('Join the dark side!');
+				$('#jointothedarkside').html(self.t('Join the dark side...'));
 			}else{
 				$('body').addClass('dark');
-				$('#jointothedarkside').html('You are on the dark side. Turn back?');
+				$('#jointothedarkside').html(self.t('You are on the dark side. Turn back?'));
 			}
 		});
 	}
