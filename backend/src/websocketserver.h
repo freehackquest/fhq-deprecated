@@ -5,12 +5,14 @@
 #include <QString>
 #include <QWebSocket>
 #include <QWebSocketServer>
-#include <QHostAddress>
+#include <QMap>
+#include "interfaces/icmdhandler.h"
+#include "interfaces/iwebsocketserver.h"
 
 // QT_FORWARD_DECLARE_CLASS(QWebSocketServer)
 // QT_FORWARD_DECLARE_CLASS(QWebSocket)
 
-class WebSocketServer : public QObject {
+class WebSocketServer : public QObject, public IWebSocketServer {
 	
 	private:
 		Q_OBJECT
@@ -18,6 +20,11 @@ class WebSocketServer : public QObject {
 		explicit WebSocketServer(quint16 port, bool debug = false, QObject *parent = Q_NULLPTR);
 		~WebSocketServer();
 
+		void sendMessage(QWebSocket *pClient, QString message);
+		virtual int getConnectedUsers();
+		virtual void sendMessage(QWebSocket *pClient, QJsonObject obj);
+		// virtual FHQSettings *settings();
+		
 	Q_SIGNALS:
 		void closed();
 
@@ -30,6 +37,7 @@ class WebSocketServer : public QObject {
 	private:
 		QWebSocketServer *m_pWebSocketServer;
 		QList<QWebSocket *> m_clients;
+		QMap<QString, ICmdHandler *> m_mapCmdHandlers;
 		bool m_debug;
 };
 
