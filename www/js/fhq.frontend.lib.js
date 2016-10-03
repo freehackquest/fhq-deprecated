@@ -17,6 +17,8 @@ function FHQFrontEndLib() {
 		return newURL;
 	};
 
+	var self = this;
+
 	this.setTokenToCookie = function(token) {
 		var date = new Date( new Date().getTime() + (7 * 24 * 60 * 60 * 1000) ); // cookie on week
 		document.cookie = "fhqtoken=" + encodeURIComponent(token) + "; path=/; expires="+date.toUTCString();
@@ -33,7 +35,7 @@ function FHQFrontEndLib() {
 		return matches ? decodeURIComponent(matches[1]) : '';
 	}
 
-	this.baseUrl = "http://fhq.keva.su/";
+	this.baseUrl = "http://freehackquest.com/";
 	this.token = this.getTokenFromCookie();
 	this.client = "FHQFrontEndLib.js";
 	this.profile = {
@@ -487,4 +489,41 @@ function FHQFrontEndLib() {
 		this.initTypes();
 		return this.enums.answerlistPassedFilter;
 	};
+	
+	this.initWebsocket = function(){
+		self.socket = new WebSocket("ws://" + window.location.hostname + ":1234/");
+		self.socket.onopen = function() {
+			console.log('Opened');
+			document.getElementById('websocket_state').innerHTML = "OK";
+			self.socket.send("Hello!");
+		};
+
+		self.socket.onclose = function(event) {
+			console.log('Closed');
+		  if (event.wasClean) {
+			  document.getElementById('websocket_state').innerHTML = "CLOSED";
+		  } else {
+			  document.getElementById('websocket_state').innerHTML = "BROKEN";
+		  }
+		  console.log('Code: ' + event.code + ' Reason: ' + event.reason);
+		};
+		self.socket.onmessage = function(event) {
+			console.log('Received: ' + event.data);
+		};
+		self.socket.onerror = function(error) {
+			console.log('Error: ' + error.message);
+		};
+	}
+
+	this.initWebsocket();
+	
+	this.send = function(obj){
+		self.socket.send(JSON.stringify(obj));
+	}
+	
+	this.getConnectedUsers = function(){
+		self.send({
+			'cmd': 'getconnectedusers'
+		});
+	}
 };
