@@ -69,9 +69,10 @@ php + mysql
 	
 	$ sudo apt install php7.0-mysql
 	
-for captcha
+for captcha and zip
 	
 	$ sudo apt install php7.0-gd
+	$ sudo apt install php7.0-zip
 	
 for mailing
 	
