@@ -51,7 +51,7 @@ Evgenii Sopov
 10. Create new quest and check it.
 
 
-# Full manual for debian (apache2 + php5 + mysql5):
+# Full manual for debian (apache2 + php7.0 + mysql):
 
 Database
 
@@ -61,27 +61,27 @@ Database
 
 php + apache
 	
-	$ sudo apt-get install php5
-	$ sudo apt-get install apache2
-	$ sudo apt-get install libapache2-mod-php5
+	$ sudo apt install php7.0
+	$ sudo apt install apache2
+	$ sudo apt install libapache2-mod-php7.0
 	
 php + mysql
 	
-	$ sudo apt-get install php5-mysql
+	$ sudo apt install php7.0-mysql
 	
 for captcha
 	
-	$ sudo apt-get install php5-gd
+	$ sudo apt install php7.0-gd
 	
 for mailing
 	
-	$ sudo apt-get install php-pear
+	$ sudo apt install php-pear
 	$ sudo pear install Mail-1.2.0
 	$ sudo pear install Net_SMTP
 
 restart apache
 	
-	$ sudo /etc/init.d/apache2 restart
+	$ sudo service apache2 restart
 	
 connect to mysql and create database
 	
@@ -90,9 +90,8 @@ connect to mysql and create database
 and execute next queries:
 
 	> CREATE DATABASE `freehackquest` CHARACTER SET utf8 COLLATE utf8_general_ci;
-	> CREATE USER 'freehackquest_u'@'localhost' IDENTIFIED BY 'freehackquest_u';
-	> GRANT ALL PRIVILEGES ON freehackquest.* TO 'freehackquest_u'@'localhost'
-	> WITH GRANT OPTION;
+	> CREATE USER 'freehackquest_u'@'localhost' IDENTIFIED BY 'freehackquest_password_database';
+	> GRANT ALL PRIVILEGES ON freehackquest.* TO 'freehackquest_u'@'localhost' WITH GRANT OPTION;
 	> FLUSH PRIVILEGES;
 
 get sources
@@ -106,9 +105,9 @@ create struct of database
 	
 copy sources to /var/www
 
-	$ sudo cp -R www/* /var/www/
-	$ sudo rm /var/www/index.html
-	$ sudo cd /var/www/config
+	$ sudo cp -R www/* /var/www/html/
+	$ sudo rm /var/www/html/index.html
+	$ sudo cd /var/www/html/config
 	$ sudo cp config.php.inc config.php
 
 -> here configure config.php
@@ -116,14 +115,14 @@ copy sources to /var/www
 change access to folders
 
 	$ sudo cd /var/www/files
-	$ sudo chmod 777 /var/www/dumps
-	$ sudo chmod 777 /var/www/users
-	$ sudo chmod 777 /var/www/games
-	$ sudo chmod 777 /var/www/quests
+	$ sudo chmod 777 /var/www/html/dumps
+	$ sudo chmod 777 /var/www/html/users
+	$ sudo chmod 777 /var/www/html/games
+	$ sudo chmod 777 /var/www/html/quests
 
 Configure updalod options
 
-Please change in /etc/php5/apache2/php.ini
+Please change in /etc/php/7.0/apache2/php.ini
 
 	upload_max_filesize = 2M
 change to
@@ -157,19 +156,19 @@ Add to /etc/apache2/sites-available/default next text or create new file /etc/ap
 
 	<VirtualHost *:80>
 			Options -Indexes FollowSymLinks MultiViews
-			DocumentRoot /var/www/fhq/
+			DocumentRoot /var/www/html/
 			ServerName fhq.keva.su
 			ErrorLog /var/log/apache2/fhq.keva.su-error_log
 			CustomLog /var/log/apache2/fhq.keva.su-access_log common
 
-			<Directory "/var/www/fhq/files">
+			<Directory "/var/www/html/files">
 					AllowOverride None
 					Options -Indexes
 					Order allow,deny
 					Allow from all
 			</Directory>
 
-			<Directory /var/www/fhq/config>
+			<Directory /var/www/html/config>
 					Order deny,allow
 					Deny from all
 			</Directory>
@@ -256,7 +255,7 @@ example run_backup.sh:
 	#!/bin/bash
 
 	cd fhq.github.temp
-	bash update_sources/backup.sh '/var/www/fhq'
+	bash update_sources/backup.sh '/var/www/html/fhq'
 
 # NOTE: 'update.sh' - helper script for update sources
 
@@ -344,11 +343,11 @@ example run 'update.sh':
 
 	chmod +x update_sources/update.sh
 	chmod +x update_sources/backup.sh
-	bash update_sources/backup.sh '/var/www/fhq'
-	bash update_sources/update.sh '/var/www/fhq'
+	bash update_sources/backup.sh '/var/www/html/fhq'
+	bash update_sources/update.sh '/var/www/html/fhq'
 
 
-# 'make_links.sh' - helper script for make link to /var/www/fhq or /var/www/html/fhq
+# 'make_links.sh' - helper script for make link to /var/www/html/fhq or /var/www/html/fhq
 
 	#!/bin/bash
 	echo "This script can help to your create link on fhq/www folder"
@@ -358,11 +357,11 @@ example run 'update.sh':
 	if [ $1 -eq 1 ]; then
 		WWWFOLDER=/var/www/html/fhq
 	elif [ $1 -eq 2 ]; then
-		WWWFOLDER=/var/www/fhq
+		WWWFOLDER=/var/www/html/fhq
 	else
 		echo "Help:"
 		echo "	$0 1 - link to /var/www/html/fhq"
-		echo "	$0 2 - link to /var/www/fhq"
+		echo "	$0 2 - link to /var/www/html/fhq"
 		exit;
 	fi
 

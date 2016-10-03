@@ -5,7 +5,7 @@
 	$config['db'] = array();
 	$config['db']['host'] = "localhost";
 	$config['db']['username'] = "freehackquest_u";
-	$config['db']['userpass'] = "freehackquest_u";
+	$config['db']['userpass'] = "freehackquest_password_database";
 	$config['db']['dbname'] = "freehackquest";
 
 	// configure mail
