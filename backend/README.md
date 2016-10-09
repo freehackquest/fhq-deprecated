@@ -10,3 +10,8 @@ This app writed on Qt5 use QWebSocket
 
 	$ qmake
 	$ make
+
+## configure
+
+	$ sudo ln -s `pwd`/etc/fhqd /etc/fhqd
+	$ sudo nano /etc/fhqd/conf.ini
