@@ -20,9 +20,10 @@ class WebSocketServer : public QObject, public IWebSocketServer {
 		explicit WebSocketServer(quint16 port, bool debug = false, QObject *parent = Q_NULLPTR);
 		~WebSocketServer();
 
-		void sendMessage(QWebSocket *pClient, QString message);
+		// IWebSocketServer
 		virtual int getConnectedUsers();
 		virtual void sendMessage(QWebSocket *pClient, QJsonObject obj);
+		virtual void sendToAll(QJsonObject obj);
 		// virtual FHQSettings *settings();
 		
 	Q_SIGNALS:

@@ -65,10 +65,15 @@ void WebSocketServer::processTextMessage(QString message) {
 			m_mapCmdHandlers[cmd]->handle(pClient, this, jsonData);
 		}else{
 			qDebug() << "Unknown command: " << cmd;
-			this->sendMessage(pClient, QString("Unknown command"));
+			QJsonObject jsonData;
+			jsonData["cmd"] = QJsonValue(cmd);
+			jsonData["error"] = QString("Unknown command");
+			this->sendMessage(pClient, jsonData);
 		}
 	}else{
-		this->sendMessage(pClient, QString("Invalid command format"));
+		QJsonObject jsonData;
+		jsonData["error"] = QString("Invalid command format");
+		this->sendMessage(pClient, jsonData);
 	}
 }
 
@@ -97,14 +102,6 @@ void WebSocketServer::socketDisconnected() {
 
 // ---------------------------------------------------------------------
 
-void WebSocketServer::sendMessage(QWebSocket *pClient, QString message){
-	if (pClient) {
-		pClient->sendTextMessage(message);
-	}
-}
-	
-// ---------------------------------------------------------------------
-
 int WebSocketServer::getConnectedUsers(){
 	return m_clients.length();
 }
@@ -121,6 +118,12 @@ void WebSocketServer::sendMessage(QWebSocket *pClient, QJsonObject obj){
 }
 
 // ---------------------------------------------------------------------
+
+void WebSocketServer::sendToAll(QJsonObject obj){
+	for(int i = 0; i < m_clients.size(); i++){
+		this->sendMessage(m_clients.at(i), obj);
+	}
+}
 
 /*
 FHQSettings *WebSocketServer::settings(){

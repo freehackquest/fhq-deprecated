@@ -9,6 +9,7 @@
 class IWebSocketServer {
 	public:
 		virtual void sendMessage(QWebSocket *pClient, QJsonObject obj) = 0;
+		virtual void sendToAll(QJsonObject obj) = 0;
 		virtual int getConnectedUsers() = 0;
 		// virtual FHQSettings *settings() = 0;
 };

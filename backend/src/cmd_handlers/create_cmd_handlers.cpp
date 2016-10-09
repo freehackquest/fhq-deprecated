@@ -1,10 +1,12 @@
 #include "create_cmd_handlers.h"
 #include "cmd_getpublicinfo_handler.h"
 #include "cmd_hello_handler.h"
+#include "cmd_addnews_handler.h"
 
 void create_cmd_handlers(QMap<QString, ICmdHandler *> &pHandlers){
 	QVector<ICmdHandler *> v;
 	v.push_back(new CmdHelloHandler());
+	v.push_back(new CmdAddNewsHandler());
 	v.push_back(new CmdGetPublicInfoHandler());
 
 	for(int i = 0; i < v.size(); i++){
