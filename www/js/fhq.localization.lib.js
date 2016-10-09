@@ -71,6 +71,10 @@ window.FHQLocalization = {
 		'en': 'Already solved',
 		'ru': 'Уже решено'
 	},
+	'Users online':{
+		'en': 'Users online',
+		'ru': 'Пользователей онлайн'
+	},
 	'Playing with us':{
 		'en': 'Playing with us',
 		'ru': 'С нами играют'

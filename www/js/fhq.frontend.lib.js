@@ -1,4 +1,4 @@
-function FHQFrontEndLib() {
+window.fhq = new function() {
 	// helpers function
 	this.createUrlFromObj = function(obj) {
 		var str = "";
@@ -490,23 +490,60 @@ function FHQFrontEndLib() {
 		return this.enums.answerlistPassedFilter;
 	};
 	
+	// WebSocket protocol
+	
+	
+	this.listeners = {}
+	this.addListener = function(cmd, d){
+		if(!self.listeners[cmd]){
+			self.listeners[cmd] = [];
+		}
+		self.listeners[cmd].push(d);
+	}
+	self.handleCommand = function(response){
+		if(self.listeners[response.cmd]){
+			for(var d in self.listeners[response.cmd]){
+				// TODO reject
+				self.listeners[response.cmd][d].resolve(response);
+			}
+			// clean listeners
+			self.listeners.hello = [];
+		}else{
+			console.error("Not found handler for '" + response.cmd + "'");
+		}
+	};
+
+	this.WSState = "?";
+	
+	this.getWSState = function(){
+		return self.WSState;
+	}
+	
+	this.setWSState = function(s){
+		self.WSState = s;
+		var el = document.getElementById('websocket_state');
+		if(el){
+			document.getElementById('websocket_state').innerHTML = s;
+		}
+	}
+
 	this.initWebsocket = function(){
 		self.socket = new WebSocket("ws://" + window.location.hostname + ":1234/");
 		// self.socket = new WebSocket("ws://freehackquest.com:1234/api");
 		self.socket.onopen = function() {
 			console.log('WS Opened');
-			document.getElementById('websocket_state').innerHTML = "OK";
+			self.setWSState("OK");
 			self.send({'cmd': 'hello'});
 		};
 
 		self.socket.onclose = function(event) {
 			console.log('Closed');
 			if (event.wasClean) {
-				document.getElementById('websocket_state').innerHTML = "CLOSED";
+				self.setWSState("CLOSED");
 			} else {
-				document.getElementById('websocket_state').innerHTML = "BROKEN";
+				self.setWSState("BROKEN");
 				setTimeout(function(){
-					document.getElementById('websocket_state').innerHTML = "RECONN";
+					self.setWSState("RECONN");
 					self.initWebsocket();
 				}, 10000);
 			  // Try reconnect after 5 sec
@@ -515,6 +552,13 @@ function FHQFrontEndLib() {
 		};
 		self.socket.onmessage = function(event) {
 			console.log('Received: ' + event.data);
+			try{
+				var response = JSON.parse(event.data);
+				self.handleCommand(response);
+			}catch(e){
+				console.error(e);
+			}
+			
 		};
 		self.socket.onerror = function(error) {
 			console.log('Error: ' + error.message);
@@ -522,21 +566,29 @@ function FHQFrontEndLib() {
 	}
 
 	this.initWebsocket();
-	
-	this.send = function(obj){
-		self.socket.send(JSON.stringify(obj));
+
+	this.send = function(obj, def){
+		var d = def || $.Deferred();
+		try{
+			if(self.socket.readyState == 0){
+				setTimeout(function(){
+					self.send(obj, d);
+				}, 1000);
+			}else{
+				// console.log("ReadyState " + self.socket.readyState);
+				console.log("Send " + JSON.stringify(obj));
+				self.socket.send(JSON.stringify(obj));
+			}
+		}catch(e){
+			console.error(e);
+		}
+		self.addListener(obj.cmd, d);
+		return d;
 	}
-	
-	this.getConnectedUsers = function(){
-		self.send({
-			'cmd': 'getconnectedusers'
+
+	this.getPublicInfo = function(){
+		return self.send({
+			'cmd': 'getpublicinfo'
 		});
 	}
-	
-	
-	this.getStatistics = function(){
-		self.send({
-			'cmd': 'getstatistics'
-		});
-	}
-};
+}();

@@ -22,6 +22,7 @@ if (isset($_SESSION['user']))
 		<meta name="description" content="competition information security" />
 		<meta name="keywords" content="security, fhq, fhq 2012, fhq 2013, fhq 2014, free, hack, quest, competition, information security, ctf, joepardy" />
 		<link rel="shortcut icon" href="favicon.ico">
+		<script src="js/libs/jquery-3.1.0.min.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/fhq.css?ver=1" />
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css?ver=1" />
@@ -43,7 +44,7 @@ if (isset($_SESSION['user']))
 		<script type="text/javascript" src="js/fhq.frontend.lib.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq.gui.lib.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq.plugins/plugins.js?ver=1"></script>
-		<script src="https://code.jquery.com/jquery-2.0.0b1.js"></script>
+		
 		<script type="text/javascript" src="js/jquery.datetimepicker.js"></script>
 		<script type="text/javascript" src="js/libs/progressbar-0.8.1.min.js"></script>
 		<script type="text/javascript" src="js/libs/Chart-1.0.2.js"></script>
@@ -59,16 +60,17 @@ if (isset($_SESSION['user']))
 		<script type="text/javascript" src="js/fhq_stats.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_feedback.js?ver=1"></script>
 		<script type="text/javascript">
-			var fhq = new FHQFrontEndLib();
-			var fhqgui = new FHQGuiLib(fhq);
 			fhq.client = "web-fhq2015";
 			fhq.baseUrl = fhq.getCurrentApiPath(); // or another path
+			var fhqgui = new FHQGuiLib(fhq);
+			
 
 			if (fhq.token && fhq.token != "")  // todo 
 				fhq.security.logout();
 
 			$(document).ready(function() {
 				
+				fhq.setWSState(fhq.getWSState()); // Update state of WS
 				fhqgui.loadTopPanel();
 
 				$("#btnfilter").hide();

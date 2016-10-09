@@ -364,6 +364,10 @@ function FHQGuiLib(api) {
 	};
 
 	this.loadCities = function() {
+		fhq.getPublicInfo().done(function(response){
+			$('#statistics-users-online').removeClass('preloading');
+			$('#statistics-users-online').text(response.connectedusers);
+		});
 		this.api.publicInfo(function(response){
 			if (response.result == "fail") {
 				$('#cities').html('Fail');
@@ -740,15 +744,19 @@ function FHQGuiLib(api) {
 		strVar += "							<div class=\"single-line-preloader\">";
 		strVar += '								<div class="single-line-name">' + self.t('All attempts') + ':</div>';
 		strVar += "								<div class=\"single-line-value preloading\" id=\"statistics-all-attempts\">...<\/div>";
-		strVar += "							</div>";
-		strVar += "							<div class=\"single-line-preloader\">";
-		strVar += '								<div class="single-line-name">' + self.t('Already solved') + ':</div>';
-		strVar += '								<div class="single-line-value preloading" id="statistics-already-solved">...</div>';
-		strVar += "							</div>";
+		strVar += "							</div>"
+		+ '<div class="single-line-preloader">'
+		+ '		<div class="single-line-name">' + self.t('Already solved') + ':</div>'
+		+ '		<div class="single-line-value preloading" id="statistics-already-solved">...</div>'
+		+ '</div>'
+		+ '<div class="single-line-preloader">'
+		+ '		<div class="single-line-name">' + self.t('Users online') + ':</div>'
+		+ '		<div class="single-line-value preloading" id="statistics-users-online">...</div>'
+		+ '</div>';
 		strVar += "							<div class=\"single-line-preloader\">";
 		strVar += '								<div class="single-line-name">' + self.t('Playing with us') + ':</div>';
-		strVar += '								<div class="single-line-value preloading" id="statistics-playing-with-us">...</div>';
-		strVar += "							<\/div>"
+		strVar += '								<div class="single-line-value preloading" id="statistics-playing-with-us">...</div>'
+		+ '</div>'
 		+ '<div class="fhq-topic">' + self.t('leaders') + '<\/div>';
 		strVar += "							<div id=\"winners\">";
 		strVar += "							<\/div>"
