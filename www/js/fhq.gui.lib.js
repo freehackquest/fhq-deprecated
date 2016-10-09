@@ -721,6 +721,31 @@ function FHQGuiLib(api) {
 		)
 	}
 
+	if(localStorage.getItem('colorscheme') == null){
+		localStorage.setItem('colorscheme', 'light');
+	}
+
+	this.applyColorScheme = function(){
+		if(localStorage.getItem('colorscheme') == 'dark'){
+			self.setDarkColorScheme();
+		}else{
+			self.setLightColorScheme();
+		}
+	}
+	
+	this.setDarkColorScheme = function(){
+		$('body').addClass('dark');
+		localStorage.setItem('colorscheme', 'dark');
+		$('#jointothedarkside').html(self.t('You are on the dark side. Turn back?'));
+	}
+	
+	this.setLightColorScheme = function(){
+		$('body').removeClass('dark');
+		localStorage.setItem('colorscheme', 'light');
+		$('#jointothedarkside').html(self.t('Join the dark side...'));
+	}
+	
+
 	this.loadMainPage = function() {
 		this.setFilter('');
 		var strVar=''
@@ -815,13 +840,13 @@ function FHQGuiLib(api) {
 			$('#donate-form').html(result);
 		});
 		
+		self.applyColorScheme();
+		
 		$('#jointothedarkside').unbind().bind('click', function(){
 			if($('body').hasClass('dark')){
-				$('body').removeClass('dark');
-				$('#jointothedarkside').html(self.t('Join the dark side...'));
+				self.setLightColorScheme();
 			}else{
-				$('body').addClass('dark');
-				$('#jointothedarkside').html(self.t('You are on the dark side. Turn back?'));
+				self.setDarkColorScheme();
 			}
 		});
 	}

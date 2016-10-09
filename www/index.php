@@ -69,7 +69,8 @@ if (isset($_SESSION['user']))
 				fhq.security.logout();
 
 			$(document).ready(function() {
-				
+			
+				fhqgui.applyColorScheme();
 				fhq.setWSState(fhq.getWSState()); // Update state of WS
 				fhqgui.loadTopPanel();
 
