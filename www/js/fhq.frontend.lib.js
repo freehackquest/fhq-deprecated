@@ -492,7 +492,7 @@ window.fhq = new function() {
 	
 	// WebSocket protocol
 	
-	
+	this.handlerReceivedNews = function(response){};
 	this.listeners = {}
 	this.addListener = function(cmd, d){
 		if(!self.listeners[cmd]){
@@ -503,11 +503,16 @@ window.fhq = new function() {
 	self.handleCommand = function(response){
 		if(self.listeners[response.cmd]){
 			for(var d in self.listeners[response.cmd]){
-				// TODO reject
-				self.listeners[response.cmd][d].resolve(response);
+				if(response['error']){
+					self.listeners[response.cmd][d].reject(response);
+				} else {
+					self.listeners[response.cmd][d].resolve(response);
+				}
 			}
 			// clean listeners
 			self.listeners.hello = [];
+		}else if(response.cmd == "news"){
+			self.handlerReceivedNews(response);
 		}else{
 			console.error("Not found handler for '" + response.cmd + "'");
 		}
@@ -589,6 +594,14 @@ window.fhq = new function() {
 	this.getPublicInfo = function(){
 		return self.send({
 			'cmd': 'getpublicinfo'
+		});
+	}
+
+	this.addNews = function(type, message){
+		return self.send({
+			'cmd': 'addnews',
+			'type': type,
+			'message': message
 		});
 	}
 }();

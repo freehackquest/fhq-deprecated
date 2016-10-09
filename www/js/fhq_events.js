@@ -26,6 +26,7 @@ function insertEvent()
 			}
 		}
 	);
+	fhq.addNews(params.type, params.message);
 };
 
 function deleteEvent(id)  {

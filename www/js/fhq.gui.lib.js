@@ -909,6 +909,10 @@ function FHQGuiLib(api) {
 		}
 	}
 
+	fhq.handlerReceivedNews = function(response) {
+		self.showMessageNews(response.message);
+	}
+
 	this.showMessageNews = function(m){
 		self.messageLastId++;
 		var id = 'message' + self.messageLastId;
