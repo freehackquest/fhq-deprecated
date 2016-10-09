@@ -288,7 +288,6 @@ function FHQGuiLib(api) {
 	}
 
 	this.signup = function() {
-		var self = this;
 		$('#signup-error-message').html('');
 		$('#signup-info-message').html('Please wait...');
 		var email = $('#signup-email').val();
@@ -893,7 +892,37 @@ function FHQGuiLib(api) {
 			results = regex.exec(location.search);
 		return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	}
-  
+	
+	this.messageLastId = 0;
+	this.showedMessages = [];
+	
+	this.updatePostionMessages = function(){
+		var count = self.showedMessages.length;
+		for(var t in self.showedMessages){
+			var id = self.showedMessages[t];
+			count--;
+			var bottom = (50 + count*60) + 'px';
+			$('#' + id).css({
+				'bottom' : bottom,
+				'right': '25px'
+			});
+		}
+	}
+
+	this.showMessageNews = function(m){
+		self.messageLastId++;
+		var id = 'message' + self.messageLastId;
+		self.showedMessages.push(id);
+		var newel = $( '<div id="' + id + '" class="message_news">' + m + '</div>');
+		$( "body" ).append( newel );
+		newel.bind('click', function(){
+			$( "#" + id).remove();
+			self.showedMessages = jQuery.grep(self.showedMessages, function(value) { return value != id; });
+			self.updatePostionMessages();
+		});
+		setTimeout(function(){self.updatePostionMessages();}, 1000);
+	}
+	
 	this.processParams = function() {
 		var questid = this.getUrlParameterByName("questid");
 		var userid = this.getUrlParameterByName("userid");

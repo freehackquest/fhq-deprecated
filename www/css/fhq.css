@@ -737,3 +737,31 @@
 .dark .fhqtopmenu_leftpanel {
     background: #3e3e3e;
 }
+
+.message_news {
+	background-color: #e4e4e4;
+	position: fixed;
+	z-index: 100;
+	width: 250px;
+	height: 50px;
+	bottom: 50px;
+	right: -300px;
+	opacity: 0.95;
+	border-radius: 10px;
+	line-height: 50px;
+	text-align: left;
+	padding-left: 10px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	border: 1px solid #3e3e3e;
+	transition: right 1.0s, bottom 0.5s;
+	-webkit-transition: right 1.0s, bottom 0.5s;
+	cursor: url("../images/cursor/delete_dark.png"), auto;
+}
+
+.dark .message_news {
+	background-color: #3e3e3e;
+	cursor: url("../images/cursor/delete_light.png"), auto;
+	border: 1px solid #e4e4e4;
+}
