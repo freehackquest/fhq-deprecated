@@ -223,9 +223,11 @@ window.fhq = new function() {
 			var params = {};
 			params.questid = questid;
 			params.answer = answer;
-			var obj = this.p.sendPostRequest_Sync('api/quests/pass.php', params);
-			var bRes = obj.result == "ok";
-			return bRes ? obj.data : obj.error;
+			return $.ajax({
+				type: "POST",
+				url: 'api/quests/pass.php',
+				data: params
+			});
 		};
 		// insert quest if you are admin
 		this.insert = function(quest_uuid, name, short_text, text, score, min_score, subject, idauthor, author, answer, state, description_state) {

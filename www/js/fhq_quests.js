@@ -141,36 +141,20 @@ function takeQuest(id)
 	);
 }
 
-function passQuest(id)
-{
-	/*var el = document.getElementById('user_answers');
-	if (el.innerHTML.length != 0) {
-		el.innerHTML = "";
-		return;
-	}*/
-	
-	var params = {};
-	params.questid = id;
-	params.answer = document.getElementById('quest_answer').value;
+function passQuest(id) {
+	var answer = document.getElementById('quest_answer').value;
 	document.getElementById("quest_error").innerHTML = "";
-	send_request_post(
-		'api/quests/pass.php',
-		createUrlFromObj(params),
-		function (obj) {
-			if (obj.result == "ok") {
-				closeModalDialog();
-				reloadQuests();
-				if (obj.new_user_score) {
-					document.getElementById('view_score').innerHTML = obj.new_user_score;
-				}
-				showQuest(id);
-			} else {
-				if (isShowMyAnswers())
-					updateMyAnswers(id);
-				document.getElementById("quest_error").innerHTML = obj.error.message;
-			}
+	fhq.quests.pass(id, answer).done(function(obj){
+		if (obj.result == "ok") {
+			closeModalDialog();
+			reloadQuests();
+			showQuest(id);
+		} else {
+			if (isShowMyAnswers())
+				updateMyAnswers(id);
+			document.getElementById("quest_error").innerHTML = obj.error.message;
 		}
-	);
+	});
 }
 
 function deleteQuest(id)
