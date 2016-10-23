@@ -55,38 +55,39 @@ var menu = [
 		} ]
 	}, {
 		'name' : 'Сети',
+		'link' : 'network.html',
 		'submenu' : [
 			{
 				'name' : 'OSI и основы',
-				'link' : 'index.html'
+				'link' : 'network_osi.html'
 			}, {
 				'name' : 'Коммутация и ЛВС',
-				'link' : 'index.html'
+				'link' : 'network_commutation.html'
 			}, {
 				'name' : 'Маршрутизация и глобальные сети',
-				'link' : 'index.html'
+				'link' : 'network_routing.html'
 			}, {
 				'name' : 'Беспроводные технологии',
-				'link' : 'index.html'
+				'link' : 'network_wireless.html'
 			}, {
-				'name' : 'Основные сервисы ( протоколы: http(s), ssh, ftp, samba; пакеты: ICMP Echo-Request, DHCP, DNS)',
-				'link' : 'index.html',
+				'name' : 'Основные сервисы',
+				'link' : 'network_base_services.html',
 				'submenu' : [
 					{
 						'name': 'Что такое DHCP?',
-						'link' : 'index.html'
+						'link' : 'network_dhcp_what.html'
 					} , {
 						'name': 'Как работает DHCP?',
-						'link' : 'index.html'
+						'link' : 'network_dhcp_how.html'
 					}
 				]
 			}, {
-				'name' : 'Утилиты (for linux: nmap, ping, ifconfig, dhcpclient, ssh, wget)',
-				'link' : 'index.html',
+				'name' : 'Сетевые утилиты',
+				'link' : 'network_tools.html',
 				'submenu': [
 					{
 						'name': 'Сканирование (nmap)',
-						'link' : 'index.html'
+						'link' : 'network_tools_nmap.html'
 					}
 				]
 			}
