@@ -27,3 +27,11 @@ li {
 .menu:hover ul {
 	display: block;
 }
+
+.content table {
+	background: #000;
+}
+
+.content tr {
+	background: #FFF;
+}

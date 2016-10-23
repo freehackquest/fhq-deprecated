@@ -178,53 +178,55 @@ var menu = [
 		]
 	}, {
 		'name' : 'Базы данных',
+		'link': 'databases.html',
 		'submenu' : [
 			{
 				'name': 'Определения',
-				'link': 'index.html'
+				'link': 'databases_definitions.html'
 			}
 		]
 	}, {
 		'name' : 'Правовая часть',
-		'link' : 'index.html'
+		'link' : 'legal_part.html'
 	}, {
 		'name' : 'Что можно почитать дополнительно',
 		'submenu' : [
 			{
 				'name': 'Криптография',
-				'link': 'index.html'
+				'link': 'forread_crypto.html'
 			}, {
 				'name': 'Сети',
-				'link': 'index.html'
+				'link': 'forread_network.html'
 			}, {
 				'name': 'Программирование',
-				'link': 'index.html'
+				'link': 'forread_programming.html'
 			}, {
 				'name': 'Администрирование Unix, Linux, BSD',
-				'link': 'index.html'
+				'link': 'forread_admin_linux_unix_bsd.html'
 			}, {
 				'name': 'Взлом',
-				'link': 'index.html'
+				'link': 'forread_hacking.html'
 			}
 		]
 	}, {
-		'name' : 'Анонимность в сети Интернет (Как прятаться и не спалиться)',
+		'name' : 'Анонимность в сети Интернет',
+		'link': 'anonimus.html',
 		'submenu' : [
 			{
 				'name': 'Прокси-сервер',
-				'link': 'index.html'
+				'link': 'anonimus_proxy.html'
 			}, {
 				'name': 'VPN подключение',
-				'link': 'index.html'
+				'link': 'anonimus_vpn.html'
 			}, {
 				'name': 'Выделенный сервер',
-				'link' : 'index.html'
+				'link' : 'anonimus_vps.html'
 			}, {
 				'name': 'TOR',
-				'link' : 'index.html'
+				'link' : 'anonimus_tor.html'
 			}, {
 				'name': 'I2P',
-				'link' : 'index.html'
+				'link' : 'anonimus_i2p.html'
 			}
 		]
 	}, {
