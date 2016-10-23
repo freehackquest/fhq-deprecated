@@ -38,7 +38,6 @@ if (!isset($_SESSION['user']))
 		<link rel="stylesheet" type="text/css" href="styles/userpanel_by_nitive.css?ver=1"/>
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/jquery.datetimepicker.css?ver=1"/>
 		<link rel="stylesheet" type="text/css" href="css/fhq.css?ver=1"/>
-		<link rel="stylesheet" type="text/css" href="css/fhq_fix.css?ver=1" />
 		<!-- link rel="stylesheet" type="text/css" href="css/fhq.min.css?ver=1"/-->
 
 		<!-- todo -->
@@ -160,7 +159,13 @@ if (!isset($_SESSION['user']))
 			
 		<center>
 
-			<div class="fhqtopmenu_leftpanel">
+			<div class="fhqtopmenu_toppanel">
+				
+				<a id="btnmenu_main_page" class="fhq_btn_menu" onclick="fhqgui.loadMainPage();">
+					<img class="fhq_btn_menu_img" src="images/fhq2016_200x150.png"/>
+					About
+				</a>
+					
 				<?php
 
 			$role = isset($_SESSION['user']['role']) ? $_SESSION['user']['role'] : 'user';
@@ -182,16 +187,6 @@ if (!isset($_SESSION['user']))
 			}
 			
 			$arrmenu = array();
-			
-			$arrmenu[] = array(
-				'name' => 'logo',
-				'html' => '
-					<div class="fhq_btn_menu fhq_btn_menu_color_none hint--right" data-hint="About" onclick="fhqgui.loadMainPage();">
-						<img class="fhq_btn_menu_img" src="templates/base/images/logo/fhq_2015_small.png"/>
-					</div>
-				',
-				'show' => true,
-			);
 
 			$arrmenu[] = array(
 				'name' => 'game_info',
@@ -199,6 +194,7 @@ if (!isset($_SESSION['user']))
 					<div class="fhq_btn_menu hint--bottom" data-hint="'.$hint_on_game.'"  onclick="changeGame();">
 						<div class="fhq_btn_menu_img">
 							<img class="fhq_btn_menu_img" src="'.$game_logo.'"/>
+							'.$game_title.'
 						</div>
 					</div>
 				',
@@ -206,53 +202,22 @@ if (!isset($_SESSION['user']))
 			);
 
 			$arrmenu[] = array(
-				'name' => 'scoreboard',
-				'html' => '
-					<div class="fhq_btn_menu hint--bottom" data-hint="Scoreboard" onclick="loadScoreboard('.$gameid.');">
-						<img class="fhq_btn_menu_img" src="images/menu/scoreboard.png"/>
-						<div class="fhqredcircle" id="view_score">'.$score.'</div>
-					</div>
-				',
-				'show' => ($gameid != 0),
-			);
-
-			$arrmenu[] = array(
-				'name' => 'rules',
-				'html' => '
-					<div class="fhq_btn_menu" data-hint="Rules" onclick="fhqgui.loadRules('.$gameid.');">
-						<img class="fhq_btn_menu_img" src="images/menu/rules.png"/><br>
-					</div>
-				',
-				'show' => ($gameid != 0),
-			);
-
-			$arrmenu[] = array(
 				'name' => 'quests',
 				'html' => '
 					<div class="fhq_btn_menu hint--bottom" data-hint="Quests" onclick="loadQuests();">
 						<img class="fhq_btn_menu_img" src="images/menu/quests.png"/>
+						Quests
 					</div>
 				',
 				'show' => ($gameid != 0),
 			);
-
-			$arrmenu[] = array(
-				'name' => 'stats',
-				'html' => '
-					<div class="fhq_btn_menu hint--bottom" data-hint="Statistics" onclick="createPageStatistics('.$gameid.'); updateStatistics('.$gameid.');">
-						<img class="fhq_btn_menu_img" src="images/menu/stats.png"/><br>
-					</div>
-				',
-				'show' => ($gameid != 0),
-			);
-			
-			
 			
 			$arrmenu[] = array(
 				'name' => 'filter',
 				'html' => '
 					<div class="fhq_btn_menu hint--bottom" data-hint="Filter" id="btnfilter" onclick="fhqgui.showFilter();">
-						<img class="fhq_btn_menu_img" src="images/menu/filter.png"/><br>
+						<img class="fhq_btn_menu_img" src="images/menu/filter.png"/>
+						Filter
 					</div>
 				',
 				'show' => true,
@@ -264,18 +229,24 @@ if (!isset($_SESSION['user']))
 					echo $menu['html'];
 				}
 			}
-	?>		</div>
-		
-			<div class="fhqtopmenu_rightpanel">
+	?>		
+				<div class="fhq_btn_menu" onclick="createPageEvents(); updateEvents();">
+					<img class="fhq_btn_menu_img" src="images/menu/news.png"/> News
+					<div class="fhqredcircle" id="plus_events">0</div>
+				</div>
 				<div class="fhq_btn_menu" id="btnmenu_user">
 					<img class="fhq_btn_menu_img" src="images/menu/user.png"/> <?php echo $nick; ?>
 					<div class="account-panel">
 						<img class="fhq_btn_menu_img" src="images/menu/user.png"/> <?php echo $nick; ?>
 						<div class="border"></div>
 						<div class="fhq-simple-btn" onclick="loadUserProfile(<?php echo $userid; ?>);">Profile</div>
+						<div class="fhq-simple-btn" onclick="loadScoreboard(<?php echo $gameid; ?>);">Scoreboard (<?php echo $score; ?>)</div>
+						<div class="fhq-simple-btn" onclick="fhqgui.loadRules(<?php echo $gameid; ?>);">Rules</div>
+						<div class="fhq-simple-btn" onclick="createPageStatistics(<?php echo $gameid; ?>); updateStatistics(<?php echo $gameid; ?>);">Statistics</div>
 						<div class="fhq-simple-btn" onclick="fhqgui.loadGames();">Games</div>
 						<div class="fhq-simple-btn" onclick="fhqgui.createPageSkills(); fhqgui.updatePageSkills();">Skills</div>
 						<div class="fhq-simple-btn" onclick="loadFeedback();">Feedback</div>
+						<div class="fhq-simple-btn" onclick="fhqgui.loadTools();">Tools</div>
 						<div class="fhq-simple-btn" onclick="logout();">Sign-out</div>
 						<?php if($role == 'admin'){ ?>
 							<div class="border"></div>
@@ -285,10 +256,6 @@ if (!isset($_SESSION['user']))
 							<div class="fhq-simple-btn" onclick="installUpdates();">Install Updates</div>
 						<?php } ?>
 					</div>
-				</div>
-				<div class="fhq_btn_menu" onclick="createPageEvents(); updateEvents();">
-					<img class="fhq_btn_menu_img" src="images/menu/news.png"/> News
-					<div class="fhqredcircle" id="plus_events">0</div>
 				</div>
 			</div>
 

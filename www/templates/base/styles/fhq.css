@@ -103,34 +103,6 @@ textarea {
 	border: 1px solid #9f9f9f;
 }
 
-
-.fhqtopmenu_leftpanel {
-	padding: 10px 10px 10px 10px;
-	background: #e4e4e4;
-	position: fixed;
-	display: inline-block;
-	left: 0px;
-	-webkit-border-bottom-right-radius: 15px;
-	-moz-border-radius-bottomright: 15px;
-	border-bottom-right-radius: 15px;
-	opacity: 0.95;
-	z-index: 555;
-}
-
-.fhqleftmenu {
-	background: #e4e4e4;
-	padding: 10px 10px 10px 10px;
-	position: fixed;
-	width: 65px;
-	top: 86px;
-	text-align: left;
-	z-index: 556;
-	-webkit-border-bottom-right-radius: 15px;
-	-moz-border-radius-bottomright: 15px;
-	border-bottom-right-radius: 15px;
-	opacity: 0.95;
-}
-
 .fhqrules {
 	white-space: pre-wrap;       /* css-3 */
 	white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */

@@ -282,7 +282,6 @@ body {
 }
 
 #btnmenu_user{
-	min-width: 200px;
 	text-align: left;
 }
 
@@ -487,27 +486,6 @@ body {
 	font: 12pt/10pt Arial;
 	line-height: 19px;
 }
-
-/* 
- * Deprecated
-*/
- 
- .fhqtopmenu_rightpanel {
-	padding: 10px 10px 10px 10px;
-	background: #e4e4e4;
-	position: fixed;
-	display: inline-block;
-	right: 0px;
-	-webkit-border-bottom-left-radius: 15px;
-	-moz-border-radius-bottomleft: 15px;
-	border-bottom-left-radius: 15px;
-	opacity: 0.95;
-	z-index: 555;
-	min-width: 200px;
-	text-align: left;
-}
-
-
 
 /*
 	darkstile
