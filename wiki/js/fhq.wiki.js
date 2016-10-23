@@ -31,27 +31,29 @@ var menu = [
 				'link' : 'index.html'
 			}, {
 				'name' : 'Виртуализация',
+				'link': 'virtualization.html',
 				'submenu' : [ {
 						'name' : 'Гипервизор',
-						'link' : 'index.html'
+						'link' : 'virtualization_hypervisor.html'
 					}, {
 						'name' : 'Для чего нужна виртуализация?',
-						'link' : 'index.html'
+						'link' : 'virtualization_why.html'
 					}, {
 						'name' : 'Виды виртуализации',
-						'link' : 'index.html'
+						'link' : 'virtualization_types.html'
 					}
 				]
 			}
 		]
 	}, {
 		'name' : 'Aрхитектура колец защиты операционной системы',
+		'link': 'architech_defence_os.html',
 		'submenu' : [ {
 			'name' : 'Режим супервизора',
-			'link' : 'index.html'
+			'link' : 'architech_defence_os_supervisor.html'
 		}, {
 			'name' : 'Режим гипервизора',
-			'link' : 'index.html'
+			'link' : 'architech_defence_os_hypervisor.html'
 		} ]
 	}, {
 		'name' : 'Сети',
