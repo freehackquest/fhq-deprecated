@@ -91,7 +91,7 @@
 	height: 32px;
 }
 
-.fhqbody {
+body {
 	margin: 0;
 	padding: 0;
 	background-color: #FFFFFF;
@@ -99,9 +99,6 @@
 	font: 12pt/10pt Arial;
 	color: #333333;	
 	text-align: center;
-}
-
-.fhqearth {
 	background: url(../images/background.png) no-repeat left top fixed;
 }
 
@@ -491,7 +488,7 @@
 	darkstile
 */
 
-.fhqbody.dark
+body.dark
 {
 	background-color: #303030;
 	color: #C8C8C8;

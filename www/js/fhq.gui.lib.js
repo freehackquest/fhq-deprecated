@@ -749,7 +749,7 @@ function FHQGuiLib(api) {
 	this.loadMainPage = function() {
 		this.setFilter('');
 		var strVar=''
-		+ '<table style="display: inline-block;">';
+		+ '<table style="display: inline-block;width: 100%;">';
 		strVar += "					<tr>";
 		strVar += "						<td valign=\"top\">";
 		strVar += "							<img class=\"leftimg\" src=\"images\/fhq2016_200x150.png\"\/>";

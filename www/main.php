@@ -80,49 +80,53 @@ if (!isset($_SESSION['user']))
 
 		<!-- Yandex.Metrika counter -->
 		<script type="text/javascript">
-			(function (d, w, c) {
-				(w[c] = w[c] || []).push(function() {
-					try {
-						w.yaCounter32831012 = new Ya.Metrika({
-							id:32831012,
-							clickmap:true,
-							trackLinks:true,
-							accurateTrackBounce:true
-						});
-					} catch(e) { }
-				});
+			if(window.location.host == "freehackquest.com"){
+				(function (d, w, c) {
+					(w[c] = w[c] || []).push(function() {
+						try {
+							w.yaCounter32831012 = new Ya.Metrika({
+								id:32831012,
+								clickmap:true,
+								trackLinks:true,
+								accurateTrackBounce:true
+							});
+						} catch(e) { }
+					});
 
-				var n = d.getElementsByTagName("script")[0],
-					s = d.createElement("script"),
-					f = function () { n.parentNode.insertBefore(s, n); };
-				s.type = "text/javascript";
-				s.async = true;
-				s.src = "https://mc.yandex.ru/metrika/watch.js";
+					var n = d.getElementsByTagName("script")[0],
+						s = d.createElement("script"),
+						f = function () { n.parentNode.insertBefore(s, n); };
+					s.type = "text/javascript";
+					s.async = true;
+					s.src = "https://mc.yandex.ru/metrika/watch.js";
 
-				if (w.opera == "[object Opera]") {
-					d.addEventListener("DOMContentLoaded", f, false);
-				} else { f(); }
-			})(document, window, "yandex_metrika_callbacks");
+					if (w.opera == "[object Opera]") {
+						d.addEventListener("DOMContentLoaded", f, false);
+					} else { f(); }
+				})(document, window, "yandex_metrika_callbacks");
+			}
 		</script>
 		<noscript><div><img src="https://mc.yandex.ru/watch/32831012" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 		<!-- /Yandex.Metrika counter -->
 
 	</head>
-	<body onload="loadQuests(); updateCountOfEvents(); fhqgui.processParams();" class="fhqbody fhqearth <?php echo $template; ?>">
-		<div id="modal_dialog" class="overlay">
-			<div class="overlay_table">
-				<div class="overlay_cell">
-					<div class="overlay_content">
-						<div id="modal_dialog_content">
-							text
-						</div>
-						<div class="overlay_buttons">
-							<div class="fhqbtn" onclick="closeModalDialog();">Close</div>
+	<body onload="loadQuests(); updateCountOfEvents(); fhqgui.processParams();" class="<?php echo $template; ?>">
+	
+			<!-- Modal dialog -->
+			<div id="modal_dialog" class="overlay">
+				<div class="overlay_table">
+					<div class="overlay_cell">
+						<div class="overlay_content">
+							<div id="modal_dialog_content">
+								text
+							</div>
+							<div class="overlay_buttons">
+								<div class="fhqbtn" onclick="closeModalDialog();">Close</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 		
 			<!-- FHQModalDialog -->
 			<div id="fhqmodaldialog" class="fhqmodaldialog" onclick="fhqgui.clickFHQModalDialog_dialog();">
