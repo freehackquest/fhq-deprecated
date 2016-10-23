@@ -7,28 +7,28 @@ var menu = [
 				'link' : 'about_operation_system.html'
 			}, {
 				'name' : 'Хранение и кодирование информации',
-				'link' : 'index.html'
+				'link' : 'about_store_and_coding_information.html'
 			}, {
 				'name' : 'Векторное изображение',
-				'link' : 'index.html'
+				'link' : 'about_vector_image.html'
 			}, {
 				'name' : 'Растровое изображение',
-				'link' : 'index.html'
+				'link' : 'about_rast_image.html'
 			}, {
 				'name' : 'Звуковая информация',
-				'link' : 'index.html'
+				'link' : 'about_binary_sound.html'
 			}, {
 				'name' : 'base64 и hex',
-				'link' : 'index.html'
+				'link' : 'about_base64_and_hex.html'
 			}, {
 				'name' : 'Бинарные операции, конвертирование из/в 2,10,16чные системы счисления',
-				'link' : 'index.html'
+				'link' : 'about_binary_operations.html'
 			}, {
-				'name' : 'Кратко о популярных хэш-функциях',
-				'link' : 'index.html'
+				'name' : 'Хэш-функции',
+				'link' : 'about_hash_functions.html'
 			}, {
-				'name' : 'Кратко о популярных криптографических алгоритмах',
-				'link' : 'index.html'
+				'name' : 'Криптографические алгоритмы',
+				'link' : 'about_crypto_algorithms.html'
 			}, {
 				'name' : 'Виртуализация',
 				'link': 'virtualization.html',

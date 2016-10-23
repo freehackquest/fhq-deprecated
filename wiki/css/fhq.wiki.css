@@ -32,6 +32,8 @@ li {
 	background: #000;
 }
 
-.content tr {
+.content td {
 	background: #FFF;
+	text-align: center;
+	padding: 10px;
 }

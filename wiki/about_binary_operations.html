@@ -1,0 +1,159 @@
+<html>
+	<head>
+		<title>Free Hack Quest / Wiki (RU)</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="copyright" lang="ru" content="sea-kg" />
+		<meta name="keywords" content="security, fhq, fhq 2012, fhq 2013, fhq 2014, free, hack, quest, competition, information security, ctf, joepardy, material for seminars" />
+		<link rel="shortcut icon" href="favicon.ico">
+		<script src="js/libs/jquery-3.1.0.min.js" type="text/javascript"></script>
+		<script src="js/fhq.wiki.js" type="text/javascript"></script>
+		<link href="css/fhq.wiki.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+		<div class="menu">
+		</div>
+		<div class="content">
+
+<!-- content -->
+
+<h1>Бинарные операции, конвертирование из/в 2,10,16чные системы счисления</h1>
+
+<p>Например имеем восьмибитное двоичное число:</p>
+<p>01001011</p>
+<p>каждый бит в этом бинарном числе умножим на соответствующий коэффициент и просуммировав получим следующие значения:</p>
+
+<p>0* (2^7) + 1*(2^6) + 0*(2^5) + 0*(2^4) + 1*(2^3) + 0*(2^2) + 1*(2^1) + 1*(2^0) =</p>
+<p>0 + 64 + 0 + 0 + 8 + 0 + 2 + 1 = 75</p>
+<p>01001011(2) = 75(10)</p>
+
+<p>для обратно преобразования число 75 будем делить на 2 и запоминать остаток отделения:</p>
+<p>75 / 2 = (74 + 1) / 2 = 37 с остатком 1</p>
+<p>37 / 2 = (36 + 1) / 2 = 18 с остатком 1</p>
+<p>18 / 2 = (18 + 0) / 2 = 9 с остатком 0</p>
+<p>9 / 2  = (8 + 1) / 2 = 4 с остатком 1</p>
+<p>4 / 2  = (4 + 0) / 2 = 2 с остатком 0</p>
+<p>2 / 2  = (2 + 0) / 2 = 1 с остатком 0</p>
+<p>1 / 2  = (0 + 1) / 2 = 0 с остатком 1</p>
+
+<p>теперь запишем число сверху вниз:</p>
+<p>1001011(2) = (75)</p>
+
+<p>В шестнадцатеричную систему переводить бинарные данные намного проще также и обратно, бинарное число мы разобьем по четыре бита и воспользуемся следующей таблицей:</p>
+
+<table>
+	<tr>
+		<td>Бинарное значение</td>
+		<td>восьмеричное
+значение</td>
+		<td>десятичное
+значение</td>
+		<td>шестнадцетиричное
+значение</td>
+	</tr>
+	<tr>
+		<td>0000</td>
+		<td>0</td>
+		<td>0</td>
+		<td>0</td>
+	</tr>
+	<tr>
+		<td>0001</td>
+		<td>1</td>
+		<td>1</td>
+		<td>1</td>
+	</tr>
+	<tr>
+		<td>0010</td>
+		<td>2</td>
+		<td>2</td>
+		<td>2</td>
+	</tr>
+	<tr>
+		<td>0011</td>
+		<td>3</td>
+		<td>3</td>
+		<td>3</td>
+	</tr>
+	<tr>
+		<td>0100</td>
+		<td>4</td>
+		<td>4</td>
+		<td>4</td>
+	</tr>
+	<tr>
+		<td>0101</td>
+		<td>5</td>
+		<td>5</td>
+		<td>5</td>
+	</tr>
+	<tr>
+		<td>0110</td>
+		<td>6</td>
+		<td>6</td>
+		<td>6</td>
+	</tr>
+	<tr>
+		<td>0111</td>
+		<td>7</td>
+		<td>7</td>
+		<td>7</td>
+	</tr>
+	<tr>
+		<td>1000</td>
+		<td>10</td>
+		<td>8</td>
+		<td>8</td>
+	</tr>
+	<tr>
+		<td>1001</td>
+		<td>11</td>
+		<td>9</td>
+		<td>9</td>
+	</tr>
+	<tr>
+		<td>1010</td>
+		<td>12</td>
+		<td>10</td>
+		<td>A</td>
+	</tr>
+	<tr>
+		<td>1011</td>
+		<td>13</td>
+		<td>11</td>
+		<td>B</td>
+	</tr>
+	<tr>
+		<td>1100</td>
+		<td>14</td>
+		<td>12</td>
+		<td>C</td>
+	</tr>
+	<tr>
+		<td>1101</td>
+		<td>15</td>
+		<td>13</td>
+		<td>D</td>
+	</tr>
+	<tr>
+		<td>1110</td>
+		<td>16</td>
+		<td>14</td>
+		<td>E</td>
+	</tr>
+	<tr>
+		<td>1111</td>
+		<td>17</td>
+		<td>15</td>
+		<td>F</td>
+	</tr>
+</table>
+
+
+<p>часто пользуются хитростью: что бы перевести шестнадцатеричное значение в десятичное: шестнадцатеричное значение переводят в бинарное значение, а из бинарного в десятичное.</p>
+
+<!-- content -->
+
+		</div>
+	</body>
+</html>
+	
