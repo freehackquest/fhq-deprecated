@@ -1,0 +1,55 @@
+<html>
+	<head>
+		<title>Free Hack Quest / Wiki (RU)</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="copyright" lang="ru" content="sea-kg" />
+		<meta name="keywords" content="security, fhq, fhq 2012, fhq 2013, fhq 2014, free, hack, quest, competition, information security, ctf, joepardy, material for seminars" />
+		<link rel="shortcut icon" href="favicon.ico">
+		<script src="js/libs/jquery-3.1.0.min.js" type="text/javascript"></script>
+		<script src="js/fhq.wiki.js" type="text/javascript"></script>
+		<link href="css/fhq.wiki.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+		<div class="menu">
+		</div>
+		<div class="content">
+
+<!-- content -->
+
+<h1>Система контроля версий git</h1>
+
+права на директорию ~/.ssh:
+
+<pre>
+	$ chmod 700 ~/.ssh
+	$ chmod 655 -R ~/.ssh/*
+	$ chmod 600 ~/.ssh/id_rsa
+</pre>
+	
+минимальный список файлов:
+
+<pre>
+	~/.ssh/config
+	~/.ssh/known_hosts
+	~/.ssh/id_rsa
+	~/.ssh/id_rsa2
+</pre>
+
+пример файла config:
+
+<pre>
+	Host git.yourserver.com
+	 User git
+	 IdentityFile ~/.ssh/id_rsa
+
+	Host github.com
+	 User git
+	 IdentityFile ~/.ssh/id_rsa2
+</pre>
+
+<!-- content -->
+
+		</div>
+	</body>
+</html>
+	

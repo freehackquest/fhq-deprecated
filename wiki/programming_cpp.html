@@ -1,0 +1,148 @@
+<html>
+	<head>
+		<title>Free Hack Quest / Wiki (RU)</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="copyright" lang="ru" content="sea-kg" />
+		<meta name="keywords" content="security, fhq, fhq 2012, fhq 2013, fhq 2014, free, hack, quest, competition, information security, ctf, joepardy, material for seminars" />
+		<link rel="shortcut icon" href="favicon.ico">
+		<script src="js/libs/jquery-3.1.0.min.js" type="text/javascript"></script>
+		<script src="js/fhq.wiki.js" type="text/javascript"></script>
+		<link href="css/fhq.wiki.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+		<div class="menu">
+		</div>
+		<div class="content">
+
+<!-- content -->
+
+<h1>C++</h1>
+
+
+<p>C++ — компилируемый статически типизированный язык программирования общего назначения. (wiki)</p>
+
+<p>Поддерживает такие парадигмы программирования как процедурное программирование, объектно-ориентированное программирование, обобщённое программирование, обеспечивает модульность, раздельную компиляцию, обработку исключений, абстракцию данных, объявление типов (классов) объектов, виртуальные функции. Стандартная библиотека включает, в том числе, общеупотребительные контейнеры и алгоритмы. C++ сочетает свойства как высокоуровневых, так и низкоуровневых языков. В сравнении с его предшественником — языком C, — наибольшее внимание уделено поддержке объектно-ориентированного и обобщённого программирования. (wiki)</p>
+
+<p>C++ широко используется для разработки программного обеспечения, являясь одним из самых популярных языков программирования. Область его применения включает создание операционных систем, разнообразных прикладных программ, драйверов устройств, приложений для встраиваемых систем, высокопроизводительных серверов, а также развлекательных приложений (игр). Существует множество реализаций языка C++, как бесплатных, так и коммерческих и для различных платформ. Например, на платформе x86 это GCC, Visual C++, Intel C++ Compiler, Embarcadero (Borland) C++ Builder и другие. C++ оказал огромное влияние на другие языки программирования, в первую очередь на Java и C#. (wiki)</p>
+
+<p>Синтаксис C++ унаследован от языка C. Одним из принципов разработки было сохранение совместимости с C. Тем не менее, C++ не является в строгом смысле надмножеством C; множество программ, которые могут одинаково успешно транслироваться как компиляторами C, так и компиляторами C++, довольно велико, но не включает все возможные программы на C. (wiki)</p>
+
+<p>А теперь напишем программу на C++ с использования компилятора gcc.</p>
+
+<p>Для начала подготовим PHP скрипт и выложим его на сервер который нам доступен.</p>
+Задачи скрипта 
+<ul>
+	<li>1. обработка из get-запроса  и запись данных в файл</li>
+	<li>2. вывод последних записаныых данных и вывод тестовой формы для формирования get-запроса</li>
+</ul>
+test_data.php <br>
+
+<pre>
+	&lt;?php
+	if(isset($_GET[&#39;test_data&#39;])) { $click = $_GET[&#39;test_data&#39;];  file_put_contents(&quot;last_recived.txt&quot;,$click); echo &quot;GET recived&quot;; exit; };
+
+	echo &quot;last_recived:&lt;br&gt;&quot;;
+	if(file_exists(&quot;last_recived.txt&quot;))
+		echo file_get_contents(&quot;last_recived.txt&quot;);
+	else
+		echo &quot;It is not yet recived data... &quot;;
+	?&gt;
+
+	&lt;hr&gt;
+	Request:
+	&lt;form method=&#39;GET&#39; action=&#39;test.php&#39;&gt;
+		&lt;textarea name=&#39;test_data&#39;&gt;&lt;/textarea&gt;&lt;br&gt;
+		&lt;input type=&#39;submit&#39; value=&#39;Send&#39;&gt;
+	&lt;/form&gt;
+</pre>
+
+Далее напишем программу на c++ под линуксом и откомпилируем ее под gcc:<br>
+test_data.cpp:<br>
+<pre>
+	#include &lt;iostream>
+	#include &lt;stddef.h>
+	#include &lt;stdio.h>
+	#include &lt;errno.h>
+	#include &lt;stdlib.h>
+	#include &lt;string.h>
+	#include &lt;sys/socket.h>
+	#include &lt;sys/un.h>
+
+	#define PORT   80
+	#define MAXMSG  512
+
+	int
+		 make_named_socket (const char *filename)
+		 {
+		   struct sockaddr_un name;
+		   int sock;
+		   size_t size;
+		 
+		   /* Create the socket. */
+		   sock = socket (PF_LOCAL, SOCK_DGRAM, 0);
+		   if (sock < 0)
+			 {
+			   perror ("socket");
+			   exit (EXIT_FAILURE);
+			 }
+		 
+		   /* Bind a name to the socket. */
+		   name.sun_family = AF_LOCAL;
+		   strncpy (name.sun_path, filename, sizeof (name.sun_path));
+		   name.sun_path[sizeof (name.sun_path) - 1] = '\0';
+		 
+		   /* The size of the address is
+			  the offset of the start of the filename,
+			  plus its length (not including the terminating null byte).
+			  Alternatively you can just do:
+			  size = SUN_LEN (&name);
+		 */
+		   size = (offsetof (struct sockaddr_un, sun_path)
+				   + strlen (name.sun_path));
+		 
+		   if (bind (sock, (struct sockaddr *) &name, size) < 0)
+			 {
+			   perror ("bind");
+			   exit (EXIT_FAILURE);
+			 }
+		 
+		   return sock;
+		 }
+
+
+	int main()
+	{
+
+	}
+</pre>
+	
+Скомпилируем и запустим 
+
+<pre>
+	$ g++ -Wall test_data.cpp -o test_data
+	$ chmod +x test_data
+	$ ./test_data
+</pre>
+
+см здесь: <a href="http://www.gnu.org/software/libc/manual/html_node/Local-Socket-Example.html">http://www.gnu.org/software/libc/manual/html_node/Local-Socket-Example.html</a><br>
+<a href="http://cboard.cprogramming.com/c-programming/124937-http-get-request.html">http://cboard.cprogramming.com/c-programming/124937-http-get-request.html</a>
+
+<pre>
+	request = malloc( ((tok - &(*argv[1])) - sizeof(argv[1])) + sizeof(char) * 17 + 1 + 4 );
+	sprintf(request, "%s %s %s", "GET", &(*argv[1]) + (tok - &(*argv[1])), "HTTP/1.0");
+	printf("%s\n", request);
+	serverSocket = socket(AF_INET, SOCK_STREAM, 0);
+	if (serverSocket == -1)
+		error("socket()");
+	if (connect(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) != 0)
+		error("connect()");
+	if (send(serverSocket, &request, sizeof(request), 0) < 0)
+		error("send()");
+</pre>
+
+<!-- content -->
+
+		</div>
+	</body>
+</html>
+	

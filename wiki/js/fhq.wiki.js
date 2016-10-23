@@ -99,35 +99,36 @@ var menu = [
 				'submenu': [
 					{
 						'name' : 'Система контроля версий git',
-						'link' : 'inde.html'
+						'link' : 'programming_tools_git.html'
 					}
 				]
 			} , {
 				'name': 'Основы программирования функции и объекты-классы (или ООП)',
-				'link' : 'index.html'
+				'link' : 'programming_oop.html'
 			} , {
 				'name' : 'Assembler',
+				'link': 'programming_assambler.html',
 				'submenu' : [
 					{
 						'name': 'Кратко об устройстве процессора',
-						'link' : 'index.html'
+						'link' : 'programming_assambler_proc.html'
 					}, {
 						'name' : 'Списки комманд и примеры',
-						'link' : 'index.html'
+						'link' : 'programming_assambler_commands.html'
 					}, {
 						'name' : 'Заключение по ассемблеру',
-						'link' : 'index.html'
+						'link' : 'programming_assambler_ps.html'
 					}
 				]
 			},{
 				'name' : 'C++',
-				'link' : 'index.html'
+				'link' : 'programming_cpp.html'
 			},{
 				'name' : 'Python',
-				'link' : 'index.html'
+				'link' : 'programming_python.html'
 			},{
 				'name' : 'JavaScript',
-				'link' : 'index.html'
+				'link' : 'programming_javascript.html'
 			}
 		]
 	}, {
