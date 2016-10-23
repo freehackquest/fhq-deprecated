@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = fhqd
+TARGET = freehackquestd
 
 QT += core sql network websockets
 QT -= gui

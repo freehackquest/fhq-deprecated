@@ -13,5 +13,8 @@ This app writed on Qt5 use QWebSocket
 
 ## configure
 
-	$ sudo ln -s `pwd`/etc/fhqd /etc/fhqd
+	$ sudo ln -s `pwd`/etc/freehackquestd /etc/freehackquestd
+	$ sudo ln -s `pwd`/etc/init.d/freehackquestd /etc/init.d/freehackquestd
+	$ sudo ln -s `pwd`/freehackquestd /usr/bin/freehackquestd
 	$ sudo nano /etc/fhqd/conf.ini
+	$ sudo /etc/init.d/freehackquestd start
