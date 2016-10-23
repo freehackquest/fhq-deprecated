@@ -201,7 +201,7 @@ function FHQGuiLib(api) {
 		toppanel.append('<div id="btnmenu_user" class="fhq_btn_menu" href="javascript:void(0);">'
 			+ '<img class="fhq_btn_menu_img" src="images/menu/user.png"/> '
 			+ this.t('Account')
-			+ '<div class="accout-panel">'
+			+ '<div class="account-panel">'
 			+ '<img class="fhq_btn_menu_img" src="images/menu/user.png"/> '
 			+ this.t('Account')
 			+ '<div class="border"></div>'
@@ -209,9 +209,9 @@ function FHQGuiLib(api) {
 			+ '</div>');
 		
 		// if(!fhq.cache.is_authorized){
-			$('.accout-panel').append('<div id="btnmenu_signin" class="fhq-simple-btn" onclick="fhqgui.showSignInForm();">' + this.t('Sign-in') + '</div>');
-			$('.accout-panel').append('<div id="btnmenu_signup" class="fhq-simple-btn" onclick="fhqgui.showSignUpForm();">' + this.t('Sign-up') + '</div>');
-			$('.accout-panel').append('<div id="btnmenu_restore_password" class="fhq-simple-btn" onclick="fhqgui.showResetPasswordForm();">' + this.t('Forgot password?') + '</div>');
+			$('.account-panel').append('<div id="btnmenu_signin" class="fhq-simple-btn" onclick="fhqgui.showSignInForm();">' + this.t('Sign-in') + '</div>');
+			$('.account-panel').append('<div id="btnmenu_signup" class="fhq-simple-btn" onclick="fhqgui.showSignUpForm();">' + this.t('Sign-up') + '</div>');
+			$('.account-panel').append('<div id="btnmenu_restore_password" class="fhq-simple-btn" onclick="fhqgui.showResetPasswordForm();">' + this.t('Forgot password?') + '</div>');
 		/*}else{
 			$('.accout-panel').append('<div id="btnmenu_signin" class="fhq-simple-btn" onclick="fhqgui.signout();">' + this.t('Sign-out') + '</div>');
 		}*/

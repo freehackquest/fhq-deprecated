@@ -117,19 +117,6 @@ textarea {
 	z-index: 555;
 }
 
-.fhqtopmenu_rightpanel {
-	padding: 10px 10px 10px 10px;
-	background: #e4e4e4;
-	position: fixed;
-	display: inline-block;
-	right: 0px;
-	-webkit-border-bottom-left-radius: 15px;
-	-moz-border-radius-bottomleft: 15px;
-	border-bottom-left-radius: 15px;
-	opacity: 0.95;
-	z-index: 555;
-}
-
 .fhqleftmenu {
 	background: #e4e4e4;
 	padding: 10px 10px 10px 10px;

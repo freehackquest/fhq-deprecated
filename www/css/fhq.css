@@ -269,7 +269,7 @@ body {
 	border-radius: 10px;
 }
 
-.accout-panel{
+.account-panel{
 	display: none;
 	position: absolute;
 	padding: 10px;
@@ -281,15 +281,20 @@ body {
 	margin-left: -10px;
 }
 
-#btnmenu_user:hover .accout-panel{
+#btnmenu_user{
+	min-width: 200px;
+	text-align: left;
+}
+
+#btnmenu_user:hover .account-panel{
 	display: block;
 }
 
-.accout-panel:hover{
+.account-panel:hover{
 	display: block;
 }
 
-.accout-panel .fhq-simple-btn{
+.account-panel .fhq-simple-btn{
     height: 30px;
     color: #333;
     text-decoration: underline;
@@ -302,13 +307,13 @@ body {
     margin-top: 5px;
 }
 
-.accout-panel .fhq-simple-btn:hover{
+.account-panel .fhq-simple-btn:hover{
 	background: #c8c8c8;
 	color: #333;
 	text-decoration: none;	
 }
 
-.accout-panel .border{
+.account-panel .border{
 	border-top: 1px dashed #333;
 	margin-top: 10px;
 }
@@ -483,6 +488,26 @@ body {
 	line-height: 19px;
 }
 
+/* 
+ * Deprecated
+*/
+ 
+ .fhqtopmenu_rightpanel {
+	padding: 10px 10px 10px 10px;
+	background: #e4e4e4;
+	position: fixed;
+	display: inline-block;
+	right: 0px;
+	-webkit-border-bottom-left-radius: 15px;
+	-moz-border-radius-bottomleft: 15px;
+	border-bottom-left-radius: 15px;
+	opacity: 0.95;
+	z-index: 555;
+	min-width: 200px;
+	text-align: left;
+}
+
+
 
 /*
 	darkstile
@@ -502,17 +527,17 @@ body.dark
 	width: 270px;
 }
 
-.dark .accout-panel {
+.dark .account-panel {
 	background-color: #3E3E3E;
 	color: #C8C8C8;
 }
 
-.dark .accout-panel .fhq-simple-btn {
+.dark .account-panel .fhq-simple-btn {
 	background-color: #3E3E3E;
 	color: #C8C8C8;
 }
 
-.dark .accout-panel .border {
+.dark .account-panel .border {
     border-top: 1px dashed #C8C8C8;
 }
 
