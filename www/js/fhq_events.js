@@ -152,7 +152,7 @@ function updateCountOfEvents() {
 				if (el.style.visibility == 'hidden') {
 					el.style.visibility = 'visible';
 				}
-				el.innerHTML = obj.data.count;
+				el.innerHTML = '+' + obj.data.count;
 			}
 		} else {
 			// el.innerHTML = obj.error.message;

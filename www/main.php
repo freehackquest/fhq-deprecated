@@ -231,8 +231,7 @@ if (!isset($_SESSION['user']))
 			}
 	?>		
 				<div class="fhq_btn_menu" onclick="createPageEvents(); updateEvents();">
-					<img class="fhq_btn_menu_img" src="images/menu/news.png"/> News
-					<div class="fhqredcircle" id="plus_events">0</div>
+					<img class="fhq_btn_menu_img" src="images/menu/news.png"/> News <font id="plus_events"></font>
 				</div>
 				<div class="fhq_btn_menu" id="btnmenu_user">
 					<img class="fhq_btn_menu_img" src="images/menu/user.png"/> <?php echo $nick; ?>
