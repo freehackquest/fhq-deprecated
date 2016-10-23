@@ -1,0 +1,29 @@
+body {
+	background: url(../images/background.png) no-repeat left top fixed;
+}
+
+li {
+	padding-top: 5px;
+}
+
+.content {
+	padding: 70px;
+}
+
+.menu {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	padding: 20px;
+	cursor: pointer;
+	opacity: 0.95;
+	background-color: #e4e4e4;
+}
+
+.menu ul {
+	display: none;
+}
+
+.menu:hover ul {
+	display: block;
+}
