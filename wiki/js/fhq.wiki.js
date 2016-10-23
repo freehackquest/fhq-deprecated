@@ -135,19 +135,19 @@ var menu = [
 		'submenu' : [
 			{
 				'name': 'Философия UNIX',
-				'link' : 'index.html'
+				'link' : 'unix_philosophi.html'
 			}, {
 				'name' : 'Правила Community',
-				'link' : 'index.html'
+				'link' : 'unix_community_rules.html'
 			}, {
 				'name' : 'Почему CLI лучше GUI?',
-				'link' : 'index.html'
+				'link' : 'unix_why_cli_best_then_gui.html'
 			}, {
 				'name' : 'Конвееры и потоки',
-				'link' : 'index.html'
+				'link' : 'unix_conveers_and_thread.html'
 			}, {
 				'name' : 'Фильтры и другие полезные утилиты',
-				'link' : 'index.html'
+				'link' : 'unix_filters_and_usefull_utilites.html'
 			}
 		]
 	}, {
@@ -155,19 +155,18 @@ var menu = [
 		'submenu' : [
 			{
 				'name': 'Кратко о Linux',
-				'link' : 'index.html'
+				'link' : 'linux_about.html'
 			}, {
 				'name' : 'Структура Linux (где что храниться)',
-				'link' : 'index.html'
+				'link' : 'linux_struct.html'
 			}, {
 				'name' : 'Просто полезные команды',
-				'link' : 'index.html'
+				'link' : 'linux_usefull_console_commands.html'
 			}
 		]
 	}, {
 		'name' : 'Команды для работы с VirtualBox из консоли',
-		'submenu' : [
-		]
+		'link' : 'virtualbox.html'
 	}, {
 		'name' : 'Shell-программирование',
 		'link': 'shell_programming.html',
