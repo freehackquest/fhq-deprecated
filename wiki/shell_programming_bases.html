@@ -1,0 +1,114 @@
+<html>
+	<head>
+		<title>Free Hack Quest / Wiki (RU)</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="copyright" lang="ru" content="sea-kg" />
+		<meta name="keywords" content="security, fhq, fhq 2012, fhq 2013, fhq 2014, free, hack, quest, competition, information security, ctf, joepardy, material for seminars" />
+		<link rel="shortcut icon" href="favicon.ico">
+		<script src="js/libs/jquery-3.1.0.min.js" type="text/javascript"></script>
+		<script src="js/fhq.wiki.js" type="text/javascript"></script>
+		<link href="css/fhq.wiki.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+		<div class="menu">
+		</div>
+		<div class="content">
+
+<!-- content -->
+
+<h1>Shell-программирование / Основы</h1>
+
+<h2>Присваивание:</h2>
+<p><переменная>=<значение></p>
+Пример:
+<pre>
+
+	COUNT=30
+	MSG="Hello, World!"
+</pre>
+
+<h2>Условие:</h2>
+<pre>
+	if <условие>; then
+		<команды>
+	elif/else <условие>; then
+		<команды>
+	fi
+</pre>
+
+<h2>Цикл while:</h2>
+<pre>
+	while <условие>
+	do
+		<команды>
+	done
+</pre>
+
+<h2>Цикл until:</h2>
+<pre>
+	until <условие>
+	do
+		<команды>
+	done
+</pre>
+
+<h2>Условия/Числа:</h2>
+<ul>
+	<li>Для n1 = n2 делаем так n1 -eq n2</li>
+	<li>Для n1 <> n2 делаем так n1 -ne n2</li>
+	<li>Для n1 > n2 делаем так n1 -gt n2</li>
+	<li>Для n1 >= n2 делаем так  n1 -ge n2</li>
+	<li>Для n1 < n2 делаем так n1 -lt n2</li>
+	<li>Для n1 <= n2 делаем так n1 -le n2</li>
+</ul>
+
+Например нам нужно загрузить все номера журнала Хакера с сайта www.xakep.ru<br>
+Просто напишем скрипт!<br>
+<pre>
+	#!/bin/bash
+	NUMBER=81
+	COUNT=$1
+	while [ $NUMBER -le $COUNT ]
+		do
+		if [ $NUMBER -le 9 ]; then
+			ISSUE=00$NUMBER
+		elif [ $NUMBER -le 99 ]; then
+			ISSUE=0$NUMBER
+		elif [ $NUMBER -gt 99 ]; then
+			ISSUE=$NUMBER
+		fi
+		wget http://www.xard.ru/magazine/xh/$ISSUE/xh_$ISSUE.pdf
+		let "NUMBER += 1"
+	done
+</pre>
+
+или нам нужно найти в файлах запрятанный код. Код можно определить по регулярному выражению: <br> " [0-9]{4,4}[a-zA-Z]{4,4} "<br>
+Скачиваем архив 2.3.tar.gz  и распаковываем “tar -xf 2_3.tar.gz”<br>
+Пишем скрипт:<br>
+
+<pre>
+	#!/bin/bash
+	dir="files/";
+	echo "" > result.txt
+	ls $dir | while read filename;
+	#for file in $(ls "2_3_files/" | read )
+	do
+		cat "$dir""$filename" | grep -E " [0-9]{4,4}[a-zA-Z]{4,4} " >> result.txt
+	done
+</pre>
+
+<p>Осознать всю офигенность и мощь bash или shell программирования, но не забывайте нет универсальных языков, каждый предназначен для решения круга задач. 
+Очень часто встречается комбинированные варианты.</p>
+
+<p>Лично я, в своей практике иногда использую: bash + Qt. Домашняя ОС: Ubuntu (linux).
+На  C++ использованием библиотеки Qt намного проще решить задачу выделяния какой то части изображения и его преобразования,
+а на bash написать скрипт который например сканирует определенную директорию
+и поочередно отдает на обработку файлы изображений в программу которая была написана ранее.</p>
+
+
+<!-- content -->
+
+		</div>
+	</body>
+</html>
+	

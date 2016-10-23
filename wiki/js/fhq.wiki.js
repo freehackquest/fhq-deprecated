@@ -170,10 +170,11 @@ var menu = [
 		]
 	}, {
 		'name' : 'Shell-программирование',
+		'link': 'shell_programming.html',
 		'submenu' : [
 			{
 				'name': 'Основы',
-				'link': 'index.html'
+				'link': 'shell_programming_bases.html'
 			}
 		]
 	}, {
