@@ -4,3 +4,4 @@ config.php
 php/fhq/files/*
 manual.pdf
 backend/freehackquestd
+backend/etc/freehackquestd/conf.ini

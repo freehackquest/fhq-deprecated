@@ -5,6 +5,25 @@ QString CmdAddNewsHandler::cmd(){
 }
 
 void CmdAddNewsHandler::handle(QWebSocket *pClient, IWebSocketServer *pWebSocketServer, QJsonObject obj){
+	UserToken *pUserToken = pWebSocketServer->getUserToken(pClient);
+	if(pUserToken == NULL){
+		QJsonObject jsonData;
+		jsonData["cmd"] = QJsonValue(cmd());
+		jsonData["result"] = QJsonValue("FAIL");
+		jsonData["error"] = QJsonValue("Not authorized request");
+		pWebSocketServer->sendMessage(pClient, jsonData);
+		return;
+	}
+
+	if(!pUserToken->isAdmin()){
+		QJsonObject jsonData;
+		jsonData["cmd"] = QJsonValue(cmd());
+		jsonData["result"] = QJsonValue("FAIL");
+		jsonData["error"] = QJsonValue("Allowed only fot admin");
+		pWebSocketServer->sendMessage(pClient, jsonData);
+		return;
+	}
+
 	QJsonObject jsonData;
 	jsonData["cmd"] = QJsonValue(cmd());
 	jsonData["result"] = QJsonValue("DONE");
@@ -15,6 +34,5 @@ void CmdAddNewsHandler::handle(QWebSocket *pClient, IWebSocketServer *pWebSocket
 	jsonData2["type"] = obj["type"];
 	jsonData2["message"] = obj["message"];
 
-	// TODO check admin access
-	// pWebSocketServer->sendToAll(jsonData2);
+	pWebSocketServer->sendToAll(jsonData2);
 }

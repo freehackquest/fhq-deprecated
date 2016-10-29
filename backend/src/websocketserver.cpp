@@ -3,6 +3,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QDateTime>
+
 #include <QHostAddress>
 #include "cmd_handlers/create_cmd_handlers.h"
 
@@ -12,12 +13,39 @@
 // ---------------------------------------------------------------------
 
 WebSocketServer::WebSocketServer(quint16 port, bool debug, QObject *parent) : QObject(parent) {
-	m_pWebSocketServer = new QWebSocketServer(QStringLiteral("FHQ Daemon"), QWebSocketServer::NonSecureMode, this);
+	m_pWebSocketServer = new QWebSocketServer(QStringLiteral("freehackquestd"), QWebSocketServer::NonSecureMode, this);
 	m_debug = debug;
+	m_sFilename = "/etc/freehackquestd/conf.ini";
+	if(QFile::exists(m_sFilename)){
+		QSettings sett(m_sFilename, QSettings::IniFormat);
+		m_sDatabase_host = readStringFromSettings(sett, "DATABASE/host", "localhost");
+		m_sDatabase_name = readStringFromSettings(sett, "DATABASE/name", "freehackquest");
+		m_sDatabase_user = readStringFromSettings(sett, "DATABASE/user", "freehackquest_u");
+		m_sDatabase_password = readStringFromSettings(sett, "DATABASE/password", "freehackquest_database_password");
+		if (m_debug){
+			qDebug() << "Database_host: " << m_sDatabase_host;
+			qDebug() << "Database_name: " << m_sDatabase_name;
+			qDebug() << "Database_user: " << m_sDatabase_user;
+			qDebug() << "Database_password: " << m_sDatabase_password;
+		}
+		
+		m_pDatabase = new QSqlDatabase(QSqlDatabase::addDatabase("QMYSQL"));
+		m_pDatabase->setHostName(m_sDatabase_host);
+		m_pDatabase->setDatabaseName(m_sDatabase_name);
+		m_pDatabase->setUserName(m_sDatabase_user);
+		m_pDatabase->setPassword(m_sDatabase_password);
+		if (!m_pDatabase->open()){
+			qDebug() << m_pDatabase->lastError().text();
+			qDebug() << "Failed to connect.";
+			return;
+		}else{
+			qDebug() << "Success connection to database";
+		}
+	}
 
     if (m_pWebSocketServer->listen(QHostAddress::Any, port)) {
         if (m_debug)
-            qDebug() << "FHQ Daemon listening on port" << port;
+            qDebug() << "freehackquestd listening on port" << port;
         connect(m_pWebSocketServer, &QWebSocketServer::newConnection, this, &WebSocketServer::onNewConnection);
         connect(m_pWebSocketServer, &QWebSocketServer::closed, this, &WebSocketServer::closed);
         create_cmd_handlers(m_mapCmdHandlers);
@@ -32,6 +60,16 @@ WebSocketServer::~WebSocketServer() {
 }
 
 // ---------------------------------------------------------------------
+
+QString WebSocketServer::readStringFromSettings(QSettings &sett, QString settName, QString defaultValue){
+	QString sResult = defaultValue;
+	if(sett.contains(settName)){
+		sResult = sett.value(settName, sResult).toString();
+	}else{
+		qDebug() << "[WARNING] " << settName << " - not found in " << m_sFilename << "\n\t Will be used default value: " << defaultValue;
+	}
+	return sResult;
+}
 
 void WebSocketServer::onNewConnection()
 {
@@ -95,6 +133,7 @@ void WebSocketServer::socketDisconnected() {
     if (m_debug)
         qDebug() << "socketDisconnected:" << pClient;
     if (pClient) {
+		m_tokens.remove(pClient);
         m_clients.removeAll(pClient);
         pClient->deleteLater();
     }
@@ -125,8 +164,25 @@ void WebSocketServer::sendToAll(QJsonObject obj){
 	}
 }
 
-/*
-FHQSettings *WebSocketServer::settings(){
-	
-}*/
+// ---------------------------------------------------------------------
+
+QSqlDatabase *WebSocketServer::database(){
+	return m_pDatabase;
+}
+
+// ---------------------------------------------------------------------
+
+void WebSocketServer::setUserToken(QWebSocket *pClient, UserToken *pUserToken){
+	m_tokens[pClient] = pUserToken;
+}
+
+// ---------------------------------------------------------------------
+
+UserToken * WebSocketServer::getUserToken(QWebSocket *pClient){
+	if(m_tokens.contains(pClient)){
+		return m_tokens[pClient];
+	}
+	return NULL;
+}
+
 

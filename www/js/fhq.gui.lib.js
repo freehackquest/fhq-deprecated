@@ -773,8 +773,6 @@ function FHQGuiLib(api) {
 		strVar += "						<\/td>";
 		strVar += "					<\/tr>";
 		strVar += "				<\/table>";
-
-		
 		
 		$("#content_page").html(strVar);
 

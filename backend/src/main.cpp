@@ -16,27 +16,30 @@
 #include "websocketserver.h"
 
 int main(int argc, char** argv) {
-	QCoreApplication app(argc, argv);
-	
 	QCoreApplication a(argc, argv);
 
     QCommandLineParser parser;
-    parser.setApplicationDescription("FHQ Daemon");
+    parser.setApplicationDescription("freehackquestd");
     parser.addHelpOption();
 
     QCommandLineOption dbgOption(QStringList() << "d" << "debug", QCoreApplication::translate("main", "Debug output [default: off]."));
     
     parser.addOption(dbgOption);
     QCommandLineOption portOption(QStringList() << "p" << "port",
-            QCoreApplication::translate("main", "Port for FHQ Daemon ws [default: 1234]."),
+            QCoreApplication::translate("main", "Port for freehackquestd [default: 1234]."),
             QCoreApplication::translate("main", "port"), QLatin1Literal("1234"));
     parser.addOption(portOption);
     parser.process(a);
     bool debug = parser.isSet(dbgOption);
     int port = parser.value(portOption).toInt();
 
+	if(!QFile::exists("/etc/freehackquestd/conf.ini")){
+		qDebug() << "Not found /etc/freehackquestd/conf.ini";
+		return 0;
+	}
+
     WebSocketServer *server = new WebSocketServer(port, debug);
     QObject::connect(server, &WebSocketServer::closed, &a, &QCoreApplication::quit);
     
-	return app.exec();
+	return a.exec();
 }

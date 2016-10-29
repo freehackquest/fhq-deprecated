@@ -3,7 +3,9 @@ if(!window.fhq.ws) window.fhq.ws = {};
 
 // WebSocket protocol
 
-window.fhq.ws.handlerReceivedNews = function(response){};
+window.fhq.ws.handlerReceivedNews = function(response){
+	fhq.handlerReceivedNews(response);
+};
 window.fhq.ws.listeners = {}
 window.fhq.ws.addListener = function(cmd, d){
 	if(!fhq.ws.listeners[cmd]){
@@ -49,7 +51,9 @@ window.fhq.ws.initWebsocket = function(){
 	window.fhq.ws.socket.onopen = function() {
 		console.log('WS Opened');
 		fhq.ws.setWSState("OK");
-		fhq.ws.send({'cmd': 'hello'});
+		fhq.ws.send({'cmd': 'hello'}).done(function(){
+			fhq.ws.login();
+		});
 	};
 
 	window.fhq.ws.socket.onclose = function(event) {
@@ -113,5 +117,12 @@ window.fhq.ws.addNews = function(type, message){
 		'cmd': 'addnews',
 		'type': type,
 		'message': message
+	});
+}
+
+window.fhq.ws.login = function(){
+	return fhq.ws.send({
+		'cmd': 'login',
+		'token': fhq.getTokenFromCookie()
 	});
 }
