@@ -23,10 +23,15 @@ window.fhq.ui.loadTools = function(){
 window.fhq.ui.loadTool = function(toolid){
 	fhq.changeLocationState({'tools' : '', 'toolid': toolid});
 	$('.toolinfo').html('Loading...');
-	$.getScript("./js/fhq.tools/" + toolid + "/index.js", function(){
+	
+	var tool = document.createElement('script');
+	tool.src = "./js/fhq.tools/" + toolid + "/index.js";
+	tool.onload = function() {
 		$('.toolinfo').html('');
 		window[toolid].init($('.toolinfo'));
-	});	
+	}
+	tool.onerror = tool.onload;
+	document.head.appendChild(tool);
 }
 
 $(document).ready(function() {
