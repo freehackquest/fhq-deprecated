@@ -34,6 +34,10 @@ $(document).ready(function() {
 	$('#btnmenu_archive').append(fhq.t('Archive'));
 	$('#btnmenu_tools').append(fhq.t('Tools'));
 	$('#btnmenu_classbook').append(fhq.t('Classbook'));
+	
+	if(fhq.containsPageParam('toolid')){
+		fhq.ui.loadTool(fhq.pageParams['toolid']);
+	}
 });
 
 // list of tools
