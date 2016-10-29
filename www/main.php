@@ -38,7 +38,6 @@ if (!isset($_SESSION['user']))
 		<script type="text/javascript" src="js/fhq.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq.ws.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq.gui.lib.js?ver=1"></script>
-		<script type="text/javascript" src="js/fhq.plugins/plugins.js?ver=1"></script>
 		<script type="text/javascript" src="js/jquery.datetimepicker.js"></script>
 		<script type="text/javascript" src="js/libs/progressbar-0.8.1.min.js"></script>
 		<script type="text/javascript" src="js/libs/Chart-1.0.2.js"></script>
@@ -234,7 +233,7 @@ if (!isset($_SESSION['user']))
 						<div class="fhq-simple-btn" onclick="fhqgui.loadGames();">Games</div>
 						<div class="fhq-simple-btn" onclick="fhqgui.createPageSkills(); fhqgui.updatePageSkills();">Skills</div>
 						<div class="fhq-simple-btn" onclick="loadFeedback();">Feedback</div>
-						<div class="fhq-simple-btn" onclick="fhqgui.loadTools();">Tools</div>
+						<a class="fhq-simple-btn" href="http://tools.freehackquest.com" target="_blank">Tools</a>
 						<div class="fhq-simple-btn" onclick="logout();">Sign-out</div>
 						<?php if($role == 'admin'){ ?>
 							<div class="border"></div>

@@ -131,7 +131,7 @@ function FHQGuiLib(api) {
 			+ fhq.t('Quests')
 			+ '</a>')
 			
-		toppanel.append('<a id="btnmenu_tools" class="fhq_btn_menu" href="?tools">'
+		toppanel.append('<a id="btnmenu_tools" class="fhq_btn_menu" target="_blank" href="http://tools.freehackquest.com">'
 			+ '<img class="fhq_btn_menu_img" src="images/menu/tools_150x150.png"/> '
 			+ fhq.t('Tools')
 			+ '</a>')
@@ -1295,36 +1295,6 @@ function FHQGuiLib(api) {
 			}
 		);
 	}
-
-	this.loadTool = function(toolid){
-		this.changeLocationState({'tools' : '', 'toolid': toolid});
-		$('.toolinfo').html('Loading...');
-		$.getScript("./js/fhq.plugins/" + toolid + "/index.js", function(){
-			$('.toolinfo').html('');
-			window[toolid].init($('.toolinfo'));
-		});
-	}
-	
-	this.loadTools = function(){
-		$('#content_page').html('<div class="toolinfo"></div><div class="toolslist"></div>');
-		
-		var len = FHQPlugins.length;
-		
-		$('.toolslist').html('');
-		$('.toolslist').append('<div class="tools"><div class="icon">Tools</div><div class="content"></div></div>');
-		
-		for(var i = 0; i < len; i++){
-			var tool = FHQPlugins[i];
-			if(tool.type == 'tools'){
-				$('.toolslist .tools .content').append('<div class=toolitem toolid="' + tool.id + '"><div class="name">' + tool.name[this.lang()] + '</div></div>');	
-			}
-		}
-
-		$('.toolitem').unbind('click').bind('click', function(){
-			self.loadTool($(this).attr('toolid'));
-		});
-	}
-
 
 	this.gameView = function(game, currentGameId) {
 		var content = '';

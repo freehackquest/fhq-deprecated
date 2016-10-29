@@ -32,7 +32,6 @@ if (isset($_SESSION['user']))
 		<script type="text/javascript" src="js/fhq.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq.ws.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq.gui.lib.js?ver=1"></script>
-		<script type="text/javascript" src="js/fhq.plugins/plugins.js?ver=1"></script>
 		
 		<script type="text/javascript" src="js/jquery.datetimepicker.js"></script>
 		<script type="text/javascript" src="js/libs/progressbar-0.8.1.min.js"></script>
@@ -84,11 +83,6 @@ if (isset($_SESSION['user']))
 					updateEvents();
 				}else if(fhq.containsPageParam("quests")){
 					fhqgui.loadQuests();
-				}else if(fhq.containsPageParam("tools")){
-					fhqgui.loadTools();
-					if(fhq.containsPageParam('toolid')){
-						fhqgui.loadTool(fhqgui.pageParams['toolid']);
-					}
 				}else if(fhq.containsPageParam("about")){
 					fhqgui.loadMainPage();
 				}else if(fhq.containsPageParam("page")){
@@ -102,8 +96,6 @@ if (isset($_SESSION['user']))
 						fhqgui.loadMainPage();
 					}else if(page == "games"){
 						fhqgui.loadGames();
-					}else if(page == "tools"){
-						fhqgui.loadTools();
 					}else if(page == "skills"){
 						fhqgui.createPageSkills();
 						fhqgui.updatePageSkills();
