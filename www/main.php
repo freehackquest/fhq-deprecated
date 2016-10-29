@@ -23,20 +23,7 @@ if (!isset($_SESSION['user']))
 		<meta name="description" content="competition information security" />
 		<meta name="keywords" content="security, fhq, fhq 2012, fhq 2013, fhq 2014, free, hack, quest, competition, information security, ctf, joepardy" />		
 		<script src="js/libs/jquery-3.1.0.min.js"></script>
-
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/fhq.css?ver=1" />
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/body.css?ver=1" />
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/site.css?ver=1" />
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/games.css?ver=1" />
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/quest_info.css?ver=1" />
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/overlay.css?ver=1" />
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/hint.css?ver=1">
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/timer.css?ver=1">
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/quests.css?ver=1">
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/users.css?ver=1">
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/events.css?ver=1">
-		<link rel="stylesheet" type="text/css" href="styles/userpanel_by_nitive.css?ver=1"/>
-		<link rel="stylesheet" type="text/css" href="templates/base/styles/jquery.datetimepicker.css?ver=1"/>
+		<link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css?ver=1"/>
 		<link rel="stylesheet" type="text/css" href="css/fhq.css?ver=1"/>
 		<!-- link rel="stylesheet" type="text/css" href="css/fhq.min.css?ver=1"/-->
 

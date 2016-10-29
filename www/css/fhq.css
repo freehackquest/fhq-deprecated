@@ -487,6 +487,581 @@ body {
 	line-height: 19px;
 }
 
+.fhqparamtbl_param {
+    display: table-cell;
+    padding: 8px 20px 8px 20px;
+    background: #cccccc;
+    text-align: right;
+}
+
+.fhqparamtbl_value {
+    display: table-cell;
+    background: #e4e4e4;
+    padding: 8px 20px 8px 20px;
+}
+
+.fhqparamtbl {
+    display: table;
+}
+
+.fhqparamtbl_row {
+    display: table-row;
+    padding: 3px;
+    text-decoration: none;
+    color: #000000;
+    margin: 3px 3px 3px 3px;
+}
+
+/* site.css */
+
+a {
+    color: #c83025;
+    text-decoration: none;
+}
+
+textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus, .uneditable-input:focus {
+    border-color: rgba(82, 168, 236, 0.8);
+    outline: 0;
+    outline: thin dotted;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
+    -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
+}
+
+select:focus, input[type="file"]:focus, input[type="radio"]:focus, input[type="checkbox"]:focus {
+    outline: thin dotted #333;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+
+select {
+    width: 220px;
+    border: 1px solid #cccccc;
+    background-color: #ffffff;
+}
+
+select {
+    height: 30px;
+    *margin-top: 4px;
+    line-height: 30px;
+}
+
+select, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    display: inline-block;
+    height: 26px;
+    padding: 4px 6px;
+    margin-bottom: 0px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #555555;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+label, input, button, select {
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 25px;
+}
+
+button, input, select, textarea {
+    margin: 0;
+    font-size: 100%;
+    vertical-align: middle;
+    border: 1px solid #cccccc;
+    cursor: pointer;
+}
+
+textarea {
+    width: 550px;
+    height: 150px;
+    padding: 4px 6px;
+    margin-bottom: 0px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.fhqparamtbl_rowskip {
+    display: table-row;
+    background: inherit;
+    height: 10px;
+}
+
+.fhqrules {
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+    line-height: 1.5;
+    font-size: 12pt;
+}
+
+.fhqcell {
+    width: 20%;
+    display: table-cell;
+    padding: 5px 5px 5px 5px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #9f9f9f;
+}
+
+.fhqrow {
+    display: table-row;
+    padding: 3px;
+    text-decoration: none;
+    margin: 3px 3px 3px 3px;
+}
+
+.fhqtable {
+    display: table;
+    width: 90%;
+}
+
+/* users.css */
+
+.users_table {
+	display: table;
+}
+
+.users_row {
+	display: table-row;
+	padding: 3px;
+	text-decoration: none;
+	color: #000000;
+	margin:3px 3px 3px 3px;
+}
+
+.users_cell {
+	display: table-cell;
+	padding: 8px 20px 8px 20px;
+	background: #cccccc;
+	text-align: center;
+	border: 1px solid black;
+	vertical-align: middle;
+}
+
+.users_cell_logo {
+	width: 100px;
+	height: 100px;
+}
+
+.users_cell_text {
+	
+}
+
+.selected_user_page {
+	display: inline-block;
+	color: #606060;
+	background: none repeat scroll 0% 0% #CCC;
+	padding: 8px;
+	border-radius: 5px;
+}
+
+/* user panel by nitive */
+
+.fhqbody .userpanel {
+  text-align: left;
+}
+div.gamespanel__game,
+div.gamespanel__arrow {
+  margin: 0;
+  float: none;
+  min-height: auto;
+}
+.gamespanel svg,
+.gamespanel__games,
+.gamespanel__gameswrap {
+  margin-left: 0;
+}
+.userpanel {
+  height: 400px;
+  width: 500px;
+  border: 2px solid #424e4b;
+  border-radius: 5px;
+  /* fixed background color */
+  /*background-color: #fbfbfb;*/ 
+  margin: auto;
+}
+.userpanel__photo {
+  float: left;
+  margin: 25px 0 0 25px;
+  box-sizing: border-box;
+  border: 2px solid #50e3c2;
+  border-radius: 7px;
+  width: 100px;
+  height: 100px;
+}
+.userpanel__title {
+  font-weight: 500;
+  margin: 30px 0 0 10px;
+  display: inline-table;
+  width: 360px;
+}
+.userpanel__info {
+  display: inline-table;
+  margin: 10px 20px;
+}
+.userpanel__games {
+  height: 100px;
+  margin-left: 18px;
+  margin-top: 30px;
+}
+.gamespanel {
+  width: 465px;
+  font-size: 0;
+}
+.gamespanel__arrow {
+  width: 25px;
+  height: 100px;
+  cursor: pointer;
+}
+.gamespanel__gameswrap {
+  font-size: 0;
+  display: inline-block;
+  overflow: hidden;
+  height: 100px;
+}
+.gamespanel__games {
+  position: relative;
+  display: inline-block;
+  width: 415px;
+  height: 100px;
+  white-space: nowrap;
+}
+div.gamespanel__game {
+  display: inline-block;
+  background-size: cover;
+  width: 100px;
+  height: 100px;
+  letter-spacing: 0;
+  margin: 0 2px;
+  border-radius: 50%;
+}
+div.gamespanel__game svg {
+  cursor: default;
+}
+div.gamespanel__game p {
+  font-size: 29px;
+  cursor: default;
+}
+div.gamespanel__game p:before,
+div.gamespanel__game p:after {
+  content: '%';
+  font-size: 10px;
+}
+div.gamespanel__game p:before {
+  color: rgba(0,0,0,0);
+}
+
+/* events.css */
+
+.fhq_event_info {
+	display: inline-table;
+	/* border: 1px solid black;*/
+	border-radius: 10px;
+	margin: 12px;
+	font-family: arial;
+	padding: 10px;
+	text-align: center;
+	min-width: 200px;
+	width: 70%;
+	background-color: #eee;
+	opacity: 0.95;
+}
+
+.fhq_event_info_row {
+	display: table-row;
+	padding: 10px;
+	margin: 10px;
+}
+
+.fhq_event_info_cell_img {
+	display: table-cell;
+	width: 110px;
+	padding: 10px;
+	margin: 10px;
+}
+
+.fhq_event_info_cell_content {
+	display: table-cell;
+	text-align: left;
+	vertical-align: top;
+	padding: 10px;
+	margin: 10px;
+}
+
+.fhq_event_caption {
+	font-size: 15px;
+}
+
+.fhq_event_score {
+	font-size: 18px;
+	font-weight: bold;
+	text-align: left;
+	padding: 20px;
+}
+
+.fhq_feedback_text {
+	font-size: 25px;
+	text-align: left;
+	padding: 10px;
+}
+
+/* games.css */
+
+.fhq_game_img {
+	width: 50px;
+	height: 50px;
+	float: left;
+	vertical-align: middle;
+	margin-right: 10px;
+	
+}
+
+.fhq_game_line {
+	display: block;
+	vertical-align: middle;
+	padding: 10px;
+	/*background-color: #fff000;*/
+	text-align: left;
+	/*white-space: pre;*/	
+	border-bottom: 1px solid #CCC;
+	font-family: monospace;
+	cursor: pointer;
+}
+
+.fhq_game_line:hover {
+	background-color: #CCC;
+}
+
+.fhq_game_text {
+	display: block-inline;
+	white-space: nowrap;
+	font-family: arial;
+	margin-left: 10px;
+	color: #606060;
+}
+
+.fhq_scoreboard_table {
+	display: display: table;
+	margin: 10px;
+	vertical-align: top;
+}
+
+.fhq_scoreboard_table {
+	display: display: table;
+	margin: 10px;
+	vertical-align: top;
+}
+
+.fhq_scoreboard_row {
+	display: table-row;
+	font-family: Arial;
+	padding: 10px;
+	text-decoration: none;
+	color: #000000;
+	margin:3px 3px 3px 3px;
+	border-bottom: 1px solid #E4E4E4;
+}
+
+.fhq_scoreboard_cell {
+	display: table-cell;
+	padding: 10px;
+	margin: 10px;
+	text-align: left;
+	border-left: 1px solid #E4E4E4;
+}
+
+/* quest_info.css */
+
+.quest_info_table {
+	display: table;
+}
+
+.quest_info_row {
+	display: table-row;
+	padding: 3px;
+	text-decoration: none;
+	margin:3px 3px 3px 3px;
+}
+
+.quest_info_row_admin {
+  background: #cccccc;
+}
+
+.quest_info_row_skip {
+	display: table-row;
+	background: inherit;
+	height: 20px;
+}
+
+.quest_info_param {
+	display: table-cell;
+	padding: 8px;
+	text-align: right;
+}
+
+.quest_info_value {
+	display: table-cell;	
+	padding:8px;
+	text-align: left;
+}
+
+/* overlay */
+
+
+.overlay {
+	visibility: hidden;
+	/*visibility: visible;*/
+	/*position: absolute;*/
+	position: fixed;
+	z-index: 1000;
+	background: rgba(0, 0, 0, 0.8);
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	/*left: 0px;
+	top: 0px;*/
+	overflow: auto;
+	vertical-align: middle;
+}
+
+.overlay_table {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.overlay_cell {
+	display: table-cell;
+    vertical-align: middle;
+    z-index: 1001;
+}
+
+.overlay_header{
+	padding: 10px;
+	display: block;
+	font: bold italic 110% serif;
+	text-align: center;
+	border-bottom: 1px solid #C8C8C8;
+}
+
+.overlay_buttons {
+	padding: 10px;
+	display: block;
+	text-align: right;
+	border-top: 1px solid #C8C8C8;
+}
+
+.overlay_content {
+	display: inline-block;
+	color: #000000;
+	padding: 15px;
+	margin: 15px;
+	background-color: #ffffff;
+	border: 5px solid #606060;
+	border-radius: 10px;
+	min-height: 50px;
+	min-width: 400px;
+	max-height: 100%;
+	max-width: 100%;
+	/*overflow: auto;*/
+	-moz-border-radius: 10px;  /* для firefox */
+	-webkit-border-radius: 10px;  /* для Safari и Chrome */	
+}
+
+/* quests.css */
+
+.fhq_quest_info {
+	display: inline-table;
+	/* border: 1px solid black;*/
+	border-radius: 10px;
+	margin: 12px;
+	font-family: arial;
+	padding: 0px;
+	text-align: center;
+	min-width: 200px;
+	background-color: #eee;
+	cursor: pointer;
+	opacity: 0.95;
+}
+
+.fhq_quest_info:hover{
+	background-color: #e4e4e4;
+}
+
+.fhq_quest_info_row {
+	display: table-row;
+	padding: 10px;
+	margin: 10px;
+}
+
+.fhq_quest_info_cell_img {
+	display: table-cell;
+	width: 110px;
+	padding: 10px;
+	margin: 10px;
+}
+
+.fhq_quest_info_cell_content {
+	display: table-cell;
+	text-align: left;
+	vertical-align: top;
+	padding: 10px;
+	margin: 10px;
+}
+
+.fhq_quest_caption {
+	font-size: 15px;
+}
+
+.fhq_quest_score {
+	font-size: 25px;
+	text-align: center;
+	padding: 10px;
+}
+
+.fhq_task_info {
+	display: block;
+	border-radius: 10px;
+	margin: 12px;
+	font-family: arial;
+	padding: 10px;
+	text-align: center;
+	position: relative;
+	min-width: 100px;
+	width: 80%;
+	background-color: #eee;
+	cursor: pointer;
+}
+
+.fhq_task_info:hover{
+	background-color: #e4e4e4;
+}
+
+font.fhq_task {
+	display: block;
+	color: #333;
+}
+
+.fhq_task_tryanswer {
+	font-family: arial;
+	padding: 2px;
+}
+
+
+
+
 /*
 	darkstile
 */
