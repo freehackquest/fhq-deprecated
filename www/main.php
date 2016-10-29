@@ -46,8 +46,10 @@ if (!isset($_SESSION['user']))
 			$template = htmlspecialchars($template);
 		?>
 
-		<script type="text/javascript" src="js/fhq.localization.lib.js?ver=1"></script>
-		<script type="text/javascript" src="js/fhq.frontend.lib.js?ver=1"></script>
+		<script type="text/javascript" src="js/fhq.base.js"></script>
+		<script type="text/javascript" src="js/fhq.localization.js"></script>
+		<script type="text/javascript" src="js/fhq.js?ver=1"></script>
+		<script type="text/javascript" src="js/fhq.ws.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq.gui.lib.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq.plugins/plugins.js?ver=1"></script>
 		<script type="text/javascript" src="js/jquery.datetimepicker.js"></script>

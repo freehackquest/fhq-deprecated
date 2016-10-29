@@ -3,64 +3,8 @@ function FHQGuiLib(api) {
 	this.fhq = api;
 	this.api = api;
 	
-	this.lang = function(){
-		return this.sLang || this.locale();
-	};
-	
-	this.locale = function() {
-		var langs = ['en', 'ru']
-		self.sLang = 'en';
-		if(this.containsPageParam('lang') && langs.indexOf(this.pageParams['lang']) >= -1){
-			this.sLang = this.pageParams['lang'];
-		} else if (navigator) {
-			var navLang = 'en';
-			navLang = navigator.language ? navigator.language.substring(0,2) : navLang;
-			navLang = navigator.browserLanguage ? navigator.browserLanguage.substring(0,2) : navLang;
-			navLang = navigator.systemLanguage ? navigator.systemLanguage.substring(0,2) : navLang;
-			navLang = navigator.userLanguage ? navigator.userLanguage.substring(0,2) : navLang;
-			this.sLang =  langs.indexOf(navLang) >= -1 ? navLang : self.sLang;
-		} else {
-			this.sLang = 'en';
-		}
-		return this.sLang;
-	};
-	
-	this.t = function(message){
-		if(FHQLocalization[message]){
-			return FHQLocalization[message][this.lang()];
-		}else{
-			console.warn("Not found localization for '" + message + "'");
-		}
-		return message;
-	}
-	
-	this.parsePageParams = function() {
-		var loc = location.search.slice(1);
-		var arr = loc.split("&");
-		var result = {};
-		var regex = new RegExp("(.*)=([^&#]*)");
-		for(var i = 0; i < arr.length; i++){
-			if(arr[i].trim() != ""){
-				p = regex.exec(arr[i].trim());
-				console.log("results: " + JSON.stringify(p));
-				if(p == null)
-					result[decodeURIComponent(arr[i].trim().replace(/\+/g, " "))] = '';
-				else
-					result[decodeURIComponent(p[1].replace(/\+/g, " "))] = decodeURIComponent(p[2].replace(/\+/g, " "));
-			}
-		}
-		console.log(JSON.stringify(result));
-		return result;
-	}
-	
-	this.pageParams = this.parsePageParams();
-	
-	this.containsPageParam = function(name){
-		return (typeof this.pageParams[name] !== "undefined");
-	}
-	
 	// include dark style
-	if(this.containsPageParam("dark")){
+	if(fhq.containsPageParam("dark")){
 		var link  = document.createElement('link');
 		link.rel  = 'stylesheet';
 		link.type = 'text/css';
@@ -180,38 +124,38 @@ function FHQGuiLib(api) {
 		toppanel.html('');
 		toppanel.append('<a id="btnmenu_main_page" class="fhq_btn_menu" href="?about">'
 			+ '<img class="fhq_btn_menu_img" src="images/fhq2016_200x150.png"/> '
-			+ this.t('About')
+			+ fhq.t('About')
 			+ '</a>')
 		toppanel.append('<a id="btnmenu_quests" class="fhq_btn_menu" href="?quests">'
 			+ '<img class="fhq_btn_menu_img" src="images/menu/quests_40x40.png"/> '
-			+ this.t('Quests')
+			+ fhq.t('Quests')
 			+ '</a>')
 			
 		toppanel.append('<a id="btnmenu_tools" class="fhq_btn_menu" href="?tools">'
 			+ '<img class="fhq_btn_menu_img" src="images/menu/tools_150x150.png"/> '
-			+ this.t('Tools')
+			+ fhq.t('Tools')
 			+ '</a>')
 			
 		toppanel.append('<a id="btnmenu_news" class="fhq_btn_menu" href="?news">'
 			+ '<img class="fhq_btn_menu_img" src="images/menu/news.png"/>'
 			+ '<div class="fhqredcircle hide" id="plus_events">0</div> '
-			+ this.t('News')
+			+ fhq.t('News')
 			+ '</a>');
 
 		toppanel.append('<div id="btnmenu_user" class="fhq_btn_menu" href="javascript:void(0);">'
 			+ '<img class="fhq_btn_menu_img" src="images/menu/user.png"/> '
-			+ this.t('Account')
+			+ fhq.t('Account')
 			+ '<div class="account-panel">'
 			+ '<img class="fhq_btn_menu_img" src="images/menu/user.png"/> '
-			+ this.t('Account')
+			+ fhq.t('Account')
 			+ '<div class="border"></div>'
 			+ '</div> '
 			+ '</div>');
 		
 		// if(!fhq.cache.is_authorized){
-			$('.account-panel').append('<div id="btnmenu_signin" class="fhq-simple-btn" onclick="fhqgui.showSignInForm();">' + this.t('Sign-in') + '</div>');
-			$('.account-panel').append('<div id="btnmenu_signup" class="fhq-simple-btn" onclick="fhqgui.showSignUpForm();">' + this.t('Sign-up') + '</div>');
-			$('.account-panel').append('<div id="btnmenu_restore_password" class="fhq-simple-btn" onclick="fhqgui.showResetPasswordForm();">' + this.t('Forgot password?') + '</div>');
+			$('.account-panel').append('<div id="btnmenu_signin" class="fhq-simple-btn" onclick="fhqgui.showSignInForm();">' + fhq.t('Sign-in') + '</div>');
+			$('.account-panel').append('<div id="btnmenu_signup" class="fhq-simple-btn" onclick="fhqgui.showSignUpForm();">' + fhq.t('Sign-up') + '</div>');
+			$('.account-panel').append('<div id="btnmenu_restore_password" class="fhq-simple-btn" onclick="fhqgui.showResetPasswordForm();">' + fhq.t('Forgot password?') + '</div>');
 		/*}else{
 			$('.accout-panel').append('<div id="btnmenu_signin" class="fhq-simple-btn" onclick="fhqgui.signout();">' + this.t('Sign-out') + '</div>');
 		}*/
@@ -363,7 +307,7 @@ function FHQGuiLib(api) {
 	};
 
 	this.loadCities = function() {
-		fhq.getPublicInfo().done(function(response){
+		fhq.ws.getPublicInfo().done(function(response){
 			$('#statistics-users-online').removeClass('preloading');
 			$('#statistics-users-online').text(response.connectedusers);
 		});
@@ -464,7 +408,6 @@ function FHQGuiLib(api) {
 		}
 		return pagesHtml.join(' ');
 	}
-
 
 	this.changeLocationState = function(newPageParams){
 		var url = '';
@@ -736,13 +679,13 @@ function FHQGuiLib(api) {
 	this.setDarkColorScheme = function(){
 		$('body').addClass('dark');
 		localStorage.setItem('colorscheme', 'dark');
-		$('#jointothedarkside').html(self.t('You are on the dark side. Turn back?'));
+		$('#jointothedarkside').html(fhq.t('You are on the dark side. Turn back?'));
 	}
 	
 	this.setLightColorScheme = function(){
 		$('body').removeClass('dark');
 		localStorage.setItem('colorscheme', 'light');
-		$('#jointothedarkside').html(self.t('Join the dark side...'));
+		$('#jointothedarkside').html(fhq.t('Join the dark side...'));
 	}
 	
 
@@ -754,41 +697,41 @@ function FHQGuiLib(api) {
 		strVar += "						<td valign=\"top\">";
 		strVar += "							<img class=\"leftimg\" src=\"images\/fhq2016_200x150.png\"\/>";
 		strVar += "							<div id=\"jointothedarkside\" class=\"fhq-join-darkside\">"
-		+ self.t('Join the dark side...');
+		+ fhq.t('Join the dark side...');
 		strVar += '							</div>';
 		strVar += '						</td>';
 		strVar += "						<td valign=\"top\">";
 		strVar += "							<div class=\"fhq-topic\">free-hack-quest<\/div>"
-		+ self.t('This is an open source platform for competitions in computer security.')
-		+ '							<div class="fhq-topic">' + self.t('statistics') + '</div>';
+		+ fhq.t('This is an open source platform for competitions in computer security.')
+		+ '							<div class="fhq-topic">' + fhq.t('statistics') + '</div>';
 		strVar += "							<div class=\"single-line-preloader\">";
-		strVar += '								<div class="single-line-name">' + self.t('Quests') + ':</div>';
+		strVar += '								<div class="single-line-name">' + fhq.t('Quests') + ':</div>';
 		strVar += "								<div class=\"single-line-value preloading\" id=\"statistics-count-quests\">...<\/div>";
 		strVar += "							<\/div>";
 		strVar += "							<div class=\"single-line-preloader\">";
-		strVar += '								<div class="single-line-name">' + self.t('All attempts') + ':</div>';
+		strVar += '								<div class="single-line-name">' + fhq.t('All attempts') + ':</div>';
 		strVar += "								<div class=\"single-line-value preloading\" id=\"statistics-all-attempts\">...<\/div>";
 		strVar += "							</div>"
 		+ '<div class="single-line-preloader">'
-		+ '		<div class="single-line-name">' + self.t('Already solved') + ':</div>'
+		+ '		<div class="single-line-name">' + fhq.t('Already solved') + ':</div>'
 		+ '		<div class="single-line-value preloading" id="statistics-already-solved">...</div>'
 		+ '</div>'
 		+ '<div class="single-line-preloader">'
-		+ '		<div class="single-line-name">' + self.t('Users online') + ':</div>'
+		+ '		<div class="single-line-name">' + fhq.t('Users online') + ':</div>'
 		+ '		<div class="single-line-value preloading" id="statistics-users-online">...</div>'
 		+ '</div>';
 		strVar += "							<div class=\"single-line-preloader\">";
-		strVar += '								<div class="single-line-name">' + self.t('Playing with us') + ':</div>';
+		strVar += '								<div class="single-line-name">' + fhq.t('Playing with us') + ':</div>';
 		strVar += '								<div class="single-line-value preloading" id="statistics-playing-with-us">...</div>'
 		+ '</div>'
-		+ '<div class="fhq-topic">' + self.t('leaders') + '<\/div>';
+		+ '<div class="fhq-topic">' + fhq.t('leaders') + '<\/div>';
 		strVar += "							<div id=\"winners\">";
 		strVar += "							<\/div>"
-		+ ' <div class="fhq-topic">' + self.t('developers and designers') + '<\/div>';
+		+ ' <div class="fhq-topic">' + fhq.t('developers and designers') + '<\/div>';
 		strVar += "							Evgenii Sopov<br>"
-		+ '<div class="fhq-topic">' + self.t('team') + '</div>'
-		+ self.t('If you are not in team you can join to FHQ team on') + ' <a href="https://ctftime.org/team/16804\">ctftime</a>'
-		+ '<div class="fhq-topic">' + self.t('thanks for') + '</div>';
+		+ '<div class="fhq-topic">' + fhq.t('team') + '</div>'
+		+ fhq.t('If you are not in team you can join to FHQ team on') + ' <a href="https://ctftime.org/team/16804\">ctftime</a>'
+		+ '<div class="fhq-topic">' + fhq.t('thanks for') + '</div>';
 		strVar += "							<a href=\"http:\/\/www.chartjs.org\/docs\/\" target=\"_blank\">Charts.js<\/a>,";
 		strVar += "							Sergey Belov (found xss!),";
 		strVar += "							Igor Polyakov,";
@@ -801,7 +744,7 @@ function FHQGuiLib(api) {
 		strVar += "							Extrim Code,";
 		strVar += "							Taisiya Lebedeva"
 		+ '<br>'
-		+ '<div class="fhq-topic">' + self.t('contacts') + '</div>';
+		+ '<div class="fhq-topic">' + fhq.t('contacts') + '</div>';
 		strVar += "							<div class=\"single-line-preloader\">";
 		strVar += "								<div class=\"single-line-name\">Group in VK: <\/div>";
 		strVar += "								<div class=\"single-line-value\"><a href=\"http:\/\/vk.com\/freehackquest\" target=\"_blank\"><img width=30px src=\"images\/vk.png\"\/><\/a><\/div>";
@@ -818,14 +761,14 @@ function FHQGuiLib(api) {
 		strVar += "								<div class=\"single-line-name\">Email: <\/div>";
 		strVar += "								<div class=\"single-line-value\">freehackquest@gmail.com<\/div>"
 		+ '</div>'
-		+ '<div class="fhq-topic">' + self.t('distribution') + '</div>';
+		+ '<div class="fhq-topic">' + fhq.t('distribution') + '</div>';
 		strVar += 'You can download <a href=\"http://dist.freehackquest.com/" target="_blank">virtual machine (ova)</a> and up in local network.'
-		+ '<div class="fhq-topic">' + self.t('source code') + '</div>';
+		+ '<div class="fhq-topic">' + fhq.t('source code') + '</div>';
 		strVar += "							<a href=\"http:\/\/github.com\/freehackquest\/fhq\" target=\"_blank\">http:\/\/github.com\/freehackquest\/fhq<\/a>";
 		strVar += "							<div class=\"fhq-topic\">api<\/div>";
 		strVar += "							<a href=\"api\/?html\">HTML<\/a>, ";
 		strVar += "							<a href=\"api\/?json\">JSON<\/a><br>";
-		+ '<div class="fhq-topic">' + self.t('donate') + '</div>';
+		+ '<div class="fhq-topic">' + fhq.t('donate') + '</div>';
 		strVar += "							<div id=\"donate-form\"><\/div>";
 		strVar += "						<\/td>";
 		strVar += "					<\/tr>";

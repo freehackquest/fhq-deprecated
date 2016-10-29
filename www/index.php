@@ -40,8 +40,10 @@ if (isset($_SESSION['user']))
 		<!-- link rel="stylesheet" type="text/css" href="css/fhq.min.css?ver=1"/-->
 		<link rel="stylesheet" type="text/css" href="templates/base/styles/jquery.datetimepicker.css?ver=1"/>
 
-		<script type="text/javascript" src="js/fhq.localization.lib.js?ver=1"></script>
-		<script type="text/javascript" src="js/fhq.frontend.lib.js?ver=1"></script>
+		<script type="text/javascript" src="js/fhq.base.js"></script>
+		<script type="text/javascript" src="js/fhq.localization.js"></script>
+		<script type="text/javascript" src="js/fhq.js?ver=1"></script>
+		<script type="text/javascript" src="js/fhq.ws.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq.gui.lib.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq.plugins/plugins.js?ver=1"></script>
 		
@@ -71,7 +73,7 @@ if (isset($_SESSION['user']))
 			$(document).ready(function() {
 			
 				fhqgui.applyColorScheme();
-				fhq.setWSState(fhq.getWSState()); // Update state of WS
+				fhq.ws.setWSState(fhq.ws.getWSState()); // Update state of WS
 				fhqgui.loadTopPanel();
 
 				$("#btnfilter").hide();
@@ -90,20 +92,20 @@ if (isset($_SESSION['user']))
 				$("#btnmenu_answer_list").hide();
 				$("#btnmenu_updates").hide();
 				
-				if(fhqgui.containsPageParam("news")){
+				if(fhq.containsPageParam("news")){
 					createPageEvents();
 					updateEvents();
-				}else if(fhqgui.containsPageParam("quests")){
+				}else if(fhq.containsPageParam("quests")){
 					fhqgui.loadQuests();
-				}else if(fhqgui.containsPageParam("tools")){
+				}else if(fhq.containsPageParam("tools")){
 					fhqgui.loadTools();
-					if(fhqgui.containsPageParam('toolid')){
+					if(fhq.containsPageParam('toolid')){
 						fhqgui.loadTool(fhqgui.pageParams['toolid']);
 					}
-				}else if(fhqgui.containsPageParam("about")){
+				}else if(fhq.containsPageParam("about")){
 					fhqgui.loadMainPage();
-				}else if(fhqgui.containsPageParam("page")){
-					var page=fhqgui.pageParams['page'];
+				}else if(fhq.containsPageParam("page")){
+					var page=fhq.pageParams['page'];
 					if(page == "scoreboard"){
 						loadScoreboard(0);
 					}else if(page == "news"){
