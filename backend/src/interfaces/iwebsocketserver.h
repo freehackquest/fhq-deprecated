@@ -19,6 +19,7 @@ class IWebSocketServer {
 		virtual QSqlDatabase *database() = 0;
 		virtual void setUserToken(QWebSocket *pClient, UserToken *pUserToken) = 0;
 		virtual UserToken * getUserToken(QWebSocket *pClient) = 0;
+		virtual void sendLettersBcc(QStringList emails, QString subject, QString text) = 0;
 };
 
 #endif // INTERFACES_IWEBSOCKETSERVER_H

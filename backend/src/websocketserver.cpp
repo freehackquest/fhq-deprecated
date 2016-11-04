@@ -6,7 +6,7 @@
 
 #include <QHostAddress>
 #include "cmd_handlers/create_cmd_handlers.h"
-
+#include "smtp/smtp.h"
 
 // QT_USE_NAMESPACE
 
@@ -41,6 +41,11 @@ WebSocketServer::WebSocketServer(quint16 port, bool debug, QObject *parent) : QO
 		}else{
 			qDebug() << "Success connection to database";
 		}
+		
+		m_sEmail_smtphost = readStringFromSettings(sett, "EMAIL/host", "smtp.gmail.com");
+		m_nEmail_smtpport = readIntFromSettings(sett, "EMAIL/port", 465);
+		m_sEmail_username = readStringFromSettings(sett, "EMAIL/username", "");
+		m_sEmail_password = readStringFromSettings(sett, "EMAIL/password", "");
 	}
 
     if (m_pWebSocketServer->listen(QHostAddress::Any, port)) {
@@ -70,6 +75,20 @@ QString WebSocketServer::readStringFromSettings(QSettings &sett, QString settNam
 	}
 	return sResult;
 }
+
+// ---------------------------------------------------------------------
+
+int WebSocketServer::readIntFromSettings(QSettings &sett, QString settName, int defaultValue){
+	int nResult = defaultValue;
+	if(sett.contains(settName)){
+		nResult = sett.value(settName, nResult).toInt();
+	}else{
+		qDebug() << "[WARNING] " << settName << " - not found in " << m_sFilename << "\n\t Will be used default value: " << defaultValue;
+	}
+	return nResult;
+}
+
+// ---------------------------------------------------------------------
 
 void WebSocketServer::onNewConnection()
 {
@@ -185,4 +204,13 @@ UserToken * WebSocketServer::getUserToken(QWebSocket *pClient){
 	return NULL;
 }
 
+// ---------------------------------------------------------------------
 
+void WebSocketServer::sendLettersBcc(QStringList emails, QString subject, QString text){
+	Smtp* smtp = new Smtp(m_sEmail_username, m_sEmail_password, m_sEmail_smtphost, m_nEmail_smtpport);
+	// smtp->disableDebugMode();
+    //connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
+	smtp->sendMailBcc("freehackquest@gmail.com", emails, subject, text);
+}
+
+// ---------------------------------------------------------------------

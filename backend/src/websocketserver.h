@@ -32,6 +32,7 @@ class WebSocketServer : public QObject, public IWebSocketServer {
 		virtual QSqlDatabase *database();
 		virtual void setUserToken(QWebSocket *pClient, UserToken *pUserToken);
 		virtual UserToken * getUserToken(QWebSocket *pClient);
+		virtual void sendLettersBcc(QStringList emails, QString subject, QString text);
 		
 	Q_SIGNALS:
 		void closed();
@@ -44,6 +45,7 @@ class WebSocketServer : public QObject, public IWebSocketServer {
 
 	private:
 		QString readStringFromSettings(QSettings &sett, QString settName, QString defaultValue);
+		int readIntFromSettings(QSettings &sett, QString settName, int defaultValue);
 	
 		QWebSocketServer *m_pWebSocketServer;
 		QList<QWebSocket *> m_clients;
@@ -58,6 +60,10 @@ class WebSocketServer : public QObject, public IWebSocketServer {
 		QString m_sDatabase_user;
 		QString m_sDatabase_password;
 		
+		QString m_sEmail_smtphost;
+		int m_nEmail_smtpport;
+		QString m_sEmail_username;
+		QString m_sEmail_password;
 		
 		// db
 		QSqlDatabase *m_pDatabase;
