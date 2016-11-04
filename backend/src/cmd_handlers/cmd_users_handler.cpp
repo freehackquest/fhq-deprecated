@@ -42,11 +42,37 @@ void CmdUsersHandler::handle(QWebSocket *pClient, IWebSocketServer *pWebSocketSe
 		return;
 	}
 
-	QJsonArray users;
+	QStringList filters;
+	QMap<QString,QString> filter_values;
 
+	if(obj.contains("filter_text")){
+		QString text = obj["filter_text"].toString().trimmed();
+		if(text != ""){
+			filters << "(email LIKE :email OR nick LIKE :nick)";
+			filter_values[":email"] = "%" + text + "%";
+			filter_values[":nick"] = "%" + text + "%";
+		}
+	}
+	if(obj.contains("filter_role")){
+		QString role = obj["filter_role"].toString().trimmed();
+		if(role != ""){
+			filters << "role = :role";
+			filter_values[":role"] = role;
+		}
+	}
+
+
+	QJsonArray users;
 	QSqlDatabase db = *(pWebSocketServer->database());
 	QSqlQuery query(db);
-	query.prepare("SELECT * FROM users ORDER BY dt_last_login DESC");
+	QString where = filters.join(" AND "); 
+	if(where.length() > 0){
+		where = "WHERE " + where;
+	}
+	query.prepare("SELECT * FROM users " + where + " ORDER BY dt_last_login DESC");
+	foreach(QString key, filter_values.keys() ){
+		query.bindValue(key, filter_values.value(key));
+	}
 	query.exec();
 	while (query.next()) {
 		QSqlRecord record = query.record();

@@ -1611,15 +1611,13 @@ window.fhq.ui.loadUserInfo = function(uuid){
 	});
 }
 
-window.fhq.ui.loadUsers = function(){
-	$('#content_page').html('<div class="fhqrightinfo center"></div><div class="fhqleftlist"></div>');
-	$('.fhqleftlist').html('');
-	$('.fhqleftlist').append('<div class="users"><div class="icon">Users</div><div class="content"></div></div>');
-	
-	$('.fhqleftlist .users .content').html('Loading...');
-	
-	fhq.ws.users().done(function(response){
+window.fhq.ui.updateUsers = function(){
+	var params = {};
+	params.filter_text = $('#users_filter_text').val();
+	params.filter_role = $('#users_filter_role').val();
+	fhq.ws.users(params).done(function(response){
 		$('.fhqleftlist .users .content').html('');
+		$('#users_found').html('Found: ' + response.data.length);
 		for(var i in response.data){
 			var u = response.data[i];
 			$('.fhqleftlist .users .content').append('<div class="fhqleftitem" uuid="' + u.uuid + '"><div class="name">' + u.nick + ' (' + u.email + ')</div></div>');			
@@ -1628,4 +1626,26 @@ window.fhq.ui.loadUsers = function(){
 			fhq.ui.loadUserInfo($(this).attr('uuid'));
 		});
 	})
+}
+
+window.fhq.ui.loadUsers = function(){
+	$('#content_page').html('<div class="fhqrightinfo center"></div><div class="fhqleftlist"></div>');
+	$('.fhqleftlist').html('');
+	var list = '<div class="users">'
+	+ '<div class="icon">Users</div>'
+	+ '<div class="filter"><input type="text" id="users_filter_text" value="" placeholder="Email or nick.."/></div>'
+	+ '<div class="filter">Role:   <select id="users_filter_role" value="">'
+	+ '<option selected="" value="">*</option>'
+	+ '<option value="user">User</option>'
+	+ '<option value="tester">Tester</option>'
+	+ '<option value="admin">Admin</option>'
+	+ '</select></div>'
+	+ '<div class="filter"><div class="fhqbtn" id="users_search">Search</div></div>'
+	+ '<div class="filter" id="users_found"></div>'
+	+ '<div class="content"></div>'
+	+ '</div>';
+	$('.fhqleftlist').append(list);
+	$('.fhqleftlist .users .content').html('Loading...');
+	$('#users_search').unbind('click').bind('click', fhq.ui.updateUsers);
+	fhq.ui.updateUsers();
 }

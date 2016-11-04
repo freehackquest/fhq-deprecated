@@ -134,13 +134,14 @@ window.fhq.ws.login = function(){
 	});
 }
 
-window.fhq.ws.users = function(){
-	return fhq.ws.send({
-		'cmd': 'users'
-	});
+window.fhq.ws.users = function(params){
+	params = params || {};
+	params.cmd = 'users';
+	return fhq.ws.send(params);
 }
 
 window.fhq.ws.user = function(params){
+	params = params || {};
 	params.cmd = 'user';
 	return fhq.ws.send(params);
 }
