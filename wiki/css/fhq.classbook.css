@@ -1,0 +1,31 @@
+.fhqleftlist {
+	width: 300px;
+}
+
+.fhqleftlist .icon{
+	width: 270px;
+}
+
+.fhqleftitem{
+	width: 270px;
+}
+
+.fhqleftitem .name {
+    width: 270px;
+}
+
+.fhqleftitem:hover{
+	width: 370px;
+}
+
+.fhqleftitem:hover .name{
+	width: 370px;
+}
+
+.fhqrightinfo {
+    width: calc(100% - 320px);
+    left: 320px;
+    text-align: left;
+    height: calc(100% - 140px);
+	overflow-y: auto;
+}

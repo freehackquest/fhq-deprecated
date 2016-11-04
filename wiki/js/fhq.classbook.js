@@ -1,4 +1,78 @@
-var menu = [
+if(!window.fhq) window.fhq = {};
+if(!window.fhq.ui) window.fhq.ui = {};
+
+window.fhq.ui.loadClassbookItem = function(link){
+	console.log("link:" + link);
+	$.ajax({
+		url: link + "?t=" + Date.now(),
+		type: 'GET'
+	}).done(function(response){
+		var a = link.split(".");
+		var type = a[a.length-1].toUpperCase();
+		var html = "";
+		if(type == "MD"){
+			console.log("Load md: todo convert to html");
+		}else{
+			// html
+			html = response;
+		}
+		$('.fhqrightinfo').html(html);
+	}).fail(function(){
+		$('.fhqrightinfo').html("Not found");
+	})
+}
+
+window.fhq.ui.loadClassbookSubmenu = function(submenu){
+	fhq.ui.classbook_numbers.push(0);
+	var len = submenu.length;
+	for(var i = 0; i < len; i++){
+		var o = submenu[i];
+		var numbers_len = fhq.ui.classbook_numbers.length;
+		fhq.ui.classbook_numbers[numbers_len-1] = fhq.ui.classbook_numbers[numbers_len-1] + 1;
+		var num = fhq.ui.classbook_numbers.join('.');
+
+		if(o.link && o.name){
+			$('.fhqleftlist .classbook .content').append('<div class="fhqleftitem" link="' + o.link + '"><div class="name">' + num + ' ' + o.name + '</div></div>');	
+		}else if(o.name){
+			$('.fhqleftlist .classbook .content').append('<div class="fhqleftitem"><div class="name">' + num + ' ' + o.name + '</div></div>');	
+		}
+		
+		if(o.submenu != undefined){
+			fhq.ui.loadClassbookSubmenu(o.submenu);
+		}
+	}
+	fhq.ui.classbook_numbers.pop();
+}
+
+window.fhq.ui.loadClassbook = function(){
+	$('#content_page').html('<div class="fhqrightinfo"></div><div class="fhqleftlist"></div>');
+	$('.fhqleftlist').html('');
+	$('.fhqleftlist').append('<div class="classbook"><div class="icon">Учебник</div><div class="content"></div></div>');
+	
+	fhq.ui.classbook_numbers = [];
+	
+	fhq.ui.loadClassbookSubmenu(fhq.classbook);
+
+	$('.fhqleftitem').unbind('click').bind('click', function(){
+		fhq.ui.loadClassbookItem($(this).attr('link'));
+	});
+}
+
+
+$(document).ready(function(){
+	
+	var content_menu = "Содержание";
+	var numbers = [];
+	
+	$('#btnmenu_archive').append(fhq.t('Archive'));
+	$('#btnmenu_tools').append(fhq.t('Tools'));
+	$('#btnmenu_classbook').append(fhq.t('Classbook'));
+	
+	fhq.ui.loadClassbook();
+})
+
+
+window.fhq.classbook = [
 	{
 		'name' : 'Информатика',
 		'submenu' : [
@@ -238,32 +312,3 @@ var menu = [
 		'link' : 'list_of_sources.html'
 	}
 ];
-
-$(document).ready(function(){
-	
-	var content_menu = "Содержание";
-	var numbers = [];
-	
-	function process_submenu(submenu){
-		numbers.push(0);
-		content_menu += "<ul>"
-		for(var i in submenu){
-			var o = submenu[i];
-			numbers[numbers.length-1] = numbers[numbers.length-1] + 1;
-			var num = numbers.join('.');
-			if(o.name && o.link ){
-				content_menu += '<li><a href="' + o.link + '">' + num + " " + o.name + '</a></li>';
-			}else if(o.name){
-				content_menu += '<li>' + num + " " + o.name + '</li>';
-			}
-			if(o.submenu){
-				process_submenu(o.submenu)
-			}
-		}
-		content_menu += '</ul>';
-		numbers.pop();
-	}
-	process_submenu(menu);
-	
-	$('.menu').html(content_menu);
-})

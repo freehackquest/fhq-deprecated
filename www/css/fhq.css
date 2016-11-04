@@ -317,7 +317,7 @@ body {
 	margin-top: 10px;
 }
 
-.questslist, .toolslist{
+.questslist, .toolslist, .fhqleftlist {
 	float: left;
 	display: inline-block;
 	min-height: 100px;
@@ -325,9 +325,10 @@ body {
 	opacity: 0.95;
 	margin-left: 0px;
 	width: 200px;
+	margin-bottom: 50px;
 }
 
-.questslist .icon, .toolslist .icon{
+.questslist .icon, .toolslist .icon, .fhqleftlist .icon{
 	width: 170px;
 	height: 50px;
 	background-repeat: no-repeat;
@@ -344,6 +345,10 @@ body {
 
 .toolslist .tools .icon{
 	background-image: url("../images/menu/tools_150x150.png");
+}
+
+.fhqleftlist .classbook .icon{
+	background-image: url("../images/menu/classbook_150x150.png");
 }
 
 .questslist .admin .icon{
@@ -400,7 +405,7 @@ body {
 	background-position: center center;
 }
 
-.questitem, .toolitem {
+.questitem, .toolitem, .fhqleftitem {
 	padding: 5px;
 	cursor: pointer;
 	padding-right: 15px;
@@ -414,7 +419,7 @@ body {
 	transition: width 0.5s ease-out 0s;
 }
 
-.questitem .name, .toolitem .name{
+.questitem .name, .toolitem .name, .fhqleftitem .name{
 	display: inline-block;
 	width: 100px;
 	text-align: left;
@@ -428,7 +433,8 @@ body {
 	transition: width 0.5s ease-out 0s;
 }
 
-.toolitem .name {
+
+.toolitem .name, .fhqleftitem .name {
 	width: 170px;
 }
 
@@ -438,22 +444,22 @@ body {
 	text-align: right;
 }
 
-.questitem:hover , .toolitem:hover{
+.questitem:hover , .toolitem:hover, .fhqleftitem:hover{
 	background: #c8c8c8;
 	color: #333;
 	text-decoration: none;
 	width: 270px;
 }
 
-.questitem:hover .name, .toolitem:hover .name{
+.questitem:hover .name, .toolitem:hover .name, .fhqleftitem:hover .name{
 	width: 200px;
 }
 
-.toolitem:hover .name{
+.toolitem:hover .name, .fhqleftitem:hover .name{
 	width: 270px;
 }
 
-.questinfo, .toolinfo{
+.questinfo, .toolinfo, .fhqrightinfo{
 	display: inline-block;
 	min-height: 100px;
 	width: calc(100% - 220px);
