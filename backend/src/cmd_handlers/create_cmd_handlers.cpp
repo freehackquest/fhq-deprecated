@@ -4,6 +4,7 @@
 #include "cmd_login_handler.h"
 #include "cmd_addnews_handler.h"
 #include "cmd_send_letters_to_subscribers_handler.h"
+#include "cmd_users_handler.h"
 
 void create_cmd_handlers(QMap<QString, ICmdHandler *> &pHandlers){
 	QVector<ICmdHandler *> v;
@@ -12,6 +13,7 @@ void create_cmd_handlers(QMap<QString, ICmdHandler *> &pHandlers){
 	v.push_back(new CmdAddNewsHandler());
 	v.push_back(new CmdGetPublicInfoHandler());
 	v.push_back(new CmdSendLettersToSubscribersHandler());
+	v.push_back(new CmdUsersHandler());
 
 	for(int i = 0; i < v.size(); i++){
 		QString cmd = v[i]->cmd();

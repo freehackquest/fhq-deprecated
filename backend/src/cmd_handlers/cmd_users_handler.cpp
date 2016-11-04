@@ -1,26 +1,26 @@
-#include "cmd_addnews_handler.h"
+#include "cmd_users_handler.h"
 
-QString CmdAddNewsHandler::cmd(){
-	return "addnews";
+QString CmdUsersHandler::cmd(){
+	return "users";
 }
 
-bool CmdAddNewsHandler::accessUnauthorized(){
+bool CmdUsersHandler::accessUnauthorized(){
 	return false;
 }
 
-bool CmdAddNewsHandler::accessUser(){
+bool CmdUsersHandler::accessUser(){
 	return false;
 }
 
-bool CmdAddNewsHandler::accessTester(){
+bool CmdUsersHandler::accessTester(){
 	return false;
 }
 
-bool CmdAddNewsHandler::accessAdmin(){
+bool CmdUsersHandler::accessAdmin(){
 	return true;
 }
 
-void CmdAddNewsHandler::handle(QWebSocket *pClient, IWebSocketServer *pWebSocketServer, QJsonObject obj){
+void CmdUsersHandler::handle(QWebSocket *pClient, IWebSocketServer *pWebSocketServer, QJsonObject obj){
 	UserToken *pUserToken = pWebSocketServer->getUserToken(pClient);
 	if(pUserToken == NULL){
 		QJsonObject jsonData;
@@ -40,15 +40,10 @@ void CmdAddNewsHandler::handle(QWebSocket *pClient, IWebSocketServer *pWebSocket
 		return;
 	}
 
-	QJsonObject jsonData;
+	// TODO
+
+	/*QJsonObject jsonData;
 	jsonData["cmd"] = QJsonValue(cmd());
 	jsonData["result"] = QJsonValue("DONE");
-	pWebSocketServer->sendMessage(pClient, jsonData);
-	
-	QJsonObject jsonData2;
-	jsonData2["cmd"] = QJsonValue("news");
-	jsonData2["type"] = obj["type"];
-	jsonData2["message"] = obj["message"];
-
-	pWebSocketServer->sendToAll(jsonData2);
+	pWebSocketServer->sendMessage(pClient, jsonData);*/
 }

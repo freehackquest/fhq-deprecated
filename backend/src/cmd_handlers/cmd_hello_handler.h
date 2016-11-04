@@ -11,6 +11,10 @@ class CmdHelloHandler : public ICmdHandler {
 	
 	public:
 		virtual QString cmd();
+		virtual bool accessUnauthorized();
+		virtual bool accessUser();
+		virtual bool accessTester();
+		virtual bool accessAdmin();
 		virtual void handle(QWebSocket *pClient, IWebSocketServer *pWebSocketServer, QJsonObject obj);
 };
 

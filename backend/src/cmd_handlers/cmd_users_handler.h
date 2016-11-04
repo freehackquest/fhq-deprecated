@@ -1,5 +1,5 @@
-#ifndef CMD_GETPUBLICINFO_HANDLER_H
-#define CMD_GETPUBLICINFO_HANDLER_H
+#ifndef CMD_USERS_HANDLER_H
+#define CMD_USERS_HANDLER_H
 
 #include "../interfaces/icmdhandler.h"
 #include "../interfaces/iwebsocketserver.h"
@@ -7,7 +7,8 @@
 #include <QString>
 #include <QVariant>
 
-class CmdGetPublicInfoHandler : public ICmdHandler {
+class CmdUsersHandler : public ICmdHandler {
+	
 	public:
 		virtual QString cmd();
 		virtual bool accessUnauthorized();
@@ -17,4 +18,4 @@ class CmdGetPublicInfoHandler : public ICmdHandler {
 		virtual void handle(QWebSocket *pClient, IWebSocketServer *pWebSocketServer, QJsonObject obj);
 };
 
-#endif // CMD_GETPUBLICINFO_HANDLER_H
+#endif // CMD_USERS_HANDLER_H

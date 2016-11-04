@@ -119,7 +119,57 @@ void WebSocketServer::processTextMessage(QString message) {
 		QString cmd = jsonData["cmd"].toString();
 		
 		if(m_mapCmdHandlers.contains(cmd)){
-			m_mapCmdHandlers[cmd]->handle(pClient, this, jsonData);
+			ICmdHandler *pCmdHandler = m_mapCmdHandlers[cmd];
+			
+			// check access
+			if(!pCmdHandler->accessUnauthorized()){
+				UserToken *pUserToken = getUserToken(pClient);
+				if(pUserToken == NULL){
+					QJsonObject jsonData;
+					jsonData["cmd"] = QJsonValue(pCmdHandler->cmd());
+					jsonData["result"] = QJsonValue("FAIL");
+					jsonData["error"] = QJsonValue("Not authorized request");
+					sendMessage(pClient, jsonData);
+					return;
+				}
+				
+				// access user
+				if(pUserToken->isUser() && !pCmdHandler->accessUser()){
+					QJsonObject jsonData;
+					jsonData["cmd"] = QJsonValue(pCmdHandler->cmd());
+					jsonData["result"] = QJsonValue("FAIL");
+					jsonData["error"] = QJsonValue("Access deny for user");
+					sendMessage(pClient, jsonData);
+					return;
+				}
+				
+				// access tester
+				if(pUserToken->isTester() && !pCmdHandler->accessTester()){
+					QJsonObject jsonData;
+					jsonData["cmd"] = QJsonValue(pCmdHandler->cmd());
+					jsonData["result"] = QJsonValue("FAIL");
+					jsonData["error"] = QJsonValue("Access deny for tester");
+					sendMessage(pClient, jsonData);
+					return;
+				}
+				
+				// access admin
+				if(pUserToken->isAdmin() && !pCmdHandler->accessAdmin()){
+					QJsonObject jsonData;
+					jsonData["cmd"] = QJsonValue(pCmdHandler->cmd());
+					jsonData["result"] = QJsonValue("FAIL");
+					jsonData["error"] = QJsonValue("Access deny for admin");
+					sendMessage(pClient, jsonData);
+					return;
+				}
+
+				// allow
+				pCmdHandler->handle(pClient, this, jsonData);	
+				
+			}else{
+				// allow unauthorized request
+				pCmdHandler->handle(pClient, this, jsonData);	
+			}
 		}else{
 			qDebug() << "Unknown command: " << cmd;
 			QJsonObject jsonData;

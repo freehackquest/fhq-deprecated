@@ -4,6 +4,22 @@ QString CmdLoginHandler::cmd(){
 	return "login";
 }
 
+bool CmdLoginHandler::accessUnauthorized(){
+	return true;
+}
+
+bool CmdLoginHandler::accessUser(){
+	return true;
+}
+
+bool CmdLoginHandler::accessTester(){
+	return true;
+}
+
+bool CmdLoginHandler::accessAdmin(){
+	return true;
+}
+
 void CmdLoginHandler::handle(QWebSocket *pClient, IWebSocketServer *pWebSocketServer, QJsonObject obj){
 	QJsonObject jsonData;
 	jsonData["cmd"] = QJsonValue(cmd());

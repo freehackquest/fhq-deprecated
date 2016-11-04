@@ -8,6 +8,10 @@
 class ICmdHandler {
 	public:
 		virtual QString cmd() = 0;
+		virtual bool accessUnauthorized() = 0;
+		virtual bool accessUser() = 0;
+		virtual bool accessTester() = 0;
+		virtual bool accessAdmin() = 0;
 		virtual void handle(QWebSocket *pClient, IWebSocketServer *pWebSocketServer, QJsonObject obj) = 0;
 };
 

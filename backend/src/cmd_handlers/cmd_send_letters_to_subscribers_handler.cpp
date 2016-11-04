@@ -4,6 +4,22 @@ QString CmdSendLettersToSubscribersHandler::cmd(){
 	return "send_letters_to_subscribers";
 }
 
+bool CmdSendLettersToSubscribersHandler::accessUnauthorized(){
+	return false;
+}
+
+bool CmdSendLettersToSubscribersHandler::accessUser(){
+	return false;
+}
+
+bool CmdSendLettersToSubscribersHandler::accessTester(){
+	return false;
+}
+
+bool CmdSendLettersToSubscribersHandler::accessAdmin(){
+	return true;
+}
+
 void CmdSendLettersToSubscribersHandler::handle(QWebSocket *pClient, IWebSocketServer *pWebSocketServer, QJsonObject obj){
 	UserToken *pUserToken = pWebSocketServer->getUserToken(pClient);
 	if(pUserToken == NULL){
