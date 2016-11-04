@@ -324,12 +324,12 @@ body {
 	background-color: #e4e4e4;
 	opacity: 0.95;
 	margin-left: 0px;
-	width: 200px;
+	width: 300px;
 	margin-bottom: 50px;
 }
 
 .questslist .icon, .toolslist .icon, .fhqleftlist .icon{
-	width: 170px;
+	width: 270px;
 	height: 50px;
 	background-repeat: no-repeat;
 	background-position: 10px 10px;
@@ -349,6 +349,10 @@ body {
 
 .fhqleftlist .classbook .icon{
 	background-image: url("../images/menu/classbook_150x150.png");
+}
+
+.fhqleftlist .users .icon{
+	background-image: url("../images/menu/users_150x150.png");
 }
 
 .questslist .admin .icon{
@@ -410,7 +414,7 @@ body {
 	cursor: pointer;
 	padding-right: 15px;
 	padding-left: 15px;
-	width: 170px;
+	width: 270px;
 	text-align: left;
 	background-color: #e4e4e4;
 	-webkit-transition: width 0.5s ease-out 0s;
@@ -433,9 +437,8 @@ body {
 	transition: width 0.5s ease-out 0s;
 }
 
-
 .toolitem .name, .fhqleftitem .name {
-	width: 170px;
+	width: 270px;
 }
 
 .questitem .score{
@@ -448,23 +451,42 @@ body {
 	background: #c8c8c8;
 	color: #333;
 	text-decoration: none;
-	width: 270px;
+	width: 370px;
 }
 
 .questitem:hover .name, .toolitem:hover .name, .fhqleftitem:hover .name{
-	width: 200px;
+	width: 370px;
 }
 
 .toolitem:hover .name, .fhqleftitem:hover .name{
-	width: 270px;
+	width: 370px;
+}
+
+.fhqleftitem:hover{
+	width: 370px;
+}
+
+.fhqleftitem:hover .name{
+	width: 370px;
+}
+
+.fhqinfo{
+	display: inline-block;
 }
 
 .questinfo, .toolinfo, .fhqrightinfo{
 	display: inline-block;
 	min-height: 100px;
-	width: calc(100% - 220px);
-	left: 220px;
+	width: calc(100% - 330px);
+	left: 320px;
 	position: fixed;
+	text-align: left;
+    height: calc(100% - 140px);
+	overflow-y: auto;
+}
+
+.fhqrightinfo.center{
+	text-align: center;
 }
 
 .questblock{
@@ -1096,11 +1118,10 @@ body.dark
 }
 
 
-.dark .questitem:hover, .dark .toolitem:hover{
+.dark .questitem:hover, .dark .toolitem:hover, .dark .fhqleftitem:hover{
 	background: #c8c8c8;
 	color: #333;
 	text-decoration: none;
-	width: 270px;
 }
 
 .dark .account-panel {
@@ -1231,15 +1252,15 @@ body.dark
   color: #010101;
 }
 
-.dark .questslist, .dark .toolslist{
+.dark .questslist, .dark .toolslist, .dark .fhqleftlist{
 	background-color: #3e3e3e;
 }
 
-.dark .questitem, .dark .toolitem {
+.dark .questitem, .dark .toolitem, .dark .fhqleftitem {
 	background-color: #3e3e3e;
 }
 
-.dark .questslist .icon, .dark .toolslist .icon{
+.dark .questslist .icon, .dark .toolslist .icon, .dark .fhqleftlist .icon{
 	border-color: #C8C8C8;
 }
 

@@ -239,6 +239,7 @@ if (!isset($_SESSION['user']))
 							<div class="border"></div>
 							<div class="fhq-simple-btn" onclick="fhqgui.loadSettings('content_page');">Settings</div>
 							<div class="fhq-simple-btn" onclick="createPageUsers(); updateUsers();">Users</div>
+							<div class="fhq-simple-btn" onclick="fhq.ui.loadUsers()">Users 2</div>
 							<div class="fhq-simple-btn" onclick="createPageAnswerList(); updateAnswerList();">Answer List</div>
 							<div class="fhq-simple-btn" onclick="installUpdates();">Install Updates</div>
 						<?php } ?>

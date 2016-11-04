@@ -1,3 +1,6 @@
+if(!window.fhq) window.fhq = {};
+if(!window.fhq.ui) window.fhq.ui = {};
+
 function FHQGuiLib(api) {
 	var self = this;
 	this.fhq = api;
@@ -1583,4 +1586,46 @@ function FHQTable() {
 		result += '</div>\n <!-- fhqtable -->';
 		return result;
 	};
+}
+
+window.fhq.ui.loadUserInfo = function(uuid){
+	fhq.ws.user({uuid: uuid}).done(function(response){
+		var u = response.data;
+		var pt = new FHQParamTable();
+		pt.row('ID:', u.id);
+		pt.row('Logo:', '<img src="' + u.logo + '">');
+		pt.row('UUID:', u.uuid);
+		pt.row('Email:', u.email);
+		pt.row('Nick:', u.nick);
+		pt.row('Role:', u.role);
+		pt.row('Last IP:', u.last_ip);
+		pt.row('Created:', u.dt_create);
+		pt.row('Last Login:', u.dt_last_login);
+		pt.skip();
+		for(var p in u.profile){
+			pt.row('Profile "' + p + '"', u.profile[p]);
+		}
+		pt.skip();
+		
+		$('.fhqrightinfo').html(pt.render());
+	});
+}
+
+window.fhq.ui.loadUsers = function(){
+	$('#content_page').html('<div class="fhqrightinfo center"></div><div class="fhqleftlist"></div>');
+	$('.fhqleftlist').html('');
+	$('.fhqleftlist').append('<div class="users"><div class="icon">Users</div><div class="content"></div></div>');
+	
+	$('.fhqleftlist .users .content').html('Loading...');
+	
+	fhq.ws.users().done(function(response){
+		$('.fhqleftlist .users .content').html('');
+		for(var i in response.data){
+			var u = response.data[i];
+			$('.fhqleftlist .users .content').append('<div class="fhqleftitem" uuid="' + u.uuid + '"><div class="name">' + u.nick + ' (' + u.email + ')</div></div>');			
+		}
+		$('.users .fhqleftitem').unbind('click').bind('click', function(){
+			fhq.ui.loadUserInfo($(this).attr('uuid'));
+		});
+	})
 }

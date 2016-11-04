@@ -120,9 +120,27 @@ window.fhq.ws.addNews = function(type, message){
 	});
 }
 
+window.fhq.ws.sendLettersToSubscribers = function(message){
+	return fhq.ws.send({
+		'cmd': 'send_letters_to_subscribers',
+		'message': message
+	});
+}
+
 window.fhq.ws.login = function(){
 	return fhq.ws.send({
 		'cmd': 'login',
 		'token': fhq.getTokenFromCookie()
 	});
+}
+
+window.fhq.ws.users = function(){
+	return fhq.ws.send({
+		'cmd': 'users'
+	});
+}
+
+window.fhq.ws.user = function(params){
+	params.cmd = 'user';
+	return fhq.ws.send(params);
 }
