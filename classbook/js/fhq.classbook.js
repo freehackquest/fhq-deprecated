@@ -11,6 +11,8 @@ window.fhq.ui.loadClassbookItem = function(link){
 		var type = a[a.length-1].toUpperCase();
 		var html = "";
 		if(type == "MD"){
+			var converter = new showdown.Converter(),
+			html = converter.makeHtml(response);
 			console.log("Load md: todo convert to html");
 		}else{
 			// html
@@ -93,7 +95,7 @@ window.fhq.classbook = [
 				'link' : 'about_binary_sound.html'
 			}, {
 				'name' : 'base64 и hex',
-				'link' : 'about_base64_and_hex.html'
+				'link' : 'items/about/base64_and_hex.md'
 			}, {
 				'name' : 'Бинарные операции, конвертирование из/в 2,10,16чные системы счисления',
 				'link' : 'about_binary_operations.html'
