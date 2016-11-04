@@ -227,6 +227,17 @@ void WebSocketServer::sendMessage(QWebSocket *pClient, QJsonObject obj){
 
 // ---------------------------------------------------------------------
 
+void WebSocketServer::sendMessageError(QWebSocket *pClient, QString cmd, QString errorMsg){
+	QJsonObject jsonData;
+	jsonData["cmd"] = QJsonValue(cmd);
+	jsonData["result"] = QJsonValue("FAIL");
+	jsonData["error"] = QJsonValue(errorMsg);
+	this->sendMessage(pClient, jsonData);
+	return;
+}
+
+// ---------------------------------------------------------------------
+
 void WebSocketServer::sendToAll(QJsonObject obj){
 	for(int i = 0; i < m_clients.size(); i++){
 		this->sendMessage(m_clients.at(i), obj);

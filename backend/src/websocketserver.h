@@ -28,6 +28,7 @@ class WebSocketServer : public QObject, public IWebSocketServer {
 		// IWebSocketServer
 		virtual int getConnectedUsers();
 		virtual void sendMessage(QWebSocket *pClient, QJsonObject obj);
+		virtual void sendMessageError(QWebSocket *pClient, QString cmd, QString errorMsg);
 		virtual void sendToAll(QJsonObject obj);
 		virtual QSqlDatabase *database();
 		virtual void setUserToken(QWebSocket *pClient, UserToken *pUserToken);

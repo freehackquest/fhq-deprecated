@@ -14,6 +14,7 @@
 class IWebSocketServer {
 	public:
 		virtual void sendMessage(QWebSocket *pClient, QJsonObject obj) = 0;
+		virtual void sendMessageError(QWebSocket *pClient, QString cmd, QString errorMsg) = 0;
 		virtual void sendToAll(QJsonObject obj) = 0;
 		virtual int getConnectedUsers() = 0;
 		virtual QSqlDatabase *database() = 0;

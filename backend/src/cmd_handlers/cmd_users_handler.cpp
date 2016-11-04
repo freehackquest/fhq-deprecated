@@ -1,4 +1,5 @@
 #include "cmd_users_handler.h"
+#include <QJsonArray>
 
 QString CmdUsersHandler::cmd(){
 	return "users";
@@ -22,6 +23,7 @@ bool CmdUsersHandler::accessAdmin(){
 
 void CmdUsersHandler::handle(QWebSocket *pClient, IWebSocketServer *pWebSocketServer, QJsonObject obj){
 	UserToken *pUserToken = pWebSocketServer->getUserToken(pClient);
+	
 	if(pUserToken == NULL){
 		QJsonObject jsonData;
 		jsonData["cmd"] = QJsonValue(cmd());
@@ -40,10 +42,29 @@ void CmdUsersHandler::handle(QWebSocket *pClient, IWebSocketServer *pWebSocketSe
 		return;
 	}
 
-	// TODO
+	QJsonArray users;
 
-	/*QJsonObject jsonData;
+	QSqlDatabase db = *(pWebSocketServer->database());
+	QSqlQuery query(db);
+	query.prepare("SELECT * FROM users ORDER BY dt_last_login DESC");
+	query.exec();
+	while (query.next()) {
+		QSqlRecord record = query.record();
+		int userid = record.value("id").toInt();
+		QString uuid = record.value("uuid").toString();
+		QString email = record.value("email").toString();
+		QString nick = record.value("nick").toString();
+		QJsonObject user;
+		user["id"] = userid;
+		user["uuid"] = uuid;
+		user["nick"] = nick;
+		user["email"] = email;
+		users.push_back(user);
+	}
+
+	QJsonObject jsonData;
 	jsonData["cmd"] = QJsonValue(cmd());
 	jsonData["result"] = QJsonValue("DONE");
-	pWebSocketServer->sendMessage(pClient, jsonData);*/
+	jsonData["data"] = users;
+	pWebSocketServer->sendMessage(pClient, jsonData);
 }

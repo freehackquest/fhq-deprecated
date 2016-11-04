@@ -23,6 +23,7 @@ SOURCES += \
 	src/cmd_handlers/cmd_login_handler.cpp \
 	src/cmd_handlers/cmd_send_letters_to_subscribers_handler.cpp \
 	src/cmd_handlers/cmd_users_handler.cpp \
+	src/cmd_handlers/cmd_user_handler.cpp \
 
 HEADERS += \
 	src/smtp/smtp.h \
@@ -37,5 +38,4 @@ HEADERS += \
 	src/cmd_handlers/cmd_login_handler.h \
 	src/cmd_handlers/cmd_send_letters_to_subscribers_handler.h \
 	src/cmd_handlers/cmd_users_handler.h \
-	
-	
+	src/cmd_handlers/cmd_user_handler.h \
