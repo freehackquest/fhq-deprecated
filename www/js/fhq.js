@@ -1,4 +1,7 @@
 if(!window.fhq) window.fhq = {};
+if(!window.fhq.api) window.fhq.api = {};
+if(!window.fhq.api.users) window.fhq.api.users = {};
+if(!window.fhq.api.events) window.fhq.api.events = {};
 
 window.fhq.createUrlFromObj = function(obj) {
 	var str = "";
@@ -292,14 +295,52 @@ window.fhq.feedback = new (function(t) {
 	};
 })(window.fhq);
 
-window.fhq.events = new (function(t) {
-	this.fhq = t;
-	this.count = function(callback) {
+
+
+window.fhq.api.events.count = function() {
+	
+	var d = $.Deferred();
+	fhq.api.users.getLastEventId().done(function(lasteventid){
 		var params = {};
-		params['id'] = this.fhq.users.getLastEventId();
-		this.fhq.sendPostRequest_Async('api/events/count.php', params, callback);
-	};
-})(window.fhq);
+		params['id'] = lasteventid;
+		$.ajax({
+			type: "POST",
+			url: 'api/events/count.php',
+			data: params
+		}).done(function(response){
+			if (response.result == 'ok') {
+				d.resolve(response.data.count);
+			}else{
+				d.resolve(0);
+			}
+		}).fail(function(){
+			d.resolve(0);
+		})
+	}).fail(function(){
+		d.resolve(0);
+	});
+	return d;
+};
+
+window.fhq.api.users.getLastEventId = function(){
+	var d = $.Deferred();
+	var params = {};
+	$.ajax({
+		type: "POST",
+		url: 'api/users/get.php',
+		data: params
+	}).done(function(response){
+		if (response.result == 'ok') {
+			fhq.profile.lastEventId = response.profile.lasteventid;
+			d.resolve(fhq.profile.lastEventId);
+		}else{
+			d.reject();
+		}
+	}).fail(function(){
+		d.reject();
+	})
+	return d;
+};
 
 window.fhq.users = new (function(t) {
 	this.fhq = t;
@@ -310,6 +351,7 @@ window.fhq.users = new (function(t) {
 		var obj = this.fhq.sendPostRequest_Sync('api/users/get.php', params);
 		if (obj.result == 'ok') {
 			if (obj.currentUser == true) {
+				console.log("Poling");
 				this.fhq.profile.lastEventId = obj.profile.lasteventid;
 				this.fhq.profile.template = obj.profile.template;
 				this.fhq.profile.university = obj.profile.university;
@@ -326,10 +368,6 @@ window.fhq.users = new (function(t) {
 		};
 	};
 
-	this.getLastEventId = function() {
-		this.fhq.users.initProfile();
-		return this.fhq.profile.lastEventId;
-	};
 	this.setLastEventId = function(id) {
 		var params = {};
 		params['id'] = id;

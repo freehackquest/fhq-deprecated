@@ -95,72 +95,22 @@ function formEditEvent(id, type, message)  {
 	);
 }
 
-/*
-function loadEvents() {
-	var params = {};
-	var el = document.getElementById("content_page");
-	el.innerHTML = "Please wait...";
-
-	send_request_post(
-		'api/events/list.php',
-		createUrlFromObj(params),
-		function (obj) {
-			if (obj.result == "fail") {
-				el.innerHTML = obj.error.message;
-			} else {
-				var content = '';
-				if (obj.access == true)
-					content += '<div class="fhqbtn" onclick="formCreateEvent();">Create News</div><br>';
-
-				var tmpLastEventId = fhq.users.getLastEventId();
-				var maxLastEventId = fhq.users.getLastEventId();
-				for (var k in obj.data.events) {
-					content += '';
-					if (obj.data.events.hasOwnProperty(k)) {
-						var e = obj.data.events[k];
-						if (e.id > maxLastEventId) {
-							maxLastEventId = e.id;
-						}
-						e.marknew = false;
-						if (e.id > tmpLastEventId) {
-							e.marknew = true;
-						}
-						content += fhqgui.eventView(e, obj.access); // TODO mark events which new
-					}
-					content += '';
-				}
-				el.innerHTML = content;
-				if (tmpLastEventId != maxLastEventId)
-					fhq.users.setLastEventId(maxLastEventId);
-			}
-		}
-	);
-}
-*/
-
 function updateCountOfEvents() {
-	// alert(1);
-	// alert(fhq.users.getLastEventId());
-	fhq.events.count(function (obj) {
-		if (obj.result == 'ok') {
-			var el = document.getElementById('plus_events');		
-			if (obj.data.count == 0) {
-				if (el.style.visibility != 'hidden')
-					el.style.visibility = 'hidden';
-				el.innerHTML = '0';
-			} else {
-				if (el.style.visibility == 'hidden') {
-					el.style.visibility = 'visible';
-				}
-				el.innerHTML = '+' + obj.data.count;
-			}
+	fhq.api.events.count().done(function(count) {
+		var el = document.getElementById('plus_events');		
+		if (count == 0) {
+			if (el.style.visibility != 'hidden')
+				el.style.visibility = 'hidden';
+			el.innerHTML = '0';
 		} else {
-			// el.innerHTML = obj.error.message;
+			if (el.style.visibility == 'hidden') {
+				el.style.visibility = 'visible';
+			}
+			el.innerHTML = '+' + count;
 		}
 		setTimeout(function(){ updateCountOfEvents(); }, 5000);
 	});
 }
-
 
 
 function createPageEvents() {
@@ -199,23 +149,24 @@ function updateEvents() {
 				var page = parseInt(obj.data.page, 10);
 				
 				el.innerHTML += fhqgui.paginator(0, found, onpage, page, 'fhqgui.setEventsPage', 'updateEvents') + '<br/>';
-				var nLastEventId = fhq.users.getLastEventId();
-				var maxid = parseInt(obj.data.maxid, 10);
-				for (var k in obj.data.events) {
-					if (obj.data.events.hasOwnProperty(k)) {
-						var e = obj.data.events[k];
+				fhq.api.users.getLastEventId().done(function(nLastEventId){
+					var maxid = parseInt(obj.data.maxid, 10);
+					for (var k in obj.data.events) {
+						if (obj.data.events.hasOwnProperty(k)) {
+							var e = obj.data.events[k];
 
-						e.marknew = false;
-						if (e.id > nLastEventId) {
-							e.marknew = true;
+							e.marknew = false;
+							if (e.id > nLastEventId) {
+								e.marknew = true;
+							}
+							el.innerHTML += fhqgui.eventView(e, obj.access); // TODO mark events which new
 						}
-						el.innerHTML += fhqgui.eventView(e, obj.access); // TODO mark events which new
 					}
-				}
-				// el.innerHTML += "obj.data.maxid: " + maxid + ", lastEventId: " + nLastEventId;
-				if (maxid > nLastEventId) {
-					fhq.users.setLastEventId(maxid);
-				}
+					// el.innerHTML += "obj.data.maxid: " + maxid + ", lastEventId: " + nLastEventId;
+					if (maxid > nLastEventId) {
+						fhq.users.setLastEventId(maxid);
+					}	
+				});
 			}
 		}
 	);
