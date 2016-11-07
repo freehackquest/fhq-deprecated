@@ -2,6 +2,7 @@ if(!window.fhq) window.fhq = {};
 if(!window.fhq.api) window.fhq.api = {};
 if(!window.fhq.api.users) window.fhq.api.users = {};
 if(!window.fhq.api.events) window.fhq.api.events = {};
+if(!window.fhq.api.quests) window.fhq.api.quests = {};
 
 window.fhq.createUrlFromObj = function(obj) {
 	var str = "";
@@ -284,6 +285,16 @@ window.fhq.quests = new (function(t) {
 	};
 })(window.fhq);
 
+
+window.fhq.api.quests.list = function(params){
+	params = params || {};
+	return $.ajax({
+		type: "POST",
+		url: 'api/quests/list.php',
+		data: params
+	});
+};
+
 window.fhq.feedback = new (function(t) {
 	this.p = t;
 	this.insert = function(params, callback) {
@@ -294,7 +305,6 @@ window.fhq.feedback = new (function(t) {
 			return this.p.sendPostRequest_Sync('api/feedback/insert.php', params);
 	};
 })(window.fhq);
-
 
 
 window.fhq.api.events.count = function() {
@@ -334,10 +344,10 @@ window.fhq.api.users.getLastEventId = function(){
 			fhq.profile.lastEventId = response.profile.lasteventid;
 			d.resolve(fhq.profile.lastEventId);
 		}else{
-			d.reject();
+			d.resolve(0);
 		}
 	}).fail(function(){
-		d.reject();
+		d.resolve(0);
 	})
 	return d;
 };
