@@ -40,6 +40,34 @@ $(document).ready(function() {
 	$('#btnmenu_tools').append(fhq.t('Tools'));
 	$('#btnmenu_classbook').append(fhq.t('Classbook'));
 	
+	function applyDark(){
+		$("body").addClass('dark');
+		$('#btnmenu_colorscheme img').attr({'src': 'http://freehackquest.com/images/menu/lightside_150x150.png'});
+		$('#btnmenu_colorscheme_text').html(fhq.t('Light'));
+		localStorage.setItem('colorscheme', 'dark');
+	}
+	
+	function applyLight(){
+		$("body").removeClass('dark');
+		$('#btnmenu_colorscheme img').attr({'src': 'http://freehackquest.com/images/menu/darkside_150x150.png'});
+		$('#btnmenu_colorscheme_text').html(fhq.t('Dark'));
+		localStorage.setItem('colorscheme', 'light');
+	}
+
+	$('#btnmenu_colorscheme').unbind().bind('click', function(e){
+		if($("body").hasClass("dark")){
+			applyLight();
+		}else{
+			applyDark();
+		}
+	});
+	
+	if(localStorage.getItem('colorscheme') == 'dark'){
+		applyDark();
+	}else{
+		applyLight();
+	}
+	
 	if(fhq.containsPageParam('toolid')){
 		fhq.ui.loadTool(fhq.pageParams['toolid']);
 	}

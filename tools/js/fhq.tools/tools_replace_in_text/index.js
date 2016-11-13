@@ -8,7 +8,6 @@ window.tools_replace_in_text = new function() {
 			+ 'Please enter text:<br>'
 			+ '<textarea id="' + pfx + '_input_text">Кимерtтекста.t"tR7aopletye7y</textarea><br><br>'
 			+ '<p>Replace Map:</p> <div id="' + pfx + '_map"></div><br>'
-			+ '<div class="fhqbtn" id="' + pfx + '_btngo">Go</div><br><br>'
 			+ 'Result:<br>'
 			+ '<textarea readonly=true id="' + pfx + '_output_text"></textarea><br><br><br>'
 			+ '</center>');
@@ -35,9 +34,9 @@ window.tools_replace_in_text = new function() {
 				var escaped_k = k;
 				if(escaped_k == '"') escaped_k = "&quot;";
 				
-				replacemap.append(escaped_k + ' => <input char="' + escaped_k + '" value="' + v + '" size=1 />  ');
+				replacemap.append(escaped_k + ' => <input type="text" char="' + escaped_k + '" value="' + v + '" size=1 />  ');
 				i++;
-				if(i % 8 == 0){
+				if(i % 6 == 0){
 					replacemap.append('</p><p>');
 				}
 			}
