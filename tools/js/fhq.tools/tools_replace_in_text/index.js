@@ -7,32 +7,79 @@ window.tools_replace_in_text = new function() {
 		e.html('<center><h1>Replace in text</h1><br>'
 			+ 'Please enter text:<br>'
 			+ '<textarea id="' + pfx + '_input_text">Кимерtтекста.t"tR7aopletye7y</textarea><br><br>'
-			+ 'Replace rules: <input type="text" id="' + pfx + '_rules" value="R:E,o:m,7:x,t: ,К:Пр,y:t"><br>'
-			+ '<i>Note: replacement performed in order to describe the rules</i><br><br>'
+			+ '<p>Replace Map:</p> <div id="' + pfx + '_map"></div><br>'
 			+ '<div class="fhqbtn" id="' + pfx + '_btngo">Go</div><br><br>'
 			+ 'Result:<br>'
 			+ '<textarea readonly=true id="' + pfx + '_output_text"></textarea><br><br><br>'
 			+ '</center>');
-
-		$('#' + pfx + '_btngo').unbind('click').bind('click', function(){
-			var text = $('#' + pfx + '_input_text').val();
-			var rules = $('#' + pfx + '_rules').val().split(",");
-			var output = window.tools_replace_in_text.replaceInText(text, rules);
-			$('#' + pfx + '_output_text').val(output);
+			
+		var inputtext = $('#' + pfx + '_input_text');
+		var outputtext = $('#' + pfx + '_output_text');
+		var replacemap = $('#' + pfx + '_map');
+		
+		inputtext.unbind().bind('change keyup paste', function(){
+			console.log("need make map");
+			// TODO get old map
+			var old_map = tools_replace_in_text.getUserMap(replacemap);
+			console.log(old_map);
+			var new_map = tools_replace_in_text.makeReplaceMap(inputtext.val());
+			replacemap.empty();
+			var i = 0;
+			for(var t in new_map){
+				var k = t;
+				var v = $("<div>").text(new_map[t]).html();
+				if(old_map[k]){
+					v = $("<div>").text(old_map[k]).html();
+				}
+				if(v == '"') v = "&quot;";
+				var escaped_k = k;
+				if(escaped_k == '"') escaped_k = "&quot;";
+				
+				replacemap.append(escaped_k + ' => <input char="' + escaped_k + '" value="' + v + '" size=1 />  ');
+				i++;
+				if(i % 8 == 0){
+					replacemap.append('</p><p>');
+				}
+			}
+			$('#' + pfx + '_map input').unbind().bind('change paste keyup', function(){
+				var map = tools_replace_in_text.getUserMap(replacemap);
+				var text = inputtext.val();
+				var text2 = "";
+				for(var i = 0; i < text.length; i++){
+					var c = text[i];
+					if(map[c]){
+						text2 += map[c];
+						// console.log(c + " => " + map[c]);
+					}else{
+						text2 += c;
+						console.log("Not found " + c + " in map")
+					}
+				}
+				console.log(text2);
+				outputtext.val(text2);
+			})
+			
 		});
+		inputtext.change();
 	}
 	
-	this.replaceInText = function(text, rules){
-		var replacerules = {};
-		for(var i = 0; i < rules.length; i++)
-		{
-			var arr = rules[i].split(":");
-			replacerules[arr[0]] = arr[1];
+	this.getUserMap = function(replacemap){
+		var map = {};
+		var inputs = replacemap.find('input');
+		for(var i = 0; i < inputs.length; i++){
+			var k = $(inputs[i]).attr('char');
+			var v = $(inputs[i]).val();
+			map[k] = v;
 		}
-		for(key in replacerules) {
-			text = text.replace(new RegExp(key,'g'),replacerules[key]);
+		return map;
+	}
+	
+	this.makeReplaceMap = function(text){
+		var map = {};
+		for(var i = 0; i < text.length; i++){
+			map[text[i]] = text[i];
 		}
-		return text;
+		return map;
 	}
 	
 	// dispose
