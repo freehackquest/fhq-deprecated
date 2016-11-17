@@ -193,7 +193,7 @@ if (!isset($_SESSION['user']))
 				'name' => 'quests',
 				'html' => '
 					<div class="fhq_btn_menu hint--bottom" data-hint="Quests" onclick="loadQuests();">
-						<img class="fhq_btn_menu_img" src="images/menu/quests.png"/>
+						<img class="fhq_btn_menu_img" src="images/menu/quests_150x150.png"/>
 						Quests
 					</div>
 				',
