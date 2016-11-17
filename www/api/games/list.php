@@ -40,7 +40,7 @@ try {
 				games
 			INNER JOIN users ON games.owner = users.id
 			ORDER BY games.date_start
-			DESC LIMIT 0,10;';
+			DESC LIMIT 0,50;';
 
 	$columns = array('id', 'title', 'state', 'form', 'type_game', 'date_start', 'date_stop', 'date_restart', 'description', 'logo', 'owner', 'nick', 'organizators', 'maxscore');
 
