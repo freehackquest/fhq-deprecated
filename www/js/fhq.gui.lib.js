@@ -1931,7 +1931,7 @@ window.fhq.ui.showQuest = function(id){
 			c += (p['delete'] ? '<div class="fhqbtn" id="quest_delete">' + fhq.t('Delete') + '</div>' : '');
 			c += (p.edit ? '<div class="fhqbtn" id="quest_export">' + fhq.t('Export') + '</div>': '')
 		}
-		// c += '<div class="fhqbtn" id="quest_report">' + fhq.t('Report an error') + '</div>';
+		c += '<div class="fhqbtn" id="quest_report">' + fhq.t('Report an error') + '</div>';
 		c += '</div>'
 		$('.fhqrightinfo').append(c);
 		
@@ -1940,9 +1940,8 @@ window.fhq.ui.showQuest = function(id){
 				'error',
 				fhq.t('Report an error'),
 				'Game: "' + q.game_title + '"\n'
-				+ 'QuestID: #' + q.questid + '\n'
-				+ 'Quest Name: #' + q.name + '\n'
-				+ 'Report:\n'
+				+ 'Quest: ' + q.name + ', ID: #' + q.questid + '\n'
+				+ 'Comment:\n'
 			);
 		});
 		
@@ -2239,7 +2238,24 @@ window.fhq.ui.showFeedbackDialog = function(type, title, text){
 		'content': $('#feedback-form').html(),
 		'buttons': $('#feedback-form-buttons').html()
 	});
+	$('#feedback-type').val(type);
 	$('#feedback-text').val(text);
+}
+
+window.fhq.ui.feedbackDialogSend = function(){
+	var text = $('#feedback-text').val();
+	var type = $('#feedback-type').val();
+	var params = {};
+	params.type = type;
+	params.text = text;
+	fhq.api.feedback.add(params).done(function(){
+		fhqgui.closeFHQModalDialog();
+	}).fail(function(response){
+		if(response){
+			alert(response.error.message);
+		}
+	})
+	
 }
 
 function createQuest() 

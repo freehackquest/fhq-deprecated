@@ -9,9 +9,10 @@
  */
  
 $curdir_feedback_insert = dirname(__FILE__);
-include_once ($curdir_feedback_insert."/../api.lib/api.helpers.php");
-include_once (dirname(__FILE__)."/../../config/config.php");
-include_once ($curdir_feedback_insert."/../api.lib/api.base.php");
+include_once ($curdir_feedback_insert."/../../api.lib/api.helpers.php");
+include_once (dirname(__FILE__)."/../../../config/config.php");
+include_once ($curdir_feedback_insert."/../../api.lib/api.base.php");
+include_once ($curdir_feedback_insert."/../../api.lib/api.mail.php");
 
 $response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
@@ -37,6 +38,12 @@ try {
 	if($stmt->execute(array($type, $text, APISecurity::userid()))) {
 		$response['data']['feedback']['id'] = $conn->lastInsertId();
 		$response['result'] = 'ok';
+		
+		// this option must be moved to db
+		if (isset($config['mail']) && isset($config['mail']['allow']) && $config['mail']['allow'] == 'yes') {
+			APIMail::send($config, 'mrseakg@gmail.com', '', '', 'Feedback from freehackquest', $text, $error);
+		}
+		
 	} else {
 		APIHelpers::showerror(1240,'Could not insert. PDO: '.$conn->errorInfo());
 	}

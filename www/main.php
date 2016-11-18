@@ -140,13 +140,14 @@ if (!isset($_SESSION['user']))
 			<!-- Feedback form -->
 
 			<div id="feedback-form" style="display: none;">
+				<input type="hidden" id="feedback-type" value=""/>
 				<textarea id="feedback-text" type="text"></textarea>
 				<br><br>
 				<font id="signin-error-message" color='#ff0000'></font>
 			</div>
 
 			<div id="feedback-form-buttons" style="display: none;">
-				<div class="fhqbtn" onclick="fhq.ui.feedbackSend();">Send</div>
+				<div class="fhqbtn" onclick="fhq.ui.feedbackDialogSend();">Send</div>
 			</div>
 			
 		<div id="copyright">

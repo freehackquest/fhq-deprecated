@@ -4,7 +4,7 @@ function insertFeedback()
 	var feedback = new FHQFeedback();
  	// alert(createUrlFromObj(feedback.params()));
 	send_request_post(
-		'api/feedback/insert.php',
+		'api/feedback/insert/',
 		createUrlFromObj(feedback.params()),
 		function (obj) {
 			if (obj.result == "ok") {

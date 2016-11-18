@@ -340,17 +340,26 @@ window.fhq.api.quests.list = function(params){
 	return d;
 };
 
-window.fhq.feedback = new (function(t) {
-	this.p = t;
-	this.insert = function(params, callback) {
-		var obj = null;
-		if (callback)
-			this.p.sendPostRequest_Async('api/feedback/insert.php', params, callback);
-		else
-			return this.p.sendPostRequest_Sync('api/feedback/insert.php', params);
-	};
-})(window.fhq);
+if(!window.fhq.api.feedback) window.fhq.api.feedback = {};
 
+window.fhq.api.feedback.add = function(params){
+	params = params || {};
+	var d = $.Deferred();
+	$.ajax({
+		type: "POST",
+		url: 'api/feedback/insert/',
+		data: params
+	}).done(function(response){
+		if (response.result == 'ok') {
+			d.resolve(response);
+		}else{
+			d.reject(response);
+		}
+	}).fail(function(){
+		d.reject();
+	})
+	return d;
+}
 
 window.fhq.api.events.count = function() {
 	

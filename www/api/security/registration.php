@@ -147,6 +147,7 @@ $stmt_insert2->execute(array(
 APIEvents::addPublicEvents($conn, 'users', 'New player {'.htmlspecialchars($nick).'}. Welcome!');
 
 $error = '';
+
 // this option must be moved to db
 if (isset($config['mail']) && isset($config['mail']['allow']) && $config['mail']['allow'] == 'yes') {
 	APIMail::send($config, $email, '', '', $email_subject, $email_message, $error);
