@@ -7,7 +7,7 @@ window.fhq.localization = {
 	},
 	'Quests' : {
 		'en': 'Quests',
-		'ru': 'Квесты'
+		'ru': 'Задачи'
 	},
 	'Tools' : {
 		'en': 'Tools',
@@ -69,10 +69,6 @@ window.fhq.localization = {
 		'en': 'This is an open source platform for competitions in computer security.',
 		'ru': 'Это платформа с открытым исходным кодом для проведения соревнований по компьютерной безопасности.'
 	},
-	'Quests':{
-		'en': 'Quests',
-		'ru': 'Задач'
-	},
 	'All attempts':{
 		'en': 'All attempts',
 		'ru': 'Всего попыток'
@@ -128,5 +124,130 @@ window.fhq.localization = {
 	'Dark': {
 		'en': 'Dark',
 		'ru': 'Темный'
+	},
+	'Subject': {
+		'en': 'Subject',
+		'ru': 'Раздел'
+	},
+	'Status': {
+		'en': 'Status',
+		'ru': 'Статус'
+	},
+	'Opened': {
+		'en': 'Opened',
+		'ru': 'Открытые'
+	},
+	'Completed': {
+		'en': 'Completed',
+		'ru': 'Завершенные'
+	},
+	'Quest completed': {
+		'en': 'Quest completed',
+		'ru': 'Задача завершена'
+	},
+	'Quest open': {
+		'en': 'Quest open',
+		'ru': 'Задача не решена'
+	},
+	'Search': {
+		'en': 'Search',
+		'ru': 'Найти'
+	},
+	'Details':{
+		'en': 'Details',
+		'ru': 'Детали'
+	},
+	'Description':{
+		'en': 'Description',
+		'ru': 'Описание'
+	},
+	'Attachments':{
+		'en': 'Attachments',
+		'ru': 'Прикрепленные файлы'
+	},
+	'Hints':{
+		'en': 'Hints',
+		'ru': 'Подсказки'
+	},
+	'Statistics':{
+		'en': 'Statistics',
+		'ru': 'Статистика'
+	},
+	'Export':{
+		'en': 'Export',
+		'ru': 'Экспорт'
+	},
+	'Delete':{
+		'en': 'Delete',
+		'ru': 'Удалить'
+	},
+	'Edit':{
+		'en': 'Edit',
+		'ru': 'Изменить'
+	},
+	'Loading...':{
+		'en': 'Loading...',
+		'ru': 'Загрузка...'
+	},
+	'Score': {
+		'en': 'Score',
+		'ru': 'Очки'
+	},
+	'State': {
+		'en': 'State',
+		'ru': 'Состояние'
+	},
+	'Solved': {
+		'en': 'Solved',
+		'ru': 'Решили'
+	},
+	'Author': {
+		'en': 'Author',
+		'ru': 'Автор'
+	},
+	'Copyright': {
+		'en': 'Copyright',
+		'ru': 'Авторские права'
+	},
+	'Min-Score': {
+		'en': 'Minimal Score',
+		'ru': 'Минимальные очки'
+	},
+	'users_solved':{
+		'en': 'users',
+		'ru': 'пользователей'
+	},
+	'My Answers':{
+		'en': 'My Answers',
+		'ru': 'Мои ответы',
+	},
+	'Answer': {
+		'en': 'Answer',
+		'ru': 'Ответ'
+	},
+	'state_closed':{
+		'en': 'Not available',
+		'ru': 'Недоступна'
+	},
+	'state_open':{
+		'en': 'Available',
+		'ru': 'Доступна'
+	},
+	'status_open':{
+		'en': 'open',
+		'ru': 'не решена'
+	},
+	'status_completed':{
+		'en': 'completed',
+		'ru': 'решена'
+	},
+	'Pass the quest': {
+		'en': 'Pass the quest',
+		'ru': 'Проверить ответ'
+	},
+	'Report an error':{
+		'en': 'Report an error',
+		'ru': 'Сообщить об ошибке'
 	}
+	
 };

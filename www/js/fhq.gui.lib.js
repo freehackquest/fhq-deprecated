@@ -1052,30 +1052,7 @@ function FHQGuiLib(api) {
 		
 		// skills
 		fhq.users.skills(userid, function(obj) {
-			
-			/*document.getElementById("user_skills").innerHTML = '<canvas id="skill' + userid + '" width="450" height="170"></canvas>';
-			// document.getElementById("user_skills").innerHTML += '<br>' + JSON.stringify(obj);
 
-			var ctx = document.getElementById('skill' + userid).getContext("2d");
-			ctx.font = "12px Arial";
-			ctx.fillStyle = "#CCC";
-			ctx.strokeStyle = "#CCC";
-
-			var y = 10;
-			for (var sub in obj.data.skills[userid].subjects) {
-				// data.labels.push(sub);
-				var max = obj.data.skills[userid].subjects[sub].max;
-				var score = obj.data.skills[userid].subjects[sub].score;
-				var percent = 0;
-				if (max != 0) {
-					percent = Math.round((score/max)*100);
-				}
-				ctx.fillText(sub, 10, y);
-				ctx.fillText('' + percent + '% ', 80, y);
-				ctx.strokeRect(120, y-9, 200, 8);
-				ctx.fillRect (120, y-9, percent*2, 9);
-				y += 12;
-			}*/
 		});	
 	}
 
@@ -1694,7 +1671,7 @@ window.fhq.ui.updateQuests = function(){
 		// $('#quests_filter_subject option:contains(' + previous_value + ')').prop({selected: true});
 		$('#quests_filter_subject').val(previous_value);
 		
-		$('#quests_found').html("Opened: " + response.status.open + "; Completed: " + response.status.completed);
+		$('#quests_found').html(fhq.t('Opened') + ": " + response.status.open + "; " + fhq.t('Completed') + ": " + response.status.completed);
 		var lastSubject = "";
 		var len = response.data.length;
 		var qs = response.data;
@@ -1725,22 +1702,22 @@ window.fhq.ui.loadQuests = function(){
 	$('#content_page').html('<div class="fhqrightinfo center"></div><div class="fhqleftlist"></div>');
 	$('.fhqleftlist').html('');
 	var list = '<div class="quests">'
-	+ '<div class="icon">Quests</div>'
+	+ '<div class="icon">' + fhq.t('Quests') + '</div>'
 	+ '<div class="filter"><input type="text" id="quests_filter_name_contains" value="" placeholder="Name"/></div>'
-	+ '<div class="filter">Subject:   <select id="quests_filter_subject" value="">'
+	+ '<div class="filter">' + fhq.t('Subject') + ': <select id="quests_filter_subject" value="">'
 	+ '<option selected="" value="">*</option>'
 	+ '</select></div>'
-	+ '<div class="filter">Status:   <select id="quests_filter_status" value="">'
+	+ '<div class="filter">' + fhq.t('Status') + ': <select id="quests_filter_status" value="">'
 	+ '<option selected="" value="">*</option>'
-	+ '<option value="open">Opened</option>'
-	+ '<option value="completed">Completed</option>'
+	+ '<option value="open">' + fhq.t('Opened') + '</option>'
+	+ '<option value="completed">' + fhq.t('Completed') + '</option>'
 	+ '</select></div>'
-	+ '<div class="filter"><div class="fhqbtn" id="quests_search">Search</div></div>'
+	+ '<div class="filter"><div class="fhqbtn" id="quests_search">' + fhq.t('Search') + '</div></div>'
 	+ '<div class="filter" id="quests_found"></div>'
 	+ '<div class="content"></div>'
 	+ '</div>';
 	$('.fhqleftlist').append(list);
-	$('.fhqleftlist .quests .content').html('Loading...');
+	$('.fhqleftlist .quests .content').html(fhq.t('Loading...'));
 	$('#quests_search').unbind('click').bind('click', fhq.ui.updateQuests);
 	fhq.ui.updateQuests();
 }
@@ -1942,58 +1919,69 @@ window.fhq.ui.showQuest = function(id){
 			+ '	<img class="newquestinfo_gamelogo" src="' + q.game_logo + '">'
 			+ '	<div class="newquestinfo_gametitlequestid">'
 			+ ' <a href="?game=' + q.gameid + '">' + q.game_title + '</a> / <a href="?quest=' + q.questid + '">Quest ' + q.questid + '</a>' 
-			+ ' (' + q.status + ')'
+			+ ' (' + fhq.t('Quest ' + q.status) + ')'
 			+ '</div>'
 			+ '<div class="newquestinfo_questname">' + q.name + '</div>'
 			+ '</div>');
 
+		var c = '<div class="newquestinfo">';
 		if(response.permissions){
 			var p = response.permissions;
-			$('.fhqrightinfo').append(
-				'<div class="newquestinfo_controls">'
-				+ (p.edit ? '<div class="fhqbtn" id="quest_edit">Edit</div>' : '')
-				+ (p['delete'] ? '<div class="fhqbtn" id="quest_delete">Delete</div>' : '')
-				+ (p.edit ? '<div class="fhqbtn" id="quest_export">Export</div>': '')
-				+ '</div>'
-			)
+			c += (p.edit ? '<div class="fhqbtn" id="quest_edit">' + fhq.t('Edit') + '</div>' : '');
+			c += (p['delete'] ? '<div class="fhqbtn" id="quest_delete">' + fhq.t('Delete') + '</div>' : '');
+			c += (p.edit ? '<div class="fhqbtn" id="quest_export">' + fhq.t('Export') + '</div>': '')
 		}
+		// c += '<div class="fhqbtn" id="quest_report">' + fhq.t('Report an error') + '</div>';
+		c += '</div>'
+		$('.fhqrightinfo').append(c);
+		
+		$('#quest_report').unbind().bind('click', function(){
+			fhq.ui.showFeedbackDialog(
+				'error',
+				fhq.t('Report an error'),
+				'Game: "' + q.game_title + '"\n'
+				+ 'QuestID: #' + q.questid + '\n'
+				+ 'Quest Name: #' + q.name + '\n'
+				+ 'Report:\n'
+			);
+		});
 		
 		$('.fhqrightinfo').append(
 			'<div class="newquestinfo_details">'
-			+ '<div class="newquestinfo_details_title">Details</div>'
+			+ '<div class="newquestinfo_details_title">' + fhq.t('Details') + '</div>'
 			+ '	<div class="newquestinfo-details-left"> '
 			+ '		<div class="newquestinfo-details-row">'
-			+ '			<div class="newquestinfo-details-cell">Subject:</div>'
+			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Subject') + ':</div>'
 			+ '			<div class="newquestinfo-details-cell">' + q.subject + '</div>'
 			+ '		</div>'
 			+ '		<div class="newquestinfo-details-row">'
-			+ '			<div class="newquestinfo-details-cell">Min-Score:</div>'
+			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Min-Score') + ':</div>'
 			+ '			<div class="newquestinfo-details-cell">' + q.min_score + '</div>'
 			+ '		</div>'
 			+ '		<div class="newquestinfo-details-row">'
-			+ '			<div class="newquestinfo-details-cell">Score:</div>'
+			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Score') + ':</div>'
 			+ '			<div class="newquestinfo-details-cell">+' + q.score + '</div>'
 			+ '		</div>'
 			+ '		<div class="newquestinfo-details-row">'
-			+ '			<div class="newquestinfo-details-cell">Status:</div>'
-			+ '			<div class="newquestinfo-details-cell">' + q.status + (q.status == 'completed' ? ' (' + q.dt_passed + ')' : '') + '</div>'
+			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Status') + ':</div>'
+			+ '			<div class="newquestinfo-details-cell">' + fhq.t('status_' + q.status) + (q.status == 'completed' ? ' (' + q.dt_passed + ')' : '') + '</div>'
 			+ '		</div>'
 			+ '	</div>'
 			+ '	<div class="newquestinfo-details-right"> '
 			+ '		<div class="newquestinfo-details-row">'
-			+ '			<div class="newquestinfo-details-cell">State:</div>'
-			+ '			<div class="newquestinfo-details-cell">' + q.state + '</div>'
+			+ '			<div class="newquestinfo-details-cell">' + fhq.t('State') + ':</div>'
+			+ '			<div class="newquestinfo-details-cell">' + fhq.t('state_' + q.state) + '</div>'
 			+ '		</div>'
 			+ '		<div class="newquestinfo-details-row">'
-			+ '			<div class="newquestinfo-details-cell">Solved:</div>'
-			+ '			<div class="newquestinfo-details-cell">' + q.solved + ' users</div>'
+			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Solved') + ':</div>'
+			+ '			<div class="newquestinfo-details-cell">' + q.solved + ' ' + fhq.t('users_solved') + '</div>'
 			+ '		</div>'
 			+ '		<div class="newquestinfo-details-row">'
-			+ '			<div class="newquestinfo-details-cell">Author:</div>'
+			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Author') + ':</div>'
 			+ '			<div class="newquestinfo-details-cell">' + q.author + '</div>'
 			+ '		</div>'
 			+ '		<div class="newquestinfo-details-row">'
-			+ '			<div class="newquestinfo-details-cell">Copyright:</div>'
+			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Copyright') + ':</div>'
 			+ '			<div class="newquestinfo-details-cell"></div>'
 			+ '		</div>'			
 			+ '	</div>'
@@ -2002,7 +1990,7 @@ window.fhq.ui.showQuest = function(id){
 
 		$('.fhqrightinfo').append(
 			'<div class="newquestinfo_description">'
-			+ '<div class="newquestinfo_description_title">Description</div>'
+			+ '<div class="newquestinfo_description_title">' + fhq.t('Description') + '</div>'
 			+ '<pre>' + q.text + '</pre>'
 			+ '</div>'
 		)
@@ -2015,7 +2003,7 @@ window.fhq.ui.showQuest = function(id){
 			
 			$('.fhqrightinfo').append(
 				'<div class="newquestinfo_attachments">'
-				+ '<div class="newquestinfo_attachments_title">Attachments</div>'
+				+ '<div class="newquestinfo_attachments_title">' + fhq.t('Attachments') + '</div>'
 				+ files1
 				+ '</div>'
 			)
@@ -2023,7 +2011,7 @@ window.fhq.ui.showQuest = function(id){
 
 		$('.fhqrightinfo').append(
 			'<div class="newquestinfo">'
-			+ '<div class="newquestinfo_title hide" id="quest_show_hints">Hints</div>'
+			+ '<div class="newquestinfo_title hide" id="quest_show_hints">' + fhq.t('Hints') + '</div>'
 			+ '<div id="newquestinfo_hints" style="display: none;">TODO</div>'
 			+ '</div>'
 		);
@@ -2043,9 +2031,9 @@ window.fhq.ui.showQuest = function(id){
 		if(q.dt_passed == null){
 			$('.fhqrightinfo').append(
 				'<div class="newquestinfo_passquest">'
-				+ '<div class="newquestinfo_passquest_title">Answer</div>'
-				+ '<input id="quest_answer" type="text" onkeydown="if (event.keyCode == 13) passQuest(' + q.questid + ');"/> '
-				+ '<div class="fhqbtn" id="newquestinfo_pass" onclick="passQuest(' + q.questid + ');">Pass quest</div>'
+				+ '<div class="newquestinfo_passquest_title">' + fhq.t('Answer') + '</div>'
+				+ '<input id="quest_answer" type="text" onkeydown="if (event.keyCode == 13) this.click();"/> '
+				+ '<div class="fhqbtn" id="newquestinfo_pass">' + fhq.t('Pass the quest') + '</div>'
 				+ '<div id="quest_pass_error"></div>'
 				+ '</div>'
 			);
@@ -2066,7 +2054,7 @@ window.fhq.ui.showQuest = function(id){
 			
 			$('.fhqrightinfo').append(
 				'<div class="newquestinfo">'
-				+ '<div class="newquestinfo_title hide" id="quest_show_my_answers">My Answers</div>'
+				+ '<div class="newquestinfo_title hide" id="quest_show_my_answers">' + fhq.t('My Answers') + '</div>'
 				+ '<pre id="newquestinfo_user_answers" style="display: none;"></pre>'
 				+ '</div>'
 			);
@@ -2078,7 +2066,7 @@ window.fhq.ui.showQuest = function(id){
 		
 		$('.fhqrightinfo').append(
 			'<div class="newquestinfo">'
-			+ '<div class="newquestinfo_title hide" id="quest_show_statistics">Statistics</div>'
+			+ '<div class="newquestinfo_title hide" id="quest_show_statistics">' + fhq.t('Statistics') + '</div>'
 			+ '	<div id="statistics_content" style="display: none;">'
 			+ ' <table><tr><td valign=top><canvas id="quest_chart" width="300" height="300"></canvas></td>'
 			+ ' <td valign=top id="quest_stat_users"></td></tr></table>'
@@ -2086,20 +2074,20 @@ window.fhq.ui.showQuest = function(id){
 			+ '</div>'
 		);
 
-		$('#quest_show_statistics').unbind().bind('click', function(){
-			if($('#statistics_content').is(":visible")){
-				$('#statistics_content').hide();
-				$('#quest_show_statistics').removeClass('show');
-				$('#quest_show_statistics').addClass('hide');
-			}else{
-				$('#statistics_content').show();
-				$('#quest_show_statistics').removeClass('hide');
-				$('#quest_show_statistics').addClass('show');
-				fhq.ui.updateQuestStatistics(q.questid);
-			}
-		});
-		
-		// $('.fhqrightinfo').append(JSON.stringify(q));
+		if(q.solved != 0){
+			$('#quest_show_statistics').unbind().bind('click', function(){
+				if($('#statistics_content').is(":visible")){
+					$('#statistics_content').hide();
+					$('#quest_show_statistics').removeClass('show');
+					$('#quest_show_statistics').addClass('hide');
+				}else{
+					$('#statistics_content').show();
+					$('#quest_show_statistics').removeClass('hide');
+					$('#quest_show_statistics').addClass('show');
+					fhq.ui.updateQuestStatistics(q.questid);
+				}
+			});
+		}
 		
 	}).fail(function(){
 		$('.fhqrightinfo').html('Not found quest by id=' + id);
@@ -2243,6 +2231,15 @@ window.fhq.ui.updateQuestStatistics = function(questid){
 		$('#quest_stat_users').html('Users who solved this quest:<br>' + usrs.join(" "));
 						
 	});
+}
+
+window.fhq.ui.showFeedbackDialog = function(type, title, text){
+	fhqgui.showFHQModalDialog({
+		'header': title,
+		'content': $('#feedback-form').html(),
+		'buttons': $('#feedback-form-buttons').html()
+	});
+	$('#feedback-text').val(text);
 }
 
 function createQuest() 
