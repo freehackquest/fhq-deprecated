@@ -282,10 +282,14 @@ body {
 	margin-left: -10px;
 }
 
+#btnmenu_colorscheme{
+	float: right;
+	margin-right: 20px;
+}
+
 #btnmenu_user{
 	text-align: left;
 	float: right;
-	margin-right: 100px;
 }
 
 #btnmenu_user:hover .account-panel{

@@ -27,12 +27,6 @@ if (!isset($_SESSION['user']))
 		<link rel="stylesheet" type="text/css" href="css/fhq.css?ver=1"/>
 		<!-- link rel="stylesheet" type="text/css" href="css/fhq.min.css?ver=1"/-->
 
-		<!-- todo -->
-		<?php
-			$template = isset($_SESSION['user']['profile']['template']) ? $_SESSION['user']['profile']['template'] : 'base';
-			$template = htmlspecialchars($template);
-		?>
-
 		<script type="text/javascript" src="js/fhq.base.js"></script>
 		<script type="text/javascript" src="js/fhq.localization.js"></script>
 		<script type="text/javascript" src="js/fhq.js?ver=1"></script>
@@ -62,6 +56,17 @@ if (!isset($_SESSION['user']))
 				fhq.security.logout();			
 				window.location.href = "index.php";
 			}
+			
+			$(document).ready(function() {
+				fhqgui.applyColorScheme();
+				$('#btnmenu_colorscheme').unbind().bind('click', function(){
+					if ($('body').hasClass('dark')) {
+						fhqgui.setLightColorScheme();
+					} else {
+						fhqgui.setDarkColorScheme();
+					}
+				});
+			});
 		</script>
 
 		<!-- Yandex.Metrika counter -->
@@ -96,7 +101,7 @@ if (!isset($_SESSION['user']))
 		<!-- /Yandex.Metrika counter -->
 
 	</head>
-	<body onload="fhqgui.processParams();" class="<?php echo $template; ?>">
+	<body onload="fhqgui.processParams();">
 	
 			<!-- Modal dialog -->
 			<div id="modal_dialog" class="overlay">
@@ -220,6 +225,10 @@ if (!isset($_SESSION['user']))
 				<div class="fhq_btn_menu" onclick="createPageEvents(); updateEvents();">
 					<img class="fhq_btn_menu_img" src="images/menu/news.png"/> News <font id="plus_events"></font>
 				</div>
+				<div class="fhq_btn_menu" id="btnmenu_colorscheme">
+					<img class="fhq_btn_menu_img" src="images/menu/lightside_150x150.png"/>
+					<div id="btnmenu_colorscheme_text" style="display: inline"></div>
+				</div>
 				<div class="fhq_btn_menu" id="btnmenu_user">
 					<img class="fhq_btn_menu_img" src="images/menu/user.png"/> <?php echo $nick; ?>
 					<div class="account-panel">
@@ -243,6 +252,7 @@ if (!isset($_SESSION['user']))
 						<?php } ?>
 					</div>
 				</div>
+				
 			</div>
 
 			<table cellspacing=10px cellpadding=10px width="100%" height="100%">

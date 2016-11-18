@@ -521,10 +521,6 @@ function loadUserProfile(userid) {
 			pt.row('', '<div class="fhqbtn" onclick="userpage_changeUserPassword();">Change password</div>');
 			pt.skip();
 
-			// todo style
-			pt.row('Сolor spectrum', fhqgui.combobox('edit_style', obj.profile.template, fhq.getStyles()));
-			pt.row('', '<div class="fhqbtn" onclick="update_profile_style()">Save</div>');
-
 			cp.innerHTML = pt.render();
 		}
 	);

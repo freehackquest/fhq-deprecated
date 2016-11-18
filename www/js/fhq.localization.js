@@ -121,4 +121,12 @@ window.fhq.localization = {
 		'en': 'If you are not in team you can join to FHQ team on',
 		'ru': 'Если вы не в команде вы можете присоединиться к команде FHQ, здесь'
 	},
+	'Light': {
+		'en': 'Light',
+		'ru': 'Светлый'
+	},
+	'Dark': {
+		'en': 'Dark',
+		'ru': 'Темный'
+	}
 };

@@ -145,7 +145,12 @@ function FHQGuiLib(api) {
 			+ fhq.t('News')
 			+ '</a>');
 
-		toppanel.append('<div id="btnmenu_user" class="fhq_btn_menu" href="javascript:void(0);">'
+		toppanel.append('<div id="btnmenu_colorscheme" class="fhq_btn_menu">'
+			+ '<img class="fhq_btn_menu_img" src="images/menu/lightside_150x150.png"/> '
+			+ '<div id="btnmenu_colorscheme_text" style="display: inline">' + fhq.t('Light') + '</div>'
+			+ '</div>');
+
+		toppanel.append('<div id="btnmenu_user" class="fhq_btn_menu">'
 			+ '<img class="fhq_btn_menu_img" src="images/menu/user.png"/> '
 			+ fhq.t('Account')
 			+ '<div class="account-panel">'
@@ -164,9 +169,16 @@ function FHQGuiLib(api) {
 		}*/
 		
 		$('#btnmenu_user').unbind().bind('click', function(e){
-			e.preventDefault();
 			$('.accout-panel').show();
 		});
+		
+		$('#btnmenu_colorscheme').unbind().bind('click', function(){
+			if ($('body').hasClass('dark')) {
+				self.setLightColorScheme();
+			} else {
+				self.setDarkColorScheme();
+			}
+		})
 	}
 	
 	/* Sign In */
@@ -678,12 +690,17 @@ function FHQGuiLib(api) {
 		$('body').addClass('dark');
 		localStorage.setItem('colorscheme', 'dark');
 		$('#jointothedarkside').html(fhq.t('You are on the dark side. Turn back?'));
+		$('#btnmenu_colorscheme img').attr({'src': 'images/menu/lightside_150x150.png'})
+		$('#btnmenu_colorscheme_text').html(fhq.t('Light'));
 	}
 	
 	this.setLightColorScheme = function(){
 		$('body').removeClass('dark');
 		localStorage.setItem('colorscheme', 'light');
 		$('#jointothedarkside').html(fhq.t('Join the dark side...'));
+		$('#btnmenu_colorscheme_text').html(fhq.t('Dark'));
+		$('#btnmenu_colorscheme img').attr({'src': 'images/menu/darkside_150x150.png'})
+		
 	}
 
 	this.loadMainPage = function() {
