@@ -45,7 +45,6 @@ if (!isset($_SESSION['user']))
 		<script type="text/javascript" src="js/fhq_echo_head.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_modal_dialog.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_games.js?ver=1"></script>
-		<script type="text/javascript" src="js/fhq_quests.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_users.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_timer.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_updates.js?ver=1"></script>
@@ -97,7 +96,7 @@ if (!isset($_SESSION['user']))
 		<!-- /Yandex.Metrika counter -->
 
 	</head>
-	<body onload="loadQuests(); updateCountOfEvents(); fhqgui.processParams();" class="<?php echo $template; ?>">
+	<body onload="fhqgui.processParams();" class="<?php echo $template; ?>">
 	
 			<!-- Modal dialog -->
 			<div id="modal_dialog" class="overlay">
@@ -192,7 +191,7 @@ if (!isset($_SESSION['user']))
 			$arrmenu[] = array(
 				'name' => 'quests',
 				'html' => '
-					<div class="fhq_btn_menu hint--bottom" data-hint="Quests" onclick="loadQuests();">
+					<div class="fhq_btn_menu hint--bottom" data-hint="Quests" onclick="fhq.ui.loadQuests();">
 						<img class="fhq_btn_menu_img" src="images/menu/quests_150x150.png"/>
 						Quests
 					</div>
@@ -229,7 +228,6 @@ if (!isset($_SESSION['user']))
 						<div class="fhq-simple-btn" onclick="loadUserProfile(<?php echo $userid; ?>);">Profile</div>
 						<div class="fhq-simple-btn" onclick="loadScoreboard(<?php echo $gameid; ?>);">Scoreboard (<?php echo $score; ?>)</div>
 						<div class="fhq-simple-btn" onclick="fhqgui.loadRules(<?php echo $gameid; ?>);">Rules</div>
-						<div class="fhq-simple-btn" onclick="createPageStatistics(<?php echo $gameid; ?>); updateStatistics(<?php echo $gameid; ?>);">Statistics</div>
 						<div class="fhq-simple-btn" onclick="fhqgui.loadGames();">Games</div>
 						<div class="fhq-simple-btn" onclick="fhqgui.createPageSkills(); fhqgui.updatePageSkills();">Skills</div>
 						<div class="fhq-simple-btn" onclick="loadFeedback();">Feedback</div>

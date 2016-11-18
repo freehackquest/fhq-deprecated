@@ -11,9 +11,9 @@ header('Content-Type: application/json');
  */
 
 $curdir = dirname(__FILE__);
-include_once ($curdir."/../api.lib/api.base.php");
-include_once ($curdir."/../api.lib/api.game.php");
-include_once ($curdir."/../../config/config.php");
+include_once ($curdir."/../../api.lib/api.base.php");
+include_once ($curdir."/../../api.lib/api.game.php");
+include_once ($curdir."/../../../config/config.php");
 
 $response = APIHelpers::startpage($config);
 
@@ -67,12 +67,17 @@ $query = '
 				quest.state,
 				quest.subject,
 				quest.author,
+				quest.count_user_solved,
 				quest.gameid,
+				games.logo as game_logo,
+				games.title as game_title,
 				users_quests.dt_passed
 			FROM
 				quest
 			LEFT JOIN 
 				users_quests ON users_quests.questid = quest.idquest AND users_quests.userid = ?
+			LEFT JOIN 
+				games ON quest.gameid = games.id
 			WHERE
 				quest.idquest = ?
 				'.$filter_by_state.'
@@ -88,9 +93,9 @@ try {
 	{
 		$status = '';
 		if ($row['dt_passed'] == null)
-			$status = 'completed';
-		else
 			$status = 'open';
+		else
+			$status = 'completed';
 
 		$response['data'] = array(
 			'questid' => $row['idquest'],
@@ -99,31 +104,30 @@ try {
 			'name' => $row['name'],
 			'subject' => $row['subject'],
 			'dt_passed' => $row['dt_passed'],
+			'solved' => $row['count_user_solved'],
 			'state' => $row['state'],
 			'author' => $row['author'],
 			'status' => $status,
+			'gameid' => $row['gameid'],
+			'game_logo' => $row['game_logo'],
+			'game_title' => $row['game_title'],
+			'text' => $row['text'],
 		);
 		$response['quest'] = $row['idquest'];
 		$response['gameid'] = $row['gameid'];
 
-		if ($status == 'current' || $status == 'completed')
-		{
-			$response['data']['text'] = $row['text'];
-			
-			$response['data']['files'] = array();
-			$stmt_files = $conn->prepare('select * from quests_files WHERE questid = ?');
-			$stmt_files->execute(array(intval($questid)));
-			while ($row_files = $stmt_files->fetch())
-				$response['data']['files'][] = array(
-					'filename' => $row_files['filename'],
-					'filepath' => $row_files['filepath'],
-					'size' => $row_files['size'],
-					'id' => $row_files['id'],
-				);
-		}
 
-		if (isset($_SESSION['game']))
-			$response['data']['game_title'] = $_SESSION['game']['title'];
+		$response['data']['files'] = array();
+		$stmt_files = $conn->prepare('select * from quests_files WHERE questid = ?');
+		$stmt_files->execute(array(intval($questid)));
+		while ($row_files = $stmt_files->fetch()){
+			$response['data']['files'][] = array(
+				'filename' => $row_files['filename'],
+				'filepath' => $row_files['filepath'],
+				'size' => $row_files['size'],
+				'id' => $row_files['id'],
+			);
+		}
 	} else {
 		APIHelpers::showerror(1148, 'Problem... may be incorrect game are selected?');
 	}

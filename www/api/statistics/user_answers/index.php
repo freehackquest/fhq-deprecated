@@ -8,10 +8,10 @@
  */
 
 $curdir_statistics_user_answers = dirname(__FILE__);
-include_once ($curdir_statistics_user_answers."/../api.lib/api.base.php");
-include_once ($curdir_statistics_user_answers."/../api.lib/api.game.php");
-include_once ($curdir_statistics_user_answers."/../../config/config.php");
-include_once ($curdir_statistics_user_answers."/../api.lib/loadtoken.php");
+include_once ($curdir_statistics_user_answers."/../../api.lib/api.base.php");
+include_once ($curdir_statistics_user_answers."/../../api.lib/api.game.php");
+include_once ($curdir_statistics_user_answers."/../../../config/config.php");
+include_once ($curdir_statistics_user_answers."/../../api.lib/loadtoken.php");
 
 $response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();

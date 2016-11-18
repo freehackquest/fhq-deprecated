@@ -12,11 +12,11 @@ header('Content-Type: application/json');
  */
 
 $curdir = dirname(__FILE__);
-include_once ($curdir."/../api.lib/api.base.php");
-include_once ($curdir."/../api.lib/api.game.php");
-include_once ($curdir."/../api.lib/api.answerlist.php");
-include_once ($curdir."/../api.lib/api.quest.php");
-include_once ($curdir."/../../config/config.php");
+include_once ($curdir."/../../api.lib/api.base.php");
+include_once ($curdir."/../../api.lib/api.game.php");
+include_once ($curdir."/../../api.lib/api.answerlist.php");
+include_once ($curdir."/../../api.lib/api.quest.php");
+include_once ($curdir."/../../../config/config.php");
 
 $response = APIHelpers::startpage($config);
 

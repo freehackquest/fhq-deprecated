@@ -4,18 +4,17 @@
  * API_DESCRIPTION: Method will be returned quest list
  * API_ACCESS: authorized users
  * API_INPUT: token - string, token
- * API_INPUT: filter_open - boolean, filter by open quests (it not taked)
- * API_INPUT: filter_current - boolean, filter by in progress quests (taked)
- * API_INPUT: filter_completed - boolean, filter by completed quest (finished quests)
- * API_INPUT: filter_subjects - string, filter by subjects quests (for example: "hashes,trivia" and etc. also look types)
+ * API_INPUT: open - boolean, filter by open quests (it not taked)
+ * API_INPUT: completed - boolean, filter by completed quest (finished quests)
+ * API_INPUT: subjects - string, filter by subjects quests (for example: "hashes,trivia" and etc. also look types)
  */
 
 $curdir = dirname(__FILE__);
-include_once ($curdir."/../api.lib/api.base.php");
-include_once ($curdir."/../api.lib/api.security.php");
-include_once ($curdir."/../api.lib/api.helpers.php");
-include_once ($curdir."/../api.lib/api.game.php");
-include_once ($curdir."/../../config/config.php");
+include_once ($curdir."/../../api.lib/api.base.php");
+include_once ($curdir."/../../api.lib/api.security.php");
+include_once ($curdir."/../../api.lib/api.helpers.php");
+include_once ($curdir."/../../api.lib/api.game.php");
+include_once ($curdir."/../../../config/config.php");
 
 
 $response = APIHelpers::startpage($config);
@@ -38,16 +37,15 @@ $conn = APIHelpers::createConnection($config);
 $response['result'] = 'ok';
 
 $response['status']['open'] = 0;
-$response['status']['current'] = 0;
 $response['status']['completed'] = 0;
 
-$response['filter']['open'] = APIHelpers::getParam('filter_open', true);
-$response['filter']['current'] = APIHelpers::getParam('filter_current', true);
-$response['filter']['completed'] = APIHelpers::getParam('filter_completed', false);
+$response['filter']['open'] = APIHelpers::getParam('open', true);
+$response['filter']['completed'] = APIHelpers::getParam('completed', false);
 
 $response['filter']['open'] = filter_var($response['filter']['open'], FILTER_VALIDATE_BOOLEAN);
-$response['filter']['current'] = filter_var($response['filter']['current'], FILTER_VALIDATE_BOOLEAN);
 $response['filter']['completed'] = filter_var($response['filter']['completed'], FILTER_VALIDATE_BOOLEAN);
+
+$response['filter']['name_contains'] = APIHelpers::getParam('name_contains', '');
 
 $response['gameid'] = APIGame::id();
 $response['userid'] = APISecurity::userid();
@@ -161,18 +159,22 @@ if (count($arrWhere_status) > 0)
 	$where_status = ' AND ('.implode(' OR ', $arrWhere_status).')';
 
 // filter by subjects
-$filter_subjects = getParam('filter_subjects', '');
+$filter_subjects = APIHelpers::getParam('subjects', '');
 $filter_subjects = explode(',', $filter_subjects);
 $arrWhere_subjects = array();
-foreach ($filter_subjects as $k)
-{
+foreach ($filter_subjects as $k){
 	if (strlen($k) > 0) {
 		$arrWhere_subjects[] = 'quest.subject = ?';
 		$params[] = $k;
 	}
 }
+		
 if (count($arrWhere_subjects) > 0)
 	$where_status .= ' AND ('.implode(' OR ', $arrWhere_subjects).')';
+
+$filter_name_contains = APIHelpers::getParam('name_contains', '');
+$params[] = '%'.$filter_name_contains.'%';
+$where_status .= ' AND quest.name LIKE ? ';
 
 $query = '
 			SELECT 

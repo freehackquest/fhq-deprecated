@@ -187,19 +187,6 @@ window.fhq.games = new (function(t) {
 
 window.fhq.quests = new (function(t) {
 	this.p = t;
-	this.list = function() {
-		var params = {};
-		var obj = this.p.sendPostRequest_Sync('api/quests/list.php', params);
-		var bRes = obj.result == "ok";
-		return bRes ? obj : obj.error;
-	};
-	this.get = function(questid) {
-		var params = {};
-		params.taskid = questid;
-		var obj = this.p.sendPostRequest_Sync('api/quests/get.php', params);
-		var bRes = obj.result == "ok";
-		return bRes ? obj.data : obj.error;
-	};
 	// return all information if you are admin
 	this.get_all = function(questid) {
 		var params = {};
@@ -215,23 +202,6 @@ window.fhq.quests = new (function(t) {
 		var obj = this.p.sendPostRequest_Sync('api/quests/delete.php', params);
 		var bRes = obj.result == "ok";
 		return bRes ? obj.data : obj.error;
-	};
-	this.take = function(questid) {
-		var params = {};
-		params.questid = questid;
-		var obj = this.p.sendPostRequest_Sync('api/quests/take.php', params);
-		var bRes = obj.result == "ok";
-		return bRes ? obj.data : obj.error;
-	};
-	this.pass = function(questid, answer) {
-		var params = {};
-		params.questid = questid;
-		params.answer = answer;
-		return $.ajax({
-			type: "POST",
-			url: 'api/quests/pass.php',
-			data: params
-		});
 	};
 	// insert quest if you are admin
 	this.insert = function(quest_uuid, name, short_text, text, score, min_score, subject, idauthor, author, answer, state, description_state) {
@@ -285,14 +255,89 @@ window.fhq.quests = new (function(t) {
 	};
 })(window.fhq);
 
+window.fhq.api.quests.quest = function(id){
+	var params = {};
+	params.taskid = id;
+	var d = $.Deferred();
+	$.ajax({
+		type: "POST",
+		url: 'api/quests/get/',
+		data: params
+	}).done(function(response){
+		if (response.result == 'ok') {
+			d.resolve(response);
+		}else{
+			d.reject(response);
+		}
+	}).fail(function(){
+		d.reject();
+	})
+
+	return d;
+}
+
+window.fhq.api.quests.statistics = function(id){
+	var params = {};
+	params.questid = id;
+	var d = $.Deferred();
+	$.ajax({
+		type: "POST",
+		url: 'api/quests/statistics/',
+		data: params
+	}).done(function(response){
+		if (response.result == 'ok') {
+			d.resolve(response);
+		}else{
+			d.reject(response);
+		}
+	}).fail(function(){
+		d.reject();
+	})
+
+	return d;
+}
+
+
+window.fhq.api.quests.pass = function(questid, answer){
+	var params = {};
+	params.questid = questid;
+	params.answer = answer;
+		
+	var d = $.Deferred();
+	$.ajax({
+		type: "POST",
+		url: 'api/quests/pass/',
+		data: params
+	}).done(function(response){
+		if (response.result == 'ok') {
+			d.resolve(response);
+		}else{
+			d.reject(response);
+		}
+	}).fail(function(){
+		d.reject();
+	})
+
+	return d;
+}
 
 window.fhq.api.quests.list = function(params){
 	params = params || {};
-	return $.ajax({
+	var d = $.Deferred();
+	$.ajax({
 		type: "POST",
-		url: 'api/quests/list.php',
+		url: 'api/quests/list/',
 		data: params
-	});
+	}).done(function(response){
+		if (response.result == 'ok') {
+			d.resolve(response);
+		}else{
+			d.reject(response);
+		}
+	}).fail(function(){
+		d.reject();
+	})
+	return d;
 };
 
 window.fhq.feedback = new (function(t) {
@@ -401,12 +446,33 @@ window.fhq.users = new (function(t) {
 window.fhq.statistics = new (function(t) {
 	this.p = t;
 	this.answerlist = function(params, callback) {
+		// TODO redesign
 		if (callback)
 			this.p.sendPostRequest_Async('api/statistics/answerlist.php', params, callback);
 		else
 			return this.p.sendPostRequest_Sync('api/statistics/answerlist.php', params);
 	};
 })(window.fhq);
+
+window.fhq.statistics.myanswers = function(questid){
+	var params = {};
+	params.questid = questid;
+	var d = $.Deferred();
+	$.ajax({
+		type: "POST",
+		url: 'api/statistics/user_answers/',
+		data: params
+	}).done(function(response){
+		if (response.result == 'ok') {
+			d.resolve(response);
+		}else{
+			d.reject();
+		}
+	}).fail(function(){
+		d.reject(0);
+	})
+	return d;
+}
 
 window.fhq.enums = null;
 

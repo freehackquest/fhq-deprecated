@@ -209,6 +209,7 @@ body {
 	border-bottom-right-radius: 15px;
 	opacity: 0.95;
 	z-index: 555;
+	text-align: left;
 }
 
 .fhq_btn_menu {
@@ -283,6 +284,8 @@ body {
 
 #btnmenu_user{
 	text-align: left;
+	float: right;
+	margin-right: 100px;
 }
 
 #btnmenu_user:hover .account-panel{
@@ -360,51 +363,55 @@ body {
 	background-image: url("../images/menu/users_150x150.png");
 }
 
-.questslist .admin .icon{
+.fhqleftlist .quests .icon{
+	background-image: url("../images/menu/quests_150x150.png");
+}
+
+.fhqleftlist .icon.admin {
 	background-image: url("../images/quests/admin.png");
 }
 
-.questslist .crypto .icon{
+.fhqleftlist .icon.crypto {
 	background-image: url("../images/quests/crypto.png");
 }
 
-.questslist .enjoy .icon{
+.fhqleftlist .enjoy.icon{
 	background-image: url("../images/quests/enjoy.png");
 }
 
-.questslist .forensics .icon{
+.fhqleftlist .icon.forensics{
 	background-image: url("../images/quests/forensics.png");
 }
 
-.questslist .hashes .icon{
+.fhqleftlist .icon.hashes{
 	background-image: url("../images/quests/hashes.png");
 }
 
-.questslist .network .icon{
+.fhqleftlist .icon.network{
 	background-image: url("../images/quests/network.png");
 }
 
-.questslist .ppc .icon{
+.fhqleftlist .icon.ppc{
 	background-image: url("../images/quests/ppc.png");
 }
 
-.questslist .recon .icon{
+.fhqleftlist .icon.recon{
 	background-image: url("../images/quests/recon.png");
 }
 
-.questslist .reverse .icon{
+.fhqleftlist .icon.reverse{
 	background-image: url("../images/quests/reverse.png");
 }
 
-.questslist .stego .icon{
+.fhqleftlist .icon.stego{
 	background-image: url("../images/quests/stego.png");
 }
 
-.questslist .trivia .icon{
+.fhqleftlist .icon.trivia{
 	background-image: url("../images/quests/trivia.png");
 }
 
-.questslist .web .icon{
+.fhqleftlist .icon.web{
 	background-image: url("../images/quests/web.png");
 }
 
@@ -446,10 +453,23 @@ body {
 	width: 270px;
 }
 
-.questitem .score{
+.quests .fhqleftitem .name {
+	width: 200px;
+}
+
+.quests .fhqleftitem.completed .name {
+	text-decoration: line-through;
+}
+
+.quests .fhqleftitem .score{
 	display: inline-block;
 	width: 50px;
 	text-align: right;
+	float: right;
+}
+
+.quests .fhqleftitem.completed .score{
+	text-decoration: line-through;
 }
 
 .questitem:hover , .toolitem:hover, .fhqleftitem:hover{
@@ -459,7 +479,7 @@ body {
 	width: 370px;
 }
 
-.questitem:hover .name, .toolitem:hover .name, .fhqleftitem:hover .name{
+.fhqleftitem:hover .name{
 	width: 370px;
 }
 
@@ -467,11 +487,12 @@ body {
 	width: 370px;
 }
 
-.fhqleftitem:hover{
-	width: 370px;
+.quests .fhqleftitem:hover .name{
+	width: 300px;
 }
 
-.fhqleftitem:hover .name{
+
+.fhqleftitem:hover{
 	width: 370px;
 }
 
@@ -561,12 +582,13 @@ pre {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
+    margin-right: 10px;
 }
 
 code, pre {
     padding: 0 3px 2px;
     font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
-    font-size: 12px;
+    font-size: 14px;
     color: #000000;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -598,7 +620,6 @@ select {
 
 select, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
     display: inline-block;
-    height: 26px;
     padding: 4px 6px;
     margin-bottom: 0px;
     font-size: 14px;
@@ -1109,8 +1130,172 @@ font.fhq_task {
 	padding: 2px;
 }
 
+.newquestinfo_header{
+	text-align: left;
+	padding-left: 50px;
+}
 
+.newquestinfo_header a:hover{
+	text-decoration: inherit;
+	border-bottom: 1px solid #c83025;
+}
 
+.newquestinfo_gamelogo{
+	display: inline-block;
+	height: 50px;
+	float: left;
+	margin-right: 15px;
+	margin-bottom: 15px;
+}
+
+.newquestinfo_gametitlequestid{
+	display: block;
+	height: 25px;
+}
+
+.newquestinfo_questname{
+	display: block;
+	height: 40px;
+	font: 12pt/10pt Arial;
+	font-size: 25px;
+	line-height: 25px;
+}
+
+.newquestinfo_controls{
+	text-align: left;
+	padding-left: 50px;
+}
+
+.newquestinfo_details{
+	text-align: left;
+	padding-left: 50px;
+}
+
+.newquestinfo_details_title{
+	font: 12pt/10pt Arial;
+	font-size: 20px;
+	line-height: 25px;
+	border-bottom: 1px dashed #3e3e3e;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.dark .newquestinfo_details_title{
+	border-color: #C8C8C8;
+}
+
+.newquestinfo-details-left{
+	display: inline-table;
+}
+
+.newquestinfo-details-right{
+	display: inline-table;
+	margin-left: 50px;
+}
+
+.newquestinfo-details-row{
+	display: table-row;
+}
+
+.newquestinfo-details-cell{
+	display: table-cell;
+	padding-right: 15px;
+	padding-bottom: 5px;
+}
+
+.newquestinfo_description{
+	text-align: left;
+	padding-left: 50px;
+}
+
+.newquestinfo_description_title{
+	font: 12pt/10pt Arial;
+	font-size: 20px;
+	line-height: 25px;
+	border-bottom: 1px dashed #3e3e3e;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.dark .newquestinfo_description_title{
+	border-color: #C8C8C8;
+}
+
+.newquestinfo_attachments{
+	text-align: left;
+	padding-left: 50px;
+}
+
+.newquestinfo_attachments_title{
+	font: 12pt/10pt Arial;
+	font-size: 20px;
+	line-height: 25px;
+	border-bottom: 1px dashed #3e3e3e;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.dark .newquestinfo_attachments_title{
+	border-color: #C8C8C8;
+}
+
+.newquestinfo_passquest{
+	text-align: left;
+	padding-left: 50px;
+}
+
+.newquestinfo_passquest_title{
+	font: 12pt/10pt Arial;
+	font-size: 20px;
+	line-height: 25px;
+	border-bottom: 1px dashed #3e3e3e;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+#quest_pass_error{
+	display: inline-block;
+	padding-left: 15px;
+}
+
+.dark .newquestinfo_passquest_title{
+	border-color: #C8C8C8;
+}
+
+.newquestinfo {
+	text-align: left;
+	padding-left: 50px;
+}
+
+.newquestinfo_title{
+	font: 12pt/10pt Arial;
+	font-size: 20px;
+	line-height: 25px;
+	border-bottom: 1px dashed #3e3e3e;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.newquestinfo_title.show{
+	background-image: url(../images/hide_20x20.png);
+	background-repeat: no-repeat;
+	cursor: pointer;
+	padding-left: 25px;
+	background-position: 0px 5px;
+}
+
+.newquestinfo_title.hide{
+	display: block;
+	background-image: url(../images/show_20x20.png);
+	background-repeat: no-repeat;
+	cursor: pointer;
+	padding-left: 25px;
+	background-position: 0px 5px;
+}
+
+.dark .newquestinfo_title{
+	border-color: #C8C8C8;
+}
 
 /*
 	darkstile

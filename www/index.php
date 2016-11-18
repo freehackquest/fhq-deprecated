@@ -40,7 +40,6 @@ if (isset($_SESSION['user']))
 		<script type="text/javascript" src="js/fhq_echo_head.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_modal_dialog.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_games.js?ver=1"></script>
-		<script type="text/javascript" src="js/fhq_quests.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_users.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_timer.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_updates.js?ver=1"></script>
