@@ -41,7 +41,7 @@ try {
 		
 		// this option must be moved to db
 		if (isset($config['mail']) && isset($config['mail']['allow']) && $config['mail']['allow'] == 'yes') {
-			APIMail::send($config, 'mrseakg@gmail.com', '', '', 'Feedback from freehackquest', $text, $error);
+			APIMail::send($config, $config['mail']['system_message_admin_email'], '', '', 'Feedback from freehackquest', $text, $error);
 		}
 		
 	} else {

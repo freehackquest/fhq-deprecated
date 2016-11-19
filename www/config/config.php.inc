@@ -17,7 +17,8 @@
 	$config['mail']['username'] = "test@gmail.com";
 	$config['mail']['password'] = "test";
 	$config['mail']['allow'] = 'yes';
-	
+	$config['mail']['system_message_admin_email'] = 'yourmailforfeedbacks@domain.com';
+
 	// configure registration
 	$config['registration'] = array();
 	$config['registration']['allow'] = 'yes';
