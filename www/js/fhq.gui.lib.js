@@ -910,6 +910,9 @@ function FHQGuiLib(api) {
 	this.processParams = function() {
 		if(fhq.containsPageParam("quests")){
 			fhq.ui.loadQuests();
+		} else if (fhq.containsPageParam("quest")){
+			fhq.ui.loadQuests();
+			fhq.ui.showQuest(fhq.pageParams["quest"]);
 		} else if(fhq.containsPageParam("questid")){
 			showQuest(fhq.pageParams["questid"]);
 		}else if(fhq.containsPageParam("userid")){
@@ -1913,6 +1916,7 @@ window.fhq.ui.showQuest = function(id){
 	$('.fhqrightinfo').html('Loading...');
 	fhq.api.quests.quest(id).done(function(response){
 		var q = response.data;
+		fhq.changeLocationState({quest: q.questid});
 		$('.fhqrightinfo').html('');
 		$('.fhqrightinfo').append(
 			'<div class="newquestinfo_header">'
@@ -1944,6 +1948,13 @@ window.fhq.ui.showQuest = function(id){
 				+ 'Comment:\n'
 			);
 		});
+		
+		$('.fhqrightinfo').append('<div class="newquestinfo"><br>'
+			+ '<script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>'
+			+ '<script src="//yastatic.net/share2/share.js"></script>'
+			+ '<div class="ya-share2" data-services="collections,vkontakte,facebook,odnoklassniki,moimir,gplus,twitter,blogger,reddit,linkedin,lj,viber,whatsapp,skype,telegram"></div>'
+			+ '</div>'
+		);
 		
 		$('.fhqrightinfo').append(
 			'<div class="newquestinfo_details">'
