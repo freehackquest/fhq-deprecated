@@ -20,6 +20,19 @@ bool CmdAddNewsHandler::accessAdmin(){
 	return true;
 }
 
+QString CmdAddNewsHandler::short_description(){
+	return "some short description";
+}
+
+QString CmdAddNewsHandler::description(){
+	return "some description";
+}
+
+QStringList CmdAddNewsHandler::errors(){
+	QStringList	list;
+	return list;
+}
+
 void CmdAddNewsHandler::handle(QWebSocket *pClient, IWebSocketServer *pWebSocketServer, QJsonObject obj){
 	UserToken *pUserToken = pWebSocketServer->getUserToken(pClient);
 	if(pUserToken == NULL){

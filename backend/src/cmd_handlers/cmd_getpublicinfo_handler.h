@@ -14,6 +14,9 @@ class CmdGetPublicInfoHandler : public ICmdHandler {
 		virtual bool accessUser();
 		virtual bool accessTester();
 		virtual bool accessAdmin();
+		virtual QString short_description();
+		virtual QString description();
+		virtual QStringList errors();
 		virtual void handle(QWebSocket *pClient, IWebSocketServer *pWebSocketServer, QJsonObject obj);
 };
 

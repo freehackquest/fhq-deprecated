@@ -20,6 +20,19 @@ bool CmdHelloHandler::accessAdmin(){
 	return true;
 }
 
+QString CmdHelloHandler::short_description(){
+	return "some short description";
+}
+
+QString CmdHelloHandler::description(){
+	return "some description";
+}
+
+QStringList CmdHelloHandler::errors(){
+	QStringList	list;
+	return list;
+}
+
 void CmdHelloHandler::handle(QWebSocket *pClient, IWebSocketServer *pWebSocketServer, QJsonObject obj){
 	QJsonObject jsonData;
 	jsonData["cmd"] = QJsonValue(cmd());

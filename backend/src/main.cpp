@@ -14,7 +14,7 @@
 #include <QFile>
 #include <QString>
 #include "websocketserver.h"
-#include "cmd_handlers/create_cmd_handlers.h"
+#include "exportapi.h"
 
 int main(int argc, char** argv) {
 	QCoreApplication a(argc, argv);
@@ -39,20 +39,8 @@ int main(int argc, char** argv) {
     bool exportApi = parser.isSet(exportApiOption);
     
     if(exportApi){
-		qDebug().nospace().noquote() << "# FreeHackQuest API (WebSocket port 1234)\n";
-		QMap<QString, ICmdHandler *> pHandlers;
-		create_cmd_handlers(pHandlers);
-		foreach( QString key, pHandlers.keys()){
-			ICmdHandler *pHandler = pHandlers.value(key);
-			qDebug().nospace().noquote() << "## Command `" << pHandler->cmd() << "`\n";
-			
-			qDebug().nospace().noquote() << "### Access\n";
-			qDebug().nospace().noquote() << " * " << (pHandler->accessUnauthorized() ? "Allowed" : "Denied") << " access unauthorized requests";
-			qDebug().nospace().noquote() << " * " << (pHandler->accessUser() ? "Allowed" : "Denied") << " access user requests";
-			qDebug().nospace().noquote() << " * " << (pHandler->accessTester() ? "Allowed" : "Denied") << " access tester requests";
-			qDebug().nospace().noquote() << " * " << (pHandler->accessAdmin() ? "Allowed" : "Denied") << " access admin requests";
-			qDebug().nospace().noquote() << "\n";
-		}
+		ExportAPI exportApi;
+		exportApi.exporttocommandline();
 		return 0;
 	}
     

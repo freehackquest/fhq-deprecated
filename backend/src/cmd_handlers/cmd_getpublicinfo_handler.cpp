@@ -20,6 +20,19 @@ bool CmdGetPublicInfoHandler::accessAdmin(){
 	return true;
 }
 
+QString CmdGetPublicInfoHandler::short_description(){
+	return "some short description";
+}
+
+QString CmdGetPublicInfoHandler::description(){
+	return "some description";
+}
+
+QStringList CmdGetPublicInfoHandler::errors(){
+	QStringList	list;
+	return list;
+}
+
 void CmdGetPublicInfoHandler::handle(QWebSocket *pClient, IWebSocketServer *pWebSocketServer, QJsonObject obj){
 	QJsonObject jsonData;
 	jsonData["cmd"] = QJsonValue(cmd());

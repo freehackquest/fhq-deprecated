@@ -21,6 +21,19 @@ bool CmdUpdateDatabaseHandler::accessAdmin(){
 	return true;
 }
 
+QString CmdUpdateDatabaseHandler::short_description(){
+	return "some short description";
+}
+
+QString CmdUpdateDatabaseHandler::description(){
+	return "some description";
+}
+
+QStringList CmdUpdateDatabaseHandler::errors(){
+	QStringList	list;
+	return list;
+}
+
 void CmdUpdateDatabaseHandler::handle(QWebSocket *pClient, IWebSocketServer *pWebSocketServer, QJsonObject obj){
 	UserToken *pUserToken = pWebSocketServer->getUserToken(pClient);
 	

@@ -20,6 +20,19 @@ bool CmdSendLettersToSubscribersHandler::accessAdmin(){
 	return true;
 }
 
+QString CmdSendLettersToSubscribersHandler::short_description(){
+	return "some short description";
+}
+
+QString CmdSendLettersToSubscribersHandler::description(){
+	return "some description";
+}
+
+QStringList CmdSendLettersToSubscribersHandler::errors(){
+	QStringList	list;
+	return list;
+}
+
 void CmdSendLettersToSubscribersHandler::handle(QWebSocket *pClient, IWebSocketServer *pWebSocketServer, QJsonObject obj){
 	UserToken *pUserToken = pWebSocketServer->getUserToken(pClient);
 	if(pUserToken == NULL){

@@ -1,6 +1,11 @@
 #include "cmd_user_handler.h"
 #include <QJsonArray>
 
+
+CmdUserHandler::CmdUserHandler(){
+	m_sERR_NO_FOUND_UUID_FIELD = "Not found uuid field";
+}
+
 QString CmdUserHandler::cmd(){
 	return "user";
 }
@@ -21,6 +26,20 @@ bool CmdUserHandler::accessAdmin(){
 	return true;
 }
 
+QString CmdUserHandler::short_description(){
+	return "some short description";
+}
+
+QString CmdUserHandler::description(){
+	return "some description";
+}
+
+QStringList CmdUserHandler::errors(){
+	QStringList	list;
+	list << m_sERR_NO_FOUND_UUID_FIELD;
+	return list;
+}
+
 void CmdUserHandler::handle(QWebSocket *pClient, IWebSocketServer *pWebSocketServer, QJsonObject obj){
 	UserToken *pUserToken = pWebSocketServer->getUserToken(pClient);
 	
@@ -35,7 +54,7 @@ void CmdUserHandler::handle(QWebSocket *pClient, IWebSocketServer *pWebSocketSer
 	}
 
 	if(!obj.contains("uuid")){
-		pWebSocketServer->sendMessageError(pClient, cmd(), "Not found uuid field");
+		pWebSocketServer->sendMessageError(pClient, cmd(), m_sERR_NO_FOUND_UUID_FIELD);
 		return;
 	}
 

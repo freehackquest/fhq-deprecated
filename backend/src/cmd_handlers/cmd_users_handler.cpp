@@ -21,6 +21,19 @@ bool CmdUsersHandler::accessAdmin(){
 	return true;
 }
 
+QString CmdUsersHandler::short_description(){
+	return "some short description";
+}
+
+QString CmdUsersHandler::description(){
+	return "some description";
+}
+
+QStringList CmdUsersHandler::errors(){
+	QStringList	list;
+	return list;
+}
+
 void CmdUsersHandler::handle(QWebSocket *pClient, IWebSocketServer *pWebSocketServer, QJsonObject obj){
 	UserToken *pUserToken = pWebSocketServer->getUserToken(pClient);
 	
