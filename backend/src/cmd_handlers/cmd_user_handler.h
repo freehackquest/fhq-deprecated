@@ -10,7 +10,6 @@
 class CmdUserHandler : public ICmdHandler {
 	
 	public:
-		CmdUserHandler();
 		virtual QString cmd();
 		virtual bool accessUnauthorized();
 		virtual bool accessUser();
@@ -22,7 +21,6 @@ class CmdUserHandler : public ICmdHandler {
 		virtual void handle(QWebSocket *pClient, IWebSocketServer *pWebSocketServer, QJsonObject obj);
 		
 	private:
-		QString m_sERR_NO_FOUND_UUID_FIELD;
 };
 
 #endif // CMD_USER_HANDLER_H

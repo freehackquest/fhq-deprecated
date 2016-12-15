@@ -17,6 +17,8 @@ SOURCES += \
 	src/websocketserver.cpp \
 	src/usertoken.cpp \
 	src/exportapi.cpp \
+	src/errors.cpp \
+	src/error.cpp \
 	src/cmd_handlers/create_cmd_handlers.cpp \
 	src/cmd_handlers/cmd_addnews_handler.cpp \
 	src/cmd_handlers/cmd_getpublicinfo_handler.cpp \
@@ -34,6 +36,8 @@ HEADERS += \
 	src/websocketserver.h \
 	src/usertoken.h \
 	src/exportapi.h \
+	src/errors.h \
+	src/error.h \
 	src/cmd_handlers/create_cmd_handlers.h \
 	src/cmd_handlers/cmd_addnews_handler.h \
 	src/cmd_handlers/cmd_getpublicinfo_handler.h \

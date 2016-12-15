@@ -13,6 +13,7 @@
 
 #include "interfaces/icmdhandler.h"
 #include "interfaces/iwebsocketserver.h"
+#include "error.h"
 
 // QT_FORWARD_DECLARE_CLASS(QWebSocketServer)
 // QT_FORWARD_DECLARE_CLASS(QWebSocket)
@@ -28,7 +29,7 @@ class WebSocketServer : public QObject, public IWebSocketServer {
 		// IWebSocketServer
 		virtual int getConnectedUsers();
 		virtual void sendMessage(QWebSocket *pClient, QJsonObject obj);
-		virtual void sendMessageError(QWebSocket *pClient, QString cmd, QString errorMsg);
+		virtual void sendMessageError(QWebSocket *pClient, QString cmd, Error error);
 		virtual void sendToAll(QJsonObject obj);
 		virtual QSqlDatabase *database();
 		virtual void setUserToken(QWebSocket *pClient, UserToken *pUserToken);

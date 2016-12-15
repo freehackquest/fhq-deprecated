@@ -227,11 +227,12 @@ void WebSocketServer::sendMessage(QWebSocket *pClient, QJsonObject obj){
 
 // ---------------------------------------------------------------------
 
-void WebSocketServer::sendMessageError(QWebSocket *pClient, QString cmd, QString errorMsg){
+void WebSocketServer::sendMessageError(QWebSocket *pClient, QString cmd, Error error){
 	QJsonObject jsonData;
 	jsonData["cmd"] = QJsonValue(cmd);
 	jsonData["result"] = QJsonValue("FAIL");
-	jsonData["error"] = QJsonValue(errorMsg);
+	jsonData["error"] = QJsonValue(error.message());
+	jsonData["code"] = QJsonValue(error.codeError());
 	this->sendMessage(pClient, jsonData);
 	return;
 }

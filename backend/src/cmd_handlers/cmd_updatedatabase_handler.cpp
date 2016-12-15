@@ -22,11 +22,11 @@ bool CmdUpdateDatabaseHandler::accessAdmin(){
 }
 
 QString CmdUpdateDatabaseHandler::short_description(){
-	return "some short description";
+	return "Updating database";
 }
 
 QString CmdUpdateDatabaseHandler::description(){
-	return "some description";
+	return "The algorithm will check the version of the database structure and update if necessary";
 }
 
 QStringList CmdUpdateDatabaseHandler::errors(){
@@ -55,28 +55,9 @@ void CmdUpdateDatabaseHandler::handle(QWebSocket *pClient, IWebSocketServer *pWe
 		return;
 	}
 
-	QStringList filters;
-	QMap<QString,QString> filter_values;
-
-	if(obj.contains("filter_text")){
-		QString text = obj["filter_text"].toString().trimmed();
-		if(text != ""){
-			filters << "(email LIKE :email OR nick LIKE :nick)";
-			filter_values[":email"] = "%" + text + "%";
-			filter_values[":nick"] = "%" + text + "%";
-		}
-	}
-	if(obj.contains("filter_role")){
-		QString role = obj["filter_role"].toString().trimmed();
-		if(role != ""){
-			filters << "role = :role";
-			filter_values[":role"] = role;
-		}
-	}
-
-
-	QJsonArray users;
+	/*QJsonArray users;
 	QSqlDatabase db = *(pWebSocketServer->database());
+	
 	QSqlQuery query(db);
 	QString where = filters.join(" AND "); 
 	if(where.length() > 0){
@@ -105,5 +86,5 @@ void CmdUpdateDatabaseHandler::handle(QWebSocket *pClient, IWebSocketServer *pWe
 	jsonData["cmd"] = QJsonValue(cmd());
 	jsonData["result"] = QJsonValue("DONE");
 	jsonData["data"] = users;
-	pWebSocketServer->sendMessage(pClient, jsonData);
+	pWebSocketServer->sendMessage(pClient, jsonData);*/
 }
