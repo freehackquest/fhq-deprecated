@@ -145,3 +145,15 @@ window.fhq.ws.user = function(params){
 	params.cmd = 'user';
 	return fhq.ws.send(params);
 }
+
+window.fhq.ws.updatedatabase = function(params){
+	params = params || {};
+	params.cmd = 'updatedatabase';
+	return fhq.ws.send(params);
+}
+
+window.fhq.ws.addhint = function(params){
+	params = params || {};
+	params.cmd = 'addhint';
+	return fhq.ws.send(params);
+}

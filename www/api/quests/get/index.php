@@ -115,7 +115,7 @@ try {
 		);
 		$response['quest'] = $row['idquest'];
 		$response['gameid'] = $row['gameid'];
-
+		$response['data']['hints'] = array('TODO1','TODO2','TODO3');
 
 		$response['data']['files'] = array();
 		$stmt_files = $conn->prepare('select * from quests_files WHERE questid = ?');
