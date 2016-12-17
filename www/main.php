@@ -41,7 +41,6 @@ if (!isset($_SESSION['user']))
 		<script type="text/javascript" src="js/fhq_games.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_users.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_timer.js?ver=1"></script>
-		<script type="text/javascript" src="js/fhq_updates.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_events.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_stats.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_feedback.js?ver=1"></script>
@@ -262,7 +261,7 @@ if (!isset($_SESSION['user']))
 							<div class="fhq-simple-btn" onclick="createPageUsers(); updateUsers();">Users</div>
 							<div class="fhq-simple-btn" onclick="fhq.ui.loadUsers()">Users 2</div>
 							<div class="fhq-simple-btn" onclick="createPageAnswerList(); updateAnswerList();">Answer List</div>
-							<div class="fhq-simple-btn" onclick="installUpdates();">Install Updates</div>
+							<div class="fhq-simple-btn" onclick="fhq.ui.updatedatabase();">Update database</div>
 						<?php } ?>
 					</div>
 				</div>

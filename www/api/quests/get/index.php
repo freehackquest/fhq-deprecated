@@ -115,7 +115,16 @@ try {
 		);
 		$response['quest'] = $row['idquest'];
 		$response['gameid'] = $row['gameid'];
-		$response['data']['hints'] = array('TODO1','TODO2','TODO3');
+		
+		$response['data']['hints'] = array();
+		$q_hints = $conn->prepare('SELECT * FROM quests_hints WHERE questid=?');
+		$q_hints->execute(array(intval($questid)));
+		while ($row_hint = $q_hints->fetch()){
+			$response['data']['hints'][] = array(
+				'hintid' => $row_hint['id'],
+				'text' => $row_hint['text'],
+			);
+		}
 
 		$response['data']['files'] = array();
 		$stmt_files = $conn->prepare('select * from quests_files WHERE questid = ?');

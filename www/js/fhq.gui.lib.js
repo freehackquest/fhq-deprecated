@@ -2040,7 +2040,8 @@ window.fhq.ui.showQuest = function(id){
 			+ '<div class="newquestinfo_title hide" id="quest_show_hints">' + fhq.t('Hints') + '</div>'
 			+ '<div id="newquestinfo_hints" style="display: none;">';
 		for(var h in q.hints){
-			var s = '<div>' + q.hints[h]  + (perm_edit ? ' <div class="fhqbtn" id="quest_deletehint">' + fhq.t('Delete') + '</div>' : '') + '</div>';
+			var hint = q.hints[h];
+			var s = '<div>' + hint.text + (perm_edit ? ' <div class="fhqbtn" id="quest_deletehint" hintid="' + hint.hintid + '">' + fhq.t('Delete') + '</div>' : '') + '</div>';
 			hints += s;
 		}
 		hints += (perm_edit ? '<div><input type="text" id="quest_addhinttext"/> <div class="fhqbtn" id="quest_addhint">' + fhq.t('Add') + '</div></div>' : '');
@@ -2188,6 +2189,22 @@ window.fhq.ui.showQuest = function(id){
 			showModalDialog(content);
 		}
 	);
+}
+
+window.fhq.ui.updatedatabase = function(){
+	fhq.changeLocationState({updatedatabase: ''});
+	$('#content_page').html('Updating database...');
+	fhq.ws.updatedatabase().done(function(response){
+		var t = '<div>Completed (last version: ' + response.last_version + ')</div><br>';
+		for(var i in response.installed_updates){
+			var u = response.installed_updates[i];
+			t += '<div>Installed ' + u.from_version + ' => ' + u.version + ' (' + u.name + ')</div>';
+		}
+		$('#content_page').html(t);
+		
+	}).fail(function(){
+		$('#content_page').html('Updating database failed');
+	})
 }
 
 window.fhq.ui.updateMyAnswers = function(questid){
