@@ -24,3 +24,8 @@ Error Errors::NotFoundUUIDField(){
 	Error error(1005, "Not found uuid field");
 	return error;
 }
+
+Error Errors::LostDatabaseConnection(){
+	Error error(1006, "Lost Database Connection");
+	return error;
+}

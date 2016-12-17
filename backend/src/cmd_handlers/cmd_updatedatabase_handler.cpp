@@ -1,5 +1,7 @@
 #include "cmd_updatedatabase_handler.h"
 #include <QJsonArray>
+#include <QSqlError>
+#include "../updates/create_list_updates.h"
 
 QString CmdUpdateDatabaseHandler::cmd(){
 	return "updatedatabase";
@@ -31,6 +33,8 @@ QString CmdUpdateDatabaseHandler::description(){
 
 QStringList CmdUpdateDatabaseHandler::errors(){
 	QStringList	list;
+	list << Errors::NotAuthorizedRequest().message();
+	list << Errors::AllowedOnlyForAdmin().message();
 	return list;
 }
 
@@ -38,53 +42,73 @@ void CmdUpdateDatabaseHandler::handle(QWebSocket *pClient, IWebSocketServer *pWe
 	UserToken *pUserToken = pWebSocketServer->getUserToken(pClient);
 	
 	if(pUserToken == NULL){
-		QJsonObject jsonData;
-		jsonData["cmd"] = QJsonValue(cmd());
-		jsonData["result"] = QJsonValue("FAIL");
-		jsonData["error"] = QJsonValue("Not authorized request");
-		pWebSocketServer->sendMessage(pClient, jsonData);
+		pWebSocketServer->sendMessageError(pClient, cmd(), Errors::NotAuthorizedRequest());
 		return;
 	}
 
 	if(!pUserToken->isAdmin()){
-		QJsonObject jsonData;
-		jsonData["cmd"] = QJsonValue(cmd());
-		jsonData["result"] = QJsonValue("FAIL");
-		jsonData["error"] = QJsonValue("Allowed only for admin");
-		pWebSocketServer->sendMessage(pClient, jsonData);
+		pWebSocketServer->sendMessageError(pClient, cmd(), Errors::AllowedOnlyForAdmin());
 		return;
 	}
 
-	/*QJsonArray users;
 	QSqlDatabase db = *(pWebSocketServer->database());
-	
+
 	QSqlQuery query(db);
-	QString where = filters.join(" AND "); 
-	if(where.length() > 0){
-		where = "WHERE " + where;
-	}
-	query.prepare("SELECT * FROM users " + where + " ORDER BY dt_last_login DESC");
-	foreach(QString key, filter_values.keys() ){
-		query.bindValue(key, filter_values.value(key));
-	}
+	query.prepare("SELECT * FROM updates ORDER BY id ASC");
 	query.exec();
+	QString last_version;
 	while (query.next()) {
 		QSqlRecord record = query.record();
-		int userid = record.value("id").toInt();
-		QString uuid = record.value("uuid").toString();
-		QString email = record.value("email").toString();
-		QString nick = record.value("nick").toString();
-		QJsonObject user;
-		user["id"] = userid;
-		user["uuid"] = uuid;
-		user["nick"] = nick;
-		user["email"] = email;
-		users.push_back(user);
+		int updateid = record.value("id").toInt();
+		QString from_version = record.value("from_version").toString();
+		QString version = record.value("version").toString();
+		QString name = record.value("name").toString();
+		QString description = record.value("description").toString();
+		QString result = record.value("result").toString();
+		int userid = record.value("userid").toInt();
+		last_version = version;
+	}
+
+	qDebug() << "last_version:" << last_version;
+	QVector<IUpdate *> vUpdates;
+	create_list_updates(vUpdates);
+
+	QJsonArray installedUpdates;
+
+	bool bHasUpdates = true;
+	while(bHasUpdates){
+		bHasUpdates = false;
+		for(int i = 0; i < vUpdates.size(); i++){
+			IUpdate* pUpdate = vUpdates[i];
+			if(last_version == pUpdate->from_version()){
+				QJsonObject jsonUpdateData;
+				jsonUpdateData["from_version"] = pUpdate->from_version();
+				jsonUpdateData["version"] = pUpdate->version();
+				jsonUpdateData["name"] = pUpdate->name();
+				installedUpdates.push_back(jsonUpdateData);
+				last_version = pUpdate->version();
+				bHasUpdates = true;
+				pUpdate->update(db);
+				
+				QSqlQuery insert_query(db);
+				insert_query.prepare("INSERT INTO updates (from_version, version, name, description, result, userid, datetime_update) "
+					  "VALUES (:from_version, :version, :name, :description, :result, :userid, NOW())");
+				insert_query.bindValue(":from_version", pUpdate->from_version());
+				insert_query.bindValue(":version", pUpdate->version());
+				insert_query.bindValue(":name", pUpdate->name());
+				insert_query.bindValue(":description", pUpdate->description());
+				insert_query.bindValue(":result", "updated");
+				insert_query.bindValue(":userid", pUserToken->userid());
+				if(!insert_query.exec())
+					qDebug() << "[ERROR] sql error: " << insert_query.lastError();
+			}
+		}
 	}
 
 	QJsonObject jsonData;
 	jsonData["cmd"] = QJsonValue(cmd());
 	jsonData["result"] = QJsonValue("DONE");
-	jsonData["data"] = users;
-	pWebSocketServer->sendMessage(pClient, jsonData);*/
+	jsonData["last_version"] = QJsonValue(last_version);
+	jsonData["installed_updates"] = installedUpdates;
+	pWebSocketServer->sendMessage(pClient, jsonData);
 }

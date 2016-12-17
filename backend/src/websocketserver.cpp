@@ -248,6 +248,19 @@ void WebSocketServer::sendToAll(QJsonObject obj){
 // ---------------------------------------------------------------------
 
 QSqlDatabase *WebSocketServer::database(){
+	
+	if(!m_pDatabase->isOpen()){
+		qDebug() << "Database is not open";
+	}
+	
+	if(m_pDatabase->isOpenError()){
+		qDebug() << "Database connection has error";
+	}
+	
+	if(!m_pDatabase->isValid()){
+		qDebug() << "Database connection invalid";
+	}
+	
 	return m_pDatabase;
 }
 

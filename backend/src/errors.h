@@ -11,7 +11,7 @@ class Errors {
 		static Error NotImplementedYet();
 		static Error NotFoundUserByUUID(QString uuid);
 		static Error NotFoundUUIDField();
-		
+		static Error LostDatabaseConnection();
 	private:
 		
 };
