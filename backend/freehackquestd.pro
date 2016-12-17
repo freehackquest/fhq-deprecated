@@ -30,6 +30,7 @@ SOURCES += \
 	src/cmd_handlers/cmd_updatedatabase_handler.cpp \
 	src/updates/create_list_updates.cpp \
 	src/updates/update0067.cpp \
+	src/updates/update0068.cpp \
 
 HEADERS += \
 	src/smtp/smtp.h \
@@ -52,3 +53,4 @@ HEADERS += \
 	src/cmd_handlers/cmd_updatedatabase_handler.h \
 	src/updates/create_list_updates.h \
 	src/updates/update0067.h \
+	src/updates/update0068.h \
