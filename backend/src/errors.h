@@ -12,6 +12,11 @@ class Errors {
 		static Error NotFoundUserByUUID(QString uuid);
 		static Error NotFoundUUIDField();
 		static Error LostDatabaseConnection();
+		static Error QuestIDMustBeInteger();
+		static Error QuestIDMustBeNotZero();
+		static Error HintIDMustBeInteger();
+		static Error HintIDMustBeNotZero();
+		
 	private:
 		
 };

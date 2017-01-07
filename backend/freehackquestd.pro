@@ -20,9 +20,12 @@ SOURCES += \
 	src/errors.cpp \
 	src/error.cpp \
 	src/cmd_handlers/create_cmd_handlers.cpp \
+	src/cmd_handlers/cmd_addhint_handler.cpp \
 	src/cmd_handlers/cmd_addnews_handler.cpp \
+	src/cmd_handlers/cmd_deletehint_handler.cpp \
 	src/cmd_handlers/cmd_getpublicinfo_handler.cpp \
 	src/cmd_handlers/cmd_hello_handler.cpp \
+	src/cmd_handlers/cmd_hints_handler.cpp \
 	src/cmd_handlers/cmd_login_handler.cpp \
 	src/cmd_handlers/cmd_send_letters_to_subscribers_handler.cpp \
 	src/cmd_handlers/cmd_users_handler.cpp \
@@ -43,9 +46,12 @@ HEADERS += \
 	src/errors.h \
 	src/error.h \
 	src/cmd_handlers/create_cmd_handlers.h \
+	src/cmd_handlers/cmd_addhint_handler.h \
 	src/cmd_handlers/cmd_addnews_handler.h \
+	src/cmd_handlers/headers/cmd_deletehint_handler.h \
 	src/cmd_handlers/cmd_getpublicinfo_handler.h \
 	src/cmd_handlers/cmd_hello_handler.h \
+	src/cmd_handlers/headers/cmd_hints_handler.h \
 	src/cmd_handlers/cmd_login_handler.h \
 	src/cmd_handlers/cmd_send_letters_to_subscribers_handler.h \
 	src/cmd_handlers/cmd_users_handler.h \

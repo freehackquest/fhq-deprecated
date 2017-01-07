@@ -29,3 +29,23 @@ Error Errors::LostDatabaseConnection(){
 	Error error(1006, "Lost Database Connection");
 	return error;
 }
+
+Error Errors::QuestIDMustBeInteger(){
+	Error error(1007, "Parameter 'questid' must be integer");
+	return error;
+}
+
+Error Errors::QuestIDMustBeNotZero(){
+	Error error(1008, "Parameter 'questid' must be not zero");
+	return error;
+}
+
+Error Errors::HintIDMustBeInteger(){
+	Error error(1009, "Parameter 'hintid' must be integer");
+	return error;
+}
+
+Error Errors::HintIDMustBeNotZero(){
+	Error error(1010, "Parameter 'hintid' must be not zero");
+	return error;
+}
