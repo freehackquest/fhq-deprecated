@@ -1916,7 +1916,7 @@ window.fhq.ui.refreshHints = function(questid, hints, perm_edit){
 	var result = "";
 	for(var h in hints){
 		var hint = hints[h];
-		result += '<div>' + hint.text + (perm_edit ? ' <div class="fhqbtn deletehint" hintid="' + hint.hintid + '">' + fhq.t('Delete') + '</div>' : '') + '</div>';
+		result += '<div>' + $('<div/>').text(hint.text).html() + (perm_edit ? ' <div class="fhqbtn deletehint" hintid="' + hint.hintid + '">' + fhq.t('Delete') + '</div>' : '') + '</div>';
 	}
 	result += (perm_edit ? '<div><input type="text" id="quest_addhinttext"/> <div class="fhqbtn" id="quest_addhint">' + fhq.t('Add') + '</div></div>' : '');
 
