@@ -1914,9 +1914,11 @@ function formEditQuest(id)
 
 window.fhq.ui.refreshHints = function(questid, hints, perm_edit){
 	var result = "";
+	var i = 1;
 	for(var h in hints){
 		var hint = hints[h];
-		result += '<div>' + $('<div/>').text(hint.text).html() + (perm_edit ? ' <div class="fhqbtn deletehint" hintid="' + hint.hintid + '">' + fhq.t('Delete') + '</div>' : '') + '</div>';
+		result += '<div><b>Hint ' + i + ':</b> ' + $('<div/>').text(hint.text).html() + (perm_edit ? ' <div class="fhqbtn deletehint" hintid="' + hint.hintid + '">' + fhq.t('Delete') + '</div>' : '') + '</div>';
+		i++;
 	}
 	result += (perm_edit ? '<div><input type="text" id="quest_addhinttext"/> <div class="fhqbtn" id="quest_addhint">' + fhq.t('Add') + '</div></div>' : '');
 
