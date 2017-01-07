@@ -1569,8 +1569,12 @@ body.dark
 	white-space: nowrap;
 	border: 1px solid #3e3e3e;
 	transition: right 1.0s, bottom 0.5s;
-	-webkit-transition: right 1.0s, bottom 0.5s;
+	-webkit-transition: right 1.0s, bottom 0.5s, width 0.5s;
 	cursor: url("../images/cursor/delete_dark.png"), auto;
+}
+
+.message_chat:hover{
+	width: 500px;
 }
 
 .dark .message_chat {

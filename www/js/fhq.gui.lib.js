@@ -2346,6 +2346,9 @@ window.fhq.ui.feedbackDialogSend = function(){
 window.fhq.ui.initChatForm = function(){
 	$("#sendchatmessage_submit").unbind().bind('click', function(){
 		var text = $('#sendchatmessage_text').val();
+		if(text.trim() == ""){
+			return;
+		}
 		$('#sendchatmessage_text').val('');
 		fhq.ws.sendChatMessage({type: 'chat', message: text}); // async
 	});
@@ -2354,6 +2357,9 @@ window.fhq.ui.initChatForm = function(){
 		if ( event.which == 13 ) {
 			event.preventDefault();
 			var text = $('#sendchatmessage_text').val();
+			if(text.trim() == ""){
+				return;
+			}
 			$('#sendchatmessage_text').val('');
 			fhq.ws.sendChatMessage({type: 'chat', message: text}); // async
 		}
