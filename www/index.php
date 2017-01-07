@@ -60,6 +60,7 @@ if (isset($_SESSION['user']))
 				fhqgui.applyColorScheme();
 				fhq.ws.setWSState(fhq.ws.getWSState()); // Update state of WS
 				fhqgui.loadTopPanel();
+				fhq.ui.initChatForm();
 
 				$("#btnfilter").hide();
 				$("#btnmenu_game").hide();
@@ -249,7 +250,11 @@ if (isset($_SESSION['user']))
 				</center>
 			</div>
 
-
+			<div class="sendchatmessage-form">
+				<input id="sendchatmessage_text" type="text">
+				<div id="sendchatmessage_submit" class="sendchatmessage-submit"></div>
+			</div>
+			
 			<table cellspacing=10px cellpadding=10px width="100%" height="100%">
 				<tr>
 					<td colspan=2 align=left valign=top height=85px></td>

@@ -1551,7 +1551,7 @@ body.dark
     background: #3e3e3e;
 }
 
-.message_news {
+.message_chat {
 	background-color: #e4e4e4;
 	position: fixed;
 	z-index: 100;
@@ -1573,8 +1573,49 @@ body.dark
 	cursor: url("../images/cursor/delete_dark.png"), auto;
 }
 
-.dark .message_news {
+.dark .message_chat {
 	background-color: #3e3e3e;
 	cursor: url("../images/cursor/delete_light.png"), auto;
 	border: 1px solid #e4e4e4;
+}
+
+.message-chat-user{
+	display: block;
+	position: absolute;
+	margin-top: -35px;
+	font-size: 12px;
+}
+
+.sendchatmessage-form {
+	opacity: 0.95;
+	border-radius: 10px;
+	position: fixed;
+	bottom: 50px;
+	z-index: 100;
+	right: 25px;
+	background-color: #e4e4e4;
+	border: 1px solid #3e3e3e;
+	padding: 10px;
+	width: 250px;
+}
+
+.dark .sendchatmessage-form{
+	background-color: #3e3e3e;
+	border: 1px solid #e4e4e4;
+}
+
+.sendchatmessage-form input {
+	margin-top: -18px;
+	width: 200px;
+}
+
+.sendchatmessage-submit {
+	background-image: url("../images/menu/chat_150x150.png");
+	height: 30px;
+	width: 30px;
+	display: inline-block;
+	background-repeat: no-repeat;
+	background-size: 30px 30px;
+	cursor: pointer;
+	margin-left: 10px;
 }

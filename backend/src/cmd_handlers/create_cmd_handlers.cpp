@@ -1,6 +1,5 @@
 #include "create_cmd_handlers.h"
 #include "cmd_addhint_handler.h"
-#include "cmd_addnews_handler.h"
 #include "headers/cmd_deletehint_handler.h"
 #include "cmd_getpublicinfo_handler.h"
 #include "cmd_hello_handler.h"
@@ -10,13 +9,13 @@
 #include "cmd_users_handler.h"
 #include "cmd_user_handler.h"
 #include "cmd_updatedatabase_handler.h"
+#include "headers/cmd_sendchatmessage_handler.h"
 
 void create_cmd_handlers(QMap<QString, ICmdHandler *> &pHandlers){
 	QVector<ICmdHandler *> v;
 	v.push_back(new CmdHelloHandler());
 	v.push_back(new CmdLoginHandler());
 	v.push_back(new CmdAddHintHandler());
-	v.push_back(new CmdAddNewsHandler());
 	v.push_back(new CmdDeleteHintHandler());
 	v.push_back(new CmdHintsHandler());
 	v.push_back(new CmdGetPublicInfoHandler());
@@ -24,6 +23,7 @@ void create_cmd_handlers(QMap<QString, ICmdHandler *> &pHandlers){
 	v.push_back(new CmdUsersHandler());
 	v.push_back(new CmdUserHandler());
 	v.push_back(new CmdUpdateDatabaseHandler());
+	v.push_back(new CmdSendChatMessageHandler());
 
 	for(int i = 0; i < v.size(); i++){
 		QString cmd = v[i]->cmd();

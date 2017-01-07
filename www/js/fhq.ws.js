@@ -3,8 +3,8 @@ if(!window.fhq.ws) window.fhq.ws = {};
 
 // WebSocket protocol
 
-window.fhq.ws.handlerReceivedNews = function(response){
-	fhq.handlerReceivedNews(response);
+window.fhq.ws.handlerReceivedChatMessage = function(response){
+	fhq.handlerReceivedChatMessage(response);
 };
 window.fhq.ws.listeners = {}
 window.fhq.ws.addListener = function(cmd, d){
@@ -24,8 +24,8 @@ fhq.ws.handleCommand = function(response){
 		}
 		// clean listeners
 		fhq.ws.listeners.hello = [];
-	}else if(response.cmd == "news"){
-		fhq.ws.handlerReceivedNews(response);
+	}else if(response.cmd == "chat"){
+		fhq.ws.handlerReceivedChatMessage(response);
 	}else{
 		console.error("Not found handler for '" + response.cmd + "'");
 	}
@@ -112,9 +112,15 @@ window.fhq.ws.getPublicInfo = function(){
 	});
 }
 
-window.fhq.ws.addNews = function(type, message){
+window.fhq.ws.sendChatMessage = function(params){
+	params = params || {};
+	params.cmd = 'sendchatmessage';
+	return fhq.ws.send(params);
+}
+
+window.fhq.ws.sendMessageToAll = function(type, message){
 	return fhq.ws.send({
-		'cmd': 'addnews',
+		'cmd': 'sendmessagetoall',
 		'type': type,
 		'message': message
 	});

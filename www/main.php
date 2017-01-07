@@ -65,6 +65,8 @@ if (!isset($_SESSION['user']))
 						fhqgui.setDarkColorScheme();
 					}
 				});
+				
+				fhq.ui.initChatForm();
 			});
 		</script>
 
@@ -267,7 +269,10 @@ if (!isset($_SESSION['user']))
 				</div>
 				
 			</div>
-
+			<div class="sendchatmessage-form">
+				<input id="sendchatmessage_text" type="text">
+				<div id="sendchatmessage_submit" class="sendchatmessage-submit"></div>
+			</div>
 			<table cellspacing=10px cellpadding=10px width="100%" height="100%">
 				<tr>
 					<td align=left valign=top height=85px></td>

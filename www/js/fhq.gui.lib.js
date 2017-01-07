@@ -881,7 +881,7 @@ function FHQGuiLib(api) {
 		for(var t in self.showedMessages){
 			var id = self.showedMessages[t];
 			count--;
-			var bottom = (50 + count*60) + 'px';
+			var bottom = (115 + count*60) + 'px';
 			$('#' + id).css({
 				'bottom' : bottom,
 				'right': '25px'
@@ -889,15 +889,17 @@ function FHQGuiLib(api) {
 		}
 	}
 
-	fhq.handlerReceivedNews = function(response) {
-		self.showMessageNews(response.message);
+	fhq.handlerReceivedChatMessage = function(response) {
+		self.showChatMessage(response.message, response.user);
 	}
 
-	this.showMessageNews = function(m){
+	this.showChatMessage = function(m,u){
 		self.messageLastId++;
 		var id = 'message' + self.messageLastId;
 		self.showedMessages.push(id);
-		var newel = $( '<div id="' + id + '" class="message_news">' + m + '</div>');
+		m = $('<div/>').text(m).html();
+		u = $('<div/>').text(u).html();
+		var newel = $( '<div id="' + id + '" class="message_chat">' + m  + '<div class="message-chat-user">' + u + '</div></div>');
 		$( "body" ).append( newel );
 		newel.bind('click', function(){
 			$( "#" + id).remove();
@@ -2338,6 +2340,24 @@ window.fhq.ui.feedbackDialogSend = function(){
 		}
 	})
 	
+}
+
+
+window.fhq.ui.initChatForm = function(){
+	$("#sendchatmessage_submit").unbind().bind('click', function(){
+		var text = $('#sendchatmessage_text').val();
+		$('#sendchatmessage_text').val('');
+		fhq.ws.sendChatMessage({type: 'chat', message: text}); // async
+	});
+	
+	$('#sendchatmessage_text').unbind().bind('keydown', function(event){
+		if ( event.which == 13 ) {
+			event.preventDefault();
+			var text = $('#sendchatmessage_text').val();
+			$('#sendchatmessage_text').val('');
+			fhq.ws.sendChatMessage({type: 'chat', message: text}); // async
+		}
+	});
 }
 
 function createQuest() 
