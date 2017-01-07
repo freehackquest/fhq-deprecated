@@ -1912,11 +1912,47 @@ function formEditQuest(id)
 	);
 }
 
-window.fhq.ui.addHint = function(id){
+window.fhq.ui.refreshHints = function(questid, hints, perm_edit){
+	var result = "";
+	for(var h in hints){
+		var hint = hints[h];
+		result += '<div>' + hint.text + (perm_edit ? ' <div class="fhqbtn deletehint" hintid="' + hint.hintid + '">' + fhq.t('Delete') + '</div>' : '') + '</div>';
+	}
+	result += (perm_edit ? '<div><input type="text" id="quest_addhinttext"/> <div class="fhqbtn" id="quest_addhint">' + fhq.t('Add') + '</div></div>' : '');
+
+	$('#newquestinfo_hints').html(result);
+
+	$('.deletehint').unbind().bind('click', function(e){
+		var hintid = parseInt($(this).attr('hintid'),10);
+		fhq.ui.deleteHint(hintid, questid);
+	});
+
+	$('#quest_addhint').unbind().bind('click', function(){
+		fhq.ui.addHint(questid);
+	});
+}
+
+window.fhq.ui.deleteHint = function(hintid, questid){
+	fhq.ws.deletehint({"hintid": hintid}).done(function(){
+		fhq.ws.hints({"questid": questid}).done(function(response){
+			fhq.ui.refreshHints(questid, response.data, true);
+		}).fail(function(){
+			alert("Problem with get hints from ws");
+		});
+	}).fail(function(){
+		console.error("Problem with delete hint");
+	});
+}
+
+window.fhq.ui.addHint = function(questid){
 	var val = $('#quest_addhinttext').val();
-	fhq.ws.addhint({questid: id, hint: val}).done(function(){
+	fhq.ws.addhint({questid: questid, hint: val}).done(function(){
 		$('#quest_addhinttext').val('');
-		// TODO refresh hints
+		fhq.ws.hints({"questid": questid}).done(function(response){
+			fhq.ui.refreshHints(questid, response.data, true);
+		}).fail(function(){
+			alert("Problem with get hints from ws");
+		});
 	}).fail(function(){
 		console.error("Problem with add hint");
 	});
@@ -2039,19 +2075,10 @@ window.fhq.ui.showQuest = function(id){
 		var hints = '<div class="newquestinfo">'
 			+ '<div class="newquestinfo_title hide" id="quest_show_hints">' + fhq.t('Hints') + '</div>'
 			+ '<div id="newquestinfo_hints" style="display: none;">';
-		for(var h in q.hints){
-			var hint = q.hints[h];
-			var s = '<div>' + hint.text + (perm_edit ? ' <div class="fhqbtn" id="quest_deletehint" hintid="' + hint.hintid + '">' + fhq.t('Delete') + '</div>' : '') + '</div>';
-			hints += s;
-		}
-		hints += (perm_edit ? '<div><input type="text" id="quest_addhinttext"/> <div class="fhqbtn" id="quest_addhint">' + fhq.t('Add') + '</div></div>' : '');
 		hints += '</div></div>';
 		$('.fhqrightinfo').append(hints);
-		
-		$('#quest_addhint').unbind().bind('click', function(){
-			fhq.ui.addHint(id);
-		});
-		
+		var questid = parseInt(id,10);
+		fhq.ui.refreshHints(questid, q.hints, perm_edit);
 		$('#quest_show_hints').unbind().bind('click', function(){
 			if($('#newquestinfo_hints').is(":visible")){
 				$('#newquestinfo_hints').hide();

@@ -157,3 +157,15 @@ window.fhq.ws.addhint = function(params){
 	params.cmd = 'addhint';
 	return fhq.ws.send(params);
 }
+
+window.fhq.ws.deletehint = function(params){
+	params = params || {};
+	params.cmd = 'deletehint';
+	return fhq.ws.send(params);
+}
+
+window.fhq.ws.hints = function(params){
+	params = params || {};
+	params.cmd = 'hints';
+	return fhq.ws.send(params);
+}
