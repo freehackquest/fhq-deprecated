@@ -260,7 +260,9 @@ QSqlDatabase *WebSocketServer::database(){
 	if(!m_pDatabase->isValid()){
 		qDebug() << "Database connection invalid";
 	}
-	
+
+	qDebug() << "Database last error: " << m_pDatabase->lastError();
+
 	return m_pDatabase;
 }
 

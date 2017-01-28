@@ -47,7 +47,6 @@ HEADERS += \
 	src/error.h \
 	src/cmd_handlers/create_cmd_handlers.h \
 	src/cmd_handlers/cmd_addhint_handler.h \
-	src/cmd_handlers/cmd_addnews_handler.h \
 	src/cmd_handlers/headers/cmd_deletehint_handler.h \
 	src/cmd_handlers/cmd_getpublicinfo_handler.h \
 	src/cmd_handlers/cmd_hello_handler.h \
