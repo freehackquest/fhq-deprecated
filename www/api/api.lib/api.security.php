@@ -39,6 +39,34 @@ class APISecurity {
 		// }
 		return false;
 	}
+	
+	static function login_by_google($conn, $email) {
+		$query = 'SELECT * FROM users WHERE email = ?';
+		$email = strtolower($email);
+		$params = array(
+			$email
+		);
+		$stmt = $conn->prepare($query);
+		$stmt->execute($params);
+		if ($row = $stmt->fetch())
+		{
+			$_SESSION['user'] = array();
+			$_SESSION['user']['id'] = $row['id'];
+			$_SESSION['user']['email'] = $row['email'];
+			$_SESSION['user']['nick'] = $row['nick'];
+			$_SESSION['user']['role'] = $row['role'];
+			APIHelpers::$FHQSESSION = array(
+				'user' => array(
+					'id' => $row['id'],
+					'email' => $row['email'],
+					'nick' => $row['nick'],
+					'role' => $row['role'],
+				),
+			);
+			return true;
+		}
+		return false;
+	}
 
 	static function logout() {
 		if(APISecurity::isLogged()) {

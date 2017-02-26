@@ -287,9 +287,6 @@ if (!isset($_SESSION['user']))
 				</tr>
 				<tr>
 					<td>
-			<?php 
-				include('copyright.php');
-			?>
 					</td>
 				</tr>
 			</table>

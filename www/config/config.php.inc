@@ -27,8 +27,16 @@
 	// configure profile
 	$config['profile']['change_nick'] = 'yes';
 	
-	// playing with us show if value more then..
+	// playing with us show if value more then...
 	$config['public_info']['cities_more_than'] = 10;
 	$config['public_info']['cities_limit'] = 25;
 	$config['public_info']['maximal_winners'] = 5;
-?>
+
+	// google auth credentials
+	$config['google_auth'] = array();
+	$config['google_auth']['appname'] = "FreeHackQuest";
+	$config['google_auth']['client_id'] = "*.googleusercontent.com";
+	$config['google_auth']['client_secret'] = "*";
+	$config['google_auth']['developer_key'] = "*";
+	$config['google_auth']['oauth2google_uri'] = "http://freehackquest.com/oauth2google.php";
+	$config['google_auth']['google_auth_uri'] = "http://freehackquest.com/google_auth.php";

@@ -5,3 +5,7 @@ php/fhq/files/*
 manual.pdf
 backend/freehackquestd
 backend/etc/freehackquestd/conf.ini
+www/config/*.json
+www/composer.lock
+www/vendor
+# !www/vendor/.placeholder

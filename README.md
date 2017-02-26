@@ -103,6 +103,12 @@ get sources
 create struct of database
 
 	$ sudo mysql -u root -p freehackquest < freehackquest.sql
+
+install composer for google authorization
+
+	$ sudo apt install composer
+	$ cd www/
+	$ composer install
 	
 copy sources to /var/www
 

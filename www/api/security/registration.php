@@ -65,7 +65,7 @@ $password = substr(md5(rand().rand()), 0, 8);
 $password_hash = APISecurity::generatePassword2($email, $password);
 
 // same code exists in api/users/insert.php
-
+// same code exists in google_auth.php
 $query = '
         INSERT INTO users(
                 uuid,

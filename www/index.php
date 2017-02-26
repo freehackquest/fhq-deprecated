@@ -11,7 +11,6 @@ if (isset($_SESSION['user']))
 	header ("Location: main.php");
 	exit;
 };
-
 ?>
 <html>
 	<head>
@@ -21,6 +20,7 @@ if (isset($_SESSION['user']))
 		<meta name="copyright" lang="ru" content="sea-kg" />
 		<meta name="description" content="competition information security" />
 		<meta name="keywords" content="security, fhq, fhq 2012, fhq 2013, fhq 2014, free, hack, quest, competition, information security, ctf, joepardy" />
+
 		<link rel="shortcut icon" href="favicon.ico">
 		<script src="js/libs/jquery-3.1.0.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css?ver=1"/>
@@ -42,7 +42,6 @@ if (isset($_SESSION['user']))
 		<script type="text/javascript" src="js/fhq_games.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_users.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_timer.js?ver=1"></script>
-		<script type="text/javascript" src="js/fhq_updates.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_events.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_stats.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_feedback.js?ver=1"></script>
@@ -111,6 +110,18 @@ if (isset($_SESSION['user']))
 				}
 			});
 
+			/*function onSignIn(googleUser) {
+				var profile = googleUser.getBasicProfile();
+				console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+				console.log('Name: ' + profile.getName());
+				console.log('Image URL: ' + profile.getImageUrl());
+				console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+			}
+			
+			gapi.load('auth2', function(){
+				gapi.auth2.init();
+			});*/
+				
 		</script>
 
 		<!-- Yandex.Metrika counter -->
@@ -190,7 +201,10 @@ if (isset($_SESSION['user']))
 				<br><br>
 				<input placeholder="*****" id="signin-password" value="" type="password"  onkeydown="if (event.keyCode == 13) fhqgui.signin(); else fhqgui.cleanupSignInMessages();">
 				<br><br>
+				<a href="./google_auth.php">Sign in With Google</a>
+				<br><br>
 				<font id="signin-error-message" color='#ff0000'></font>
+				
 			</div>
 
 			<div id="signin-form-buttons" style="display: none;">
