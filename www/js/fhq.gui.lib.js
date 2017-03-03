@@ -162,6 +162,7 @@ function FHQGuiLib(api) {
 		
 		// if(!fhq.cache.is_authorized){
 			$('.account-panel').append('<div id="btnmenu_signin" class="fhq-simple-btn" onclick="fhqgui.showSignInForm();">' + fhq.t('Sign-in') + '</div>');
+			$('.account-panel').append('<div class="fhq-simple-btn" onclick="window.location=\'./google_auth.php\'">' + fhq.t('Sign-in with Google') + '</div>');
 			$('.account-panel').append('<div id="btnmenu_signup" class="fhq-simple-btn" onclick="fhqgui.showSignUpForm();">' + fhq.t('Sign-up') + '</div>');
 			$('.account-panel').append('<div id="btnmenu_restore_password" class="fhq-simple-btn" onclick="fhqgui.showResetPasswordForm();">' + fhq.t('Forgot password?') + '</div>');
 		/*}else{

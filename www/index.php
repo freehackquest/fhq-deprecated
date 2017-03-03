@@ -109,19 +109,6 @@ if (isset($_SESSION['user']))
 					fhqgui.loadMainPage();
 				}
 			});
-
-			/*function onSignIn(googleUser) {
-				var profile = googleUser.getBasicProfile();
-				console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-				console.log('Name: ' + profile.getName());
-				console.log('Image URL: ' + profile.getImageUrl());
-				console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-			}
-			
-			gapi.load('auth2', function(){
-				gapi.auth2.init();
-			});*/
-				
 		</script>
 
 		<!-- Yandex.Metrika counter -->
@@ -200,8 +187,6 @@ if (isset($_SESSION['user']))
 				<input placeholder="your@email.com" id="signin-email" value="" type="text" onkeydown="if (event.keyCode == 13) fhqgui.signin(); else fhqgui.cleanupSignInMessages();">
 				<br><br>
 				<input placeholder="*****" id="signin-password" value="" type="password"  onkeydown="if (event.keyCode == 13) fhqgui.signin(); else fhqgui.cleanupSignInMessages();">
-				<br><br>
-				<a href="./google_auth.php">Sign in With Google</a>
 				<br><br>
 				<font id="signin-error-message" color='#ff0000'></font>
 				

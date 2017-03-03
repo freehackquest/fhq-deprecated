@@ -33,6 +33,10 @@ window.fhq.localization = {
 		'en': 'Sign-in',
 		'ru': 'Вход'
 	},
+	'Sign-in with Google': {
+		'en': 'Sign-in with Google',
+		'ru': 'Вход через Google'
+	},
 	'Sign-up': {
 		'en': 'Sign-up',
 		'ru': 'Регистрация'
