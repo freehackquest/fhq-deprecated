@@ -34,6 +34,7 @@ SOURCES += \
 	src/updates/create_list_updates.cpp \
 	src/updates/update0067.cpp \
 	src/updates/update0068.cpp \
+	src/updates/update0069.cpp \
 
 HEADERS += \
 	src/smtp/smtp.h \
@@ -60,3 +61,4 @@ HEADERS += \
 	src/updates/create_list_updates.h \
 	src/updates/update0067.h \
 	src/updates/update0068.h \
+	src/updates/update0069.h \
