@@ -1,4 +1,6 @@
 #include "cmd_login_handler.h"
+#include "../tasks/update_user_location_task.h"
+#include <QThreadPool>
 
 QString CmdLoginHandler::cmd(){
 	return "login";
@@ -43,7 +45,7 @@ void CmdLoginHandler::handle(QWebSocket *pClient, IWebSocketServer *pWebSocketSe
 		pWebSocketServer->sendMessage(pClient, jsonData);
 		return;
 	}
-	
+
 	QSqlDatabase db = *(pWebSocketServer->database());
 	QSqlQuery query(db);
 	query.prepare("SELECT * FROM users_tokens WHERE token = :token");
@@ -61,7 +63,11 @@ void CmdLoginHandler::handle(QWebSocket *pClient, IWebSocketServer *pWebSocketSe
 		qDebug() << "data " << data;
 		qDebug() << "start_date " << start_date;
 		qDebug() << "end_date " << end_date;
+		QString lastip = pClient->peerAddress().toString();
 		pWebSocketServer->setUserToken(pClient, new UserToken(data));
+		UpdateUserLocationTask *pUpdateUserLocationTask = new UpdateUserLocationTask(pWebSocketServer, userid, lastip);
+		QThreadPool::globalInstance()->start(pUpdateUserLocationTask);
+		
 	}else{
 		jsonData["result"] = QJsonValue("FAIL");
 		jsonData["error"] = QJsonValue("Invalid token");

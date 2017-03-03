@@ -49,3 +49,13 @@ Error Errors::HintIDMustBeNotZero(){
 	Error error(1010, "Parameter 'hintid' must be not zero");
 	return error;
 }
+
+Error Errors::UserIDMustBeInteger(){
+	Error error(1011, "Parameter 'userid' must be integer");
+	return error;
+}
+
+Error Errors::UserIDMustBeNotZero(){
+	Error error(1012, "Parameter 'userid' must be not zero");
+	return error;
+}

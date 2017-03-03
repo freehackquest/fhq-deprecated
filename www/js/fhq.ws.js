@@ -44,12 +44,14 @@ window.fhq.ws.setWSState = function(s){
 		document.getElementById('websocket_state').innerHTML = s;
 	}
 }
+window.fhq.ws.onconnect = function(){};
 
 window.fhq.ws.initWebsocket = function(){
 	fhq.ws.socket = new WebSocket("ws://" + window.location.hostname + ":1234/");
 	// fhq.ws.socket = new WebSocket("ws://freehackquest.com:1234/api");
 	window.fhq.ws.socket.onopen = function() {
 		console.log('WS Opened');
+		window.fhq.ws.onconnect();
 		fhq.ws.setWSState("OK");
 		fhq.ws.send({'cmd': 'hello'}).done(function(){
 			fhq.ws.login();
@@ -110,6 +112,12 @@ window.fhq.ws.getPublicInfo = function(){
 	return fhq.ws.send({
 		'cmd': 'getpublicinfo'
 	});
+}
+
+window.fhq.ws.getmap = function(params){
+	params = params || {};
+	params.cmd = 'getmap';
+	return fhq.ws.send(params);
 }
 
 window.fhq.ws.sendChatMessage = function(params){
@@ -175,3 +183,12 @@ window.fhq.ws.hints = function(params){
 	params.cmd = 'hints';
 	return fhq.ws.send(params);
 }
+
+window.fhq.ws.updateUserLocation = function(userid){
+	var params = {};
+	params.cmd = 'updateuserlocation';
+	params.userid = userid;
+	return fhq.ws.send(params);
+}
+
+

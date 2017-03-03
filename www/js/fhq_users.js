@@ -206,9 +206,11 @@ function showUserInfo(id) {
 				pt.row('Role:', '<div id="user_current_role">' + obj.data.role + '</div>');
 			}
 			pt.row('Nick:', '<div id="user_current_nick">' + obj.data.nick + '</div>');
-			if (obj.access.edit == true)
+			if (obj.access.edit == true){
 				pt.row('Status:', '<div id="user_current_status">' + obj.data.status + '</div>');
-			
+				pt.row('Country/Region/City:', '<div>' + obj.data.country + '/' + obj.data.region + '/' + obj.data.city + ' <div class="fhqbtn update-location" userid="' + obj.data.userid + '">Update</div> </div>');
+			}
+
 			if (obj.access.edit) {
 				if (!obj.currentUser) {
 					pt.skip();
@@ -243,6 +245,11 @@ function showUserInfo(id) {
 			pt.skip();
 			ui.innerHTML = pt.render();
 			// ui.innerHTML += JSON.stringify(obj);
+			
+			$('.update-location').unbind().bind('click', function(){
+				var userid = parseInt($(this).attr('userid'),10);
+				fhq.ws.updateUserLocation(userid);
+			});
 		}
 	);
 }

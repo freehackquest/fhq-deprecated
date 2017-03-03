@@ -52,6 +52,7 @@ int main(int argc, char** argv) {
 		return 0;
 	}
 
+	QThreadPool::globalInstance()->setMaxThreadCount(5);
     WebSocketServer *server = new WebSocketServer(port, debug);
     QObject::connect(server, &WebSocketServer::closed, &a, &QCoreApplication::quit);
     

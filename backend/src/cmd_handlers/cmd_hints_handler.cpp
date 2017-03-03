@@ -6,15 +6,15 @@ QString CmdHintsHandler::cmd(){
 }
 
 bool CmdHintsHandler::accessUnauthorized(){
-	return false;
+	return true;
 }
 
 bool CmdHintsHandler::accessUser(){
-	return false;
+	return true;
 }
 
 bool CmdHintsHandler::accessTester(){
-	return false;
+	return true;
 }
 
 bool CmdHintsHandler::accessAdmin(){

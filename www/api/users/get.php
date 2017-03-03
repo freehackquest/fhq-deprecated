@@ -35,7 +35,7 @@ $bAllow = APISecurity::isAdmin() || APISecurity::isTester() || APISecurity::user
 $response['access']['edit'] = $bAllow;
 $response['currentUser'] = APISecurity::userid() == $userid;
 
-$columns = array('id', 'email', 'dt_last_login', 'uuid', 'status', 'role', 'nick', 'logo');
+$columns = array('id', 'email', 'dt_last_login', 'uuid', 'status', 'role', 'nick', 'logo', 'country', 'region', 'city');
 
 $query = '
 		SELECT '.implode(', ', $columns).' FROM
@@ -61,6 +61,9 @@ try {
 			 $response['data']['email'] = $row['email'];
 			 $response['data']['role'] = $row['role'];
 			 $response['data']['status'] = $row['status'];
+			 $response['data']['country'] = $row['country'];
+			 $response['data']['region'] = $row['region'];
+			 $response['data']['city'] = $row['city'];
 		}
 	}
 	$response['result'] = 'ok';

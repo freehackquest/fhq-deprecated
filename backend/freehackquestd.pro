@@ -11,6 +11,8 @@ MOC_DIR = tmp/
 RCC_DIR = tmp/
 CONFIG += c++11 c++14
 
+INCLUDEPATH += src/interfaces
+
 SOURCES += \
 	src/main.cpp \
 	src/smtp/smtp.cpp \
@@ -19,6 +21,7 @@ SOURCES += \
 	src/exportapi.cpp \
 	src/errors.cpp \
 	src/error.cpp \
+	src/tasks/update_user_location_task.cpp \
 	src/cmd_handlers/create_cmd_handlers.cpp \
 	src/cmd_handlers/cmd_addhint_handler.cpp \
 	src/cmd_handlers/cmd_deletehint_handler.cpp \
@@ -31,10 +34,13 @@ SOURCES += \
 	src/cmd_handlers/cmd_users_handler.cpp \
 	src/cmd_handlers/cmd_user_handler.cpp \
 	src/cmd_handlers/cmd_updatedatabase_handler.cpp \
+	src/cmd_handlers/cmd_updateuserlocation_handler.cpp \
+	src/cmd_handlers/cmd_getmap_handler.cpp \
 	src/updates/create_list_updates.cpp \
 	src/updates/update0067.cpp \
 	src/updates/update0068.cpp \
 	src/updates/update0069.cpp \
+	
 
 HEADERS += \
 	src/smtp/smtp.h \
@@ -46,6 +52,7 @@ HEADERS += \
 	src/exportapi.h \
 	src/errors.h \
 	src/error.h \
+	src/tasks/update_user_location_task.h \
 	src/cmd_handlers/create_cmd_handlers.h \
 	src/cmd_handlers/cmd_addhint_handler.h \
 	src/cmd_handlers/headers/cmd_deletehint_handler.h \
@@ -58,7 +65,10 @@ HEADERS += \
 	src/cmd_handlers/cmd_users_handler.h \
 	src/cmd_handlers/cmd_user_handler.h \
 	src/cmd_handlers/cmd_updatedatabase_handler.h \
+	src/cmd_handlers/headers/cmd_updateuserlocation_handler.h \
+	src/cmd_handlers/headers/cmd_getmap_handler.h \
 	src/updates/create_list_updates.h \
 	src/updates/update0067.h \
 	src/updates/update0068.h \
 	src/updates/update0069.h \
+	

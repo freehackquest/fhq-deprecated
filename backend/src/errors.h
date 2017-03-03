@@ -16,6 +16,8 @@ class Errors {
 		static Error QuestIDMustBeNotZero();
 		static Error HintIDMustBeInteger();
 		static Error HintIDMustBeNotZero();
+		static Error UserIDMustBeInteger();
+		static Error UserIDMustBeNotZero();
 		
 	private:
 		
