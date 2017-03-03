@@ -42,11 +42,12 @@ function initMap() {
 		console.log(r);
 		for(var i = 0; i < r.data.length; i++){
 			var t = r.data[i];
-			markers.push(new google.maps.Marker({
-				position: new google.maps.LatLng(t.lat, t.lng),
-				map: map,
-				label: "" + t.count
-			}));
+			for(var y = 0; y < t.count; y++){
+				markers.push(new google.maps.Marker({
+					position: new google.maps.LatLng(t.lat, t.lng),
+					map: map
+				}));
+			}
 		}
 
 		markers.push(new google.maps.Marker({
