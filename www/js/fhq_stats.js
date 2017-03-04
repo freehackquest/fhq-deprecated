@@ -55,7 +55,7 @@ function updateAnswerList() {
 				tbl.cell('Passed');
 				tbl.cell('User');
 				tbl.closerow();
-
+				var content = '';
 				for (var k in obj.data.answers) {
 					content += '';
 					if (obj.data.answers.hasOwnProperty(k)) {
