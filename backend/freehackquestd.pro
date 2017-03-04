@@ -40,6 +40,7 @@ SOURCES += \
 	src/updates/update0067.cpp \
 	src/updates/update0068.cpp \
 	src/updates/update0069.cpp \
+	src/updates/update0070.cpp \
 	
 
 HEADERS += \
@@ -71,4 +72,5 @@ HEADERS += \
 	src/updates/update0067.h \
 	src/updates/update0068.h \
 	src/updates/update0069.h \
+	src/updates/update0070.h \
 	

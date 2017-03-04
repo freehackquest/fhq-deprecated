@@ -103,7 +103,7 @@ if( !APISecurity::login($conn, $email, $password_hash)) {
 	error_log("1287: ".$error);
 	APIHelpers::showerror(1287, '[Registration] Sorry registration is broken. Please send report to the admin about this.');
 } else {
-	APISecurity::insertLastIp($conn, APIHelpers::getParam('client', 'none'));
+	APISecurity::updateLastDTLogin($conn);
 	APIUser::loadUserProfile($conn);
 	APISecurity::logout();
 }

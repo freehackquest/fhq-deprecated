@@ -79,7 +79,7 @@ if( !APISecurity::login($conn, $email, $password_hash)) {
 	APIEvents::addPublicEvents($conn, 'errors', 'Admin, restore password is broken!');
 	APIHelpers::showerror(1315, '[Restore] Sorry restore is broken. Please send report to the admin about this.');
 } else {
-	APISecurity::insertLastIp($conn, APIHelpers::getParam('client', 'none'));
+	APISecurity::updateLastDTLogin($conn);
 	APIUser::loadUserProfile($conn);
 	APISecurity::logout();
 }

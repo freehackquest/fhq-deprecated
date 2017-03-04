@@ -45,9 +45,8 @@ if( APISecurity::login($conn, $email, $hash_password2)) {
 	APIHelpers::showerror(1002, 'email or/and password was not found in system');
 }
 
-
 if ($result['result'] == 'ok') {
-	APISecurity::insertLastIp($conn, APIHelpers::getParam('client', 'none'));
+	APISecurity::updateLastDTLogin($conn);
 	APIUser::loadUserProfile($conn);
 	// APIUser::loadUserScore($conn);
 	APISecurity::saveByToken();

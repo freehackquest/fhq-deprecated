@@ -33,7 +33,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 			APIHelpers::$TOKEN = APIHelpers::gen_guid();
 			$result['data']['token'] = APIHelpers::$TOKEN;
 			$result['data']['session'] = APIHelpers::$FHQSESSION;
-			APISecurity::insertLastIp($conn, APIHelpers::getParam('client', 'web-google'));
+			APISecurity::updateLastDTLogin($conn);
 			APIUser::loadUserProfile($conn);
 			// APIUser::loadUserScore($conn);
 			APISecurity::saveByToken();
@@ -85,7 +85,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 				APIHelpers::$TOKEN = APIHelpers::gen_guid();
 				$result['data']['token'] = APIHelpers::$TOKEN;
 				$result['data']['session'] = APIHelpers::$FHQSESSION;
-				APISecurity::insertLastIp($conn, APIHelpers::getParam('client', 'web-google'));
+				APISecurity::updateLastDTLogin($conn);
 				APIUser::loadUserProfile($conn);
 				// APIUser::loadUserScore($conn);
 				APISecurity::saveByToken();

@@ -19,7 +19,7 @@ UpdateUserLocationTask::~UpdateUserLocationTask(){
 
 void UpdateUserLocationTask::run(){
 	qDebug().nospace().noquote() << "UpdateUserLocationTask (uid " << m_nUserID << ")";
-	
+		
 	QSqlDatabase db = *(m_pWebSocketServer->database());
 	QSqlQuery query(db);
 	query.prepare("SELECT * FROM users WHERE id = :id");
@@ -70,10 +70,12 @@ void UpdateUserLocationTask::run(){
 			query_update.exec();
 		}
 	}else{
-		// jsonData["result"] = QJsonValue("FAIL");
-		// jsonData["error"] = QJsonValue("Invalid token");
-		// pWebSocketServer->sendMessage(pClient, jsonData);
 		qDebug().nospace().noquote() << "UpdateUserLocationTask failed for " << m_nUserID;
-		return;
+
+		// write to server errors
+		QString errorInfo = "UpdateUserLocationTask failed (not found userid in database)\n";
+		errorInfo += "UserID: " + QString::number(m_nUserID) + "\n";
+		errorInfo += "LastIP: " + mLastIP + "\n";
+		Errors::WriteServerError(errorInfo);
 	}
 };

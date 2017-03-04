@@ -80,6 +80,8 @@ try {
 			SELECT
 				id, email, role,
 				nick, logo, status,
+				country, city, region,
+				last_ip,
 				dt_last_login
 			FROM
 				users
@@ -101,6 +103,10 @@ try {
 			'role' => $row2['role'],
 			'nick' => $row2['nick'],
 			'logo' => $row2['logo'],
+			'last_ip' => $row2['last_ip'],
+			'country' => $row2['country'],
+			'region' => $row2['region'],
+			'city' => $row2['city'],
 			'dt_last_login' => $row2['dt_last_login'],
 			'status' => $row2['status'],
 		);

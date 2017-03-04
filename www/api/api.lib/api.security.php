@@ -155,29 +155,8 @@ class APISecurity {
 		return $userid;
 	}
 
-	static function insertLastIp($conn, $client) {
+	static function updateLastDTLogin($conn) {
 		try {
-			$query = 'INSERT INTO users_ips (userid, ip, country, city, browser, client, date_sign_in) VALUES(?,?,?,?,?,?,NOW())';
-			$ip = $_SERVER['REMOTE_ADDR'];
-			$country = '';
-			$city = '';
-			if ($ip == '127.0.0.1')
-			{
-				$country = 'home';
-				$city = 'localhost';
-			}
-
-			$params = array(
-				APISecurity::userid(),
-				$_SERVER['REMOTE_ADDR'],
-				$country,
-				$city,
-				$_SERVER['HTTP_USER_AGENT'],
-				$client,
-			);
-			$stmt = $conn->prepare($query);
-			$stmt->execute($params);
-
 			$stmt_dls = $conn->prepare('UPDATE users SET dt_last_login = NOW() WHERE id = ?');
 			$stmt_dls->execute(array(APISecurity::userid()));
 		} catch(PDOException $e) {

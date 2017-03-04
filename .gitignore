@@ -9,3 +9,6 @@ www/config/*.json
 www/composer.lock
 www/vendor
 # !www/vendor/.placeholder
+
+backend/var/log/freehackquestd/errors/*
+!backend/var/log/freehackquestd/errors/.placeholder

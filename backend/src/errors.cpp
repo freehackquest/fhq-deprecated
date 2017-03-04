@@ -1,5 +1,43 @@
 #include "errors.h"
 
+#include <QTextStream>
+#include <QFile>
+#include <QDebug>
+#include <QByteArray>
+#include <QDateTime>
+#include <QDir>
+
+// use this function for problems with database connection
+void Errors::WriteServerError(QString errorInfo){
+	QDir dir("/var/log/freehackquestd/errors");
+	if(!dir.exists()){
+		qDebug().nospace().noquote() << dir.absolutePath() << " did not found";
+		qDebug().nospace().noquote() << errorInfo;
+		return;
+	}
+	QString date = QDateTime::currentDateTime().toString("yyyy-MM-dd");
+	if(!dir.exists(date) && !dir.mkdir(date)){
+		qDebug().nospace().noquote() << dir.absolutePath() << " could not create dir " << date;
+		qDebug().nospace().noquote() << errorInfo;
+		return;
+	}
+	dir.cd(date);
+	
+	QString time = QDateTime::currentDateTime().toString("HHmmss.zzz");
+    QFile errorf(dir.absolutePath() + '/' + time);
+    errorf.open(QIODevice::WriteOnly | QIODevice::Text);
+
+    if(!errorf.isOpen()){
+        qDebug().nospace().noquote() << dir.absolutePath() + '/' + time << " could not openfile ";
+		qDebug().nospace().noquote() << errorInfo;
+		return;
+    }
+    QTextStream outStream(&errorf);
+    outStream << errorInfo.toUtf8();
+    errorf.close();
+}
+
+
 Error Errors::NotAuthorizedRequest(){
 	Error error(1001, "Not Authorized Request");
 	return error;

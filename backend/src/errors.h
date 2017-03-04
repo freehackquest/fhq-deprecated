@@ -6,6 +6,7 @@
 
 class Errors {
 	public:
+		static void WriteServerError(QString errorInfo);
 		static Error NotAuthorizedRequest();
 		static Error AllowedOnlyForAdmin();
 		static Error NotImplementedYet();
@@ -18,7 +19,6 @@ class Errors {
 		static Error HintIDMustBeNotZero();
 		static Error UserIDMustBeInteger();
 		static Error UserIDMustBeNotZero();
-		
 	private:
 		
 };

@@ -208,7 +208,6 @@ function showUserInfo(id) {
 			pt.row('Nick:', '<div id="user_current_nick">' + obj.data.nick + '</div>');
 			if (obj.access.edit == true){
 				pt.row('Status:', '<div id="user_current_status">' + obj.data.status + '</div>');
-				pt.row('Country/Region/City:', '<div>' + obj.data.country + '/' + obj.data.region + '/' + obj.data.city + ' <div class="fhqbtn update-location" userid="' + obj.data.userid + '">Update</div> </div>');
 			}
 
 			if (obj.access.edit) {
@@ -245,44 +244,7 @@ function showUserInfo(id) {
 			pt.skip();
 			ui.innerHTML = pt.render();
 			// ui.innerHTML += JSON.stringify(obj);
-			
-			$('.update-location').unbind().bind('click', function(){
-				var userid = parseInt($(this).attr('userid'),10);
-				fhq.ws.updateUserLocation(userid);
-			});
-		}
-	);
-}
 
-function showUserIP(id) {
-	showModalDialog('<div id="user_ips"></div>');
-
-	var params = {};
-	params.userid = id;
-	document.getElementById('user_ips').innerHTML = "Please wait...";
-	// user_ips
-	send_request_post(
-		'api/users/get_ips.php',
-		createUrlFromObj(params),
-		function (obj) {
-			if (obj.result == "fail") {
-				document.getElementById('user_ips').innerHTML = obj.error.message;
-				return;
-			}
-			var ui = document.getElementById('user_ips');
-			
-			// .innerHTML = JSON.stringify(obj);
-
-			var content = '<pre>';
-
-			for (var k in obj.data) {
-				content += obj.data[k].date + '\t'+ obj.data[k].ip + ' (' + obj.data[k].country + ', ' + obj.data[k].city + ')\n';
-			}
-			
-			// content += JSON.stringify(obj);
-			content += '</pre>';
-			
-			ui.innerHTML = content;
 		}
 	);
 }
@@ -331,10 +293,9 @@ function updateUsers() {
 			
 			tbl.openrow();
 			tbl.cell('Logo');
-			tbl.cell('ID / E-mail');
-			tbl.cell('Nick / info');
-			tbl.cell('Status / Role ');
-			tbl.cell('Last Sign in');
+			tbl.cell('ID / E-mail <br> Nick');
+			tbl.cell('Last IP <br> Country / City');
+			tbl.cell('Last Sign in <br> Status / Role');
 			tbl.closerow();
 		
 			for (var k in obj.data) {
@@ -347,18 +308,32 @@ function updateUsers() {
 				else
 					tbl.cell('');
 
-				tbl.cell( '#' + userinfo.userid + ') ' + userinfo.email + ' <br> ');
-				tbl.cell(userinfo.nick + ' ' + fhqgui.btn('Info', 'showUserInfo(' + userinfo.userid + ');')
-					+ fhqgui.btn('IP', 'showUserIP(' + userinfo.userid + ');'));
+				tbl.cell( '#' + userinfo.userid + ' / '
+					+ userinfo.email + ' <br> '
+					+ userinfo.nick + ' <br> '
+					+ fhqgui.btn('Info', 'showUserInfo(' + userinfo.userid + ');')
+				);
+				tbl.cell(
+					userinfo.last_ip + '<br>'
+					+ userinfo.country + ' / ' + userinfo.city + '<br>'
+					+ '<div class="fhqbtn update-location" userid="' + userinfo.userid + '">Update</div>'
+				);
 
 				// TODO: if not activated can allow edit email and send mail again
-				tbl.cell(userinfo.status + ' / ' + userinfo.role);
-				tbl.cell(userinfo.dt_last_login);
+				tbl.cell(
+					userinfo.dt_last_login + '<br>'
+					+ userinfo.status + ' / ' + userinfo.role
+				);
 				tbl.closerow();
 			}
 
 			lu.innerHTML += tbl.render();
 			// lu.innerHTML += JSON.stringify(obj);
+			$('.update-location').unbind().bind('click', function(){
+				var userid = parseInt($(this).attr('userid'),10);
+				fhq.ws.updateUserLocation(userid);
+				$(this).parent().html('');	
+			});
 		}
 	);
 }

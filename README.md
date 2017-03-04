@@ -77,7 +77,7 @@ for captcha and zip
 for mailing
 	
 	$ sudo apt install php-pear
-	$ sudo pear install Mail-1.2.0
+	$ sudo pear install Mail
 	$ sudo pear install Net_SMTP
 
 restart apache

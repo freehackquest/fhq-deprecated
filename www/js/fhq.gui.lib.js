@@ -347,7 +347,8 @@ function FHQGuiLib(api) {
 				}
 
 				$('#statistics-playing-with-us').removeClass('preloading');
-				$('#statistics-playing-with-us').text(cities.join(", "));				
+				$('#statistics-playing-with-us').text(cities.join(", "));
+				$('#statistics-playing-with-us').append('<br><a href="map.php" target="_blank">On Map</a>');
 
 				var content = "";
 				for (var k in response.data.winners) {

@@ -35,9 +35,12 @@ try {
 		SELECT * FROM (
 			SELECT
 				city,
-				count(userid) cnt
+				count(*) cnt
 			FROM
-				users_ips
+				users
+			WHERE
+				city IS NOT NULL
+				AND city <> "" 
 			GROUP BY
 				city
 			ORDER BY
@@ -45,11 +48,9 @@ try {
 		) as cities
 		WHERE
 			cities.cnt > ?
-			AND cities.city <> ?
-			AND cities.city <> ?
 		LIMIT 0,'.$cities_limit.'
 	');
- 	$stmt->execute(array($more_than, 'localhost', ''));
+ 	$stmt->execute(array($more_than));
 	
 	$response['data']['cities'] = array();
  	while ($row = $stmt->fetch()) {
