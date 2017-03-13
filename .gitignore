@@ -12,3 +12,5 @@ www/vendor
 
 backend/var/log/freehackquestd/errors/*
 !backend/var/log/freehackquestd/errors/.placeholder
+
+www/files/classbook/*.md

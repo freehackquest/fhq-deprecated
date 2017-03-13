@@ -160,9 +160,9 @@ window.fhq.ws.user = function(params){
 	return fhq.ws.send(params);
 }
 
-window.fhq.ws.updatedatabase = function(params){
+window.fhq.ws.classbook = function(params){
 	params = params || {};
-	params.cmd = 'updatedatabase';
+	params.cmd = 'classbook';
 	return fhq.ws.send(params);
 }
 

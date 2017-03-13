@@ -36,6 +36,7 @@ if (isset($_SESSION['user']))
 		<script type="text/javascript" src="js/jquery.datetimepicker.js"></script>
 		<script type="text/javascript" src="js/libs/progressbar-0.8.1.min.js"></script>
 		<script type="text/javascript" src="js/libs/Chart-1.0.2.js"></script>
+		<script type="text/javascript" src="js/libs/showdown.min.js"></script>
 		<script type="text/javascript" src="js/fhq_send_request.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_echo_head.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_modal_dialog.js?ver=1"></script>
@@ -82,6 +83,8 @@ if (isset($_SESSION['user']))
 					updateEvents();
 				}else if(fhq.containsPageParam("quests")){
 					fhqgui.loadQuests();
+				}else if(fhq.containsPageParam("classbook")){
+					fhq.ui.loadClassbook();
 				}else if(fhq.containsPageParam("about")){
 					fhqgui.loadMainPage();
 				}else if(fhq.containsPageParam("page")){

@@ -2224,22 +2224,6 @@ window.fhq.ui.showQuest = function(id){
 	);
 }
 
-window.fhq.ui.updatedatabase = function(){
-	fhq.changeLocationState({updatedatabase: ''});
-	$('#content_page').html('Updating database...');
-	fhq.ws.updatedatabase().done(function(response){
-		var t = '<div>Completed (last version: ' + response.last_version + ')</div><br>';
-		for(var i in response.installed_updates){
-			var u = response.installed_updates[i];
-			t += '<div>Installed ' + u.from_version + ' => ' + u.version + ' (' + u.name + ')</div>';
-		}
-		$('#content_page').html(t);
-		
-	}).fail(function(){
-		$('#content_page').html('Updating database failed');
-	})
-}
-
 window.fhq.ui.updateMyAnswers = function(questid){
 	fhq.statistics.myanswers(questid).done(function(response){
 		var h = '';
@@ -2418,7 +2402,94 @@ function formCreateQuest()
 	showModalDialog(content);
 }
 
+/* classbook */
 
+window.fhq.ui.loadClassbookItem = function(link, cbid){
+	console.log("link:" + link);
+	$.ajax({
+		url: link + "?t=" + Date.now(),
+		type: 'GET'
+	}).done(function(response){
+		var a = link.split(".");
+		var type = a[a.length-1].toUpperCase();
+		var html = "";
+		if(type == "MD"){
+			var converter = new showdown.Converter(),
+			html = converter.makeHtml(response);
+		}else{
+			// html
+			html = response;
+		}
+		if(cbid != undefined){
+			fhq.changeLocationState({'classbook': '', 'cbid': cbid});
+		}
+		$('.fhqrightinfo').html(html);
+	}).fail(function(){
+		$('.fhqrightinfo').html("Not found");
+	})
+}
 
+window.fhq.ui.loadClassbookSubmenu = function(submenu){
+	fhq.ui.classbook_numbers.push(0);
+	var len = submenu.length;
+	for(var i = 0; i < len; i++){
+		var o = submenu[i];
+		var numbers_len = fhq.ui.classbook_numbers.length;
+		fhq.ui.classbook_numbers[numbers_len-1] = fhq.ui.classbook_numbers[numbers_len-1] + 1;
+		var num = fhq.ui.classbook_numbers.join('.');
 
+		if(o.id)
+			fhq.classbookCache[o.id] = o;
 
+		if(o.link && o.name){
+			$('.fhqleftlist .classbook .content').append('<div class="fhqleftitem" link="' + o.link + '" cbid="' + o.id + '" ><div class="name">' + num + ' ' + o.name + '</div></div>');	
+		}else if(o.name){
+			$('.fhqleftlist .classbook .content').append('<div class="fhqleftitem"><div class="name">' + num + ' ' + o.name + '</div></div>');	
+		}
+		
+		if(o.submenu != undefined){
+			fhq.ui.loadClassbookSubmenu(o.submenu);
+		}
+	}
+	fhq.ui.classbook_numbers.pop();
+}
+
+window.fhq.ui.classbookSearchLinkByID = function(cbid){
+	if(fhq.classbookCache[cbid]){
+		return fhq.classbookCache[cbid].link;
+	}
+}
+
+window.fhq.classbookCache = {};
+
+window.fhq.ui.loadClassbook = function(){
+	$('#content_page').html(''
+		+ '<div class="fhqleftlist">'
+		+ '		<div class="classbook">'
+		+ ' 		<div class="icon">' + fhq.t('Classbook') + '</div>'
+		+ ' 		<div>'
+		+ '				<div id="addclassbookitem" class="fhqbtn">Add</div>'
+		+ '			</div>'
+		+ '			<div class="content"></div>'
+		+ '		</div>'
+		+ '</div>'
+		+ '<div class="fhqrightinfo">text</div>'
+	);
+	
+	// fhq.lang();
+	
+	fhq.ws.classbook().done(function(r){
+		fhq.ui.classbook_numbers = [];
+		fhq.classbookCache = {}
+		fhq.ui.loadClassbookSubmenu(r.items);
+
+		$('.fhqleftitem').unbind('click').bind('click', function(){
+			var link = $(this).attr('link');
+			var cbid = $(this).attr('cbid');
+			fhq.ui.loadClassbookItem(link, cbid);
+		});
+	});
+
+	// fhq.changeLocationState({updatedatabase: ''});	
+	// $('.classbook .content').html('')
+}
