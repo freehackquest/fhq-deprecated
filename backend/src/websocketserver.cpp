@@ -7,6 +7,7 @@
 #include <QHostAddress>
 #include "cmd_handlers/create_cmd_handlers.h"
 #include "smtp/smtp.h"
+#include "updates/create_list_updates.h"
 
 // QT_USE_NAMESPACE
 
@@ -40,9 +41,7 @@ WebSocketServer::WebSocketServer(quint16 port, bool debug, QObject *parent) : QO
 			return;
 		}else{
 			qDebug() << "Success connection to database";
-			// qDebug() << "Try update...";
-			// create_list_updates(QVector<IUpdate *> &vUpdates)
-			
+			tryUpdateDatabase(m_pDatabase);
 		}
 		
 		m_sEmail_smtphost = readStringFromSettings(sett, "EMAIL/host", "smtp.gmail.com");
