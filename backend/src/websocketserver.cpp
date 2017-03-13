@@ -40,6 +40,9 @@ WebSocketServer::WebSocketServer(quint16 port, bool debug, QObject *parent) : QO
 			return;
 		}else{
 			qDebug() << "Success connection to database";
+			// qDebug() << "Try update...";
+			// create_list_updates(QVector<IUpdate *> &vUpdates)
+			
 		}
 		
 		m_sEmail_smtphost = readStringFromSettings(sett, "EMAIL/host", "smtp.gmail.com");
