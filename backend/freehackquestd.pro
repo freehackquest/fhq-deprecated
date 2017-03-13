@@ -33,7 +33,7 @@ SOURCES += \
 	src/cmd_handlers/cmd_send_letters_to_subscribers_handler.cpp \
 	src/cmd_handlers/cmd_users_handler.cpp \
 	src/cmd_handlers/cmd_user_handler.cpp \
-	src/cmd_handlers/cmd_updatedatabase_handler.cpp \
+	src/cmd_handlers/cmd_classbook_handler.cpp \
 	src/cmd_handlers/cmd_updateuserlocation_handler.cpp \
 	src/cmd_handlers/cmd_getmap_handler.cpp \
 	src/updates/create_list_updates.cpp \
@@ -65,7 +65,7 @@ HEADERS += \
 	src/cmd_handlers/cmd_send_letters_to_subscribers_handler.h \
 	src/cmd_handlers/cmd_users_handler.h \
 	src/cmd_handlers/cmd_user_handler.h \
-	src/cmd_handlers/cmd_updatedatabase_handler.h \
+	src/cmd_handlers/headers/cmd_classbook_handler.h \
 	src/cmd_handlers/headers/cmd_updateuserlocation_handler.h \
 	src/cmd_handlers/headers/cmd_getmap_handler.h \
 	src/updates/create_list_updates.h \

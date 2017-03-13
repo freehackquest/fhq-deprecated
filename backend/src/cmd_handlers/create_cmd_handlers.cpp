@@ -8,7 +8,7 @@
 #include "cmd_send_letters_to_subscribers_handler.h"
 #include "cmd_users_handler.h"
 #include "cmd_user_handler.h"
-#include "cmd_updatedatabase_handler.h"
+#include "headers/cmd_classbook_handler.h"
 #include "headers/cmd_sendchatmessage_handler.h"
 #include "headers/cmd_updateuserlocation_handler.h"
 #include "headers/cmd_getmap_handler.h"
@@ -24,7 +24,7 @@ void create_cmd_handlers(QMap<QString, ICmdHandler *> &pHandlers){
 	v.push_back(new CmdSendLettersToSubscribersHandler());
 	v.push_back(new CmdUsersHandler());
 	v.push_back(new CmdUserHandler());
-	v.push_back(new CmdUpdateDatabaseHandler());
+	v.push_back(new CmdClassbookHandler());
 	v.push_back(new CmdSendChatMessageHandler());
 	v.push_back(new CmdUpdateUserLocationHandler());
 	v.push_back(new CmdGetMapHandler());
