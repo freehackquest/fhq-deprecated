@@ -38,6 +38,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 			// APIUser::loadUserScore($conn);
 			APISecurity::saveByToken();
 			unset($_SESSION['access_token']);
+			setcookie("fhqtoken", APIHelpers::$TOKEN, time()+3600);
 			header('Location: ./main.php');
 		}else{
 			$nick = "hacker-".substr(md5(rand().rand()), 0, 7);
@@ -58,7 +59,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 							nick,
 							role,
 							logo,
-					last_ip,
+							last_ip,
 							dt_last_login,
 							dt_create
 					)
@@ -90,6 +91,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 				// APIUser::loadUserScore($conn);
 				APISecurity::saveByToken();
 				unset($_SESSION['access_token']);
+				setcookie("fhqtoken", APIHelpers::$TOKEN, time()+3600);
 				header('Location: ./main.php');
 			}else{
 				APIEvents::addPublicEvents($conn, 'errors', 'Alert! Admin, google registration is broken!');
