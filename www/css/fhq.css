@@ -9,6 +9,11 @@
 	text-align: center;
 	overflow: auto;
 	vertical-align: middle;
+	-webkit-transition: transform 0.5s ease-out 0.5s;
+	-moz-transition: transform 0.5s ease-out 0.5s;
+	-o-transition: transform 0.5s ease-out 0.5s;
+	transition: transform 0.5s ease-out 0.5s;
+	transform: scale(0.05);
 }
 
 .fhqmodaldialog_table {
@@ -930,6 +935,8 @@ div.gamespanel__game p:before {
 	display: display: table;
 	margin: 10px;
 	vertical-align: top;
+	padding-left: 200px;
+    padding-right: 200px;
 }
 
 .fhq_scoreboard_table {
@@ -1622,4 +1629,8 @@ body.dark
 	background-size: 30px 30px;
 	cursor: pointer;
 	margin-left: 10px;
+}
+
+.scoreboard-user-tile{
+	display: inline-block;
 }

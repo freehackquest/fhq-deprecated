@@ -75,18 +75,24 @@ try {
 try {
 	$stmt = $conn->prepare('SELECT * FROM users_profile WHERE userid = ?');
 	$stmt->execute(array($userid));
-	while ($row = $stmt->fetch())
-	{
+	while ($row = $stmt->fetch()){
 		$response['profile'][$row['name']] = $row['value'];
 	}
 } catch(PDOException $e) {
 	APIHelpers::showerror(1183, $e->getMessage());
 }
 
+if(isset($_SESSION['game'])){
+	$response['profile']['game'] = $_SESSION['game'];
+}else{
+	unset($response['profile']['game']);
+}
+
 // users_games
 try {
 	$stmt = $conn->prepare('
 		SELECT
+			g.id as gameid,
 			g.maxscore as game_maxscore,
 			g.logo,
 			g.title,
@@ -100,6 +106,7 @@ try {
 	while ($row = $stmt->fetch())
 	{
 		$response['games'][] = array(
+			'gameid' => $row['gameid'],
 			'title' => $row['title'],
 			'type_game' => $row['type_game'],
 			'maxscore' => $row['game_maxscore'],

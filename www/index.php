@@ -1,17 +1,3 @@
-<?php
-
-if (!file_exists("config/config.php")) {
-	echo "Please configure config/config.php";
-	exit;
-};
-
-session_start();
-if (isset($_SESSION['user']))
-{
-	header ("Location: main.php");
-	exit;
-};
-?>
 <html>
 	<head>
 		<title>Free Hack Quest</title>
@@ -50,67 +36,16 @@ if (isset($_SESSION['user']))
 			fhq.client = "web-fhq2015";
 			fhq.baseUrl = fhq.getCurrentApiPath(); // or another path
 			var fhqgui = new FHQGuiLib(fhq);
-			
 
-			if (fhq.token && fhq.token != "")  // todo 
-				fhq.security.logout();
+			/*if (fhq.token && fhq.token != "")  // todo 
+				fhq.security.logout();*/
 
 			$(document).ready(function() {
-			
 				fhqgui.applyColorScheme();
 				fhq.ws.setWSState(fhq.ws.getWSState()); // Update state of WS
 				fhqgui.loadTopPanel();
 				fhq.ui.initChatForm();
-
-				$("#btnfilter").hide();
-				$("#btnmenu_game").hide();
-
-				$("#btnmenu_rules").hide();
-				$("#btnmenu_quests").hide();
-				$("#btnmenu_stats").hide();
-				
-				// $("#btnmenu_games").hide();
-				// $("#btnmenu_skills").hide();
-
-				$("#btnmenu_feedback").hide();
-				$("#btnmenu_settings").hide();
-				$("#btnmenu_users").hide();
-				$("#btnmenu_answer_list").hide();
-				$("#btnmenu_updates").hide();
-				
-				if(fhq.containsPageParam("news")){
-					createPageEvents();
-					updateEvents();
-				}else if(fhq.containsPageParam("quests")){
-					fhqgui.loadQuests();
-				}else if(fhq.containsPageParam("classbook")){
-					fhq.ui.loadClassbook();
-				}else if(fhq.containsPageParam("about")){
-					fhqgui.loadMainPage();
-				}else if(fhq.containsPageParam("page")){
-					var page=fhq.pageParams['page'];
-					if(page == "scoreboard"){
-						loadScoreboard(0);
-					}else if(page == "news"){
-						createPageEvents();
-						updateEvents();
-					}else if(page == "main_page"){
-						fhqgui.loadMainPage();
-					}else if(page == "games"){
-						fhqgui.loadGames();
-					}else if(page == "skills"){
-						fhqgui.createPageSkills();
-						fhqgui.updatePageSkills();
-					}else if(page == "stats"){
-						// todo
-						createPageStatistics('.$gameid.');
-						updateStatistics('.$gameid.');
-					}else{
-						$("#content_page").html('unknown page');
-					}
-				}else{
-					fhqgui.loadMainPage();
-				}
+				fhqgui.processParams();
 			});
 		</script>
 
@@ -165,38 +100,21 @@ if (isset($_SESSION['user']))
 			</div>
 			
 			<!-- FHQModalDialog -->
-			<div id="fhqmodaldialog" class="fhqmodaldialog" onclick="fhqgui.clickFHQModalDialog_dialog();">
+			<div id="fhqmodaldialog" class="fhqmodaldialog" onclick="fhq.ui.clickModalDialog_dialog();">
 				<div class="fhqmodaldialog_table">
 					<div class="fhqmodaldialog_cell">
-						<div class="fhqmodaldialog_content" onclick="fhqgui.clickFHQModalDialog_content();">
-							<div class="fhqmodaldialog_iconclose" onclick="fhqgui.closeFHQModalDialog();"></div>
+						<div class="fhqmodaldialog_content" onclick="fhq.ui.clickModalDialog_content();">
+							<div class="fhqmodaldialog_iconclose" onclick="fhq.ui.closeModalDialog();"></div>
 							<div class="fhqmodaldialog_iconfhq"></div>
 							<div id="fhqmodaldialog_header" class="fhqmodaldialog_header"></div>
 							<div id="fhqmodaldialog_content" class="fhqmodaldialog_content2"></div>
 							<div id="fhqmodaldialog_buttons" class="fhqmodaldialog_buttons"></div>
 							<div id="fhqmodaldialog_btncancel" class="fhqmodaldialog_btncancel">
-								<div class="fhqbtn" onclick="fhqgui.closeFHQModalDialog();">Cancel</div>
+								<div class="fhqbtn" onclick="fhq.ui.closeModalDialog();">Cancel</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-
-			<!-- Sign In -->
-
-			<div id="signin-form" style="display: none;">
-				<!-- img src="images/logo_middle.png" /><br><br -->
-				<!-- todo replace type="text" to type="email" (html5) -->
-				<input placeholder="your@email.com" id="signin-email" value="" type="text" onkeydown="if (event.keyCode == 13) fhqgui.signin(); else fhqgui.cleanupSignInMessages();">
-				<br><br>
-				<input placeholder="*****" id="signin-password" value="" type="password"  onkeydown="if (event.keyCode == 13) fhqgui.signin(); else fhqgui.cleanupSignInMessages();">
-				<br><br>
-				<font id="signin-error-message" color='#ff0000'></font>
-				
-			</div>
-
-			<div id="signin-form-buttons" style="display: none;">
-				<div class="fhqbtn" onclick="fhqgui.signin();">Sign In</div>
 			</div>
 
 			<!-- Sign Up -->

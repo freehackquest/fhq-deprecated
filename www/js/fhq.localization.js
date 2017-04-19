@@ -260,6 +260,10 @@ window.fhq.localization = {
 	'Report an error':{
 		'en': 'Report an error',
 		'ru': 'Сообщить об ошибке'
-	}
+	},
+	'Profile': {
+		'en': 'Profile',
+		'ru': 'Профиль'
+	},
 	
 };

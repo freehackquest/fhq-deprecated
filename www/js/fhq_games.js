@@ -263,7 +263,7 @@ function loadScoreboard(gameid) {
 						arr.push(fhqgui.userIcon(place[k2].userid, place[k2].logo, place[k2].nick));
 					}
 					content += '<div class="fhq_scoreboard_cell">' + place[0].score + '</div>';
-					content += '<div class="fhq_scoreboard_cell"><div>' + arr.join('</div><div>') + '</div></div>';
+					content += '<div class="fhq_scoreboard_cell"><div class="scoreboard-user-tile">' + arr.join('</div><div class="scoreboard-user-tile">') + '</div></div>';
 					content += '</div>';
 				}
 				content += '</div>'; // row

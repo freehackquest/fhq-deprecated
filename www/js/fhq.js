@@ -39,9 +39,10 @@ window.fhq.getTokenFromCookie = function() {
 
 window.fhq.baseUrl = "http://freehackquest.com/";
 window.fhq.client = "fhq.js";
-window.fhq.token = fhq.getTokenFromCookie();
+fhq.token = fhq.getTokenFromCookie();
 
-window.fhq.profile = profile = {
+		
+window.fhq.profile = {
 	lastEventId: 0,
 	bInitUserProfile: false
 };
@@ -118,21 +119,6 @@ window.fhq.supportsHtml5Storage = function() {
 
 window.fhq.security = new (function(t) {
 	this.p = t;
-	this.login = function (email, password) {
-		var params = {};
-		params.email = email;
-		params.password = password;
-		params.client = this.p.client;
-		var obj = this.p.sendPostRequest_Sync('api/security/login.php', params);
-		if (obj.result == "ok") {
-			this.p.token = obj.data.token;
-			this.p.setTokenToCookie(obj.data.token);
-		} else {
-			this.p.token = "";
-			this.p.removeTokenFromCookie();
-		}
-		return obj;
-	};
 	this.registration = function(email, captcha, callback) {
 		var params = {};
 		params.email = email;
@@ -145,16 +131,65 @@ window.fhq.security = new (function(t) {
 		params.captcha = captcha;
 		this.p.sendPostRequest_Async('api/security/restore.php', params, callback);
 	};
-	
-	this.logout = function () {
-		var params = {};
-		params.token = this.p.token;
-		var obj = this.p.sendPostRequest_Sync('api/security/logout.php', params);
-		this.p.token = "";
-		//this.p.removeTokenFromCookie();
-		return true;
-	};
 })(window.fhq);
+
+fhq.isAuth = function(){
+	return fhq.token != "";
+}
+
+fhq.isAdmin = function(){
+	return fhq.userinfo.role == "admin";
+}
+
+fhq.security.login = function (email, password) {
+	var params = {};
+	params.email = email;
+	params.password = password;
+	var d = $.Deferred();
+	$.ajax({
+		type: "POST",
+		url: 'api/security/login.php',
+		data: params
+	}).done(function(r){
+		if (r.result == 'ok') {
+			fhq.token = r.data.token;
+			fhq.userinfo = r.data.session.user;
+			localStorage.setItem('userinfo', JSON.stringify(fhq.userinfo));
+			fhq.setTokenToCookie(r.data.token);
+			try{fhq.ws.socket.close();fhq.ws.initWebsocket()}catch(e){console.error(e)};
+			d.resolve(r);
+		}else{
+			fhq.token = "";
+			fhq.removeTokenFromCookie();
+			d.reject(r);
+		}
+	}).fail(function(r){
+		d.reject(r);
+	})
+	return d;
+};
+
+fhq.security.logout = function () {
+	var params = {};
+	params.token = fhq.token;
+	var d = $.Deferred();
+	$.ajax({
+		type: "POST",
+		url: 'api/security/logout.php',
+		data: params
+	}).done(function(r){
+		fhq.token = "";
+		fhq.removeTokenFromCookie();
+		localStorage.removeItem('userinfo');
+		try{fhq.ws.socket.close();fhq.ws.initWebsocket()}catch(e){console.error(e)};
+		d.resolve(r);
+	}).fail(function(r){
+		fhq.token = "";
+		fhq.removeTokenFromCookie();
+		d.reject(r);
+	})
+	return d;
+};
 
 window.fhq.games = new (function(t) {
 	this.p = t;
@@ -272,7 +307,6 @@ window.fhq.api.quests.quest = function(id){
 	}).fail(function(){
 		d.reject();
 	})
-
 	return d;
 }
 
@@ -292,7 +326,6 @@ window.fhq.api.quests.insert = function(params){
 	}).fail(function(){
 		d.reject();
 	})
-
 	return d;
 }
 
@@ -428,30 +461,6 @@ window.fhq.api.users.getLastEventId = function(){
 
 window.fhq.users = new (function(t) {
 	this.fhq = t;
-	this.initProfile = function() {
-		if (this.fhq.profile.bInitUserProfile == true)
-			return;
-		var params = {};
-		var obj = this.fhq.sendPostRequest_Sync('api/users/get.php', params);
-		if (obj.result == 'ok') {
-			if (obj.currentUser == true) {
-				console.log("Poling");
-				this.fhq.profile.lastEventId = obj.profile.lasteventid;
-				this.fhq.profile.template = obj.profile.template;
-				this.fhq.profile.university = obj.profile.university;
-				this.fhq.profile.country = obj.profile.country;
-				this.fhq.profile.city = obj.profile.city;
-				this.fhq.profile.game = obj.profile.game;
-				this.fhq.userid = obj.data.userid;
-				this.fhq.nick = obj.data.nick;
-				this.fhq.email = obj.data.email;
-				this.fhq.role = obj.data.role;
-				this.fhq.status = obj.data.status;
-				this.fhq.profile.bInitUserProfile == true;
-			}
-		};
-	};
-
 	this.setLastEventId = function(id) {
 		var params = {};
 		params['id'] = id;
@@ -471,6 +480,59 @@ window.fhq.users = new (function(t) {
 		this.fhq.sendPostRequest_Async('api/statistics/skills.php', params, callback);
 	}
 })(window.fhq);
+
+fhq.users.initProfile = function(){
+	var params = {};
+	params.token = fhq.token;
+	var d = $.Deferred();
+	if(fhq.profile.bInitUserProfile){
+		d.resolve();
+		return d;
+	}
+	$.ajax({
+		type: "POST",
+		url: 'api/users/get.php',
+		data: params
+	}).done(function(r){
+		if (r.result == 'ok') {
+			if (r.currentUser == true) {
+				fhq.profile.bInitUserProfile == true;
+				fhq.profile.lastEventId = r.profile.lasteventid;
+				fhq.profile.template = r.profile.template;
+				fhq.profile.university = r.profile.university;
+				fhq.profile.country = r.profile.country;
+				fhq.profile.city = r.profile.city;
+				fhq.profile.game = r.profile.game;
+				fhq.userinfo = {};
+				fhq.userinfo.id = r.data.userid;
+				fhq.userinfo.nick = r.data.nick;
+				fhq.userinfo.email = r.data.email;
+				fhq.userinfo.role = r.data.role;
+				fhq.userinfo.logo = r.data.logo;
+				if(fhq.profile.game && r.games){
+					for(var i in r.games){
+						if(r.games[i].gameid == fhq.profile.game.id){
+							fhq.userinfo.score = r.games[i].score
+						}
+					}
+				}
+				// fhq.userinfo.status = r.data.status;
+			}
+			d.resolve(r);
+		}else{
+			d.reject(r);
+		}
+	}).fail(function(r){
+		d.reject(r);
+	})
+	return d;
+}
+
+if(localStorage.getItem('userinfo') != null){
+	fhq.userinfo = JSON.parse(localStorage.getItem('userinfo'));
+}
+
+fhq.users.initProfile();
 
 window.fhq.statistics = new (function(t) {
 	this.p = t;
