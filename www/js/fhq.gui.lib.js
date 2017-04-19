@@ -1622,10 +1622,6 @@ function FHQTable() {
 	};
 }
 
-fhq.ui.isAdmin = function(){
-	return fhq.ui.role == 'admin';
-}
-
 fhq.ui.loadUserInfo = function(uuid){
 	fhq.ws.user({uuid: uuid}).done(function(response){
 		var u = response.data;
@@ -1835,7 +1831,7 @@ fhq.ui.loadQuests = function(){
 	var list = '<div class="quests">'
 	+ '<div class="icon">' + fhq.t('Quests') + '</div>'
 	
-	if(fhq.ui.isAdmin()){
+	if(fhq.isAdmin()){
 		list += '<div class="filter">'
 			+ '<div class="fhqbtn" id="quest_create">' + fhq.t('Create') + '</div>'
 			+ '<div class="fhqbtn" id="quest_import">' + fhq.t('Import') + '</div>'
