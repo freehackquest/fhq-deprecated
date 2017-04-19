@@ -1234,38 +1234,6 @@ function FHQGuiLib(api) {
 	this.exportQuest = function(questid) {
 		fhq.quests.export(questid);
 	}
-
-	this.formImportQuest = function() {
-		var pt = new FHQParamTable();
-		pt.row('', 'ZIP: <input id="importquest_zip" type="file" required/>');
-		pt.row('', '<div class="fhqbtn" onclick="fhqgui.importQuest();">Import</div>');
-		pt.skip();
-		this.showModalDialog(pt.render());
-	}
-
-	this.importQuest = function() {
-		var files = document.getElementById('importquest_zip').files;
-		if (files.length == 0) {
-			alert("Please select file");
-			return;
-		}
-		/*for(i = 0; i < files.length; i++)
-			alert(files[i].name);*/
-		
-		send_request_post_files(
-			files,
-			'api/quests/import.php',
-			createUrlFromObj({}),
-			function (obj) {
-				if (obj.result == "fail") {
-					alert(obj.error.message);
-					return;
-				}
-				fhqgui.closeModalDialog();
-				loadQuests();
-			}
-		);
-	}
 	
 	this.handleFail = function(response){
 		if(response.result=='fail'){
@@ -1585,11 +1553,12 @@ function FHQTable() {
 		return result;
 	};
 }
+
 fhq.ui.isAdmin = function(){
 	return fhq.ui.role == 'admin';
 }
 
-window.fhq.ui.loadUserInfo = function(uuid){
+fhq.ui.loadUserInfo = function(uuid){
 	fhq.ws.user({uuid: uuid}).done(function(response){
 		var u = response.data;
 		var pt = new FHQParamTable();
@@ -1758,8 +1727,37 @@ fhq.ui.createQuest = function() {
 	})
 };
 
+fhq.ui.importQuest = function() {
+	var files = document.getElementById('importquest_zip').files;
+	if (files.length == 0) {
+		alert("Please select file");
+		return;
+	}
+	/*for(i = 0; i < files.length; i++)
+		alert(files[i].name);*/
+	
+	send_request_post_files(
+		files,
+		'api/quests/import/',
+		createUrlFromObj({}),
+		function (obj) {
+			if (obj.result == "fail") {
+				alert(obj.error.message);
+				return;
+			}
+			closeModalDialog();
+			fhq.ui.updateQuests();
+			fhq.ui.showQuest(obj.data.quest.id);
+		}
+	);
+}
+	
 fhq.ui.importQuestForm = function(){
-	fhqgui.formImportQuest();
+	var pt = new FHQParamTable();
+	pt.row('', 'ZIP: <input id="importquest_zip" type="file" required/>');
+	pt.row('', '<div class="fhqbtn" onclick="fhq.ui.importQuest();">Import</div>');
+	pt.skip();
+	showModalDialog(pt.render());
 }
 
 fhq.ui.loadQuests = function(){
@@ -1797,14 +1795,10 @@ fhq.ui.loadQuests = function(){
 	fhq.ui.updateQuests();
 }
 
-/* fhq_quests.js todo redesign */
-
-function deleteQuest(id)
-{
+fhq.ui.deleteQuest = function(id){
 	if (!confirm("Are you sure that wand remove this quest?"))
 		return;
 
-	document.getElementById("quest_error").innerHTML = "";
 	var params = {};
 	params.questid = id;
 	send_request_post(
@@ -1813,13 +1807,16 @@ function deleteQuest(id)
 		function (obj) {
 			if (obj.result == "ok") {
 				closeModalDialog();
-				loadQuests();
+				fhq.ui.updateQuests();
+				$('.fhqrightinfo').html('Quest removed');
 			} else {
-				document.getElementById("quest_error").innerHTML = obj.error.message;
+				alert(obj.error.message);
 			}
 		}
 	);
 }
+
+/* fhq_quests.js todo redesign */
 
 function updateQuest(id)
 {
@@ -2071,6 +2068,10 @@ window.fhq.ui.showQuest = function(id){
 				+ 'Quest: ' + q.name + ', ID: #' + q.questid + '\n'
 				+ 'Comment:\n'
 			);
+		});
+
+		$('#quest_delete').unbind().bind('click', function(){
+			fhq.ui.deleteQuest(q.questid);
 		});
 		
 		$('.fhqrightinfo').append('<div class="newquestinfo"><br>'

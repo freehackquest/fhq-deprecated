@@ -8,8 +8,8 @@
  */
 
 $curdir_import_quest = dirname(__FILE__);
-include_once ($curdir_import_quest."/../api.lib/api.base.php");
-include_once ($curdir_import_quest."/../../config/config.php");
+include_once ($curdir_import_quest."/../../api.lib/api.base.php");
+include_once ($curdir_import_quest."/../../../config/config.php");
 
 $response = APIHelpers::startpage($config);
 
@@ -23,6 +23,7 @@ if (count($_FILES) <= 0)
 
 $keys = array_keys($_FILES);
 $response['result'] = 'ok';
+$response['data']['quest'] = array();
 
 // $prefix = 'quest'.$id.'_';
 // $output_dir = 'files/';
@@ -117,6 +118,7 @@ for($i = 0; $i < count($keys); $i++)
 			$stmt1 = $conn->prepare($query);
 			$stmt1->execute($values);
 			$questid = $conn->lastInsertId();
+			$response['data']['quest']['id'] = $questid;
 			APIEvents::addPublicEvents($conn, 'quests', "New quest #".$questid.' '.htmlspecialchars($quest['name']).' into game '.htmlspecialchars($quest['game']['title']));
 		} else {
 			$values = array();
@@ -135,6 +137,7 @@ for($i = 0; $i < count($keys); $i++)
 			$stmt2 = $conn->prepare($query);
 			$values[] = $quest['uuid'];
 			$stmt2->execute($values);
+			$response['data']['quest']['id'] = $questid;
 			APIEvents::addPublicEvents($conn, 'quests', "Updated quest #".$questid.' from game '.htmlspecialchars($quest['game']['title']));
 		}
 
