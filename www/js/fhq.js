@@ -276,6 +276,26 @@ window.fhq.api.quests.quest = function(id){
 	return d;
 }
 
+window.fhq.api.quests.insert = function(params){
+	params = params || {};
+	var d = $.Deferred();
+	$.ajax({
+		type: "POST",
+		url: 'api/quests/insert/',
+		data: params
+	}).done(function(response){
+		if (response.result == 'ok') {
+			d.resolve(response);
+		}else{
+			d.reject(response);
+		}
+	}).fail(function(){
+		d.reject();
+	})
+
+	return d;
+}
+
 window.fhq.api.quests.statistics = function(id){
 	var params = {};
 	params.questid = id;

@@ -45,6 +45,15 @@ if (!isset($_SESSION['user']))
 		<script type="text/javascript" src="js/fhq_stats.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_feedback.js?ver=1"></script>
 
+		<?php
+			$role = isset($_SESSION['user']['role']) ? $_SESSION['user']['role'] : 'user';
+			$score = isset($_SESSION['user']['score']) ? $_SESSION['user']['score'] : 0;
+			$userid = isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : 0;
+			$nick = isset($_SESSION['user']['nick']) ? $_SESSION['user']['nick'] : '';
+			$nick = htmlspecialchars($nick);
+			echo "<script>fhq.ui.role = '".$role."'</script>";
+		?>
+
 		<script type="text/javascript">
 			fhq.client = "web-fhq2015";
 			fhq.baseUrl = fhq.getCurrentApiPath(); // or another path
@@ -158,7 +167,7 @@ if (!isset($_SESSION['user']))
 				API: <a href="api/?html">html</a> or <a href="api/?json">json</a>
 				VM: <a href="http://dist.freehackquest.com/" target="_ablank">ova</a>
 				Team: <a href="https://ctftime.org/team/16804">ctftime</a>
-				Donate: <a href="http://fhq.sea-kg.com/donate.html">donate</a>
+				Donate: <a href="http://freehackquest.com/donate.html">donate</a>
 				WS State: <font id="websocket_state">?</font><br>
 				</font>
 			</center>

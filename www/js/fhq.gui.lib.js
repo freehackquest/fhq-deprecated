@@ -1585,6 +1585,9 @@ function FHQTable() {
 		return result;
 	};
 }
+fhq.ui.isAdmin = function(){
+	return fhq.ui.role == 'admin';
+}
 
 window.fhq.ui.loadUserInfo = function(uuid){
 	fhq.ws.user({uuid: uuid}).done(function(response){
@@ -1704,13 +1707,76 @@ window.fhq.ui.updateQuests = function(){
 	})
 }
 
-window.fhq.ui.loadQuests = function(){
+// TODO redesign
+function createQuestRow(name, value)
+{
+	return '<div class="quest_info_row">\n'
+	+ '\t<div class="quest_info_param">' + name + '</div>\n'
+	+ '\t<div class="quest_info_value">' + value + '</div>\n'
+	+ '</div>\n';
+}
+
+fhq.ui.createQuestForm = function(){
+	var content = '';
+	content += '<div class="quest_info_table">\n';
+	content += createQuestRow('Quest UUID:', '<input type="text" id="newquest_quest_uuid" value="' + guid() + '"/>');
+	content += createQuestRow('Name:', '<input type="text" id="newquest_name" value=""/>');
+	content += createQuestRow('Text:', '<textarea id="newquest_text"></textarea>');
+	content += createQuestRow('Score(+):', '<input type="text" id="newquest_score" value="100"/>');
+	content += createQuestRow('Min Score(>):', '<input type="text" id="newquest_min_score" value="0"/>');
+	content += createQuestRow('Subject:', fhqgui.combobox('newquest_subject', 'trivia', fhq.getQuestTypes()));
+	// content += createQuestRow('Author Id:', '<input type="text" id="newquest_author_id" value=""/>');
+	content += createQuestRow('Author:', '<input type="text" id="newquest_author" value=""/>');
+	content += createQuestRow('Answer:', '<input type="text" id="newquest_answer" value=""/>');
+	content += createQuestRow('State:', fhqgui.combobox('newquest_state', 'open', fhq.getQuestStates()));
+	content += createQuestRow('Description State:', '<textarea id="newquest_description_state"></textarea>');
+	content += createQuestRow('', '<div class="fhqbtn" onclick="fhq.ui.createQuest();">Create</div>');
+	content += '</div>'; // quest_info_table
+	showModalDialog(content);
+}
+
+fhq.ui.createQuest = function() {
+	var params = {};
+	params["quest_uuid"] = document.getElementById("newquest_quest_uuid").value;
+	params["name"] = document.getElementById("newquest_name").value;
+	params["text"] = document.getElementById("newquest_text").value;
+	params["score"] = document.getElementById("newquest_score").value;
+	params["min_score"] = document.getElementById("newquest_min_score").value;
+	params["subject"] = document.getElementById("newquest_subject").value;
+	params["idauthor"] = 0; // document.getElementById("newquest_author_id").value;
+	params["author"] = document.getElementById("newquest_author").value;
+	params["answer"] = document.getElementById("newquest_answer").value;
+	params["state"] = document.getElementById("newquest_state").value;
+	params["description_state"] = document.getElementById("newquest_description_state").value;
+
+	fhq.api.quests.insert(params).done(function(r){
+		closeModalDialog();
+		fhq.ui.updateQuests();
+		fhq.ui.showQuest(r.data.quest.id);
+	}).fail(function(){
+		alert("fail");
+	})
+};
+
+fhq.ui.importQuestForm = function(){
+	fhqgui.formImportQuest();
+}
+
+fhq.ui.loadQuests = function(){
 	fhqgui.setFilter('');
 	$('#content_page').html('<div class="fhqrightinfo center"></div><div class="fhqleftlist"></div>');
 	$('.fhqleftlist').html('');
 	var list = '<div class="quests">'
 	+ '<div class="icon">' + fhq.t('Quests') + '</div>'
-	+ '<div class="filter"><input type="text" id="quests_filter_name_contains" value="" placeholder="Name"/></div>'
+	
+	if(fhq.ui.isAdmin()){
+		list += '<div class="filter">'
+			+ '<div class="fhqbtn" id="quest_create">' + fhq.t('Create') + '</div>'
+			+ '<div class="fhqbtn" id="quest_import">' + fhq.t('Import') + '</div>'
+			+ '</div>';
+	}
+	
+	list += '<div class="filter"><input type="text" id="quests_filter_name_contains" value="" placeholder="Name"/></div>'
 	+ '<div class="filter">' + fhq.t('Subject') + ': <select id="quests_filter_subject" value="">'
 	+ '<option selected="" value="">*</option>'
 	+ '</select></div>'
@@ -1726,11 +1792,10 @@ window.fhq.ui.loadQuests = function(){
 	$('.fhqleftlist').append(list);
 	$('.fhqleftlist .quests .content').html(fhq.t('Loading...'));
 	$('#quests_search').unbind('click').bind('click', fhq.ui.updateQuests);
+	$('#quest_create').unbind('click').bind('click', fhq.ui.createQuestForm);
+	$('#quest_import').unbind('click').bind('click', fhq.ui.importQuestForm);
 	fhq.ui.updateQuests();
 }
-
-// tmp += '<div class="fhqbtn" onclick="formCreateQuest();">Create Quest</div>';
-// tmp += '<div class="fhqbtn" onclick="fhqgui.formImportQuest();">Import Quest</div>';
 
 /* fhq_quests.js todo redesign */
 
@@ -2352,55 +2417,7 @@ window.fhq.ui.initChatForm = function(){
 	});
 }
 
-function createQuest() 
-{
-	var params = {};
-	params["quest_uuid"] = document.getElementById("newquest_quest_uuid").value;
-	params["name"] = document.getElementById("newquest_name").value;
-	params["text"] = document.getElementById("newquest_text").value;
-	params["score"] = document.getElementById("newquest_score").value;
-	params["min_score"] = document.getElementById("newquest_min_score").value;
-	params["subject"] = document.getElementById("newquest_subject").value;
-	params["idauthor"] = 0; // document.getElementById("newquest_author_id").value;
-	params["author"] = document.getElementById("newquest_author").value;
-	params["answer"] = document.getElementById("newquest_answer").value;
-	params["state"] = document.getElementById("newquest_state").value;
-	params["description_state"] = document.getElementById("newquest_description_state").value;
 
-	// alert(createUrlFromObj(params));
-	send_request_post(
-		'api/quests/insert.php',
-		createUrlFromObj(params),
-		function (obj) {
-			if (obj.result == "ok") {
-				closeModalDialog();
-				loadQuests();
-			} else {
-				alert(obj.error.message);
-			}
-		}
-	);
-};
-
-function formCreateQuest() 
-{
-	var content = '';
-	content += '<div class="quest_info_table">\n';
-	content += createQuestRow('Quest UUID:', '<input type="text" id="newquest_quest_uuid" value="' + guid() + '"/>');
-	content += createQuestRow('Name:', '<input type="text" id="newquest_name" value=""/>');
-	content += createQuestRow('Text:', '<textarea id="newquest_text"></textarea>');
-	content += createQuestRow('Score(+):', '<input type="text" id="newquest_score" value="100"/>');
-	content += createQuestRow('Min Score(>):', '<input type="text" id="newquest_min_score" value="0"/>');
-	content += createQuestRow('Subject:', fhqgui.combobox('newquest_subject', 'trivia', fhq.getQuestTypes()));
-	// content += createQuestRow('Author Id:', '<input type="text" id="newquest_author_id" value=""/>');
-	content += createQuestRow('Author:', '<input type="text" id="newquest_author" value=""/>');
-	content += createQuestRow('Answer:', '<input type="text" id="newquest_answer" value=""/>');
-	content += createQuestRow('State:', fhqgui.combobox('newquest_state', 'open', fhq.getQuestStates()));
-	content += createQuestRow('Description State:', '<textarea id="newquest_description_state"></textarea>');
-	content += createQuestRow('', '<div class="fhqbtn" onclick="createQuest();">Create</div>');
-	content += '</div>'; // quest_info_table
-	showModalDialog(content);
-}
 
 /* classbook */
 

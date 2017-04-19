@@ -25,6 +25,14 @@ window.fhq.localization = {
 		'en': 'About',
 		'ru': 'Информация'
 	},
+	'Create' : {
+		'en': 'Create',
+		'ru': 'Создать'
+	},
+	'Import' : {
+		'en': 'Import',
+		'ru': 'Импортировать'
+	},
 	'Account' : {
 		'en': 'Account',
 		'ru': 'Аккаунт'

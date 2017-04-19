@@ -1,4 +1,7 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+header('Content-Type: application/json');
+
 /*
  * API_NAME: Quest Insert
  * API_DESCRIPTION: Method will be add quest to the system
@@ -17,11 +20,11 @@
  * API_INPUT: token - string, token
  */
 
-$curdir_quests_insert = dirname(__FILE__);
-include_once ($curdir_quests_insert."/../api.lib/api.base.php");
-include_once ($curdir_quests_insert."/../api.lib/api.game.php");
-include_once ($curdir_quests_insert."/../api.lib/api.quest.php");
-include_once ($curdir_quests_insert."/../../config/config.php");
+$curdir = dirname(__FILE__);
+include_once ($curdir."/../../api.lib/api.base.php");
+include_once ($curdir."/../../api.lib/api.game.php");
+include_once ($curdir."/../../api.lib/api.quest.php");
+include_once ($curdir."/../../../config/config.php");
 
 $response = APIHelpers::startpage($config);
 
