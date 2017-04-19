@@ -1841,8 +1841,8 @@ function updateQuest(id)
 		function (obj) {
 			if (obj.result == "ok") {
 				closeModalDialog();
-				reloadQuests();
-				showQuest(id);
+				fhq.ui.updateQuests();
+				fhq.ui.showQuest(id);
 			} else {
 				alert(obj.error.message);
 			}
@@ -2073,6 +2073,15 @@ window.fhq.ui.showQuest = function(id){
 		$('#quest_delete').unbind().bind('click', function(){
 			fhq.ui.deleteQuest(q.questid);
 		});
+		
+		$('#quest_edit').unbind().bind('click', function(){
+			formEditQuest(q.questid);
+		})
+		
+		$('#quest_export').unbind().bind('click', function(){
+			fhqgui.exportQuest(q.questid);
+		})
+		
 		
 		$('.fhqrightinfo').append('<div class="newquestinfo"><br>'
 			+ '<script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>'
