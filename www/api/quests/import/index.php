@@ -145,7 +145,7 @@ for($i = 0; $i < count($keys); $i++)
 		$stmt = $conn->prepare('SELECT id, filepath FROM quests_files WHERE questid = ?');
 		$stmt->execute(array($questid));
 		while ($row = $stmt->fetch()) {
-			$filepath = $curdir_import_quest.'/../../'.$row['filepath'];
+			$filepath = $curdir_import_quest.'/../../../'.$row['filepath'];
 			if (file_exists($filepath)) {
 				unlink($filepath);
 			}
@@ -164,7 +164,7 @@ for($i = 0; $i < count($keys); $i++)
 			
 			if ($fileid == 0) {
 				if (isset($files[$file_uuid])) {
-					$fp = fopen($curdir_import_quest.'/../../'.$file_path, 'w');
+					$fp = fopen($curdir_import_quest.'/../../../'.$file_path, 'w');
 					fwrite($fp, $files[$file_uuid]);
 					fclose($fp);
 				}
