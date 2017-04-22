@@ -520,9 +520,13 @@ fhq.users.initProfile = function(){
 			}
 			d.resolve(r);
 		}else{
+			fhq.token = "";
+			fhq.removeTokenFromCookie();
 			d.reject(r);
 		}
 	}).fail(function(r){
+		fhq.token = "";
+		fhq.removeTokenFromCookie();
 		d.reject(r);
 	})
 	return d;

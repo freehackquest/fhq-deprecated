@@ -235,7 +235,7 @@ function FHQGuiLib(api) {
 			+ '<div class="account-panel"></div>');
 
 		$('.account-panel').append(
-			'<img class="fhq_btn_menu_img" src="' + (fhq.isAuth() ? fhq.userinfo.logo : 'images/menu/user.png') + '"/>  '
+			'<img class="fhq_btn_menu_img" src="' + (fhq.isAuth() && fhq.userinfo ? fhq.userinfo.logo : 'images/menu/user.png') + '"/>  '
 			+ (fhq.isAuth() ? fhq.userinfo.nick : fhq.t('Account'))
 		);
 		$('.account-panel').append('<div class="border"></div>');

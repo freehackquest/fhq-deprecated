@@ -13,8 +13,8 @@
 		<link rel="stylesheet" type="text/css" href="css/fhq.css?ver=1"/>
 		<!-- link rel="stylesheet" type="text/css" href="css/fhq.min.css?ver=1"/-->
 
-		<script type="text/javascript" src="js/fhq.base.js"></script>
-		<script type="text/javascript" src="js/fhq.localization.js"></script>
+		<script type="text/javascript" src="js/fhq.base.js?ver=1"></script>
+		<script type="text/javascript" src="js/fhq.localization.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq.ws.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq.gui.lib.js?ver=1"></script>
