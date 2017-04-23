@@ -12,14 +12,20 @@ $google_client->setClientId($config['google_auth']['client_id']);
 $google_client->setClientSecret($config['google_auth']['client_secret']);
 $google_client->setRedirectUri("postmessage"); /* alway postmessage. */
 $google_client->setDeveloperKey($config['google_auth']['developer_key']);
+$google_client->setRedirectUri($config['google_auth']['google_auth_uri']);
 
-$google_client->addScope(array('https://www.googleapis.com/auth/userinfo.email',
-		'https://www.googleapis.com/auth/userinfo.profile',
-        'https://www.googleapis.com/auth/plus.me'));
+$google_client->addScope(array(
+	'https://www.googleapis.com/auth/userinfo.email',
+	'https://www.googleapis.com/auth/userinfo.profile',
+	'https://www.googleapis.com/auth/plus.me'
+));
 
-if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
-	$google_client->setAccessToken($_SESSION['access_token']);
-	$_SESSION['access_token'] = $google_client->getAccessToken();
+if (!isset($_GET['code'])) {
+	$auth_url = $google_client->createAuthUrl();
+	header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
+} else {
+	$google_client->authenticate($_GET['code']);
+	
 	$plus = new Google_Service_Plus($google_client);
 	try{
 		$me = $plus->people->get("me"); /* me is the current logged in user */
@@ -103,7 +109,4 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 	}catch(Exception $e){
 		echo $e->getMessage();
 	}
-} else {
-	$redirect_uri = $config['google_auth']['oauth2google_uri'];
-	header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
 }
