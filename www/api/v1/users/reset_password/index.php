@@ -1,5 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: *");
+header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 
 /*
@@ -10,17 +10,14 @@ header('Content-Type: application/json');
  * API_INPUT: captcha - string, here -> api/captcha.php
  * API_INPUT: client - string, indentifier of frontend
  */
- 
-
-$httpname = 'http://'.$_SERVER['HTTP_HOST'].dirname(dirname(dirname($_SERVER['PHP_SELF']))).'/';
 
 $curdir_security_restore = dirname(__FILE__);
-include_once ($curdir_security_restore."/../api.lib/api.base.php");
-include_once ($curdir_security_restore."/../api.lib/api.helpers.php");
-include_once ($curdir_security_restore."/../api.lib/api.security.php");
-include_once ($curdir_security_restore."/../api.lib/api.user.php");
-include_once ($curdir_security_restore."/../../config/config.php");
-include_once ($curdir_security_restore."/../api.lib/api.mail.php");
+include_once ($curdir_security_restore."/../../../api.lib/api.base.php");
+include_once ($curdir_security_restore."/../../../api.lib/api.helpers.php");
+include_once ($curdir_security_restore."/../../../api.lib/api.security.php");
+include_once ($curdir_security_restore."/../../../api.lib/api.user.php");
+include_once ($curdir_security_restore."/../../../../config/config.php");
+include_once ($curdir_security_restore."/../../../api.lib/api.mail.php");
 
 $result = array(
 	'result' => 'fail',
@@ -33,13 +30,13 @@ if (!APIHelpers::issetParam('email'))
 if (!APIHelpers::issetParam('captcha'))
 	APIHelpers::showerror(1039, 'Parameter captcha was not found');
 
+$conn = APIHelpers::createConnection($config);
 
 $email = APIHelpers::getParam('email', '');
 $captcha = APIHelpers::getParam('captcha', '');
-$orig_captcha = $_SESSION['captcha_reg'];
+$captcha_uuid = APIHelpers::getParam('captcha_uuid', '');
 
-// cleanup captcha
-$_SESSION['captcha_reg'] = md5(rand().rand());
+$orig_captcha = APIHelpers::find_captcha($conn, $captcha_uuid);
 
 if (strtoupper($captcha) != strtoupper($orig_captcha))
 	APIHelpers::showerror(1040, '[Restore] Captcha is not correct, please "Refresh captcha" and try again');
@@ -47,7 +44,7 @@ if (strtoupper($captcha) != strtoupper($orig_captcha))
 if (!filter_var($email, FILTER_VALIDATE_EMAIL))
 	APIHelpers::showerror(1041, '[Restore] Invalid e-mail address. ');
 
-$conn = APIHelpers::createConnection($config);
+
 $stmt = $conn->prepare('select id, nick from users where email = ?');
 $stmt->execute(array($email));
 $nick = '';
@@ -77,22 +74,22 @@ $stmt_update->execute(array(
 
 if( !APISecurity::login($conn, $email, $password_hash)) {
 	APIEvents::addPublicEvents($conn, 'errors', 'Admin, restore password is broken!');
-	APIHelpers::showerror(1315, '[Restore] Sorry restore is broken. Please send report to the admin about this.');
+	APIHelpers::showerror(1315, '[Reset] Sorry restore is broken. Please send report to the admin about this.');
 } else {
 	APISecurity::updateLastDTLogin($conn);
 	APIUser::loadUserProfile($conn);
 	APISecurity::logout();
 }
 
-$email_subject = "Restore password to your account on FreeHackQuest.";
+$email_subject = "Reset password to your account for FreeHackQuest.";
 
 $email_message = '
 	Restore:
 
-	Somebody (may be you) reseted your password on '.$httpname.'
+	Somebody (may be you) reseted your password on '.$config['hostname'].'
 	Your login: '.$email.'
 	Your new password: '.$password.' (You must change it)
-	Link: '.$httpname.'index.php
+	Link: '.$config['hostname'].'
 	';
 
 $stmt_insert2 = $conn->prepare('

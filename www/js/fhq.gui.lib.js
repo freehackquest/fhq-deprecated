@@ -9,7 +9,7 @@ fhq.ui.showModalDialog = function(obj) {
 	
 	$('#fhqmodaldialog_header').html(obj.header);
 	$('#fhqmodaldialog_content').html(obj.content);
-	$('#fhqmodaldialog_buttons').html(obj.buttons + $('#fhqmodaldialog_btncancel').html());
+	$('#fhqmodaldialog_buttons').html(obj.buttons + fhq.ui.templates.dialog_btn_cancel());
 	document.body.scroll = "no"; // ie only
 	fhq.ui.modalDialog2ClickContent = false;
 	document.onkeydown = function(evt) {
@@ -28,10 +28,11 @@ fhq.ui.closeModalDialog = function() {
 		document.onkeydown = null;
 	},800);
 }
+
 fhq.ui.updateModalDialog = function(obj) {
 	$('#fhqmodaldialog_header').html(obj.header);
 	$('#fhqmodaldialog_content').html(obj.content);
-	$('#fhqmodaldialog_buttons').html(obj.buttons + $('#fhqmodaldialog_btncancel').html());
+	$('#fhqmodaldialog_buttons').html(obj.buttons + fhq.ui.templates.dialog_btn_cancel());
 }
 
 fhq.ui.clickModalDialog_content = function() {
@@ -73,7 +74,7 @@ fhq.ui.signin = function() {
 	var email = $("#signin-email").val();
 	var password = $("#signin-password").val();
 
-	var obj = fhq.security.login(email,password).done(function(r){
+	var obj = fhq.api.users.login(email,password).done(function(r){
 		// TODO
 		// $('#signin-email').val('');
 		// $("#signin-password").val('');
@@ -96,7 +97,7 @@ fhq.ui.signin = function() {
 }
 
 fhq.ui.signout = function(){
-	fhq.security.logout().done(function(){
+	fhq.api.users.logout().done(function(){
 		fhqgui.loadTopPanel();
 		fhqgui.loadMainPage();
 		fhq.changeLocationState({});
@@ -332,16 +333,19 @@ function FHQGuiLib(api) {
 	/* Reset Password */
 
 	this.showResetPasswordForm = function() {
-		fhq.ui.showModalDialog({
-			'header' : 'Reset Password',
-			'content': $("#reset-password-form").html(),
-			'buttons': $("#reset-password-form-buttons").html()
-		});
+		fhq.ui.showModalDialog(fhq.ui.templates.reset_password());
 		this.refreshResetPasswordCaptcha();
 	};
 
 	this.refreshResetPasswordCaptcha = function() {
-		$('#reset-password-captcha-image').attr('src', 'api/captcha.php?rid=' + Math.random());
+		fhq.api.users.captcha().done(function(r){
+			$('#reset-password-captcha-image').attr({
+				'src': 'data:image/png;base64, ' + r.data.captcha,
+				'uuid': r.data.uuid
+			});
+		}).fail(function(r){
+			console.error(r)
+		})
 	}
 
 	this.cleanupResetPasswordMessages = function() {
@@ -353,28 +357,29 @@ function FHQGuiLib(api) {
 		var self = this;
 		$('#reset-password-error-message').html('');
 		$('#reset-password-info-message').html('Please wait...');
-		var email = $('#reset-password-email').val();
-		var captcha = $('#reset-password-captcha').val();
+		var params = {};
+		params.email = $('#reset-password-email').val();
+		params.captcha = $('#reset-password-captcha').val();
+		params.captcha_uuid = $('#reset-password-captcha-image').attr('uuid');
 
-		this.fhq.security.resetPassword(email,captcha, function(response){
-			if(response.result == "fail"){
-				$('#reset-password-error-message').html(response.error.message);
-				$('#reset-password-info-message').html('');
-			}else{
-				
-				$('#reset-password-email').val('');
-				$('#reset-password-captcha').val('');
-				$('#reset-password-info-message').html('');
-				$('#reset-password-error-message').html('');
-				
-				fhq.ui.updateModalDialog({
-					'header' : 'Reset Password',
-					'content': response.data.message,
-					'buttons': ''
-				});
-			}
+		fhq.api.users.reset_password(params).done(function(r){
+			$('#reset-password-email').val('');
+			$('#reset-password-captcha').val('');
+			$('#reset-password-info-message').html('');
+			$('#reset-password-error-message').html('');
+			
+			fhq.ui.updateModalDialog({
+				'header' : 'Reset Password',
+				'content': r.data.message,
+				'buttons': ''
+			});
+		}).fail(function(r){
+			console.error(r);
+			$('#reset-password-error-message').html(r.responseJSON.error.message);
+			$('#reset-password-info-message').html('');
+			$('#reset-password-captcha').val('');
 			self.refreshResetPasswordCaptcha();
-		});
+		})
 	};
 
 	this.loadCities = function() {
@@ -2629,6 +2634,32 @@ fhq.ui.templates.singup = function(){
 		'buttons': '<div class="fhqbtn" onclick="fhqgui.signup();">' + fhq.t('Sign-up') + '</div>'
 	};
 }
+
+fhq.ui.templates.reset_password = function(){
+	var content = ''
+		+ '<div id="reset-password-form">'
+		+ '		<input placeholder="your@email.com" id="reset-password-email" value="" type="text" onkeydown="if (event.keyCode == 13) fhqgui.resetPassword(); else fhqgui.cleanupResetPasswordMessages();">'
+		+ '		<br><br>'
+		+ '		<img src="" id="reset-password-captcha-image"/>'
+		+ '		<div class="fhqbtn" onclick="fhqgui.refreshResetPasswordCaptcha();"><img src="images/refresh.svg"/></div>'
+		+ '		<br><br>'
+		+ '		<input placeholder="captcha" id="reset-password-captcha" value="" type="text" onkeydown="if (event.keyCode == 13) fhqgui.resetPassword(); else fhqgui.cleanupResetPasswordMessages();">'
+		+ '		<br><br>'
+		+ '		<font id="reset-password-info-message"></font>'
+		+ '		<font id="reset-password-error-message" color="#ff0000"></font>'
+		+ '</div>';
+
+	return {
+		'header' : fhq.t('Reset password'),
+		'content': content,
+		'buttons': '<div class="fhqbtn" onclick="fhqgui.resetPassword();">' + fhq.t('Reset') + '</div>'
+	};
+}
+
+fhq.ui.templates.dialog_btn_cancel = function(){
+	return '<div class="fhqbtn" onclick="fhq.ui.closeModalDialog();">' + fhq.t('Cancel') + '</div>';
+}
+
 
 window.fhq.ui.createCopyright = function() {
 	$("body").append(''

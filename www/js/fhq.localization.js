@@ -265,5 +265,20 @@ window.fhq.localization = {
 		'en': 'Profile',
 		'ru': 'Профиль'
 	},
-	
+	'Reset': {
+		'en': 'Reset',
+		'ru': 'Сбросить'
+	},
+	'Reset password': {
+		'en': 'Reset password',
+		'ru': 'Сбросить пароль'
+	},
+	'Cancel': {
+		'en': 'Cancel',
+		'ru': 'Отмена'
+	},
+	'Game': {
+		'en': 'Game',
+		'ru': 'Игра'
+	}
 };

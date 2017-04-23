@@ -116,17 +116,6 @@ window.fhq.supportsHtml5Storage = function() {
 	}
 }
 
-
-window.fhq.security = new (function(t) {
-	this.p = t;
-	this.resetPassword = function(email, captcha, callback) {
-		var params = {};
-		params.email = email;
-		params.captcha = captcha;
-		this.p.sendPostRequest_Async('api/security/restore.php', params, callback);
-	};
-})(window.fhq);
-
 fhq.isAuth = function(){
 	return fhq.token != "";
 }
@@ -134,56 +123,6 @@ fhq.isAuth = function(){
 fhq.isAdmin = function(){
 	return fhq.userinfo.role == "admin";
 }
-
-fhq.security.login = function (email, password) {
-	var params = {};
-	params.email = email;
-	params.password = password;
-	var d = $.Deferred();
-	$.ajax({
-		type: "POST",
-		url: 'api/security/login.php',
-		data: params
-	}).done(function(r){
-		if (r.result == 'ok') {
-			fhq.token = r.data.token;
-			fhq.userinfo = r.data.session.user;
-			localStorage.setItem('userinfo', JSON.stringify(fhq.userinfo));
-			fhq.setTokenToCookie(r.data.token);
-			try{fhq.ws.socket.close();fhq.ws.initWebsocket()}catch(e){console.error(e)};
-			d.resolve(r);
-		}else{
-			fhq.token = "";
-			fhq.removeTokenFromCookie();
-			d.reject(r);
-		}
-	}).fail(function(r){
-		d.reject(r);
-	})
-	return d;
-};
-
-fhq.security.logout = function () {
-	var params = {};
-	params.token = fhq.token;
-	var d = $.Deferred();
-	$.ajax({
-		type: "POST",
-		url: 'api/security/logout.php',
-		data: params
-	}).done(function(r){
-		fhq.token = "";
-		fhq.removeTokenFromCookie();
-		localStorage.removeItem('userinfo');
-		try{fhq.ws.socket.close();fhq.ws.initWebsocket()}catch(e){console.error(e)};
-		d.resolve(r);
-	}).fail(function(r){
-		fhq.token = "";
-		fhq.removeTokenFromCookie();
-		d.reject(r);
-	})
-	return d;
-};
 
 window.fhq.games = new (function(t) {
 	this.p = t;
@@ -405,7 +344,7 @@ window.fhq.api.feedback.add = function(params){
 	return d;
 }
 
-window.fhq.api.events.count = function() {
+fhq.api.events.count = function() {
 	
 	var d = $.Deferred();
 	fhq.api.users.getLastEventId().done(function(lasteventid){
@@ -430,6 +369,34 @@ window.fhq.api.events.count = function() {
 	return d;
 };
 
+fhq.api.users.login = function (email, password) {
+	var params = {};
+	params.email = email;
+	params.password = password;
+	var d = $.Deferred();
+	$.ajax({
+		type: "POST",
+		url: 'api/security/login.php',
+		data: params
+	}).done(function(r){
+		if (r.result == 'ok') {
+			fhq.token = r.data.token;
+			fhq.userinfo = r.data.session.user;
+			localStorage.setItem('userinfo', JSON.stringify(fhq.userinfo));
+			fhq.setTokenToCookie(r.data.token);
+			try{fhq.ws.socket.close();fhq.ws.initWebsocket()}catch(e){console.error(e)};
+			d.resolve(r);
+		}else{
+			fhq.token = "";
+			fhq.removeTokenFromCookie();
+			d.reject(r);
+		}
+	}).fail(function(r){
+		d.reject(r);
+	})
+	return d;
+};
+
 fhq.api.users.getLastEventId = function(){
 	var d = $.Deferred();
 	var params = {};
@@ -446,6 +413,28 @@ fhq.api.users.getLastEventId = function(){
 		}
 	}).fail(function(){
 		d.resolve(0);
+	})
+	return d;
+};
+
+fhq.api.users.logout = function () {
+	var params = {};
+	params.token = fhq.token;
+	var d = $.Deferred();
+	$.ajax({
+		type: "POST",
+		url: 'api/security/logout.php',
+		data: params
+	}).done(function(r){
+		fhq.token = "";
+		fhq.removeTokenFromCookie();
+		localStorage.removeItem('userinfo');
+		try{fhq.ws.socket.close();fhq.ws.initWebsocket()}catch(e){console.error(e)};
+		d.resolve(r);
+	}).fail(function(r){
+		fhq.token = "";
+		fhq.removeTokenFromCookie();
+		d.reject(r);
 	})
 	return d;
 };
@@ -479,6 +468,21 @@ fhq.api.users.registration = function(params, callback){
 	})
 	return d;
 }
+
+fhq.api.users.reset_password = function(params) {
+	params = params || {};
+	var d = $.Deferred();
+	$.ajax({
+		type: "POST",
+		url: 'api/v1/users/reset_password/',
+		data: params
+	}).done(function(r){
+		d.resolve(r);
+	}).fail(function(r){
+		d.reject(r);
+	})
+	return d;
+};
 
 window.fhq.users = new (function(t) {
 	this.fhq = t;

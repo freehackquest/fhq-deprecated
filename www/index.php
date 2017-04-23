@@ -109,35 +109,12 @@
 							<div id="fhqmodaldialog_header" class="fhqmodaldialog_header"></div>
 							<div id="fhqmodaldialog_content" class="fhqmodaldialog_content2"></div>
 							<div id="fhqmodaldialog_buttons" class="fhqmodaldialog_buttons"></div>
-							<div id="fhqmodaldialog_btncancel" class="fhqmodaldialog_btncancel">
-								<div class="fhqbtn" onclick="fhq.ui.closeModalDialog();">Cancel</div>
-							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-
-			<!-- Reset Password -->
-
-			<div id="reset-password-form" style="display: none;">
-				<input placeholder="your@email.com" id="reset-password-email" value="" type="text" onkeydown="if (event.keyCode == 13) fhqgui.resetPassword(); else fhqgui.cleanupResetPasswordMessages();">
-				<br><br>
-				<img src="api/captcha.php" id="reset-password-captcha-image"/>
-				<div class="fhqbtn" onclick="fhqgui.refreshResetPasswordCaptcha();"><img src="images/refresh.svg"/></div>
-				<br><br>
-				<input placeholder="captcha" id="reset-password-captcha" value="" type="text" onkeydown="if (event.keyCode == 13) fhqgui.resetPassword(); else fhqgui.cleanupResetPasswordMessages();">
-				<br><br>
-				<font id="reset-password-info-message"></font>
-				<font id="reset-password-error-message" color='#ff0000'></font>
-			</div>
-			
-			<div id="reset-password-form-buttons" style="display: none;">
-				<div class="fhqbtn" onclick="fhqgui.resetPassword();">Reset</div>			
-			</div>
-			
 			
 			<div class="fhqtopmenu_toppanel"></div>
-
 
 			<div id="copyright">
 				<center>
