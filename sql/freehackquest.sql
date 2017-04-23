@@ -1,19 +1,53 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.10.1deb1
--- http://www.phpmyadmin.net
+-- version 4.6.4deb1
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Jul 02, 2015 at 12:48 PM
--- Server version: 5.5.40
--- PHP Version: 5.3.10-1ubuntu3.18
+-- Host: localhost:3306
+-- Generation Time: Апр 23 2017 г., 15:22
+-- Server version: 5.7.17-0ubuntu0.16.10.1
+-- PHP Version: 7.0.15-0ubuntu0.16.10.4
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `freehackquest`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `chatmessages`
+--
+
+CREATE TABLE `chatmessages` (
+  `id` int(11) NOT NULL,
+  `user` varchar(128) NOT NULL,
+  `message` varchar(255) NOT NULL,
+  `dt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `classbook`
+--
+
+CREATE TABLE `classbook` (
+  `id` int(11) NOT NULL,
+  `parentid` int(11) NOT NULL,
+  `uuid` varchar(128) NOT NULL,
+  `parentuuid` varchar(128) NOT NULL,
+  `name_ru` varchar(128) NOT NULL,
+  `name_en` varchar(128) NOT NULL,
+  `dt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -21,16 +55,15 @@ SET time_zone = "+00:00";
 -- Table structure for table `email_delivery`
 --
 
-CREATE TABLE IF NOT EXISTS `email_delivery` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `email_delivery` (
+  `id` int(11) NOT NULL,
   `to_email` varchar(255) NOT NULL,
   `subject` varchar(255) NOT NULL,
   `message` text NOT NULL,
   `priority` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
-  `dt` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `dt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -38,14 +71,13 @@ CREATE TABLE IF NOT EXISTS `email_delivery` (
 -- Table structure for table `feedback`
 --
 
-CREATE TABLE IF NOT EXISTS `feedback` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `feedback` (
+  `id` int(11) NOT NULL,
   `dt` datetime DEFAULT NULL,
   `type` varchar(255) DEFAULT '',
   `text` text,
-  `userid` int(11) DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+  `userid` int(11) DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -53,14 +85,13 @@ CREATE TABLE IF NOT EXISTS `feedback` (
 -- Table structure for table `feedback_msg`
 --
 
-CREATE TABLE IF NOT EXISTS `feedback_msg` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `feedback_msg` (
+  `id` int(11) NOT NULL,
   `dt` datetime NOT NULL,
   `text` text,
   `feedbackid` int(11) DEFAULT '0',
-  `userid` int(11) DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+  `userid` int(11) DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -68,8 +99,8 @@ CREATE TABLE IF NOT EXISTS `feedback_msg` (
 -- Table structure for table `games`
 --
 
-CREATE TABLE IF NOT EXISTS `games` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `games` (
+  `id` int(11) NOT NULL,
   `uuid` varchar(255) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
   `logo` varchar(255) DEFAULT NULL,
@@ -85,17 +116,8 @@ CREATE TABLE IF NOT EXISTS `games` (
   `state` varchar(255) DEFAULT 'copy',
   `form` varchar(255) DEFAULT 'online',
   `rules` text,
-  `maxscore` int(11) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uuid_game` (`uuid`),
-  UNIQUE KEY `uuid_game_2` (`uuid`),
-  KEY `date_create` (`date_create`),
-  KEY `date_start` (`date_start`),
-  KEY `date_stop` (`date_stop`),
-  KEY `date_change` (`date_change`),
-  KEY `owner` (`owner`),
-  KEY `date_restart` (`date_restart`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+  `maxscore` int(11) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -103,14 +125,12 @@ CREATE TABLE IF NOT EXISTS `games` (
 -- Table structure for table `public_events`
 --
 
-CREATE TABLE IF NOT EXISTS `public_events` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `public_events` (
+  `id` int(11) NOT NULL,
   `type` varchar(255) NOT NULL,
   `dt` datetime NOT NULL,
-  `message` varchar(2048) DEFAULT '',
-  PRIMARY KEY (`id`),
-  KEY `message` (`message`(255))
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+  `message` varchar(2048) DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -118,19 +138,18 @@ CREATE TABLE IF NOT EXISTS `public_events` (
 -- Table structure for table `quest`
 --
 
-CREATE TABLE IF NOT EXISTS `quest` (
-  `idquest` int(10) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `quest` (
+  `idquest` int(10) UNSIGNED NOT NULL,
   `name` varchar(300) NOT NULL,
   `text` varchar(4048) NOT NULL,
   `answer` text NOT NULL,
-  `score` int(10) unsigned NOT NULL,
+  `score` int(10) UNSIGNED NOT NULL,
   `min_score` int(10) NOT NULL DEFAULT '0',
-  `for_person` bigint(10) unsigned NOT NULL DEFAULT '0',
   `idauthor` bigint(20) DEFAULT '0',
   `author` varchar(50) DEFAULT NULL,
   `subject` varchar(128) DEFAULT NULL,
   `answer_upper_md5` varchar(255) DEFAULT NULL,
-  `gameid` int(10) unsigned DEFAULT NULL,
+  `gameid` int(10) UNSIGNED DEFAULT NULL,
   `state` varchar(50) DEFAULT NULL,
   `description_state` varchar(4048) DEFAULT NULL,
   `quest_uuid` varchar(255) DEFAULT NULL,
@@ -138,8 +157,8 @@ CREATE TABLE IF NOT EXISTS `quest` (
   `date_create` datetime DEFAULT NULL,
   `userid` bigint(20) DEFAULT '0',
   `count_user_solved` bigint(20) DEFAULT '0',
-  PRIMARY KEY (`idquest`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+  `copyright` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -147,16 +166,28 @@ CREATE TABLE IF NOT EXISTS `quest` (
 -- Table structure for table `quests_files`
 --
 
-CREATE TABLE IF NOT EXISTS `quests_files` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `quests_files` (
+  `id` int(11) NOT NULL,
   `uuid` varchar(255) NOT NULL,
   `questid` int(11) NOT NULL,
   `filename` varchar(255) NOT NULL,
   `size` int(11) NOT NULL,
   `dt` datetime NOT NULL,
-  `filepath` varchar(255) DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+  `filepath` varchar(255) DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quests_hints`
+--
+
+CREATE TABLE `quests_hints` (
+  `id` int(11) NOT NULL,
+  `questid` int(11) NOT NULL,
+  `text` varchar(4048) NOT NULL,
+  `dt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -164,17 +195,16 @@ CREATE TABLE IF NOT EXISTS `quests_files` (
 -- Table structure for table `tryanswer`
 --
 
-CREATE TABLE IF NOT EXISTS `tryanswer` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tryanswer` (
+  `id` int(11) NOT NULL,
   `iduser` int(11) NOT NULL,
   `idquest` int(11) NOT NULL,
   `answer_try` text NOT NULL,
   `answer_real` text NOT NULL,
   `passed` varchar(10) NOT NULL,
   `datetime_try` datetime NOT NULL,
-  `levenshtein` int(11) DEFAULT '100',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+  `levenshtein` int(11) DEFAULT '100'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -182,17 +212,16 @@ CREATE TABLE IF NOT EXISTS `tryanswer` (
 -- Table structure for table `tryanswer_backup`
 --
 
-CREATE TABLE IF NOT EXISTS `tryanswer_backup` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tryanswer_backup` (
+  `id` int(11) NOT NULL,
   `iduser` int(11) NOT NULL,
   `idquest` int(11) NOT NULL,
   `answer_try` text NOT NULL,
   `answer_real` text NOT NULL,
   `passed` varchar(10) NOT NULL,
   `datetime_try` datetime NOT NULL,
-  `levenshtein` int(11) DEFAULT '100',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+  `levenshtein` int(11) DEFAULT '100'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -200,20 +229,19 @@ CREATE TABLE IF NOT EXISTS `tryanswer_backup` (
 -- Table structure for table `updates`
 --
 
-CREATE TABLE IF NOT EXISTS `updates` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `updates` (
+  `id` int(11) NOT NULL,
   `from_version` varchar(255) DEFAULT NULL,
   `version` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `description` text,
   `result` varchar(255) DEFAULT NULL,
   `userid` int(11) DEFAULT NULL,
-  `datetime_update` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=61 ;
+  `datetime_update` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `updates`
+-- Дамп данных таблицы `updates`
 --
 
 INSERT INTO `updates` (`id`, `from_version`, `version`, `name`, `description`, `result`, `userid`, `datetime_update`) VALUES
@@ -276,21 +304,20 @@ INSERT INTO `updates` (`id`, `from_version`, `version`, `name`, `description`, `
 (57, 'u0056', 'u0057', 'added table users_token_invalid', 'added table users_token_invalid', 'updated', 220, '2015-06-07 20:59:09'),
 (58, 'u0057', 'u0058', 'rename games.uuid_game games.uuid', 'rename games.uuid_game games.uuid', 'updated', 220, '2015-06-07 20:59:09'),
 (59, 'u0058', 'u0059', 'change userid and questid in users_quests to INT', 'change userid and questid in users_quests to INT', 'updated', 220, '2015-06-07 20:59:09'),
-(60, 'u0059', 'u0060', 'moved data from userquest to users_quests', 'moved data from userquest to users_quests', 'updated', 220, '2015-06-07 20:59:46');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `userquest`
---
-
-CREATE TABLE IF NOT EXISTS `userquest` (
-  `iduser` int(10) NOT NULL,
-  `idquest` int(10) NOT NULL,
-  `stopdate` datetime NOT NULL,
-  `startdate` datetime NOT NULL,
-  UNIQUE KEY `iduser` (`iduser`,`idquest`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+(60, 'u0059', 'u0060', 'moved data from userquest to users_quests', 'moved data from userquest to users_quests', 'updated', 220, '2015-06-07 20:59:46'),
+(61, 'u0060', 'u0061', 'remove personal quests which not passed', 'remove personal quests which not passed', 'updated', 47, '2015-07-23 11:11:43'),
+(62, 'u0061', 'u0062', 'remove table user_old', 'remove table user_old', 'updated', 47, '2015-07-23 11:11:43'),
+(63, 'u0062', 'u0063', 'remove table userquest', 'remove table userquest', 'updated', 47, '2015-07-23 11:11:43'),
+(64, 'u0063', 'u0064', 'remove personal quests which passed', 'remove personal quests which passed', 'updated', 47, '2015-07-23 11:11:43'),
+(65, 'u0064', 'u0065', 'update quests uuid', 'update quests uuid', 'updated', 47, '2015-07-23 11:11:43'),
+(66, 'u0065', 'u0066', 'update quests uuid', 'update quests uuid', 'updated', 47, '2015-07-23 11:11:43'),
+(67, 'u0066', 'u0067', 'Added column copyright to quest', 'Added column copyright to quest', 'updated', 0, '2017-01-07 06:24:22'),
+(68, 'u0067', 'u0068', 'Added table hints', 'Added table hints', 'updated', 0, '2017-01-07 06:24:22'),
+(71, 'u0068', 'u0069', 'Add columns to users', 'Add columns to users', 'updated', 0, '2017-03-03 20:21:44'),
+(72, 'u0069', 'u0070', 'Removed table users_ips', 'Removed table users_ips', 'updated', 0, '2017-03-04 13:58:02'),
+(73, 'u0070', 'u0071', 'Added classbook table', 'Added classbook table', 'updated', 0, '2017-03-14 00:22:40'),
+(75, 'u0071', 'u0072', 'Added chatmessages table', 'Added chatmessages table', 'updated', 0, '2017-04-01 12:52:57'),
+(77, 'u0072', 'u0073', 'Added captcha table', 'Added captcha table', 'updated', 0, '2017-04-23 13:11:32');
 
 -- --------------------------------------------------------
 
@@ -298,8 +325,8 @@ CREATE TABLE IF NOT EXISTS `userquest` (
 -- Table structure for table `users`
 --
 
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
   `uuid` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `pass` varchar(255) NOT NULL,
@@ -310,13 +337,25 @@ CREATE TABLE IF NOT EXISTS `users` (
   `dt_last_login` datetime NOT NULL,
   `last_ip` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+  `country` varchar(255) DEFAULT '',
+  `region` varchar(255) DEFAULT '',
+  `city` varchar(255) DEFAULT '',
+  `latitude` double DEFAULT '0',
+  `longitude` double DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
-INSERT INTO `users` (`id`, `uuid`, `email`, `pass`, `role`, `nick`, `logo`, `dt_create`, `dt_last_login`, `last_ip`, `status`) VALUES
-(46, '39A551F4-3BF0-A1C8-8686-06A5C510DDA3', 'admin', '00fe92df464389f2da26c14475ad81e2632904fa', 'admin', 'sea-kg', 'files/users/46.png', '0000-00-00 00:00:00', '2015-04-12 23:49:58', '127.0.0.1', 'activated');
+--
+-- Table structure for table `users_captcha`
+--
+
+CREATE TABLE `users_captcha` (
+  `id` int(11) NOT NULL,
+  `captcha_uuid` varchar(127) NOT NULL,
+  `captcha_val` varchar(127) NOT NULL,
+  `dt_expired` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -324,36 +363,13 @@ INSERT INTO `users` (`id`, `uuid`, `email`, `pass`, `role`, `nick`, `logo`, `dt_
 -- Table structure for table `users_games`
 --
 
-CREATE TABLE IF NOT EXISTS `users_games` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users_games` (
+  `id` int(11) NOT NULL,
   `userid` int(11) DEFAULT NULL,
   `gameid` int(11) DEFAULT NULL,
   `score` int(11) DEFAULT NULL,
-  `date_change` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `users_ips`
---
-
-CREATE TABLE IF NOT EXISTS `users_ips` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `userid` int(11) DEFAULT NULL,
-  `ip` varchar(255) DEFAULT NULL,
-  `country` varchar(255) DEFAULT NULL,
-  `city` varchar(255) DEFAULT NULL,
-  `client` varchar(255) DEFAULT NULL,
-  `date_sign_in` datetime DEFAULT NULL,
-  `browser` varchar(1024) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `ip` (`ip`),
-  KEY `country` (`country`),
-  KEY `city` (`city`),
-  KEY `client` (`client`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+  `date_change` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -361,14 +377,13 @@ CREATE TABLE IF NOT EXISTS `users_ips` (
 -- Table structure for table `users_profile`
 --
 
-CREATE TABLE IF NOT EXISTS `users_profile` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users_profile` (
+  `id` int(11) NOT NULL,
   `userid` int(11) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `value` varchar(255) DEFAULT NULL,
-  `date_change` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+  `date_change` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -376,11 +391,10 @@ CREATE TABLE IF NOT EXISTS `users_profile` (
 -- Table structure for table `users_quests`
 --
 
-CREATE TABLE IF NOT EXISTS `users_quests` (
+CREATE TABLE `users_quests` (
   `userid` int(11) DEFAULT NULL,
   `questid` int(11) DEFAULT NULL,
-  `dt_passed` datetime NOT NULL,
-  UNIQUE KEY `userid` (`userid`,`questid`)
+  `dt_passed` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -389,16 +403,15 @@ CREATE TABLE IF NOT EXISTS `users_quests` (
 -- Table structure for table `users_tokens`
 --
 
-CREATE TABLE IF NOT EXISTS `users_tokens` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users_tokens` (
+  `id` int(11) NOT NULL,
   `userid` int(11) NOT NULL,
   `token` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
   `data` varchar(4048) NOT NULL,
   `start_date` datetime NOT NULL,
-  `end_date` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+  `end_date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -406,19 +419,248 @@ CREATE TABLE IF NOT EXISTS `users_tokens` (
 -- Table structure for table `users_tokens_invalid`
 --
 
-CREATE TABLE IF NOT EXISTS `users_tokens_invalid` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users_tokens_invalid` (
+  `id` int(11) NOT NULL,
   `userid` int(11) NOT NULL,
   `token` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
   `data` varchar(4048) NOT NULL,
   `start_date` datetime NOT NULL,
-  `end_date` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+  `end_date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+--
+-- Индексы сохранённых таблиц
+--
 
+--
+-- Индексы таблицы `chatmessages`
+--
+ALTER TABLE `chatmessages`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `classbook`
+--
+ALTER TABLE `classbook`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `email_delivery`
+--
+ALTER TABLE `email_delivery`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `feedback`
+--
+ALTER TABLE `feedback`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `feedback_msg`
+--
+ALTER TABLE `feedback_msg`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `games`
+--
+ALTER TABLE `games`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uuid_game` (`uuid`),
+  ADD UNIQUE KEY `uuid_game_2` (`uuid`),
+  ADD KEY `date_create` (`date_create`),
+  ADD KEY `date_start` (`date_start`),
+  ADD KEY `date_stop` (`date_stop`),
+  ADD KEY `date_change` (`date_change`),
+  ADD KEY `owner` (`owner`),
+  ADD KEY `date_restart` (`date_restart`);
+
+--
+-- Индексы таблицы `public_events`
+--
+ALTER TABLE `public_events`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `message` (`message`(255));
+
+--
+-- Индексы таблицы `quest`
+--
+ALTER TABLE `quest`
+  ADD PRIMARY KEY (`idquest`);
+
+--
+-- Индексы таблицы `quests_files`
+--
+ALTER TABLE `quests_files`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `quests_hints`
+--
+ALTER TABLE `quests_hints`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `tryanswer`
+--
+ALTER TABLE `tryanswer`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `tryanswer_backup`
+--
+ALTER TABLE `tryanswer_backup`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `updates`
+--
+ALTER TABLE `updates`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `users_captcha`
+--
+ALTER TABLE `users_captcha`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `users_games`
+--
+ALTER TABLE `users_games`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `users_profile`
+--
+ALTER TABLE `users_profile`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `users_quests`
+--
+ALTER TABLE `users_quests`
+  ADD UNIQUE KEY `userid` (`userid`,`questid`);
+
+--
+-- Индексы таблицы `users_tokens`
+--
+ALTER TABLE `users_tokens`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `users_tokens_invalid`
+--
+ALTER TABLE `users_tokens_invalid`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT для сохранённых таблиц
+--
+
+--
+-- AUTO_INCREMENT для таблицы `chatmessages`
+--
+ALTER TABLE `chatmessages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+--
+-- AUTO_INCREMENT для таблицы `classbook`
+--
+ALTER TABLE `classbook`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT для таблицы `email_delivery`
+--
+ALTER TABLE `email_delivery`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=594;
+--
+-- AUTO_INCREMENT для таблицы `feedback`
+--
+ALTER TABLE `feedback`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT для таблицы `feedback_msg`
+--
+ALTER TABLE `feedback_msg`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT для таблицы `games`
+--
+ALTER TABLE `games`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+--
+-- AUTO_INCREMENT для таблицы `public_events`
+--
+ALTER TABLE `public_events`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3993;
+--
+-- AUTO_INCREMENT для таблицы `quest`
+--
+ALTER TABLE `quest`
+  MODIFY `idquest` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=201;
+--
+-- AUTO_INCREMENT для таблицы `quests_files`
+--
+ALTER TABLE `quests_files`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=185;
+--
+-- AUTO_INCREMENT для таблицы `quests_hints`
+--
+ALTER TABLE `quests_hints`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+--
+-- AUTO_INCREMENT для таблицы `tryanswer`
+--
+ALTER TABLE `tryanswer`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28565;
+--
+-- AUTO_INCREMENT для таблицы `tryanswer_backup`
+--
+ALTER TABLE `tryanswer_backup`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28747;
+--
+-- AUTO_INCREMENT для таблицы `updates`
+--
+ALTER TABLE `updates`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+--
+-- AUTO_INCREMENT для таблицы `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=532;
+--
+-- AUTO_INCREMENT для таблицы `users_captcha`
+--
+ALTER TABLE `users_captcha`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+--
+-- AUTO_INCREMENT для таблицы `users_games`
+--
+ALTER TABLE `users_games`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1562;
+--
+-- AUTO_INCREMENT для таблицы `users_profile`
+--
+ALTER TABLE `users_profile`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2905;
+--
+-- AUTO_INCREMENT для таблицы `users_tokens`
+--
+ALTER TABLE `users_tokens`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2271;
+--
+-- AUTO_INCREMENT для таблицы `users_tokens_invalid`
+--
+ALTER TABLE `users_tokens_invalid`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
