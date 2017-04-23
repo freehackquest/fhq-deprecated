@@ -117,24 +117,6 @@
 				</div>
 			</div>
 
-			<!-- Sign Up -->
-			<div id="signup-form" style="display: none;">
-				<!-- todo replace type="text" to type="password" -->
-				<input placeholder="your@email.com" id="signup-email" value="" type="text" onkeydown="if (event.keyCode == 13) fhqgui.signup(); else fhqgui.cleanupSignUpMessages();"/>
-				<br><br>
-				<img src="api/captcha.php?rid=1" id="signup-captcha-image"/>
-				<div class="fhqbtn" onclick="fhqgui.refreshSignUpCaptcha();"><img src="images/refresh.svg"/></div>
-				<br><br>
-				<input placeholder="captcha" id="signup-captcha" value="" type="text" onkeydown="if (event.keyCode == 13) fhqgui.signup(); else fhqgui.cleanupSignUpMessages();"/>
-				<br><br>
-				<font id="signup-info-message"></font>
-				<font id="signup-error-message" color='#ff0000'></font>
-			</div>
-
-			<div id="signup-form-buttons" style="display: none;">
-				<div class="fhqbtn" onclick="fhqgui.signup();">Sign Up</div>			
-			</div>
-
 			<!-- Reset Password -->
 
 			<div id="reset-password-form" style="display: none;">

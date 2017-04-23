@@ -26,10 +26,10 @@ $conn = APIHelpers::createConnection($config);
 $message = '';
 
 if (!APIGame::checkGameDates($message))
-	APIHelpers::showerror(1094, $message);
+	APIHelpers::showerror2(1094, 403, $message);
 
 if (APIGame::id() == 0)
-	APIHelpers::showerror(1095, "Game was not selected.");
+	APIHelpers::showerror(1095, 400, "Game was not selected.");
 
 // TODO: must be added filters
 $conn = APIHelpers::createConnection($config);

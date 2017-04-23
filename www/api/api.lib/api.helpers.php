@@ -44,6 +44,19 @@ class APIHelpers {
 	static function showerror($code, $message) {
 		$result = array(
 			'result' => 'fail',
+			'httpcode' => 400,
+			'data' => array(),
+		);
+		$result['error']['code'] = $code;
+		$result['error']['message'] = 'Error '.$code.': '.$message;
+		APIHelpers::endpage($result);
+		exit;
+	}
+	
+	static function showerror2($code, $httpcode, $message) {
+		$result = array(
+			'result' => 'fail',
+			'httpcode' => $httpcode,
 			'data' => array(),
 		);
 		$result['error']['code'] = $code;
@@ -99,28 +112,29 @@ class APIHelpers {
 	static $CONN = null;
 
 	static function startpage($config) {
-		header("Access-Control-Allow-Origin: *");
+		header('Access-Control-Allow-Origin: *');
 		header('Content-Type: application/json');
 		APIHelpers::$TIMESTART = microtime(true);
-
-		$issetToken = APIHelpers::issetParam('token');
-		if ($issetToken) {
+		if(isset($_COOKIE['fhqtoken'])){
+			APIHelpers::$TOKEN = $_COOKIE['fhqtoken'];
+		}else if(APIHelpers::issetParam('token')){
 			APIHelpers::$TOKEN = APIHelpers::getParam('token', '');
+		}else{
+			APIHelpers::$TOKEN = null;
+		}
+		
+		if(APIHelpers::$TOKEN != null){
 			$conn = APIHelpers::createConnection($config);
 			try {
 				$stmt = $conn->prepare('SELECT data FROM users_tokens WHERE token = ? AND status = ? AND end_date > NOW()');
 				$stmt->execute(array(APIHelpers::$TOKEN,'active'));
-				if ($row = $stmt->fetch())
-				{
+				if ($row = $stmt->fetch()){
 					APIHelpers::$FHQSESSION = json_decode($row['data'],true);
 					APIHelpers::$FHQSESSION_ORIG = json_decode($row['data'],true);
 				}
 			} catch(PDOException $e) {
 				APIHelpers::showerror(1188, $e->getMessage());
 			}
-		} else {
-			APIHelpers::$FHQSESSION = $_SESSION;
-			APIHelpers::$FHQSESSION_ORIG = $_SESSION;
 		}
 
 		$response = array(
@@ -144,8 +158,28 @@ class APIHelpers {
 		if ($hash_session != $hash_session_orig && $hash_session_orig != null) {
 			APISecurity::updateByToken();
 		}
-		
+		if($response['result'] == 'fail'){
+			if(isset($response['httpcode'])){
+				http_response_code($response['httpcode']);
+			}else{
+				http_response_code(400);
+			}
+		}
 		echo json_encode($response);
+	}
+	
+	static function find_captcha($conn, $captcha_uuid){
+		// cleanup captures
+		$conn->prepare('DELETE FROM users_captcha WHERE dt_expired < NOW();')->execute();
+
+		$stmt = $conn->prepare('SELECT * FROM users_captcha WHERE captcha_uuid = ?');
+		$stmt->execute(array($captcha_uuid));
+		$captcha_val = '';
+		if($row = $stmt->fetch()){
+			$captcha_val = $row['captcha_val'];
+		}
+		$conn->prepare('DELETE FROM users_captcha WHERE captcha_uuid = ?')->execute(array($captcha_val));
+		return $captcha_val;
 	}
 }
 

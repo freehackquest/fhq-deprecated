@@ -280,16 +280,19 @@ function FHQGuiLib(api) {
 	/* Sign Up */
 	
 	this.showSignUpForm = function() {
-		fhq.ui.showModalDialog({
-			'header' : 'Sign Up',
-			'content': $("#signup-form").html(),
-			'buttons': $("#signup-form-buttons").html()
-		});
+		fhq.ui.showModalDialog(fhq.ui.templates.singup());
 		this.refreshSignUpCaptcha();
 	}
 
 	this.refreshSignUpCaptcha = function() {
-		$('#signup-captcha-image').attr('src', 'api/captcha.php?rid=' + Math.random());
+		fhq.api.users.captcha().done(function(r){
+			$('#signup-captcha-image').attr({
+				'src': 'data:image/png;base64, ' + r.data.captcha,
+				'uuid': r.data.uuid
+			});
+		}).fail(function(r){
+			console.error(r)
+		})
 	}
 
 	this.cleanupSignUpMessages = function() {
@@ -300,28 +303,30 @@ function FHQGuiLib(api) {
 	this.signup = function() {
 		$('#signup-error-message').html('');
 		$('#signup-info-message').html('Please wait...');
-		var email = $('#signup-email').val();
-		var captcha = $('#signup-captcha').val();
+		var params = {};
+		params.email = $('#signup-email').val();
+		params.captcha = $('#signup-captcha').val();
+		params.captcha_uuid = $('#signup-captcha-image').attr('uuid');
 
-		this.fhq.security.registration(email,captcha, function(response){
-			if(response.result == "fail"){
-				$('#signup-error-message').html(response.error.message);
-				$('#signup-info-message').html('');
-			}else{
-				
-				$('#signup-email').val('');
-				$('#signup-captcha').val('');
-				$('#signup-info-message').html('');
-				$('#signup-error-message').html('');
-				
-				fhq.ui.updateModalDialog({
-					'header' : 'Sign Up',
-					'content': response.data.message,
-					'buttons': ''
-				});
-			}
+		fhq.api.users.registration(params).done(function(r){
+			console.log(r);
+			$('#signup-email').val('');
+			$('#signup-captcha').val('');
+			$('#signup-info-message').html('');
+			$('#signup-error-message').html('');
+			fhq.ui.updateModalDialog({
+				'header' : 'Sign Up',
+				'content': r.data.message,
+				'buttons': ''
+			});
+		}).fail(function(r){
+			console.error(r);
+			$('#signup-error-message').html(r.responseJSON.error.message);
+			$('#signup-info-message').html('');
 			self.refreshSignUpCaptcha();
-		});
+			$('#signup-captcha').val('');
+		})
+			
 	}
 	
 	/* Reset Password */
@@ -1731,9 +1736,10 @@ window.fhq.ui.updateQuests = function(){
 		$('.fhqleftlist .quests .content .fhqleftitem').unbind('click').bind('click', function(e){
 			fhq.ui.showQuest($(this).attr("questid"));
 		});
-	}).fail(function(response){
-		if(response){
-			if(response.error.code == 1094){
+	}).fail(function(r){
+		console.log(r);
+		if(r && r.responseJSON){
+			if(r.responseJSON.error.code == 1094){
 				changeGame();
 			}
 		}
@@ -2603,8 +2609,26 @@ fhq.ui.templates.singin = function(){
 	};
 }
 
-if(!window.fhq) window.fhq = {};
-if(!window.fhq.ui) window.fhq.ui = {};
+fhq.ui.templates.singup = function(){
+	var content = ''
+		+ '<div id="signup-form">'
+		+ '		<input placeholder="your@email.com" id="signup-email" value="" type="text" onkeydown="if (event.keyCode == 13) fhqgui.signup(); else fhqgui.cleanupSignUpMessages();"/>'
+		+ '		<br><br>'
+		+ '		<img src="" id="signup-captcha-image"/>'
+		+ '		<div class="fhqbtn" onclick="fhqgui.refreshSignUpCaptcha();"><img src="images/refresh.svg"/></div>'
+		+ '		<br><br>'
+		+ '		<input placeholder="captcha" id="signup-captcha" value="" type="text" onkeydown="if (event.keyCode == 13) fhqgui.signup(); else fhqgui.cleanupSignUpMessages();"/>'
+		+ '		<br><br>'
+		+ '		<font id="signup-info-message"></font>'
+		+ '		<font id="signup-error-message" color="#ff0000"></font>'
+		+ '</div>'
+
+	return {
+		'header' : fhq.t('Sign-up'),
+		'content': content,
+		'buttons': '<div class="fhqbtn" onclick="fhqgui.signup();">' + fhq.t('Sign-up') + '</div>'
+	};
+}
 
 window.fhq.ui.createCopyright = function() {
 	$("body").append(''

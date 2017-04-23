@@ -1,5 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: *");
+header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 
 /*
@@ -11,15 +11,13 @@ header('Content-Type: application/json');
  * API_INPUT: captcha - string, here -> api/captcha.php
  */
 
-$httpname = 'http://'.$_SERVER['HTTP_HOST'].dirname(dirname(dirname($_SERVER['PHP_SELF']))).'/';
-
-$curdir_security_registration = dirname(__FILE__);
-include_once ($curdir_security_registration."/../api.lib/api.base.php");
-include_once ($curdir_security_registration."/../api.lib/api.helpers.php");
-include_once ($curdir_security_registration."/../api.lib/api.security.php");
-include_once ($curdir_security_registration."/../api.lib/api.user.php");
-include_once ($curdir_security_registration."/../../config/config.php");
-include_once ($curdir_security_registration."/../api.lib/api.mail.php");
+$curdir = dirname(__FILE__);
+include_once ($curdir."/../../../api.lib/api.base.php");
+include_once ($curdir."/../../../api.lib/api.helpers.php");
+include_once ($curdir."/../../../api.lib/api.security.php");
+include_once ($curdir."/../../../api.lib/api.user.php");
+include_once ($curdir."/../../../../config/config.php");
+include_once ($curdir."/../../../api.lib/api.mail.php");
 
 error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE & ~E_STRICT);
 
@@ -34,13 +32,12 @@ if (!APIHelpers::issetParam('email'))
 if (!APIHelpers::issetParam('captcha'))
 	APIHelpers::showerror(1043, 'Parameter captcha was not found');
 
+$conn = APIHelpers::createConnection($config);
 
 $email = APIHelpers::getParam('email', '');
 $captcha = APIHelpers::getParam('captcha', '');
-$orig_captcha = $_SESSION['captcha_reg'];
-
-// cleanup captcha
-$_SESSION['captcha_reg'] = md5(rand().rand());
+$captcha_uuid = APIHelpers::getParam('captcha_uuid', '');
+$orig_captcha = APIHelpers::find_captcha($conn, $captcha_uuid);
 
 if (strtoupper($captcha) != strtoupper($orig_captcha))
 	APIHelpers::showerror(1012, '[Registration] Captcha is not correct, please "Refresh captcha" and try again');
@@ -48,7 +45,7 @@ if (strtoupper($captcha) != strtoupper($orig_captcha))
 if (!filter_var($email, FILTER_VALIDATE_EMAIL))
 	APIHelpers::showerror(1011, '[Registration] Invalid e-mail address.');
 
-$conn = APIHelpers::createConnection($config);
+
 $stmt = $conn->prepare('select count(*) as cnt from users where email = ?');
 $stmt->execute(array($email));
 if ($row = $stmt->fetch())
@@ -113,13 +110,13 @@ $email_subject = "Registration on FreeHackQuest.";
 $email_message = '
 	Registration:
 
-	If you was not tried registering on '.$httpname.' just remove this email.
+	If you was not tried registering on '.$config['hostname'].' just remove this email.
 
 	Welcome to FreeHackQuest!
 
 	Your login: '.$email.'
 	Your password: '.$password.' (You must change it)
-	Link: '.$httpname.'index.php
+	Link: '.$config['hostname'].'
 ';
 
 $stmt_insert2 = $conn->prepare('

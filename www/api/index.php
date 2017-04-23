@@ -252,7 +252,7 @@ function convert_to_html($doc) {
 				the system. Also presented are various examples for the job. Also,<br>
 				this chapter is devoted to the frontend developers using kernel of fhq.<br>
 				<br>
-				Also sometimes you will be need captcha: api/captcha.php
+				Also sometimes you will be need captcha: api/v1/users/captcha/
 			</td>
 		</tr>
 	';

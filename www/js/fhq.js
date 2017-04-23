@@ -119,12 +119,6 @@ window.fhq.supportsHtml5Storage = function() {
 
 window.fhq.security = new (function(t) {
 	this.p = t;
-	this.registration = function(email, captcha, callback) {
-		var params = {};
-		params.email = email;
-		params.captcha = captcha;
-		this.p.sendPostRequest_Async('api/security/registration.php', params, callback);
-	};
 	this.resetPassword = function(email, captcha, callback) {
 		var params = {};
 		params.email = email;
@@ -376,19 +370,16 @@ window.fhq.api.quests.pass = function(questid, answer){
 
 window.fhq.api.quests.list = function(params){
 	params = params || {};
+	params.token = fhq.token;
 	var d = $.Deferred();
 	$.ajax({
 		type: "POST",
 		url: 'api/quests/list/',
 		data: params
 	}).done(function(response){
-		if (response.result == 'ok') {
-			d.resolve(response);
-		}else{
-			d.reject(response);
-		}
-	}).fail(function(){
-		d.reject();
+		d.resolve(response);
+	}).fail(function(r){
+		d.reject(r);
 	})
 	return d;
 };
@@ -439,7 +430,7 @@ window.fhq.api.events.count = function() {
 	return d;
 };
 
-window.fhq.api.users.getLastEventId = function(){
+fhq.api.users.getLastEventId = function(){
 	var d = $.Deferred();
 	var params = {};
 	$.ajax({
@@ -458,6 +449,36 @@ window.fhq.api.users.getLastEventId = function(){
 	})
 	return d;
 };
+
+fhq.api.users.captcha = function(){
+	var d = $.Deferred();
+	var params = {};
+	$.ajax({
+		type: "GET",
+		url: 'api/v1/users/captcha/',
+		data: params
+	}).done(function(r){
+		d.resolve(r);
+	}).fail(function(r){
+		d.resolve(r);
+	})
+	return d;
+};
+
+fhq.api.users.registration = function(params, callback){
+	params = params || {};
+	var d = $.Deferred();
+	$.ajax({
+		type: "POST",
+		url: 'api/v1/users/registration/',
+		data: params
+	}).done(function(r){
+		d.resolve(r);
+	}).fail(function(r){
+		d.reject(r);
+	})
+	return d;
+}
 
 window.fhq.users = new (function(t) {
 	this.fhq = t;

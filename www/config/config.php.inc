@@ -1,7 +1,10 @@
 <?php
-
-	// configure for connection to database
 	$config = array();
+
+	// main
+	$config['hostname'] = "http://freehackquest.com/";
+	
+	// configure for connection to database
 	$config['db'] = array();
 	$config['db']['host'] = "localhost";
 	$config['db']['username'] = "freehackquest_u";
