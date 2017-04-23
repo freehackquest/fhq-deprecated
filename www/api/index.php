@@ -70,8 +70,7 @@ function scanfolder($dir) {
 
 	$files = scandir($dir, 1);
 	sort($files);
-	foreach ($files as $key => $value)
-	{
+	foreach ($files as $key => $value){
 		if ($value != 'index.php' && strpos($value, '.php') !== false)  {
 			$method = array(
 				'name' => '',
@@ -147,6 +146,12 @@ $doc['users'] = array(
 	'name' => 'Users',
 	'description' => 'Methods for work with users',
 	'methods' => scanfolder('users'),
+);
+
+$doc['users2'] = array(
+	'name' => 'Users2',
+	'description' => 'Methods for work with users',
+	'methods' => scanfolder('v1/users'),
 );
 
 $doc['games'] = array(
@@ -324,7 +329,6 @@ function print_doc($doc) {
 			</head>
 			<body>
 		';
-		include "../copyright.php";
 		echo convert_to_html($doc);
 		echo '</body>';
 		

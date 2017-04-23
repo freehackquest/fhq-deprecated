@@ -284,26 +284,22 @@ window.fhq.api.quests.statistics = function(id){
 }
 
 
-window.fhq.api.quests.pass = function(questid, answer){
+fhq.api.quests.pass = function(questid, answer){
 	var params = {};
 	params.questid = questid;
 	params.answer = answer;
-		
+	params.token = fhq.token;
+
 	var d = $.Deferred();
 	$.ajax({
 		type: "POST",
-		url: 'api/quests/pass/',
+		url: 'api/v1/quests/pass/',
 		data: params
-	}).done(function(response){
-		if (response.result == 'ok') {
-			d.resolve(response);
-		}else{
-			d.reject(response);
-		}
-	}).fail(function(){
-		d.reject();
-	})
-
+	}).done(function(r){
+		d.resolve(r);
+	}).fail(function(r){
+		d.reject(r);
+	});
 	return d;
 }
 

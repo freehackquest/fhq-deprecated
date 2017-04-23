@@ -43,7 +43,7 @@
 			$(document).ready(function() {
 				fhqgui.applyColorScheme();
 				fhq.ws.setWSState(fhq.ws.getWSState()); // Update state of WS
-				fhqgui.loadTopPanel();
+				fhq.users.initProfile().done(fhqgui.loadTopPanel).fail(fhqgui.loadTopPanel);
 				fhq.ui.initChatForm();
 				fhqgui.processParams();
 			});

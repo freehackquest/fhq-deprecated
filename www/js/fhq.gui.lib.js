@@ -2261,12 +2261,10 @@ window.fhq.ui.showQuest = function(id){
 				fhq.api.quests.pass(q.questid, answer).done(function(response){
 					fhq.ui.updateQuests();
 					fhq.ui.showQuest(q.questid);
-				}).fail(function(response){
-					if(response){
-						$('#quest_pass_error').html(response.error.message);
-						if(fhq.ui.isShowMyAnswers()){
-							fhq.ui.updateMyAnswers(q.questid);
-						}
+				}).fail(function(r){
+					$('#quest_pass_error').html(r.responseJSON.error.message);
+					if(fhq.ui.isShowMyAnswers()){
+						fhq.ui.updateMyAnswers(q.questid);
 					}
 				});
 			});

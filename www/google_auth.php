@@ -32,8 +32,6 @@ if (!isset($_GET['code'])) {
 		$email = $me['emails'][0]['value'];
 		$image = isset($me['image']) ? $me['image']['url'] : "";
 		
-		$_SESSION["EMAIL"] = $email; /* keep in session variable whatever you send to client */
-		
 		$conn = APIHelpers::createConnection($config);
 		if(APISecurity::login_by_google($conn, $email)){
 			APIHelpers::$TOKEN = APIHelpers::gen_guid();
@@ -43,7 +41,6 @@ if (!isset($_GET['code'])) {
 			APIUser::loadUserProfile($conn);
 			// APIUser::loadUserScore($conn);
 			APISecurity::saveByToken();
-			unset($_SESSION['access_token']);
 			setcookie("fhqtoken", APIHelpers::$TOKEN, time()+604800, "/");
 			header('Location: ./?quests');
 		}else{
@@ -96,7 +93,6 @@ if (!isset($_GET['code'])) {
 				APIUser::loadUserProfile($conn);
 				// APIUser::loadUserScore($conn);
 				APISecurity::saveByToken();
-				unset($_SESSION['access_token']);
 				setcookie("fhqtoken", APIHelpers::$TOKEN, time()+604800, "/");
 				header('Location: ./?quests');
 			}else{
