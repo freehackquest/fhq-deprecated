@@ -41,8 +41,7 @@
 	$config['google_auth']['client_id'] = "*.googleusercontent.com";
 	$config['google_auth']['client_secret'] = "*";
 	$config['google_auth']['developer_key'] = "*";
-	$config['google_auth']['oauth2google_uri'] = "http://freehackquest.com/oauth2google.php";
-	$config['google_auth']['google_auth_uri'] = "http://freehackquest.com/google_auth.php";
+	$config['google_auth']['google_auth_uri'] = $config['hostname']."google_auth.php";
 
 	// google map credentials
 	$config['google_map'] = array();
