@@ -512,7 +512,7 @@ fhq.users.initProfile = function(){
 	}
 	$.ajax({
 		type: "POST",
-		url: 'api/users/get.php',
+		url: 'api/v1/users/get/',
 		data: params
 	}).done(function(r){
 		if (r.result == 'ok') {

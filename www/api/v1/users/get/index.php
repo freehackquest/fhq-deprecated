@@ -7,10 +7,10 @@
  * API_OKRESPONSE: { "result":"ok" }
  */
 
-$curdir_users_get = dirname(__FILE__);
-include_once ($curdir_users_get."/../api.lib/api.base.php");
-include_once ($curdir_users_get."/../api.lib/api.game.php");
-include_once ($curdir_users_get."/../../config/config.php");
+$curdir = dirname(__FILE__);
+include_once ($curdir."/../../../api.lib/api.base.php");
+include_once ($curdir."/../../../api.lib/api.game.php");
+include_once ($curdir."/../../../../config/config.php");
 
 $response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
