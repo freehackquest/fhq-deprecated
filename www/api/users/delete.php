@@ -14,12 +14,9 @@ $curdir_users_delete = dirname(__FILE__);
 include_once ($curdir_users_delete."/../api.lib/api.base.php");
 include_once ($curdir_users_delete."/../../config/config.php");
 
-APIHelpers::checkAuth();
+$result = APIHelpers::startpage($config);
 
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
+APIHelpers::checkAuth();
 
 $conn = APIHelpers::createConnection($config);
 

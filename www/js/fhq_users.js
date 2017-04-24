@@ -188,7 +188,7 @@ function showUserInfo(id) {
 
 	// user info
 	send_request_post(
-		'api/users/get.php',
+		'api/v1/users/get/',
 		createUrlFromObj(params),
 		function (obj) {
 			if (obj.result == "fail") {
@@ -316,7 +316,6 @@ function updateUsers() {
 				tbl.cell(
 					userinfo.last_ip + '<br>'
 					+ userinfo.country + ' / ' + userinfo.city + '<br>'
-					+ '<div class="fhqbtn update-location" userid="' + userinfo.userid + '">Update</div>'
 				);
 
 				// TODO: if not activated can allow edit email and send mail again
@@ -329,11 +328,6 @@ function updateUsers() {
 
 			lu.innerHTML += tbl.render();
 			// lu.innerHTML += JSON.stringify(obj);
-			$('.update-location').unbind().bind('click', function(){
-				var userid = parseInt($(this).attr('userid'),10);
-				fhq.ws.updateUserLocation(userid);
-				$(this).parent().html('');	
-			});
 		}
 	);
 }
@@ -464,7 +458,7 @@ function loadUserProfile(userid) {
 
 	// alert(createUrlFromObj(params));
 	send_request_post(
-		'api/users/get.php',
+		'api/v1/users/get/',
 		createUrlFromObj({"userid": userid}),
 		function (obj) {
 			// alert(1);

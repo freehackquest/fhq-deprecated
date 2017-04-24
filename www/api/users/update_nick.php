@@ -1,7 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: Update User's Nick
  * API_DESCRIPTION: Method for update user avatar
@@ -15,6 +12,8 @@ $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../../config/config.php");
 
+$result = APIHelpers::startpage($config);
+
 APIHelpers::checkAuth();
 
 $userid = APIHelpers::getParam('userid', APISecurity::userid());
@@ -24,11 +23,6 @@ $userid = intval($userid);
 
 if (!APISecurity::isAdmin() && $userid != APISecurity::userid()) 
 	APIHelpers::showerror(1116, 'you what change nick for another user, it can do only admin '.APISecurity::userid());
-
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
 
 // todo check if changed is current user
 // if (isset($config['profile']) && isset($config['profile']['change_nick']) && $config['profile']['change_nick'] == 'yes') {

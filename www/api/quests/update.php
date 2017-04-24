@@ -27,12 +27,9 @@ include_once ($curdir."/../api.lib/api.quest.php");
 include_once ($curdir."/../../config/config.php");
 include_once ($curdir."/../api.lib/loadtoken.php");
 
-APIHelpers::checkAuth();
+$result = APIHelpers::startPage($config);
 
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
+APIHelpers::checkAuth();
 
 $message = '';
 

@@ -1,6 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
 
 /*
  * API_NAME: Update LastEventID
@@ -15,15 +13,13 @@ $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../../config/config.php");
 
+$result = APIHelpers::startPage($config);
+
 APIHelpers::checkAuth();
 
 // TODO only for admins
 // really ???
 
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
 
 $result['result'] = 'ok';
 

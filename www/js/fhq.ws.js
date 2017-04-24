@@ -183,12 +183,3 @@ window.fhq.ws.hints = function(params){
 	params.cmd = 'hints';
 	return fhq.ws.send(params);
 }
-
-window.fhq.ws.updateUserLocation = function(userid){
-	var params = {};
-	params.cmd = 'updateuserlocation';
-	params.userid = userid;
-	return fhq.ws.send(params);
-}
-
-

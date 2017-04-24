@@ -2451,11 +2451,7 @@ window.fhq.ui.updateQuestStatistics = function(questid){
 }
 
 window.fhq.ui.showFeedbackDialog = function(type, title, text){
-	fhq.ui.showModalDialog({
-		'header': title,
-		'content': $('#feedback-form').html(),
-		'buttons': $('#feedback-form-buttons').html()
-	});
+	fhq.ui.showModalDialog(fhq.ui.templates.feedback_form(title));
 	$('#feedback-type').val(type);
 	$('#feedback-text').val(text);
 }
@@ -2656,6 +2652,21 @@ fhq.ui.templates.reset_password = function(){
 
 fhq.ui.templates.dialog_btn_cancel = function(){
 	return '<div class="fhqbtn" onclick="fhq.ui.closeModalDialog();">' + fhq.t('Cancel') + '</div>';
+}
+
+fhq.ui.templates.feedback_form = function(title_text){
+	var content = ''
+		+ '<div id="feedback-form">'
+		+ '	<input type="hidden" id="feedback-type" value=""/>'
+		+ '	<textarea id="feedback-text" type="text"></textarea>'
+		+ '	<br><br>'
+		+ '	<font id="signin-error-message" color="#ff0000"></font>'
+		+ '</div>'
+	return {
+		'header' : title_text,
+		'content': content,
+		'buttons': '<div class="fhqbtn" onclick="fhq.ui.feedbackDialogSend();">' + fhq.t('Send') + '</div>'
+	};
 }
 
 

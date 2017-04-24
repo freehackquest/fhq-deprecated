@@ -17,6 +17,8 @@ include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.security.php");
 include_once ($curdir."/../../config/config.php");
 
+$result = APIHelpers::startpage($config);
+
 APIHelpers::checkAuth();
 
 if (!APISecurity::isAdmin()) 
@@ -32,11 +34,6 @@ if (!is_numeric($userid))
 
 if ($userid == APISecurity::userid())
 	APIHelpers::showerror(1123, 'Please use another function for change your password');
-
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
 
 $conn = APIHelpers::createConnection($config);
 

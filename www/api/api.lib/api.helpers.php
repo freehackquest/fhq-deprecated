@@ -15,7 +15,7 @@ class APIHelpers {
 	static function checkAuth()
 	{
 		if(!APISecurity::isLogged()) {
-			APIHelpers::showerror(1224, 'Not authorized request');
+			APIHelpers::showerror2(1224, 401, 'Not authorized request');
 			exit;
 		}
 	}

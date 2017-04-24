@@ -19,17 +19,14 @@ include_once ($curdir_users_list."/../api.lib/api.base.php");
 include_once ($curdir_users_list."/../api.lib/api.game.php");
 include_once ($curdir_users_list."/../../config/config.php");
 
+$result = APIHelpers::startpage($config);
+
 APIHelpers::checkAuth();
 
 $message = '';
 
 if (!APISecurity::isAdmin())
 	APIHelpers::showerror(1091, 'This function allowed only for admin');
-
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
 
 $result['result'] = 'ok';
 

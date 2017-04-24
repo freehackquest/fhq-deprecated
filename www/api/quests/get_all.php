@@ -16,6 +16,9 @@ include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../../config/config.php");
 include_once ($curdir."/../api.lib/loadtoken.php");
 
+$result = APIHelpers::startPage($config);
+
+
 APIHelpers::checkAuth();
 
 $message = '';
@@ -30,11 +33,6 @@ $questid = APIHelpers::getParam('questid', 0);
 
 if (!is_numeric($questid))
 	APIHelpers::showerror(1082, 'parameter "questid" must be numeric');
-
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
 
 $result['result'] = 'ok';
 

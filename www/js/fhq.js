@@ -323,6 +323,7 @@ if(!window.fhq.api.feedback) window.fhq.api.feedback = {};
 
 window.fhq.api.feedback.add = function(params){
 	params = params || {};
+	params.token = fhq.token;
 	var d = $.Deferred();
 	$.ajax({
 		type: "POST",
@@ -398,7 +399,7 @@ fhq.api.users.getLastEventId = function(){
 	var params = {};
 	$.ajax({
 		type: "POST",
-		url: 'api/users/get.php',
+		url: 'api/v1/users/get/',
 		data: params
 	}).done(function(response){
 		if (response.result == 'ok') {
@@ -492,7 +493,7 @@ window.fhq.users = new (function(t) {
 		var obj = null;
 		var params = {};
 		params.userid = userid;
-		this.fhq.sendPostRequest_Async('api/users/get.php', params, callback);
+		this.fhq.sendPostRequest_Async('api/v1/users/get/', params, callback);
 	}
 	this.skills = function(userid, callback) {
 		var obj = null;

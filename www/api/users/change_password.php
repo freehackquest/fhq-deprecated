@@ -17,12 +17,9 @@ include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.security.php");
 include_once ($curdir."/../../config/config.php");
 
-APIHelpers::checkAuth();
+$result = APIHelpers::startpage($config);
 
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
+APIHelpers::checkAuth();
 
 $conn = APIHelpers::createConnection($config);
 

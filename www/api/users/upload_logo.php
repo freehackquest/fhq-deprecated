@@ -15,6 +15,8 @@ $curdir_upload_logo = dirname(__FILE__);
 include_once ($curdir_upload_logo."/../api.lib/api.base.php");
 include_once ($curdir_upload_logo."/../../config/config.php");
 
+$result = APIHelpers::startpage($config);
+
 APIHelpers::checkAuth();
 
 $userid = APIHelpers::getParam('userid', APISecurity::userid());
@@ -27,11 +29,6 @@ if (!APISecurity::isAdmin() && $userid != APISecurity::userid())
 
 if (count($_FILES) <= 0)
 	APIHelpers::showerror(1046, 'Not found file');
-
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
 
 $keys = array_keys($_FILES);
 
