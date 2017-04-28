@@ -194,11 +194,6 @@ function FHQGuiLib(api) {
 		var game_id = fhq.profile.game ? fhq.profile.game.id : 0;
 			
 		if(fhq.isAuth()){
-			toppanel.append('<div id="btnmenu_game" class="fhq_btn_menu" onclick="changeGame();">'
-				+ '<img class="fhq_btn_menu_img" src="' + game_logo + '"/> '
-				+ game_title
-				+ '</div>')
-
 			toppanel.append('<a id="btnmenu_quests" class="fhq_btn_menu" href="?quests">'
 				+ '<img class="fhq_btn_menu_img" src="images/menu/quests_40x40.png"/> '
 				+ fhq.t('Quests')
@@ -1329,13 +1324,16 @@ function FHQGuiLib(api) {
 
 	this.chooseGame = function(id) {
 		var self = this;
+		fhq.cache.gameid = id;
+		console.log("fhq.cache.gameid: " + fhq.cache.gameid);
 		$.post('api/games/choose.php', {'id' : id},
 			function(obj){
 				if(self.handleFail(obj)){
 					return;
 				}
 				if(obj.result=='ok'){
-					window.location.href = "?quests";
+					closeModalDialog();
+					fhq.ui.loadQuests();
 				}
 			}
 		);

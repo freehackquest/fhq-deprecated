@@ -9,29 +9,36 @@
 
 $curdir_statistics_user_answers = dirname(__FILE__);
 include_once ($curdir_statistics_user_answers."/../../api.lib/api.base.php");
-include_once ($curdir_statistics_user_answers."/../../api.lib/api.game.php");
 include_once ($curdir_statistics_user_answers."/../../../config/config.php");
 include_once ($curdir_statistics_user_answers."/../../api.lib/loadtoken.php");
 
 $response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
 
-$message = '';
-
-if (!APIGame::checkGameDates($message))
-	APIHelpers::showerror(1085, $message);
-
 if (!APIHelpers::issetParam('questid'))
 	APIHelpers::showerror(1086, 'Not found parameter "questid"');
-
+	
 $questid = APIHelpers::getParam('questid', 0);
 
 if (!is_numeric($questid))
 	APIHelpers::showerror(1087, 'parameter "questid" must be numeric');
 
-$response['result'] = 'ok';
-
 $conn = APIHelpers::createConnection($config);
+
+$gameid = 0;
+$stmt = $conn->prepare('SELECT gameid FROM quest WHERE idquest = ?');
+$stmt->execute(array($questid));
+if($row = $stmt->fetch()){
+	$gameid = $row['gameid'];
+}else{
+	APIHelpers::showerror2(2213, 404, 'Quest not found');
+}
+
+$message = '';
+if (!APIHelpers::checkGameDates($conn, $gameid, $message))
+	APIHelpers::showerror(1085, $message);
+
+$response['result'] = 'ok';
 
 $response['userid'] = APISecurity::userid();
 $response['questid'] = $questid;

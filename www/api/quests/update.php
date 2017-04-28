@@ -22,7 +22,6 @@ header('Content-Type: application/json');
 
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
-include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../api.lib/api.quest.php");
 include_once ($curdir."/../../config/config.php");
 include_once ($curdir."/../api.lib/loadtoken.php");
@@ -32,9 +31,6 @@ $result = APIHelpers::startPage($config);
 APIHelpers::checkAuth();
 
 $message = '';
-
-if (!APIGame::checkGameDates($message))
-	APIHelpers::showerror(1023, $message);
 
 if (!APISecurity::isAdmin())
 	APIHelpers::showerror(1024, 'Access denied. You are not admin.');
@@ -70,12 +66,10 @@ $questname = $params['name'];
 $params['answer_upper_md5'] = md5(strtoupper($params['answer']));
 $params['score'] = intval($params['score']);
 $params['min_score'] = intval($params['min_score']);
-$params['gameid'] = APIGame::id();
 $params['idauthor'] = intval($params['idauthor']);
 // $params['state'] = $params['state'];
 // $params['description_state'] = $params['description_state'];
 // $params['quest_uuid'] = $params['quest_uuid'];
-// $params['gameid'] = APIGame::id();
 $params['userid'] = APISecurity::userid();
 
 $conn = APIHelpers::createConnection($config);
@@ -111,7 +105,11 @@ $values[] = $questid;
 //	APIHelpers::showerror(1028,$e->getMessage());
 //}
 
-APIQuest::updateMaxGameScore($conn, APIGame::id());
+$stmt = $conn->prepare('SELECT gameid FROM quest WHERE idquest = ?');
+$stmt->execute(array($questid);
+if($row = $stmt->fetch()){
+	APIQuest::updateMaxGameScore($conn, $row['gameid']);	
+}
 
 include_once ($curdir."/../api.lib/savetoken.php");
 echo json_encode($result);

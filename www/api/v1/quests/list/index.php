@@ -10,26 +10,34 @@
  */
 
 $curdir = dirname(__FILE__);
-include_once ($curdir."/../../api.lib/api.base.php");
-include_once ($curdir."/../../api.lib/api.security.php");
-include_once ($curdir."/../../api.lib/api.helpers.php");
-include_once ($curdir."/../../api.lib/api.game.php");
-include_once ($curdir."/../../../config/config.php");
+include_once ($curdir."/../../../api.lib/api.base.php");
+include_once ($curdir."/../../../api.lib/api.security.php");
+include_once ($curdir."/../../../api.lib/api.helpers.php");
+include_once ($curdir."/../../../../config/config.php");
 
 
 $response = APIHelpers::startpage($config);
+
+if(!APIHelpers::is_json_input()){
+	APIHelpers::showerror2(2000, 400, "Expected application/json");
+}
 
 APIHelpers::checkAuth();
 
 $conn = APIHelpers::createConnection($config);
 
+$request = APIHelpers::read_json_input();
+
+$gameid = isset($request['gameid']) ? intval($request['gameid']) : 0;
+
+if ($gameid == 0)
+	APIHelpers::showerror2(1094, 400, "Missing or wrong parameter gameid");
+
 $message = '';
+if (!APIHelpers::checkGameDates($conn, $gameid, $message))
+	APIHelpers::showerror2(1095, 403, $message);
 
-if (!APIGame::checkGameDates($message))
-	APIHelpers::showerror2(1094, 403, $message);
 
-if (APIGame::id() == 0)
-	APIHelpers::showerror(1095, 400, "Game was not selected.");
 
 // TODO: must be added filters
 $conn = APIHelpers::createConnection($config);
@@ -47,7 +55,7 @@ $response['filter']['completed'] = filter_var($response['filter']['completed'], 
 
 $response['filter']['name_contains'] = APIHelpers::getParam('name_contains', '');
 
-$response['gameid'] = APIGame::id();
+$response['gameid'] = $gameid;
 $response['userid'] = APISecurity::userid();
 
 $filter_by_state = APISecurity::isAdmin() ? '' : ' AND quest.state = "open" ';
@@ -66,7 +74,7 @@ try {
 				'.$filter_by_state.'
 				'.$filter_by_score.'
 	');
-	$stmt->execute(array(APIGame::id()));
+	$stmt->execute(array($gameid));
 	if($row = $stmt->fetch())
 		$response['status']['summary'] = $row['cnt'];
 } catch(PDOException $e) {
@@ -89,7 +97,7 @@ try {
 	';
 	// $response['query_open'] = $query;
 	$stmt1 = $conn->prepare($query);
-	$stmt1->execute(array(APISecurity::userid(),APIGame::id()));
+	$stmt1->execute(array(APISecurity::userid(),$gameid));
 	if($row = $stmt1->fetch())
 		$response['status']['open'] = $row['cnt'];
 } catch(PDOException $e) {
@@ -110,7 +118,7 @@ try {
 				'.$filter_by_state.'
 				'.$filter_by_score.'
 	');
-	$stmt->execute(array(APISecurity::userid(),APIGame::id()));
+	$stmt->execute(array(APISecurity::userid(),$gameid));
 	if($row = $stmt->fetch())
 		$response['status']['completed'] = $row['cnt'];
 } catch(PDOException $e) {
@@ -132,7 +140,7 @@ try {
 			GROUP BY
 				quest.subject
 	');
-	$stmt->execute(array(APIGame::id()));
+	$stmt->execute(array($gameid));
 	while($row = $stmt->fetch())
 	{
 		$response['subjects'][$row['subject']] = $row['cnt'];
@@ -142,7 +150,7 @@ try {
 }
 
 /*$userid = APIHelpers::getParam('userid', 0);*/
-$params = array(APISecurity::userid(), APIGame::id());
+$params = array(APISecurity::userid(), $gameid);
 
 // filter by status
 $arrWhere_status = array();

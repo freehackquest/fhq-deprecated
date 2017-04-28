@@ -8,7 +8,6 @@
  * API_OKRESPONSE: { "result":"ok" }
  */
 
-
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../../config/config.php");

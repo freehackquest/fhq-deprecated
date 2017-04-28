@@ -10,7 +10,6 @@
 
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../../../api.lib/api.base.php");
-include_once ($curdir."/../../../api.lib/api.game.php");
 include_once ($curdir."/../../../api.lib/api.answerlist.php");
 include_once ($curdir."/../../../api.lib/api.quest.php");
 include_once ($curdir."/../../../../config/config.php");
@@ -19,32 +18,44 @@ $response = APIHelpers::startpage($config);
 
 APIHelpers::checkAuth();
 
-$message = '';
-
-if (!APIGame::checkGameDates($message))
-	APIHelpers::showerror(1211, $message);
-
 if (!APIHelpers::issetParam('questid'))
-	APIHelpers::showerror(1212, 'Not found parameter "questid"');
-
-if (!APIHelpers::issetParam('answer'))
-	APIHelpers::showerror(1213, 'Not found parameter "answer"');
+	APIHelpers::showerror2(1212, 400, 'Not found parameter "questid"');
 
 $questid = APIHelpers::getParam('questid', 0);
+
+if (!is_numeric($questid))
+	APIHelpers::showerror(1215, 'Parameter "questid" must be numeric');
+
+if (!APIHelpers::issetParam('answer'))
+	APIHelpers::showerror2(1213, 400, 'Not found parameter "answer"');
+
 $answer = APIHelpers::getParam('answer', '');
 
 if ($answer == "")
   APIHelpers::showerror(1214, 'Parameter "answer" must be not empty');
 
-if (!is_numeric($questid))
-	APIHelpers::showerror(1215, 'Parameter "questid" must be numeric');
+$conn = APIHelpers::createConnection($config);
+
+$gameid = 0;
+$stmt = $conn->prepare('SELECT gameid FROM quest WHERE idquest = ?');
+$stmt->execute(array($questid));
+if($row = $stmt->fetch()){
+	$gameid = $row['gameid'];
+}else{
+	APIHelpers::showerror2(2213, 404, 'Quest not found');
+}
+
+$message = '';
+if (!APIHelpers::checkGameDates($conn, $gameid, $message))
+	APIHelpers::showerror2(1211, 400, $message);
+
 
 $questid = intval($questid);
 
 $response['result'] = 'ok';
-$conn = APIHelpers::createConnection($config);
 
-$response['gameid'] = APIGame::id(); 
+
+$response['gameid'] = $gameid; 
 $response['userid'] = APISecurity::userid();
 
 $filter_by_state = APISecurity::isAdmin() ? '' : ' AND quest.state = "open" ';
@@ -52,7 +63,7 @@ $filter_by_score = APISecurity::isAdmin() ? '' : ' AND quest.min_score <= '.APIS
 
 $userid = APISecurity::userid();
 $params[] = $userid;
-$params[] = APIGame::id();
+$params[] = $gameid;
 $params[] = intval($questid);
 
 $questname = '';
@@ -106,14 +117,14 @@ try {
 					$stmt_users_quests->execute(array(APISecurity::userid(), $questid));
 				}
 				
-				$new_user_score = APIHelpers::calculateScore($conn);			
+				$new_user_score = APIHelpers::calculateScore($conn, $gameid);			
 				$response['new_user_score'] = intval($new_user_score);
 				if (APISecurity::score() != $response['new_user_score'])
 				{
 					APISecurity::setUserScore($response['new_user_score']);
 					$query2 = 'UPDATE users_games SET date_change = NOW(), score = ? WHERE userid = ? AND gameid = ?;';
 					$stmt2 = $conn->prepare($query2);
-					$stmt2->execute(array(intval($new_user_score), APISecurity::userid(), APIGame::id()));
+					$stmt2->execute(array(intval($new_user_score), APISecurity::userid(), $gameid));
 				}
 				APIQuest::updateCountUserSolved($conn, $questid);
 				APIAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, $levenshtein, 'Yes');
@@ -121,7 +132,7 @@ try {
 
 				// add to public events
 				if (!APISecurity::isAdmin())
-					APIEvents::addPublicEvents($conn, "users", 'User #'.APISecurity::userid().' {'.APISecurity::nick().'} passed quest #'.$questid.' {'.$questname.'} from game #'.APIGame::id().' {'.APIGame::title().'} (new user score: '.$new_user_score.')');
+					APIEvents::addPublicEvents($conn, "users", 'User #'.APISecurity::userid().' {'.APISecurity::nick().'} passed quest #'.$questid.' {'.$questname.'} from game #'.$gameid.' (new user score: '.$new_user_score.')');
 			} else {
 				// check already try pass
 				$stmt_check_tryanswer = $conn->prepare('select count(*) as cnt from tryanswer where answer_try = ? and iduser = ? and idquest = ?');

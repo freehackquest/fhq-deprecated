@@ -9,7 +9,6 @@
 
 $curdir_games_get = dirname(__FILE__);
 include_once ($curdir_games_get."/../api.lib/api.base.php");
-include_once ($curdir_games_get."/../api.lib/api.game.php");
 include_once ($curdir_games_get."/../../config/config.php");
 
 $response = APIHelpers::startpage($config);

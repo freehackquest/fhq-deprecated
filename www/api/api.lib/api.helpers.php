@@ -65,8 +65,7 @@ class APIHelpers {
 		exit;
 	}
 
-	static function calculateScore($conn)
-	{
+	static function calculateScore($conn, $gameid){
 		// calculate score
 		$query = '
 			SELECT 
@@ -80,7 +79,7 @@ class APIHelpers {
 		';
 		$score = 0;
 		$stmt = $conn->prepare($query);
-		$stmt->execute(array(APIGame::id(), APISecurity::userid()));
+		$stmt->execute(array($gameid, APISecurity::userid()));
 		if($row = $stmt->fetch())
 			$score = $row['sum_score'];
 		return $score;
@@ -180,6 +179,73 @@ class APIHelpers {
 		}
 		$conn->prepare('DELETE FROM users_captcha WHERE captcha_uuid = ?')->execute(array($captcha_val));
 		return $captcha_val;
+	}
+	
+	static function is_json_input(){
+		$headers =  getallheaders();
+		$is_json = false;
+		foreach($headers as $key=>$val){
+			if(strtolower($key) == "content-type" && strtolower($val) == "application/json"){
+				$is_json = true;
+			}
+		}
+		return $is_json;
+	}
+	
+	static function read_json_input(){
+		return json_decode(file_get_contents('php://input'), true);
+	}
+
+	static function checkGameDates($conn, $gameid, &$message) {
+		
+		if ($gameid <= 0) {
+			$message = 'Select game please';
+			return false;
+		}
+
+		$stmt = $conn->prepare('SELECT * FROM games WHERE id = ?');
+		$stmt->execute(array($gameid));
+		if($row = $stmt->fetch()){
+			if (APISecurity::isAdmin() || APISecurity::isTester())
+				return true;
+			$date_start = new DateTime();
+			date_timestamp_set($date_start, strtotime($row['date_start']));
+			$date_stop = new DateTime();
+			date_timestamp_set($date_stop, strtotime($row['date_stop']));
+			$date_restart = new DateTime();
+			date_timestamp_set($date_restart, strtotime($row['date_restart']));
+			$date_current = new DateTime();
+			date_timestamp_set($date_current, time());
+			$di_start = $date_current->diff($date_start);
+			$di_stop = $date_current->diff($date_stop);
+			$di_restart = $date_current->diff($date_restart);
+
+			$bWillBeStarted = ($di_start->invert == 0);
+			$bWillBeRestarted = ($di_stop->invert == 1 && $di_restart->invert == 0);
+			
+			// echo date_diff($date_current, $date_start)."<br>";
+			if ( $bWillBeStarted || $bWillBeRestarted) {
+				$label = $bWillBeStarted ? 'Game will be started after: ' : 'Game will be restarted after: ';
+				$di = $bWillBeStarted ? $di_start : $di_restart;
+
+				$message = $label.'<br>
+					<div class="fhq_timer" id="days">'.$di->d.'</div> day(s) 
+					<div class="fhq_timer" id="hours">'.$di->h.'</div> hour(s) 
+					<div class="fhq_timer" id="minutes">'.$di->i.'</div> minute(s)
+					<div class="fhq_timer" id="seconds">'.$di->s.'</div> second(s)<br>
+					<div id="reload_content" onclick="startTimer();"/></div> <br><br>
+				';
+				
+				return false;
+			}
+			return true;
+		}else{
+			$message = "Game not found";
+			APIHelpers::showerror2(404, 404, "Game not found");
+			return false;
+		}
+
+		return true;
 	}
 }
 

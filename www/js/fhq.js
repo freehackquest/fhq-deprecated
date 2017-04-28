@@ -46,6 +46,8 @@ window.fhq.profile = {
 	lastEventId: 0,
 	bInitUserProfile: false
 };
+fhq.cache = {};
+fhq.cache.gameid = 0;
 
 // TODO deprecated redesign to $.ajax
 // post request to server Async
@@ -303,14 +305,16 @@ fhq.api.quests.pass = function(questid, answer){
 	return d;
 }
 
-window.fhq.api.quests.list = function(params){
+fhq.api.quests.list = function(params){
 	params = params || {};
+	params.gameid = fhq.cache.gameid;
 	params.token = fhq.token;
 	var d = $.Deferred();
 	$.ajax({
 		type: "POST",
-		url: 'api/quests/list/',
-		data: params
+		url: 'api/v1/quests/list/',
+		contentType: "application/json",
+		data: JSON.stringify(params)
 	}).done(function(response){
 		d.resolve(response);
 	}).fail(function(r){

@@ -12,29 +12,26 @@ header('Content-Type: application/json');
 
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../../api.lib/api.base.php");
-include_once ($curdir."/../../api.lib/api.game.php");
 include_once ($curdir."/../../../config/config.php");
 
 $response = APIHelpers::startpage($config);
 
 APIHelpers::checkAuth();
 
+$conn = APIHelpers::createConnection($config);
+
 $message = '';
 
-if (!APIGame::checkGameDates($message) && !APISecurity::isAdmin())
-	APIHelpers::showerror(1064, $message);
-
 if (!APIHelpers::issetParam('taskid'))
-	APIHelpers::showerror(1065, 'Not found parameter "taskid"');
+	APIHelpers::showerror2(1065, 400, 'Not found parameter "taskid"');
 
 $questid = APIHelpers::getParam('taskid', 0);
+$gameid = 0;
 
 if (!is_numeric($questid))
 	APIHelpers::showerror(1066, 'parameter "taskid" must be numeric');
 
 $response['result'] = 'ok';
-
-$conn = APIHelpers::createConnection($config);
 
 $response['userid'] = APISecurity::userid();
 
@@ -52,9 +49,6 @@ if (!APISecurity::isAdmin()) {
 	
 	$filter_by_score = ' AND quest.min_score <= ?';
 	$params[] = APISecurity::score();
-	
-	$filter_by_game = ' AND quest.gameid = ? ';
-	$params[] = APIGame::id();	
 }
 
 $query = '
@@ -89,8 +83,7 @@ try {
 	$stmt = $conn->prepare($query);
 	$stmt->execute($params);
 
-	if($row = $stmt->fetch())
-	{
+	if($row = $stmt->fetch()){
 		$status = '';
 		if ($row['dt_passed'] == null)
 			$status = 'open';
@@ -113,6 +106,7 @@ try {
 			'game_title' => $row['game_title'],
 			'text' => $row['text'],
 		);
+		$gameid = $row['gameid'];
 		$response['quest'] = $row['idquest'];
 		$response['gameid'] = $row['gameid'];
 		
@@ -144,6 +138,10 @@ try {
 	$response['result'] = 'ok';
 	$response['permissions']['edit'] = APISecurity::isAdmin();
 	$response['permissions']['delete'] = APISecurity::isAdmin();
+	
+	if (!APIHelpers::checkGameDates($conn, $gameid, $message) && !APISecurity::isAdmin())
+		APIHelpers::showerror2(1064, 400, $message);
+	
 } catch(PDOException $e) {
 	APIHelpers::showerror(1067, $e->getMessage());
 }

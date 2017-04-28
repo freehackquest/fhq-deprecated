@@ -10,7 +10,6 @@ $curdir_statistics_list = dirname(__FILE__);
 include_once ($curdir_statistics_list."/../../api.lib/api.base.php");
 include_once ($curdir_statistics_list."/../../api.lib/api.security.php");
 include_once ($curdir_statistics_list."/../../api.lib/api.helpers.php");
-include_once ($curdir_statistics_list."/../../api.lib/api.game.php");
 include_once ($curdir_statistics_list."/../../../config/config.php");
 
 $response = APIHelpers::startpage($config);
