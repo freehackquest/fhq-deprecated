@@ -23,7 +23,7 @@ window.fhq.localization = {
 	},
 	'About' : {
 		'en': 'About',
-		'ru': 'Информация'
+		'ru': 'О проекте'
 	},
 	'Create' : {
 		'en': 'Create',
@@ -261,9 +261,9 @@ window.fhq.localization = {
 		'en': 'Report an error',
 		'ru': 'Сообщить об ошибке'
 	},
-	'Profile': {
-		'en': 'Profile',
-		'ru': 'Профиль'
+	'Your Profile': {
+		'en': 'Your Profile',
+		'ru': 'Ваш Профиль'
 	},
 	'Reset': {
 		'en': 'Reset',
@@ -280,5 +280,62 @@ window.fhq.localization = {
 	'Game': {
 		'en': 'Game',
 		'ru': 'Игра'
+	},
+	'Other': {
+		'en': 'Other',
+		'ru': 'Еще...'
+	},
+	'admin_description':{
+		'en': 'Administration',
+		'ru': 'Администрирование'
+	},
+	'crypto_description':{
+		'en': 'Сryptography',
+		'ru': 'Криптография'
+	},
+	'enjoy_description':{
+		'en': 'Quests for fun',
+		'ru': 'Задачи для удовольствия'
+	},
+	'forensics_description':{
+		'en': 'Computer forensic examination',
+		'ru': 'Компьютерно-криминалистическая экспертиза'
+	},
+	'hashes_description':{
+		'en': 'Data recovery by their hash values',
+		'ru': 'Восстановление данных по их хэш значениям'
+	},
+	'network_description':{
+		'en': 'Knowledge of network infrastructure and protocols',
+		'ru': 'Знание сетевой инфраструктуры и протоколов'
+	},
+	'ppc_description':{
+		'en': 'Professional programming and coding',
+		'ru': 'Олимпиадное программирование'
+	},
+	'recon_description':{
+		'en': 'Competitive intelligence',
+		'ru': 'Конкурентная разведка'
+	},
+	'reverse_description':{
+		'en': '(Reverse engineering) Analysis of the binary code',
+		'ru': '(Reverse engineering) Анализ бинарного кода'
+	},
+	'stego_description':{
+		'en': 'Steganography',
+		'ru': 'Стеганография'
+	},
+	'trivia_description':{
+		'en': 'Simple quests for warming up',
+		'ru': 'Простые задачи для разогрева'
+	},
+	'web_description':{
+		'en': 'Search and use of web vulnerabilities',
+		'ru': 'Поиск и использование веб-уязвимостей'
+	},
+	'misc_description':{
+		'en': 'Miscellaneous',
+		'ru': 'Разное'
 	}
+	
 };
