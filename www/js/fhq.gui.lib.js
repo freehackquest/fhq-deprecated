@@ -93,9 +93,7 @@ fhq.ui.signin = function() {
 
 fhq.ui.signout = function(){
 	fhq.api.users.logout().done(function(){
-		fhqgui.loadTopPanel();
-		fhqgui.loadMainPage();
-		fhq.changeLocationState({});
+		fhqgui.processParams();
 	});
 }
 
