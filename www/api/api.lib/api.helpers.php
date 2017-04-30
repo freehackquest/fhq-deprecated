@@ -20,15 +20,15 @@ class APIHelpers {
 		}
 	}
 	
-	static function createConnection($config)
+	static function createConnection()
 	{
 		if (APIHelpers::$CONN != null)
 			return APIHelpers::$CONN;
 		
 		APIHelpers::$CONN = new PDO(
-			'mysql:host='.$config['db']['host'].';dbname='.$config['db']['dbname'].';charset=utf8',
-			$config['db']['username'],
-			$config['db']['userpass']
+			'mysql:host='.APIHelpers::$CONFIG['db']['host'].';dbname='.APIHelpers::$CONFIG['db']['dbname'].';charset=utf8',
+			APIHelpers::$CONFIG['db']['username'],
+			APIHelpers::$CONFIG['db']['userpass']
 		);
 		return APIHelpers::$CONN;
 	}
@@ -109,8 +109,9 @@ class APIHelpers {
 	static $FHQSESSION_ORIG = null;
 	static $TOKEN = null;
 	static $CONN = null;
+	static $CONFIG = null;
 
-	static function startpage($config) {
+	static function startpage() {
 		header('Access-Control-Allow-Origin: *');
 		header('Content-Type: application/json');
 		APIHelpers::$TIMESTART = microtime(true);
@@ -123,7 +124,7 @@ class APIHelpers {
 		}
 		
 		if(APIHelpers::$TOKEN != null){
-			$conn = APIHelpers::createConnection($config);
+			$conn = APIHelpers::createConnection();
 			try {
 				$stmt = $conn->prepare('SELECT data FROM users_tokens WHERE token = ? AND status = ? AND end_date > NOW()');
 				$stmt->execute(array(APIHelpers::$TOKEN,'active'));
@@ -248,4 +249,13 @@ class APIHelpers {
 		return true;
 	}
 }
+
+include_once ($curdir_helpers."/../../config/config.php");
+
+if(!isset($config)){
+	http_response_code(400);
+	echo "Config not found";
+	exit;
+}
+APIHelpers::$CONFIG = $config;
 

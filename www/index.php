@@ -43,8 +43,6 @@
 			$(document).ready(function() {
 				fhqgui.applyColorScheme();
 				fhq.ws.setWSState(fhq.ws.getWSState()); // Update state of WS
-				fhq.users.initProfile().done(fhqgui.loadTopPanel).fail(fhqgui.loadTopPanel);
-				fhq.ui.initChatForm();
 				fhqgui.processParams();
 			});
 		</script>
@@ -114,7 +112,9 @@
 				</div>
 			</div>
 			
-			<div class="fhqtopmenu_toppanel"></div>
+			<div class="fhqtopmenu_toppanel">
+				<div class="fhqtopmenu_toppanel_container"></div>
+			</div>
 
 			<div id="copyright">
 				<center>

@@ -227,20 +227,17 @@ window.fhq.quests = new (function(t) {
 
 window.fhq.api.quests.quest = function(id){
 	var params = {};
-	params.taskid = id;
+	params.questid = id;
 	var d = $.Deferred();
 	$.ajax({
 		type: "POST",
-		url: 'api/quests/get/',
-		data: params
-	}).done(function(response){
-		if (response.result == 'ok') {
-			d.resolve(response);
-		}else{
-			d.reject(response);
-		}
-	}).fail(function(){
-		d.reject();
+		url: 'api/v1/quests/get/',
+		contentType: "application/json",
+		data: JSON.stringify(params)
+	}).done(function(r){
+		d.resolve(r);
+	}).fail(function(r){
+		d.reject(r);
 	})
 	return d;
 }
@@ -323,6 +320,23 @@ fhq.api.quests.list = function(params){
 	return d;
 };
 
+fhq.api.quests.stats_subjects = function(params){
+	params = params || {};
+	params.token = fhq.token;
+	var d = $.Deferred();
+	$.ajax({
+		type: "POST",
+		url: 'api/v1/quests/stats_subjects/',
+		contentType: "application/json",
+		data: JSON.stringify(params)
+	}).done(function(r){
+		d.resolve(r);
+	}).fail(function(r){
+		d.reject(r);
+	})
+	return d;
+}
+
 if(!window.fhq.api.feedback) window.fhq.api.feedback = {};
 
 window.fhq.api.feedback.add = function(params){
@@ -398,13 +412,34 @@ fhq.api.users.login = function (email, password) {
 	return d;
 };
 
+fhq.api.users.profile(userid){
+	var d = $.Deferred();
+	var params = {};
+	params.token = fhq.token;
+	if(userid){
+		params.userid = id;
+	}
+	$.ajax({
+		type: "POST",
+		url: 'api/v1/users/profile/',
+		contentType: "application/json",
+		data: JSON.stringify(params)
+	}).done(function(r){
+		d.resolve(r);
+	}).fail(function(r){
+		d.resolve(r);
+	})
+	return d;
+}
+
 fhq.api.users.getLastEventId = function(){
 	var d = $.Deferred();
 	var params = {};
 	$.ajax({
 		type: "POST",
 		url: 'api/v1/users/get/',
-		data: params
+		contentType: "application/json",
+		data: JSON.stringify(params)
 	}).done(function(response){
 		if (response.result == 'ok') {
 			fhq.profile.lastEventId = response.profile.lasteventid;
@@ -493,12 +528,6 @@ window.fhq.users = new (function(t) {
 		this.fhq.sendPostRequest_Async('api/users/update_lasteventid.php', params, function(obj) {});
 		this.fhq.profile.lastEventId = id;
 	};
-	this.get = function(userid, callback) {
-		var obj = null;
-		var params = {};
-		params.userid = userid;
-		this.fhq.sendPostRequest_Async('api/v1/users/get/', params, callback);
-	}
 	this.skills = function(userid, callback) {
 		var obj = null;
 		var params = {};

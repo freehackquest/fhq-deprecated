@@ -9,20 +9,22 @@
 
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../../../api.lib/api.base.php");
-include_once ($curdir."/../../../../config/config.php");
 
-$response = APIHelpers::startpage($config);
-APIHelpers::checkAuth();
+$response = APIHelpers::startpage();
+
+if(!APIHelpers::is_json_input()){
+	APIHelpers::showerror2(2000, 400, "Expected application/json");
+}
+$conn = APIHelpers::createConnection();
+$request = APIHelpers::read_json_input();
 
 $response['profile'] = array();
 $response['access'] = array();
 
-$conn = APIHelpers::createConnection($config);
-
 /*if (!APIHelpers::issetParam('userid'))
 	APIHelpers::showerror(1177, 'Not found parameter userid');*/
 
-$userid = APIHelpers::getParam('userid', APISecurity::userid());
+$userid = $request['userid'];
 
 if (!is_numeric($userid))
 	APIHelpers::showerror(1181, 'Parameter userid must be integer');
@@ -48,8 +50,8 @@ $result['userid'] = $userid;
 try {
 	$stmt = $conn->prepare($query);
 	$stmt->execute(array($userid));
-	if ($row = $stmt->fetch())
-	{
+	if ($row = $stmt->fetch()){
+		$response['result'] = 'ok';
 		$response['data']['userid'] = $row['id'];
 		$response['data']['nick'] = $row['nick'];
 		$response['data']['logo'] = $row['logo'];
@@ -65,7 +67,7 @@ try {
 			 $response['data']['city'] = $row['city'];
 		}
 	}
-	$response['result'] = 'ok';
+	
 } catch(PDOException $e) {
 	APIHelpers::showerror(1184, $e->getMessage());
 }

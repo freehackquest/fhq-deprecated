@@ -149,10 +149,8 @@ class APISecurity {
 			$userid = (APISecurity::isLogged() && isset($_SESSION['user']['id'])) ? $_SESSION['user']['id'] : intval('');
 		}
 		if (intval($userid) == 0) {
-			session_destroy();
-			APIHelpers::showerror(1317, 'Please relogon');
+			return 0;
 		}
-		return $userid;
 	}
 
 	static function updateLastDTLogin($conn) {

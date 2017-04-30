@@ -1,7 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: Get Quest Info (users method)
  * API_DESCRIPTION: Method will be returned quest info 
@@ -11,29 +8,27 @@ header('Content-Type: application/json');
  */
 
 $curdir = dirname(__FILE__);
-include_once ($curdir."/../../api.lib/api.base.php");
-include_once ($curdir."/../../../config/config.php");
+include_once ($curdir."/../../../api.lib/api.base.php");
+include_once ($curdir."/../../../api.lib/api.helpers.php");
 
-$response = APIHelpers::startpage($config);
+$response = APIHelpers::startpage();
 
-APIHelpers::checkAuth();
+if(!APIHelpers::is_json_input()){
+	APIHelpers::showerror2(2000, 400, "Expected application/json");
+}
+$conn = APIHelpers::createConnection();
+$request = APIHelpers::read_json_input();
 
-$conn = APIHelpers::createConnection($config);
 
-$message = '';
+if (!isset($request['questid']))
+	APIHelpers::showerror2(1065, 400, 'Not found parameter "questid"');
 
-if (!APIHelpers::issetParam('taskid'))
-	APIHelpers::showerror2(1065, 400, 'Not found parameter "taskid"');
-
-$questid = APIHelpers::getParam('taskid', 0);
-$gameid = 0;
+$questid = $request['questid'];
 
 if (!is_numeric($questid))
-	APIHelpers::showerror(1066, 'parameter "taskid" must be numeric');
+	APIHelpers::showerror(1066, 'parameter "questid" must be numeric');
 
 $response['result'] = 'ok';
-
-$response['userid'] = APISecurity::userid();
 
 $params = array();
 $params[] = APISecurity::userid();
@@ -41,14 +36,10 @@ $params[] = intval($questid);
 
 $filter_by_state = '';
 $filter_by_score = '';
-$filter_by_game = '';
 
 if (!APISecurity::isAdmin()) {
 	$filter_by_state = ' AND quest.state = ?';
 	$params[] = 'open';
-	
-	$filter_by_score = ' AND quest.min_score <= ?';
-	$params[] = APISecurity::score();
 }
 
 $query = '
@@ -75,8 +66,6 @@ $query = '
 			WHERE
 				quest.idquest = ?
 				'.$filter_by_state.'
-				'.$filter_by_score.'
-				'.$filter_by_game.'
 		';
 
 try {
@@ -132,7 +121,7 @@ try {
 			);
 		}
 	} else {
-		APIHelpers::showerror(1148, 'Problem... may be incorrect game are selected?');
+		APIHelpers::showerror2(1148, 400, 'Problem... may be incorrect game are selected?');
 	}
 	
 	$response['result'] = 'ok';

@@ -202,42 +202,46 @@ body {
 }
 
 .fhqtopmenu_toppanel {
-	padding: 10px 20px 0px 20px;
 	background: #e4e4e4;
 	position: fixed;
 	display: inline-block;
 	left: 0px;
 	width: 100%;
 	min-width: 1000px;
-	-webkit-border-bottom-right-radius: 15px;
-	-moz-border-radius-bottomright: 15px;
-	border-bottom-right-radius: 15px;
 	opacity: 0.95;
 	z-index: 555;
+	text-align: center;
+	height: 50px;
+}
+
+.fhqtopmenu_toppanel_container{
+	width: 80%;
+    display: inline-block;
 	text-align: left;
+	padding-top: 5px;
+}
+
+.fhq-menu-logo{
+	height: 40px;
+    padding: 10px;
 }
 
 .fhq_btn_menu {
-	padding: 5px;
 	display: inline-block;
 	transition: all 1s ease 0s;
 	cursor: pointer;
 	text-align: center;
-	height: 40px;
-	min-height: 40px;
 	border-radius: 10px;
-	margin-bottom: 5px;
-	padding: 5px;
-	vertical-align:middle;
 	transition: 0s;
 	color: #333;
 	font: 12pt/10pt Arial;
-	font-size: 20px;
-	padding-right: 20px;
+	font-size: 15px;
+	font-weight: bold;
+	margin-left: 10px;
+    margin-right: 10px;
 }
 
 .fhq_btn_menu:hover {
-	background: #c8c8c8;
 	color: #333;
 	text-decoration: none;
 }
@@ -260,6 +264,10 @@ body {
 	vertical-align: middle;
 	white-space: nowrap;
 	height: 40px;
+}
+
+.user-logo{
+	border-radius: 20px;
 }
 
 .fhq_btn_menu_user_panel {
@@ -327,6 +335,70 @@ body {
 .account-panel .border{
 	border-top: 1px dashed #333;
 	margin-top: 10px;
+}
+
+.fhq-quests{
+	width: 80%;
+}
+
+.fhq-quests-subject{
+	display: table;
+	width: 100%;
+	background-color: #eee;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+.fhq-quests-subject:hover{
+	background: #c8c8c8;
+    color: #333;
+}
+
+.dark .fhq-quests-subject:hover{
+	background: #606060;
+    color: #C8C8C8;
+}
+
+.dark .fhq-quests-subject{
+	background-color: #494949;
+}
+
+.fhq-quests-subject .descr{
+	font-size: 20px;
+    font-style: italic;
+}
+
+.fhq-quests-subject-skip{
+	height: 20px;
+}
+
+.fhq-quests-subject-row{
+	display: table-row;
+}
+
+.fhq-quests-subject-cell{
+	display: table-cell;	
+}
+
+.fhq-quests-subject-cell.logo{
+	width: 110px;
+	min-width: 110px;
+    height: 110px;
+    background-size: 100% 100%;
+}
+
+.fhq-quests-subject-cell.text{
+	vertical-align: middle;
+    font-size: 30px;
+    text-align: left;
+	padding-left: 20px;
+}
+
+.fhq-quests-subject-cell.count{
+	vertical-align: middle;
+    font-size: 30px;
+    text-align: center;
+    width: 300px;
 }
 
 .questslist, .toolslist, .fhqleftlist {
@@ -853,7 +925,7 @@ div.gamespanel__game p:before {
 	padding: 10px;
 	text-align: center;
 	min-width: 200px;
-	width: 70%;
+	width: 80%;
 	background-color: #eee;
 	opacity: 0.95;
 }
@@ -895,6 +967,8 @@ div.gamespanel__game p:before {
 	text-align: left;
 	padding: 10px;
 }
+
+
 
 /* games.css */
 
@@ -1141,45 +1215,12 @@ font.fhq_task {
 	padding: 2px;
 }
 
-.newquestinfo_header{
-	text-align: left;
-	padding-left: 50px;
-}
-
-.newquestinfo_header a:hover{
-	text-decoration: inherit;
-	border-bottom: 1px solid #c83025;
-}
-
-.newquestinfo_gamelogo{
-	display: inline-block;
-	height: 50px;
-	float: left;
-	margin-right: 15px;
-	margin-bottom: 15px;
-}
-
-.newquestinfo_gametitlequestid{
-	display: block;
-	height: 25px;
-}
-
-.newquestinfo_questname{
-	display: block;
-	height: 40px;
-	font: 12pt/10pt Arial;
-	font-size: 25px;
-	line-height: 25px;
-}
-
 .newquestinfo_controls{
 	text-align: left;
-	padding-left: 50px;
 }
 
 .newquestinfo_details{
 	text-align: left;
-	padding-left: 50px;
 }
 
 .newquestinfo_details_title{
@@ -1216,7 +1257,6 @@ font.fhq_task {
 
 .newquestinfo_description{
 	text-align: left;
-	padding-left: 50px;
 }
 
 .newquestinfo_description_title{
@@ -1234,7 +1274,6 @@ font.fhq_task {
 
 .newquestinfo_attachments{
 	text-align: left;
-	padding-left: 50px;
 }
 
 .newquestinfo_attachments_title{
@@ -1252,7 +1291,6 @@ font.fhq_task {
 
 .newquestinfo_passquest{
 	text-align: left;
-	padding-left: 50px;
 }
 
 .newquestinfo_passquest_title{
@@ -1275,7 +1313,6 @@ font.fhq_task {
 
 .newquestinfo {
 	text-align: left;
-	padding-left: 50px;
 }
 
 .newquestinfo_title{
@@ -1377,8 +1414,7 @@ body.dark
 }
 
 .dark .fhq_btn_menu:hover {
-	background: #606060;
-	color: #C8C8C8;
+	color: #F8E8D8;
 }
 
 .dark .fhq_btn_menu_splitter {
@@ -1633,4 +1669,126 @@ body.dark
 
 .scoreboard-user-tile{
 	display: inline-block;
+}
+
+
+/* quests-list */
+
+.fhq0001{
+	display: table;
+	width: 100%;
+	background-color: #eee;
+	border-radius: 10px;
+    cursor: pointer;
+}
+
+.fhq0001:hover {
+    background: #c8c8c8;
+    color: #333;
+}
+
+.dark .fhq0001 {
+    background-color: #494949;
+}
+
+.dark .fhq0001:hover {
+	background: #606060;
+    color: #C8C8C8;
+}
+
+.fhq0002{
+	display: table-cell;
+	width: 110px;
+    min-width: 110px;
+    height: 110px;
+    max-height: 110px;
+    background-image: url(../images/menu/quests_150x150.png);
+	background-size: 100% 100%;
+	border-radius: 10px;
+}
+
+.fhq0003{
+	display: table-cell;
+	font-size: 30px;
+	vertical-align: middle;
+	text-align: left;
+    padding-left: 20px;
+}
+
+.fhq0004{
+	display: inline-block;
+	font-size: 20px;
+    font-style: italic;
+}
+
+.fhq0005{
+	width: 80%;
+}
+
+.fhq0006{
+	width: 80%;
+}
+
+.fhq0007{
+	display: table-cell;
+	width: 300px;
+	vertical-align: middle;
+	font-size: 30px;
+}
+
+.fhq0008{
+	display: table-row;
+}
+
+.fhq0009{
+	display: block;
+	width: 80%;
+}
+
+.fhq0010{
+	display: table;
+	width: 100%;
+	text-align: left;
+	background-color: #eee;
+	border-radius: 10px;
+}
+
+.dark .fhq0010 {
+    background-color: #3e3e3e;
+}
+
+.fhq0010 a:hover{
+	text-decoration: inherit;
+	border-bottom: 1px solid #c83025;
+}
+
+.fhq0011 {
+	display: table-cell;
+	width: 110px;
+    height: 110px;
+    background-repeat: no-repeat;
+	background-size: 100% 100%;
+    border-radius: 10px;
+}
+
+.fhq0012{
+	display: table-row;
+}
+
+.fhq0013{
+	display: table-cell;
+	padding-top: 10px;
+    padding-left: 20px;
+}
+
+.fhq0014{
+	display: block;
+	height: 40px;
+	font: 12pt/10pt Arial;
+	font-size: 30px;
+    padding-top: 20px;
+}
+
+.fhq0015{
+	height: 20px;
 }

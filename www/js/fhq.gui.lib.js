@@ -86,7 +86,7 @@ fhq.ui.signin = function() {
 		fhq.users.initProfile().done(function(){
 			fhq.ui.closeModalDialog();
 			fhqgui.loadTopPanel();
-			fhq.ui.loadQuests();
+			fhq.ui.loadStatSubjectsQuests();
 			fhq.changeLocationState({'quests':''});
 		});
 	}).fail(function(r){
@@ -178,60 +178,52 @@ function FHQGuiLib(api) {
 		document.onkeydown = null;
 		document.getElementById('modal_dialog_content').innerHTML = "";
 	}
-	
+
 	/* top menu */
-	
+
 	this.loadTopPanel = function(){
-		var toppanel = $('.fhqtopmenu_toppanel');
+		var toppanel = $('.fhqtopmenu_toppanel_container');
 		toppanel.html('');
-		toppanel.append('<a id="btnmenu_main_page" class="fhq_btn_menu" href="?about">'
+		// logo
+		toppanel.append('<a class="fhq-menu-logo" href="./?">'
 			+ '<img class="fhq_btn_menu_img" src="images/fhq2016_200x150.png"/> '
-			+ fhq.t('About')
 			+ '</a>')
 		
-		var game_title = fhq.profile.game ? fhq.profile.game.title : fhq.t('Game');
-		var game_logo = fhq.profile.game ? fhq.profile.game.logo : 'images/menu/unknown.png';
-		var game_id = fhq.profile.game ? fhq.profile.game.id : 0;
-			
-		if(fhq.isAuth()){
-			toppanel.append('<a id="btnmenu_quests" class="fhq_btn_menu" href="?quests">'
-				+ '<img class="fhq_btn_menu_img" src="images/menu/quests_40x40.png"/> '
-				+ fhq.t('Quests')
-				+ '</a>')
-		}
-		
-		/*<div class="fhq_btn_menu">
-			<div class="fhq_btn_menu_img">
-				<img class="fhq_btn_menu_img" src="'.$game_logo.'"/>
-				'.$game_title.'
-			</div>
-		</div>*/
-		
-		if(!fhq.isAuth()){
-			toppanel.append('<a id="btnmenu_tools" class="fhq_btn_menu" target="_blank" href="http://tools.freehackquest.com">'
-				+ '<img class="fhq_btn_menu_img" src="images/menu/tools_150x150.png"/> '
-				+ fhq.t('Tools')
-				+ '</a>')
-		}
-			
+		toppanel.append('<a id="btnmenu_quests" class="fhq_btn_menu" href="?quests">'
+			// + '<img class="fhq_btn_menu_img" src="images/menu/quests_40x40.png"/> '
+			+ fhq.t('Quests')
+			+ '</a>')
+
 		toppanel.append('<a id="btnmenu_news" class="fhq_btn_menu" href="?news">'
-			+ '<img class="fhq_btn_menu_img" src="images/menu/news.png"/>'
-			+ '<div class="fhqredcircle hide" id="plus_events">0</div> '
+			// + '<img class="fhq_btn_menu_img" src="images/menu/news.png"/>'
+			// + '<div class="fhqredcircle hide" id="plus_events">0</div> '
 			+ fhq.t('News')
 			+ '</a>');
 
+		toppanel.append('<div id="btnmenu_more" class="fhq_btn_menu">'
+			+ fhq.t('Other')
+			+ '</div>');
+										
+		toppanel.append('<div id="btnmenu_about" class="fhq_btn_menu" href="?about">' + fhq.t('About') + '</div>');
+		
+		/*if(!fhq.isAuth()){
+			toppanel.append('<a id="btnmenu_tools" class="fhq_btn_menu" target="_blank" href="http://tools.freehackquest.com">'
+				// + '<img class="fhq_btn_menu_img" src="images/menu/tools_150x150.png"/> '
+				+ fhq.t('Tools')
+				+ '</a>')
+		}*/
+
 		toppanel.append('<div id="btnmenu_colorscheme" class="fhq_btn_menu">'
 			+ '<img class="fhq_btn_menu_img" src="images/menu/lightside_150x150.png"/> '
-			+ '<div id="btnmenu_colorscheme_text" style="display: inline">' + fhq.t('Light') + '</div>'
 			+ '</div>');
 
 		toppanel.append('<div id="btnmenu_user" class="fhq_btn_menu">'
-			+ '<img class="fhq_btn_menu_img" src="' + (fhq.isAuth() ? fhq.userinfo.logo : 'images/menu/user.png') + '"/>  '
+			+ '<img class="fhq_btn_menu_img user-logo" src="' + (fhq.isAuth() ? fhq.userinfo.logo : 'images/menu/user.png') + '"/>  '
 			+ (fhq.isAuth() ? fhq.userinfo.nick : fhq.t('Account'))
 			+ '<div class="account-panel"></div>');
 
 		$('.account-panel').append(
-			'<img class="fhq_btn_menu_img" src="' + (fhq.isAuth() && fhq.userinfo ? fhq.userinfo.logo : 'images/menu/user.png') + '"/>  '
+			'<img class="fhq_btn_menu_img user-logo" src="' + (fhq.isAuth() && fhq.userinfo ? fhq.userinfo.logo : 'images/menu/user.png') + '"/>  '
 			+ (fhq.isAuth() ? fhq.userinfo.nick : fhq.t('Account'))
 		);
 		$('.account-panel').append('<div class="border"></div>');
@@ -242,7 +234,8 @@ function FHQGuiLib(api) {
 			$('.account-panel').append('<div id="btnmenu_signup" class="fhq-simple-btn" onclick="fhqgui.showSignUpForm();">' + fhq.t('Sign-up') + '</div>');
 			$('.account-panel').append('<div id="btnmenu_restore_password" class="fhq-simple-btn" onclick="fhqgui.showResetPasswordForm();">' + fhq.t('Forgot password?') + '</div>');
 		}else{
-			$('.account-panel').append('<div class="fhq-simple-btn" onclick="loadUserProfile(' + fhq.userinfo.id + ');">' + fhq.t('Profile') + '</div>');
+			var game_id = 0;
+			$('.account-panel').append('<div class="fhq-simple-btn" onclick="loadUserProfile(' + fhq.userinfo.id + ');">' + fhq.t('Your Profile') + '</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="loadScoreboard(' + game_id + ');">Scoreboard (' + fhq.userinfo.score + ')</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.loadRules(' + game_id + ');">Rules</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.loadGames();">Games</div>');
@@ -270,6 +263,14 @@ function FHQGuiLib(api) {
 			} else {
 				self.setDarkColorScheme();
 			}
+		})
+		
+		$('#btnmenu_more').unbind().bind('click', function(){
+			window.location = '?more';
+		})
+		
+		$('#btnmenu_about').unbind().bind('click', function(){
+			window.location = '?about';
 		})
 	}
 	
@@ -748,14 +749,12 @@ function FHQGuiLib(api) {
 		localStorage.setItem('colorscheme', 'dark');
 		$('#jointothedarkside').html(fhq.t('You are on the dark side. Turn back?'));
 		$('#btnmenu_colorscheme img').attr({'src': 'images/menu/lightside_150x150.png'})
-		$('#btnmenu_colorscheme_text').html(fhq.t('Light'));
 	}
 	
 	this.setLightColorScheme = function(){
 		$('body').removeClass('dark');
 		localStorage.setItem('colorscheme', 'light');
 		$('#jointothedarkside').html(fhq.t('Join the dark side...'));
-		$('#btnmenu_colorscheme_text').html(fhq.t('Dark'));
 		$('#btnmenu_colorscheme img').attr({'src': 'images/menu/darkside_150x150.png'})
 		
 	}
@@ -967,38 +966,41 @@ function FHQGuiLib(api) {
 	}
 	
 	this.processParams = function() {
-		if(fhq.containsPageParam("quests")){
-			fhq.ui.loadQuests();
-		} else if(fhq.containsPageParam("news")){
-			createPageEvents();
-			updateEvents();
-		} else if(fhq.containsPageParam("classbook")){
-			fhq.ui.loadClassbook();
-		} else if(fhq.containsPageParam("about")){
-			fhqgui.loadMainPage();
-		} else if(fhq.containsPageParam("skills")){
-			fhqgui.createPageSkills();
-			fhqgui.updatePageSkills();
-		} else if(fhq.containsPageParam("stats")){
-			// TODO
-			createPageStatistics('.$gameid.');
-			updateStatistics('.$gameid.');
-		} else if(fhq.containsPageParam("games")){
-			fhqgui.loadGames();
-		} else if(fhq.containsPageParam("scoreboard")){
-			loadScoreboard(fhq.profile.game.id);
-		} else if (fhq.containsPageParam("quest")){
-			fhq.ui.loadQuests();
-			fhq.ui.showQuest(fhq.pageParams["quest"]);
-		} else if(fhq.containsPageParam("questid")){
-			showQuest(fhq.pageParams["questid"]);
-		}else if(fhq.containsPageParam("userid")){
-			var userid = fhq.pageParams["userid"]
-			this.showFullUserProfile(userid);
-		}else{
-			// default
-			this.loadMainPage();
-		}
+		fhq.users.initProfile().always(function(){
+			fhqgui.loadTopPanel();
+			fhq.ui.initChatForm();
+			if(fhq.containsPageParam("quests")){
+				fhq.ui.loadStatSubjectsQuests();
+			} else if(fhq.containsPageParam("news")){
+				createPageEvents();
+				updateEvents();
+			} else if(fhq.containsPageParam("classbook")){
+				fhq.ui.loadClassbook();
+			} else if(fhq.containsPageParam("about")){
+				fhqgui.loadMainPage();
+			} else if(fhq.containsPageParam("skills")){
+				fhqgui.createPageSkills();
+				fhqgui.updatePageSkills();
+			} else if(fhq.containsPageParam("stats")){
+				// TODO
+				createPageStatistics('.$gameid.');
+				updateStatistics('.$gameid.');
+			} else if(fhq.containsPageParam("games")){
+				fhqgui.loadGames();
+			} else if(fhq.containsPageParam("scoreboard")){
+				loadScoreboard(fhq.profile.game.id);
+			} else if (fhq.containsPageParam("quest")){
+				fhq.ui.showQuest(fhq.pageParams["quest"]);
+			}else if(fhq.containsPageParam("userid")){
+				var userid = fhq.pageParams["userid"]
+				this.showFullUserProfile(userid);
+			}else if(fhq.containsPageParam("subject")){
+				fhq.ui.loadQuestsBySubject(fhq.pageParams["subject"]);
+			}else{
+				// default
+				fhq.ui.loadStatSubjectsQuests();
+			}
+		});
 	}
 
 	this.openQuestInNewTab = function(questid) {
@@ -1333,7 +1335,7 @@ function FHQGuiLib(api) {
 				}
 				if(obj.result=='ok'){
 					closeModalDialog();
-					fhq.ui.loadQuests();
+					fhq.ui.loadStatQuests();
 				}
 			}
 		);
@@ -1833,7 +1835,49 @@ fhq.ui.importQuestForm = function(){
 	showModalDialog(pt.render());
 }
 
-fhq.ui.loadQuests = function(){
+fhq.ui.capitalizeFirstLetter = function(s) {
+    return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+fhq.ui.loadStatSubjectsQuests = function(){
+	$('#content_page').html('<div class="fhq0006">Loading...</div>');
+	fhq.api.quests.stats_subjects().done(function(r){
+		console.log(r);
+		$('.fhq0006').html('');
+		var el = $('.fhq0006');
+		for(var i in r.data){
+			var o = r.data[i];
+			el.append(''
+				+ '<div class="fhq-quests-subject" subject="' + o.subject + '">'
+				+ ' <div class="fhq-quests-subject-row">'
+				+ ' 	<div class="fhq-quests-subject-cell logo" style="background-image: url(images/quests/' + o.subject + '.png)">'
+				+ ' 	</div>'
+				+ ' 	<div class="fhq-quests-subject-cell text">'
+				+ fhq.ui.capitalizeFirstLetter(o.subject) + '<br>'
+				+ '<div class="descr">' + fhq.t(o.subject + '_description') + '</div>'
+				+ ' 	</div>'
+				+ ' 	<div class="fhq-quests-subject-cell count">'
+				+ '(' + o.count + ' quests)'
+				+ ' 	</div>'
+				+ ' </div>'
+				+ ' <div class="fhq-quests-subject-row">'
+				+ ' </div>'
+				+ ' <div class="fhq-quests-subject-row">'
+				+ ' </div>'
+				+ '</div>'
+				+ '<div class="fhq-quests-subject-skip"></div>'
+			)
+			
+		}
+		
+		$('.fhq-quests-subject').unbind().bind('click', function(){
+			window.location = '?subject=' + $(this).attr('subject');
+		})
+	}).fail(function(r){
+		console.error(r);
+		$('.fhq0006').html('Failed');
+	});
+	/*
 	fhqgui.setFilter('');
 	$('#content_page').html('<div class="fhqrightinfo center"></div><div class="fhqleftlist"></div>');
 	$('.fhqleftlist').html('');
@@ -1865,7 +1909,40 @@ fhq.ui.loadQuests = function(){
 	$('#quests_search').unbind('click').bind('click', fhq.ui.updateQuests);
 	$('#quest_create').unbind('click').bind('click', fhq.ui.createQuestForm);
 	$('#quest_import').unbind('click').bind('click', fhq.ui.importQuestForm);
-	fhq.ui.updateQuests();
+	fhq.ui.updateQuests();*/
+}
+
+
+fhq.ui.loadQuestsBySubject = function(subject){
+	$('#content_page').html('<div class="fhq0005">Loading...</div>');
+	var params = {};
+	params.subject = subject;
+	fhq.api.quests.list(params).done(function(r){
+		$('.fhq0005').html('');
+		for(var i in r.data){
+			var q = r.data[i];
+			console.log(q);
+			$('.fhq0005').append(''
+				+ '<div class="fhq0001" questid="' + q.questid + '">'
+				+ '	<div class="fhq0008">'
+				+ '		<div class="fhq0002"></div>' // TODO icon quest
+				+ ' 	<div class="fhq0003">' + q.name + ' (+' + q.score + ')<br>' // TODO passed quest
+				+ '			<div class="fhq0004">Quest ' + q.questid + '</div>'
+				+ '		</div>'
+				+ ' 	<div class="fhq0007">' + fhq.t('Solved') + ': ' + q.solved + '</div>'
+				+ '	</div>'
+				+ '</div>'
+				+ '<div class="fhq0015"></div>'
+			);
+		}
+		
+		$('.fhq0001').unbind().bind('click', function(){
+			window.location = '?quest=' + $(this).attr('questid');
+		});
+	}).fail(function(r){
+		console.error(r)
+		$('.fhq0005').html('Failed');
+	});
 }
 
 fhq.ui.deleteQuest = function(id){
@@ -2100,7 +2177,9 @@ window.fhq.ui.addHint = function(questid){
 }
 
 window.fhq.ui.showQuest = function(id){
-	$('.fhqrightinfo').html('Loading...');
+	$('#content_page').html('<div class="fhq0009"></div>')
+	var el = $('.fhq0009');
+	el.html('Loading...');
 	fhq.api.quests.quest(id).done(function(response){
 		var q = response.data;
 		var perm_edit = false;
@@ -2111,17 +2190,23 @@ window.fhq.ui.showQuest = function(id){
 		}
 
 		fhq.changeLocationState({quest: q.questid});
-		$('.fhqrightinfo').html('');
-		$('.fhqrightinfo').append(
-			'<div class="newquestinfo_header">'
-			+ '	<img class="newquestinfo_gamelogo" src="' + q.game_logo + '">'
-			+ '	<div class="newquestinfo_gametitlequestid">'
-			+ ' <a href="?game=' + q.gameid + '">' + q.game_title + '</a> / <a href="?quest=' + q.questid + '">Quest ' + q.questid + '</a>' 
-			+ ' (' + fhq.t('Quest ' + q.status) + ')'
-			+ '</div>'
-			+ '<div class="newquestinfo_questname">' + q.name + '</div>'
+		el.html('');
+		el.append(''
+			+ '<div class="fhq0010">'
+			+ '	<div class="fhq0012">'
+			+ '		<div class="fhq0011"></div>'
+			+ '		<div class="fhq0013">'
+			+ ' 		<a href="?game=' + q.gameid + '">' + q.game_title + '</a> / <a href="?quest=' + q.questid + '">Quest ' + q.questid + '</a>' 
+			+ ' 		(' + fhq.t('Quest ' + q.status) + ')'
+			+ '			<div class="fhq0014">' + q.name + ' (+' + q.score + ')</div>'
+			+ '		</div>'
+			+ '	</div>'
 			+ '</div>');
 
+		$('.fhq0011').css({ // game logo
+			'background-image': 'url(' + q.game_logo + ')'
+		});
+		
 		var c = '<div class="newquestinfo">';
 		if(response.permissions){
 			var p = response.permissions;
@@ -2131,7 +2216,9 @@ window.fhq.ui.showQuest = function(id){
 		}
 		c += '<div class="fhqbtn" id="quest_report">' + fhq.t('Report an error') + '</div>';
 		c += '</div>'
-		$('.fhqrightinfo').append(c);
+		el.append(c);
+
+		
 		
 		$('#quest_report').unbind().bind('click', function(){
 			fhq.ui.showFeedbackDialog(
@@ -2156,14 +2243,14 @@ window.fhq.ui.showQuest = function(id){
 		})
 		
 		
-		$('.fhqrightinfo').append('<div class="newquestinfo"><br>'
+		el.append('<div class="newquestinfo"><br>'
 			+ '<script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>'
 			+ '<script src="//yastatic.net/share2/share.js"></script>'
 			+ '<div class="ya-share2" data-services="collections,vkontakte,facebook,odnoklassniki,moimir,gplus,twitter,blogger,reddit,linkedin,lj,viber,whatsapp,skype,telegram"></div>'
 			+ '</div>'
 		);
 		
-		$('.fhqrightinfo').append(
+		el.append(
 			'<div class="newquestinfo_details">'
 			+ '<div class="newquestinfo_details_title">' + fhq.t('Details') + '</div>'
 			+ '	<div class="newquestinfo-details-left"> '
@@ -2205,7 +2292,7 @@ window.fhq.ui.showQuest = function(id){
 			+ '</div>'
 		)
 
-		$('.fhqrightinfo').append(
+		el.append(
 			'<div class="newquestinfo_description">'
 			+ '<div class="newquestinfo_description_title">' + fhq.t('Description') + '</div>'
 			+ '<pre>' + q.text + '</pre>'
@@ -2218,7 +2305,7 @@ window.fhq.ui.showQuest = function(id){
 				files1 += '<a class="fhqbtn" href="' + q.files[k].filepath + '" target="_blank">'+ q.files[k].filename + '</a> ';
 			}
 			
-			$('.fhqrightinfo').append(
+			el.append(
 				'<div class="newquestinfo_attachments">'
 				+ '<div class="newquestinfo_attachments_title">' + fhq.t('Attachments') + '</div>'
 				+ files1
@@ -2226,27 +2313,29 @@ window.fhq.ui.showQuest = function(id){
 			)
 		}
 
-		var hints = '<div class="newquestinfo">'
-			+ '<div class="newquestinfo_title hide" id="quest_show_hints">' + fhq.t('Hints') + '</div>'
-			+ '<div id="newquestinfo_hints" style="display: none;">';
-		hints += '</div></div>';
-		$('.fhqrightinfo').append(hints);
-		var questid = parseInt(id,10);
-		fhq.ui.refreshHints(questid, q.hints, perm_edit);
-		$('#quest_show_hints').unbind().bind('click', function(){
-			if($('#newquestinfo_hints').is(":visible")){
-				$('#newquestinfo_hints').hide();
-				$('#quest_show_hints').removeClass('show');
-				$('#quest_show_hints').addClass('hide');
-			}else{
-				$('#newquestinfo_hints').show();
-				$('#quest_show_hints').removeClass('hide');
-				$('#quest_show_hints').addClass('show');
-			}
-		});
+		if(q.hints && q.hints.length > 0 || fhq.isAdmin()){
+			var hints = '<div class="newquestinfo">'
+				+ '<div class="newquestinfo_title hide" id="quest_show_hints">' + fhq.t('Hints') + '</div>'
+				+ '<div id="newquestinfo_hints" style="display: none;">';
+			hints += '</div></div>';
+			el.append(hints);
+			var questid = parseInt(id,10);
+			fhq.ui.refreshHints(questid, q.hints, perm_edit);
+			$('#quest_show_hints').unbind().bind('click', function(){
+				if($('#newquestinfo_hints').is(":visible")){
+					$('#newquestinfo_hints').hide();
+					$('#quest_show_hints').removeClass('show');
+					$('#quest_show_hints').addClass('hide');
+				}else{
+					$('#newquestinfo_hints').show();
+					$('#quest_show_hints').removeClass('hide');
+					$('#quest_show_hints').addClass('show');
+				}
+			});
+		}
 		
 		if(q.dt_passed == null){
-			$('.fhqrightinfo').append(
+			el.append(
 				'<div class="newquestinfo_passquest">'
 				+ '<div class="newquestinfo_passquest_title">' + fhq.t('Answer') + '</div>'
 				+ '<input id="quest_answer" type="text" onkeydown="if (event.keyCode == 13) this.click();"/> '
@@ -2267,7 +2356,7 @@ window.fhq.ui.showQuest = function(id){
 				});
 			});
 			
-			$('.fhqrightinfo').append(
+			el.append(
 				'<div class="newquestinfo">'
 				+ '<div class="newquestinfo_title hide" id="quest_show_my_answers">' + fhq.t('My Answers') + '</div>'
 				+ '<pre id="newquestinfo_user_answers" style="display: none;"></pre>'
@@ -2279,7 +2368,7 @@ window.fhq.ui.showQuest = function(id){
 			});
 		}
 		
-		$('.fhqrightinfo').append(
+		el.append(
 			'<div class="newquestinfo">'
 			+ '<div class="newquestinfo_title hide" id="quest_show_statistics">' + fhq.t('Statistics') + '</div>'
 			+ '	<div id="statistics_content" style="display: none;">'
@@ -2303,71 +2392,10 @@ window.fhq.ui.showQuest = function(id){
 				}
 			});
 		}
-		
-	}).fail(function(){
-		$('.fhqrightinfo').html('Not found quest by id=' + id);
+	}).fail(function(r){
+		console.error(r);
+		el.html(r.responseJSON.error.message);
 	})
-	return;
-
-	var params = {};
-	params.taskid = id;
-	send_request_post(
-		'api/quests/get.php',
-		createUrlFromObj(params),
-		function (obj) {
-			var content = '\n';
-
-			if (!obj.quest) {
-				showModalDialog("error");
-				return;
-			}
-			content += '<div class="quest_info_table">\n';
-			
-			if (obj.data.dt_passed == null) {
-				if (obj.data.text)
-					content += createQuestRow('Text: ', '<pre>' + obj.data.text + '</pre>');
-				
-				if (obj.data.files && obj.data.files.length > 0) {
-					var files1 = '';						
-					for (var k in obj.data.files) {
-						files1 += '<a class="fhqbtn" href="' + obj.data.files[k].filepath + '" target="_ablank"> Download '+ obj.data.files[k].filename + '</a><br>';
-					}
-					content += createQuestRow('Attachmnet files: ', files1);
-				}
-
-				content += createQuestRow('', '<input id="quest_answer" type="text" onkeydown="if (event.keyCode == 13) passQuest(' + obj.quest + ');"/>'
-					+ '<div class="fhqbtn" onclick="passQuest(' + obj.quest + ');">Pass quest</div>'
-				);
-			} else {
-				if (obj.data.text)
-					content += createQuestRow('Text: ', '<pre>' + obj.data.text + '</pre>');
-				
-				if (obj.data.files && obj.data.files.length > 0) {
-					var files1 = '';						
-					for (var k in obj.data.files) {
-						files1 += '<a class="fhqbtn" href="' + obj.data.files[k].filepath + '" target="_ablank"> Download '+ obj.data.files[k].filename + '</a><br>';
-					}
-					content += createQuestRow('Attachmnet files: ', files1);
-				}
-
-				if (obj.data.dt_passed)
-					content += createQuestRow('Date Stop: ', obj.data.dt_passed);
-			}
-			
-			if (obj.permissions.edit == true && obj.permissions['delete'] == true) {
-				content += createQuestRow('',
-					'<div class="fhqbtn" onclick="formEditQuest(' + obj.quest + ');">Edit</div>'
-					+ '<div class="fhqbtn" onclick="deleteQuest(' + obj.quest + ');">Delete</div>'
-					+ '<div class="fhqbtn" onclick="fhqgui.exportQuest(' + obj.quest + ');">Export</div>'
-				);
-			}
-			content += createQuestRow('','<div class="fhqbtn" onclick="fhqgui.openQuestInNewTab(' + obj.quest + ');">Open in new tab</div>');
-			content += '</div>';
-			content += '<div id="quest_error"><div>';
-			content += '\n';
-			showModalDialog(content);
-		}
-	);
 }
 
 window.fhq.ui.updateMyAnswers = function(questid){
