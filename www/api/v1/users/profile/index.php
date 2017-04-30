@@ -24,10 +24,17 @@ $response['access'] = array();
 /*if (!APIHelpers::issetParam('userid'))
 	APIHelpers::showerror(1177, 'Not found parameter userid');*/
 
-$userid = $request['userid'];
+$userid = APISecurity::userid();
+if(isset($request['userid'])){
+	$userid = $request['userid'];
+}
 
 if (!is_numeric($userid))
-	APIHelpers::showerror(1181, 'Parameter userid must be integer');
+	APIHelpers::showerror2(1181, 400, 'Parameter userid must be integer');
+
+if($userid == 0 && APISecurity::userid() == 0){
+	APIHelpers::showerror2(1181, 401, 'Not authorized');
+}
 
 $userid = intval($userid);
 

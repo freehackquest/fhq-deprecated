@@ -12,9 +12,16 @@ function getParam($name, $defaultValue = "") {
 
 class APIHelpers {
 
+	static function isAuthorized() {
+		if (APIHelpers::$FHQSESSION == NULL) {
+			return false;
+		}
+		return isset(APIHelpers::$FHQSESSION['user']);
+	}
+
 	static function checkAuth()
 	{
-		if(!APISecurity::isLogged()) {
+		if(!APIHelpers::isAuthorized()) {
 			APIHelpers::showerror2(1224, 401, 'Not authorized request');
 			exit;
 		}
@@ -119,6 +126,13 @@ class APIHelpers {
 			APIHelpers::$TOKEN = $_COOKIE['fhqtoken'];
 		}else if(APIHelpers::issetParam('token')){
 			APIHelpers::$TOKEN = APIHelpers::getParam('token', '');
+		}else if(APIHelpers::is_json_input()){
+			$request = APIHelpers::read_json_input();
+			if(isset($request['token']) && $request['token'] != ''){
+				APIHelpers::$TOKEN = $request['token'];
+			}else{
+				APIHelpers::$TOKEN = null;
+			}
 		}else{
 			APIHelpers::$TOKEN = null;
 		}

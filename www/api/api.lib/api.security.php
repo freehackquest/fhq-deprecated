@@ -1,11 +1,5 @@
 <?php
 class APISecurity {
-	static function isLogged() {
-		if (APIHelpers::$FHQSESSION != NULL) {
-			return isset(APIHelpers::$FHQSESSION['user']);
-		}
-		return isset($_SESSION['user']);
-	}
 
 	static function login($conn, $email, $hash_password) {
 		// try {
@@ -69,10 +63,7 @@ class APISecurity {
 	}
 
 	static function logout() {
-		if(APISecurity::isLogged()) {
-			unset($_SESSION['user']);
-			unset($_SESSION['game']);
-			
+		if(APIHelpers::isAuthorized()) {
 			if (APIHelpers::$FHQSESSION != NULL) {
 				unset(APIHelpers::$FHQSESSION['user']);
 				unset(APIHelpers::$FHQSESSION['game']);
@@ -85,9 +76,7 @@ class APISecurity {
 	}
 	
 	static function role() { 
-		if (APIHelpers::$FHQSESSION != NULL)
-			return (APISecurity::isLogged() ? APIHelpers::$FHQSESSION['user']['role'] : '' ); 
-		return (APISecurity::isLogged()) ? $_SESSION['user']['role'] : '';
+		return (APIHelpers::isAuthorized()) ? APIHelpers::$FHQSESSION['user']['role'] : '';
 	}
 	
 	static function isAdmin() {
@@ -107,50 +96,46 @@ class APISecurity {
 	}
 	
 	static function score() { 
-		if (APIHelpers::$FHQSESSION != NULL && APISecurity::isLogged() && isset(APIHelpers::$FHQSESSION['user']['score'])) {
+		if (APIHelpers::$FHQSESSION != NULL && APIHelpers::isAuthorized() && isset(APIHelpers::$FHQSESSION['user']['score'])) {
 			return is_numeric(APIHelpers::$FHQSESSION['user']['score']) ? intval(APIHelpers::$FHQSESSION['user']['score']) : 0;
 		}
-		return (APISecurity::isLogged() && is_numeric($_SESSION['user']['score'])) ? $_SESSION['user']['score'] : 0; 
+		return (APIHelpers::isAuthorized() && is_numeric($_SESSION['user']['score'])) ? $_SESSION['user']['score'] : 0; 
 	}
 	
 	static function setUserScore($newScore) {
 		if (isset($_SESSION['user']['score']))
 			$_SESSION['user']['score'] = $newScore;
-		if (APIHelpers::$FHQSESSION != NULL && APISecurity::isLogged() ) {
+		if (APIHelpers::$FHQSESSION != NULL && APIHelpers::isAuthorized() ) {
 			APIHelpers::$FHQSESSION['user']['score'] = $newScore;
 		}
 	}	
 	
 	static function nick() { 
-		if (APIHelpers::$FHQSESSION != NULL && APISecurity::isLogged()) {
+		if (APIHelpers::$FHQSESSION != NULL && APIHelpers::isAuthorized()) {
 			return isset(APIHelpers::$FHQSESSION['user']['nick']) ? APIHelpers::$FHQSESSION['user']['nick'] : '';
 		}
-		return (APISecurity::isLogged()) ? $_SESSION['user']['nick'] : ''; 
+		return (APIHelpers::isAuthorized()) ? $_SESSION['user']['nick'] : ''; 
 	}
 	
 	static function email() {
-		if (APIHelpers::$FHQSESSION != NULL && APISecurity::isLogged()) {
+		if (APIHelpers::$FHQSESSION != NULL && APIHelpers::isAuthorized()) {
 			return isset(APIHelpers::$FHQSESSION['user']['email']) ? $FHQSESSION['user']['email'] : '';
 		}
-		return (APISecurity::isLogged()) ? strtolower($_SESSION['user']['email']) : '';
+		return (APIHelpers::isAuthorized()) ? strtolower($_SESSION['user']['email']) : '';
 	}
   
 	static function setNick($nick) {
 		// TODO $FHQSESSION
-		if(APISecurity::isLogged())
+		if(APIHelpers::isAuthorized())
 			$_SESSION['user']['nick'] = $nick;
 	}
 
 	static function userid() {
 		$userid = 0;
-		if (APIHelpers::$FHQSESSION != NULL && APISecurity::isLogged() && isset(APIHelpers::$FHQSESSION['user']['id'])) {
+		if (APIHelpers::$FHQSESSION != NULL && APIHelpers::isAuthorized() && isset(APIHelpers::$FHQSESSION['user']['id'])) {
 			$userid = intval(APIHelpers::$FHQSESSION['user']['id']);
-		} else {
-			$userid = (APISecurity::isLogged() && isset($_SESSION['user']['id'])) ? $_SESSION['user']['id'] : intval('');
 		}
-		if (intval($userid) == 0) {
-			return 0;
-		}
+		return $userid;
 	}
 
 	static function updateLastDTLogin($conn) {

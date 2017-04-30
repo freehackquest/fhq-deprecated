@@ -82,13 +82,8 @@ fhq.ui.signin = function() {
 			localStorage.setItem("email", email);
 			localStorage.setItem("password", password);
 		}
-		// window.location.href = "main.php?quests";
-		fhq.users.initProfile().done(function(){
-			fhq.ui.closeModalDialog();
-			fhqgui.loadTopPanel();
-			fhq.ui.loadStatSubjectsQuests();
-			fhq.changeLocationState({'quests':''});
-		});
+		fhqgui.processParams();
+		fhq.ui.closeModalDialog();
 	}).fail(function(r){
 		if(r.error && r.error.message){
 			$("#signin-error-message").html(r.error.message);
@@ -966,7 +961,7 @@ function FHQGuiLib(api) {
 	}
 	
 	this.processParams = function() {
-		fhq.users.initProfile().always(function(){
+		fhq.api.users.profile().always(function(){
 			fhqgui.loadTopPanel();
 			fhq.ui.initChatForm();
 			if(fhq.containsPageParam("quests")){
