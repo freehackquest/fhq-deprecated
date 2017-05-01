@@ -59,11 +59,9 @@ $response['gameid'] = $gameid;
 $response['userid'] = APISecurity::userid();
 
 $filter_by_state = APISecurity::isAdmin() ? '' : ' AND quest.state = "open" ';
-$filter_by_score = APISecurity::isAdmin() ? '' : ' AND quest.min_score <= '.APISecurity::score().' ';
 
 $userid = APISecurity::userid();
 $params[] = $userid;
-$params[] = $gameid;
 $params[] = intval($questid);
 
 $questname = '';
@@ -79,17 +77,14 @@ $query = '
 			LEFT JOIN 
 				users_quests ON users_quests.questid = quest.idquest AND users_quests.userid = ?
 			WHERE
-				quest.gameid = ?
-				AND quest.idquest = ?
+				quest.idquest = ?
 				'.$filter_by_state.'
-				'.$filter_by_score.'
 		';
 
 try {
 	$stmt = $conn->prepare($query);
 	$stmt->execute($params);
-	if($row = $stmt->fetch())
-	{
+	if($row = $stmt->fetch()){
 		$questname = $row['name'];
 		$status = '';
 		if ($row['dt_passed'] == null)
