@@ -872,15 +872,16 @@ function FHQGuiLib(api) {
 			imgpath = 'images/menu/default.png'; // default
 
 		var marknew = '';
-		if (event.marknew && event.marknew == true)
+		if (event.marknew && event.marknew == true && fhq.isAuth())
 			marknew = '*** NEW!!! ***,';
 
-		content += '\n<div class="fhq_event_info">\n';
-		content += '	<div class="fhq_event_info_row">\n';
-		content += '		<div class="fhq_event_info_cell_img"><img src="' + imgpath + '" width="100px"></div>\n';
-		content += '		<div class="fhq_event_info_cell_content">\n';
-		content += '			<div class="fhq_event_caption"> [' + marknew + event.type + ', ' + event.dt + ']</div>';
-		content += '			<div class="fhq_event_score">' + event.message + '</div>';
+		var content = ''
+			+ '<div class="fhq0017">'
+			+ '	<div class="fhq0018">'
+			+ '		<div class="fhq0019" style="background-image: url(' + imgpath + ')"></div>\n'
+			+ '		<div class="fhq0020">'
+			+ event.message
+			+ '			<div class="fhq_event_caption"> [' + marknew + event.type + ', ' + event.dt + ']</div>';
 		if (access == true) {
 			content += '			<div class="fhq_event_caption">'; 
 			content += '				<div class="fhqbtn" onclick="deleteConfirmEvent(' + event.id + ');">Delete</div>';
