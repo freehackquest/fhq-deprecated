@@ -119,11 +119,11 @@ window.fhq.supportsHtml5Storage = function() {
 }
 
 fhq.isAuth = function(){
-	return fhq.token != "";
+	return fhq.token && fhq.token != "";
 }
 
 fhq.isAdmin = function(){
-	return fhq.userinfo.role == "admin";
+	return fhq.userinfo && fhq.userinfo.role == "admin";
 }
 
 window.fhq.games = new (function(t) {
@@ -585,10 +585,6 @@ window.fhq.users = new (function(t) {
 	})
 	return d;
 }*/
-
-if(localStorage.getItem('userinfo') != null){
-	fhq.userinfo = JSON.parse(localStorage.getItem('userinfo'));
-}
 
 window.fhq.statistics = new (function(t) {
 	this.p = t;

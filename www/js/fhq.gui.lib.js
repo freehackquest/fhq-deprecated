@@ -82,7 +82,7 @@ fhq.ui.signin = function() {
 			localStorage.setItem("email", email);
 			localStorage.setItem("password", password);
 		}
-		fhqgui.processParams();
+		fhq.ui.processParams();
 		fhq.ui.closeModalDialog();
 	}).fail(function(r){
 		if(r.error && r.error.message){
@@ -93,7 +93,7 @@ fhq.ui.signin = function() {
 
 fhq.ui.signout = function(){
 	fhq.api.users.logout().done(function(){
-		fhqgui.processParams();
+		fhq.ui.processParams();
 	});
 }
 
@@ -957,44 +957,6 @@ function FHQGuiLib(api) {
 		});
 		setTimeout(function(){self.updatePostionMessages();}, 1000);
 	}
-	
-	this.processParams = function() {
-		fhq.api.users.profile().always(function(){
-			fhqgui.loadTopPanel();
-			fhq.ui.initChatForm();
-			if(fhq.containsPageParam("quests")){
-				fhq.ui.loadStatSubjectsQuests();
-			} else if(fhq.containsPageParam("news")){
-				createPageEvents();
-				updateEvents();
-			} else if(fhq.containsPageParam("classbook")){
-				fhq.ui.loadClassbook();
-			} else if(fhq.containsPageParam("about")){
-				fhqgui.loadMainPage();
-			} else if(fhq.containsPageParam("skills")){
-				fhqgui.createPageSkills();
-				fhqgui.updatePageSkills();
-			} else if(fhq.containsPageParam("stats")){
-				// TODO
-				createPageStatistics('.$gameid.');
-				updateStatistics('.$gameid.');
-			} else if(fhq.containsPageParam("games")){
-				fhqgui.loadGames();
-			} else if(fhq.containsPageParam("scoreboard")){
-				loadScoreboard(fhq.profile.game.id);
-			} else if (fhq.containsPageParam("quest")){
-				fhq.ui.showQuest(fhq.pageParams["quest"]);
-			}else if(fhq.containsPageParam("userid")){
-				var userid = fhq.pageParams["userid"]
-				this.showFullUserProfile(userid);
-			}else if(fhq.containsPageParam("subject")){
-				fhq.ui.loadQuestsBySubject(fhq.pageParams["subject"]);
-			}else{
-				// default
-				fhq.ui.loadStatSubjectsQuests();
-			}
-		});
-	}
 
 	this.openQuestInNewTab = function(questid) {
 		var win = window.open('?questid=' + questid, '_blank');
@@ -1625,6 +1587,72 @@ function FHQTable() {
 	};
 }
 
+fhq.ui.processParams = function() {
+	fhq.api.users.profile().always(function(){
+		fhqgui.loadTopPanel();
+		fhq.ui.initChatForm();
+		if(fhq.containsPageParam("quests")){
+			fhq.ui.loadStatSubjectsQuests();
+		} else if(fhq.containsPageParam("news")){
+			createPageEvents();
+			updateEvents();
+		} else if(fhq.containsPageParam("classbook")){
+			fhq.ui.loadClassbook();
+		} else if(fhq.containsPageParam("about")){
+			fhqgui.loadMainPage();
+		} else if(fhq.containsPageParam("skills")){
+			fhqgui.createPageSkills();
+			fhqgui.updatePageSkills();
+		} else if(fhq.containsPageParam("stats")){
+			// TODO
+			createPageStatistics('.$gameid.');
+			updateStatistics('.$gameid.');
+		} else if(fhq.containsPageParam("games")){
+			fhqgui.loadGames();
+		} else if(fhq.containsPageParam("scoreboard")){
+			loadScoreboard(fhq.profile.game.id);
+		} else if (fhq.containsPageParam("quest")){
+			fhq.ui.showQuest(fhq.pageParams["quest"]);
+		}else if(fhq.containsPageParam("userid")){
+			var userid = fhq.pageParams["userid"]
+			this.showFullUserProfile(userid);
+		}else if(fhq.containsPageParam("subject")){
+			fhq.ui.loadQuestsBySubject(fhq.pageParams["subject"]);
+		}else if(fhq.containsPageParam("more")){
+			fhq.ui.loadPageMore();
+		}else{
+			// default
+			fhq.ui.loadStatSubjectsQuests();
+		}
+	});
+}
+
+fhq.ui.loadPageMore = function(){
+	$('#content_page').html('<div class="fhq0016"></div>')
+	var el = $('.fhq0016');
+	
+	var lst = [];
+	lst.push({'id': 'feedback', 'name': 'Feedback', 'descr': 'Send feedback', 'icon': 'images/menu/feedback.png'});
+	lst.push({'id': 'games', 'name': 'Games', 'descr': 'List of games', 'icon': 'images/menu/games.png'});
+	lst.push({'id': 'tools', 'name': 'Tools', 'descr': 'Useful tools', 'icon': 'images/menu/tools_150x150.png'});
+	lst.push({'id': 'classbook', 'name': 'Classbook', 'descr': 'A set of useful articles', 'icon': 'images/menu/classbook_150x150.png'});
+	lst.push({'id': 'users', 'name': 'Users', 'descr': 'Rating of users', 'icon': 'images/menu/users_150x150.png'});
+	for(var i in lst){
+		var o = lst[i];
+		el.append(''
+			+ '<div class="fhq0001">'
+			+ '	<div class="fhq0008">'
+			+ '		<div class="fhq0002" style="background-image: url(' + o.icon + ')"></div>' // TODO icon quest
+			+ ' 	<div class="fhq0003">' + fhq.t(o.name) + '<br>'
+			+ '			<div class="fhq0004">' + fhq.t(o.descr) + '</div>'
+			+ '		</div>'
+			+ '	</div>'
+			+ '</div>'
+			+ '<div class="fhq0015"></div>'
+		);	
+	}
+}
+
 fhq.ui.loadUserInfo = function(uuid){
 	fhq.ws.user({uuid: uuid}).done(function(response){
 		var u = response.data;
@@ -2189,7 +2217,7 @@ window.fhq.ui.showQuest = function(id){
 			+ '	<div class="fhq0012">'
 			+ '		<div class="fhq0011"></div>'
 			+ '		<div class="fhq0013">'
-			+ ' 		<a href="?game=' + q.gameid + '">' + q.game_title + '</a> / <a href="?quest=' + q.questid + '">Quest ' + q.questid + '</a>' 
+			+ ' 		<a href="?subject=' + q.subject + '">' + fhq.ui.capitalizeFirstLetter(q.subject) + '</a> / <a href="?quest=' + q.questid + '">Quest ' + q.questid + '</a>' 
 			+ ' 		(' + fhq.t('Quest ' + q.status) + ')'
 			+ '			<div class="fhq0014">' + q.name + ' (+' + q.score + ')</div>'
 			+ '		</div>'
@@ -2210,8 +2238,6 @@ window.fhq.ui.showQuest = function(id){
 		c += '<div class="fhqbtn" id="quest_report">' + fhq.t('Report an error') + '</div>';
 		c += '</div>'
 		el.append(c);
-
-		
 		
 		$('#quest_report').unbind().bind('click', function(){
 			fhq.ui.showFeedbackDialog(
@@ -2230,12 +2256,11 @@ window.fhq.ui.showQuest = function(id){
 		$('#quest_edit').unbind().bind('click', function(){
 			formEditQuest(q.questid);
 		})
-		
+
 		$('#quest_export').unbind().bind('click', function(){
 			fhqgui.exportQuest(q.questid);
 		})
-		
-		
+
 		el.append('<div class="newquestinfo"><br>'
 			+ '<script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>'
 			+ '<script src="//yastatic.net/share2/share.js"></script>'
@@ -2279,7 +2304,7 @@ window.fhq.ui.showQuest = function(id){
 			+ '		</div>'
 			+ '		<div class="newquestinfo-details-row">'
 			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Copyright') + ':</div>'
-			+ '			<div class="newquestinfo-details-cell"></div>'
+			+ '			<div class="newquestinfo-details-cell"><a href="?game=' + q.gameid + '">' + q.game_title + '</a></div>'
 			+ '		</div>'			
 			+ '	</div>'
 			+ '</div>'
@@ -2328,37 +2353,46 @@ window.fhq.ui.showQuest = function(id){
 		}
 		
 		if(q.dt_passed == null){
-			el.append(
-				'<div class="newquestinfo_passquest">'
-				+ '<div class="newquestinfo_passquest_title">' + fhq.t('Answer') + '</div>'
-				+ '<input id="quest_answer" type="text" onkeydown="if (event.keyCode == 13) this.click();"/> '
-				+ '<div class="fhqbtn" id="newquestinfo_pass">' + fhq.t('Pass the quest') + '</div>'
-				+ '<div id="quest_pass_error"></div>'
-				+ '</div>'
-			);
-			$('#newquestinfo_pass').unbind().bind('click', function(){
-				var answer = $('#quest_answer').val();
-				fhq.api.quests.pass(q.questid, answer).done(function(response){
-					fhq.ui.updateQuests();
-					fhq.ui.showQuest(q.questid);
-				}).fail(function(r){
-					$('#quest_pass_error').html(r.responseJSON.error.message);
-					if(fhq.ui.isShowMyAnswers()){
-						fhq.ui.updateMyAnswers(q.questid);
-					}
+			if(fhq.isAuth()){
+				el.append(
+					'<div class="newquestinfo_passquest">'
+					+ '<div class="newquestinfo_passquest_title">' + fhq.t('Answer') + '</div>'
+					+ '<input id="quest_answer" type="text" onkeydown="if (event.keyCode == 13) this.click();"/> '
+					+ '<div class="fhqbtn" id="newquestinfo_pass">' + fhq.t('Pass the quest') + '</div>'
+					+ '<div id="quest_pass_error"></div>'
+					+ '</div>'
+				);
+				$('#newquestinfo_pass').unbind().bind('click', function(){
+					var answer = $('#quest_answer').val();
+					fhq.api.quests.pass(q.questid, answer).done(function(response){
+						fhq.ui.updateQuests();
+						fhq.ui.showQuest(q.questid);
+					}).fail(function(r){
+						$('#quest_pass_error').html(r.responseJSON.error.message);
+						if(fhq.ui.isShowMyAnswers()){
+							fhq.ui.updateMyAnswers(q.questid);
+						}
+					});
 				});
-			});
-			
-			el.append(
-				'<div class="newquestinfo">'
-				+ '<div class="newquestinfo_title hide" id="quest_show_my_answers">' + fhq.t('My Answers') + '</div>'
-				+ '<pre id="newquestinfo_user_answers" style="display: none;"></pre>'
-				+ '</div>'
-			);
-			
-			$('#quest_show_my_answers').unbind().bind('click', function(){
-				fhq.ui.loadMyAnswers(q.questid);
-			});
+				
+				el.append(
+					'<div class="newquestinfo">'
+					+ '<div class="newquestinfo_title hide" id="quest_show_my_answers">' + fhq.t('My Answers') + '</div>'
+					+ '<pre id="newquestinfo_user_answers" style="display: none;"></pre>'
+					+ '</div>'
+				);
+				
+				$('#quest_show_my_answers').unbind().bind('click', function(){
+					fhq.ui.loadMyAnswers(q.questid);
+				});
+			}else{
+				el.append(
+					'<div class="newquestinfo_passquest">'
+					+ '<div class="newquestinfo_passquest_title">' + fhq.t('Answer') + '</div>'
+					+ fhq.t('Please authorize for pass the quest')
+					+ '</div>'
+				);
+			}
 		}
 		
 		el.append(
@@ -2491,6 +2525,7 @@ window.fhq.ui.feedbackDialogSend = function(){
 }
 
 window.fhq.ui.initChatForm = function(){
+	
 	$("#sendchatmessage_submit").unbind().bind('click', function(){
 		var text = $('#sendchatmessage_text').val();
 		if(text.trim() == ""){
@@ -2514,9 +2549,7 @@ window.fhq.ui.initChatForm = function(){
 }
 
 
-
 /* classbook */
-
 window.fhq.ui.loadClassbookItem = function(link, cbid){
 	console.log("link:" + link);
 	$.ajax({

@@ -43,7 +43,7 @@
 			$(document).ready(function() {
 				fhqgui.applyColorScheme();
 				fhq.ws.setWSState(fhq.ws.getWSState()); // Update state of WS
-				fhqgui.processParams();
+				fhq.ui.processParams();
 			});
 		</script>
 

@@ -336,6 +336,42 @@ window.fhq.localization = {
 	'misc_description':{
 		'en': 'Miscellaneous',
 		'ru': 'Разное'
+	},
+	'Please authorize for pass the quest':{
+		'en': 'Please authorize for pass the quest',
+		'ru': 'Пожалуйста авторизуйтесь для проверки ответа'
+	},
+	'A set of useful articles':{
+		'en': 'A set of useful articles',
+		'ru': 'Набор полезных статей'
+	},
+	'Useful tools':{
+		'en': 'Useful tools',
+		'ru': 'Полезные инструменты'
+	},
+	'Games':{
+		'en': 'Games',
+		'ru': 'Игры'
+	},
+	'List of games':{
+		'en': 'List of games',
+		'ru': 'Список игр'
+	},
+	'Feedback':{
+		'en': 'Feedback',
+		'ru': 'Обратная связь'
+	},
+	'Send feedback':{
+		'en': 'Send feedback',
+		'ru': 'Отправить отзыв'
+	},
+	'Users':{
+		'en': 'Users',
+		'ru': 'Пользователи'
+	},
+	'Rating of users':{
+		'en': 'Rating of users',
+		'ru': 'Рейтинг пользователей'
 	}
 	
 };
