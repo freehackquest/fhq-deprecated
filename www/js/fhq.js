@@ -2,7 +2,9 @@ if(!window.fhq) window.fhq = {};
 if(!window.fhq.api) window.fhq.api = {};
 if(!window.fhq.api.users) window.fhq.api.users = {};
 if(!window.fhq.api.events) window.fhq.api.events = {};
+if(!window.fhq.api.feedback) window.fhq.api.feedback = {};
 if(!window.fhq.api.quests) window.fhq.api.quests = {};
+if(!window.fhq.api.games) window.fhq.api.games = {};
 
 window.fhq.createUrlFromObj = function(obj) {
 	var str = "";
@@ -128,12 +130,6 @@ fhq.isAdmin = function(){
 
 window.fhq.games = new (function(t) {
 	this.p = t;
-	this.list = function() {
-		var params = {};
-		var obj = this.p.sendPostRequest_Sync('api/games/list.php', params);
-		var bRes = obj.result == "ok";
-		return bRes ? obj.data : obj.error;
-	};
 	this.get = function(gameid) {
 		var params = {};
 		params.id = gameid;
@@ -337,7 +333,22 @@ fhq.api.quests.stats_subjects = function(params){
 	return d;
 }
 
-if(!window.fhq.api.feedback) window.fhq.api.feedback = {};
+fhq.api.games.list = function(params){
+	params = params || {};
+	params.token = fhq.token;
+	var d = $.Deferred();
+	$.ajax({
+		type: "POST",
+		url: 'api/v1/games/list/',
+		contentType: "application/json",
+		data: JSON.stringify(params)
+	}).done(function(response){
+		d.resolve(response);
+	}).fail(function(r){
+		d.reject(r);
+	})
+	return d;
+};
 
 window.fhq.api.feedback.add = function(params){
 	params = params || {};
@@ -384,6 +395,11 @@ fhq.api.events.count = function() {
 	return d;
 };
 
+fhq.api.cleanuptoken = function(){
+	fhq.token = "";
+	fhq.removeTokenFromCookie();
+}
+
 fhq.api.users.login = function (email, password) {
 	var params = {};
 	params.email = email;
@@ -402,8 +418,7 @@ fhq.api.users.login = function (email, password) {
 			try{fhq.ws.socket.close();fhq.ws.initWebsocket()}catch(e){console.error(e)};
 			d.resolve(r);
 		}else{
-			fhq.token = "";
-			fhq.removeTokenFromCookie();
+			fhq.api.cleanuptoken();
 			d.reject(r);
 		}
 	}).fail(function(r){
@@ -449,6 +464,9 @@ fhq.api.users.profile = function(userid){
 		}
 		d.resolve(r);
 	}).fail(function(r){
+		if(r.status == 401){
+			fhq.api.cleanuptoken();
+		}
 		d.resolve(r);
 	})
 	return d;
@@ -485,12 +503,13 @@ fhq.api.users.logout = function () {
 		data: params
 	}).done(function(r){
 		fhq.token = "";
+		fhq.userinfo = null;
 		fhq.removeTokenFromCookie();
-		localStorage.removeItem('userinfo');
 		try{fhq.ws.socket.close();fhq.ws.initWebsocket()}catch(e){console.error(e)};
 		d.resolve(r);
 	}).fail(function(r){
 		fhq.token = "";
+		fhq.userinfo = null;
 		fhq.removeTokenFromCookie();
 		d.reject(r);
 	})

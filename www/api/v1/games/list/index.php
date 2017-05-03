@@ -7,19 +7,20 @@
  */
 
 $curdir = dirname(__FILE__);
-include_once ($curdir."/../api.lib/api.base.php");
-include_once ($curdir."/../api.lib/api.security.php");
-include_once ($curdir."/../api.lib/api.helpers.php");
-include_once ($curdir."/../../config/config.php");
+include_once ($curdir."/../../../api.lib/api.base.php");
+include_once ($curdir."/../../../api.lib/api.security.php");
+include_once ($curdir."/../../../api.lib/api.helpers.php");
 
-$response = APIHelpers::startpage($config);
+$response = APIHelpers::startpage();
 
-// APIHelpers::checkAuth();
-
-$conn = APIHelpers::createConnection($config);
+if(!APIHelpers::is_json_input()){
+	APIHelpers::showerror2(2000, 400, "Expected application/json");
+}
+$conn = APIHelpers::createConnection();
+$request = APIHelpers::read_json_input();
 
 try {
-  // TODO paging
+	// TODO paging
 	$query = 'SELECT 
 				games.id,
 				games.uuid,

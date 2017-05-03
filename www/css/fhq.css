@@ -1797,3 +1797,75 @@ body.dark
     text-align: left;
 	padding-left: 20px;
 }
+
+/* games list */
+
+.fhq0021 {
+	width: 80%;
+}
+
+.fhq0022 {
+	display: block;
+	padding-bottom: 20px;
+}
+
+.fhq0023 {
+	display: table;
+	width: 100%;
+	background-color: #eee;
+	border-radius: 10px;
+}
+
+.dark .fhq0023{
+	background-color: #494949;
+}
+
+.fhq0024 {
+	display: table-row;
+}
+
+.fhq0025{
+	display: table-cell;
+	width: 110px;
+}
+
+.fhq0026{
+	display: table-cell;
+	vertical-align: top;
+    padding-left: 20px;
+}
+
+.fhq0027{
+	text-align: left;
+	font-size: 20px;
+    font-style: italic;
+}
+
+.fhq0028{
+	display: block;
+	height: 20px;
+}
+
+.fhq0029{
+	font-size: 30px;
+    text-align: left;
+    padding-top: 10px;
+}
+
+.fhq0030{
+	width: 110px;
+    height: 110px;
+    border-radius: 10px;
+    background-size: 100% 100%;
+}
+
+.fhq0031{
+	white-space: pre;
+	text-align: left;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+.fhq0032{
+	text-align: left;
+}

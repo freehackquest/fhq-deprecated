@@ -73,11 +73,12 @@ fhq.ui.cleanupSignInMessages = function() {
 fhq.ui.signin = function() {
 	var email = $("#signin-email").val();
 	var password = $("#signin-password").val();
-
+	
 	var obj = fhq.api.users.login(email,password).done(function(r){
 		// TODO
 		// $('#signin-email').val('');
 		// $("#signin-password").val('');
+		$('.message_chat').remove();
 		if(fhq.supportsHtml5Storage()){
 			localStorage.setItem("email", email);
 			localStorage.setItem("password", password);
@@ -92,6 +93,7 @@ fhq.ui.signin = function() {
 }
 
 fhq.ui.signout = function(){
+	$('.message_chat').remove();
 	fhq.api.users.logout().done(function(){
 		fhq.ui.processParams();
 	});
@@ -231,7 +233,7 @@ function FHQGuiLib(api) {
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="loadUserProfile(' + fhq.userinfo.id + ');">' + fhq.t('Your Profile') + '</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="loadScoreboard(' + game_id + ');">Scoreboard (' + fhq.userinfo.score + ')</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.loadRules(' + game_id + ');">Rules</div>');
-			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.loadGames();">Games</div>');
+			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadGames();">Games</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.createPageSkills(); fhqgui.updatePageSkills();">Skills</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="loadFeedback();">Feedback</div>');
 			$('.account-panel').append('<a class="fhq-simple-btn" href="http://tools.freehackquest.com" target="_blank">Tools</a>');
@@ -687,42 +689,6 @@ function FHQGuiLib(api) {
 		this.filter.stats.questname = document.getElementById('statistics_questname').value;
 		this.filter.stats.questid = document.getElementById('statistics_questid').value;
 		this.filter.stats.questsubject = document.getElementById('statistics_questsubject').value;
-	}
-	
-	this.loadGames = function() {
-		this.setFilter('games');
-		var self = this;
-		$('#content_page').html("Please wait...");
-
-		$.post('api/games/list.php', {},
-			function (obj) {
-				var current_game = obj.current_game;
-				
-				// todo redesign handleFail
-				if(obj.result=="fail"){
-					var content = "";
-					if(obj.error.code == 1224){
-						content = "<div class='fhqbtn' onclick='fhq.ui.showSignInForm();'>Sign-in</div> or <div class='fhqbtn' onclick='fhqgui.showSignUpForm();'>Sign Up</div>";
-					}
-					$('#content_page').html(obj.error.message + '<br><br>' + content);
-					return;
-				}
-
-				var content = '';
-				if (obj['permissions']['insert'] == true)
-					content += '<div class="fhqinfo">'
-						+ '<div class="fhqbtn" onclick="formCreateGame();">Create Game</div>'
-						+ '<div class="fhqbtn" onclick="fhqgui.formImportGame();">Import Game</div>'
-						+ '</div><br>';
-
-				for (var k in obj.data) {
-					if (obj.data.hasOwnProperty(k)) {
-						content += fhqgui.gameView(obj.data[k], current_game);
-					}
-				}
-				$('#content_page').html(content);
-			}
-		)
 	}
 
 	if(localStorage.getItem('colorscheme') == null){
@@ -1257,7 +1223,7 @@ function FHQGuiLib(api) {
 				}
 				// document.getElementById('editgame_logo').src = obj.data.logo + '?' + new Date().getTime();
 				fhqgui.closeModalDialog();
-				fhqgui.loadGames();
+				fhq.ui.loadGames();
 			}
 		);
 	}
@@ -1278,56 +1244,6 @@ function FHQGuiLib(api) {
 			return true;
 		}
 		return false;
-	}
-
-	this.chooseGame = function(id) {
-		var self = this;
-		fhq.cache.gameid = id;
-		console.log("fhq.cache.gameid: " + fhq.cache.gameid);
-		$.post('api/games/choose.php', {'id' : id},
-			function(obj){
-				if(self.handleFail(obj)){
-					return;
-				}
-				if(obj.result=='ok'){
-					closeModalDialog();
-					fhq.ui.loadStatQuests();
-				}
-			}
-		);
-	}
-
-	this.gameView = function(game, currentGameId) {
-		var content = '';
-		content += '\n<div class="fhq_event_info">\n';
-		content += '	<div class="fhq_event_info_row">\n';
-		content += '		<div class="fhq_event_info_cell_img"><img src="' + game.logo + '" width="100px"></div>\n';
-		content += '		<div class="fhq_event_info_cell_content">\n';
-		content += '			<div class="fhq_event_caption"> [' + game.type_game + ', ' + game.state + ', ' + game.form + ', ' + ' by <b>{' + game.organizators + '}</b></div>';
-		content += '			<div class="fhq_event_caption"> ' + game.date_start + ' - ' + game.date_stop + ', restart: ' + game.date_restart + ']</div>';
-		content += '			<div class="fhq_event_score"><b><h1>' + game.title + '</h1></b></div>';
-		content += '			<div class="fhq_event_caption"><font size="5">Maximal score in this game: <b>' + game.maxscore + '</b></font></div>';
-		content += '			<div class="fhq_event_score"><pre>' + game.description + '</pre></div>';
-		content += '			<div class="fhq_event_caption">'; 
-		var perms = game.permissions;
-
-		if (perms['choose'] == true)
-			content += '<div class="fhqbtn" onclick="fhqgui.chooseGame(' + game.id + ');">Choose</div> ';
-		
-		if (perms['delete'] == true)
-			content += '<div class="fhqbtn" onclick="formDeleteGame(' + game.id + ');">Delete</div>';
-
-		if (perms['update'] == true)
-			content += '<div class="fhqbtn" onclick="formEditGame(' + game.id + ');">Edit</div>';
-			
-		if (perms['export'] == true)
-			content += '<div class="fhqbtn" onclick="fhqgui.exportGame(' + game.id + ');">Export</div>';
-
-		content += '			</div>';
-		content += '		</div>'; // fhq_event_info_cell_content
-		content += '	</div>'; // fhq_event_info_row
-		content += '</div><br>'; // fhq_event_info
-		return content;
 	}
 
 	this.resetEventsPage = function() {
@@ -1609,7 +1525,7 @@ fhq.ui.processParams = function() {
 			createPageStatistics('.$gameid.');
 			updateStatistics('.$gameid.');
 		} else if(fhq.containsPageParam("games")){
-			fhqgui.loadGames();
+			fhq.ui.loadGames();
 		} else if(fhq.containsPageParam("scoreboard")){
 			loadScoreboard(fhq.profile.game.id);
 		} else if (fhq.containsPageParam("quest")){
@@ -1641,7 +1557,7 @@ fhq.ui.loadPageMore = function(){
 	for(var i in lst){
 		var o = lst[i];
 		el.append(''
-			+ '<div class="fhq0001">'
+			+ '<div class="fhq0001" moreid="' + o.id + '">'
 			+ '	<div class="fhq0008">'
 			+ '		<div class="fhq0002" style="background-image: url(' + o.icon + ')"></div>' // TODO icon quest
 			+ ' 	<div class="fhq0003">' + fhq.t(o.name) + '<br>'
@@ -1650,9 +1566,72 @@ fhq.ui.loadPageMore = function(){
 			+ '	</div>'
 			+ '</div>'
 			+ '<div class="fhq0015"></div>'
-		);	
+		);
 	}
+	$('.fhq0001').unbind().bind('click', function(){
+		window.location = '?' + $(this).attr('moreid');
+	});
 }
+
+fhq.ui.loadGames = function() {
+	$('#content_page').html('<div class="fhq0021"></div>');
+	
+	fhq.api.games.list().done(function(r){
+		console.log(r);
+		
+		var el = $('.fhq0021');
+		
+		if (fhq.isAdmin()){
+			el.append(''
+				+ '<div class="fhq0022">'
+				+ '		<div class="fhqbtn" onclick="formCreateGame();">' + fhq.t('Create Game') + '</div>'
+				+ '		<div class="fhqbtn" onclick="fhqgui.formImportGame();">' + fhq.t('Import Game') + '</div>'
+				+ '</div>'
+			)
+		}
+
+		for (var k in r.data) {
+			if (r.data.hasOwnProperty(k)) {
+				el.append(fhq.ui.gameView(r.data[k]));
+			}
+		}
+	}).fail(function(r){
+		$('#content_page').html('fail');
+	});
+}
+
+fhq.ui.gameView = function(game, currentGameId) {
+		var content = ''
+		+ '<div class="fhq0023">'
+		+ '		<div class="fhq0024">'
+		+ '			<div class="fhq0025">'
+		+ '				<div class="fhq0030" style="background-image: url(' + game.logo + ')" ></div>'
+		+ '</div>';
+		content += '		<div class="fhq0026">\n';
+		content += '			<div class="fhq0029">' + game.title + ' (Maximal score: ' + game.maxscore + ')</div>';
+		content += '			<div class="fhq0027">' + game.type_game + ', ' + game.date_start + ' - ' + game.date_stop + '</div>';
+		content += '			<div class="fhq0027">' + fhq.t('Organizators') + ': ' + game.organizators + '</div>';
+		content += '			<div class="fhq0031">' + game.description + '</div>';
+		content += '			<div class="fhq0032">';
+		var perms = game.permissions;
+		
+		if (perms['delete'] == true)
+			content += '<div class="fhqbtn" onclick="formDeleteGame(' + game.id + ');">' + fhq.t('Delete') + '</div>';
+
+		if (perms['update'] == true)
+			content += '<div class="fhqbtn" onclick="formEditGame(' + game.id + ');">' + fhq.t('Edit') + '</div>';
+			
+		if (perms['export'] == true)
+			content += '<div class="fhqbtn" onclick="fhqgui.exportGame(' + game.id + ');">' + fhq.t('Export') + '</div>';
+
+		content += '			</div>';
+		content += '		</div>';
+		content += '	</div>';
+		content += '</div>'
+		content += '<div class="fhq0028"></div>';
+		return content;
+	}
+
 
 fhq.ui.loadUserInfo = function(uuid){
 	fhq.ws.user({uuid: uuid}).done(function(response){
@@ -1764,13 +1743,8 @@ window.fhq.ui.updateQuests = function(){
 			fhq.ui.showQuest($(this).attr("questid"));
 		});
 	}).fail(function(r){
-		console.log(r);
-		if(r && r.responseJSON){
-			if(r.responseJSON.error.code == 1094){
-				changeGame();
-			}
-		}
-	})
+		console.error(r);
+	});
 }
 
 // TODO redesign
