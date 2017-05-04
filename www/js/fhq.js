@@ -350,6 +350,25 @@ fhq.api.games.list = function(params){
 	return d;
 };
 
+/* feedback api */
+
+fhq.api.feedback.list = function(params){
+	params = params || {};
+	params.token = fhq.token;
+	var d = $.Deferred();
+	$.ajax({
+		type: "POST",
+		url: 'api/v1/feedback/list/',
+		contentType: "application/json",
+		data: JSON.stringify(params)
+	}).done(function(r){
+		d.resolve(r);
+	}).fail(function(r){
+		d.reject(r);
+	})
+	return d;
+};
+
 window.fhq.api.feedback.add = function(params){
 	params = params || {};
 	params.token = fhq.token;

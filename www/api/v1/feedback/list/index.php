@@ -10,41 +10,43 @@
  */
 
 $curdir_statistics_list = dirname(__FILE__);
-include_once ($curdir_statistics_list."/../api.lib/api.base.php");
-include_once ($curdir_statistics_list."/../api.lib/api.security.php");
-include_once ($curdir_statistics_list."/../api.lib/api.helpers.php");
-include_once ($curdir_statistics_list."/../api.lib/api.game.php");
-include_once ($curdir_statistics_list."/../../config/config.php");
+include_once ($curdir_statistics_list."/../../../api.lib/api.base.php");
+include_once ($curdir_statistics_list."/../../../api.lib/api.security.php");
+include_once ($curdir_statistics_list."/../../../api.lib/api.helpers.php");
 
-$response = APIHelpers::startpage($config);
-APIHelpers::checkAuth();
+$response = APIHelpers::startpage();
+
+if(!APIHelpers::is_json_input()){
+	APIHelpers::showerror2(2000, 400, "Expected application/json");
+}
+$conn = APIHelpers::createConnection();
+$request = APIHelpers::read_json_input();
 
 // page
-$page = APIHelpers::getParam('page', 0);
+$page = 0;
+if(isset($request['page']))
+	$page = $request['page'];
 if (!is_numeric($page))
-	APIHelpers::showerror(1234, 'parameter "page" must be numeric');
+	APIHelpers::showerror2(1234, 400, 'parameter "page" must be numeric');
 $response['data']['page'] = intval($page);
 
 // onpage
-$onpage = APIHelpers::getParam('onpage', 25);
+$onpage = 25; 
+if(isset($request['onpage']))
+	$onpage = $request['onpage'];
 if (!is_numeric($onpage))
-	APIHelpers::showerror(1235, 'parameter "onpage" must be numeric');
+	APIHelpers::showerror2(1235, 400, 'parameter "onpage" must be numeric');
+
 $response['data']['onpage'] = intval($onpage);
 
-$filter_where = array();
-$filter_values = array();
-
-if (!APISecurity::isAdmin()) {
-	$filter_where[] = 'fb.userid = ?';
-	$filter_values[] = APISecurity::userid();
-}
-
-$response['access'] = APISecurity::isAdmin();
-
-$where = '';
-if (count($filter_where) > 0) {
-	$where = ' WHERE '.implode(' AND ', $filter_where);
-}
+$columns = array();
+$columns[] = 'fb.id';
+$columns[] = 'fb.type';
+$columns[] = 'fb.text';
+$columns[] = 'fb.dt';
+$columns[] = 'u.nick';
+$columns[] = 'u.logo';
+$columns[] = 'fb.userid';
 
 $conn = APIHelpers::createConnection($config);
 
@@ -53,14 +55,9 @@ $response['result'] = 'ok';
 // count feedback
 try {
 	$stmt = $conn->prepare('
-			SELECT
-				count(*) as cnt
-			FROM 
-				feedback fb
-			INNER JOIN users u ON fb.userid = u.id 
-			'.$where.'
+			SELECT count(*) as cnt FROM feedback fb LEFT JOIN users u ON fb.userid = u.id 
 	');
-	$stmt->execute($filter_values);
+	$stmt->execute();
 	if($row = $stmt->fetch()) {
 		$response['data']['count'] = $row['cnt'];
 	}
@@ -71,23 +68,16 @@ try {
 try {
 	$stmt = $conn->prepare('
 			SELECT
-				fb.id,
-				fb.type,
-				fb.text,
-				fb.dt,
-				u.email,
-				u.nick,
-				u.logo,
-				fb.userid
+				'.implode(', ', $columns).'
 			FROM 
 				feedback fb
-			INNER JOIN users u ON fb.userid = u.id 
-				'.$where.'
+			LEFT JOIN
+				users u ON fb.userid = u.id 
 			ORDER BY
 				fb.id DESC
 			LIMIT '.($page*$onpage).','.$onpage.'
 	');
-	$stmt->execute($filter_values);
+	$stmt->execute();
 	$response['data']['feedback'] = array();
 	$id = -1;
 	while ($row = $stmt->fetch()) {
@@ -97,7 +87,6 @@ try {
 			'id' => $row['id'],
 			'type' => htmlspecialchars($row['type']),
 			'text' => htmlspecialchars($row['text']),
-			'email' => htmlspecialchars($row['email']),
 			'nick' => htmlspecialchars($row['nick']),
 			'userid' => htmlspecialchars($row['userid']),
 			'logo' => htmlspecialchars($row['logo']),
@@ -114,8 +103,7 @@ try {
 				fbm.dt,
 				fbm.userid,
 				u.nick,
-				u.logo,
-				u.email
+				u.logo
 			from 
 				feedback_msg fbm
 			INNER JOIN users u ON fbm.userid = u.id
@@ -132,7 +120,6 @@ try {
 				'userid' => $row_message['userid'],
 				'nick' => htmlspecialchars($row_message['nick']),
 				'logo' => htmlspecialchars($row_message['logo']),
-				'email' => htmlspecialchars($row_message['email']),
 				'text' => htmlspecialchars($row_message['text']),
 				'dt' => $row_message['dt'],
 			);

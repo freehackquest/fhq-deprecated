@@ -235,7 +235,7 @@ function FHQGuiLib(api) {
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.loadRules(' + game_id + ');">Rules</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadGames();">Games</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.createPageSkills(); fhqgui.updatePageSkills();">Skills</div>');
-			$('.account-panel').append('<div class="fhq-simple-btn" onclick="loadFeedback();">Feedback</div>');
+			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadFeedback();">Feedback</div>');
 			$('.account-panel').append('<a class="fhq-simple-btn" href="http://tools.freehackquest.com" target="_blank">Tools</a>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.signout();">' + fhq.t('Sign-out') + '</div>');
 			
@@ -578,15 +578,6 @@ function FHQGuiLib(api) {
 			}
 		}
 	};
-
-	this.setFilter = function(current_filter) {
-		this.filter.current = current_filter;
-		if (this.filter[current_filter] == null) {
-			$('#btnfilter').hide();
-		} else {
-			$('#btnfilter').show();
-		}
-	}
 	
 	this.showFilter = function() {
 		var current_page = this.filter.current;
@@ -1537,6 +1528,8 @@ fhq.ui.processParams = function() {
 			fhq.ui.loadQuestsBySubject(fhq.pageParams["subject"]);
 		}else if(fhq.containsPageParam("more")){
 			fhq.ui.loadPageMore();
+		}else if(fhq.containsPageParam("feedback")){
+			fhq.ui.loadFeedback()
 		}else{
 			// default
 			fhq.ui.loadStatSubjectsQuests();
@@ -1601,37 +1594,103 @@ fhq.ui.loadGames = function() {
 }
 
 fhq.ui.gameView = function(game, currentGameId) {
-		var content = ''
-		+ '<div class="fhq0023">'
-		+ '		<div class="fhq0024">'
-		+ '			<div class="fhq0025">'
-		+ '				<div class="fhq0030" style="background-image: url(' + game.logo + ')" ></div>'
-		+ '</div>';
-		content += '		<div class="fhq0026">\n';
-		content += '			<div class="fhq0029">' + game.title + ' (Maximal score: ' + game.maxscore + ')</div>';
-		content += '			<div class="fhq0027">' + game.type_game + ', ' + game.date_start + ' - ' + game.date_stop + '</div>';
-		content += '			<div class="fhq0027">' + fhq.t('Organizators') + ': ' + game.organizators + '</div>';
-		content += '			<div class="fhq0031">' + game.description + '</div>';
-		content += '			<div class="fhq0032">';
-		var perms = game.permissions;
+	var content = ''
+	+ '<div class="fhq0023">'
+	+ '		<div class="fhq0024">'
+	+ '			<div class="fhq0025">'
+	+ '				<div class="fhq0030" style="background-image: url(' + game.logo + ')" ></div>'
+	+ '</div>';
+	content += '		<div class="fhq0026">\n';
+	content += '			<div class="fhq0029">' + game.title + ' (Maximal score: ' + game.maxscore + ')</div>';
+	content += '			<div class="fhq0027">' + game.type_game + ', ' + game.date_start + ' - ' + game.date_stop + '</div>';
+	content += '			<div class="fhq0027">' + fhq.t('Organizators') + ': ' + game.organizators + '</div>';
+	content += '			<div class="fhq0031">' + game.description + '</div>';
+	content += '			<div class="fhq0032">';
+	var perms = game.permissions;
+	
+	if (perms['delete'] == true)
+		content += '<div class="fhqbtn" onclick="formDeleteGame(' + game.id + ');">' + fhq.t('Delete') + '</div>';
+
+	if (perms['update'] == true)
+		content += '<div class="fhqbtn" onclick="formEditGame(' + game.id + ');">' + fhq.t('Edit') + '</div>';
 		
-		if (perms['delete'] == true)
-			content += '<div class="fhqbtn" onclick="formDeleteGame(' + game.id + ');">' + fhq.t('Delete') + '</div>';
+	if (perms['export'] == true)
+		content += '<div class="fhqbtn" onclick="fhqgui.exportGame(' + game.id + ');">' + fhq.t('Export') + '</div>';
 
-		if (perms['update'] == true)
-			content += '<div class="fhqbtn" onclick="formEditGame(' + game.id + ');">' + fhq.t('Edit') + '</div>';
-			
-		if (perms['export'] == true)
-			content += '<div class="fhqbtn" onclick="fhqgui.exportGame(' + game.id + ');">' + fhq.t('Export') + '</div>';
+	content += '			</div>';
+	content += '		</div>';
+	content += '	</div>';
+	content += '</div>'
+	content += '<div class="fhq0028"></div>';
+	return content;
+}
 
-		content += '			</div>';
-		content += '		</div>';
-		content += '	</div>';
-		content += '</div>'
-		content += '<div class="fhq0028"></div>';
-		return content;
-	}
+fhq.ui.loadFeedback = function() {
+	$('#content_page').html('<div class="fhq0021"></div>');
+	var el = $('.fhq0021');
+	
+	fhq.api.feedback.list().done(function(obj){
+		var content = '';
+		content += '<div class="fhq0033"><div class="fhqbtn" onclick="new FHQFeedback().show();">Create Feedback</div></div>';
+		
+		for (var k in obj.data.feedback) {
+			content += '';
+			if (obj.data.feedback.hasOwnProperty(k)) {
+				var f = obj.data.feedback[k];
 
+				content += '\n<div class="fhq0034">\n';
+				content += '	<div class="fhq0035">\n';
+				content += '		<div class="fhq0036"><div class="fhq0038" style="background-image: url(' + f.logo + ')"></div></div>\n';
+				content += '		<div class="fhq0037">\n';
+				content += '			<div class="fhq_event_caption">[' + f.type + ', ' + f.dt + ', {' + f.nick + '}]</div>';
+				content += '			<div class="fhq_feedback_text"><pre>' + f.text + '</pre></div>';
+				content += '			<div class="fhq_event_caption">'; 
+				content += '				<div class="fhqbtn" onclick="formInsertFeedbackMessage(' + f.id + ');">Add message</div>';
+				if (obj.access == true) {
+					content += '				<div class="fhqbtn" onclick="deleteConfirmFeedback(' + f.id + ');">Delete</div>';
+					content += '				<div class="fhqbtn" onclick="formEditFeedback(' + f.id + ');">Edit</div>';
+				}
+				content += '			</div>';
+				
+				content += '			<div class="fhq_event_caption">'; 
+				/*content += '				<div class="fhqbtn" onclick="deleteConfirmEvent(' + f.id + ');">Delete</div>';
+				content += '				<div class="fhqbtn" onclick="formEditEvent(' + f.id + ');">Edit</div>';*/
+				
+				for (var k1 in f.messages) {
+					var m = f.messages[k1];
+					content += '\n<div class="fhq0039">\n';
+					content += '	<div class="fhq0035">\n';
+					content += '		<div class="fhq0036"><div class="fhq0038" style="background-image: url(' + m.logo + ')"></div></div>\n';
+					content += '		<div class="fhq0037">\n';
+					content += '			<div class="fhq0040"></div>';
+					content += '			<div class="fhq_event_caption">[' + m.dt + ', {' + m.nick + '}]</div>';
+					content += '			<div class="fhq_feedback_text"><pre>' + m.text + '</pre></div>';
+					if (obj.access == true) {
+						content += '			<div class="fhq_event_caption">'; 
+						content += '				<div class="fhqbtn" onclick="deleteConfirmFeedbackMessage(' + m.id + ');">Delete</div>';
+						content += '				<div class="fhqbtn" onclick="formEditFeedbackMessage(' + m.id + ');">Edit</div>';
+						content += '			</div>';
+					}
+					content += '		</div>'; // fhq_event_info_cell_content
+					content += '	</div>'; // fhq_event_info_row
+					content += '</div><br>'; // fhq_event_info
+					/*content += '				<div class="fhqbtn" onclick="deleteConfirmEvent(' + f.id + ');">Delete</div>';
+					content += '				<div class="fhqbtn" onclick="formEditEvent(' + f.id + ');">Edit</div>';*/
+				}
+				content += '			</div>';
+
+				content += '		</div>'; // fhq_event_info_cell_content
+				content += '	</div>'; // fhq_event_info_row
+				content += '</div><br>'; // fhq_event_info
+			}
+			content += '';
+		}
+		el.html(content);
+		
+	}).fail(function(r){
+		el.html(r.responseJSON.error.message);
+	});
+}
 
 fhq.ui.loadUserInfo = function(uuid){
 	fhq.ws.user({uuid: uuid}).done(function(response){
@@ -1873,39 +1932,6 @@ fhq.ui.loadStatSubjectsQuests = function(){
 		console.error(r);
 		$('.fhq0006').html('Failed');
 	});
-	/*
-	fhqgui.setFilter('');
-	$('#content_page').html('<div class="fhqrightinfo center"></div><div class="fhqleftlist"></div>');
-	$('.fhqleftlist').html('');
-	var list = '<div class="quests">'
-	+ '<div class="icon">' + fhq.t('Quests') + '</div>'
-	
-	if(fhq.isAdmin()){
-		list += '<div class="filter">'
-			+ '<div class="fhqbtn" id="quest_create">' + fhq.t('Create') + '</div>'
-			+ '<div class="fhqbtn" id="quest_import">' + fhq.t('Import') + '</div>'
-			+ '</div>';
-	}
-	
-	list += '<div class="filter"><input type="text" id="quests_filter_name_contains" value="" placeholder="Name"/></div>'
-	+ '<div class="filter">' + fhq.t('Subject') + ': <select id="quests_filter_subject" value="">'
-	+ '<option selected="" value="">*</option>'
-	+ '</select></div>'
-	+ '<div class="filter">' + fhq.t('Status') + ': <select id="quests_filter_status" value="">'
-	+ '<option selected="" value="">*</option>'
-	+ '<option value="open">' + fhq.t('Opened') + '</option>'
-	+ '<option value="completed">' + fhq.t('Completed') + '</option>'
-	+ '</select></div>'
-	+ '<div class="filter"><div class="fhqbtn" id="quests_search">' + fhq.t('Search') + '</div></div>'
-	+ '<div class="filter" id="quests_found"></div>'
-	+ '<div class="content"></div>'
-	+ '</div>';
-	$('.fhqleftlist').append(list);
-	$('.fhqleftlist .quests .content').html(fhq.t('Loading...'));
-	$('#quests_search').unbind('click').bind('click', fhq.ui.updateQuests);
-	$('#quest_create').unbind('click').bind('click', fhq.ui.createQuestForm);
-	$('#quest_import').unbind('click').bind('click', fhq.ui.importQuestForm);
-	fhq.ui.updateQuests();*/
 }
 
 
@@ -2478,13 +2504,13 @@ window.fhq.ui.updateQuestStatistics = function(questid){
 	});
 }
 
-window.fhq.ui.showFeedbackDialog = function(type, title, text){
+fhq.ui.showFeedbackDialog = function(type, title, text){
 	fhq.ui.showModalDialog(fhq.ui.templates.feedback_form(title));
 	$('#feedback-type').val(type);
 	$('#feedback-text').val(text);
 }
 
-window.fhq.ui.feedbackDialogSend = function(){
+fhq.ui.feedbackDialogSend = function(){
 	var text = $('#feedback-text').val();
 	var type = $('#feedback-type').val();
 	var params = {};
@@ -2499,7 +2525,7 @@ window.fhq.ui.feedbackDialogSend = function(){
 	})
 }
 
-window.fhq.ui.initChatForm = function(){
+fhq.ui.initChatForm = function(){
 	
 	$("#sendchatmessage_submit").unbind().bind('click', function(){
 		var text = $('#sendchatmessage_text').val();
