@@ -184,35 +184,25 @@ function FHQGuiLib(api) {
 			+ '<img class="fhq_btn_menu_img" src="images/fhq2016_200x150.png"/> '
 			+ '</a>')
 		
-		toppanel.append('<a id="btnmenu_quests" class="fhq_btn_menu" href="?quests">'
-			// + '<img class="fhq_btn_menu_img" src="images/menu/quests_40x40.png"/> '
+		toppanel.append('<a id="btnmenu_quests" class="fhq0041" href="?quests">'
 			+ fhq.t('Quests')
 			+ '</a>')
 
-		toppanel.append('<a id="btnmenu_news" class="fhq_btn_menu" href="?news">'
-			// + '<img class="fhq_btn_menu_img" src="images/menu/news.png"/>'
-			// + '<div class="fhqredcircle hide" id="plus_events">0</div> '
+		toppanel.append('<a id="btnmenu_news" class="fhq0041" href="?news">'
 			+ fhq.t('News')
 			+ '</a>');
 
-		toppanel.append('<div id="btnmenu_more" class="fhq_btn_menu">'
+		toppanel.append('<div id="btnmenu_more" class="fhq0041">'
 			+ fhq.t('Other')
 			+ '</div>');
 										
-		toppanel.append('<div id="btnmenu_about" class="fhq_btn_menu" href="?about">' + fhq.t('About') + '</div>');
-		
-		/*if(!fhq.isAuth()){
-			toppanel.append('<a id="btnmenu_tools" class="fhq_btn_menu" target="_blank" href="http://tools.freehackquest.com">'
-				// + '<img class="fhq_btn_menu_img" src="images/menu/tools_150x150.png"/> '
-				+ fhq.t('Tools')
-				+ '</a>')
-		}*/
+		toppanel.append('<div id="btnmenu_about" class="fhq0041" href="?about">' + fhq.t('About') + '</div>');
 
-		toppanel.append('<div id="btnmenu_colorscheme" class="fhq_btn_menu">'
+		toppanel.append('<div id="btnmenu_colorscheme" class="fhq0041">'
 			+ '<img class="fhq_btn_menu_img" src="images/menu/lightside_150x150.png"/> '
 			+ '</div>');
 
-		toppanel.append('<div id="btnmenu_user" class="fhq_btn_menu">'
+		toppanel.append('<div id="btnmenu_user" class="fhq0041">'
 			+ '<img class="fhq_btn_menu_img user-logo" src="' + (fhq.isAuth() ? fhq.userinfo.logo : 'images/menu/user.png') + '"/>  '
 			+ (fhq.isAuth() ? fhq.userinfo.nick : fhq.t('Account'))
 			+ '<div class="account-panel"></div>');
@@ -247,6 +237,16 @@ function FHQGuiLib(api) {
 				$('.account-panel').append('<div class="fhq-simple-btn" onclick="createPageAnswerList(); updateAnswerList();">Answer List</div>');
 			}
 		}
+		
+		toppanel.append(''
+			+ '<div id="btnmenu_plus" class="fhq0041 fhq0042">'
+			+ '<div class="fhq0043"></div>'
+			+ '<div class="fhq0044"></div>'
+			+ '</div>');
+		// create menu
+		
+		$('.fhq0044').append('<div class="fhq0045" onclick="$(\'.fhq0044\').hide(); $(\'.fhq0043\').hide();  new FHQFeedback().show();">New Feedback</div>'); // TODO redesign show feedback
+
 
 		$('#btnmenu_user').unbind().bind('click', function(e){
 			$('.accout-panel').show();
@@ -266,6 +266,21 @@ function FHQGuiLib(api) {
 		
 		$('#btnmenu_about').unbind().bind('click', function(){
 			window.location = '?about';
+		})
+		
+		$('#btnmenu_plus').unbind().bind('click', function(){
+			$('.fhq0043').show();
+			$('.fhq0044').show();
+			console.log("1234");
+		});
+
+		$('.fhq0043').unbind().bind('click', function(e){
+			console.log("123");
+			e.stopPropagation();
+			e.preventDefault();
+			$('.fhq0043').hide();
+			$('.fhq0044').hide();
+			return true;
 		})
 	}
 	
@@ -1631,7 +1646,6 @@ fhq.ui.loadFeedback = function() {
 	
 	fhq.api.feedback.list().done(function(obj){
 		var content = '';
-		content += '<div class="fhq0033"><div class="fhqbtn" onclick="new FHQFeedback().show();">Create Feedback</div></div>';
 		
 		for (var k in obj.data.feedback) {
 			content += '';
