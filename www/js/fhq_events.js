@@ -114,8 +114,6 @@ function updateCountOfEvents() {
 
 
 function createPageEvents() {
-	fhqgui.setFilter('events');
-	
 	var pt = new FHQParamTable();
 	var cp = new FHQContentPage();
 	cp.clear();
