@@ -220,7 +220,7 @@ function FHQGuiLib(api) {
 			$('.account-panel').append('<div id="btnmenu_restore_password" class="fhq-simple-btn" onclick="fhqgui.showResetPasswordForm();">' + fhq.t('Forgot password?') + '</div>');
 		}else{
 			var game_id = 0;
-			$('.account-panel').append('<div class="fhq-simple-btn" onclick="loadUserProfile(' + fhq.userinfo.id + ');">' + fhq.t('Your Profile') + '</div>');
+			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadUserProfile(' + fhq.userinfo.id + ');">' + fhq.t('Your Profile') + '</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="loadScoreboard(' + game_id + ');">Scoreboard (' + fhq.userinfo.score + ')</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.loadRules(' + game_id + ');">Rules</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadGames();">Games</div>');
@@ -1581,6 +1581,52 @@ fhq.ui.loadPageMore = function(){
 	});
 }
 
+fhq.ui.loadUserProfile = function(userid) {
+	// alert(userid);
+
+	var cp = document.getElementById('content_page');
+	cp.innerHTML = 'Please wait...';
+
+	// alert(createUrlFromObj(params));
+	fhq.api.users.profile(userid).done(function (obj) {
+			var pt = new FHQParamTable();
+			pt.row('ID:', userid);
+			pt.row('Your logo:', '<img id="user_logo" src="' + obj.data.logo + '"/>');
+			pt.row('Your name:', '<div id="user_current_nick">' + obj.data.nick + '</div>');
+			pt.row('Your role:', obj.data.role);
+			for (var k in obj.games) {
+				pt.row('Game "' + obj.games[k].title + '" (' + obj.games[k].type_game + '):', obj.games[k].score);
+			}
+			pt.skip();
+			pt.row('Update logo:', 'PNG: <input id="user_new_logo" type="file" accept="image/png" required/>');
+			pt.row('', '<div class="fhqbtn" onclick="updateUserLogo(' + userid + ');">Upload</div>');
+			
+			pt.skip();
+			pt.row('Update nick:', '<input id="user_new_nick" type="text" value="' + obj.data.nick + '"/>');
+			pt.row('', '<div class="fhqbtn" onclick="changeUserNick(null);">Change name</div>');
+			pt.skip();
+			pt.row('Country:', '<input id="edit_user_country" type="text" value="'+obj.profile.country+'"/>');
+			pt.row('City:', '<input id="edit_user_city" type="text" value="'+obj.profile.city+'"/>');
+			pt.row('University:', '<input id="edit_user_university" type="text" value="'+obj.profile.university+'"/>');
+			pt.row('', '<div class="fhqbtn" onclick="update_profile_location();">Update</div>');
+			pt.skip();
+
+			// todo change password
+			pt.row('Old password:', '<input id="userpage_old_password" type="password" value=""/>');
+			pt.row('New password:', '<input id="userpage_new_password" type="password" value=""/>');
+			pt.row('New password(confirm):', '<input id="userpage_new_password_confirm" type="password" value=""/>');
+			pt.row('', '<div class="fhqbtn" onclick="userpage_changeUserPassword();">Change password</div>');
+			pt.skip();
+
+			cp.innerHTML = pt.render();
+		}
+	).fail(function(r){
+		content = obj.error.message;
+		cp.innerHTML = content;
+		return;
+	});
+}
+
 fhq.ui.loadGames = function() {
 	$('#content_page').html('<div class="fhq0021"></div>');
 	
@@ -2741,8 +2787,8 @@ window.fhq.ui.createCopyright = function() {
 	$("body").append(''
 		+ '<div id="copyright">'
 		+ '	<center>'
-		+ '		<font face="Arial" size=2>Copyright © 2011-2016 sea-kg. | '
-		+ '		<a href="http://freehackquest.com/?about">About</a> | '
+		+ '		<font face="Arial" size=2>Copyright © 2011-2017 sea-kg. | '
+		+ '		<a href="http://freehackquest.com/">About</a> | '
 		+ '		WS State: <font id="websocket_state">?</font>'
 		+ '	</center>'
 		+ '</div>'

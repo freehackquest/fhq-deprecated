@@ -451,7 +451,7 @@ fhq.api.users.profile = function(userid){
 	var params = {};
 	params.token = fhq.token;
 	if(userid){
-		params.userid = id;
+		params.userid = userid;
 	}
 	$.ajax({
 		type: "POST",

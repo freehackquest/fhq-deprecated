@@ -116,7 +116,7 @@
 				<div class="fhqtopmenu_toppanel_container"></div>
 			</div>
 
-			<div id="copyright">
+			<!-- div id="copyright">
 				<center>
 					<font face="Arial" size=2>Copyright © 2011-2016 sea-kg.
 					Source code: <a href="https://github.com/freehackquest/fhq">github.com</a>
@@ -127,7 +127,7 @@
 					WS State: <font id="websocket_state">?</font><br>
 					</font>
 				</center>
-			</div>
+			</div -->
 
 			<div class="sendchatmessage-form">
 				<input id="sendchatmessage_text" type="text">
