@@ -1,21 +1,4 @@
 
-function insertFeedback()
-{
-	var feedback = new FHQFeedback();
- 	// alert(createUrlFromObj(feedback.params()));
-	send_request_post(
-		'api/feedback/insert/',
-		createUrlFromObj(feedback.params()),
-		function (obj) {
-			if (obj.result == "ok") {
-				feedback.close();
-				loadFeedback();
-			} else {
-				alert(obj.error.message);
-			}
-		}
-	);
-};
 
 function saveFeedback()  {
 	var feedback = new FHQFeedback();

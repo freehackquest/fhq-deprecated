@@ -17,7 +17,6 @@ include_once ($curdir."/../../../api.lib/api.helpers.php");
 include_once ($curdir."/../../../api.lib/api.security.php");
 include_once ($curdir."/../../../api.lib/api.user.php");
 include_once ($curdir."/../../../../config/config.php");
-include_once ($curdir."/../../../api.lib/api.mail.php");
 
 error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE & ~E_STRICT);
 
@@ -147,7 +146,7 @@ $error = '';
 
 // this option must be moved to db
 if (isset($config['mail']) && isset($config['mail']['allow']) && $config['mail']['allow'] == 'yes') {
-	APIMail::send($config, $email, '', '', $email_subject, $email_message, $error);
+	APIHelpers::sendMail($config, $email, '', '', $email_subject, $email_message, $error);
 }
 
 $result['result'] = 'ok';

@@ -385,5 +385,49 @@ window.fhq.localization = {
 	'Organizators':{
 		'en': 'Organizators',
 		'ru': 'Организаторы'
+	},
+	'complaint':{
+		'en': 'Complaint',
+		'ru': 'Жалоба'
+	},
+	'defect':{
+		'en': 'Defect',
+		'ru': 'Недочет'
+	},
+	'error':{
+		'en': 'Error',
+		'ru': 'Ошибка'
+	},
+	'approval':{
+		'en': 'Approval',
+		'ru': 'Одобрение'
+	},
+	'proposal':{
+		'en': 'Proposal',
+		'ru': 'Предложение'
+	},
+	'question':{
+		'en': 'Question',
+		'ru': 'Вопрос'
+	},
+	'Target':{
+		'en': 'Target',
+		'ru': 'Назначение'
+	},
+	'From':{
+		'en': 'From',
+		'ru': 'От'
+	},
+	'Message':{
+		'en': 'Message',
+		'ru': 'Сообщение'
+	},
+	'Error':{
+		'en': 'Error',
+		'ru': 'Ошибка'
+	},
+	'Send':{
+		'en': 'Send',
+		'ru': 'Отправить'
 	}
 };

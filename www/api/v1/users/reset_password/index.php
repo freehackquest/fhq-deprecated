@@ -17,7 +17,6 @@ include_once ($curdir_security_restore."/../../../api.lib/api.helpers.php");
 include_once ($curdir_security_restore."/../../../api.lib/api.security.php");
 include_once ($curdir_security_restore."/../../../api.lib/api.user.php");
 include_once ($curdir_security_restore."/../../../../config/config.php");
-include_once ($curdir_security_restore."/../../../api.lib/api.mail.php");
 
 $result = array(
 	'result' => 'fail',
@@ -118,7 +117,7 @@ APIEvents::addPublicEvents($conn, 'users', 'The user #'.$userid.' {'.htmlspecial
 // this option must be moved to db
 if (isset($config['mail']) && isset($config['mail']['allow']) && $config['mail']['allow'] == 'yes') {
 	$error = '';
-	APIMail::send($config, $email, '', '', $email_subject, $email_message, $error);
+	APIHelpers::sendMail($config, $email, '', '', $email_subject, $email_message, $error);
 }
 
 $result['result'] = 'ok';

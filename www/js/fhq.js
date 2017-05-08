@@ -369,22 +369,19 @@ fhq.api.feedback.list = function(params){
 	return d;
 };
 
-window.fhq.api.feedback.add = function(params){
+window.fhq.api.feedback.insert = function(params){
 	params = params || {};
 	params.token = fhq.token;
 	var d = $.Deferred();
 	$.ajax({
 		type: "POST",
-		url: 'api/feedback/insert/',
-		data: params
-	}).done(function(response){
-		if (response.result == 'ok') {
-			d.resolve(response);
-		}else{
-			d.reject(response);
-		}
-	}).fail(function(){
-		d.reject();
+		url: 'api/v1/feedback/insert/',
+		contentType: "application/json",
+		data: JSON.stringify(params)
+	}).done(function(r){
+		d.resolve(r);
+	}).fail(function(r){
+		d.reject(r);
 	})
 	return d;
 }
@@ -747,11 +744,6 @@ window.fhq.getOnPage = function() {
 window.fhq.getStyles = function() {
 	this.initTypes();
 	return this.enums.styles;
-};
-
-window.fhq.getFeedbackTypes = function() {
-	this.initTypes();
-	return this.enums.feedbackTypes;
 };
 
 window.fhq.getAnswerlistTable = function() {

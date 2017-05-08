@@ -1982,3 +1982,33 @@ body.dark
 .dark .fhq0045:hover{
 	color: #F8E8D8;
 }
+
+
+.fhq0046{
+	width: 550px;
+    text-align: left;
+}
+
+.fhq0047{
+    display: block;
+	width: 550px;
+	margin-bottom: 20px !important;
+}
+
+.fhq0048{
+    display: block;
+	width: 550px;
+}
+
+.fhq0049{
+	display: none;
+	width: 550px;
+    text-align: center;
+}
+
+.fhq0050{
+	display: inline-block;
+    width: 50px;
+    height: 15px;
+    background-image: url(../images/preloader.gif);
+}

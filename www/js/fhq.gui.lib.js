@@ -147,10 +147,6 @@ function FHQGuiLib(api) {
 	this.btn = function(caption, js) {
 		return '<div class="fhqbtn" onclick="' + js + '">' + caption + '</div>';
 	}
-	
-	this.textedit = function(idelem, text) {
-		return '<textarea id="' + idelem + '">' + text + '</textarea>';
-	}
 
 	/* Old Modal Dialog */
 	
@@ -245,7 +241,7 @@ function FHQGuiLib(api) {
 			+ '</div>');
 		// create menu
 		
-		$('.fhq0044').append('<div class="fhq0045" onclick="$(\'.fhq0044\').hide(); $(\'.fhq0043\').hide();  new FHQFeedback().show();">New Feedback</div>'); // TODO redesign show feedback
+		$('.fhq0044').append('<div class="fhq0045" onclick="fhq.ui.loadNewFeedback()">New Feedback</div>'); // TODO redesign show feedback
 
 
 		$('#btnmenu_user').unbind().bind('click', function(e){
@@ -725,7 +721,6 @@ function FHQGuiLib(api) {
 	}
 
 	this.loadMainPage = function() {
-		this.setFilter('');
 		var strVar=''
 		+ '<table style="display: inline-block;width: 100%;">';
 		strVar += "					<tr>";
@@ -1109,7 +1104,6 @@ function FHQGuiLib(api) {
 	}
 
 	this.loadSettings = function(idelem) {
-		this.setFilter('settings');
 		var scp = new FHQDynamicContent(idelem);
 		send_request_post(
 			'api/admin/settings.php',
@@ -1134,7 +1128,6 @@ function FHQGuiLib(api) {
 	}
 	
 	this.loadRules = function(gameid) {
-		this.setFilter('rules');
 		var el = document.getElementById("content_page");
 		el.innerHTML = 'Loading...';
 		var params = {};
@@ -1269,7 +1262,6 @@ function FHQGuiLib(api) {
 	}
 	
 	this.createPageSkills = function() {
-		this.setFilter('skills');
 		var el = document.getElementById("content_page");
 		el.innerHTML = '<h1>User\'s Skills</h1>Found:<font id="skills_found">0</font><hr><div id="skills_page"></div>';
 	}
@@ -1431,53 +1423,6 @@ function FHQDynamicContent(idelem) {
 	};
 }
 
-function FHQFeedback() {
-	this.type = '';
-	this.text = '';
-	this.id = null;
-	this.show = function(obj) {
-		this.id = obj ? obj.id : null;
-		this.type = obj ? obj.type : '';
-		this.text = obj ? obj.text : '';
-
-		var pt = new FHQParamTable();
-		if (this.id != null)
-			pt.row('ID:', fhqgui.readonly('editfeedback_id', this.id));
-		pt.row('Type:', fhqgui.combobox('editfeedback_type', this.type, fhq.getFeedbackTypes()));
-		pt.row('Message:', fhqgui.textedit('editfeedback_text', this.text));
-		if (this.id == null)
-			pt.right(fhqgui.btn('Create', 'insertFeedback();'));
-		else
-			pt.right(fhqgui.btn('Save', 'saveFeedback();'));
-		fhqgui.showModalDialog(pt.render());
-	};
-	
-	this.params = function() {
-		var params = {};
-		if (document.getElementById("editfeedback_id"))
-			params.id = document.getElementById("editfeedback_id").innerHTML;
-		params.text = document.getElementById("editfeedback_text").value;
-		params.type = document.getElementById("editfeedback_type").value;
-		return params;
-	};
-
-	this.close = function() {
-		fhqgui.closeModalDialog();
-	};
-	
-	this.save = function() {
-		alert('feedback save nothing');
-	};
-	
-	this.create = function() {
-		alert('feedback create nothing');
-	};
-	
-	this.delete = function() {
-		alert('feedback create nothing');
-	};
-};
-
 function FHQTable() {
 	this.table = [];
 
@@ -1541,6 +1486,8 @@ fhq.ui.processParams = function() {
 			this.showFullUserProfile(userid);
 		}else if(fhq.containsPageParam("subject")){
 			fhq.ui.loadQuestsBySubject(fhq.pageParams["subject"]);
+		}else if(fhq.containsPageParam("new_feedback")){
+			fhq.ui.loadNewFeedback();
 		}else if(fhq.containsPageParam("more")){
 			fhq.ui.loadPageMore();
 		}else if(fhq.containsPageParam("feedback")){
@@ -1627,9 +1574,74 @@ fhq.ui.loadUserProfile = function(userid) {
 	});
 }
 
-fhq.ui.loadGames = function() {
-	$('#content_page').html('<div class="fhq0021"></div>');
+fhq.ui.loadNewFeedback = function() {
+	window.fhq.changeLocationState({'new_feedback':''});
+	$('.fhq0044').hide();
+	$('.fhq0043').hide();
 	
+	$('#content_page').html('<div class="fhq0046"></div>')
+	$('#content_page').append('<div class="fhq0049"><div class="fhq0050"></div></div>')
+	var el = $('.fhq0046');
+	el.append('<h1>Feedback</h1>');
+	
+	el.append('<div class="fhq0048">' + fhq.t("Target") + ':</div>');
+	el.append(''
+		+ '<select class="fhq0047" id="newfeedback_type">'
+		+ '	<option value="question">' + fhq.t("question") + '</option>'
+		+ '	<option value="complaint">' + fhq.t("complaint") + '</option>'
+		+ '	<option value="defect">' + fhq.t("defect") + '</option>'
+		+ '	<option value="error">' + fhq.t("error") + '</option>'
+		+ '	<option value="approval">' + fhq.t("approval") + '</option>'
+		+ '	<option value="proposal">' + fhq.t("proposal") + '</option>'
+		+ '</select>');
+	
+	if(fhq.userinfo){
+		el.append('<input class="fhq0047" type="hidden" id="newfeedback_from" value="' + fhq.userinfo.email + '">');
+	}else{
+		el.append('<div class="fhq0048">' + fhq.t("From") + ':</div>');
+		el.append('<input class="fhq0047" type="text" id="newfeedback_from" value="Guest">');
+	}
+	
+	el.append('<div class="fhq0048">' + fhq.t("Message") + ':</div>');
+	el.append('<textarea id="newfeedback_text"></textarea><br><br>');
+	el.append('<div class="fhqbtn" id="newfeedback_send" onclick="fhq.ui.insertFeedback()">' + fhq.t("Send") + '</div>');
+}
+
+fhq.ui.insertFeedback = function(){
+	var data = {};
+
+	data.type = $('#newfeedback_type').val();
+	data.from = $('#newfeedback_from').val();
+	data.text = $('#newfeedback_text').val();
+	$('.fhq0046').hide();
+	$('.fhq0049').show();
+
+	fhq.api.feedback.insert(data).done(function(){
+		fhq.ui.loadFeedback();
+	}).fail(function(r){
+		$('.fhq0046').show();
+		$('.fhq0049').hide();
+	
+		console.error(r);
+		var msg = '';
+		if(r && r.responseJSON){
+			msg = r.responseJSON.error.message;
+		}else{
+			msg += 'Error (' + r.status + ')';
+		}
+		
+		fhq.ui.showModalDialog({
+			'header' : fhq.t('Error'),
+			'content' : msg,
+			'buttons' : ''
+		});
+	})
+};
+
+fhq.ui.loadGames = function() {
+	window.fhq.changeLocationState({'games':''});
+	
+	$('#content_page').html('<div class="fhq0021"></div>');
 	fhq.api.games.list().done(function(r){
 		console.log(r);
 		
@@ -1687,6 +1699,7 @@ fhq.ui.gameView = function(game, currentGameId) {
 }
 
 fhq.ui.loadFeedback = function() {
+	window.fhq.changeLocationState({'feedback':''});
 	$('#content_page').html('<div class="fhq0021"></div>');
 	var el = $('.fhq0021');
 	
@@ -2575,8 +2588,9 @@ fhq.ui.feedbackDialogSend = function(){
 	var type = $('#feedback-type').val();
 	var params = {};
 	params.type = type;
+	// params.from = from; // TODO
 	params.text = text;
-	fhq.api.feedback.add(params).done(function(){
+	fhq.api.feedback.insert(params).done(function(){
 		fhq.ui.closeModalDialog();
 	}).fail(function(response){
 		if(response){

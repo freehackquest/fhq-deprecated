@@ -262,6 +262,46 @@ class APIHelpers {
 
 		return true;
 	}
+	
+	static function sendMail($to_, $cc_, $bcc_, $subject, $body, &$errormsg)
+	{	
+		/*if (isset($config['mail']['allow']) && $config['mail']['allow'] != 'yes' )
+			return false;*/
+		
+		// Pear Mail Library
+		require_once "Mail.php";
+		
+		$to = '<'.$to_.'>';
+		
+		$headers = array(
+			'From' => '<'.APIHelpers::$CONFIG['mail']['from'].'>',
+			'To' => '<'.$to_.'>',
+			'Subject' => $subject
+		);
+		
+		if(strlen($cc_) > 0)
+			$headers['Cc'] = '<'.$cc_.'>';
+
+	if(strlen($bcc_) > 0)
+			$headers['Bcc'] = '<'.$bcc_.'>';
+
+		// @ - hide warnings
+		$smtp = @Mail::factory('smtp', array(
+			'host' => APIHelpers::$CONFIG['mail']['host'],
+			'port' => APIHelpers::$CONFIG['mail']['port'],
+			'auth' => APIHelpers::$CONFIG['mail']['auth'],
+			'username' => APIHelpers::$CONFIG['mail']['username'],
+			'password' => APIHelpers::$CONFIG['mail']['password']
+		));
+
+		$mail = @$smtp->send($to, $headers, $body);
+		// $errormsg = $mail->getMessage();
+		return true; // PEAR::isError($mail);
+	}
+
+	static function sendMailToAdmin($subject, $body, &$errormsg){
+		APIHelpers::sendMail(APIHelpers::$CONFIG['mail']['system_message_admin_email'], '', '', $subject, $body, $errormsg);
+	}
 }
 
 include_once ($curdir_helpers."/../../config/config.php");
