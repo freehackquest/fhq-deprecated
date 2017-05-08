@@ -199,13 +199,13 @@ function FHQGuiLib(api) {
 			+ '</div>');
 
 		toppanel.append('<div id="btnmenu_user" class="fhq0041">'
-			+ '<img class="fhq_btn_menu_img user-logo" src="' + (fhq.isAuth() ? fhq.userinfo.logo : 'images/menu/user.png') + '"/>  '
-			+ (fhq.isAuth() ? fhq.userinfo.nick : fhq.t('Account'))
+			+ '<img class="fhq_btn_menu_img user-logo" src="' + (fhq.isAuth() && fhq.userinfo ? fhq.userinfo.logo : 'images/menu/user.png') + '"/>  '
+			+ (fhq.isAuth() && fhq.userinfo ? fhq.userinfo.nick : fhq.t('Account'))
 			+ '<div class="account-panel"></div>');
 
 		$('.account-panel').append(
 			'<img class="fhq_btn_menu_img user-logo" src="' + (fhq.isAuth() && fhq.userinfo ? fhq.userinfo.logo : 'images/menu/user.png') + '"/>  '
-			+ (fhq.isAuth() ? fhq.userinfo.nick : fhq.t('Account'))
+			+ (fhq.isAuth() && fhq.userinfo ? fhq.userinfo.nick : fhq.t('Account'))
 		);
 		$('.account-panel').append('<div class="border"></div>');
 
@@ -216,8 +216,8 @@ function FHQGuiLib(api) {
 			$('.account-panel').append('<div id="btnmenu_restore_password" class="fhq-simple-btn" onclick="fhqgui.showResetPasswordForm();">' + fhq.t('Forgot password?') + '</div>');
 		}else{
 			var game_id = 0;
-			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadUserProfile(' + fhq.userinfo.id + ');">' + fhq.t('Your Profile') + '</div>');
-			$('.account-panel').append('<div class="fhq-simple-btn" onclick="loadScoreboard(' + game_id + ');">Scoreboard (' + fhq.userinfo.score + ')</div>');
+			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadUserProfile(' + (fhq.userinfo ? fhq.userinfo.id : 0) + ');">' + fhq.t('Your Profile') + '</div>');
+			$('.account-panel').append('<div class="fhq-simple-btn" onclick="loadScoreboard(' + game_id + ');">Scoreboard (' + (fhq.userinfo ? fhq.userinfo.score : 0) + ')</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.loadRules(' + game_id + ');">Rules</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadGames();">Games</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.createPageSkills(); fhqgui.updatePageSkills();">Skills</div>');
@@ -2016,7 +2016,6 @@ fhq.ui.loadQuestsBySubject = function(subject){
 		$('.fhq0005').html('');
 		for(var i in r.data){
 			var q = r.data[i];
-			console.log(q);
 			$('.fhq0005').append(''
 				+ '<div class="fhq0001" questid="' + q.questid + '">'
 				+ '	<div class="fhq0008">'

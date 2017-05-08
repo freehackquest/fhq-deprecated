@@ -22,7 +22,7 @@ class APIHelpers {
 	static function checkAuth()
 	{
 		if(!APIHelpers::isAuthorized()) {
-			APIHelpers::showerror2(1224, 401, 'Not authorized request');
+			APIHelpers::showerror(401, 'Not authorized request');
 			exit;
 		}
 	}
@@ -49,26 +49,13 @@ class APIHelpers {
 	}
 	
 	static function showerror($code, $message) {
-		$result = array(
+		$response = array(
 			'result' => 'fail',
-			'httpcode' => 400,
 			'data' => array(),
 		);
-		$result['error']['code'] = $code;
-		$result['error']['message'] = 'Error '.$code.': '.$message;
-		APIHelpers::endpage($result);
-		exit;
-	}
-	
-	static function showerror2($code, $httpcode, $message) {
-		$result = array(
-			'result' => 'fail',
-			'httpcode' => $httpcode,
-			'data' => array(),
-		);
-		$result['error']['code'] = $code;
-		$result['error']['message'] = 'Error '.$code.': '.$message;
-		APIHelpers::endpage($result);
+		$response['error']['code'] = $code;
+		$response['error']['message'] = $message;
+		APIHelpers::endpage($response);
 		exit;
 	}
 
@@ -173,11 +160,13 @@ class APIHelpers {
 			APISecurity::updateByToken();
 		}
 		if($response['result'] == 'fail'){
-			if(isset($response['httpcode'])){
-				http_response_code($response['httpcode']);
+			if(isset($response['code'])){
+				http_response_code($response['code']);
 			}else{
 				http_response_code(400);
 			}
+		}else{
+			http_response_code(200);
 		}
 		echo json_encode($response);
 	}
@@ -256,7 +245,7 @@ class APIHelpers {
 			return true;
 		}else{
 			$message = "Game not found";
-			APIHelpers::showerror2(404, 404, "Game not found");
+			APIHelpers::showerror(404, "Game not found");
 			return false;
 		}
 

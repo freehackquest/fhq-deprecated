@@ -16,7 +16,6 @@ header('Content-Type: application/json');
 
 $curdir_users_list = dirname(__FILE__);
 include_once ($curdir_users_list."/../api.lib/api.base.php");
-include_once ($curdir_users_list."/../api.lib/api.game.php");
 include_once ($curdir_users_list."/../../config/config.php");
 
 $result = APIHelpers::startpage($config);

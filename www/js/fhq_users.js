@@ -183,18 +183,8 @@ function deleteUser(userid) {
 function showUserInfo(id) {
 	showModalDialog('<div id="user_info"><center>Please wait...</div>');
 
-	var params = {};
-	params.userid = id;
-
 	// user info
-	send_request_post(
-		'api/v1/users/get/',
-		createUrlFromObj(params),
-		function (obj) {
-			if (obj.result == "fail") {
-				document.getElementById('user_info').innerHTML = obj.error.message;
-				return;
-			}
+	fhq.api.users.profile(id).done(function (obj) {
 			var ui = document.getElementById('user_info');
 			
 			
@@ -246,7 +236,9 @@ function showUserInfo(id) {
 			// ui.innerHTML += JSON.stringify(obj);
 
 		}
-	);
+	).fail(function(r){
+		document.getElementById('user_info').innerHTML = obj.error.message;
+	});
 }
 
 function updateUsers() {

@@ -16,12 +16,12 @@ $response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
 
 if (!APIHelpers::issetParam('questid'))
-	APIHelpers::showerror(1086, 'Not found parameter "questid"');
+	APIHelpers::showerror(404, 'Not found parameter "questid"');
 	
 $questid = APIHelpers::getParam('questid', 0);
 
 if (!is_numeric($questid))
-	APIHelpers::showerror(1087, 'parameter "questid" must be numeric');
+	APIHelpers::showerror(400, 'parameter "questid" must be numeric');
 
 $conn = APIHelpers::createConnection($config);
 
@@ -31,12 +31,12 @@ $stmt->execute(array($questid));
 if($row = $stmt->fetch()){
 	$gameid = $row['gameid'];
 }else{
-	APIHelpers::showerror2(2213, 404, 'Quest not found');
+	APIHelpers::showerror(404, 'Quest not found');
 }
 
 $message = '';
 if (!APIHelpers::checkGameDates($conn, $gameid, $message))
-	APIHelpers::showerror(1085, $message);
+	APIHelpers::showerror(400, $message);
 
 $response['result'] = 'ok';
 
@@ -74,7 +74,7 @@ try {
 	$response['result'] = 'ok';
 	
 } catch(PDOException $e) {
-	APIHelpers::showerror(1084, $e->getMessage());
+	APIHelpers::showerror(400, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

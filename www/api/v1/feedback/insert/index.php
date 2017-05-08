@@ -20,8 +20,6 @@ if(!APIHelpers::is_json_input()){
 $conn = APIHelpers::createConnection();
 $request = APIHelpers::read_json_input();
 
-
-
 if (!isset($request['type'])){
   APIHelpers::showerror2(1237, 400, 'not found parameter type');
 }

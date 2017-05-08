@@ -547,13 +547,14 @@ fhq.api.users.captcha = function(){
 	return d;
 };
 
-fhq.api.users.registration = function(params, callback){
-	params = params || {};
+fhq.api.users.registration = function(data){
+	data = data || {};
 	var d = $.Deferred();
 	$.ajax({
 		type: "POST",
 		url: 'api/v1/users/registration/',
-		data: params
+		contentType: "application/json",
+		data: JSON.stringify(data)
 	}).done(function(r){
 		d.resolve(r);
 	}).fail(function(r){
@@ -562,13 +563,14 @@ fhq.api.users.registration = function(params, callback){
 	return d;
 }
 
-fhq.api.users.reset_password = function(params) {
-	params = params || {};
+fhq.api.users.reset_password = function(data) {
+	data = data || {};
 	var d = $.Deferred();
 	$.ajax({
 		type: "POST",
 		url: 'api/v1/users/reset_password/',
-		data: params
+		contentType: "application/json",
+		data: JSON.stringify(data)
 	}).done(function(r){
 		d.resolve(r);
 	}).fail(function(r){

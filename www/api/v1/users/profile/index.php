@@ -51,8 +51,7 @@ $query = '
 		WHERE id = ?
 ';
 
-$result['userid'] = $userid;
-// $result['query'] = $query;
+$response['userid'] = $userid;
 
 try {
 	$stmt = $conn->prepare($query);

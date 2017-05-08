@@ -16,26 +16,35 @@ include_once ($curdir."/../../../api.lib/api.base.php");
 include_once ($curdir."/../../../api.lib/api.helpers.php");
 include_once ($curdir."/../../../api.lib/api.security.php");
 include_once ($curdir."/../../../api.lib/api.user.php");
-include_once ($curdir."/../../../../config/config.php");
 
 error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE & ~E_STRICT);
 
-$result = array(
-	'result' => 'fail',
-	'data' => array(),
-);
+$response = APIHelpers::startpage();
 
-if (!APIHelpers::issetParam('email'))
-	APIHelpers::showerror(1013, 'Parameter email was not found');
+if(!APIHelpers::is_json_input()){
+	APIHelpers::showerror2(2000, 400, "Expected application/json");
+}
+$conn = APIHelpers::createConnection();
+$request = APIHelpers::read_json_input();
 
-if (!APIHelpers::issetParam('captcha'))
-	APIHelpers::showerror(1043, 'Parameter captcha was not found');
+if (!isset($request['email'])){
+	APIHelpers::showerror2(1013, 400, 'Parameter email was not found');
+}
 
-$conn = APIHelpers::createConnection($config);
+if (!isset($request['captcha'])){
+	APIHelpers::showerror2(1013, 400, 'Parameter captcha was not found');
+}
 
-$email = APIHelpers::getParam('email', '');
-$captcha = APIHelpers::getParam('captcha', '');
-$captcha_uuid = APIHelpers::getParam('captcha_uuid', '');
+if (!isset($request['captcha_uuid'])){
+	APIHelpers::showerror2(1013, 400, 'Parameter captcha_uuid was not found');
+}
+
+
+$email = $request['email'];
+$captcha = $request['captcha'];
+$captcha_uuid = $request['captcha_uuid'];
+
+$conn = APIHelpers::createConnection();
 $orig_captcha = APIHelpers::find_captcha($conn, $captcha_uuid);
 
 if (strtoupper($captcha) != strtoupper($orig_captcha))
@@ -109,13 +118,13 @@ $email_subject = "Registration on FreeHackQuest.";
 $email_message = '
 	Registration:
 
-	If you was not tried registering on '.$config['hostname'].' just remove this email.
+	If you was not tried registering on '.APIHelpers::$CONFIG['hostname'].' just remove this email.
 
 	Welcome to FreeHackQuest!
 
 	Your login: '.$email.'
 	Your password: '.$password.' (You must change it)
-	Link: '.$config['hostname'].'
+	Link: '.APIHelpers::$CONFIG['hostname'].'
 ';
 
 $stmt_insert2 = $conn->prepare('
@@ -145,11 +154,11 @@ APIEvents::addPublicEvents($conn, 'users', 'New player {'.htmlspecialchars($nick
 $error = '';
 
 // this option must be moved to db
-if (isset($config['mail']) && isset($config['mail']['allow']) && $config['mail']['allow'] == 'yes') {
-	APIHelpers::sendMail($config, $email, '', '', $email_subject, $email_message, $error);
+if (isset(APIHelpers::$CONFIG['mail']) && isset(APIHelpers::$CONFIG['mail']['allow']) && APIHelpers::$CONFIG['mail']['allow'] == 'yes') {
+	APIHelpers::sendMail($email, '', '', $email_subject, $email_message, $error);
 }
 
-$result['result'] = 'ok';
-$result['data']['message'] = 'Check your your e-mail (also please check spam).';
+$response['result'] = 'ok';
+$response['data']['message'] = 'Check your your e-mail (also please check spam).';
 
-echo json_encode($result);
+APIHelpers::endpage($response);
