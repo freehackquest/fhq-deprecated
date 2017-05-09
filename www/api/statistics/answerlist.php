@@ -29,27 +29,27 @@ $response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
 
 if(!APISecurity::isAdmin())
-  APIHelpers::showerror(1068, 'access denie. you must be admin.');
+  APIHelpers::error(403, 'access denie. you must be admin.');
 
 $response['result'] = 'ok';
 
 // table
 $table = APIHelpers::getParam('table', 'active');
 if ($table != 'active' && $table != 'backup')
-	APIHelpers::showerror(1071, 'parameter "table" must be "active" or "backup"');
+	APIHelpers::error(400, 'parameter "table" must be "active" or "backup"');
 $response['data']['table'] = $table;
 $table = $table == 'active' ? 'tryanswer' : 'tryanswer_backup';
 
 // page
 $page = APIHelpers::getParam('page', 0);
 if (!is_numeric($page))
-	APIHelpers::showerror(1072, 'parameter "page" must be numeric');
+	APIHelpers::error(400, 'parameter "page" must be numeric');
 $response['data']['page'] = intval($page);
 
 // onpage
 $onpage = APIHelpers::getParam('onpage', 10);
 if (!is_numeric($onpage))
-	APIHelpers::showerror(1073, 'parameter "onpage" must be numeric');
+	APIHelpers::error(400, 'parameter "onpage" must be numeric');
 $response['data']['onpage'] = intval($onpage);
 
 
@@ -137,7 +137,7 @@ try {
 		$response['data']['count'] = intval($row['cnt']);
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1074, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 try {
@@ -200,7 +200,7 @@ try {
 		);
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1075, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

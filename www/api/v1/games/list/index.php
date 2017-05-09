@@ -14,7 +14,7 @@ include_once ($curdir."/../../../api.lib/api.helpers.php");
 $response = APIHelpers::startpage();
 
 if(!APIHelpers::is_json_input()){
-	APIHelpers::showerror2(2000, 400, "Expected application/json");
+	APIHelpers::error(400, "Expected application/json");
 }
 $conn = APIHelpers::createConnection();
 $request = APIHelpers::read_json_input();
@@ -69,7 +69,7 @@ try {
 	
 	$response['result'] = 'ok';
 } catch(PDOException $e) {
-	APIHelpers::showerror(1193, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

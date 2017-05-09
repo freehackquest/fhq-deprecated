@@ -16,22 +16,22 @@ $response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
 
 if(!APISecurity::isAdmin())
-  APIHelpers::showerror(1319, 'access denie. you must be admin.');
+  APIHelpers::error(403, 'access denie. you must be admin.');
   
 $conn = APIHelpers::createConnection($config);
 
 if (!APIHelpers::issetParam('id'))
-  APIHelpers::showerror(1320, 'not found parameter "id"');
+  APIHelpers::error(400, 'not found parameter "id"');
 
 $gameid = APIHelpers::getParam('id', 0);
 
 if (!is_numeric($gameid))
-	APIHelpers::showerror(1321, '"id" must be numeric');
+	APIHelpers::error(400, '"id" must be numeric');
 
 $gameid = intval($gameid);
 
 if (!APIHelpers::issetParam('rules'))
-  APIHelpers::showerror(1322, 'not found parameter "rules"');
+  APIHelpers::error(400, 'not found parameter "rules"');
 
 $rules = APIHelpers::getParam('rules', '');
 
@@ -43,10 +43,10 @@ try {
 	if ($row = $stmt->fetch()) {
 		$title = $row['title'];
 	} else {
-		APIHelpers::showerror(1326, 'Game #'.$gameid.' does not exists.');
+		APIHelpers::error(404, 'Game #'.$gameid.' does not exists.');
 	}
 } catch(PDOException $e) {
- 	APIHelpers::showerror(1327, $e->getMessage());
+ 	APIHelpers::error(500, $e->getMessage());
 }
 
 try {
@@ -57,7 +57,7 @@ try {
 	APIEvents::addPublicEvents($conn, 'games', "Updated rules for game #".$gameid.' '.htmlspecialchars($title));
 	
 } catch(PDOException $e) {
-	APIHelpers::showerror(1323, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

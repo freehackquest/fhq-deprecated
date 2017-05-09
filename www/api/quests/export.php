@@ -20,28 +20,28 @@ APIHelpers::checkAuth();
 $message = '';
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(1337, 'Denie access (only for admin)');
+	APIHelpers::error(403, 'Denie access (only for admin)');
 
 if (!APIHelpers::issetParam('questid'))
-	APIHelpers::showerror(1338, 'Not found parameter "taskid"');
+	APIHelpers::error(400, 'Not found parameter "taskid"');
 
 $questid = APIHelpers::getParam('questid', 0);
 
 if (!is_numeric($questid))
-	APIHelpers::showerror(1339, 'parameter "questid" must be numeric');
+	APIHelpers::error(400, 'parameter "questid" must be numeric');
 
 $zipfile = tempnam(sys_get_temp_dir(), 'fhq-export-quest-');
 $response['zipfile'] = $zipfile;
 $zip = new ZipArchive();
 if ($zip->open($zipfile,  ZIPARCHIVE::CREATE) !== TRUE)
-	APIHelpers::showerror(1342, 'Could not create zip-file (Please check access t folder files/dumps/)');
+	APIHelpers::error(400, 'Could not create zip-file (Please check access t folder files/dumps/)');
 
 //$zip->addEmptyDir('files');
 //$zip->addEmptyDir('files/users');
 $zip->close();
 
 if (!file_exists($zipfile))
-	APIHelpers::showerror(1343, 'Could not create zip-file');
+	APIHelpers::error(400, 'Could not create zip-file');
 
 $zip->open($zipfile,  ZIPARCHIVE::CREATE);
 
@@ -104,10 +104,10 @@ try {
 		}
 
 	} else {
-		APIHelpers::showerror(1340, 'Problem... may be incorrect game are selected?');
+		APIHelpers::error(400, 'Problem... may be incorrect game are selected?');
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1341, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 // normalize filename

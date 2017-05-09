@@ -17,14 +17,14 @@ include_once ($curdir_quests_files_remove."/../../config/config.php");
 APIHelpers::checkAuth();
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(1300, 'it can do only admin');
+	APIHelpers::error(403, 'it can do only admin');
 	
 if (!APIHelpers::issetParam('fileid'))
-	APIHelpers::showerror(1301, 'Parameter fileid did not found');
+	APIHelpers::error(400, 'Parameter fileid did not found');
 
 $fileid = APIHelpers::getParam('fileid', 0);
 if (!is_numeric($fileid))
-	APIHelpers::showerror(1302, 'Parameter fileid must be numeric');
+	APIHelpers::error(400, 'Parameter fileid must be numeric');
 
 $result = array(
 	'result' => 'fail',
@@ -41,10 +41,10 @@ try {
 	if ($row = $stmt->fetch()) {
 		$filepath = $row['filepath'];
 	} else {
-		APIHelpers::showerror(1304, 'File with id '.$fileid.' did not found.');
+		APIHelpers::error(404, 'File with id '.$fileid.' did not found.');
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1303, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 if (file_exists($curdir_quests_files_remove.'/../../'.$filepath))
@@ -59,7 +59,7 @@ try {
 	$result['data']['id'] = $fileid;
 	$result['data']['filepath'] = $filepath;
 } catch(PDOException $e) {
-	APIHelpers::showerror(1305, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 echo json_encode($result);

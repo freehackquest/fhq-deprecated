@@ -19,19 +19,19 @@ APIHelpers::checkAuth();
 
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(1306, 'it can do only admin');
+	APIHelpers::error(403, 'it can do only admin');
 	
 if (!APIHelpers::issetParam('questid'))
-	APIHelpers::showerror(1307, 'Parameter questid did not found');
+	APIHelpers::error(404, 'Parameter questid did not found');
 
 $questid = APIHelpers::getParam('questid', 0);
 if (!is_numeric($questid))
-	APIHelpers::showerror(1308, 'userid must be numeric');
+	APIHelpers::error(400, 'userid must be numeric');
 
 $questid = intval($questid);
 
 if (count($_FILES) <= 0)
-	APIHelpers::showerror(1309, 'Not found files '.count($_FILES));
+	APIHelpers::error(404, 'Not found files '.count($_FILES));
 
 $result = array(
 	'result' => 'fail',
@@ -85,7 +85,7 @@ for($i = 0; $i < count($keys); $i++)
 	$filename = $keys[$i];
 	if ($_FILES[$filename]['error'] > 0)
 	{
-		APIHelpers::showerror(1310, "Error: " . $_FILES[$filename]["error"]);
+		APIHelpers::error(400, "Error: " . $_FILES[$filename]["error"]);
 	}
 	else
 	{
@@ -97,7 +97,7 @@ for($i = 0; $i < count($keys); $i++)
 		// chmod($curdir_upload_logo.'/../../files/users/',0755);
 		move_uploaded_file($_FILES[$filename]["tmp_name"],$full_filename);
 		if(!file_exists($full_filename))
-			APIHelpers::showerror(1311, 'File was not loaded');
+			APIHelpers::error(400, 'File was not loaded');
 		else {
 			try {
 				$query = 'INSERT INTO quests_files(uuid, questid, filepath, filename, size, dt) VALUES(?,?,?,?,?,NOW())';
@@ -112,10 +112,10 @@ for($i = 0; $i < count($keys); $i++)
 					$result['data']['uuid'] = $uuid;
 					$result['data']['questid'] = $questid;
 				} else {
-					APIHelpers::showerror(1312, 'Could not insert information about file');
+					APIHelpers::error(500, 'Could not insert information about file');
 				}
 			} catch(PDOException $e) {
-				APIHelpers::showerror(1313, $e->getMessage());
+				APIHelpers::error(500, $e->getMessage());
 			}	
 		}
 	}

@@ -17,19 +17,19 @@ $response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
 
 if(!APISecurity::isAdmin())
-  APIHelpers::showerror(1275, 'access denie. you must be admin.');
+  APIHelpers::error(403, 'access denie. you must be admin.');
 
 if (!APIHelpers::issetParam('id'))
-  APIHelpers::showerror(1276, 'not found parameter id');
+  APIHelpers::error(400, 'not found parameter id');
   
 if (!APIHelpers::issetParam('text'))
-  APIHelpers::showerror(1278, 'not found parameter text');
+  APIHelpers::error(400, 'not found parameter text');
 
 $id = APIHelpers::getParam('id', 0);
 $text = APIHelpers::getParam('text', '');
 
 if (!is_numeric($id))
-  APIHelpers::showerror(1279, 'Parameter id must be integer');
+  APIHelpers::error(400, 'Parameter id must be integer');
 
 $id = intval($id);
 
@@ -40,7 +40,7 @@ try {
  	$stmt->execute(array($text, intval($id)));
  	$response['result'] = 'ok';
 } catch(PDOException $e) {
- 	APIHelpers::showerror(1277, $e->getMessage());
+ 	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

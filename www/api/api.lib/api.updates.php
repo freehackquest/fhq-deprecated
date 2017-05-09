@@ -12,7 +12,7 @@ class APIUpdates {
 			if ($row = $stmt->fetch())
 				$id = $row['max'];
 		} catch(PDOException $e) {
-			APIHelpers::showerror(1008, $e->getMessage());
+			APIHelpers::error(500, $e->getMessage());
 		}
 
 		if ($id == NULL)
@@ -26,7 +26,7 @@ class APIUpdates {
 			if ($row = $stmt->fetch())
 				$version = $row['version'];
 		} catch(PDOException $e) {
-			APIHelpers::showerror(1009, $e->getMessage());
+			APIHelpers::error(500, $e->getMessage());
 		}
 		return $version;
 	}
@@ -39,7 +39,7 @@ class APIUpdates {
 			');
 			$stmt->execute(array($old_version, $new_version, $name, 'updated', $description, $userid));
 		} catch(PDOException $e) {
-			APIHelpers::showerror(1010, $e->getMessage());
+			APIHelpers::error(500, $e->getMessage());
 		}
 	}
 }

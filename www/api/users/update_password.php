@@ -22,27 +22,27 @@ $result = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
 
 if (!APISecurity::isAdmin()) 
-	APIHelpers::showerror(1120, 'only for admin');
+	APIHelpers::error(403, 'only for admin');
 
 if (!APIHelpers::issetParam('userid'))
-  APIHelpers::showerror(1121, 'Not found parameter "userid"');
+  APIHelpers::error(400, 'Not found parameter "userid"');
 
 $userid = APIHelpers::getParam('userid', '');
 
 if (!is_numeric($userid))
-	APIHelpers::showerror(1122, 'userid must be numeric');
+	APIHelpers::error(400, 'userid must be numeric');
 
 if ($userid == APISecurity::userid())
-	APIHelpers::showerror(1123, 'Please use another function for change your password');
+	APIHelpers::error(403, 'Please use another function for change your password');
 
 $conn = APIHelpers::createConnection($config);
 
 if (!APIHelpers::issetParam('password'))
-  APIHelpers::showerror(1124, 'Not found parameter "password"');
+  APIHelpers::error(400, 'Not found parameter "password"');
 
 // TODO must be get email by iduser!!!!  
 if (!APIHelpers::issetParam('email'))
-  APIHelpers::showerror(1125, 'Not found parameter "email"');
+  APIHelpers::error(400, 'Not found parameter "email"');
 
 $password = APIHelpers::getParam('password', '');
 $email = APIHelpers::getParam('email', '');
@@ -54,17 +54,14 @@ $result['data']['email'] = $email;
 $result['data']['userid'] = $userid;
 
 if (strlen($password) <= 3)
-  APIHelpers::showerror(1126, '"password" must be more then 3 characters');
+  APIHelpers::error(400, '"password" must be more then 3 characters');
 
-try {
-	$query = 'UPDATE users SET pass = ? WHERE id = ? AND email = ?';
-	$stmt = $conn->prepare($query);
-	if ($stmt->execute(array($password, $userid, $email)))
-		$result['result'] = 'ok';
-	else
-		$result['result'] = 'fail';
-} catch(PDOException $e) {
-	APIHelpers::showerror(1127, $e->getMessage());
-}
+$query = 'UPDATE users SET pass = ? WHERE id = ? AND email = ?';
+$stmt = $conn->prepare($query);
+if ($stmt->execute(array($password, $userid, $email)))
+	$result['result'] = 'ok';
+else
+	$result['result'] = 'fail';
+
 
 echo json_encode($result);

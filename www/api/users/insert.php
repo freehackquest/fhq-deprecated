@@ -1,7 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: Create user (by admin)
  * API_DESCRIPTION: Method will be add new user
@@ -21,38 +18,38 @@ include_once ($curdir."/../api.lib/api.base.php");
 include_once ($curdir."/../api.lib/api.game.php");
 include_once ($curdir."/../../config/config.php");
 
-$result = APIHelpers::startpage($config);
+$result = APIHelpers::startpage();
 
 APIHelpers::checkAuth();
 
 $message = '';
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(1090, 'This function allowed only for admin');
+	APIHelpers::error(403, 'This function allowed only for admin');
 
 $conn = APIHelpers::createConnection($config);
 
 
 if (!APIHelpers::issetParam('uuid'))
-	APIHelpers::showerror(1029, 'Not found parameter uuid');
+	APIHelpers::error(400, 'Not found parameter uuid');
 	
 if (!APIHelpers::issetParam('logo'))
-	APIHelpers::showerror(1030, 'Not found parameter logo');
+	APIHelpers::error(400, 'Not found parameter logo');
 	
 if (!APIHelpers::issetParam('email'))
-	APIHelpers::showerror(1031, 'Not found parameter email');
+	APIHelpers::error(400, 'Not found parameter email');
 	
 if (!APIHelpers::issetParam('role'))
-	APIHelpers::showerror(1032, 'Not found parameter role');
+	APIHelpers::error(400, 'Not found parameter role');
 	
 if (!APIHelpers::issetParam('nick'))
-	APIHelpers::showerror(1033, 'Not found parameter nick');
+	APIHelpers::error(400, 'Not found parameter nick');
 	
 if (!APIHelpers::issetParam('password'))
-	APIHelpers::showerror(1034, 'Not found parameter password');
+	APIHelpers::error(400, 'Not found parameter password');
 	
 if (!APIHelpers::issetParam('status'))
-	APIHelpers::showerror(1035, 'Not found parameter status');
+	APIHelpers::error(400, 'Not found parameter status');
 
 $uuid = APIHelpers::getParam('uuid', APIHelpers::gen_guid());
 $logo = APIHelpers::getParam('logo', 'files/users/0.png');
@@ -64,14 +61,14 @@ $status = APIHelpers::getParam('status', 'activated');
 
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-	APIHelpers::showerror(1036, 'Invalid e-mail address.');
+	APIHelpers::error(400, 'Invalid e-mail address.');
 
 $stmt = $conn->prepare('select count(*) as cnt from users where email = ?');
 $stmt->execute(array($email));
 if ($row = $stmt->fetch())
 {
 	if (intval($row['cnt']) >= 1)
-		APIHelpers::showerror(1037, 'This e-mail was already registered.');	
+		APIHelpers::error(400, 'This e-mail was already registered.');	
 }
 
 // same code exists in api/security/registration.php

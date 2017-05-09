@@ -19,20 +19,20 @@ $response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
 
 if (!APIHelpers::issetParam('questid'))
-	APIHelpers::showerror2(1212, 400, 'Not found parameter "questid"');
+	APIHelpers::error(400, 'Not found parameter "questid"');
 
 $questid = APIHelpers::getParam('questid', 0);
 
 if (!is_numeric($questid))
-	APIHelpers::showerror(1215, 'Parameter "questid" must be numeric');
+	APIHelpers::error(400, 'Parameter "questid" must be numeric');
 
 if (!APIHelpers::issetParam('answer'))
-	APIHelpers::showerror2(1213, 400, 'Not found parameter "answer"');
+	APIHelpers::error(400, 'Not found parameter "answer"');
 
 $answer = APIHelpers::getParam('answer', '');
 
 if ($answer == "")
-  APIHelpers::showerror(1214, 'Parameter "answer" must be not empty');
+  APIHelpers::error(400, 'Parameter "answer" must be not empty');
 
 $conn = APIHelpers::createConnection($config);
 
@@ -42,12 +42,12 @@ $stmt->execute(array($questid));
 if($row = $stmt->fetch()){
 	$gameid = $row['gameid'];
 }else{
-	APIHelpers::showerror2(2213, 404, 'Quest not found');
+	APIHelpers::error(404, 'Quest not found');
 }
 
 $message = '';
 if (!APIHelpers::checkGameDates($conn, $gameid, $message))
-	APIHelpers::showerror2(1211, 400, $message);
+	APIHelpers::error(400, $message);
 
 
 $questid = intval($questid);
@@ -136,26 +136,24 @@ try {
 					$count = intval($row_check_tryanswer['cnt']);
 					$response['checkanswer'] = array($answer, $userid, intval($questid));
 					if ($count > 0) {
-						APIHelpers::showerror(1318, 'Your already try this answer. Levenshtein distance: '.$levenshtein);
+						APIHelpers::error(400, 'Your already try this answer. Levenshtein distance: '.$levenshtein);
 					}
 				}
 				APIAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, $levenshtein, 'No');
-				APIHelpers::showerror(1216, 'Answer incorrect. Levenshtein distance: '.$levenshtein);
+				APIHelpers::error(400, 'Answer incorrect. Levenshtein distance: '.$levenshtein);
 			};
 		} else if ($status == 'completed') {
-			APIHelpers::showerror(1217, 'Quest already passed');
+			APIHelpers::error(400, 'Quest already passed');
 		}
 
 		/*if ($status == 'current' || $status == 'completed')
 			$response['data']['text'] = $row['text'];*/
-	}
-	else
-	{
-		APIHelpers::showerror(1218, 'Not found quest');
+	}else{
+		APIHelpers::error(404, 'Not found quest');
 	}
 
 } catch(PDOException $e) {
-	APIHelpers::showerror(1219, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

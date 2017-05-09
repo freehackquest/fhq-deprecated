@@ -33,15 +33,15 @@ APIHelpers::checkAuth();
 $message = '';
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(1024, 'Access denied. You are not admin.');
+	APIHelpers::error(403, 'Access denied. You are not admin.');
 
 if (!APIHelpers::issetParam('questid'))
-	APIHelpers::showerror(1025, 'Not found parameter "questid"');
+	APIHelpers::error(400, 'Not found parameter "questid"');
 
 $questid = APIHelpers::getParam('questid', 0);
 
 if (!is_numeric($questid))
-	APIHelpers::showerror(1026, 'parameter "questid" must be numeric');
+	APIHelpers::error(400, 'parameter "questid" must be numeric');
 
 $params = array(
 	'name' => '',
@@ -58,7 +58,7 @@ $params = array(
 
 foreach( $params as $key => $val ) {
 	if (!APIHelpers::issetParam($key))
-		APIHelpers::showerror(1027, 'Not found parameter "'.$key.'"');
+		APIHelpers::error(400, 'Not found parameter "'.$key.'"');
 	$params[$key] = APIHelpers::getParam($key, '');
 }
 
@@ -102,7 +102,7 @@ $values[] = $questid;
 		$result['error']['message'] = 'Could not insert';
 	}
 // } catch(PDOException $e) {
-//	APIHelpers::showerror(1028,$e->getMessage());
+//	APIHelpers::error(500,$e->getMessage());
 //}
 
 $stmt = $conn->prepare('SELECT gameid FROM quest WHERE idquest = ?');

@@ -22,13 +22,13 @@ APIHelpers::checkAuth();
 $userid = APIHelpers::getParam('userid', APISecurity::userid());
 // $userid = intval($userid);
 if (!is_numeric($userid))
-	APIHelpers::showerror(1044, 'userid must be numeric');
+	APIHelpers::error(400, 'userid must be numeric');
 
 if (!APISecurity::isAdmin() && $userid != APISecurity::userid())
-	APIHelpers::showerror(1045, 'you what change logo for another user, it can do only admin');
+	APIHelpers::error(403, 'you what change logo for another user, it can do only admin');
 
 if (count($_FILES) <= 0)
-	APIHelpers::showerror(1046, 'Not found file');
+	APIHelpers::error(404, 'Not found file');
 
 $keys = array_keys($_FILES);
 
@@ -49,11 +49,11 @@ for($i = 0; $i < count($keys); $i++)
 		
 		move_uploaded_file($_FILES[$filename]["tmp_name"],$full_filename);
 		if(!file_exists($full_filename))
-			APIHelpers::showerror(1047, 'File was not loaded');
+			APIHelpers::error(404, 'File was not loaded');
 		else {
 			if(mime_content_type($full_filename) != 'image/png') {
 				unlink($full_filename);
-				APIHelpers::showerror(1048, 'File are not png-image');
+				APIHelpers::error(400, 'File are not png-image');
 			}
 				
 			try {
@@ -82,7 +82,7 @@ for($i = 0; $i < count($keys); $i++)
 				unlink($full_filename);
 			} catch(Exception $e) {
 				unlink($full_filename);
-				APIHelpers::showerror(1049, 'Problem with convert image: '.$e->getMessage());
+				APIHelpers::error(500, 'Problem with convert image: '.$e->getMessage());
 			}
 		}
 	}
@@ -99,7 +99,7 @@ try {
 	} else
 		$result['result'] = 'fail';
 } catch(PDOException $e) {
-	APIHelpers::showerror(1050, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 echo json_encode($result);

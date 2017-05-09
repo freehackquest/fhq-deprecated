@@ -27,7 +27,7 @@ APIHelpers::checkAuth();
 $conn = APIHelpers::createConnection($config);
 
 if(!APISecurity::isAdmin())
-  APIHelpers::showerror(1159, 'Error 756: access denie. you must be admin.');
+  APIHelpers::error(403, 'Error 756: access denie. you must be admin.');
 
 $columns = array(
   'title' => 'Unknown',
@@ -42,12 +42,12 @@ $columns = array(
 );
 
 if (!APIHelpers::issetParam('id'))
-  APIHelpers::showerror(1155, 'not found parameter "id"');
+  APIHelpers::error(400, 'not found parameter "id"');
 
 $gameid = getParam('id', 0);
 
 if (!is_numeric($gameid))
-	APIHelpers::showerror(1156, 'incorrect "id"');
+	APIHelpers::error(400, 'incorrect "id"');
 
 $gameid = intval($gameid);
 
@@ -59,7 +59,7 @@ foreach ( $columns as $k => $v) {
   if (APIHelpers::issetParam($k))
     $param_values[$k] = APIHelpers::getParam($k, $v);
   else
-    APIHelpers::showerror(1157, 'Does not found parameter "'.$k.'"');
+    APIHelpers::error(400, 'Does not found parameter "'.$k.'"');
 }
 
 // check game
@@ -69,10 +69,10 @@ try {
 	if ($row = $stmt->fetch()) {
 		// $title = $row['title'];
 	} else {
-		APIHelpers::showerror(1324, 'Game #'.$gameid.' does not exists.');
+		APIHelpers::error(404, 'Game #'.$gameid.' does not exists.');
 	}
 } catch(PDOException $e) {
- 	APIHelpers::showerror(1325, $e->getMessage());
+ 	APIHelpers::error(500, $e->getMessage());
 }
 
 $query = 'UPDATE games SET '.implode(',', $values_q).', date_change = NOW()
@@ -90,7 +90,7 @@ try {
 	$response['result'] = 'ok';
 	APIEvents::addPublicEvents($conn, 'games', "Updated game #".$gameid.' '.htmlspecialchars($param_values['title']));
 } catch(PDOException $e) {
-	APIHelpers::showerror(1158, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

@@ -19,19 +19,19 @@ APIHelpers::checkAuth();
 $message = '';
 
 if (!APIHelpers::issetParam('gameid'))
-	APIHelpers::showerror(1328, 'Not found parameter "gameid"');
+	APIHelpers::error(400, 'Not found parameter "gameid"');
 
 $conn = APIHelpers::createConnection($config);
 $gameid = APIHelpers::getParam('gameid', 0);
 
 if (!is_numeric($gameid))
-	APIHelpers::showerror(1172, 'gameid must be numeric');
+	APIHelpers::error(400, 'gameid must be numeric');
 
 /*
 // TODO
 $errmsg = "";
 if (!checkGameDates($security, &$message))
-	APIHelpers::showerror(1191, $errmsg);
+	APIHelpers::error(403, $errmsg);
 */
 
 
@@ -81,10 +81,10 @@ try {
 	}
 	else
 	{
-		APIHelpers::showerror(1173, 'Game #'.$gameid.' does not exists');
+		APIHelpers::error(404, 'Game #'.$gameid.' does not exists');
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1174, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

@@ -17,12 +17,12 @@ $response = APIHelpers::startpage($config);
 $message = '';
 
 if (!APIHelpers::issetParam('gameid'))
-	APIHelpers::showerror(1331, 'Parameter "gameid" does not found');
+	APIHelpers::error(400, 'Parameter "gameid" does not found');
 
 $gameid = APIHelpers::getParam('gameid', 0);
 
 if (!is_numeric($gameid))
-	APIHelpers::showerror(1088, 'Parameter "gameid" must be numeric');
+	APIHelpers::error(400, 'Parameter "gameid" must be numeric');
 
 
 $response['result'] = 'ok';
@@ -83,7 +83,7 @@ try {
 	}
 	
 } catch(PDOException $e) {
-	APIHelpers::showerror(1089, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

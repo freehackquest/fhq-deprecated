@@ -17,16 +17,16 @@ $response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
 
 if (!APIHelpers::issetParam('feedbackid'))
-  APIHelpers::showerror(1248, 'not found parameter feedbackid');
+  APIHelpers::error(400, 'not found parameter feedbackid');
 
 if (!APIHelpers::issetParam('text'))
-  APIHelpers::showerror(1250, 'not found parameter text');
+  APIHelpers::error(400, 'not found parameter text');
 
 $feedbackid = APIHelpers::getParam('feedbackid', 0);
 $text = APIHelpers::getParam('text', '');
 
 if (!is_numeric($feedbackid))
-  APIHelpers::showerror(1251, 'incorrect feedbackid');
+  APIHelpers::error(400, 'incorrect feedbackid');
 
 $feedbackid = intval($feedbackid);
 
@@ -41,11 +41,11 @@ if(!APISecurity::isAdmin()) {
 		$stmt->execute(array($feedbackid, APISecurity::userid()));
 		if($row = $stmt->fetch()) {
 			if (intval($row['cnt']) != 1) {
-				APIHelpers::showerror(1247, " added message can only admin and author of topic.");
+				APIHelpers::error(400, " added message can only admin and author of topic.");
 			}
 		}
 	} catch(PDOException $e) {
-		APIHelpers::showerror(1252, $e->getMessage());
+		APIHelpers::error(500, $e->getMessage());
 	}
 }
 
@@ -63,7 +63,7 @@ Feedback Answer:
  	$stmt->execute(array($feedbackid, $text, APISecurity::userid()));
  	$response['result'] = 'ok';
 } catch(PDOException $e) {
- 	APIHelpers::showerror(1249, $e->getMessage());
+ 	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

@@ -18,18 +18,18 @@ $response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
 
 if (APIHelpers::issetParam('userid') && !APISecurity::isAdmin()) 
-	APIHelpers::showerror(1128, 'you what change role for another user, it can do only admin');
+	APIHelpers::error(403, 'you what change role for another user, it can do only admin');
 
 $userid = APIHelpers::getParam('userid', APISecurity::userid());
 // $userid = intval($userid);
 if (!is_numeric($userid))
-	APIHelpers::showerror(1129, 'userid must be numeric');
+	APIHelpers::error(400, 'userid must be numeric');
 
 if (!APIHelpers::issetParam('role'))
-  APIHelpers::showerror(1131, 'Not found parameter "role"');
+  APIHelpers::error(400, 'Not found parameter "role"');
 
 if (APISecurity::isAdmin() && APISecurity::userid() == $userid)
-	APIHelpers::showerror(1130, 'you are administrator and you cannot change role for self');
+	APIHelpers::error(400, 'you are administrator and you cannot change role for self');
 
 $conn = APIHelpers::createConnection($config);
 
@@ -44,18 +44,15 @@ foreach (APITypes::$types['userRoles'] as $key => $value) {
 }
 
 if (!in_array($role, $response['data']['possible_roles'])) {
-	APIHelpers::showerror(1132, '"role" must have value from userRoles: "'.implode('", "', $response['data']['possible_roles']).'"');
+	APIHelpers::error(400, '"role" must have value from userRoles: "'.implode('", "', $response['data']['possible_roles']).'"');
 }
 
-try {
-	$query = 'UPDATE users SET role = ? WHERE id = ?';
-	$stmt = $conn->prepare($query);
-	if ($stmt->execute(array($role, $userid)))
-		$response['result'] = 'ok';
-	else
-		$response['result'] = 'fail';
-} catch(PDOException $e) {
-	APIHelpers::showerror(1133, $e->getMessage());
-}
+$query = 'UPDATE users SET role = ? WHERE id = ?';
+$stmt = $conn->prepare($query);
+if ($stmt->execute(array($role, $userid)))
+	$response['result'] = 'ok';
+else
+	$response['result'] = 'fail';
+
 
 APIHelpers::endpage($response);

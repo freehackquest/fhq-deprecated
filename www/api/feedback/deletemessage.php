@@ -16,15 +16,15 @@ $response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
 
 if(!APISecurity::isAdmin())
-  APIHelpers::showerror(1264, 'access denie. you must be admin.');
+  APIHelpers::error(403, 'access denie. you must be admin.');
 
 if (!APIHelpers::issetParam('id'))
-  APIHelpers::showerror(1269, 'not found parameter id');
+  APIHelpers::error(400, 'not found parameter id');
 
 $id = APIHelpers::getParam('id', 0);
 
 if (!is_numeric($id))
-  APIHelpers::showerror(1270, 'incorrect id');
+  APIHelpers::error(400, 'incorrect id');
 
 $conn = APIHelpers::createConnection($config);
 
@@ -32,7 +32,7 @@ try {
  	$conn->prepare('DELETE FROM feedback_msg WHERE id = ?')->execute(array(intval($id)));
  	$response['result'] = 'ok';
 } catch(PDOException $e) {
- 	APIHelpers::showerror(1271, $e->getMessage());
+ 	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

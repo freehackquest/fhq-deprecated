@@ -11,18 +11,17 @@ include_once ($curdir_admin_settings."/../api.lib/api.base.php");
 include_once ($curdir_admin_settings."/../api.lib/api.security.php");
 include_once ($curdir_admin_settings."/../api.lib/api.helpers.php");
 include_once ($curdir_admin_settings."/../api.lib/api.updates.php");
-include_once ($curdir_admin_settings."/../../config/config.php");
 
-$response = APIHelpers::startpage($config);
-$conn = APIHelpers::createConnection($config);
+$response = APIHelpers::startpage();
+$conn = APIHelpers::createConnection();
 
 APIHelpers::checkAuth();
 
 if(!APISecurity::isAdmin())
-  APIHelpers::showerror(1280, 'This method only for admin');
+  APIHelpers::error(403, 'This method only for admin');
 
 $response['result'] = 'ok';
-$response['data'] = $config;
+$response['data'] = APIHelpers::$CONFIG;
 
 unset($response['data']['mail']['password']);
 unset($response['data']['db']['userpass']);

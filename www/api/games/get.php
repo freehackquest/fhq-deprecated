@@ -19,7 +19,7 @@ $gameid = APIHelpers::getParam('gameid', 0);
 $response['access']['edit'] = APISecurity::isAdmin();
 
 if (!is_numeric($gameid))
-	APIHelpers::showerror(1170, '"gameid" must be numeric');
+	APIHelpers::error(400, '"gameid" must be numeric');
 
 $gameid = intval($gameid);
 
@@ -58,10 +58,10 @@ try {
 		}
 		$response['result'] = 'ok';
 	} else {
-		APIHelpers::showerror(1171, 'Does not found game with this id');
+		APIHelpers::error(404, 'Does not found game with this id');
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1169, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

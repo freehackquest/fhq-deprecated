@@ -1,18 +1,17 @@
 <?php
 require_once __DIR__.'/vendor/autoload.php';
-require_once __DIR__.'/config/config.php';
 require_once __DIR__.'/api/api.lib/api.base.php';
 require_once __DIR__.'/api/api.lib/api.helpers.php';
 require_once __DIR__.'/api/api.lib/api.security.php';
 require_once __DIR__.'/api/api.lib/api.user.php';
 
 $google_client = new Google_Client();
-$google_client->setApplicationName($config['google_auth']['appname']);
-$google_client->setClientId($config['google_auth']['client_id']);
-$google_client->setClientSecret($config['google_auth']['client_secret']);
+$google_client->setApplicationName(APIHelpers::$CONFIG['google_auth']['appname']);
+$google_client->setClientId(APIHelpers::$CONFIG['google_auth']['client_id']);
+$google_client->setClientSecret(APIHelpers::$CONFIG['google_auth']['client_secret']);
 $google_client->setRedirectUri("postmessage"); /* alway postmessage. */
-$google_client->setDeveloperKey($config['google_auth']['developer_key']);
-$google_client->setRedirectUri($config['google_auth']['google_auth_uri']);
+$google_client->setDeveloperKey(APIHelpers::$CONFIG['google_auth']['developer_key']);
+$google_client->setRedirectUri(APIHelpers::$CONFIG['google_auth']['google_auth_uri']);
 
 $google_client->addScope(array(
 	'https://www.googleapis.com/auth/userinfo.email',
@@ -32,7 +31,7 @@ if (!isset($_GET['code'])) {
 		$email = $me['emails'][0]['value'];
 		$image = isset($me['image']) ? $me['image']['url'] : "";
 		
-		$conn = APIHelpers::createConnection($config);
+		$conn = APIHelpers::createConnection();
 		if(APISecurity::login_by_google($conn, $email)){
 			APIHelpers::$TOKEN = APIHelpers::gen_guid();
 			$result['data']['token'] = APIHelpers::$TOKEN;
@@ -98,7 +97,7 @@ if (!isset($_GET['code'])) {
 			}else{
 				APIEvents::addPublicEvents($conn, 'errors', 'Alert! Admin, google registration is broken!');
 				error_log("1287: ".$error);
-				APIHelpers::showerror(1287, '[Registration] Sorry registration is broken. Please send report to the admin about this.');
+				APIHelpers::error(500, '[Registration] Sorry registration is broken. Please send report to the admin about this.');
 			}
 
 		}

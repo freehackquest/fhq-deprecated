@@ -26,7 +26,7 @@ $where = array();
 $id = APIHelpers::getParam('id', -1);
 if ($id != -1) {
 	if (!is_numeric($id))
-		APIHelpers::showerror(1228, 'Id must be integer');
+		APIHelpers::error(400, 'Id must be integer');
 	$params[] = $id;
 	$where[] = 'id > ?';
 }
@@ -67,7 +67,7 @@ try {
 	if($row = $stmt->fetch())
 		$response['data']['found'] = $row['cnt'];
 } catch(PDOException $e) {
-	APIHelpers::showerror(1185, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 try {
@@ -101,7 +101,7 @@ try {
 	}
 	$response['data']['maxid'] = $new_id;
 } catch(PDOException $e) {
-	APIHelpers::showerror(1229, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

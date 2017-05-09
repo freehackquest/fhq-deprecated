@@ -20,21 +20,21 @@ include_once ($curdir_security_restore."/../../../api.lib/api.user.php");
 $response = APIHelpers::startpage();
 
 if(!APIHelpers::is_json_input()){
-	APIHelpers::showerror2(400, "Expected application/json");
+	APIHelpers::error(400, "Expected application/json");
 }
 $conn = APIHelpers::createConnection();
 $request = APIHelpers::read_json_input();
 
 if (!isset($request['email'])){
-	APIHelpers::showerror2(400, 'Parameter email was not found');
+	APIHelpers::error(400, 'Parameter email was not found');
 }
 
 if (!isset($request['captcha'])){
-	APIHelpers::showerror2(400, 'Parameter captcha was not found');
+	APIHelpers::error(400, 'Parameter captcha was not found');
 }
 
 if (!isset($request['captcha_uuid'])){
-	APIHelpers::showerror2(400, 'Parameter captcha_uuid was not found');
+	APIHelpers::error(400, 'Parameter captcha_uuid was not found');
 }
 
 $email = $request['email'];
@@ -44,10 +44,10 @@ $captcha_uuid = $request['captcha_uuid'];
 $orig_captcha = APIHelpers::find_captcha($conn, $captcha_uuid);
 
 if (strtoupper($captcha) != strtoupper($orig_captcha))
-	APIHelpers::showerror(1040, '[Restore] Captcha is not correct, please "Refresh captcha" and try again');
+	APIHelpers::error(400, '[Restore] Captcha is not correct, please "Refresh captcha" and try again');
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-	APIHelpers::showerror(1041, '[Restore] Invalid e-mail address. ');
+	APIHelpers::error(400, '[Restore] Invalid e-mail address. ');
 
 
 $stmt = $conn->prepare('select id, nick from users where email = ?');
@@ -59,7 +59,7 @@ if ($row = $stmt->fetch()) {
 	$nick = $row['nick'];
 	$userid = $row['id'];
 } else {
-	APIHelpers::showerror(1042, '[Restore] This e-mail was not registered.');
+	APIHelpers::error(400, '[Restore] This e-mail was not registered.');
 }
 
 $password = substr(md5(rand().rand()), 0, 8);
@@ -79,7 +79,7 @@ $stmt_update->execute(array(
 
 if( !APISecurity::login($conn, $email, $password_hash)) {
 	APIEvents::addPublicEvents($conn, 'errors', 'Admin, restore password is broken!');
-	APIHelpers::showerror(1315, '[Reset] Sorry restore is broken. Please send report to the admin about this.');
+	APIHelpers::error(500, '[Reset] Sorry restore is broken. Please send report to the admin about this.');
 } else {
 	APISecurity::updateLastDTLogin($conn);
 	APIUser::loadUserProfile($conn);

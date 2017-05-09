@@ -16,8 +16,8 @@ function getSubString($line, $substring) {
 }
 
 function parseErrorCode($line) {
-	$pos = strpos($line, 'APIHelpers::showerror');
-	$str = substr($line, $pos + strlen('APIHelpers::showerror'));
+	$pos = strpos($line, 'APIHelpers::error');
+	$str = substr($line, $pos + strlen('APIHelpers::error'));
 	$pos = strpos($str, '(');
 	$str = substr($str, $pos);
 	$str = substr($str, 1, strpos($str, ',') - 1);
@@ -25,8 +25,8 @@ function parseErrorCode($line) {
 }
 
 function parseErrorMessage($line) {
-	$pos = strpos($line, 'APIHelpers::showerror');
-	$str = substr($line, $pos + strlen('APIHelpers::showerror'));
+	$pos = strpos($line, 'APIHelpers::error');
+	$str = substr($line, $pos + strlen('APIHelpers::error'));
 	$pos = strpos($str, '(');
 	$str = substr($str, $pos);
 	$str = substr($str, strpos($str, ',') + 1);
@@ -106,7 +106,7 @@ function scanfolder($dir) {
 						);
 					}
 					
-					if (hasSubString($line, 'APIHelpers::showerror')) {
+					if (hasSubString($line, 'APIHelpers::error')) {
 						$method['output']['errors'][parseErrorCode($line)] = parseErrorMessage($line);
 					}
 				}

@@ -18,10 +18,10 @@ $response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
 
 if(!APISecurity::isAdmin())
-  APIHelpers::showerror(1272, 'access denie. you must be admin.');
+  APIHelpers::error(403, 'access denie. you must be admin.');
 
 if (!APIHelpers::issetParam('id'))
-  APIHelpers::showerror(1273, 'not found parameter id');
+  APIHelpers::error(400, 'not found parameter id');
 
 $id = APIHelpers::getParam("id", 0);
 
@@ -44,7 +44,7 @@ try {
 		$response['data']['text'] = htmlspecialchars($row['text']);
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1274, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

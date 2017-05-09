@@ -24,15 +24,15 @@ APIHelpers::checkAuth();
 $message = '';
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(1080, 'Access denied');
+	APIHelpers::error(403, 'Access denied');
 
 if (!APIHelpers::issetParam('questid'))
-	APIHelpers::showerror(1081, 'Not found parameter "questid"');
+	APIHelpers::error(400, 'Not found parameter "questid"');
 
 $questid = APIHelpers::getParam('questid', 0);
 
 if (!is_numeric($questid))
-	APIHelpers::showerror(1082, 'parameter "questid" must be numeric');
+	APIHelpers::error(400, 'parameter "questid" must be numeric');
 
 $result['result'] = 'ok';
 
@@ -82,7 +82,7 @@ try {
 	$result['result'] = 'ok';
 	
 } catch(PDOException $e) {
-	APIHelpers::showerror(1083, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 try {
@@ -99,7 +99,7 @@ try {
 	$result['result'] = 'ok';
 	
 } catch(PDOException $e) {
-	APIHelpers::showerror(1314, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 include_once ($curdir."/../api.lib/savetoken.php");

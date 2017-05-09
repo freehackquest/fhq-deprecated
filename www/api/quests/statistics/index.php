@@ -25,7 +25,7 @@ if ($questid != '' && is_numeric($questid)) {
 	$filter_where[] = '(idquest = ?)';
 	$filter_values[] = intval($questid);
 } else if ($questid != '' && !is_numeric($questid)) {
-	APIHelpers::showerror(1286, 'Parameter "questid" must be numeric or empty');
+	APIHelpers::error(400, 'Parameter "questid" must be numeric or empty');
 }
 
 if (!APISecurity::isAdmin()) {
@@ -56,7 +56,7 @@ function getCountStatBy($conn, $table, $questid, $passed){
 			$res = $row['cnt'];
 		}
 	} catch(PDOException $e) {
-		APIHelpers::showerror(1079, $e->getMessage());
+		APIHelpers::error(500, $e->getMessage());
 	}
 	return $res;
 }
@@ -112,7 +112,7 @@ try {
 		$response['msg'] = 'not_found';
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1102, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

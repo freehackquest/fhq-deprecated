@@ -25,7 +25,7 @@ APIHelpers::checkAuth();
 $message = '';
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(1091, 'This function allowed only for admin');
+	APIHelpers::error(403, 'This function allowed only for admin');
 
 $result['result'] = 'ok';
 
@@ -68,7 +68,7 @@ try {
 		$result['found'] = $row['cnt'];
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1092, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 try {
@@ -109,7 +109,7 @@ try {
     $i++;
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1093, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 $dir = $curdir_users_list."/../../files/dumps/";

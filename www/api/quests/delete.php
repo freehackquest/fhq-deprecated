@@ -20,18 +20,18 @@ APIHelpers::checkAuth();
 $message = '';
 
 if (!APIGame::checkGameDates($message))
-	APIHelpers::showerror(1059, $message);
+	APIHelpers::error(400, $message);
 
 if (!APIHelpers::issetParam('questid'))
-	APIHelpers::showerror(1060, 'Not found parameter "questid"');
+	APIHelpers::error(400, 'Not found parameter "questid"');
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(1061, 'Access denied. You are not admin.');
+	APIHelpers::error(403, 'Access denied. You are not admin.');
 
 $questid = APIHelpers::getParam('questid', 0);
 
 if (!is_numeric($questid))
-	APIHelpers::showerror(1062, 'parameter "questid" must be numeric');
+	APIHelpers::error(400, 'parameter "questid" must be numeric');
 
 $conn = APIHelpers::createConnection($config);
 
@@ -46,10 +46,10 @@ try {
 		$name = $row['name'];
 		$subject = $row['subject'];
 	} else {
-		APIHelpers::showerror(1190, 'Quest #'.$gameid.' does not exists.');
+		APIHelpers::error(404, 'Quest #'.$gameid.' does not exists.');
 	}
 } catch(PDOException $e) {
- 	APIHelpers::showerror(1152, $e->getMessage());
+ 	APIHelpers::error(500, $e->getMessage());
 }
 
 // todo recalculate score for users
@@ -73,7 +73,7 @@ try {
 	$response['result'] = 'ok';
 	APIEvents::addPublicEvents($conn, "quests", "Removed quest #".$questid.' '.htmlspecialchars($name).' (subject: '.htmlspecialchars($subject).') ');
 } catch(PDOException $e) {
-	APIHelpers::showerror(1063, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 APIQuest::updateMaxGameScore($conn, APIGame::id());

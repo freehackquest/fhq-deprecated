@@ -18,7 +18,7 @@ include_once ($curdir."/../../config/config.php");
 APIHelpers::checkAuth();
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(1007, 'This function allowed only for admin');
+	APIHelpers::error(403, 'This function allowed only for admin');
 
 $result = array(
 	'result' => 'fail',

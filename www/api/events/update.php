@@ -18,23 +18,23 @@ $response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
 
 if(!APISecurity::isAdmin())
-  APIHelpers::showerror(1253, 'access denie. you must be admin.');
+  APIHelpers::error(403, 'access denie. you must be admin.');
 
 if (!APIHelpers::issetParam('id'))
-  APIHelpers::showerror(1254, 'not found parameter id');
+  APIHelpers::error(400, 'not found parameter id');
   
 if (!APIHelpers::issetParam('type'))
-  APIHelpers::showerror(1255, 'not found parameter type');
+  APIHelpers::error(400, 'not found parameter type');
 
 if (!APIHelpers::issetParam('message'))
-  APIHelpers::showerror(1256, 'not found parameter message');
+  APIHelpers::error(400, 'not found parameter message');
 
 $id = APIHelpers::getParam('id', 0);
 $type = APIHelpers::getParam('type', 'info');
 $message = APIHelpers::getParam('message', '');
 
 if (!is_numeric($id))
-  APIHelpers::showerror(1257, 'incorrect id');
+  APIHelpers::error(400, 'incorrect id');
 
 $conn = APIHelpers::createConnection($config);
 
@@ -43,6 +43,6 @@ try {
  	$stmt->execute(array($type, $message, intval($id)));
  	$response['result'] = 'ok';
 } catch(PDOException $e) {
- 	APIHelpers::showerror(1258, $e->getMessage());
+ 	APIHelpers::error(500, $e->getMessage());
 }
 APIHelpers::endpage($response);

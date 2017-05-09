@@ -22,7 +22,7 @@ class APIHelpers {
 	static function checkAuth()
 	{
 		if(!APIHelpers::isAuthorized()) {
-			APIHelpers::showerror(401, 'Not authorized request');
+			APIHelpers::error(401, 'Not authorized request');
 			exit;
 		}
 	}
@@ -48,7 +48,7 @@ class APIHelpers {
 	  return isset($_GET[$name]) ? $_GET[$name] : (isset($_POST[$name]) ? $_POST[$name] : $defaultValue);
 	}
 	
-	static function showerror($code, $message) {
+	static function error($code, $message) {
 		$response = array(
 			'result' => 'fail',
 			'data' => array(),
@@ -134,7 +134,7 @@ class APIHelpers {
 					APIHelpers::$FHQSESSION_ORIG = json_decode($row['data'],true);
 				}
 			} catch(PDOException $e) {
-				APIHelpers::showerror(1188, $e->getMessage());
+				APIHelpers::error(500, $e->getMessage());
 			}
 		}
 
@@ -245,7 +245,7 @@ class APIHelpers {
 			return true;
 		}else{
 			$message = "Game not found";
-			APIHelpers::showerror(404, "Game not found");
+			APIHelpers::error(404, "Game not found");
 			return false;
 		}
 

@@ -13,7 +13,7 @@ include_once ($curdir."/../../../api.lib/api.base.php");
 $response = APIHelpers::startpage();
 
 if(!APIHelpers::is_json_input()){
-	APIHelpers::showerror2(2000, 400, "Expected application/json");
+	APIHelpers::error(400, "Expected application/json");
 }
 $conn = APIHelpers::createConnection();
 $request = APIHelpers::read_json_input();
@@ -22,7 +22,7 @@ $response['profile'] = array();
 $response['access'] = array();
 
 /*if (!APIHelpers::issetParam('userid'))
-	APIHelpers::showerror(1177, 'Not found parameter userid');*/
+	APIHelpers::error(400, 'Not found parameter userid');*/
 
 $userid = APISecurity::userid();
 if(isset($request['userid'])){
@@ -30,10 +30,10 @@ if(isset($request['userid'])){
 }
 
 if (!is_numeric($userid))
-	APIHelpers::showerror2(1181, 400, 'Parameter userid must be integer');
+	APIHelpers::error(400, 'Parameter userid must be integer');
 
 if($userid == 0 && APISecurity::userid() == 0){
-	APIHelpers::showerror2(1181, 401, 'Not authorized');
+	APIHelpers::error(401, 'Not authorized');
 }
 
 $userid = intval($userid);
@@ -75,7 +75,7 @@ try {
 	}
 	
 } catch(PDOException $e) {
-	APIHelpers::showerror(1184, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 // users_profile
@@ -86,7 +86,7 @@ try {
 		$response['profile'][$row['name']] = $row['value'];
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1183, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 if(isset($_SESSION['game'])){
@@ -122,7 +122,7 @@ try {
 		);
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1182, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

@@ -48,7 +48,7 @@ window.fhq.ws.onconnect = function(){};
 
 window.fhq.ws.initWebsocket = function(){
 	fhq.ws.socket = new WebSocket("ws://" + window.location.hostname + ":1234/");
-	// fhq.ws.socket = new WebSocket("ws://freehackquest.com:1234/api");
+	// fhq.ws.socket = new WebSocket("ws://192.168.1.5:1234/api");
 	window.fhq.ws.socket.onopen = function() {
 		console.log('WS Opened');
 		window.fhq.ws.onconnect();

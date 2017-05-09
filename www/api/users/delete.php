@@ -21,15 +21,15 @@ APIHelpers::checkAuth();
 $conn = APIHelpers::createConnection($config);
 
 if (!APISecurity::isAdmin()) 
-	APIHelpers::showerror(1107, 'access only for admin');
+	APIHelpers::error(403, 'access only for admin');
 
 if (!APIHelpers::issetParam('userid'))
-  APIHelpers::showerror(1108, 'Not found parameter "userid"');
+  APIHelpers::error(400, 'Not found parameter "userid"');
 
 $userid = APIHelpers::getParam('userid', 0);
 
 if (!is_numeric($userid))
-  APIHelpers::showerror(1109, 'userid must be numeric');
+  APIHelpers::error(400, 'userid must be numeric');
 
 $nick = '';
 // check user
@@ -39,10 +39,10 @@ try {
 	if ($row = $stmt->fetch()) {
 		$nick = $row['nick'];
 	} else {
-		APIHelpers::showerror(1111, 'Userid did not found');
+		APIHelpers::error(404, 'Userid did not found');
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1110, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 
@@ -55,7 +55,7 @@ try {
  	
  	$result['result'] = 'ok';
 } catch(PDOException $e) {
- 	APIHelpers::showerror(1147, $e->getMessage());
+ 	APIHelpers::error(500, $e->getMessage());
 }
 
 APIEvents::addPublicEvents($conn, 'users', 'User #'.$userid.' {'.htmlspecialchars($nick).'} was removed by admin!');

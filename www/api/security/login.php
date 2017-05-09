@@ -27,10 +27,10 @@ $result = array(
 $token = '';
 
 if (!APIHelpers::issetParam('email'))
-	APIHelpers::showerror(1001, 'Parameter email was not found');
+	APIHelpers::error(400, 'Parameter email was not found');
 
 if (!APIHelpers::issetParam('password'))
-	APIHelpers::showerror(1316, 'Parameter password was not found');
+	APIHelpers::error(400, 'Parameter password was not found');
 
 $email = APIHelpers::getParam('email', '');
 $password = APIHelpers::getParam('password', '');
@@ -42,7 +42,7 @@ if( APISecurity::login($conn, $email, $hash_password2)) {
 	$result['data']['token'] = APIHelpers::$TOKEN;
 	$result['data']['session'] = APIHelpers::$FHQSESSION;
 } else {
-	APIHelpers::showerror(1002, 'email or/and password was not found in system');
+	APIHelpers::error(401, 'email or/and password was not found in system');
 }
 
 if ($result['result'] == 'ok') {

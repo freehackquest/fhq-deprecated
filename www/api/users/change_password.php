@@ -1,7 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 /*
  * API_NAME: Change password
  * API_DESCRIPTION: Method for change password
@@ -24,26 +21,26 @@ APIHelpers::checkAuth();
 $conn = APIHelpers::createConnection($config);
 
 if (!APIHelpers::issetParam('old_password'))
-  APIHelpers::showerror(1016, 'Not found parameter "old_password"');
+  APIHelpers::error(400, 'Not found parameter "old_password"');
   
 if (!APIHelpers::issetParam('new_password'))
-  APIHelpers::showerror(1017, 'Not found parameter "new_password"');
+  APIHelpers::error(400, 'Not found parameter "new_password"');
   
 if (!APIHelpers::issetParam('new_password_confirm'))
-  APIHelpers::showerror(1018, 'Not found parameter "new_password_confirm"');
+  APIHelpers::error(400, 'Not found parameter "new_password_confirm"');
 
 $old_password = APIHelpers::getParam('old_password', '');
 $new_password = APIHelpers::getParam('new_password', '');
 $new_password_confirm = APIHelpers::getParam('new_password_confirm', '');
 
 if (strlen($new_password) <= 3)
-  APIHelpers::showerror(1015, '"New password" must be more then 3 characters');
+  APIHelpers::error(400, '"New password" must be more then 3 characters');
   
 $email = APISecurity::email();
 $userid = APISecurity::userid();
 
 if (md5($new_password) != md5($new_password_confirm))
-  APIHelpers::showerror(1014, 'New password and New password confirm are not equals');
+  APIHelpers::error(400, 'New password and New password confirm are not equals');
   
 // temporary double passwords 
 $hash_old_password = APISecurity::generatePassword2($email, $old_password);
@@ -59,10 +56,10 @@ try {
 	$stmt = $conn->prepare($query);
 	$stmt->execute(array($userid, $email, $hash_old_password));
 	if (!$row = $stmt->fetch()) {
-		APIHelpers::showerror(1019, 'Old password are incorrect');
+		APIHelpers::error(400, 'Old password are incorrect');
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1020, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 // set new password
@@ -72,9 +69,9 @@ try {
 	if ($stmt->execute(array($hash_new_password, $userid, $email, $hash_old_password)))
 		$result['result'] = 'ok';
 	else
-		APIHelpers::showerror(1021, 'Problem with set new password');
+		APIHelpers::error(500, 'Problem with set new password');
 } catch(PDOException $e) {
-	APIHelpers::showerror(1022, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 echo json_encode($result);

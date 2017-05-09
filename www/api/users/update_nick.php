@@ -18,11 +18,11 @@ APIHelpers::checkAuth();
 
 $userid = APIHelpers::getParam('userid', APISecurity::userid());
 if (!is_numeric($userid))
-	APIHelpers::showerror(1117, 'userid must be numeric '.$userid);
+	APIHelpers::error(400, 'userid must be numeric '.$userid);
 $userid = intval($userid);
 
 if (!APISecurity::isAdmin() && $userid != APISecurity::userid()) 
-	APIHelpers::showerror(1116, 'you what change nick for another user, it can do only admin '.APISecurity::userid());
+	APIHelpers::error(403, 'you what change nick for another user, it can do only admin '.APISecurity::userid());
 
 // todo check if changed is current user
 // if (isset($config['profile']) && isset($config['profile']['change_nick']) && $config['profile']['change_nick'] == 'yes') {
@@ -34,14 +34,14 @@ if (!APISecurity::isAdmin() && $userid != APISecurity::userid())
 $conn = APIHelpers::createConnection($config);
 
 if (!APIHelpers::issetParam('nick'))
-  APIHelpers::showerror(1115, 'Not found parameter "nick"');
+  APIHelpers::error(400, 'Not found parameter "nick"');
 
 $nick = APIHelpers::getParam('nick', '');
 $nick = htmlspecialchars($nick);
 $oldnick = APISecurity::nick();
 
 if ($nick == $oldnick) {
-	APIHelpers::showerror(1112, 'New nick equal with old nick');
+	APIHelpers::error(400, 'New nick equal with old nick');
 }
 
 
@@ -50,11 +50,9 @@ $result['data']['userid'] = $userid;
 $result['currentUser'] = $userid == APISecurity::userid();
 
 if (strlen($nick) <= 3)
-  APIHelpers::showerror(1113, '"nick" must be more then 3 characters');
+  APIHelpers::error(400, '"nick" must be more then 3 characters');
 
 try {
-	
-
 	$query = 'UPDATE users SET nick = ? WHERE id = ?';
 	$stmt = $conn->prepare($query);
 	if ($stmt->execute(array($nick, $userid)))
@@ -73,7 +71,7 @@ try {
 	else
 		$result['result'] = 'fail';
 } catch(PDOException $e) {
-	APIHelpers::showerror(1114, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 echo json_encode($result);

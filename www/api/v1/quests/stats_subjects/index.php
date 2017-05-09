@@ -16,7 +16,7 @@ include_once ($curdir."/../../../api.lib/api.helpers.php");
 $response = APIHelpers::startpage();
 
 if(!APIHelpers::is_json_input()){
-	APIHelpers::showerror2(2001, 400, "Expected application/json on input POST");
+	APIHelpers::error(400, "Expected application/json on input POST");
 }
 
 $conn = APIHelpers::createConnection();
@@ -37,7 +37,7 @@ try {
 		);
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1096, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

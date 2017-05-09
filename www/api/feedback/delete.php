@@ -16,15 +16,15 @@ $response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
 
 if(!APISecurity::isAdmin())
-  APIHelpers::showerror(1243, 'access denie. you must be admin.');
+  APIHelpers::error(403, 'access denie. you must be admin.');
 
 if (!APIHelpers::issetParam('id'))
-  APIHelpers::showerror(1244, 'not found parameter id');
+  APIHelpers::error(400, 'not found parameter id');
 
 $id = APIHelpers::getParam('id', 0);
 
 if (!is_numeric($id))
-  APIHelpers::showerror(1245, 'incorrect id');
+  APIHelpers::error(400, 'incorrect id');
 
 $conn = APIHelpers::createConnection($config);
 
@@ -34,7 +34,7 @@ try {
  	
  	$response['result'] = 'ok';
 } catch(PDOException $e) {
- 	APIHelpers::showerror(1246, $e->getMessage());
+ 	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

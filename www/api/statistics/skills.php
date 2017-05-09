@@ -72,7 +72,7 @@ try {
 		$max_score[$row['subject']] = intval($row['sum_subject']);
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1069, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 foreach ($max_score as $key => $value) {
@@ -84,14 +84,14 @@ foreach ($max_score as $key => $value) {
 // page
 $page = APIHelpers::getParam('page', 0);
 if (!is_numeric($page))
-	APIHelpers::showerror(1070, 'Parameter "page" must be numeric');
+	APIHelpers::error(400, 'Parameter "page" must be numeric');
 $page = intval($page);
 $response['data']['page'] = $page;
 
 // onpage
 $onpage = APIHelpers::getParam('onpage', 25);
 if (!is_numeric($onpage))
-	APIHelpers::showerror(1186, 'parameter "onpage" must be numeric');
+	APIHelpers::error(400, 'parameter "onpage" must be numeric');
 $onpage = intval($onpage);
 $response['data']['onpage'] = intval($onpage);
 
@@ -175,7 +175,7 @@ try {
 	}
 
 } catch(PDOException $e) {
-	APIHelpers::showerror(1187, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 // count quests
@@ -205,7 +205,7 @@ try {
 		}
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1189, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

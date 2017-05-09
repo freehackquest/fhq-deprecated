@@ -16,10 +16,10 @@ $response = APIHelpers::startpage($config);
 APIHelpers::checkAuth();
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(1345, 'This method only for admin');
+	APIHelpers::error(403, 'This method only for admin');
 
 if (count($_FILES) <= 0)
-	APIHelpers::showerror(1346, 'Not found files '.count($_FILES));
+	APIHelpers::error(404, 'Not found files '.count($_FILES));
 
 $keys = array_keys($_FILES);
 $response['result'] = 'ok';
@@ -29,19 +29,16 @@ $response['result'] = 'ok';
 for($i = 0; $i < count($keys); $i++)
 {
 	$filename = $keys[$i];
-	if ($_FILES[$filename]['error'] > 0)
-	{
-		APIHelpers::showerror(1347, 'Error with files '.$_FILES[$filename]["error"]);
-	}
-	else
-	{
+	if ($_FILES[$filename]['error'] > 0){
+		APIHelpers::error(400, 'Error with files '.$_FILES[$filename]["error"]);
+	}else{
 		$response[$filename] = 'try';
 		
 		$zip = new ZipArchive();
 		$filename = $_FILES[$filename]["tmp_name"];
 
 		if ($zip->open($filename)!==TRUE) {
-			APIHelpers::showerror(1348, 'Could not open zip-archive');
+			APIHelpers::error(400, 'Could not open zip-archive');
 		}
 		
 		// print_r($zip);

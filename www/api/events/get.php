@@ -19,29 +19,25 @@ $params = array();
 $where = array();
 
 if (!APIHelpers::issetParam('id'))
-  APIHelpers::showerror(1220, 'not found parameter id');
+  APIHelpers::error(400, 'not found parameter id');
 
 $id = APIHelpers::getParam('id', 0);
 
 if (!is_numeric($id))
-  APIHelpers::showerror(1221, 'incorrect id');
+  APIHelpers::error(400, 'incorrect id');
 
 $conn = APIHelpers::createConnection($config);
 
-try {
- 	$stmt = $conn->prepare('SELECT * FROM public_events WHERE id = ?');
- 	$stmt->execute(array(intval($id)));
- 	
- 	if ($row = $stmt->fetch()) {
-		$response['result'] = 'ok';
-		$response['data']['id'] = $row['id'];
-		$response['data']['type'] = htmlspecialchars($row['type']);
-		$response['data']['message'] = htmlspecialchars($row['message']);
-	} else {
-		APIHelpers::showerror(1222, 'not found event with this id');
-	}
-} catch(PDOException $e) {
- 	APIHelpers::showerror(1223, $e->getMessage());
+$stmt = $conn->prepare('SELECT * FROM public_events WHERE id = ?');
+$stmt->execute(array(intval($id)));
+
+if ($row = $stmt->fetch()) {
+	$response['result'] = 'ok';
+	$response['data']['id'] = $row['id'];
+	$response['data']['type'] = htmlspecialchars($row['type']);
+	$response['data']['message'] = htmlspecialchars($row['message']);
+} else {
+	APIHelpers::error(400, 'not found event with this id');
 }
 
 APIHelpers::endpage($response);

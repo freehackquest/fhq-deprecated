@@ -23,15 +23,15 @@ $response = APIHelpers::startpage($config);
 // APIHelpers::checkAuth();
 
 if (!APIHelpers::issetParam('gameid'))
-	APIHelpers::showerror(1330, 'Parameter "gameid" does not found');
+	APIHelpers::error(404, 'Parameter "gameid" does not found');
 
 $gameid = APIHelpers::getParam('gameid', 0);
 
 if (!is_numeric($gameid))
-	APIHelpers::showerror(1077, 'Parameter "gameid" must be numeric');
+	APIHelpers::error(400, 'Parameter "gameid" must be numeric');
 
 if ($gameid == 0)
-	APIHelpers::showerror(1076, "Parameter gameid must be not 0.");
+	APIHelpers::error(400, "Parameter gameid must be not 0.");
 
 $response['result'] = 'ok';
 
@@ -43,13 +43,13 @@ $filter_values[] = intval($gameid);
 // page
 $page = APIHelpers::getParam('page', 0);
 if (!is_numeric($page))
-	APIHelpers::showerror(1284, 'Parameter "page" must be numeric');
+	APIHelpers::error(400, 'Parameter "page" must be numeric');
 $response['data']['page'] = intval($page);
 
 // onpage
 $onpage = APIHelpers::getParam('onpage', 25);
 if (!is_numeric($onpage))
-	APIHelpers::showerror(1285, 'parameter "onpage" must be numeric');
+	APIHelpers::error(400, 'parameter "onpage" must be numeric');
 $response['data']['onpage'] = intval($onpage);
 
 // questid
@@ -58,7 +58,7 @@ if ($questid != '' && is_numeric($questid)) {
 	$filter_where[] = '(idquest = ?)';
 	$filter_values[] = intval($questid);
 } else if ($questid != '' && !is_numeric($questid)) {
-	APIHelpers::showerror(1286, 'Parameter "questid" must be numeric or empty');
+	APIHelpers::error(400, 'Parameter "questid" must be numeric or empty');
 }
 
 // questname
@@ -105,7 +105,7 @@ try {
 		$response['data']['count'] = $row['cnt'];
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1078, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 
@@ -129,7 +129,7 @@ function getCountStatBy($conn, $table, $questid, $passed)
 			$res = $row['cnt'];
 		}
 	} catch(PDOException $e) {
-		APIHelpers::showerror(1079, $e->getMessage());
+		APIHelpers::error(500, $e->getMessage());
 	}
 	return $res;
 }
@@ -200,7 +200,7 @@ try {
 		}
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1102, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

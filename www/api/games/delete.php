@@ -18,15 +18,15 @@ APIHelpers::checkAuth();
 $conn = APIHelpers::createConnection($config);
 
 if(!APISecurity::isAdmin())
-  APIHelpers::showerror(1149, 'access denie. you must be admin.');
+  APIHelpers::error(403, 'access denie. you must be admin.');
 
 if (!APIHelpers::issetParam('id'))
-  APIHelpers::showerror(1150, 'not found parameter "id"');
+  APIHelpers::error(400, 'not found parameter "id"');
 
 $gameid = APIHelpers::getParam('id', 0);
 
 if (!is_numeric($gameid))
-  APIHelpers::showerror(1153, 'incorrect id');
+  APIHelpers::error(400, 'incorrect id');
 
 $title = '';
 
@@ -37,10 +37,10 @@ try {
 	if ($row = $stmt->fetch()) {
 		$title = $row['title'];
 	} else {
-		APIHelpers::showerror(1200, 'Game #'.$gameid.' does not exists.');
+		APIHelpers::error(404, 'Game #'.$gameid.' does not exists.');
 	}
 } catch(PDOException $e) {
- 	APIHelpers::showerror(1151, $e->getMessage());
+ 	APIHelpers::error(500, $e->getMessage());
 }
 
 try {
@@ -70,7 +70,7 @@ try {
  	$response['result'] = 'ok';
  	APIEvents::addPublicEvents($conn, 'games', "Removed game #".$gameid.' '.htmlspecialchars($title));
 } catch(PDOException $e) {
- 	APIHelpers::showerror(1154, $e->getMessage());
+ 	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

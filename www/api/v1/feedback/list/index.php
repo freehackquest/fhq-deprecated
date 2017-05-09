@@ -17,7 +17,7 @@ include_once ($curdir_statistics_list."/../../../api.lib/api.helpers.php");
 $response = APIHelpers::startpage();
 
 if(!APIHelpers::is_json_input()){
-	APIHelpers::showerror2(2000, 400, "Expected application/json");
+	APIHelpers::error(400, "Expected application/json");
 }
 $conn = APIHelpers::createConnection();
 $request = APIHelpers::read_json_input();
@@ -27,7 +27,7 @@ $page = 0;
 if(isset($request['page']))
 	$page = $request['page'];
 if (!is_numeric($page))
-	APIHelpers::showerror2(1234, 400, 'parameter "page" must be numeric');
+	APIHelpers::error(400, 'parameter "page" must be numeric');
 $response['data']['page'] = intval($page);
 
 // onpage
@@ -35,7 +35,7 @@ $onpage = 25;
 if(isset($request['onpage']))
 	$onpage = $request['onpage'];
 if (!is_numeric($onpage))
-	APIHelpers::showerror2(1235, 400, 'parameter "onpage" must be numeric');
+	APIHelpers::error(400, 'parameter "onpage" must be numeric');
 
 $response['data']['onpage'] = intval($onpage);
 
@@ -62,7 +62,7 @@ try {
 		$response['data']['count'] = $row['cnt'];
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1236, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 try {
@@ -126,7 +126,7 @@ try {
 		}
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1238, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

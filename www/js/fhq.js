@@ -493,7 +493,7 @@ fhq.api.users.getLastEventId = function(){
 	var params = {};
 	$.ajax({
 		type: "POST",
-		url: 'api/v1/users/get/',
+		url: 'api/v1/users/profile/',
 		contentType: "application/json",
 		data: JSON.stringify(params)
 	}).done(function(response){
@@ -605,7 +605,7 @@ window.fhq.users = new (function(t) {
 	}
 	$.ajax({
 		type: "POST",
-		url: 'api/v1/users/get/',
+		url: 'api/v1/users/profile/',
 		data: params
 	}).done(function(r){
 		if (r.result == 'ok') {

@@ -33,10 +33,10 @@ APIHelpers::checkAuth();
 $message = '';
 
 if (!APIGame::checkGameDates($message))
-	APIHelpers::showerror(1164, $message);
+	APIHelpers::error(403, $message);
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(1165, 'Access denied. You are not admin.');
+	APIHelpers::error(403, 'Access denied. You are not admin.');
 
 $params = array(
 	'quest_uuid' => '',
@@ -54,7 +54,7 @@ $params = array(
 
 foreach( $params as $key => $val ) {
 	if (!APIHelpers::issetParam($key))
-		APIHelpers::showerror(1166, 'Not found parameter "'.$key.'"');
+		APIHelpers::error(400, 'Not found parameter "'.$key.'"');
 	$params[$key] = APIHelpers::getParam($key, '');
 }
 
@@ -92,10 +92,10 @@ try {
 			APIEvents::addPublicEvents($conn, "quests", "New quest #".$response['data']['quest']['id']." ".$questname." (subject: ".$params['subject'].")");
 		}
 	} else {
-		APIHelpers::showerror(1168,'Could not insert. PDO: '.$conn->errorInfo());
+		APIHelpers::error(500,'Could not insert. PDO: '.$conn->errorInfo());
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1167,$e->getMessage());
+	APIHelpers::error(500,$e->getMessage());
 }
 
 APIQuest::updateMaxGameScore($conn, APIGame::id());

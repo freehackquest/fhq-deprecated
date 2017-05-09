@@ -14,19 +14,19 @@ include_once ($curdir."/../../../api.lib/api.helpers.php");
 $response = APIHelpers::startpage();
 
 if(!APIHelpers::is_json_input()){
-	APIHelpers::showerror2(2000, 400, "Expected application/json");
+	APIHelpers::error(400, "Expected application/json");
 }
 $conn = APIHelpers::createConnection();
 $request = APIHelpers::read_json_input();
 
 
 if (!isset($request['questid']))
-	APIHelpers::showerror2(1065, 400, 'Not found parameter "questid"');
+	APIHelpers::error(400, 'Not found parameter "questid"');
 
 $questid = $request['questid'];
 
 if (!is_numeric($questid))
-	APIHelpers::showerror(1066, 'parameter "questid" must be numeric');
+	APIHelpers::error(400, 'parameter "questid" must be numeric');
 
 $response['result'] = 'ok';
 
@@ -121,7 +121,7 @@ try {
 			);
 		}
 	} else {
-		APIHelpers::showerror2(1148, 400, 'Problem... may be incorrect game are selected?');
+		APIHelpers::error(500, 'Problem... may be incorrect game are selected?');
 	}
 	
 	$response['result'] = 'ok';
@@ -129,10 +129,10 @@ try {
 	$response['permissions']['delete'] = APISecurity::isAdmin();
 	
 	if (!APIHelpers::checkGameDates($conn, $gameid, $message) && !APISecurity::isAdmin())
-		APIHelpers::showerror2(1064, 400, $message);
+		APIHelpers::error(400, $message);
 	
 } catch(PDOException $e) {
-	APIHelpers::showerror(1067, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

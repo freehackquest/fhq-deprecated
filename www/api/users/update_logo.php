@@ -18,12 +18,12 @@ include_once ($curdir."/../../config/config.php");
 APIHelpers::checkAuth();
 
 if (!APISecurity::isAdmin()) 
-	APIHelpers::showerror(1139, 'only for admin');
+	APIHelpers::error(403, 'only for admin');
 
 $userid = APIHelpers::getParam('userid', APISecurity::userid());
 // $userid = intval($userid);
 if (!is_numeric($userid))
-	APIHelpers::showerror(1140, 'userid must be numeric');
+	APIHelpers::error(400, 'userid must be numeric');
 
 $result = array(
 	'result' => 'fail',
@@ -33,7 +33,7 @@ $result = array(
 $conn = APIHelpers::createConnection($config);
 
 if (!APIHelpers::issetParam('logo'))
-  APIHelpers::showerror(1141, 'Not found parameter "logo"');
+  APIHelpers::error(400, 'Not found parameter "logo"');
 
 $logo = APIHelpers::getParam('logo', '');
 
@@ -48,7 +48,7 @@ try {
 	else
 		$result['result'] = 'fail';
 } catch(PDOException $e) {
-	APIHelpers::showerror(1142, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 echo json_encode($result);

@@ -19,15 +19,16 @@ include_once ($curdir_events_count."/../../config/config.php");
 $response = APIHelpers::startpage($config);
 $conn = APIHelpers::createConnection($config);
 
-if (!APIHelpers::issetParam('id'))
-  APIHelpers::showerror(1225, 'Not found parameter "id"');
+if (!APIHelpers::issetParam('id')){
+  APIHelpers::error(400, 'Not found parameter "id"');
+}
 
 $type = APIHelpers::getParam('type', '');
 
 $id = APIHelpers::getParam('id', 0);
 
 if (!is_numeric($id))
-  APIHelpers::showerror(1226, 'id must be integer');
+  APIHelpers::error(400, 'id must be integer');
 
 try {
 	$params = array();
@@ -48,7 +49,7 @@ try {
 		$response['result'] = 'ok';		
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1227, $e->getMessage());
+	APIHelpers::error(400, $e->getMessage());
 }
 
 APIHelpers::endpage($response);

@@ -19,10 +19,10 @@ $conn = APIHelpers::createConnection($config);
 $gameid = APIHelpers::getParam('gameid', 0);
 
 if (!APISecurity::isAdmin())
-	APIHelpers::showerror(1194, 'Denie access (only for admin)');
+	APIHelpers::error(403, 'Denie access (only for admin)');
 
 if (!is_numeric($gameid))
-	APIHelpers::showerror(1333, '"gameid" must be numeric');
+	APIHelpers::error(400, '"gameid" must be numeric');
 
 $gameid = intval($gameid);
 
@@ -30,14 +30,14 @@ $zipfile = tempnam(sys_get_temp_dir(), 'fhq-export-game-');
 
 $zip = new ZipArchive();
 if ($zip->open($zipfile,  ZIPARCHIVE::CREATE) !== TRUE)
-	APIHelpers::showerror(1334, 'Could not create zip-file (Please check access t folder files/dumps/)');
+	APIHelpers::error(404, 'Could not create zip-file (Please check access t folder files/dumps/)');
 
 //$zip->addEmptyDir('files');
 //$zip->addEmptyDir('files/users');
 $zip->close();
 
 if (!file_exists($zipfile))
-	APIHelpers::showerror(1335, 'Could not create zip-file');
+	APIHelpers::error(404, 'Could not create zip-file');
 
 $zip->open($zipfile,  ZIPARCHIVE::CREATE);
 
@@ -86,10 +86,10 @@ try {
 		}
 		
 	} else {
-		APIHelpers::showerror(1336, 'Does not found game with this id');
+		APIHelpers::error(404, 'Does not found game with this id');
 	}
 } catch(PDOException $e) {
-	APIHelpers::showerror(1332, $e->getMessage());
+	APIHelpers::error(500, $e->getMessage());
 }
 
 // normalize filename

@@ -22,21 +22,21 @@ error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE & ~E_STRICT);
 $response = APIHelpers::startpage();
 
 if(!APIHelpers::is_json_input()){
-	APIHelpers::showerror2(2000, 400, "Expected application/json");
+	APIHelpers::error(400, "Expected application/json");
 }
 $conn = APIHelpers::createConnection();
 $request = APIHelpers::read_json_input();
 
 if (!isset($request['email'])){
-	APIHelpers::showerror2(1013, 400, 'Parameter email was not found');
+	APIHelpers::error(400, 'Parameter email was not found');
 }
 
 if (!isset($request['captcha'])){
-	APIHelpers::showerror2(1013, 400, 'Parameter captcha was not found');
+	APIHelpers::error(400, 'Parameter captcha was not found');
 }
 
 if (!isset($request['captcha_uuid'])){
-	APIHelpers::showerror2(1013, 400, 'Parameter captcha_uuid was not found');
+	APIHelpers::error(400, 'Parameter captcha_uuid was not found');
 }
 
 
@@ -48,10 +48,10 @@ $conn = APIHelpers::createConnection();
 $orig_captcha = APIHelpers::find_captcha($conn, $captcha_uuid);
 
 if (strtoupper($captcha) != strtoupper($orig_captcha))
-	APIHelpers::showerror(1012, '[Registration] Captcha is not correct, please "Refresh captcha" and try again');
+	APIHelpers::error(400, '[Registration] Captcha is not correct, please "Refresh captcha" and try again');
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-	APIHelpers::showerror(1011, '[Registration] Invalid e-mail address.');
+	APIHelpers::error(400, '[Registration] Invalid e-mail address.');
 
 
 $stmt = $conn->prepare('select count(*) as cnt from users where email = ?');
@@ -59,7 +59,7 @@ $stmt->execute(array($email));
 if ($row = $stmt->fetch())
 {
 	if (intval($row['cnt']) >= 1)
-		APIHelpers::showerror(1192, '[Registration] This e-mail was already registered.');	
+		APIHelpers::error(400, '[Registration] This e-mail was already registered.');	
 }
 
 $nick = "hacker-".substr(md5(rand().rand()), 0, 7);
@@ -106,7 +106,7 @@ $error = print_r($conn->errorInfo(),true);
 if( !APISecurity::login($conn, $email, $password_hash)) {
 	APIEvents::addPublicEvents($conn, 'errors', 'Alert! Admin, registration is broken!');
 	error_log("1287: ".$error);
-	APIHelpers::showerror(1287, '[Registration] Sorry registration is broken. Please send report to the admin about this.');
+	APIHelpers::error(500, '[Registration] Sorry registration is broken. Please send report to the admin about this.');
 } else {
 	APISecurity::updateLastDTLogin($conn);
 	APIUser::loadUserProfile($conn);
