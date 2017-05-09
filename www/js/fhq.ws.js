@@ -50,7 +50,7 @@ window.fhq.ws.initWebsocket = function(){
 	var protocol = window.location.protocol == "https:" ? "wss:" : "ws:";
 	var port = window.location.protocol == "https:" ? "4613" : "1234";
 
-	fhq.ws.socket = new WebSocket(protocol + "://" + window.location.hostname + ":" + port + "/");
+	fhq.ws.socket = new WebSocket(protocol + "//" + window.location.hostname + ":" + port + "/");
 	// fhq.ws.socket = new WebSocket("ws://192.168.1.5:1234/api");
 	window.fhq.ws.socket.onopen = function() {
 		console.log('WS Opened');

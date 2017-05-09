@@ -291,6 +291,13 @@ class APIHelpers {
 	static function sendMailToAdmin($subject, $body, &$errormsg){
 		APIHelpers::sendMail(APIHelpers::$CONFIG['mail']['system_message_admin_email'], '', '', $subject, $body, $errormsg);
 	}
+	
+	static function email() {
+		if (APIHelpers::$FHQSESSION != NULL && APIHelpers::isAuthorized()) {
+			return isset(APIHelpers::$FHQSESSION['user']['email']) ? $FHQSESSION['user']['email'] : '';
+		}
+		return '';
+	}
 }
 
 include_once ($curdir_helpers."/../../config/config.php");

@@ -1,13 +1,4 @@
 <?php
-/*
- * API_NAME: Feedback Insert
- * API_DESCRIPTION: Method will be add feedback
- * API_ACCESS: authorized users
- * API_INPUT: type - string, type of feedback - look in types
- * API_INPUT: text - string, text message
- * API_INPUT: token - string, token
- */
- 
 $curdir_feedback_insert = dirname(__FILE__);
 include_once ($curdir_feedback_insert."/../../../api.lib/api.helpers.php");
 include_once ($curdir_feedback_insert."/../../../api.lib/api.base.php");
@@ -27,7 +18,7 @@ if (!isset($request['type'])){
 if (!isset($request['from'])){
   APIHelpers::error(400, 'not found parameter from');
 }
-  
+
 if (!isset($request['text'])){
   APIHelpers::error(400, 'not found parameter text');
 }
@@ -35,6 +26,15 @@ if (!isset($request['text'])){
 $type = $request['type'];
 $from = $request['from'];
 $text = $request['text'];
+
+if (!filter_var($from, FILTER_VALIDATE_EMAIL))
+	APIHelpers::error(400, '[Feedback] Invalid e-mail address.');
+
+if(APIHelpers::email() != ''){
+	$from = APIHelpers::email()."(".$from.")";
+}else{
+	$from = "Guest (".$from.")";
+}
 
 if (strlen($text) <= 10)
   APIHelpers::error(400, 'text must be informative! (more than 10 character)');

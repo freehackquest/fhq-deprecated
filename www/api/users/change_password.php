@@ -36,7 +36,7 @@ $new_password_confirm = APIHelpers::getParam('new_password_confirm', '');
 if (strlen($new_password) <= 3)
   APIHelpers::error(400, '"New password" must be more then 3 characters');
   
-$email = APISecurity::email();
+$email = APIHelpers::email();
 $userid = APISecurity::userid();
 
 if (md5($new_password) != md5($new_password_confirm))

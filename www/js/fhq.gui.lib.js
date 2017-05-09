@@ -1599,7 +1599,7 @@ fhq.ui.loadNewFeedback = function() {
 		el.append('<input class="fhq0047" type="hidden" id="newfeedback_from" value="' + fhq.userinfo.email + '">');
 	}else{
 		el.append('<div class="fhq0048">' + fhq.t("From") + ':</div>');
-		el.append('<input class="fhq0047" type="text" id="newfeedback_from" value="Guest">');
+		el.append('<input class="fhq0047" type="text" id="newfeedback_from" placeholder="youmail@domain.com" value="">');
 	}
 	
 	el.append('<div class="fhq0048">' + fhq.t("Message") + ':</div>');

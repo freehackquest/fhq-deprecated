@@ -113,13 +113,6 @@ class APISecurity {
 		}
 		return (APIHelpers::isAuthorized()) ? $_SESSION['user']['nick'] : ''; 
 	}
-	
-	static function email() {
-		if (APIHelpers::$FHQSESSION != NULL && APIHelpers::isAuthorized()) {
-			return isset(APIHelpers::$FHQSESSION['user']['email']) ? $FHQSESSION['user']['email'] : '';
-		}
-		return (APIHelpers::isAuthorized()) ? strtolower($_SESSION['user']['email']) : '';
-	}
   
 	static function setNick($nick) {
 		// TODO $FHQSESSION
