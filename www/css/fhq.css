@@ -1969,6 +1969,9 @@ body.dark
 .fhq0045{
 	color: #333;
 	cursor: pointer;
+	padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: left;
 }
 
 .fhq0045:hover{
@@ -1982,7 +1985,6 @@ body.dark
 .dark .fhq0045:hover{
 	color: #F8E8D8;
 }
-
 
 .fhq0046{
 	width: 550px;

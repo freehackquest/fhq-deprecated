@@ -429,5 +429,9 @@ window.fhq.localization = {
 	'Send':{
 		'en': 'Send',
 		'ru': 'Отправить'
+	},
+	'New Feedback':{
+		'en': 'New Feedback',
+		'ru': 'Написать отзыв'
 	}
 };

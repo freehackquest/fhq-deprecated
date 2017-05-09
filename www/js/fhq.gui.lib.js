@@ -241,8 +241,13 @@ function FHQGuiLib(api) {
 			+ '</div>');
 		// create menu
 		
-		$('.fhq0044').append('<div class="fhq0045" onclick="fhq.ui.loadNewFeedback()">New Feedback</div>'); // TODO redesign show feedback
+		$('.fhq0044').append('<div class="fhq0045" onclick="fhq.ui.loadNewFeedback()">' + fhq.t('New Feedback') + '</div>');
 
+		if (fhq.isAdmin()){
+			$('.fhq0044').append('<div class="fhq0045" onclick="formCreateGame();">' + fhq.t('Create Game') + '</div>');
+			$('.fhq0044').append('<div class="fhq0045" onclick="fhqgui.formImportGame();">' + fhq.t('Import Game') + '</div>');
+		}
+		
 
 		$('#btnmenu_user').unbind().bind('click', function(e){
 			$('.accout-panel').show();
@@ -1488,6 +1493,10 @@ fhq.ui.processParams = function() {
 			fhq.ui.loadQuestsBySubject(fhq.pageParams["subject"]);
 		}else if(fhq.containsPageParam("new_feedback")){
 			fhq.ui.loadNewFeedback();
+		}else if(fhq.containsPageParam("tools")){
+			fhq.ui.loadTools();
+		}else if(fhq.containsPageParam("tool")){
+			fhq.ui.loadTool(fhq.pageParams["tool"]);
 		}else if(fhq.containsPageParam("more")){
 			fhq.ui.loadPageMore();
 		}else if(fhq.containsPageParam("feedback")){
@@ -1646,15 +1655,6 @@ fhq.ui.loadGames = function() {
 		console.log(r);
 		
 		var el = $('.fhq0021');
-		
-		if (fhq.isAdmin()){
-			el.append(''
-				+ '<div class="fhq0022">'
-				+ '		<div class="fhqbtn" onclick="formCreateGame();">' + fhq.t('Create Game') + '</div>'
-				+ '		<div class="fhqbtn" onclick="fhqgui.formImportGame();">' + fhq.t('Import Game') + '</div>'
-				+ '</div>'
-			)
-		}
 
 		for (var k in r.data) {
 			if (r.data.hasOwnProperty(k)) {
