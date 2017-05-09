@@ -43,7 +43,7 @@
 ?>
 
 	<script type="text/javascript" src="js/fhq.frontend.lib.js?ver=1"></script>
-	<script type="text/javascript" src="js/fhq.gui.lib.js?ver=1"></script>
+	<script type="text/javascript" src="js/fhq.ui.lib.js?ver=1"></script>
 	<script type="text/javascript" src="js/fhq_send_request.js?ver=<?php echo $versioncontent; ?>"></script>
 	<script type="text/javascript" src="js/fhq_echo_head.js?ver=<?php echo $versioncontent; ?>"></script>
 	<script type="text/javascript" src="js/fhq_modal_dialog.js?ver=<?php echo $versioncontent; ?>"></script>
