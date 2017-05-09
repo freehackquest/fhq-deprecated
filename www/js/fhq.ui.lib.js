@@ -866,24 +866,6 @@ function FHQGuiLib(api) {
 		return content;
 	}
 	
-	this.questIcon = function(questid, name, subject, score, solved) {
-		solved = solved == null ? "?" : solved;
-
-		var content = '\n\n<div class="fhq_quest_info" onclick="showQuest(' + questid + ');">';
-		content += '<div class="fhq_quest_info_row">\n';
-		content += '<div class="fhq_quest_info_cell_img">';
-		content += '<img  width="100px" src="images/quests/' + subject + '.png">';
-		content += '</div>';
-		
-		content += '<div class="fhq_quest_info_cell_content">';
-		content += '<div class="fhq_quest_caption">' + questid + ' ' + name + '</div>';
-		content += '<div class="fhq_quest_score">' + subject + ' +' + score + '</div>';
-		content += '<div class="fhq_quest_caption">solved: ' + solved + '</div>';
-		content += '</div>';
-		content += '</div></div>\n';
-		return content;
-	}
-	
 	this.userIcon = function(userid, logo, nick) {
 		return '<div class="fhqbtn" onclick="showUserInfo(' + userid + ')"> <img class="fhqmiddelinner" width=25px src="' + logo + '"/> ' + nick + '</div>'
 	}
@@ -1485,7 +1467,7 @@ fhq.ui.processParams = function() {
 		} else if(fhq.containsPageParam("scoreboard")){
 			loadScoreboard(fhq.profile.game.id);
 		} else if (fhq.containsPageParam("quest")){
-			fhq.ui.showQuest(fhq.pageParams["quest"]);
+			fhq.ui.loadQuest(fhq.pageParams["quest"]);
 		}else if(fhq.containsPageParam("userid")){
 			var userid = fhq.pageParams["userid"]
 			this.showFullUserProfile(userid);
@@ -1872,7 +1854,7 @@ window.fhq.ui.updateQuests = function(){
 			$('.fhqleftlist .quests .content').append('<div class="fhqleftitem ' + q.status + '" questid="' + q.questid + '"><div class="name">' + q.name + '</div> <div class="score">+' + q.score + '</div></div>');
 		}
 		$('.fhqleftlist .quests .content .fhqleftitem').unbind('click').bind('click', function(e){
-			fhq.ui.showQuest($(this).attr("questid"));
+			fhq.ui.loadQuest($(this).attr("questid"));
 		});
 	}).fail(function(r){
 		console.error(r);
@@ -1924,7 +1906,7 @@ fhq.ui.createQuest = function() {
 	fhq.api.quests.insert(params).done(function(r){
 		closeModalDialog();
 		fhq.ui.updateQuests();
-		fhq.ui.showQuest(r.data.quest.id);
+		fhq.ui.loadQuest(r.data.quest.id);
 	}).fail(function(){
 		alert("fail");
 	})
@@ -1950,7 +1932,7 @@ fhq.ui.importQuest = function() {
 			}
 			closeModalDialog();
 			fhq.ui.updateQuests();
-			fhq.ui.showQuest(obj.data.quest.id);
+			fhq.ui.loadQuest(obj.data.quest.id);
 		}
 	);
 }
@@ -2086,7 +2068,7 @@ function updateQuest(id)
 			if (obj.result == "ok") {
 				closeModalDialog();
 				fhq.ui.updateQuests();
-				fhq.ui.showQuest(id);
+				fhq.ui.loadQuest(id);
 			} else {
 				alert(obj.error.message);
 			}
@@ -2203,7 +2185,7 @@ function formEditQuest(id)
 			content += createQuestRow('State:', fhqgui.combobox('editquest_state', obj.data.state, fhq.getQuestStates()));
 			content += createQuestRow('Description State:', '<textarea id="editquest_description_state">' + obj.data.description_state + '</textarea>');
 			content += createQuestRow('', '<div class="fhqbtn" onclick="updateQuest(' + obj.quest + ');">Update</div>'
-				+ '<div class="fhqbtn" onclick="showQuest(' + obj.quest + ');">Cancel</div>'
+				+ '<div class="fhqbtn" onclick="fhq.ui.loadQuest(' + obj.quest + ');">Cancel</div>'
 			);
 
 			content += '</div>';
@@ -2270,11 +2252,12 @@ window.fhq.ui.addHint = function(questid){
 	});
 }
 
-window.fhq.ui.showQuest = function(id){
+window.fhq.ui.loadQuest = function(id){
 	$('#content_page').html('<div class="fhq0009"></div>')
 	var el = $('.fhq0009');
 	el.html('Loading...');
 	fhq.api.quests.quest(id).done(function(response){
+		var questid = parseInt(id,10);
 		var q = response.data;
 		var perm_edit = false;
 		var perm_delete = false;
@@ -2301,7 +2284,7 @@ window.fhq.ui.showQuest = function(id){
 			'background-image': 'url(' + q.game_logo + ')'
 		});
 		
-		var c = '<div class="newquestinfo">';
+		var c = '<div class="fhq0051">';
 		if(response.permissions){
 			var p = response.permissions;
 			c += (p.edit ? '<div class="fhqbtn" id="quest_edit">' + fhq.t('Edit') + '</div>' : '');
@@ -2334,7 +2317,7 @@ window.fhq.ui.showQuest = function(id){
 			fhqgui.exportQuest(q.questid);
 		})
 
-		el.append('<div class="newquestinfo"><br>'
+		el.append('<div class="fhq0051"><br>'
 			+ '<script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>'
 			+ '<script src="//yastatic.net/share2/share.js"></script>'
 			+ '<div class="ya-share2" data-services="collections,vkontakte,facebook,odnoklassniki,moimir,gplus,twitter,blogger,reddit,linkedin,lj,viber,whatsapp,skype,telegram"></div>'
@@ -2405,12 +2388,11 @@ window.fhq.ui.showQuest = function(id){
 		}
 
 		if(q.hints && q.hints.length > 0 || fhq.isAdmin()){
-			var hints = '<div class="newquestinfo">'
-				+ '<div class="newquestinfo_title hide" id="quest_show_hints">' + fhq.t('Hints') + '</div>'
+			var hints = '<div class="fhq0051">'
+				+ '<div class="fhq0053 hide" id="quest_show_hints">' + fhq.t('Hints') + '</div>'
 				+ '<div id="newquestinfo_hints" style="display: none;">';
 			hints += '</div></div>';
 			el.append(hints);
-			var questid = parseInt(id,10);
 			fhq.ui.refreshHints(questid, q.hints, perm_edit);
 			$('#quest_show_hints').unbind().bind('click', function(){
 				if($('#newquestinfo_hints').is(":visible")){
@@ -2439,7 +2421,7 @@ window.fhq.ui.showQuest = function(id){
 					var answer = $('#quest_answer').val();
 					fhq.api.quests.pass(q.questid, answer).done(function(response){
 						fhq.ui.updateQuests();
-						fhq.ui.showQuest(q.questid);
+						fhq.ui.loadQuest(q.questid);
 					}).fail(function(r){
 						$('#quest_pass_error').html(r.responseJSON.error.message);
 						if(fhq.ui.isShowMyAnswers()){
@@ -2449,8 +2431,8 @@ window.fhq.ui.showQuest = function(id){
 				});
 				
 				el.append(
-					'<div class="newquestinfo">'
-					+ '<div class="newquestinfo_title hide" id="quest_show_my_answers">' + fhq.t('My Answers') + '</div>'
+					'<div class="fhq0051">'
+					+ '<div class="fhq0053 hide" id="quest_show_my_answers">' + fhq.t('My Answers') + '</div>'
 					+ '<pre id="newquestinfo_user_answers" style="display: none;"></pre>'
 					+ '</div>'
 				);
@@ -2468,9 +2450,30 @@ window.fhq.ui.showQuest = function(id){
 			}
 		}
 		
+		var writeups = ''
+			+ '<div class="fhq0051">'
+			+ '		<div class="fhq0053 hide" id="quest_show_writeups">' + fhq.t('Write Up') + '</div>'
+			+ '		<div class="fhq0052" style="display: none;"></div>'
+			+ '</div>'
+		el.append(writeups);
+
+		// fhq.ui.refreshHints(questid, q.hints, perm_edit);
+		$('#quest_show_writeups').unbind().bind('click', function(){
+			if($('.fhq0052').is(":visible")){
+				$('.fhq0052').hide();
+				$('#quest_show_writeups').removeClass('show');
+				$('#quest_show_writeups').addClass('hide');
+			}else{
+				$('.fhq0052').show();
+				$('#quest_show_writeups').removeClass('hide');
+				$('#quest_show_writeups').addClass('show');
+				fhq.ui.loadWriteUps(questid);
+			}
+		});
+		
 		el.append(
-			'<div class="newquestinfo">'
-			+ '<div class="newquestinfo_title hide" id="quest_show_statistics">' + fhq.t('Statistics') + '</div>'
+			'<div class="fhq0051">'
+			+ '<div class="fhq0053 hide" id="quest_show_statistics">' + fhq.t('Statistics') + '</div>'
 			+ '	<div id="statistics_content" style="display: none;">'
 			+ ' <table><tr><td valign=top><canvas id="quest_chart" width="300" height="300"></canvas></td>'
 			+ ' <td valign=top id="quest_stat_users"></td></tr></table>'
@@ -2498,7 +2501,25 @@ window.fhq.ui.showQuest = function(id){
 	})
 }
 
-window.fhq.ui.updateMyAnswers = function(questid){
+fhq.ui.loadWriteUps = function(questid){
+	$('.fhq0052').html('...');
+	fhq.ws.writeups({questid: questid}).done(function(r){
+		if(r.data.length == 0){
+			$('.fhq0052').html(fhq.t('No solutions yet'));  // TODO propose by user
+		}else{
+			var writeup = r.data[0];
+			if(writeup.type == 'youtube_video'){
+				$('.fhq0052').html('<iframe width="560" height="315" src="' + writeup.link + '" frameborder="0" allowfullscreen></iframe>');
+			}else{
+				$('.fhq0052').html('TODO');
+			}
+		}
+	}).fail(function(r){
+		$('.fhq0052').html(r.error);
+	})
+}
+
+fhq.ui.updateMyAnswers = function(questid){
 	fhq.statistics.myanswers(questid).done(function(response){
 		var h = '';
 		for (var i = 0; i < response.data.length; ++i) {

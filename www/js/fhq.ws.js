@@ -144,45 +144,51 @@ window.fhq.ws.sendLettersToSubscribers = function(message){
 	});
 }
 
-window.fhq.ws.login = function(){
+fhq.ws.login = function(){
 	return fhq.ws.send({
 		'cmd': 'login',
 		'token': fhq.getTokenFromCookie()
 	});
 }
 
-window.fhq.ws.users = function(params){
+fhq.ws.users = function(params){
 	params = params || {};
 	params.cmd = 'users';
 	return fhq.ws.send(params);
 }
 
-window.fhq.ws.user = function(params){
+fhq.ws.user = function(params){
 	params = params || {};
 	params.cmd = 'user';
 	return fhq.ws.send(params);
 }
 
-window.fhq.ws.classbook = function(params){
+fhq.ws.classbook = function(params){
 	params = params || {};
 	params.cmd = 'classbook';
 	return fhq.ws.send(params);
 }
 
-window.fhq.ws.addhint = function(params){
+fhq.ws.addhint = function(params){
 	params = params || {};
 	params.cmd = 'addhint';
 	return fhq.ws.send(params);
 }
 
-window.fhq.ws.deletehint = function(params){
+fhq.ws.deletehint = function(params){
 	params = params || {};
 	params.cmd = 'deletehint';
 	return fhq.ws.send(params);
 }
 
-window.fhq.ws.hints = function(params){
+fhq.ws.hints = function(params){
 	params = params || {};
 	params.cmd = 'hints';
+	return fhq.ws.send(params);
+}
+
+fhq.ws.writeups = function(params){
+	params = params || {};
+	params.cmd = 'writeups';
 	return fhq.ws.send(params);
 }

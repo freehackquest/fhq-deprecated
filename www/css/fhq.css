@@ -1249,40 +1249,6 @@ font.fhq_task {
 	border-color: #C8C8C8;
 }
 
-.newquestinfo {
-	text-align: left;
-}
-
-.newquestinfo_title{
-	font: 12pt/10pt Arial;
-	font-size: 20px;
-	line-height: 25px;
-	border-bottom: 1px dashed #3e3e3e;
-	margin-top: 15px;
-	margin-bottom: 15px;
-}
-
-.newquestinfo_title.show{
-	background-image: url(../images/hide_20x20.png);
-	background-repeat: no-repeat;
-	cursor: pointer;
-	padding-left: 25px;
-	background-position: 0px 5px;
-}
-
-.newquestinfo_title.hide{
-	display: block;
-	background-image: url(../images/show_20x20.png);
-	background-repeat: no-repeat;
-	cursor: pointer;
-	padding-left: 25px;
-	background-position: 0px 5px;
-}
-
-.dark .newquestinfo_title{
-	border-color: #C8C8C8;
-}
-
 /*
 	darkstile
 */
@@ -2013,4 +1979,41 @@ body.dark
     width: 50px;
     height: 15px;
     background-image: url(../images/preloader.gif);
+}
+
+.fhq0051 {
+	text-align: left;
+}
+
+.fhq0052 {
+}
+
+.fhq0053{
+	font: 12pt/10pt Arial;
+	font-size: 20px;
+	line-height: 25px;
+	border-bottom: 1px dashed #3e3e3e;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.fhq0053.show{
+	background-image: url(../images/hide_20x20.png);
+	background-repeat: no-repeat;
+	cursor: pointer;
+	padding-left: 25px;
+	background-position: 0px 5px;
+}
+
+.fhq0053.hide{
+	display: block;
+	background-image: url(../images/show_20x20.png);
+	background-repeat: no-repeat;
+	cursor: pointer;
+	padding-left: 25px;
+	background-position: 0px 5px;
+}
+
+.dark .fhq0053{
+	border-color: #C8C8C8;
 }

@@ -433,5 +433,17 @@ window.fhq.localization = {
 	'New Feedback':{
 		'en': 'New Feedback',
 		'ru': 'Написать отзыв'
+	},
+	'Write Up':{
+		'en': 'Write Up',
+		'ru': 'Решение'
+	},
+	'No solutions yet':{
+		'en': 'No solutions yet',
+		'ru': 'Пока нет ни одного решения'
+	},
+	'Add':{
+		'en': 'Add',
+		'ru': 'Добавить'
 	}
 };
