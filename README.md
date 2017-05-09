@@ -40,16 +40,34 @@ Evgenii Sopov
 
 5. copy 'config/config.php.ini' to 'config/config.php' and configure it
 
-6. Login in the FHQ (admin:admin123).
+6. Install backend for your OS from http://dist.freehackquest.com/backend/ or build your-self (https://github.com/freehackquest/backend)
 
-7. Create new user with role 'admin' and with correct email
+	$ sudo apt update
+	$ wget http://dist.freehackquest.com/backend/debian-x64/freehackquest-backend_0.1.14_amd64.deb
+	$ su
+	# apt install mysql-server
+	# dpkg -i freehackquest-backend_0.1.14_amd64.deb
+	# apt -f install
+	# cp /etc/freehackquest-backend/conf.ini.example /etc/freehackquest-backend/conf.ini
+	# nano /etc/freehackquest-backend/conf.ini
+	
+Run for check database configuration:
 
-8. Relogon with new user and remove old admin.
+	# freehackquest -d
+	
+Run like service (or just reboot system):
 
-9. Create new game.
+	# /etc/init.d/freehackquestd start
 
-10. Create new quest and check it.
+7. Login in the FHQ (admin:admin123).
 
+8. Create new user with role 'admin' and with correct email
+
+9. Relogon with new user and remove old admin.
+
+10. Create new game.
+
+11. Create new quest and check it.
 
 # Full manual for debian (apache2 + php7.0 + mysql):
 
