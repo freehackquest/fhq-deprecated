@@ -32,10 +32,9 @@ window.tools_statistical_analysis_of_the_text = new function() {
 				stat[ch]++;
 			}
 		}
-		
 		for(key in stat) {
 			var val = stat[key];
-			result += '[' + key + '] = ' + val + '/' + count + ' ( ' + ((val*100)/count) + ' %)\n';
+			result += '[' + key + '] = ' + val + '/' + count + ' ( ' + Math.floor((val*100)/count) + ' %)\n';
 		}
 		return result;
 	}

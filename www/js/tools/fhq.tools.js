@@ -7,7 +7,7 @@ fhq.ui.loadTools = function(){
 	var len = fhq.tools.length;
 	
 	$('.toolslist').html('');
-	$('.toolslist').append('<div class="tools"><div class="icon">Tools</div><div class="content"></div></div>');
+	$('.toolslist').append('<div class="tools"><div class="icon">' + fhq.t('Tools') + '</div><div class="content"></div></div>');
 	
 	for(var i = 0; i < len; i++){
 		var tool = fhq.tools[i];
@@ -21,8 +21,9 @@ fhq.ui.loadTools = function(){
 }
 
 fhq.ui.loadTool = function(toolid){
+	fhq.ui.loadTools();
 	fhq.changeLocationState({'tool': toolid});
-	$('.toolinfo').html('Loading...');
+	$('.toolinfo').html(fhq.t('Loading...'));
 	
 	var tool = document.createElement('script');
 	tool.src = "./js/tools/" + toolid + "/index.js";
