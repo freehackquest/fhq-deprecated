@@ -30,31 +30,40 @@ $text = $request['text'];
 if (!filter_var($from, FILTER_VALIDATE_EMAIL))
 	APIHelpers::error(400, '[Feedback] Invalid e-mail address.');
 
+$nick = 'Guest';
+
+if(APISecurity::nick() != ''){
+	$nick = APISecurity::nick();
+}
+
+$from = $nick." (".$from.")";
+
 if(APIHelpers::email() != ''){
-	$from = APIHelpers::email()."(".$from.")";
-}else{
-	$from = "Guest (".$from.")";
+	$from = APIHelpers::email();
 }
 
 if (strlen($text) <= 10)
   APIHelpers::error(400, 'text must be informative! (more than 10 character)');
 
+$email_msg = "Type: ".htmlspecialchars($type)."\r\n";
+$email_msg .= "From: ".htmlspecialchars($from)."\r\n\r\n";
+$email_msg .= htmlspecialchars($text);
+
 $msg = "Type: ".htmlspecialchars($type)."\r\n";
-$msg .= "From: ".htmlspecialchars($from)."\r\n\r\n";
+$msg .= "From: ".htmlspecialchars($nick)."\r\n\r\n";
 $msg .= htmlspecialchars($text);
 
-$stmt = $conn->prepare('INSERT INTO feedback(type, text, userid, dt) VALUES(?,?,?,NOW());');
-if($stmt->execute(array($type, $msg, APISecurity::userid()))) {
+$stmt = $conn->prepare('INSERT INTO feedback(`type`, `from`, `text`, `userid`, `dt`) VALUES(?,?,?,?,NOW());');
+if($stmt->execute(array($type, $from, $msg, APISecurity::userid()))){
 	$response['data']['feedback']['id'] = $conn->lastInsertId();
 	$response['result'] = 'ok';
 	
 	// this option must be moved to db
-	if (isset($config['mail']) && isset($config['mail']['allow']) && $config['mail']['allow'] == 'yes') {
-		APIHelpers::sendMailToAdmin('Feedback from freehackquest', $msg, $error);
+	if (isset(APIHelpers::$CONFIG['mail']) && isset(APIHelpers::$CONFIG['mail']['allow']) && APIHelpers::$CONFIG['mail']['allow'] == 'yes') {
+		APIHelpers::sendMailToAdmin('Feedback from freehackquest', $email_msg, $error);
 	}
-	
 } else {
-	APIHelpers::error(400, 'Could not insert. PDO: '.$conn->errorInfo());
+	APIHelpers::error(400, 'Could not insert. PDO: '.print_r($conn->errorInfo(),true));
 }
 
 

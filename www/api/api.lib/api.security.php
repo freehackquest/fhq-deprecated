@@ -111,7 +111,7 @@ class APISecurity {
 		if (APIHelpers::$FHQSESSION != NULL && APIHelpers::isAuthorized()) {
 			return isset(APIHelpers::$FHQSESSION['user']['nick']) ? APIHelpers::$FHQSESSION['user']['nick'] : '';
 		}
-		return (APIHelpers::isAuthorized()) ? $_SESSION['user']['nick'] : ''; 
+		return ''; 
 	}
   
 	static function setNick($nick) {
