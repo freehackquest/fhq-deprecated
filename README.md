@@ -36,11 +36,11 @@ Evgenii Sopov
 	files/quests
 	files/users
 
-4. execute SQL-script: 'freehackquest.sql'
+4. Install mysql-server and create empty database
 
 5. copy 'config/config.php.ini' to 'config/config.php' and configure it
 
-6. Install backend, please follow https://github.com/freehackquest/backend
+6. Install backend, please follow https://github.com/freehackquest/backend (And run this for creating database struct)
 
 7. Login in the FHQ (admin:admin123).
 
@@ -101,9 +101,9 @@ get sources
 	$ sudo git clone https://github.com/sea-kg/fhq.git fhq.git
 	$ sudo cd fhq.git
 	
-create struct of database
+create struct of database:
 
-	$ sudo mysql -u root -p freehackquest < freehackquest.sql
+	Please follow https://github.com/freehackquest/backend (And freehackquest-backend for creating database struct)
 
 install composer for google authorization
 
@@ -425,3 +425,5 @@ Brief history and biography platform.
 В 2014 год дизайн был полностью сменен в очередной раз, доработки и прочее. Проведен в последний раз FHQ 2014.
 
 В 2015 решил закончить и заморозить разработку как платформы архива игр и проведения локальных небольших ctf в виде jeopady.
+
+В конце 2016 начал переписывать серверную часть на Qt (WebSockets)
