@@ -162,6 +162,8 @@ class APIHelpers {
 		if($response['result'] == 'fail'){
 			if(isset($response['code'])){
 				http_response_code($response['code']);
+			}else if(isset($response['error']) && isset($response['error']['code'])){
+				http_response_code($response['error']['code']);
 			}else{
 				http_response_code(400);
 			}
