@@ -8,7 +8,6 @@ function hatchAnswer(answer) {
 }
 
 function createPageAnswerList() {
-	fhqgui.setFilter('answerlist');
 	var cp = document.getElementById('content_page');
 	cp.innerHTML = '';
 
@@ -68,7 +67,8 @@ function updateAnswerList() {
 							tbl.openrow('');
 
 						tbl.cell(ans.dt + ' / ' + ans.game.title);
-						tbl.cell(fhqgui.questIcon(ans.quest.id, ans.quest.name, ans.quest.subject, ans.quest.score, ans.quest.solved));
+						tbl.cell('<a target="blank_" href="?subject=' + ans.quest.subject + '">' + ans.quest.subject + '</a>'+ ' / ' 
+							+ '<a target="blank_" href="?quest=' + ans.quest.id + '">Quest ' + ans.quest.id + '</a><br>' + ans.quest.name + ' ' + '  (+' + ans.quest.score + ') ');
 						tbl.cell('Try: <br>' + (ans.passed == 'Yes' ? hatchAnswer(ans.answer_try) : ans.answer_try)
 							+ '<br><br>Real: <br>' + hatchAnswer(ans.answer_real)
 							+ '<br>Levenstein: ' + ans.levenshtein
