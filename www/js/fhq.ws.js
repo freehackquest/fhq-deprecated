@@ -192,3 +192,9 @@ fhq.ws.writeups = function(params){
 	params.cmd = 'writeups';
 	return fhq.ws.send(params);
 }
+
+fhq.ws.answerlist = function(params){
+	params = params || {};
+	params.cmd = 'answerlist';
+	return fhq.ws.send(params);
+}

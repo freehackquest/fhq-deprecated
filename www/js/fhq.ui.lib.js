@@ -217,7 +217,7 @@ function FHQGuiLib(api) {
 		}else{
 			var game_id = 0;
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadUserProfile(' + (fhq.userinfo ? fhq.userinfo.id : 0) + ');">' + fhq.t('Your Profile') + '</div>');
-			$('.account-panel').append('<div class="fhq-simple-btn" onclick="loadScoreboard(' + game_id + ');">Scoreboard (' + (fhq.userinfo ? fhq.userinfo.score : 0) + ')</div>');
+			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadScoreboard();">Scoreboard</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.loadRules(' + game_id + ');">Rules</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadGames();">Games</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.createPageSkills(); fhqgui.updatePageSkills();">Skills</div>');
@@ -1465,7 +1465,7 @@ fhq.ui.processParams = function() {
 		} else if(fhq.containsPageParam("games")){
 			fhq.ui.loadGames();
 		} else if(fhq.containsPageParam("scoreboard")){
-			loadScoreboard(fhq.profile.game.id);
+			fhq.ui.loadScoreboard();
 		} else if (fhq.containsPageParam("quest")){
 			fhq.ui.loadQuest(fhq.pageParams["quest"]);
 		}else if(fhq.containsPageParam("userid")){
@@ -1488,6 +1488,40 @@ fhq.ui.processParams = function() {
 			fhq.ui.loadStatSubjectsQuests();
 		}
 	});
+}
+
+fhq.ui.loadScoreboard = function(){
+	window.fhq.changeLocationState({'scoreboard':''});
+
+	// document.getElementById("gameid").value;
+	
+	fhq.api.games.scoreboard().done(
+		function (obj) {
+			var el = document.getElementById("content_page");
+			el.innerHTML = '';
+			el.innerHTML += '<div id="scoreboard_table" class="fhq_scoreboard_table"></div>';
+			var tbl = document.getElementById("scoreboard_table");
+
+			var content = '';
+			for (var k in obj.data) {
+				content = '<div class="fhq_scoreboard_row">';
+				if (obj.data.hasOwnProperty(k)) {
+					var place = obj.data[k];
+					content += '<div class="fhq_scoreboard_cell">' + k + '</div>';
+					var arr = [];
+					for (var k2 in place) {
+						arr.push(fhqgui.userIcon(place[k2].userid, place[k2].logo, place[k2].nick));
+					}
+					content += '<div class="fhq_scoreboard_cell">' + place[0].rating + '</div>';
+					content += '<div class="fhq_scoreboard_cell"><div class="scoreboard-user-tile">' + arr.join('</div><div class="scoreboard-user-tile">') + '</div></div>';
+					content += '</div>';
+				}
+				content += '</div>'; // row
+				tbl.innerHTML += content;
+			}
+			content = '';
+		}
+	);
 }
 
 fhq.ui.loadPageMore = function(){
@@ -2420,7 +2454,6 @@ window.fhq.ui.loadQuest = function(id){
 				$('#newquestinfo_pass').unbind().bind('click', function(){
 					var answer = $('#quest_answer').val();
 					fhq.api.quests.pass(q.questid, answer).done(function(response){
-						fhq.ui.updateQuests();
 						fhq.ui.loadQuest(q.questid);
 					}).fail(function(r){
 						$('#quest_pass_error').html(r.responseJSON.error.message);

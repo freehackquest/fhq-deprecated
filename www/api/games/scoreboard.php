@@ -9,81 +9,56 @@
 
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../api.lib/api.base.php");
-include_once ($curdir."/../api.lib/api.game.php");
-include_once ($curdir."/../../config/config.php");
 
-$response = APIHelpers::startpage($config);
+$response = APIHelpers::startpage();
 
 $message = '';
-
-if (!APIHelpers::issetParam('gameid'))
-	APIHelpers::error(400, 'Parameter "gameid" does not found');
-
-$gameid = APIHelpers::getParam('gameid', 0);
-
-if (!is_numeric($gameid))
-	APIHelpers::error(400, 'Parameter "gameid" must be numeric');
-
 
 $response['result'] = 'ok';
 
 // TODO: must be added filters
-$conn = APIHelpers::createConnection($config);
+$conn = APIHelpers::createConnection();
 
-$response['gameid'] = $gameid;
-
-$params[] = $gameid;
-
-$filter_by_role = APISecurity::isAdmin() == false ? ' AND u.role = "user" ' : '';
+$filter_by_role = APISecurity::isAdmin() == false ? 'WHERE u.role = "user" ' : '';
 
 $query = '
-			SELECT 
+			SELECT
+				u.id,
 				u.nick,
 				u.role,
 				u.logo,
-				ug.userid,
-				ug.score
+				u.rating
 			FROM 
-				users_games ug
-			LEFT JOIN 
-				users u ON u.id = ug.userid
-			WHERE
-				ug.gameid = ?
+				users u
 				'.$filter_by_role.'
 			ORDER BY
-				ug.score DESC
+				u.rating DESC
 		';
 
-try {
-	$stmt = $conn->prepare($query);
-	$stmt->execute($params);
-	$i = 1;
-	$score = 0;
-	$response['data'] = array();
-	
-	while($row = $stmt->fetch())
+$stmt = $conn->prepare($query);
+$stmt->execute(array());
+$i = 1;
+$score = 0;
+$response['data'] = array();
+
+while($row = $stmt->fetch()) {
+	$user_score = $row['rating'];
+	if ($i == 1 && $score == 0)
+		$score = $row['rating'];
+
+	if ($score != $user_score)
 	{
-		$user_score = $row['score'];
-		if ($i == 1 && $score == 0)
-			$score = $row['score'];
-
-		if ($score != $user_score)
-		{
-			$score = $user_score;
-			$i++;
-		}
-
-		$response['data'][$i][] = array(
-			'userid' => $row['userid'],
-			'nick' => htmlspecialchars($row['nick']),
-			'logo' => $row['logo'],
-			'score' => $row['score'],
-			// 'role' => $row['role'],
-		);
+		$score = $user_score;
+		$i++;
 	}
-	
-} catch(PDOException $e) {
-	APIHelpers::error(500, $e->getMessage());
+
+	$response['data'][$i][] = array(
+		'id' => $row['id'],
+		'nick' => htmlspecialchars($row['nick']),
+		'logo' => $row['logo'],
+		'rating' => $row['rating'],
+		// 'role' => $row['role'],
+	);
 }
 
 APIHelpers::endpage($response);

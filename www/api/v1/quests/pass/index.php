@@ -12,9 +12,8 @@ $curdir = dirname(__FILE__);
 include_once ($curdir."/../../../api.lib/api.base.php");
 include_once ($curdir."/../../../api.lib/api.answerlist.php");
 include_once ($curdir."/../../../api.lib/api.quest.php");
-include_once ($curdir."/../../../../config/config.php");
 
-$response = APIHelpers::startpage($config);
+$response = APIHelpers::startpage();
 
 APIHelpers::checkAuth();
 
@@ -34,7 +33,7 @@ $answer = APIHelpers::getParam('answer', '');
 if ($answer == "")
   APIHelpers::error(400, 'Parameter "answer" must be not empty');
 
-$conn = APIHelpers::createConnection($config);
+$conn = APIHelpers::createConnection();
 
 $gameid = 0;
 $stmt = $conn->prepare('SELECT gameid FROM quest WHERE idquest = ?');
@@ -99,9 +98,8 @@ try {
 		$response['quest'] = $row['idquest'];
 		$real_answer = $row['answer'];
 		$levenshtein = levenshtein(strtoupper($real_answer), strtoupper($answer));		
-		
-		if ($status == 'open') {
 
+		if ($status == 'open') {
 			// check answer
 			if (md5(strtoupper($real_answer)) == md5(strtoupper($answer))) {
 				$response['result'] = 'ok';
@@ -112,15 +110,9 @@ try {
 					$stmt_users_quests->execute(array(APISecurity::userid(), $questid));
 				}
 				
-				$new_user_score = APIHelpers::calculateScore($conn, $gameid);			
+				$new_user_score = APIHelpers::calculateScore();
 				$response['new_user_score'] = intval($new_user_score);
-				if (APISecurity::score() != $response['new_user_score'])
-				{
-					APISecurity::setUserScore($response['new_user_score']);
-					$query2 = 'UPDATE users_games SET date_change = NOW(), score = ? WHERE userid = ? AND gameid = ?;';
-					$stmt2 = $conn->prepare($query2);
-					$stmt2->execute(array(intval($new_user_score), APISecurity::userid(), $gameid));
-				}
+				APIHelpers::updateUserRating();
 				APIQuest::updateCountUserSolved($conn, $questid);
 				APIAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, $levenshtein, 'Yes');
 				APIAnswerList::movedToBackup($conn, $questid);

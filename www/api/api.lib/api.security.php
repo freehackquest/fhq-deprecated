@@ -92,21 +92,6 @@ class APISecurity {
 		return (APISecurity::role() == 'god');
 	}
 	
-	static function score() { 
-		if (APIHelpers::$FHQSESSION != NULL && APIHelpers::isAuthorized() && isset(APIHelpers::$FHQSESSION['user']['score'])) {
-			return is_numeric(APIHelpers::$FHQSESSION['user']['score']) ? intval(APIHelpers::$FHQSESSION['user']['score']) : 0;
-		}
-		return (APIHelpers::isAuthorized() && is_numeric($_SESSION['user']['score'])) ? $_SESSION['user']['score'] : 0; 
-	}
-	
-	static function setUserScore($newScore) {
-		if (isset($_SESSION['user']['score']))
-			$_SESSION['user']['score'] = $newScore;
-		if (APIHelpers::$FHQSESSION != NULL && APIHelpers::isAuthorized() ) {
-			APIHelpers::$FHQSESSION['user']['score'] = $newScore;
-		}
-	}	
-	
 	static function nick() { 
 		if (APIHelpers::$FHQSESSION != NULL && APIHelpers::isAuthorized()) {
 			return isset(APIHelpers::$FHQSESSION['user']['nick']) ? APIHelpers::$FHQSESSION['user']['nick'] : '';

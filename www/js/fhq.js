@@ -137,14 +137,6 @@ window.fhq.games = new (function(t) {
 		var bRes = obj.result == "ok";
 		return bRes ? obj.data : obj.error;
 	};
-	this.choose = function(gameid) {
-		var params = {};
-		params.id = gameid;
-		var obj = this.p.sendPostRequest_Sync('api/games/choose.php', params);
-		// alert(JSON.stringify(params));
-		var bRes = obj.result == "ok";
-		return bRes ? obj : obj.error;
-	};
 	this.export = function(gameid) {
 		var win = window.open(this.p.baseUrl + 'api/games/export.php?gameid=' + gameid, '_blank');
 		win.focus();
@@ -342,6 +334,22 @@ fhq.api.games.list = function(params){
 		url: 'api/v1/games/list/',
 		contentType: "application/json",
 		data: JSON.stringify(params)
+	}).done(function(response){
+		d.resolve(response);
+	}).fail(function(r){
+		d.reject(r);
+	})
+	return d;
+};
+
+fhq.api.games.scoreboard = function(params){
+	params = params || {};
+	params.token = fhq.token;
+	var d = $.Deferred();
+	$.ajax({
+		type: "POST",
+		url: 'api/games/scoreboard.php',
+		data: params
 	}).done(function(response){
 		d.resolve(response);
 	}).fail(function(r){

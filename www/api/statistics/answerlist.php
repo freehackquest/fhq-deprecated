@@ -21,10 +21,8 @@ $curdir_statistics_answerlist = dirname(__FILE__);
 include_once ($curdir_statistics_answerlist."/../api.lib/api.base.php");
 include_once ($curdir_statistics_answerlist."/../api.lib/api.security.php");
 include_once ($curdir_statistics_answerlist."/../api.lib/api.helpers.php");
-include_once ($curdir_statistics_answerlist."/../api.lib/api.game.php");
-include_once ($curdir_statistics_answerlist."/../../config/config.php");
 
-$response = APIHelpers::startpage($config);
+$response = APIHelpers::startpage();
 
 APIHelpers::checkAuth();
 
@@ -118,7 +116,7 @@ if ($where != '') {
 	$where = ' WHERE '.$where;
 }
 
-$conn = APIHelpers::createConnection($config);
+$conn = APIHelpers::createConnection();
 
 // count quests
 try {

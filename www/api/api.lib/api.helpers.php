@@ -59,7 +59,14 @@ class APIHelpers {
 		exit;
 	}
 
-	static function calculateScore($conn, $gameid){
+	static function updateUserRating(){
+		$new_score = APIHelpers::calculateScore();
+		$conn = APIHelpers::createConnection();
+		$stmt = $conn->prepare('UPDATE users SET rating = ? WHERE id = ?;');
+		$stmt->execute(array(intval($new_score), APISecurity::userid()));
+	}
+
+	static function calculateScore(){
 		// calculate score
 		$query = '
 			SELECT 
@@ -67,15 +74,17 @@ class APIHelpers {
 			FROM 
 				users_quests
 			INNER JOIN 
-				quest ON quest.idquest = users_quests.questid AND quest.gameid = ?
-			WHERE 
+				quest ON quest.idquest = users_quests.questid
+			WHERE
 				(users_quests.userid = ?)
 		';
 		$score = 0;
+		$conn = APIHelpers::createConnection();
 		$stmt = $conn->prepare($query);
-		$stmt->execute(array($gameid, APISecurity::userid()));
-		if($row = $stmt->fetch())
+		$stmt->execute(array(APISecurity::userid()));
+		if($row = $stmt->fetch()){
 			$score = $row['sum_score'];
+		}
 		return $score;
 	}
 	
