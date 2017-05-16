@@ -1484,29 +1484,29 @@ fhq.ui.loadScoreboard = function(){
 	window.fhq.changeLocationState({'scoreboard':''});
 
 	// document.getElementById("gameid").value;
-	
-	fhq.api.games.scoreboard().done(
-		function (obj) {
+
+	fhq.ws.scoreboard().done(
+		function (r) {
+			console.log(r);
 			var el = document.getElementById("content_page");
 			el.innerHTML = '';
 			el.innerHTML += '<div id="scoreboard_table" class="fhq_scoreboard_table"></div>';
 			var tbl = document.getElementById("scoreboard_table");
 
 			var content = '';
-			for (var k in obj.data) {
+			for (var k in r.data) {
 				content = '<div class="fhq_scoreboard_row">';
-				if (obj.data.hasOwnProperty(k)) {
-					var place = obj.data[k];
-					content += '<div class="fhq_scoreboard_cell">' + k + '</div>';
-					var arr = [];
-					for (var k2 in place) {
-						arr.push(fhqgui.userIcon(place[k2].userid, place[k2].logo, place[k2].nick));
-					}
-					content += '<div class="fhq_scoreboard_cell">' + place[0].rating + '</div>';
-					content += '<div class="fhq_scoreboard_cell"><div class="scoreboard-user-tile">' + arr.join('</div><div class="scoreboard-user-tile">') + '</div></div>';
-					content += '</div>';
+				var row = r.data[k];
+				content += '<div class="fhq_scoreboard_cell">' + row.place + '</div>';
+				var arr = [];
+				for (var k2 in row.users) {
+					var u = row.users[k2];
+					arr.push(fhqgui.userIcon(u.userid, u.logo, u.nick));
 				}
-				content += '</div>'; // row
+				content += '<div class="fhq_scoreboard_cell">' + row.rating + '</div>';
+				content += '<div class="fhq_scoreboard_cell"><div class="scoreboard-user-tile">' + arr.join('</div><div class="scoreboard-user-tile">') + '</div></div>';
+				content += '</div>';
+				content += '</div>';
 				tbl.innerHTML += content;
 			}
 			content = '';

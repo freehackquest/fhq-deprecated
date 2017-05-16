@@ -198,3 +198,10 @@ fhq.ws.answerlist = function(params){
 	params.cmd = 'answerlist';
 	return fhq.ws.send(params);
 }
+
+
+fhq.ws.scoreboard = function(params){
+	params = params || {};
+	params.cmd = 'scoreboard';
+	return fhq.ws.send(params);
+}
