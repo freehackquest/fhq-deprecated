@@ -445,5 +445,9 @@ window.fhq.localization = {
 	'Add':{
 		'en': 'Add',
 		'ru': 'Добавить'
+	},
+	'Scoreboard':{
+		'en': 'Scoreboard',
+		'ru': 'Рейтинг'
 	}
 };

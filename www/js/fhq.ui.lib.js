@@ -180,14 +180,9 @@ function FHQGuiLib(api) {
 			+ '<img class="fhq_btn_menu_img" src="images/fhq2016_200x150.png"/> '
 			+ '</a>')
 		
-		toppanel.append('<div id="btnmenu_quests" class="fhq0041">'
-			+ fhq.t('Quests')
-			+ '</div>')
-
-		toppanel.append('<div id="btnmenu_news" class="fhq0041">'
-			+ fhq.t('News')
-			+ '</div>');
-
+		toppanel.append('<div id="btnmenu_quests" class="fhq0041">' + fhq.t('Quests') + '</div>')
+		toppanel.append('<div id="btnmenu_scoreboard" class="fhq0041">' + fhq.t('Scoreboard') + '</div>');
+		toppanel.append('<div id="btnmenu_news" class="fhq0041">' + fhq.t('News') + '</div>');
 		toppanel.append('<div id="btnmenu_more" class="fhq0041">' + fhq.t('Other') + '</div>');
 		toppanel.append('<div id="btnmenu_about" class="fhq0041">' + fhq.t('About') + '</div>');
 
@@ -214,7 +209,6 @@ function FHQGuiLib(api) {
 		}else{
 			var game_id = 0;
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadUserProfile(' + (fhq.userinfo ? fhq.userinfo.id : 0) + ');">' + fhq.t('Your Profile') + '</div>');
-			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadScoreboard();">Scoreboard</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.createPageSkills(); fhqgui.updatePageSkills();">Skills</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.signout();">' + fhq.t('Sign-out') + '</div>');
 			
@@ -258,6 +252,12 @@ function FHQGuiLib(api) {
 			window.fhq.changeLocationState({'quests':''});
 			fhq.ui.loadStatSubjectsQuests();
 		})
+		
+		$('#btnmenu_scoreboard').unbind().bind('click', function(){
+			window.fhq.changeLocationState({'scoreboard':''});
+			fhq.ui.loadScoreboard();
+		})
+		
 		
 		$('#btnmenu_news').unbind().bind('click', function(){
 			window.fhq.changeLocationState({'news':''});
