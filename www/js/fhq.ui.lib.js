@@ -221,7 +221,6 @@ function FHQGuiLib(api) {
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.loadRules(' + game_id + ');">Rules</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.createPageSkills(); fhqgui.updatePageSkills();">Skills</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadFeedback();">Feedback</div>');
-			$('.account-panel').append('<a class="fhq-simple-btn" href="http://tools.freehackquest.com" target="_blank">Tools</a>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.signout();">' + fhq.t('Sign-out') + '</div>');
 			
 			if(fhq.isAdmin()){
