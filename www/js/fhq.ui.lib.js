@@ -218,7 +218,6 @@ function FHQGuiLib(api) {
 			var game_id = 0;
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadUserProfile(' + (fhq.userinfo ? fhq.userinfo.id : 0) + ');">' + fhq.t('Your Profile') + '</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadScoreboard();">Scoreboard</div>');
-			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.loadRules(' + game_id + ');">Rules</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.createPageSkills(); fhqgui.updatePageSkills();">Skills</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.signout();">' + fhq.t('Sign-out') + '</div>');
 			
