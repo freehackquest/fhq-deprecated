@@ -107,7 +107,7 @@ try {
 }
 
 try {
- 	$stmt = $conn->prepare('SELECT count(*) cnt FROM tryanswer_backup WHERE passed="Yes"');
+ 	$stmt = $conn->prepare('SELECT count(*) cnt FROM users_quests');
  	$stmt->execute();
 
  	if ($row = $stmt->fetch()) {
@@ -122,50 +122,27 @@ try {
 try {
  	$stmt = $conn->prepare('
 		SELECT
-			t0.userid,
-			t0.gameid,
-			t0.score,
-			u0.nick,
-			g0.title
+			u.nick,
+			u.rating
 		FROM
-			users_games t0
-		INNER JOIN games g0 ON g0.id = t0.gameid
-		INNER JOIN users u0 ON t0.userid = u0.id
+			users u
 		WHERE
-			t0.score = (
-				SELECT
-					max( score )
-				FROM
-					users_games t1
-				INNER JOIN users u1 ON t1.userid = u1.id
-				WHERE t1.gameid = t0.gameid
-				AND u1.role = ?
-			) AND t0.score > 0
-			AND u0.role = ?
-			AND ( g0.state = ? OR g0.state = ?)
+			u.role = "user"
+		ORDER BY
+			u.rating DESC
+		LIMIT 0,10
 	');
- 	$stmt->execute(array('user','user', 'original', 'copy'));
+ 	$stmt->execute();
 	
 	$response['data']['winners'] = array();
-
+	$place = 1;
  	while ($row = $stmt->fetch()) {
-		
-		$gametitle = $row['title'];
-		$arr = array(
-			'game' => $gametitle,
+		$response['data']['winners'][] = array(
+			'place' => $place,
 			'user' => htmlspecialchars($row['nick']),
-			'score' => $row['score'],
+			'rating' => $row['rating'],
 		);
-		
-		$maximal_winners = 50;
-		if (isset($config['public_info']['maximal_winners']))
-			$maximal_winners = $config['public_info']['maximal_winners'];
-		
-		if (!isset($response['data']['winners'][$gametitle]))
-			$response['data']['winners'][$gametitle] = array();
-			
-		if (count($response['data']['winners'][$gametitle]) < $maximal_winners)
-			$response['data']['winners'][$gametitle][] = $arr;
+		$place++;
 	}
 
 } catch(PDOException $e) {
