@@ -180,13 +180,13 @@ function FHQGuiLib(api) {
 			+ '<img class="fhq_btn_menu_img" src="images/fhq2016_200x150.png"/> '
 			+ '</a>')
 		
-		toppanel.append('<a id="btnmenu_quests" class="fhq0041" href="?quests">'
+		toppanel.append('<div id="btnmenu_quests" class="fhq0041">'
 			+ fhq.t('Quests')
-			+ '</a>')
+			+ '</div>')
 
-		toppanel.append('<a id="btnmenu_news" class="fhq0041" href="?news">'
+		toppanel.append('<div id="btnmenu_news" class="fhq0041">'
 			+ fhq.t('News')
-			+ '</a>');
+			+ '</div>');
 
 		toppanel.append('<div id="btnmenu_more" class="fhq0041">'
 			+ fhq.t('Other')
@@ -257,8 +257,19 @@ function FHQGuiLib(api) {
 			}
 		})
 		
+		$('#btnmenu_quests').unbind().bind('click', function(){
+			window.fhq.changeLocationState({'quests':''});
+			fhq.ui.loadStatSubjectsQuests();
+		})
+		
+		$('#btnmenu_news').unbind().bind('click', function(){
+			window.fhq.changeLocationState({'news':''});
+			fhq.ui.loadPageNews();
+		})
+		
 		$('#btnmenu_more').unbind().bind('click', function(){
-			window.location = '?more';
+			window.fhq.changeLocationState({'more':''});
+			fhq.ui.loadPageMore();
 		})
 		
 		$('#btnmenu_about').unbind().bind('click', function(){
@@ -1445,8 +1456,7 @@ fhq.ui.processParams = function() {
 		if(fhq.containsPageParam("quests")){
 			fhq.ui.loadStatSubjectsQuests();
 		} else if(fhq.containsPageParam("news")){
-			createPageEvents();
-			updateEvents();
+			fhq.ui.loadPageNews();
 		} else if(fhq.containsPageParam("classbook")){
 			fhq.ui.loadClassbook();
 		} else if(fhq.containsPageParam("about")){
@@ -1486,6 +1496,11 @@ fhq.ui.processParams = function() {
 	});
 }
 
+fhq.ui.loadPageNews = function(){
+	createPageEvents();
+	updateEvents();
+}
+
 fhq.ui.loadScoreboard = function(){
 	window.fhq.changeLocationState({'scoreboard':''});
 
@@ -1521,15 +1536,16 @@ fhq.ui.loadScoreboard = function(){
 }
 
 fhq.ui.loadPageMore = function(){
+	window.fhq.changeLocationState({'more':''});
 	$('#content_page').html('<div class="fhq0016"></div>')
 	var el = $('.fhq0016');
-	
+
 	var lst = [];
-	lst.push({'id': 'feedback', 'name': 'Feedback', 'descr': 'Send feedback', 'icon': 'images/menu/feedback.png'});
-	lst.push({'id': 'games', 'name': 'Games', 'descr': 'List of games', 'icon': 'images/menu/games.png'});
-	lst.push({'id': 'tools', 'name': 'Tools', 'descr': 'Useful tools', 'icon': 'images/menu/tools_150x150.png'});
-	lst.push({'id': 'classbook', 'name': 'Classbook', 'descr': 'A set of useful articles', 'icon': 'images/menu/classbook_150x150.png'});
-	lst.push({'id': 'users', 'name': 'Users', 'descr': 'Rating of users', 'icon': 'images/menu/users_150x150.png'});
+	lst.push({'id': 'feedback', 'name': 'Feedback', 'descr': 'Send feedback', 'icon': 'images/menu/feedback.png', 'load': fhq.ui.loadFeedback});
+	lst.push({'id': 'games', 'name': 'Games', 'descr': 'List of games', 'icon': 'images/menu/games.png', 'load': fhq.ui.loadGames});
+	lst.push({'id': 'tools', 'name': 'Tools', 'descr': 'Useful tools', 'icon': 'images/menu/tools_150x150.png', 'load': fhq.ui.loadTools});
+	lst.push({'id': 'classbook', 'name': 'Classbook', 'descr': 'A set of useful articles', 'icon': 'images/menu/classbook_150x150.png', 'load': fhq.ui.loadClassbook});
+	lst.push({'id': 'users', 'name': 'Users', 'descr': 'Rating of users', 'icon': 'images/menu/users_150x150.png', 'load': fhq.ui.loadRatingOfUsers});
 	for(var i in lst){
 		var o = lst[i];
 		el.append(''
@@ -1544,8 +1560,17 @@ fhq.ui.loadPageMore = function(){
 			+ '<div class="fhq0015"></div>'
 		);
 	}
+	
 	$('.fhq0001').unbind().bind('click', function(){
-		window.location = '?' + $(this).attr('moreid');
+		var moreid = $(this).attr('moreid');
+		for(var i in lst){
+			if(lst[i].id == moreid){
+				var p = {}
+				p[moreid] = '';
+				window.fhq.changeLocationState(p);
+				lst[i].load();
+			}
+		}
 	});
 }
 
