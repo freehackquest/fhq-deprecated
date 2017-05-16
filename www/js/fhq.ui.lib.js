@@ -220,7 +220,6 @@ function FHQGuiLib(api) {
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadScoreboard();">Scoreboard</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.loadRules(' + game_id + ');">Rules</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.createPageSkills(); fhqgui.updatePageSkills();">Skills</div>');
-			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadFeedback();">Feedback</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.signout();">' + fhq.t('Sign-out') + '</div>');
 			
 			if(fhq.isAdmin()){
