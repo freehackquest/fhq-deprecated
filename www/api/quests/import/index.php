@@ -88,7 +88,6 @@ for($i = 0; $i < count($keys); $i++)
 			'text',
 			'answer',
 			'score',
-			'min_score',
 			'author',
 			'subject',
 			'state',

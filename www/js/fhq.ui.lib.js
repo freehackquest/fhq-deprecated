@@ -1911,7 +1911,6 @@ fhq.ui.createQuestForm = function(){
 	content += createQuestRow('Name:', '<input type="text" id="newquest_name" value=""/>');
 	content += createQuestRow('Text:', '<textarea id="newquest_text"></textarea>');
 	content += createQuestRow('Score(+):', '<input type="text" id="newquest_score" value="100"/>');
-	content += createQuestRow('Min Score(>):', '<input type="text" id="newquest_min_score" value="0"/>');
 	content += createQuestRow('Subject:', fhqgui.combobox('newquest_subject', 'trivia', fhq.getQuestTypes()));
 	// content += createQuestRow('Author Id:', '<input type="text" id="newquest_author_id" value=""/>');
 	content += createQuestRow('Author:', '<input type="text" id="newquest_author" value=""/>');
@@ -1929,7 +1928,6 @@ fhq.ui.createQuest = function() {
 	params["name"] = document.getElementById("newquest_name").value;
 	params["text"] = document.getElementById("newquest_text").value;
 	params["score"] = document.getElementById("newquest_score").value;
-	params["min_score"] = document.getElementById("newquest_min_score").value;
 	params["subject"] = document.getElementById("newquest_subject").value;
 	params["idauthor"] = 0; // document.getElementById("newquest_author_id").value;
 	params["author"] = document.getElementById("newquest_author").value;
@@ -2085,7 +2083,6 @@ function updateQuest(id)
 	params["name"] = document.getElementById("editquest_name").value;
 	params["text"] = document.getElementById("editquest_text").value;
 	params["score"] = document.getElementById("editquest_score").value;
-	params["min_score"] = document.getElementById("editquest_min_score").value;
 	params["subject"] = document.getElementById("editquest_subject").value;
 	params["idauthor"] = 0;
 	params["author"] = document.getElementById("editquest_author").value;
@@ -2211,7 +2208,6 @@ function formEditQuest(id)
 			content += createQuestRow('', '<input id="editquest_upload_files" multiple required="" type="file">' 
 				+ ' <div class="fhqbtn" onclick="uploadQuestFiles(' + obj.quest + ');">Upload files</div>');
 			content += createQuestRow('Score(+):', '<input type="text" id="editquest_score" value="' + obj.data.score + '"/>');
-			content += createQuestRow('Min Score(>):', '<input type="text" id="editquest_min_score" value="' + obj.data.min_score + '"/>');
 			content += createQuestRow('Subject:', fhqgui.combobox('editquest_subject', obj.data.subject, fhq.getQuestTypes()));
 			// content += createQuestRow('Author Id:', '<input type="text" id="editquest_authorid" value="' + obj.data.authorid + '"/>');
 			content += createQuestRow('Author:', '<input type="text" id="editquest_author" value="' + obj.data.author + '"/>');
@@ -2365,10 +2361,6 @@ window.fhq.ui.loadQuest = function(id){
 			+ '		<div class="newquestinfo-details-row">'
 			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Subject') + ':</div>'
 			+ '			<div class="newquestinfo-details-cell">' + q.subject + '</div>'
-			+ '		</div>'
-			+ '		<div class="newquestinfo-details-row">'
-			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Min-Score') + ':</div>'
-			+ '			<div class="newquestinfo-details-cell">' + q.min_score + '</div>'
 			+ '		</div>'
 			+ '		<div class="newquestinfo-details-row">'
 			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Score') + ':</div>'

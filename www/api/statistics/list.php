@@ -141,7 +141,6 @@ try {
 				idquest, 
 				name,
 				subject,
-				min_score,
 				score
 			FROM 
 				quest
@@ -149,7 +148,7 @@ try {
 				gameid = ?
 				'.$where.'
 			ORDER BY
-				subject, score ASC, min_score
+				subject, score ASC
 			LIMIT '.($page*$onpage).','.$onpage.'
 	');
 	$stmt->execute($filter_values);
@@ -162,7 +161,6 @@ try {
 			'id' => $row['idquest'],
 			'name' => $row['name'],
 			'subject' => $row['subject'],
-			'min_score' => $row['min_score'],
 			'score' => $row['score'],
 		);
 		// subquesry

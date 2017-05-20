@@ -10,7 +10,6 @@ header('Content-Type: application/json');
  * API_INPUT: name - string, name of the quest
  * API_INPUT: text - string, description of the quest
  * API_INPUT: score - string, how much +score for user after solve quest by user
- * API_INPUT: min_score - string, condition for opened quest for user
  * API_INPUT: subject - string, subject msut be one from types (look types)
  * API_INPUT: idauthor - integer, will be depricated
  * API_INPUT: author - string, who make this quest
@@ -47,7 +46,6 @@ $params = array(
 	'name' => '',
 	'text' => '',
 	'score' => '',
-	'min_score' => '',
 	'subject' => '',
 	'idauthor' => '',
 	'author' => '',
@@ -65,7 +63,6 @@ foreach( $params as $key => $val ) {
 $questname = $params['name'];
 $params['answer_upper_md5'] = md5(strtoupper($params['answer']));
 $params['score'] = intval($params['score']);
-$params['min_score'] = intval($params['min_score']);
 $params['idauthor'] = intval($params['idauthor']);
 // $params['state'] = $params['state'];
 // $params['description_state'] = $params['description_state'];

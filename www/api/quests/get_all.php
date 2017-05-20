@@ -67,7 +67,6 @@ try {
 			'name' => $row['name'],
 			'text' => $row['text'],
 			'score' => $row['score'],
-			'min_score' => $row['min_score'],
 			'authorid' => $row['idauthor'],
 			'author' => $row['author'],
 			'answer' => $row['answer'],

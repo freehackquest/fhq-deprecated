@@ -162,14 +162,13 @@ window.fhq.quests = new (function(t) {
 		return bRes ? obj.data : obj.error;
 	};
 	// insert quest if you are admin
-	this.insert = function(quest_uuid, name, short_text, text, score, min_score, subject, idauthor, author, answer, state, description_state) {
+	this.insert = function(quest_uuid, name, short_text, text, score, subject, idauthor, author, answer, state, description_state) {
 		var params = {};
 		params.quest_uuid = quest_uuid;
 		params.name = name;
 		params.short_text = short_text;
 		params.text = text;
 		params.score = score;
-		params.min_score = min_score;
 		params.subject = subject;
 		params.idauthor = idauthor;
 		params.author = author;
@@ -181,14 +180,13 @@ window.fhq.quests = new (function(t) {
 		return bRes ? obj.data : obj.error;
 	};
 	// update quest info if you are admin
-	this.update = function(questid, name, short_text, text, score, min_score, subject, idauthor, author, answer, state, description_state) {
+	this.update = function(questid, name, short_text, text, score, subject, idauthor, author, answer, state, description_state) {
 		var params = {};
 		params.questid = questid;
 		params.name = name;
 		params.short_text = short_text;
 		params.text = text;
 		params.score = score;
-		params.min_score = min_score;
 		params.subject = subject;
 		params.idauthor = idauthor;
 		params.author = author;

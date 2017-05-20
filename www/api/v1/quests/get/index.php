@@ -47,7 +47,6 @@ $query = '
 				quest.idquest,
 				quest.name,
 				quest.score,
-				quest.min_score,
 				quest.text,
 				quest.state,
 				quest.subject,
@@ -82,7 +81,6 @@ try {
 		$response['data'] = array(
 			'questid' => $row['idquest'],
 			'score' => $row['score'],
-			'min_score' => $row['min_score'],
 			'name' => $row['name'],
 			'subject' => $row['subject'],
 			'dt_passed' => $row['dt_passed'],

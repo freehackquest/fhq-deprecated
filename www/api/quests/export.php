@@ -65,7 +65,6 @@ try {
 	{
 		$info['uuid'] = $row['quest_uuid'];
 		$info['score'] = $row['score'];
-		$info['min_score'] = $row['min_score'];
 		$info['name'] = $row['name'];
 		$info['subject'] = $row['subject'];
 		$info['state'] = $row['state'];
