@@ -218,6 +218,7 @@ function FHQGuiLib(api) {
 				$('.account-panel').append('<div class="fhq-simple-btn" onclick="createPageUsers(); updateUsers();">Users</div>');
 				$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadUsers()">Users 2</div>');
 				$('.account-panel').append('<div class="fhq-simple-btn" onclick="createPageAnswerList(); updateAnswerList();">Answer List</div>');
+				$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadServerInfo()">Server Info</div>');
 			}
 		}
 		
@@ -1374,6 +1375,8 @@ fhq.ui.processParams = function() {
 			fhq.ui.loadTools();
 		}else if(fhq.containsPageParam("tool")){
 			fhq.ui.loadTool(fhq.pageParams["tool"]);
+		}else if(fhq.containsPageParam("serverinfo")){
+			fhq.ui.loadServerInfo();
 		}else if(fhq.containsPageParam("more")){
 			fhq.ui.loadPageMore();
 		}else if(fhq.containsPageParam("feedback")){
@@ -1385,7 +1388,22 @@ fhq.ui.processParams = function() {
 	});
 }
 
+fhq.ui.loadServerInfo = function(){
+	window.fhq.changeLocationState({'serverinfo':''});
+	$("#content_page").html('<div class="fhq0054"></div>');
+	fhq.ws.serverinfo().done(function(r){
+		console.log(r);
+		$('.fhq0054').append('<div class="fhq0055"><h1>Request Statistics</h1></div>');
+		for(var i in r.data){
+			$('.fhq0055').append('<div class="fhq0056">' + i + ' => ' + r.data[i] + '</div>')
+		}
+	}).fail(function(r){
+		console.error(r);
+	})
+}
+
 fhq.ui.loadPageAbout = function() {
+	window.fhq.changeLocationState({'about':''});
 	var strVar=''
 	+ '<table style="display: inline-block;width: 80%;background-color: #494949;">';
 	strVar += "					<tr>";

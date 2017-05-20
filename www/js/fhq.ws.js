@@ -199,9 +199,14 @@ fhq.ws.answerlist = function(params){
 	return fhq.ws.send(params);
 }
 
-
 fhq.ws.scoreboard = function(params){
 	params = params || {};
 	params.cmd = 'scoreboard';
+	return fhq.ws.send(params);
+}
+
+fhq.ws.serverinfo = function(params){
+	params = params || {};
+	params.cmd = 'serverinfo';
 	return fhq.ws.send(params);
 }
