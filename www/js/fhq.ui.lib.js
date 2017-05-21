@@ -250,7 +250,7 @@ function FHQGuiLib(api) {
 		})
 		
 		$('#btnmenu_quests').unbind().bind('click', function(){
-			window.fhq.changeLocationState({'quests':''});
+			fhq.changeLocationState({'quests':''});
 			fhq.ui.loadStatSubjectsQuests();
 		})
 		
@@ -434,63 +434,6 @@ function FHQGuiLib(api) {
 			}
 		});
 	};
-
-	this.paginator = function(min,max,onpage,page, setfuncname, updatefuncname) {
-		if (max == 0) 
-			return "";
-
-		if (min == max || page > max || page < min )
-			return " Paging Error ";
-		
-		var pages = Math.ceil(max / onpage);
-
-		var pagesInt = [];
-		var leftp = 5;
-		var rightp = leftp + 1;
-
-		if (pages > (leftp + rightp + 2)) {
-			pagesInt.push(min);
-			if (page - leftp > min + 1) {
-				pagesInt.push(-1);
-				for (var i = (page - leftp); i <= page; i++) {
-					pagesInt.push(i);
-				}
-			} else {
-				for (var i = min+1; i <= page; i++) {
-					pagesInt.push(i);
-				}
-			}
-			
-			if (page + rightp < pages-1) {
-				for (var i = page+1; i < (page + rightp); i++) {
-					pagesInt.push(i);
-				}
-				pagesInt.push(-1);
-			} else {
-				for (var i = page+1; i < pages-1; i++) {
-					pagesInt.push(i);
-				}
-			}
-			if (page != pages-1)
-				pagesInt.push(pages-1);
-		} else {
-			for (var i = 0; i < pages; i++) {
-				pagesInt.push(i);
-			}
-		}
-
-		var pagesHtml = [];
-		for (var i = 0; i < pagesInt.length; i++) {
-			if (pagesInt[i] == -1) {
-				pagesHtml.push("...");
-			} else if (pagesInt[i] == page) {
-				pagesHtml.push('<div class="selected_user_page">[' + (pagesInt[i]+1) + ']</div>');
-			} else {
-				pagesHtml.push('<div class="fhqbtn" onclick="' + setfuncname + '(' + pagesInt[i] + '); ' + updatefuncname + '();">[' + (pagesInt[i]+1) + ']</div>');
-			}
-		}
-		return pagesHtml.join(' ');
-	}
 
 	this.changeLocationState = function(newPageParams){
 		var url = '';
@@ -1113,7 +1056,7 @@ function FHQGuiLib(api) {
 					document.getElementById('skills_found').innerHTML = obj.data.found;
 					var onpage = parseInt(obj.data.onpage, 10);
 					var page = parseInt(obj.data.page, 10);
-					el.innerHTML = fhqgui.paginator(0, obj.data.found, onpage, page, 'fhqgui.setSkillsPage', 'fhqgui.updatePageSkills');
+					el.innerHTML = fhq.ui.paginator(0, obj.data.found, onpage, page, 'fhqgui.setSkillsPage', 'fhqgui.updatePageSkills');
 
 					var tbl = new FHQTable();
 					tbl.openrow();
@@ -1350,9 +1293,21 @@ fhq.ui.loadServerInfo = function(){
 }
 
 fhq.ui.loadAnswerList = function(){
-	window.fhq.changeLocationState({'answerlist':''});
+	var onpage = 8;
+	if(fhq.containsPageParam("onpage")){
+		onpage = parseInt(fhq.pageParams['onpage'], 10);
+	}
+
+	var page = 0;
+	if(fhq.containsPageParam("page")){
+		page = parseInt(fhq.pageParams['page'], 10);
+	}
+	
+	window.fhq.changeLocationState({'answerlist': '', 'onpage': onpage, 'page': page});
 	$("#content_page").html('<div class="fhq0057"></div>');
-	$('.fhq0057').append('<h1>' + fhq.t('Answer List') + '</h1><div class="fhq0058"></div>');
+	$('.fhq0057').append('<h1>' + fhq.t('Answer List') + '</h1>');
+	$('.fhq0057').append('<div class="fhq0063"></div>');
+	$('.fhq0057').append('<div class="fhq0058"></div>');
 	$('.fhq0058').append(fhq.ui.render([{
 		'c': 'fhq0059',
 		'r': [
@@ -1364,7 +1319,9 @@ fhq.ui.loadAnswerList = function(){
 		]
 	}]));
 
-	fhq.ws.answerlist().done(function(r){
+	fhq.ws.answerlist({'onpage': onpage, 'page': page}).done(function(r){
+		$('.fhq0063').append(fhq.ui.paginator(0, r.count, r.onpage, r.page));
+		
 		for(var i in r.data){
 			var uqa = r.data[i];
 			$('.fhq0058').append(fhq.ui.render([{
@@ -2884,6 +2841,69 @@ fhq.ui.render = function(obj){
 	return res;
 }
 
+fhq.ui.paginatorClick = function(onpage, page){
+	fhq.pageParams['onpage'] = onpage;
+	fhq.pageParams['page'] = page;
+	fhq.changeLocationState(fhq.pageParams);
+	fhq.ui.processParams();
+}
+
+fhq.ui.paginator = function(min,max,onpage,page) {
+	if (max == 0) 
+		return "";
+
+	if (min == max || page > max || page < min )
+		return " Paging Error ";
+	
+	var pages = Math.ceil(max / onpage);
+
+	var pagesInt = [];
+	var leftp = 5;
+	var rightp = leftp + 1;
+
+	if (pages > (leftp + rightp + 2)) {
+		pagesInt.push(min);
+		if (page - leftp > min + 1) {
+			pagesInt.push(-1);
+			for (var i = (page - leftp); i <= page; i++) {
+				pagesInt.push(i);
+			}
+		} else {
+			for (var i = min+1; i <= page; i++) {
+				pagesInt.push(i);
+			}
+		}
+		
+		if (page + rightp < pages-1) {
+			for (var i = page+1; i < (page + rightp); i++) {
+				pagesInt.push(i);
+			}
+			pagesInt.push(-1);
+		} else {
+			for (var i = page+1; i < pages-1; i++) {
+				pagesInt.push(i);
+			}
+		}
+		if (page != pages-1)
+			pagesInt.push(pages-1);
+	} else {
+		for (var i = 0; i < pages; i++) {
+			pagesInt.push(i);
+		}
+	}
+
+	var pagesHtml = [];
+	for (var i = 0; i < pagesInt.length; i++) {
+		if (pagesInt[i] == -1) {
+			pagesHtml.push("...");
+		} else if (pagesInt[i] == page) {
+			pagesHtml.push('<div class="fhq0064 fhq0065">' + (pagesInt[i]+1) + '</div>');
+		} else {
+			pagesHtml.push('<div class="fhq0064" onclick="fhq.ui.paginatorClick(' + onpage + ',' + pagesInt[i] + ');">' + (pagesInt[i]+1) + '</div>');
+		}
+	}
+	return pagesHtml.join(' ');
+}
 
 $(document).ready(function() {
 	fhq.ui.createCopyright();

@@ -2068,3 +2068,39 @@ body.dark
 .fhq0062 .fhq0061{
     background-color: rgba(219, 106, 106, 0.8);
 }
+
+.fhq0063{
+    padding-bottom: 15px;
+    text-align: right;
+}
+
+.fhq0064{
+	display: inline-block;
+    background: #ccc;
+    padding: 8px;
+    text-decoration: none;
+    position: relative;
+    color: #000000;
+    margin: 3px 3px 3px 3px;
+    cursor: pointer;
+    min-width: 25px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+}
+
+.dark .fhq0064{
+	color: #C8C8C8;
+    background: #383838;
+}
+
+.fhq0064.fhq0065{
+	background: none repeat scroll 0% 0% #CCC;
+	border: 1px solid;
+	cursor: default;
+}
+
+.dark .fhq0064.fhq0065 {
+    color: #C8C8C8;
+    background-color: #494949;
+}
