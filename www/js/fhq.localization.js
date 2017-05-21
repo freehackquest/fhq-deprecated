@@ -449,5 +449,25 @@ window.fhq.localization = {
 	'Scoreboard':{
 		'en': 'Scoreboard',
 		'ru': 'Рейтинг'
+	},
+	'Answer List':{
+		'en': 'Answer List',
+		'ru': 'Ответы пользователей'
+	},
+	'Server Info':{
+		'en': 'Server Info',
+		'ru': 'Информация о сервере'
+	},
+	'User':{
+		'en': 'User',
+		'ru': 'Пользователь'
+	},
+	'Quest':{
+		'en': 'Quest',
+		'ru': 'Задача'
+	},
+	'Passed':{
+		'en': 'Passed',
+		'ru': 'Сдан'
 	}
 };

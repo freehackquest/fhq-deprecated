@@ -52,7 +52,7 @@ $query = '
 				datetime_try,
 				levenshtein
 			FROM 
-				tryanswer
+				users_quests_answers
 			WHERE
 				iduser = ?
 				AND idquest = ?

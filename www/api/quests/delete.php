@@ -58,13 +58,9 @@ try {
 	$stmt_quest = $conn->prepare('DELETE FROM quest WHERE idquest = ?');
 	$stmt_quest->execute(array(intval($questid)));
 	
-	// remove from tryanswer
-	$stmt_tryanswer = $conn->prepare('DELETE FROM tryanswer WHERE idquest = ?');
- 	$stmt_tryanswer->execute(array(intval($questid)));
- 	
-	// remove from tryanswer_backup
-	$stmt_tryanswer_backup = $conn->prepare('DELETE FROM tryanswer_backup WHERE idquest = ?');
- 	$stmt_tryanswer_backup->execute(array(intval($questid)));
+	// remove from users_quests_answers
+	$stmt_users_quests_answers = $conn->prepare('DELETE FROM users_quests_answers WHERE idquest = ?');
+ 	$stmt_users_quests_answers->execute(array(intval($questid)));
  	
  	// remove from users_quests
 	$stmt_users_quests = $conn->prepare('DELETE FROM users_quests WHERE questid = ?');

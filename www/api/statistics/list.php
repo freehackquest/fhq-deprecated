@@ -165,9 +165,10 @@ try {
 		);
 		// subquesry
 		// users how solved this quest
-		$tries_nosolved = getCountStatBy($conn, 'tryanswer', $questid, 'No');
-		$solved = getCountStatBy($conn, 'tryanswer_backup', $questid, 'Yes');
-		$tries_solved = getCountStatBy($conn, 'tryanswer_backup', $questid, 'No');
+		// TODO refactoring
+		$tries_nosolved = getCountStatBy($conn, 'users_answers_list', $questid, 'No');
+		$solved = getCountStatBy($conn, 'users_answers_list', $questid, 'Yes');
+		$tries_solved = getCountStatBy($conn, 'users_answers_list', $questid, 'No');
 
 		$response['data']['quests'][$id]['solved'] = $solved;
 		$response['data']['quests'][$id]['tries_nosolved'] = $tries_nosolved;

@@ -2031,4 +2031,40 @@ body.dark
 	padding-top: 10px;
 }
 
+.fhq0057{
+	width: 80%;
+}
 
+.fhq0058{
+	display: table;
+	width: 100%;
+}
+
+.fhq0059{
+	display: table-row;
+    padding: 3px;
+    text-decoration: none;
+    margin: 3px 3px 3px 3px;
+}
+
+.fhq0060{
+	
+}
+
+.fhq0060 .fhq0003{
+	text-decoration: line-through;
+}
+
+.fhq0061{
+	width: 20%;
+    display: table-cell;
+    padding: 5px 5px 5px 5px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #9f9f9f;
+}
+
+
+.fhq0062 .fhq0061{
+    background-color: rgba(219, 106, 106, 0.8);
+}

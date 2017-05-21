@@ -10,7 +10,6 @@
 
 $curdir = dirname(__FILE__);
 include_once ($curdir."/../../../api.lib/api.base.php");
-include_once ($curdir."/../../../api.lib/api.answerlist.php");
 include_once ($curdir."/../../../api.lib/api.quest.php");
 
 $response = APIHelpers::startpage();
@@ -80,6 +79,22 @@ $query = '
 				'.$filter_by_state.'
 		';
 
+
+function addUsersQuestAnswers($conn, $questid, $user_answer, $real_answer, $levenshtein, $passed) {
+	$answer_try = $user_answer;
+	$answer_real = $real_answer;
+	$query = 'INSERT INTO users_quests_answers(iduser, idquest, answer_try, answer_real, passed, levenshtein, datetime_try) VALUES (?, ?, ?, ?, ?, ?, NOW());';
+	$params[] = APISecurity::userid();
+	$params[] = intval($questid);
+	$params[] = $answer_try;
+	$params[] = $answer_real;
+	$params[] = $passed;
+	$params[] = $levenshtein;
+	$stmt = $conn->prepare($query);
+	$stmt->execute($params);
+	return true;
+}
+	
 try {
 	$stmt = $conn->prepare($query);
 	$stmt->execute($params);
@@ -114,24 +129,23 @@ try {
 				$response['new_user_score'] = intval($new_user_score);
 				APIHelpers::updateUserRating();
 				APIQuest::updateCountUserSolved($conn, $questid);
-				APIAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, $levenshtein, 'Yes');
-				APIAnswerList::movedToBackup($conn, $questid);
+				addUsersQuestAnswers($conn, $questid, $answer, $real_answer, $levenshtein, 'Yes');
 
 				// add to public events
 				if (!APISecurity::isAdmin())
 					APIEvents::addPublicEvents($conn, "users", 'User #'.APISecurity::userid().' {'.APISecurity::nick().'} passed quest #'.$questid.' {'.$questname.'} from game #'.$gameid.' (new user score: '.$new_user_score.')');
 			} else {
 				// check already try pass
-				$stmt_check_tryanswer = $conn->prepare('select count(*) as cnt from tryanswer where answer_try = ? and iduser = ? and idquest = ?');
-				$stmt_check_tryanswer->execute(array($answer, $userid, intval($questid)));
-				if($row_check_tryanswer = $stmt_check_tryanswer->fetch()) {
-					$count = intval($row_check_tryanswer['cnt']);
+				$stmt_check_users_quests_answers = $conn->prepare('select count(*) as cnt from users_quests_answers where answer_try = ? and iduser = ? and idquest = ?');
+				$stmt_check_users_quests_answers->execute(array($answer, $userid, intval($questid)));
+				if($row_check_users_quests_answers = $stmt_check_users_quests_answers->fetch()) {
+					$count = intval($row_check_users_quests_answers['cnt']);
 					$response['checkanswer'] = array($answer, $userid, intval($questid));
 					if ($count > 0) {
 						APIHelpers::error(400, 'Your already try this answer. Levenshtein distance: '.$levenshtein);
 					}
 				}
-				APIAnswerList::addTryAnswer($conn, $questid, $answer, $real_answer, $levenshtein, 'No');
+				addUsersQuestAnswers($conn, $questid, $answer, $real_answer, $levenshtein, 'No');
 				APIHelpers::error(400, 'Answer incorrect. Levenshtein distance: '.$levenshtein);
 			};
 		} else if ($status == 'completed') {

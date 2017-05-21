@@ -81,9 +81,9 @@ try {
  	APIHelpers::error(500, $e->getMessage());
 }
 
-// tryanswers and succsessuful
+// users_quests_answers
 try {
- 	$stmt = $conn->prepare('SELECT count(*) cnt FROM tryanswer');
+ 	$stmt = $conn->prepare('SELECT count(*) cnt FROM users_quests_answers');
  	$stmt->execute();
 
  	if ($row = $stmt->fetch()) {
@@ -95,7 +95,7 @@ try {
 }
 
 try {
- 	$stmt = $conn->prepare('SELECT count(*) cnt FROM tryanswer_backup WHERE passed="No"');
+ 	$stmt = $conn->prepare('SELECT count(*) cnt FROM users_quests_answers WHERE passed="No"');
  	$stmt->execute();
 
  	if ($row = $stmt->fetch()) {
