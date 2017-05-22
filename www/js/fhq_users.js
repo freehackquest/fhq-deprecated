@@ -278,7 +278,7 @@ function updateUsers() {
 			var onpage = parseInt(obj.onpage, 10);
 			var page = parseInt(obj.page, 10);
 
-			lu.innerHTML += '<div id="user_paging">' + fhqgui.paginator(0,found, onpage, page, 'setUsersPage', 'updateUsers') + '</div>';
+			lu.innerHTML += '<div id="user_paging">' + fhq.ui.paginator(0,found, onpage, page) + '</div>';
 			
 			
 			var tbl = new FHQTable();
