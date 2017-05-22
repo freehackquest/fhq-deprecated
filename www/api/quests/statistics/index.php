@@ -45,9 +45,9 @@ function getCountStatBy($conn, $table, $questid, $passed){
 					count(t0.id) as cnt 
 				from 
 					'.$table.' t0
-				inner join users t1 on t1.id = t0.iduser
+				inner join users t1 on t1.id = t0.userid
 				where 
-					t0.idquest = ?
+					t0.questid = ?
 					and t0.passed = ?
 					and t1.role = ?
 		');
@@ -78,13 +78,11 @@ try {
 		// subquesry
 		// users how solved this quest
 		// TODO
-		$tries_nosolved = getCountStatBy($conn, 'users_quests_answers', $questid, 'No');
+		$tries = getCountStatBy($conn, 'users_quests_answers', $questid, 'No');
 		$solved = getCountStatBy($conn, 'users_quests_answers', $questid, 'Yes');
-		$tries_solved = getCountStatBy($conn, 'users_quests_answers', $questid, 'No');
 
+		$response['data']['tries'] = $tries;
 		$response['data']['solved'] = $solved;
-		$response['data']['tries_nosolved'] = $tries_nosolved;
-		$response['data']['tries_solved'] = $tries_solved;
 		$response['data']['users'] = array();
 
 		// how solved this quest

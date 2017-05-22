@@ -95,18 +95,6 @@ try {
 }
 
 try {
- 	$stmt = $conn->prepare('SELECT count(*) cnt FROM users_quests_answers WHERE passed="No"');
- 	$stmt->execute();
-
- 	if ($row = $stmt->fetch()) {
-		$response['data']['quests']['attempts'] += intval($row['cnt']);
-	}
-
-} catch(PDOException $e) {
- 	APIHelpers::error(500, $e->getMessage());
-}
-
-try {
  	$stmt = $conn->prepare('SELECT count(*) cnt FROM users_quests');
  	$stmt->execute();
 

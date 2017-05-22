@@ -2557,19 +2557,13 @@ window.fhq.ui.updateQuestStatistics = function(questid){
 				value: q.solved,
 				color: "#9f9f9f",
 				highlight: "#606060",
-				label: "Solved"
+				label: "Correct"
 			},
 			{
-				value: q.tries_solved,
+				value: q.tries,
 				color: "#9f9f9f",
 				highlight: "#606060",
-				label: "Tried (who solved)"
-			},
-			{
-				value: q.tries_nosolved,
-				color:"#9f9f9f",
-				highlight: "#606060",
-				label: "Tried (who didn't solve)"
+				label: "Incorrect answers"
 			}
 		];
 		var ctx = document.getElementById('quest_chart').getContext("2d");

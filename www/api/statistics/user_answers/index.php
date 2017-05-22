@@ -48,16 +48,16 @@ $params[] = intval($questid);
 
 $query = '
 			SELECT 
-				answer_try,
-				datetime_try,
+				user_answer,
+				dt,
 				levenshtein
 			FROM 
 				users_quests_answers
 			WHERE
-				iduser = ?
-				AND idquest = ?
+				userid = ?
+				AND questid = ?
 			ORDER BY
-				datetime_try DESC
+				dt DESC
 		';
 
 try {
@@ -66,8 +66,8 @@ try {
 	while($row = $stmt->fetch())
 	{
 		$response['data'][] = array(
-			'datetime_try' => $row['datetime_try'],
-			'answer_try' => htmlspecialchars($row['answer_try']),
+			'datetime_try' => $row['dt'],
+			'answer_try' => htmlspecialchars($row['user_answer']),
 			'levenshtein' => $row['levenshtein'],
 		);
 	}

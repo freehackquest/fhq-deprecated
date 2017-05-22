@@ -52,7 +52,7 @@ try {
  	$stmt_users_games->execute(array(intval($gameid)));
 
 	// remove from users_quests_answers
-	$stmt_users_quests_answers = $conn->prepare('DELETE FROM users_quests_answers WHERE idquest IN (SELECT idquest FROM quest q WHERE q.gameid = ?)');
+	$stmt_users_quests_answers = $conn->prepare('DELETE FROM users_quests_answers WHERE questid IN (SELECT idquest FROM quest q WHERE q.gameid = ?)');
  	$stmt_users_quests_answers->execute(array(intval($gameid)));
 
  	// remove from users_quests

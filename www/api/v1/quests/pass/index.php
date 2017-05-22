@@ -83,7 +83,7 @@ $query = '
 function addUsersQuestAnswers($conn, $questid, $user_answer, $real_answer, $levenshtein, $passed) {
 	$answer_try = $user_answer;
 	$answer_real = $real_answer;
-	$query = 'INSERT INTO users_quests_answers(iduser, idquest, answer_try, answer_real, passed, levenshtein, datetime_try) VALUES (?, ?, ?, ?, ?, ?, NOW());';
+	$query = 'INSERT INTO users_quests_answers(userid, questid, user_answer, quest_answer, passed, levenshtein, dt) VALUES (?, ?, ?, ?, ?, ?, NOW());';
 	$params[] = APISecurity::userid();
 	$params[] = intval($questid);
 	$params[] = $answer_try;
@@ -136,7 +136,7 @@ try {
 					APIEvents::addPublicEvents($conn, "users", 'User #'.APISecurity::userid().' {'.APISecurity::nick().'} passed quest #'.$questid.' {'.$questname.'} from game #'.$gameid.' (new user score: '.$new_user_score.')');
 			} else {
 				// check already try pass
-				$stmt_check_users_quests_answers = $conn->prepare('select count(*) as cnt from users_quests_answers where answer_try = ? and iduser = ? and idquest = ?');
+				$stmt_check_users_quests_answers = $conn->prepare('select count(*) as cnt from users_quests_answers where user_answer = ? and userid = ? and questid = ?');
 				$stmt_check_users_quests_answers->execute(array($answer, $userid, intval($questid)));
 				if($row_check_users_quests_answers = $stmt_check_users_quests_answers->fetch()) {
 					$count = intval($row_check_users_quests_answers['cnt']);

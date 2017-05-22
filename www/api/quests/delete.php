@@ -59,7 +59,7 @@ try {
 	$stmt_quest->execute(array(intval($questid)));
 	
 	// remove from users_quests_answers
-	$stmt_users_quests_answers = $conn->prepare('DELETE FROM users_quests_answers WHERE idquest = ?');
+	$stmt_users_quests_answers = $conn->prepare('DELETE FROM users_quests_answers WHERE questid = ?');
  	$stmt_users_quests_answers->execute(array(intval($questid)));
  	
  	// remove from users_quests
