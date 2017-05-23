@@ -890,10 +890,6 @@ div.gamespanel__game p:before {
   color: rgba(0,0,0,0);
 }
 
-.fhq_event_caption {
-	font-size: 15px;
-}
-
 .fhq_event_score {
 	font-size: 18px;
 	font-weight: bold;
@@ -1695,12 +1691,12 @@ body.dark
 	display: inline-table;
 	/* border: 1px solid black;*/
 	border-radius: 10px;
-	margin: 12px;
+	margin-bottom: 24px;
 	font-family: arial;
 	padding: 10px;
 	text-align: center;
 	min-width: 200px;
-	width: 80%;
+	width: 100%;
 	background-color: #eee;
 	opacity: 0.95;
 }
@@ -2103,4 +2099,18 @@ body.dark
 .dark .fhq0064.fhq0065 {
     color: #C8C8C8;
     background-color: #494949;
+}
+
+.fhq0065 {
+	font-size: 15px;
+}
+
+.fhq0066{
+	font-size: 15px;
+    float: left;
+    min-width: 25px;
+    height: 25px;
+    line-height: 25px;
+    margin: 3px 3px 3px 3px;
+	padding: 8px;
 }

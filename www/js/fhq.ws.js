@@ -210,3 +210,9 @@ fhq.ws.serverinfo = function(params){
 	params.cmd = 'serverinfo';
 	return fhq.ws.send(params);
 }
+
+fhq.ws.publiceventslist = function(params){
+	params = params || {};
+	params.cmd = 'publiceventslist';
+	return fhq.ws.send(params);
+}

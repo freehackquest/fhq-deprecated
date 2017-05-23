@@ -653,45 +653,6 @@ function FHQGuiLib(api) {
 		$('#btnmenu_colorscheme img').attr({'src': 'images/menu/darkside_150x150.png'})
 		
 	}
-
-	this.eventView = function(event, access) {
-		var content = '';
-		var imgpath = '';
-		if (event.type == 'users')
-			imgpath = 'images/menu/user.png';
-		else if (event.type == 'quests')
-			imgpath = 'images/menu/quests_150x150.png';
-		else if (event.type == 'warning')
-			imgpath = 'images/menu/warning.png';
-		else if (event.type == 'info')
-			imgpath = 'images/menu/news.png';
-		else if (event.type == 'games')
-			imgpath = 'images/menu/games.png';
-		else
-			imgpath = 'images/menu/default.png'; // default
-
-		var marknew = '';
-		if (event.marknew && event.marknew == true && fhq.isAuth())
-			marknew = '*** NEW!!! ***,';
-
-		var content = ''
-			+ '<div class="fhq0017">'
-			+ '	<div class="fhq0018">'
-			+ '		<div class="fhq0019" style="background-image: url(' + imgpath + ')"></div>\n'
-			+ '		<div class="fhq0020">'
-			+ event.message
-			+ '			<div class="fhq_event_caption"> [' + marknew + event.type + ', ' + event.dt + ']</div>';
-		if (access == true) {
-			content += '			<div class="fhq_event_caption">'; 
-			content += '				<div class="fhqbtn" onclick="deleteConfirmEvent(' + event.id + ');">Delete</div>';
-			content += '				<div class="fhqbtn" onclick="formEditEvent(' + event.id + ');">Edit</div>';
-			content += '			</div>';
-		}
-		content += '		</div>'; // fhq_event_info_cell_content
-		content += '	</div>'; // fhq_event_info_row
-		content += '</div><br>'; // fhq_event_info
-		return content;
-	}
 	
 	this.userIcon = function(userid, logo, nick) {
 		return '<div class="fhqbtn" onclick="showUserInfo(' + userid + ')"> <img class="fhqmiddelinner" width=25px src="' + logo + '"/> ' + nick + '</div>'
@@ -1437,8 +1398,78 @@ fhq.ui.loadPageAbout = function() {
 
 
 fhq.ui.loadPageNews = function(){
-	createPageEvents();
-	updateEvents();
+	var onpage = 5;
+	if(fhq.containsPageParam("onpage")){
+		onpage = parseInt(fhq.pageParams['onpage'], 10);
+	}
+
+	var page = 0;
+	if(fhq.containsPageParam("page")){
+		page = parseInt(fhq.pageParams['page'], 10);
+	}
+	
+	window.fhq.changeLocationState({'news': '', 'onpage': onpage, 'page': page});
+	$("#content_page").html('<div class="fhq0057"></div>');
+	$('.fhq0057').append('<h1>' + fhq.t('News') + '</h1>');
+	$('.fhq0057').append('<div class="fhq0063"></div>');
+
+	fhq.ws.publiceventslist({'onpage': onpage, 'page': page}).done(function(r){
+		$('.fhq0063').append(fhq.ui.paginator(0, r.count, r.onpage, r.page));
+		console.log(r);
+
+		for(var i in r.data){
+			var ev = r.data[i];
+			var imgpath = '';
+			if (ev.type == 'users')
+				imgpath = 'images/menu/user.png';
+			else if (ev.type == 'quests')
+				imgpath = 'images/menu/quests_150x150.png';
+			else if (ev.type == 'warning')
+				imgpath = 'images/menu/warning.png';
+			else if (ev.type == 'info')
+				imgpath = 'images/menu/news.png';
+			else if (ev.type == 'games')
+				imgpath = 'images/menu/games.png';
+			else
+				imgpath = 'images/menu/default.png'; // default
+			
+			var marknew = '';
+			if (ev.marknew && ev.marknew == true && fhq.isAuth())
+				marknew = '*** NEW!!! ***,';
+					
+			
+			$('.fhq0057').append(fhq.ui.render([{
+				'c': 'fhq0017',
+				'r': [{
+					c: 'fhq0018',
+					r: [{
+						c: 'fhq0019',
+						s: 'background-image: url(' + imgpath + ')',
+					},{
+						c: 'fhq0020',
+						r: [
+							ev.message, {
+								c: 'fhq0065',
+								r: '[' + marknew + ev.type + ', ' + ev.dt + ']'
+						}]
+					}]
+				}]
+			}]));
+			
+			/*
+			 * TODO
+			 * if (access == true) {
+					content += '			<div class="fhq_event_caption">'; 
+					content += '				<div class="fhqbtn" onclick="deleteConfirmEvent(' + event.id + ');">Delete</div>';
+					content += '				<div class="fhqbtn" onclick="formEditEvent(' + event.id + ');">Edit</div>';
+					content += '			</div>';
+				}
+			 * */
+		}
+	}).fail(function(r){
+		console.error(r);
+		$('.fhq0057').append(r.error);
+	})
 }
 
 fhq.ui.loadScoreboard = function(){
@@ -2819,18 +2850,25 @@ fhq.ui.render = function(obj){
 	var res = '';
 	for(var i = 0; i < obj.length; i++){
 		var el = obj[i];
-		res += '<div';
-		res += (el.c ? ' class="' + el.c + '" ':'');
-		res += (el.id ? ' id="' + el.id + '" ':'');
-		res += '>';
-		if(el.r){
-			if(typeof(el.r) == "number" || typeof(el.r) == "boolean" || typeof(el.r) == "string"){
-				res += el.r;
-			}else{
-				res += fhq.ui.render(el.r);
+		if(typeof(el) == "undefined"){
+			console.error("Element is undefined");
+		}else if(typeof(el) == "string"){
+			res += el;
+		}else{
+			res += '<div';
+			res += (el.c ? ' class="' + el.c + '" ':'');
+			res += (el.id ? ' id="' + el.id + '" ':'');
+			res += (el.s ? ' style="' + el.s + '" ':'');
+			res += '>';
+			if(el.r){
+				if(typeof(el.r) == "number" || typeof(el.r) == "boolean" || typeof(el.r) == "string"){
+					res += el.r;
+				}else{
+					res += fhq.ui.render(el.r);
+				}
 			}
+			res += '</div>'
 		}
-		res += '</div>'
 	}
 	return res;
 }
@@ -2887,6 +2925,7 @@ fhq.ui.paginator = function(min,max,onpage,page) {
 	}
 
 	var pagesHtml = [];
+	pagesHtml.push('<div class="fhq0066">' + fhq.t('Found') + ': ' + (max-min) + '</div>');
 	for (var i = 0; i < pagesInt.length; i++) {
 		if (pagesInt[i] == -1) {
 			pagesHtml.push("...");
