@@ -216,3 +216,9 @@ fhq.ws.publiceventslist = function(params){
 	params.cmd = 'publiceventslist';
 	return fhq.ws.send(params);
 }
+
+fhq.ws.createpublicevent = function(params){
+	params = params || {};
+	params.cmd = 'createpublicevent';
+	return fhq.ws.send(params);
+}

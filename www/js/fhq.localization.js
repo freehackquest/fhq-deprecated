@@ -469,5 +469,25 @@ window.fhq.localization = {
 	'Passed':{
 		'en': 'Passed',
 		'ru': 'Сдан'
+	},
+	'Found':{
+		'en': 'Found',
+		'ru': 'Найдено'
+	},
+	'Create News':{
+		'en': 'Create News',
+		'ru': 'Создать новость'
+	},
+	'Type':{
+		'en': 'Type',
+		'ru': 'Тип'
+	},
+	'Warning':{
+		'en': 'Warning',
+		'ru': 'Предупреждение'
+	},
+	'Information':{
+		'en': 'Information',
+		'ru': 'Информация'
 	}
 };

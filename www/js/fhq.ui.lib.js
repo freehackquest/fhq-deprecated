@@ -234,6 +234,7 @@ function FHQGuiLib(api) {
 		if (fhq.isAdmin()){
 			$('.fhq0044').append('<div class="fhq0045" onclick="formCreateGame();">' + fhq.t('Create Game') + '</div>');
 			$('.fhq0044').append('<div class="fhq0045" onclick="fhqgui.formImportGame();">' + fhq.t('Import Game') + '</div>');
+			$('.fhq0044').append('<div class="fhq0045" onclick="fhq.ui.loadCreateNews();">' + fhq.t('Create News') + '</div>');
 		}
 		
 
@@ -261,7 +262,6 @@ function FHQGuiLib(api) {
 		
 		
 		$('#btnmenu_news').unbind().bind('click', function(){
-			window.fhq.changeLocationState({'news':''});
 			fhq.ui.loadPageNews();
 		})
 		
@@ -278,15 +278,12 @@ function FHQGuiLib(api) {
 		$('#btnmenu_plus').unbind().bind('click', function(){
 			$('.fhq0043').show();
 			$('.fhq0044').show();
-			console.log("1234");
 		});
 
 		$('.fhq0043').unbind().bind('click', function(e){
-			console.log("123");
 			e.stopPropagation();
 			e.preventDefault();
-			$('.fhq0043').hide();
-			$('.fhq0044').hide();
+			fhq.ui.closeAddMenu();
 			return true;
 		})
 	}
@@ -1188,6 +1185,13 @@ function FHQTable() {
 	};
 }
 
+fhq.ui.closeAddMenu = function(){
+	setTimeout(function(){
+		$('.fhq0044').hide();
+		$('.fhq0043').hide();
+	},100);
+}
+
 fhq.ui.processParams = function() {
 	fhq.api.users.profile().always(function(){
 		fhqgui.loadTopPanel();
@@ -1220,6 +1224,8 @@ fhq.ui.processParams = function() {
 			fhq.ui.loadQuestsBySubject(fhq.pageParams["subject"]);
 		}else if(fhq.containsPageParam("new_feedback")){
 			fhq.ui.loadNewFeedback();
+		}else if(fhq.containsPageParam("create_news")){
+			fhq.ui.loadCreateNews();
 		}else if(fhq.containsPageParam("tools")){
 			fhq.ui.loadTools();
 		}else if(fhq.containsPageParam("tool")){
@@ -1239,8 +1245,59 @@ fhq.ui.processParams = function() {
 	});
 }
 
+fhq.ui.loadCreateNews = function(){
+	fhq.changeLocationState({'create_news':''});
+	fhq.ui.closeAddMenu();
+	
+	// $("#content_page").html('<div class="fhq0067"></div>');
+	
+	$('#content_page').html('<div class="fhq0046"></div>')
+	$('#content_page').append('<div class="fhq0049"><div class="fhq0050"></div></div>')
+	var el = $('.fhq0046');
+	el.append('<h1>' + fhq.t("News") + '</h1>');
+
+	el.append('<div class="fhq0048">' + fhq.t("Type") + ':</div>');
+	el.append(''
+		+ '<select class="fhq0047" id="create_news_type">'
+		+ '	<option value="info">' + fhq.t("Information") + '</option>'
+		+ '	<option value="users">' + fhq.t("Users") + '</option>'
+		+ '	<option value="games">' + fhq.t("Games") + '</option>'
+		+ '	<option value="quests">' + fhq.t("Quests") + '</option>'
+		+ '	<option value="warning">' + fhq.t("Warning") + '</option>'
+		+ '</select>');
+	
+	el.append('<div class="fhq0048">' + fhq.t("Message") + ':</div>');
+	el.append('<textarea id="create_news_text"></textarea><br><br>');
+	el.append('<div class="fhqbtn" onclick="fhq.ui.insertNews()">' + fhq.t("Create") + '</div>');
+	
+}
+
+fhq.ui.insertNews = function(){
+	var data = {};
+
+	data.type = $('#create_news_type').val();
+	data.text = $('#create_news_text').val();
+	$('.fhq0046').hide();
+	$('.fhq0049').show();
+
+	fhq.ws.createpublicevent(data).done(function(){
+		fhq.ui.loadPageNews();
+	}).fail(function(r){
+		$('.fhq0046').show();
+		$('.fhq0049').hide();
+	
+		console.error(r);
+		var msg = r.error;
+		fhq.ui.showModalDialog({
+			'header' : fhq.t('Error'),
+			'content' : msg,
+			'buttons' : ''
+		});
+	})
+};
+
 fhq.ui.loadServerInfo = function(){
-	window.fhq.changeLocationState({'serverinfo':''});
+	fhq.changeLocationState({'serverinfo':''});
 	$("#content_page").html('<div class="fhq0054"></div>');
 	fhq.ws.serverinfo().done(function(r){
 		$('.fhq0054').append('<div class="fhq0055"><h1>Request Statistics</h1></div>');
@@ -1593,13 +1650,12 @@ fhq.ui.loadUserProfile = function(userid) {
 
 fhq.ui.loadNewFeedback = function() {
 	window.fhq.changeLocationState({'new_feedback':''});
-	$('.fhq0044').hide();
-	$('.fhq0043').hide();
+	fhq.ui.closeAddMenu();
 	
 	$('#content_page').html('<div class="fhq0046"></div>')
 	$('#content_page').append('<div class="fhq0049"><div class="fhq0050"></div></div>')
 	var el = $('.fhq0046');
-	el.append('<h1>Feedback</h1>');
+	el.append('<h1>' + fhq.t("Feedback") + '</h1>');
 	
 	el.append('<div class="fhq0048">' + fhq.t("Target") + ':</div>');
 	el.append(''

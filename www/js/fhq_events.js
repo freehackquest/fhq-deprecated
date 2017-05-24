@@ -1,33 +1,4 @@
 
-function formCreateEvent() {
-	var pt = new FHQParamTable();
-	pt.row('Type:', fhqgui.combobox('newevent_type', 'info', fhq.getEventTypes()));
-	pt.row('Message:', fhqgui.textedit('newevent_message', ''));
-	pt.right(fhqgui.btn('Create', 'insertEvent();'));
-	fhqgui.showModalDialog(pt.render());
-}
-
-function insertEvent()
-{
-	var params = {};
-	params["type"] = document.getElementById("newevent_type").value;
-	params["message"] = document.getElementById("newevent_message").value;
-// 	alert(createUrlFromObj(params));
-
-	send_request_post(
-		'api/events/insert.php',
-		createUrlFromObj(params),
-		function (obj) {
-			if (obj.result == "ok") {
-				closeModalDialog();
-				updateEvents();
-			} else {
-				alert(obj.error.message);
-			}
-		}
-	);
-	fhq.addNews(params.type, params.message);
-};
 
 function deleteEvent(id)  {
 	var params = {};

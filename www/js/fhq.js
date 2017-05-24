@@ -698,7 +698,7 @@ window.fhq.getGameStates = function() {
 	return this.enums.gameStates;
 };
 
-window.fhq.getEventTypes = function() {
+fhq.getEventTypes = function() {
 	this.initTypes();
 	return this.enums.eventTypes;
 };
