@@ -1276,7 +1276,7 @@ fhq.ui.insertNews = function(){
 	var data = {};
 
 	data.type = $('#create_news_type').val();
-	data.text = $('#create_news_text').val();
+	data.message = $('#create_news_text').val();
 	$('.fhq0046').hide();
 	$('.fhq0049').show();
 

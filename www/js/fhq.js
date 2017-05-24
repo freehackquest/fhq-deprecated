@@ -376,31 +376,6 @@ window.fhq.api.feedback.insert = function(params){
 	return d;
 }
 
-fhq.api.events.count = function() {
-	
-	var d = $.Deferred();
-	fhq.api.users.getLastEventId().done(function(lasteventid){
-		var params = {};
-		params['id'] = lasteventid;
-		$.ajax({
-			type: "POST",
-			url: 'api/events/count.php',
-			data: params
-		}).done(function(response){
-			if (response.result == 'ok') {
-				d.resolve(response.data.count);
-			}else{
-				d.resolve(0);
-			}
-		}).fail(function(){
-			d.resolve(0);
-		})
-	}).fail(function(){
-		d.resolve(0);
-	});
-	return d;
-};
-
 fhq.api.cleanuptoken = function(){
 	fhq.token = "";
 	fhq.removeTokenFromCookie();
