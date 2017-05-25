@@ -222,3 +222,9 @@ fhq.ws.createpublicevent = function(params){
 	params.cmd = 'createpublicevent';
 	return fhq.ws.send(params);
 }
+
+fhq.ws.deletepublicevent = function(params){
+	params = params || {};
+	params.cmd = 'deletepublicevent';
+	return fhq.ws.send(params);
+}

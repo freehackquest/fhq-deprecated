@@ -13,8 +13,9 @@ fhq.ui.showModalDialog = function(obj) {
 	document.body.scroll = "no"; // ie only
 	fhq.ui.modalDialog2ClickContent = false;
 	document.onkeydown = function(evt) {
-		if (evt.keyCode == 27)
+		if (evt.keyCode == 27){
 			fhq.ui.closeModalDialog();
+		}
 	}
 }
 
@@ -1476,57 +1477,29 @@ fhq.ui.loadPageNews = function(){
 
 		for(var i in r.data){
 			var ev = r.data[i];
-			var imgpath = '';
-			if (ev.type == 'users')
-				imgpath = 'images/menu/user.png';
-			else if (ev.type == 'quests')
-				imgpath = 'images/menu/quests_150x150.png';
-			else if (ev.type == 'warning')
-				imgpath = 'images/menu/warning.png';
-			else if (ev.type == 'info')
-				imgpath = 'images/menu/news.png';
-			else if (ev.type == 'games')
-				imgpath = 'images/menu/games.png';
-			else
-				imgpath = 'images/menu/default.png'; // default
-			
-			var marknew = '';
-			if (ev.marknew && ev.marknew == true && fhq.isAuth())
-				marknew = '*** NEW!!! ***,';
-					
-			
-			$('.fhq0057').append(fhq.ui.render([{
-				'c': 'fhq0017',
-				'r': [{
-					c: 'fhq0018',
-					r: [{
-						c: 'fhq0019',
-						s: 'background-image: url(' + imgpath + ')',
-					},{
-						c: 'fhq0020',
-						r: [
-							ev.message, {
-								c: 'fhq0065',
-								r: '[' + marknew + ev.type + ', ' + ev.dt + ']'
-						}]
-					}]
-				}]
-			}]));
-			
-			/*
-			 * TODO
-			 * if (access == true) {
-					content += '			<div class="fhq_event_caption">'; 
-					content += '				<div class="fhqbtn" onclick="deleteConfirmEvent(' + event.id + ');">Delete</div>';
-					content += '				<div class="fhqbtn" onclick="formEditEvent(' + event.id + ');">Edit</div>';
-					content += '			</div>';
-				}
-			 * */
+			$('.fhq0057').append(fhq.ui.templates.newsRow(ev));
 		}
 	}).fail(function(r){
 		console.error(r);
 		$('.fhq0057').append(r.error);
 	})
+}
+
+fhq.ui.deleteNews = function(id){
+	fhq.ui.closeModalDialog();
+	fhq.ws.deletepublicevent({'eventid': id}).done(function(r){
+		fhq.ui.processParams();
+	}).fail(function(r){
+		console.error(r);
+	});
+}
+
+fhq.ui.deleteNewsConfirm = function(id){
+	fhq.ui.confirmDialog(fhq.t('Are you sure delete news') + ' #' + id + ' ?', 'fhq.ui.deleteNews(' + id + ');');
+}
+
+fhq.ui.editNews = function(id){
+	alert("TODO " + id);
 }
 
 fhq.ui.loadScoreboard = function(){
@@ -1711,6 +1684,14 @@ fhq.ui.insertFeedback = function(){
 	})
 };
 
+fhq.ui.confirmDialog = function(msg, onclick_yes){
+	fhq.ui.showModalDialog({
+		'header' : fhq.t('Confirm'),
+		'content' : msg,
+		'buttons' : '<div class="fhqbtn" onclick="' + onclick_yes + '">' + fhq.t('Yes') + '</div>'
+	});
+}
+
 fhq.ui.loadGames = function() {
 	window.fhq.changeLocationState({'games':''});
 	
@@ -1790,8 +1771,6 @@ fhq.ui.loadFeedback = function() {
 				content += '			</div>';
 				
 				content += '			<div class="fhq_event_caption">'; 
-				/*content += '				<div class="fhqbtn" onclick="deleteConfirmEvent(' + f.id + ');">Delete</div>';
-				content += '				<div class="fhqbtn" onclick="formEditEvent(' + f.id + ');">Edit</div>';*/
 				
 				for (var k1 in f.messages) {
 					var m = f.messages[k1];
@@ -1811,8 +1790,6 @@ fhq.ui.loadFeedback = function() {
 					content += '		</div>'; // fhq_event_info_cell_content
 					content += '	</div>'; // fhq_event_info_row
 					content += '</div><br>'; // fhq_event_info
-					/*content += '				<div class="fhqbtn" onclick="deleteConfirmEvent(' + f.id + ');">Delete</div>';
-					content += '				<div class="fhqbtn" onclick="formEditEvent(' + f.id + ');">Edit</div>';*/
 				}
 				content += '			</div>';
 
@@ -2806,6 +2783,52 @@ window.fhq.ui.loadClassbook = function(){
 
 window.fhq.ui.templates = window.fhq.ui.templates || {};
 
+fhq.ui.templates.newsRow = function(ev){
+	var imgpath = '';
+	if (ev.type == 'users')
+		imgpath = 'images/menu/user.png';
+	else if (ev.type == 'quests')
+		imgpath = 'images/menu/quests_150x150.png';
+	else if (ev.type == 'warning')
+		imgpath = 'images/menu/warning.png';
+	else if (ev.type == 'info')
+		imgpath = 'images/menu/news.png';
+	else if (ev.type == 'games')
+		imgpath = 'images/menu/games.png';
+	else
+		imgpath = 'images/menu/default.png'; // default
+
+	var r = [{
+		'c': 'fhq0017',
+		'r': [{
+			c: 'fhq0018',
+			r: [{
+				c: 'fhq0019',
+				s: 'background-image: url(' + imgpath + ')',
+			},{
+				c: 'fhq0020',
+				r: [ ev.message,{
+						c: 'fhq0065',
+						r: '[' + ev.type + ', ' + ev.dt + ']'
+				}, {
+					c: 'fhq0068',
+					a: fhq.isAdmin(),
+					r: [{
+						c: 'fhqbtn',
+						click: 'fhq.ui.editNews(' + ev.id + ')',
+						r: fhq.t('Edit')
+					},{
+						c: 'fhqbtn',
+						click: 'fhq.ui.deleteNewsConfirm(' + ev.id + ')',
+						r: fhq.t('Delete')
+					}]
+				}]
+			}]
+		}]
+	}];
+	return fhq.ui.render(r);
+}
+
 fhq.ui.templates.singin = function(){
 	var content = ''
 		+ '<div id="signin-form">'
@@ -2911,19 +2934,26 @@ fhq.ui.render = function(obj){
 		}else if(typeof(el) == "string"){
 			res += el;
 		}else{
-			res += '<div';
-			res += (el.c ? ' class="' + el.c + '" ':'');
-			res += (el.id ? ' id="' + el.id + '" ':'');
-			res += (el.s ? ' style="' + el.s + '" ':'');
-			res += '>';
-			if(el.r){
-				if(typeof(el.r) == "number" || typeof(el.r) == "boolean" || typeof(el.r) == "string"){
-					res += el.r;
-				}else{
-					res += fhq.ui.render(el.r);
-				}
+			var a = true;
+			if(el.a !== undefined){
+				a = el.a;
 			}
-			res += '</div>'
+			if (a){
+				res += '<div';
+				res += (el.c ? ' class="' + el.c + '" ':'');
+				res += (el.id ? ' id="' + el.id + '" ':'');
+				res += (el.s ? ' style="' + el.s + '" ':'');
+				res += (el.click ? ' onclick="' + el.click + '" ':'');
+				res += '>';
+				if(el.r){
+					if(typeof(el.r) == "number" || typeof(el.r) == "boolean" || typeof(el.r) == "string"){
+						res += el.r;
+					}else{
+						res += fhq.ui.render(el.r);
+					}
+				}
+				res += '</div>'
+			}
 		}
 	}
 	return res;

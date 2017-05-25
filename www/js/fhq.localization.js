@@ -489,5 +489,18 @@ window.fhq.localization = {
 	'Information':{
 		'en': 'Information',
 		'ru': 'Информация'
+	},
+	'Confirm':{
+		'en': 'Confirm',
+		'ru': 'Подтверждение'
+	},
+	'Are you sure delete news':{
+		'en': 'Are you sure delete news',
+		'ru': 'Уверены что хотите удалить новость'
+	},
+	'Yes':{
+		'en': 'Yes',
+		'ru': 'Да'
 	}
+
 };
