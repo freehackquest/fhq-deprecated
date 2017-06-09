@@ -680,16 +680,17 @@ function FHQGuiLib(api) {
 	}
 
 	fhq.handlerReceivedChatMessage = function(response) {
-		self.showChatMessage(response.message, response.user);
+		self.showChatMessage(response.message, response.user, response.dt);
 	}
 
-	this.showChatMessage = function(m,u){
+	this.showChatMessage = function(m,u,d){
 		self.messageLastId++;
 		var id = 'message' + self.messageLastId;
 		self.showedMessages.push(id);
 		m = $('<div/>').text(m).html();
 		u = $('<div/>').text(u).html();
-		var newel = $( '<div id="' + id + '" class="message_chat">' + m  + '<div class="message-chat-user">' + u + '</div></div>');
+		d = $('<div/>').text(d).html();
+		var newel = $( '<div id="' + id + '" class="message_chat">' + m  + '<div class="message-chat-user">' + u + ' [' + new Date(Date.parse(d)) + ']</div>');
 		$( "body" ).append( newel );
 		newel.bind('click', function(){
 			$( "#" + id).remove();
@@ -1246,6 +1247,11 @@ fhq.ui.processParams = function() {
 	});
 }
 
+
+fhq.ui.onwsclose = function(){
+	$('.message_chat').remove();
+}
+
 fhq.ui.loadCreateNews = function(){
 	fhq.changeLocationState({'create_news':''});
 	fhq.ui.closeAddMenu();
@@ -1473,8 +1479,6 @@ fhq.ui.loadPageNews = function(){
 
 	fhq.ws.publiceventslist({'onpage': onpage, 'page': page}).done(function(r){
 		$('.fhq0063').append(fhq.ui.paginator(0, r.count, r.onpage, r.page));
-		console.log(r);
-
 		for(var i in r.data){
 			var ev = r.data[i];
 			$('.fhq0057').append(fhq.ui.templates.newsRow(ev));
@@ -2685,6 +2689,23 @@ fhq.ui.initChatForm = function(){
 			}
 			$('#sendchatmessage_text').val('');
 			fhq.ws.sendChatMessage({type: 'chat', message: text}); // async
+		}
+	});
+	
+	
+	$('#sendchatmessage_trigger').unbind().bind('click', function(event){
+		if($('#sendchatmessage_trigger').hasClass('hide')){
+			$('#sendchatmessage_trigger').removeClass('hide');
+			$('.message_chat').show();
+			$('.sendchatmessage-form').css({'width': '300px'});
+			$('#sendchatmessage_text').show();
+			$('#sendchatmessage_submit').show();
+		}else{
+			$('#sendchatmessage_trigger').addClass('hide');
+			$('.sendchatmessage-form').css({'width': '30px'});
+			$('.message_chat').hide();
+			$('#sendchatmessage_text').hide();
+			$('#sendchatmessage_submit').hide();
 		}
 	});
 }

@@ -1486,7 +1486,7 @@ body.dark
 	background-color: #e4e4e4;
 	position: fixed;
 	z-index: 100;
-	width: 250px;
+	width: 300px;
 	height: 50px;
 	bottom: 50px;
 	right: -300px;
@@ -1531,7 +1531,7 @@ body.dark
 	background-color: #e4e4e4;
 	border: 1px solid #3e3e3e;
 	padding: 10px;
-	width: 250px;
+	width: 300px;
 }
 
 .dark .sendchatmessage-form{
@@ -1553,6 +1553,21 @@ body.dark
 	background-size: 30px 30px;
 	cursor: pointer;
 	margin-left: 10px;
+}
+
+.sendchatmessage-trigger {
+	background-image: url("../images/hide_20x20.png");
+	height: 30px;
+	width: 30px;
+	display: inline-block;
+	background-repeat: no-repeat;
+	background-size: 30px 30px;
+	cursor: pointer;
+	margin-right: 10px;
+}
+
+.sendchatmessage-trigger.hide{
+	background-image: url("../images/menu/chat_150x150.png");
 }
 
 .scoreboard-user-tile{

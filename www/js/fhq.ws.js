@@ -44,7 +44,9 @@ window.fhq.ws.setWSState = function(s){
 		document.getElementById('websocket_state').innerHTML = s;
 	}
 }
-window.fhq.ws.onconnect = function(){};
+window.fhq.ws.onconnect = function(){
+	
+};
 
 window.fhq.ws.initWebsocket = function(){
 	var protocol = window.location.protocol == "https:" ? "wss:" : "ws:";
@@ -63,6 +65,11 @@ window.fhq.ws.initWebsocket = function(){
 
 	window.fhq.ws.socket.onclose = function(event) {
 		console.log('Closed');
+		
+		if(fhq.ui && fhq.ui.onwsclose){
+			fhq.ui.onwsclose();
+		}
+		
 		if (event.wasClean) {
 			fhq.ws.setWSState("CLOSED");
 		} else {

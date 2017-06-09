@@ -125,7 +125,10 @@ fhq.isAuth = function(){
 }
 
 fhq.isAdmin = function(){
-	return fhq.userinfo && fhq.userinfo.role == "admin";
+	if(fhq.userinfo){
+		return fhq.userinfo.role == "admin";
+	}
+	return false;
 }
 
 window.fhq.games = new (function(t) {
@@ -400,6 +403,8 @@ fhq.api.users.login = function (email, password) {
 			d.resolve(r);
 		}else{
 			fhq.api.cleanuptoken();
+			localStorage.removeItem('userinfo');
+			fhq.userinfo = {};
 			d.reject(r);
 		}
 	}).fail(function(r){
@@ -486,6 +491,7 @@ fhq.api.users.logout = function () {
 		fhq.token = "";
 		fhq.userinfo = null;
 		fhq.removeTokenFromCookie();
+		localStorage.removeItem('userinfo');
 		try{fhq.ws.socket.close();fhq.ws.initWebsocket()}catch(e){console.error(e)};
 		d.resolve(r);
 	}).fail(function(r){
