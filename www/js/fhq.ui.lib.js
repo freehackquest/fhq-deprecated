@@ -1601,7 +1601,7 @@ fhq.ui.loadUserProfile = function(userid) {
 			
 			pt.skip();
 			pt.row('Update nick:', '<input id="user_new_nick" type="text" value="' + obj.data.nick + '"/>');
-			pt.row('', '<div class="fhqbtn" onclick="changeUserNick(null);">Change name</div>');
+			pt.row('', '<div class="fhqbtn" onclick="changeUserNick(null);">Change nick</div>');
 			pt.skip();
 			pt.row('Country:', '<input id="edit_user_country" type="text" value="'+obj.profile.country+'"/>');
 			pt.row('City:', '<input id="edit_user_city" type="text" value="'+obj.profile.city+'"/>');
