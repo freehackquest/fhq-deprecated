@@ -1240,6 +1240,8 @@ fhq.ui.processParams = function() {
 			fhq.ui.loadPageMore();
 		}else if(fhq.containsPageParam("feedback")){
 			fhq.ui.loadFeedback()
+		}else if(fhq.containsPageParam("api")){
+			fhq.ui.loadApiPage()
 		}else{
 			// default
 			fhq.ui.loadStatSubjectsQuests();
@@ -1551,6 +1553,7 @@ fhq.ui.loadPageMore = function(){
 	lst.push({'id': 'tools', 'name': 'Tools', 'descr': 'Useful tools', 'icon': 'images/menu/tools_150x150.png', 'load': fhq.ui.loadTools});
 	lst.push({'id': 'classbook', 'name': 'Classbook', 'descr': 'A set of useful articles', 'icon': 'images/menu/classbook_150x150.png', 'load': fhq.ui.loadClassbook});
 	lst.push({'id': 'users', 'name': 'Users', 'descr': 'Rating of users', 'icon': 'images/menu/users_150x150.png', 'load': fhq.ui.loadRatingOfUsers});
+	lst.push({'id': 'api', 'name': 'API', 'descr': 'API', 'icon': 'images/menu/api_150x150.png', 'load': fhq.ui.loadApiPage});
 	for(var i in lst){
 		var o = lst[i];
 		el.append(''
@@ -1577,6 +1580,13 @@ fhq.ui.loadPageMore = function(){
 			}
 		}
 	});
+}
+
+fhq.ui.loadApiPage = function() {
+	window.fhq.changeLocationState({'api':''});
+	$('#content_page').html('<div class="fhq0021"></div>');
+	var el = $('.fhq0021');
+	el.append("TODO");
 }
 
 fhq.ui.loadUserProfile = function(userid) {
