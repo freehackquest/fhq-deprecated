@@ -57,17 +57,25 @@ window.fhq.localization = {
 		'en': 'Sign-out',
 		'ru': 'Выход'
 	},
-	'statistics': {
-		'en': 'statistics',
-		'ru': 'статистика'
+	'Statistics': {
+		'en': 'Statistics',
+		'ru': 'Статистика'
 	},
-	'leaders': {
-		'en': 'leaders',
-		'ru': 'лидеры'
+	'Top 10': {
+		'en': 'Top 10',
+		'ru': 'Топ 10'
 	},
-	'developers and designers':{
-		'en': 'developers and designers',
-		'ru': 'разработчики и дизайнеры'
+	'License': {
+		'en': 'License',
+		'ru': 'Лицензия'
+	},
+	'Virtual Machine': {
+		'en': 'Virtual Machine',
+		'ru': 'Виртуальная машина'
+	},
+	'Developers and designers':{
+		'en': 'Developers and designers',
+		'ru': 'Разработчики и дизайнеры'
 	},
 	'Join the dark side...':{
 		'en': 'Join the dark side...',
@@ -101,33 +109,33 @@ window.fhq.localization = {
 		'en': 'team',
 		'ru': 'команда'
 	},
-	'contacts':{
-		'en': 'contacts',
-		'ru': 'контакты'
+	'Contacts':{
+		'en': 'Contacts',
+		'ru': 'Контакты'
 	},
-	'thanks for':{
-		'en': 'thanks for',
-		'ru': 'благодарности'
+	'Thanks for':{
+		'en': 'Thanks for',
+		'ru': 'Благодарности'
 	},
-	'source code':{
-		'en': 'source code',
-		'ru': 'исходный код'
+	'Source code':{
+		'en': 'Source code',
+		'ru': 'Исходный код'
 	},
-	'distribution': {
-		'en': 'distribution',
-		'ru': 'скачать виртуальную машину с платформой'
+	'Distribution': {
+		'en': 'Distribution',
+		'ru': 'Распространение'
 	},
-	'donate':{
-		'en': 'donate',
+	'Deb package':{
+		'en': 'Deb package',
+		'ru': 'Deb пакет'
+	},
+	'Donate':{
+		'en': 'Donate',
 		'ru': 'пожертвования'
 	},
-	'contacts':{
-		'en': 'contacts',
-		'ru': 'контакты'
-	},
-	'If you are not in team you can join to FHQ team on':{
-		'en': 'If you are not in team you can join to FHQ team on',
-		'ru': 'Если вы не в команде вы можете присоединиться к команде FHQ, здесь'
+	'Contacts':{
+		'en': 'Contacts',
+		'ru': 'Контакты'
 	},
 	'Light': {
 		'en': 'Light',
@@ -501,6 +509,11 @@ window.fhq.localization = {
 	'Yes':{
 		'en': 'Yes',
 		'ru': 'Да'
+	},
+	'If you found old version please contact me by mrseakg@gmail.com for get newest version':{
+		'en': 'If you found old version please contact me by mrseakg@gmail.com for get newest version',
+		'ru': 'Если там старая версия пожалуйста напишите на ящик mrseakg@gmail.com с просьбой обновить версию',
 	}
+	
 
 };

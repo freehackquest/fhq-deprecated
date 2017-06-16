@@ -627,7 +627,7 @@ window.fhq.statistics.myanswers = function(questid){
 
 window.fhq.enums = null;
 
-window.fhq.publicInfo = function(callback) {
+fhq.publicInfo = function(callback) {
 	this.sendPostRequest_Async('api/public/info.php', {}, callback);
 }
 

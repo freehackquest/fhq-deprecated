@@ -155,42 +155,6 @@ body {
 
 /* .dark .fhq-btn-menu-right, .dark .fhq-simple-btn, */
 
-.fhq-topic {
-    text-decoration: underline;
-    font: 12pt/10pt Arial;
-    font-size: 38.5px;
-    line-height: 40px;
-    height: 40px;
-    padding-bottom: 10px;
-    color: #303030;
-    padding-top: 20px;
-}
-
-.single-line-value {
-    display: inline-block;
-    min-height: 25px;
-    line-height: 25px;
-    min-width: 100px;
-}
-
-.single-line-name {
-    display: inline-block;
-    min-height: 25px;
-    line-height: 25px;
-    font-weight: bold;
-}
-
-.single-line-preloader {
-    min-height: 25px;
-}
-
-.single-line-value.preloading{
-	background-image: url('../images/preloader.gif');
-	background-repeat: no-repeat;
-	background-position: center center;
-}
-
-
 #copyright {
     position: fixed;
     bottom: 0px;
@@ -2131,7 +2095,40 @@ body.dark
 }
 
 .fhq0067{
+	width: 80%;
 }
 
 .fhq0068{
+}
+
+.fhq0069{
+	margin: 10px;
+}
+
+.fhq0070 {
+    text-decoration: underline;
+    font: 12pt/10pt Arial;
+    font-size: 38.5px;
+    line-height: 40px;
+    height: 40px;
+    padding-bottom: 10px;
+    padding-top: 20px;
+}
+
+.fhq0071{
+	height: 60px;
+}
+
+.fhq0072{
+	display: inline-table;
+}
+
+.fhq0073{
+	display: table-row;
+}
+
+.fhq0074{
+	display: table-cell;
+	border-right: 1px solid;
+	padding: 10px;
 }
