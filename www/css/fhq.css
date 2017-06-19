@@ -2132,3 +2132,59 @@ body.dark
 	border-right: 1px solid;
 	padding: 10px;
 }
+
+
+.fhq0075{
+	display: table-row;
+    padding: 10px;
+	background-color: #eee;
+	border-bottom: 1px solid;
+}
+
+.dark .fhq0075{
+	background-color: #494949;
+}
+
+.fhq0076{
+	display: table-cell;
+	width: 33%;
+	padding: 10px;
+}
+
+.fhq0077{
+	display: table-cell;
+    width: 33%;
+    padding: 10px;
+}
+
+.fhq0078{
+	width: 80%;
+	display: table;
+}
+
+.fhq0079{
+	padding: 10px;
+	font-size: 25px;
+}
+
+.fhq0080{
+	
+}
+
+.fhq0081{
+	
+}
+
+.fhq0082{
+	display: table-cell;
+	width: 33%;
+	padding: 10px;
+}
+
+.fhq0083{
+	
+}
+
+.fhq0084{
+	
+}

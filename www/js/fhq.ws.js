@@ -235,3 +235,9 @@ fhq.ws.deletepublicevent = function(params){
 	params.cmd = 'deletepublicevent';
 	return fhq.ws.send(params);
 }
+
+fhq.ws.api = function(params){
+	params = params || {};
+	params.cmd = 'api';
+	return fhq.ws.send(params);
+}

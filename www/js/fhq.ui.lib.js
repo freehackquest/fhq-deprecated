@@ -1153,57 +1153,54 @@ fhq.ui.closeAddMenu = function(){
 	},100);
 }
 
+fhq.ui.pageHandlers = {};
+
 fhq.ui.processParams = function() {
+	fhq.ui.pageHandlers["quests"] = fhq.ui.loadStatSubjectsQuests;
+	fhq.ui.pageHandlers["user"] = fhq.ui.loadUserProfile;
+	fhq.ui.pageHandlers["classbook"] = fhq.ui.loadClassbook;
+	fhq.ui.pageHandlers["about"] = fhq.ui.loadPageAbout;
+	fhq.ui.pageHandlers["games"] = fhq.ui.loadGames;
+	fhq.ui.pageHandlers["scoreboard"] = fhq.ui.loadScoreboard;
+	fhq.ui.pageHandlers["news"] = fhq.ui.loadPageNews;
+	fhq.ui.pageHandlers["quest"] = fhq.ui.loadQuest;
+	fhq.ui.pageHandlers["userid"] = fhqgui.showFullUserProfile; // TODO redesign
+	fhq.ui.pageHandlers["subject"] = fhq.ui.loadQuestsBySubject;
+	fhq.ui.pageHandlers["new_feedback"] = fhq.ui.loadNewFeedback;
+	fhq.ui.pageHandlers["create_news"] = fhq.ui.loadCreateNews;
+	fhq.ui.pageHandlers["tools"] = fhq.ui.loadTools;
+	fhq.ui.pageHandlers["tool"] = fhq.ui.loadTool;
+	fhq.ui.pageHandlers["serverinfo"] = fhq.ui.loadServerInfo;
+	fhq.ui.pageHandlers["answerlist"] = fhq.ui.loadAnswerList;
+	fhq.ui.pageHandlers["more"] = fhq.ui.loadPageMore;
+	fhq.ui.pageHandlers["feedback"] = fhq.ui.loadFeedback;
+	fhq.ui.pageHandlers["api"] = fhq.ui.loadApiPage;
+
 	fhq.api.users.profile().always(function(){
 		fhqgui.loadTopPanel();
 		fhq.ui.initChatForm();
-		if(fhq.containsPageParam("quests")){
-			fhq.ui.loadStatSubjectsQuests();
-		} else if(fhq.containsPageParam("news")){
-			fhq.ui.loadPageNews();
-		} else if(fhq.containsPageParam("classbook")){
-			fhq.ui.loadClassbook();
-		} else if(fhq.containsPageParam("about")){
-			fhq.ui.loadPageAbout();
-		} else if(fhq.containsPageParam("skills")){
-			fhqgui.createPageSkills();
-			fhqgui.updatePageSkills();
-		} else if(fhq.containsPageParam("stats")){
-			// TODO
-			createPageStatistics('.$gameid.');
-			updateStatistics('.$gameid.');
-		} else if(fhq.containsPageParam("games")){
-			fhq.ui.loadGames();
-		} else if(fhq.containsPageParam("scoreboard")){
-			fhq.ui.loadScoreboard();
-		} else if (fhq.containsPageParam("quest")){
-			fhq.ui.loadQuest(fhq.pageParams["quest"]);
-		}else if(fhq.containsPageParam("userid")){
-			var userid = fhq.pageParams["userid"]
-			this.showFullUserProfile(userid);
-		}else if(fhq.containsPageParam("subject")){
-			fhq.ui.loadQuestsBySubject(fhq.pageParams["subject"]);
-		}else if(fhq.containsPageParam("new_feedback")){
-			fhq.ui.loadNewFeedback();
-		}else if(fhq.containsPageParam("create_news")){
-			fhq.ui.loadCreateNews();
-		}else if(fhq.containsPageParam("tools")){
-			fhq.ui.loadTools();
-		}else if(fhq.containsPageParam("tool")){
-			fhq.ui.loadTool(fhq.pageParams["tool"]);
-		}else if(fhq.containsPageParam("serverinfo")){
-			fhq.ui.loadServerInfo();
-		}else if(fhq.containsPageParam("answerlist")){
-			fhq.ui.loadAnswerList();
-		}else if(fhq.containsPageParam("more")){
-			fhq.ui.loadPageMore();
-		}else if(fhq.containsPageParam("feedback")){
-			fhq.ui.loadFeedback()
-		}else if(fhq.containsPageParam("api")){
-			fhq.ui.loadApiPage()
-		}else{
-			// default
-			fhq.ui.loadStatSubjectsQuests();
+		var processed = true;
+		for(var p in fhq.ui.pageHandlers){
+			if(fhq.containsPageParam(p)){
+				processed = true;
+				console.log("Processed: " + p);
+				fhq.ui.pageHandlers[p](fhq.pageParams[p]);
+				break;
+			}
+		}
+		
+		if(!processed){
+			if(fhq.containsPageParam("skills")){
+				fhqgui.createPageSkills();
+				fhqgui.updatePageSkills();
+			} else if(fhq.containsPageParam("stats")){
+				// TODO
+				createPageStatistics('.$gameid.');
+				updateStatistics('.$gameid.');
+			}else{
+				// default
+				fhq.ui.loadStatSubjectsQuests();
+			}
 		}
 	});
 }
@@ -1619,13 +1616,46 @@ fhq.ui.loadPageMore = function(){
 
 fhq.ui.loadApiPage = function() {
 	window.fhq.changeLocationState({'api':''});
-	$('#content_page').html('<div class="fhq0021"></div>');
-	var el = $('.fhq0021');
-	el.append("TODO");
+	$('#content_page').html('<div class="fhq0078"></div>');
+	var el = $('.fhq0078');
+	el.html("Loading...");	
+	fhq.ws.api().done(function(r){
+		el.html("");
+		el.append("ws port: " + r.data.port);
+		el.append("wss port: " + r.data.port);
+		for(var i in r.data.handlers){
+			var h = r.data.handlers[i];
+			var c = ''
+				+ '<div class="fhq0075">'
+				+ '	<div class="fhq0076">'
+				+ '		<div class="fhq0079">' + h.cmd + '</div>'
+				+ '		<div class="fhq0080">' + h.description + '</div>'
+				+ '	</div>'
+				+ '	<div class="fhq0077">'
+				+ '		<div class="fhq0081">' + 'Input' + '</div>'
+				+ '	</div>'
+				+ '	<div class="fhq0082">'
+				+ '		<div class="fhq0083">Errors</div>'
+			
+			for(var i1 in h.errors){
+				c += '<div class="fhq0084">' + h.errors[i1] + '</div>'
+			}
+				
+			c += '	</div>'
+				+ '</div>'
+			
+			el.append(c);
+		}
+		el.append('<div class="fhq0071"></div>');
+	}).fail(function(r){
+		console.error(r);
+	})
 }
 
 fhq.ui.loadUserProfile = function(userid) {
+	window.fhq.changeLocationState({'user':userid});
 	// alert(userid);
+	// $('#content_page').html('<div class="fhq0021"></div>');
 
 	var cp = document.getElementById('content_page');
 	cp.innerHTML = 'Please wait...';
@@ -3093,3 +3123,4 @@ fhq.ui.paginator = function(min,max,onpage,page) {
 $(document).ready(function() {
 	fhq.ui.createCopyright();
 });
+
