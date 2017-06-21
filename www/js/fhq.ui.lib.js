@@ -1179,7 +1179,7 @@ fhq.ui.processParams = function() {
 	fhq.api.users.profile().always(function(){
 		fhqgui.loadTopPanel();
 		fhq.ui.initChatForm();
-		var processed = true;
+		var processed = false;
 		for(var p in fhq.ui.pageHandlers){
 			if(fhq.containsPageParam(p)){
 				processed = true;
@@ -1616,13 +1616,17 @@ fhq.ui.loadPageMore = function(){
 
 fhq.ui.loadApiPage = function() {
 	window.fhq.changeLocationState({'api':''});
-	$('#content_page').html('<div class="fhq0078"></div>');
+	$('#content_page').html('<h1>API</h1><div class="fhq0086"></div><div class="fhq0078"></div>');
 	var el = $('.fhq0078');
-	el.html("Loading...");	
+	el.html("Loading...");
 	fhq.ws.api().done(function(r){
 		el.html("");
-		el.append("ws port: " + r.data.port);
-		el.append("wss port: " + r.data.port);
+		$('.fhq0086').html('<p>Connection string: <br>'
+			+ ' ws://freehackquest.com:' + r.data.port + '/ <br> '
+			+ 'wss://freehackquest.com: ' + r.data.ssl_port + '/ - with ssl</p>'
+			+ '<p>Fisrt command must be hello and next login if you have api token</p>'
+		);
+
 		for(var i in r.data.handlers){
 			var h = r.data.handlers[i];
 			var c = ''
@@ -1632,8 +1636,15 @@ fhq.ui.loadApiPage = function() {
 				+ '		<div class="fhq0080">' + h.description + '</div>'
 				+ '	</div>'
 				+ '	<div class="fhq0077">'
-				+ '		<div class="fhq0081">' + 'Input' + '</div>'
-				+ '	</div>'
+				+ '		<div class="fhq0081">' + fhq.t('Input\'s parameters') + '</div>';
+			
+			for(var i1 in h.inputs){
+				var inp = h.inputs[i1];
+				c += '<div class="fhq0085"><b>' + inp.type + '</b> "' + inp.name + '" (' + inp.restrict + ') - <i>' + inp.description + '</i></div>'
+			}
+				
+
+			c += '	</div>'
 				+ '	<div class="fhq0082">'
 				+ '		<div class="fhq0083">Errors</div>'
 			

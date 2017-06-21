@@ -2155,6 +2155,7 @@ body.dark
 	display: table-cell;
     width: 33%;
     padding: 10px;
+    text-align: left;
 }
 
 .fhq0078{
@@ -2168,7 +2169,7 @@ body.dark
 }
 
 .fhq0080{
-	
+	font-style: italic;
 }
 
 .fhq0081{
@@ -2186,5 +2187,13 @@ body.dark
 }
 
 .fhq0084{
+	
+}
+
+.fhq0085{
+	
+}
+
+.fhq0086{
 	
 }
