@@ -2140,7 +2140,7 @@ fhq.ui.loadStatSubjectsQuests = function(){
 		}
 		
 		$('.fhq-quests-subject').unbind().bind('click', function(){
-			window.location = '?subject=' + $(this).attr('subject');
+			fhq.ui.loadQuestsBySubject($(this).attr('subject'));
 		})
 	}).fail(function(r){
 		console.error(r);
@@ -2174,7 +2174,7 @@ fhq.ui.loadQuestsBySubject = function(subject){
 		}
 		
 		$('.fhq0001').unbind().bind('click', function(){
-			window.location = '?quest=' + $(this).attr('questid');
+			fhq.ui.loadQuest($(this).attr('questid'));
 		});
 	}).fail(function(r){
 		console.error(r)
