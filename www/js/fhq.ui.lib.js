@@ -1541,35 +1541,47 @@ fhq.ui.editNews = function(id){
 }
 
 fhq.ui.loadScoreboard = function(){
-	window.fhq.changeLocationState({'scoreboard':''});
+	
+	var onpage = 5;
+	if(fhq.containsPageParam("onpage")){
+		onpage = parseInt(fhq.pageParams['onpage'], 10);
+	}
 
-	// document.getElementById("gameid").value;
+	var page = 0;
+	if(fhq.containsPageParam("page")){
+		page = parseInt(fhq.pageParams['page'], 10);
+	}
+	
+	window.fhq.changeLocationState({'scoreboard':'', 'onpage': onpage, 'page': page});
 
-	fhq.ws.scoreboard().done(
-		function (r) {
-			console.log(r);
-			var el = document.getElementById("content_page");
-			el.innerHTML = '';
-			el.innerHTML += '<div id="scoreboard_table" class="fhq_scoreboard_table"></div>';
-			var tbl = document.getElementById("scoreboard_table");
-
-			var content = '';
+	fhq.ws.scoreboard().done(function(r){
+			$("#content_page").html('<div class="fhq0087"></div>');
+			
 			for (var k in r.data) {
-				content = '<div class="fhq_scoreboard_row">';
-				var row = r.data[k];
-				content += '<div class="fhq_scoreboard_cell">' + row.place + '</div>';
 				var arr = [];
+				var row = r.data[k];
+				var first_user_logo = ''
 				for (var k2 in row.users) {
 					var u = row.users[k2];
+					first_user_logo = u.logo;
 					arr.push(fhqgui.userIcon(u.userid, u.logo, u.nick));
 				}
-				content += '<div class="fhq_scoreboard_cell">' + row.rating + '</div>';
-				content += '<div class="fhq_scoreboard_cell"><div class="scoreboard-user-tile">' + arr.join('</div><div class="scoreboard-user-tile">') + '</div></div>';
-				content += '</div>';
-				content += '</div>';
-				tbl.innerHTML += content;
+				
+				$('.fhq0087').append(''
+					+ '<div class="fhq0088">'
+					+ '  <div class="fhq0090" id="place' + k + '"></div>'
+					+ '  <div class="fhq0090"><h1>' + row.place + '</h2> [' + row.rating + ' P]</div>'
+					+ '  <div class="fhq0091">' + arr.join(' ') + '</div>'
+					
+					+ '</div>');
+				
+				if(row.users.length == 1)	{
+					$('#place' + k).css({'background-image': 'url(' + u.logo + ')'});
+				}else{
+					$('#place' + k).css({'background-image': 'url(files/users/0.png)'});
+				}
+				$('.fhq0087').append('<div class="fhq0092"></div>');
 			}
-			content = '';
 		}
 	);
 }

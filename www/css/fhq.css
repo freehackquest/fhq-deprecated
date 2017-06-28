@@ -904,38 +904,6 @@ div.gamespanel__game p:before {
 	color: #606060;
 }
 
-.fhq_scoreboard_table {
-	display: display: table;
-	margin: 10px;
-	vertical-align: top;
-	padding-left: 200px;
-    padding-right: 200px;
-}
-
-.fhq_scoreboard_table {
-	display: display: table;
-	margin: 10px;
-	vertical-align: top;
-}
-
-.fhq_scoreboard_row {
-	display: table-row;
-	font-family: Arial;
-	padding: 10px;
-	text-decoration: none;
-	color: #000000;
-	margin:3px 3px 3px 3px;
-	border-bottom: 1px solid #E4E4E4;
-}
-
-.fhq_scoreboard_cell {
-	display: table-cell;
-	padding: 10px;
-	margin: 10px;
-	text-align: left;
-	border-left: 1px solid #E4E4E4;
-}
-
 /* quest_info.css */
 
 .quest_info_table {
@@ -1534,9 +1502,7 @@ body.dark
 	background-image: url("../images/menu/chat_150x150.png");
 }
 
-.scoreboard-user-tile{
-	display: inline-block;
-}
+
 
 
 /* quests-list */
@@ -2196,4 +2162,43 @@ body.dark
 
 .fhq0086{
 	
+}
+
+.fhq0087{
+	width: 80%;
+}
+
+.fhq0088 {
+	display: table;
+    width: 100%;
+    background-color: #eee;
+    border-radius: 10px;
+}
+
+.dark .fhq0088{
+	background-color: #494949;
+}
+
+.fhq0089 {
+	display: table-row;
+}
+
+.fhq0090 {
+	display: table-cell;
+	width: 110px;
+    min-width: 110px;
+    height: 110px;
+    border-radius: 10px;
+    background-size: 110px 110px;
+    background-repeat: no-repeat;
+}
+
+.fhq0091 {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.fhq0092 {
+	display: block;
+    height: 20px;
 }
