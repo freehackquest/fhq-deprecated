@@ -1637,10 +1637,16 @@ fhq.ui.loadApiPage = function() {
 	el.html("Loading...");
 	fhq.ws.api().done(function(r){
 		el.html("");
-		$('.fhq0086').html('<p>Connection string: <br>'
-			+ ' ws://freehackquest.com:' + r.data.port + '/ <br> '
-			+ 'wss://freehackquest.com: ' + r.data.ssl_port + '/ - with ssl</p>'
-			+ '<p>Fisrt command must be hello and next login if you have api token</p>'
+		$('.fhq0086').html('<div class="fhq0097"><h3>Connect</h3>'
+			+ 'Connection string: ws://freehackquest.com:' + r.data.port + '/ <br> '
+			+ 'Or if enabled ssl: wss://freehackquest.com:' + r.data.ssl_port + '/ - with ssl</p>'
+			+ '<p>For example: <pre>var socket = new WebSocket("wss://freehackquest.com:' + r.data.ssl_port + '/");</pre></p>'
+			+ '<h3>Start communication with server</h3>'
+			+ '<p>Fisrt command must be hello and next login if you have api token'
+			+ '<p>For example: <pre>socket.send(JSON.stringify({cmd: "hello"}))</pre>'
+			+ '<h3>Implemnetation</h3>'
+			+ '<p>You can find this: <a href="https://freehackquest.com/js/fhq.ws.js" target="_blank">https://freehackquest.com/js/fhq.ws.js</a></p>'
+			+ '</div>'
 		);
 
 		for(var i in r.data.handlers){

@@ -2222,3 +2222,15 @@ body.dark
     padding: 10px;
     text-align: left;
 }
+
+.fhq0097{
+	background-color: #eee;
+	width: 80%;
+	text-align: left;
+    padding: 10px;
+    margin-bottom: 50px;
+}
+
+.dark .fhq0097{
+	background-color: #494949;
+}
