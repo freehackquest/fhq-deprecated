@@ -2202,3 +2202,23 @@ body.dark
 	display: block;
     height: 20px;
 }
+
+.fhq0093 {
+	display: table;
+}
+
+.fhq0094 {
+	display: table-row;
+}
+
+.fhq0095 {
+	display: table-cell;
+	padding: 10px;
+	text-align: right;
+}
+
+.fhq0096 {
+	display: table-cell;
+    padding: 10px;
+    text-align: left;
+}
