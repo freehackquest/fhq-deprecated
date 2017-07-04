@@ -660,6 +660,9 @@ function FHQGuiLib(api) {
 			self.updatePostionMessages();
 		});
 		setTimeout(function(){self.updatePostionMessages();}, 1000);
+		if(fhq.ui.chatSoundOn){
+			document.getElementById('income_msg_sound').play();
+		}
 	}
 
 	this.openQuestInNewTab = function(questid) {
@@ -1148,6 +1151,8 @@ function FHQTable() {
 		return result;
 	};
 }
+
+fhq.ui.chatSoundOn = false;
 
 fhq.ui.closeAddMenu = function(){
 	setTimeout(function(){
