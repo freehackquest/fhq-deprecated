@@ -2113,13 +2113,13 @@ body.dark
 
 .fhq0076{
 	display: table-cell;
-	width: 33%;
+	width: 25%;
 	padding: 10px;
 }
 
 .fhq0077{
 	display: table-cell;
-    width: 33%;
+    width: 25%;
     padding: 10px;
     text-align: left;
 }
@@ -2144,7 +2144,7 @@ body.dark
 
 .fhq0082{
 	display: table-cell;
-	width: 33%;
+	width: 25%;
 	padding: 10px;
 }
 
@@ -2233,4 +2233,10 @@ body.dark
 
 .dark .fhq0097{
 	background-color: #494949;
+}
+
+.fhq0098{
+	display: table-cell;
+    width: 25%;
+    padding: 10px;
 }

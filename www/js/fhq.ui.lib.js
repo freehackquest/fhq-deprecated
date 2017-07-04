@@ -1657,14 +1657,26 @@ fhq.ui.loadApiPage = function() {
 				+ '		<div class="fhq0079">' + h.cmd + '</div>'
 				+ '		<div class="fhq0080">' + h.description + '</div>'
 				+ '	</div>'
-				+ '	<div class="fhq0077">'
-				+ '		<div class="fhq0081">' + fhq.t('Input\'s parameters') + '</div>';
-			
-			for(var i1 in h.inputs){
-				var inp = h.inputs[i1];
-				c += '<div class="fhq0085"><b>' + inp.type + '</b> "' + inp.name + '" (' + inp.restrict + ') - <i>' + inp.description + '</i></div>'
-			}
 				
+			c +=  '	<div class="fhq0098">'
+				+ '		<div class="fhq0081">' + fhq.t('Access') + '</div>'
+				+ '		<div class="fhq0085">Unauthorized: ' + (h.access_unauthorized ? 'allow': 'deny') + '</div>'
+				+ '		<div class="fhq0085">User: ' + (h.access_user ? 'allow': 'deny') + '</div>'
+				+ '		<div class="fhq0085">Tester: ' + (h.access_tester ? 'allow': 'deny') + '</div>'
+				+ '		<div class="fhq0085">Admin: ' + (h.access_admin ? 'allow': 'deny') + '</div>'
+				+ '	</div>';
+				
+			c +=  '	<div class="fhq0077">';
+			
+			
+			if(h.inputs.length != 0){
+				c += '		<div class="fhq0081">' + fhq.t('Input\'s parameters') + '</div>';
+						
+				for(var i1 in h.inputs){
+					var inp = h.inputs[i1];
+					c += '<div class="fhq0085"><b>' + inp.type + '</b> "' + inp.name + '" (' + inp.restrict + ') - <i>' + inp.description + '</i></div>'
+				}
+			}
 
 			c += '	</div>'
 				+ '	<div class="fhq0082">'

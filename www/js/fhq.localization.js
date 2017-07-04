@@ -533,7 +533,13 @@ window.fhq.localization = {
 	'Text':{
 		'en': 'Text',
 		'ru': 'Текст',
+	},
+	'Input\'s parameters':{
+		'en': 'Input\'s parameters',
+		'ru': 'Входные параметры'
+	},
+	'Access':{
+		'en': 'Access',
+		'ru': 'Доступ'
 	}
-	
-	
 };
