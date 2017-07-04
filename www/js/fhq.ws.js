@@ -83,7 +83,7 @@ window.fhq.ws.initWebsocket = function(){
 		console.log('Code: ' + event.code + ' Reason: ' + event.reason);
 	};
 	fhq.ws.socket.onmessage = function(event) {
-		console.log('Received: ' + event.data);
+		// console.log('Received: ' + event.data);
 		try{
 			var response = JSON.parse(event.data);
 			fhq.ws.handleCommand(response);
@@ -108,7 +108,7 @@ window.fhq.ws.send = function(obj, def){
 			}, 1000);
 		}else{
 			// console.log("ReadyState " + fhq.ws.socket.readyState);
-			console.log("Send " + JSON.stringify(obj));
+			// console.log("Send " + JSON.stringify(obj));
 			fhq.ws.socket.send(JSON.stringify(obj));
 		}
 	}catch(e){
@@ -239,5 +239,11 @@ fhq.ws.deletepublicevent = function(params){
 fhq.ws.api = function(params){
 	params = params || {};
 	params.cmd = 'api';
+	return fhq.ws.send(params);
+}
+
+fhq.ws.games = function(params){
+	params = params || {};
+	params.cmd = 'games';
 	return fhq.ws.send(params);
 }

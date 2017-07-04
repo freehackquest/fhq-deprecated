@@ -513,7 +513,27 @@ window.fhq.localization = {
 	'If you found old version please contact me by mrseakg@gmail.com for get newest version':{
 		'en': 'If you found old version please contact me by mrseakg@gmail.com for get newest version',
 		'ru': 'Если там старая версия пожалуйста напишите на ящик mrseakg@gmail.com с просьбой обновить версию',
+	},
+	'API':{
+		'en': 'API',
+		'ru': 'API'
+	},
+	'Create Quest':{
+		'en': 'Create Quest',
+		'ru': 'Создать задачу',
+	},
+	'Skills':{
+		'en': 'Skills',
+		'ru': 'Навыки',
+	},
+	'UUID':{
+		'en': 'UUID',
+		'ru': 'UUID',
+	},
+	'Text':{
+		'en': 'Text',
+		'ru': 'Текст',
 	}
 	
-
+	
 };

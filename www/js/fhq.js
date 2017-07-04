@@ -326,23 +326,6 @@ fhq.api.quests.stats_subjects = function(params){
 	return d;
 }
 
-fhq.api.games.list = function(params){
-	params = params || {};
-	params.token = fhq.token;
-	var d = $.Deferred();
-	$.ajax({
-		type: "POST",
-		url: 'api/v1/games/list/',
-		contentType: "application/json",
-		data: JSON.stringify(params)
-	}).done(function(response){
-		d.resolve(response);
-	}).fail(function(r){
-		d.reject(r);
-	})
-	return d;
-};
-
 /* feedback api */
 
 fhq.api.feedback.list = function(params){

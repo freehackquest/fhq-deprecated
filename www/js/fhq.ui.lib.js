@@ -1802,9 +1802,8 @@ fhq.ui.loadGames = function() {
 	window.fhq.changeLocationState({'games':''});
 	
 	$('#content_page').html('<div class="fhq0021"></div>');
-	fhq.api.games.list().done(function(r){
+	fhq.ws.games().done(function(r){
 		console.log(r);
-		
 		var el = $('.fhq0021');
 
 		for (var k in r.data) {
@@ -1832,13 +1831,13 @@ fhq.ui.gameView = function(game, currentGameId) {
 	content += '			<div class="fhq0032">';
 	var perms = game.permissions;
 	
-	if (perms['delete'] == true)
+	if (fhq.isAdmin())
 		content += '<div class="fhqbtn" onclick="formDeleteGame(' + game.id + ');">' + fhq.t('Delete') + '</div>';
 
-	if (perms['update'] == true)
+	if (fhq.isAdmin())
 		content += '<div class="fhqbtn" onclick="formEditGame(' + game.id + ');">' + fhq.t('Edit') + '</div>';
 		
-	if (perms['export'] == true)
+	if (fhq.isAdmin())
 		content += '<div class="fhqbtn" onclick="fhqgui.exportGame(' + game.id + ');">' + fhq.t('Export') + '</div>';
 
 	content += '			</div>';
@@ -2048,8 +2047,12 @@ fhq.ui.loadCreateQuestForm = function(){
 	var form = ''
 		+ '<div class="fhq0093">'
 		+ '	<div class="fhq0094">'
-		+ '		<div class="fhq0095">' + fhq.t('Quest UUID') + '</div>'
+		+ '		<div class="fhq0095">' + fhq.t('UUID') + '</div>'
 		+ '		<div class="fhq0096"><input type="text" id="newquest_quest_uuid" value="' + guid() + '"/></div>'
+		+ ' </div>'
+		+ '	<div class="fhq0094">'
+		+ '		<div class="fhq0095">' + fhq.t('Game') + '</div>'
+		+ '		<div class="fhq0096"><select id="newquest_game"></select></div>'
 		+ ' </div>'
 		+ '	<div class="fhq0094">'
 		+ '		<div class="fhq0095">' + fhq.t('Text') + '</div>'
@@ -2088,8 +2091,13 @@ fhq.ui.loadCreateQuestForm = function(){
 		+ '		<div class="fhq0096"><div class="fhqbtn" onclick="fhq.ui.createQuest();">Create</div></div>'
 		+ ' </div>'
 		+ '</div>'
-	
 	el.append(form);
+	
+	fhq.ws.games().done(function(r){
+		for(var i in r.data){
+			$('#newquest_game').append('<option value="' + r.data[i]["id"] + '">' + r.data[i]["title"] + '</option>');
+		}
+	})
 }
 
 fhq.ui.createQuest = function() {
