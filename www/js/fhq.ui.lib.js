@@ -19,6 +19,14 @@ fhq.ui.showModalDialog = function(obj) {
 	}
 }
 
+fhq.ui.showError = function(msg){
+	fhq.ui.showModalDialog({
+		'header' : fhq.t('Error'),
+		'content' : msg,
+		'buttons' : ''
+	});
+}
+
 fhq.ui.closeModalDialog = function() {
 	$('#fhqmodaldialog').css({'transform': ''});
 	setTimeout(function(){
@@ -1996,9 +2004,8 @@ window.fhq.ui.loadUsers = function(){
 	fhq.ui.updateUsers();
 }
 
-
 window.fhq.ui.updateQuests = function(){
-	
+
 	// todo filters
 	var params = {};
 	params.name_contains = $('#quests_filter_name_contains').val();
@@ -2071,42 +2078,42 @@ fhq.ui.loadCreateQuestForm = function(){
 		+ '<div class="fhq0093">'
 		+ '	<div class="fhq0094">'
 		+ '		<div class="fhq0095">' + fhq.t('UUID') + '</div>'
-		+ '		<div class="fhq0096"><input type="text" id="newquest_quest_uuid" value="' + guid() + '"/></div>'
+		+ '		<div class="fhq0096"><input style="width: 300px" type="text" readonly id="newquest_quest_uuid" value="' + guid() + '"/></div>'
 		+ ' </div>'
 		+ '	<div class="fhq0094">'
 		+ '		<div class="fhq0095">' + fhq.t('Game') + '</div>'
-		+ '		<div class="fhq0096"><select id="newquest_game"></select></div>'
+		+ '		<div class="fhq0096"><select id="newquest_gameid"></select></div>'
+		+ ' </div>'
+		+ '	<div class="fhq0094">'
+		+ '		<div class="fhq0095">' + fhq.t('Name') + '</div>'
+		+ '		<div class="fhq0096"><input type="text" id="newquest_name"></div>'
 		+ ' </div>'
 		+ '	<div class="fhq0094">'
 		+ '		<div class="fhq0095">' + fhq.t('Text') + '</div>'
 		+ '		<div class="fhq0096"><textarea id="newquest_text"></textarea></div>'
 		+ ' </div>'
 		+ '	<div class="fhq0094">'
-		+ '		<div class="fhq0095">' + fhq.t('Score') + '(+)</div>'
+		+ '		<div class="fhq0095">' + fhq.t('Score') + ' (+)</div>'
 		+ '		<div class="fhq0096"><input type="text" id="newquest_score" value="100"/></div>'
 		+ ' </div>'
 		+ '	<div class="fhq0094">'
-		+ '		<div class="fhq0095">Subject</div>'
+		+ '		<div class="fhq0095">' + fhq.t('Subject') + '</div>'
 		+ '		<div class="fhq0096">' + fhqgui.combobox('newquest_subject', 'trivia', fhq.getQuestTypes()) + '</div>'
 		+ ' </div>'
 		+ '	<div class="fhq0094">'
-		+ '		<div class="fhq0095">Answer</div>'
-		+ '		<div class="fhq0096"><input type="text" id="newquest_answer" value=""/></div>'
+		+ '		<div class="fhq0095">' + fhq.t('Answer') + '</div>'
+		+ '		<div class="fhq0096"><input type="text" id="newquest_answer" value=""/> (' + fhq.t('Answer format') + ' <input type="text" id="newquest_answerformat" value=""/>)</div>'
 		+ ' </div>'
 		+ '	<div class="fhq0094">'
-		+ '		<div class="fhq0095">Answer format</div>'
-		+ '		<div class="fhq0096"><input type="text" id="newquest_answerformat" value=""/></div>'
-		+ ' </div>'
-		+ '	<div class="fhq0094">'
-		+ '		<div class="fhq0095">Copyright</div>'
+		+ '		<div class="fhq0095">' + fhq.t('Copyright') + '</div>'
 		+ '		<div class="fhq0096"><input type="text" id="newquest_copyright" value=""/></div>'
 		+ ' </div>'
 		+ '	<div class="fhq0094">'
-		+ '		<div class="fhq0095">State</div>'
+		+ '		<div class="fhq0095">' + fhq.t('State') + '</div>'
 		+ '		<div class="fhq0096">' + fhqgui.combobox('newquest_state', 'open', fhq.getQuestStates()) + '</div>'
 		+ ' </div>'
 		+ '	<div class="fhq0094">'
-		+ '		<div class="fhq0095">Description State</div>'
+		+ '		<div class="fhq0095">' + fhq.t('Description State') + '</div>'
 		+ '		<div class="fhq0096"><textarea id="newquest_description_state"></textarea></div>'
 		+ ' </div>'
 		+ '	<div class="fhq0094">'
@@ -2118,31 +2125,30 @@ fhq.ui.loadCreateQuestForm = function(){
 	
 	fhq.ws.games().done(function(r){
 		for(var i in r.data){
-			$('#newquest_game').append('<option value="' + r.data[i]["id"] + '">' + r.data[i]["title"] + '</option>');
+			$('#newquest_gameid').append('<option value="' + r.data[i]["id"] + '">' + r.data[i]["title"] + '</option>');
 		}
 	})
 }
 
 fhq.ui.createQuest = function() {
 	var params = {};
-	params["quest_uuid"] = document.getElementById("newquest_quest_uuid").value;
-	params["name"] = document.getElementById("newquest_name").value;
-	params["text"] = document.getElementById("newquest_text").value;
-	params["score"] = document.getElementById("newquest_score").value;
-	params["subject"] = document.getElementById("newquest_subject").value;
-	params["idauthor"] = 0; // document.getElementById("newquest_author_id").value;
-	params["author"] = document.getElementById("newquest_author").value;
-	params["answer"] = document.getElementById("newquest_answer").value;
-	params["state"] = document.getElementById("newquest_state").value;
-	params["description_state"] = document.getElementById("newquest_description_state").value;
+	params["uuid"] = $("#newquest_quest_uuid").val();
+	params["gameid"] = parseInt($("#newquest_gameid").val(),10);
+	params["name"] = $("#newquest_name").val();
+	params["text"] = $("#newquest_text").val();
+	params["score"] = parseInt($("#newquest_score").val(),10);
+	params["subject"] = $("#newquest_subject").val();
+	params["copyright"] = $("#newquest_copyright").val();
+	params["answer"] = $("#newquest_answer").val();
+	params["answer_format"] = $("#newquest_answerformat").val();
+	params["state"] = $("#newquest_state").val();
+	params["description_state"] = $("#newquest_description_state").val();
 
-	fhq.api.quests.insert(params).done(function(r){
-		closeModalDialog();
-		fhq.ui.updateQuests();
-		fhq.ui.loadQuest(r.data.quest.id);
-	}).fail(function(){
-		alert("fail");
-	})
+	fhq.ws.createquest(params).done(function(r){
+		fhq.ui.loadQuest(r.questid);
+	}).fail(function(r){
+		fhq.ui.showError(r.error);
+	});
 };
 
 fhq.ui.importQuest = function() {

@@ -66,7 +66,6 @@ $params['score'] = intval($params['score']);
 $params['idauthor'] = intval($params['idauthor']);
 // $params['state'] = $params['state'];
 // $params['description_state'] = $params['description_state'];
-// $params['quest_uuid'] = $params['quest_uuid'];
 $params['userid'] = APISecurity::userid();
 
 $conn = APIHelpers::createConnection($config);

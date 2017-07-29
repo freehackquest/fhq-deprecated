@@ -247,3 +247,9 @@ fhq.ws.games = function(params){
 	params.cmd = 'games';
 	return fhq.ws.send(params);
 }
+
+fhq.ws.createquest = function(params){
+	params = params || {};
+	params.cmd = 'createquest';
+	return fhq.ws.send(params);
+}

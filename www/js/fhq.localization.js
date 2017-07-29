@@ -541,5 +541,17 @@ window.fhq.localization = {
 	'Access':{
 		'en': 'Access',
 		'ru': 'Доступ'
+	},
+	'Description State':{
+		'en': 'Description State',
+		'ru': 'Коментарий к состоянию'
+	},
+	'Name':{
+		'en': 'Name',
+		'ru': 'Имя'
+	},
+	'Answer format':{
+		'en': 'Answer format',
+		'ru': 'Формат ответа'
 	}
 };

@@ -27,26 +27,4 @@ class APIQuest {
 		$stmt = $conn->prepare($query);
 		$stmt->execute($params);*/
 	}
-
-	static function updateMaxGameScore($conn, $gameid) {
-		$query = '
-			UPDATE
-				games
-			SET
-				maxscore = (
-					SELECT
-						SUM(score)
-					FROM
-						quest
-					WHERE
-						state = "open"
-						AND gameid = ?
-				)
-			WHERE
-				id = ?;';
-		$params[] = intval($gameid);
-		$params[] = intval($gameid);
-		$stmt = $conn->prepare($query);
-		$stmt->execute($params);
-	}
 }

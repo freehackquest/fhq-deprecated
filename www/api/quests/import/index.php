@@ -75,7 +75,7 @@ for($i = 0; $i < count($keys); $i++)
 			APIHelpers::error(404, 'Not found game');
 		}
 
-		$stmt = $conn->prepare('SELECT idquest FROM quest WHERE quest_uuid = ?');
+		$stmt = $conn->prepare('SELECT idquest FROM quest WHERE uuid = ?');
 		$stmt->execute(array($quest['uuid']));
 		$questid = 0;
 		if ($row = $stmt->fetch()) {
@@ -83,7 +83,7 @@ for($i = 0; $i < count($keys); $i++)
 		}
 
 		$columns = array(
-			'quest_uuid',
+			'uuid',
 			'name',
 			'text',
 			'answer',
@@ -99,7 +99,7 @@ for($i = 0; $i < count($keys); $i++)
 			$values = array();
 			$values_q = array();
 			foreach ( $columns as $k) {
-				if ($k == 'quest_uuid')
+				if ($k == 'uuid')
 					$values[] = $quest['uuid'];
 				else
 					$values[] = $quest[$k];
@@ -123,7 +123,7 @@ for($i = 0; $i < count($keys); $i++)
 			$values = array();
 			$values_q = array();
 			foreach ( $columns as $k) {
-				if ($k == 'quest_uuid')
+				if ($k == 'uuid')
 					$values[] = $quest['uuid'];
 				else
 					$values[] = $quest[$k];
@@ -132,7 +132,7 @@ for($i = 0; $i < count($keys); $i++)
 			$values_q[] = 'userid = ?';
 			$values[] = APISecurity::userid();
 
-			$query = 'UPDATE quest SET '.implode(',', $values_q).', date_change = NOW() WHERE quest_uuid = ?';
+			$query = 'UPDATE quest SET '.implode(',', $values_q).', date_change = NOW() WHERE uuid = ?';
 			$stmt2 = $conn->prepare($query);
 			$values[] = $quest['uuid'];
 			$stmt2->execute($values);

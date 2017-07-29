@@ -63,7 +63,7 @@ try {
 
 	if($row = $stmt->fetch())
 	{
-		$info['uuid'] = $row['quest_uuid'];
+		$info['uuid'] = $row['uuid'];
 		$info['score'] = $row['score'];
 		$info['name'] = $row['name'];
 		$info['subject'] = $row['subject'];
