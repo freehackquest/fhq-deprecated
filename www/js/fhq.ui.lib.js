@@ -2090,7 +2090,7 @@ fhq.ui.loadCreateQuestForm = function(){
 		+ '		<div class="fhq0096"><input type="text" id="newquest_name"></div>'
 		+ ' </div>'
 		+ '	<div class="fhq0094">'
-		+ '		<div class="fhq0095">' + fhq.t('Text') + '</div>'
+		+ '		<div class="fhq0095">' + fhq.t('Text') + ' (Use markdown format)</div>'
 		+ '		<div class="fhq0096"><textarea id="newquest_text"></textarea></div>'
 		+ ' </div>'
 		+ '	<div class="fhq0094">'
@@ -2701,10 +2701,13 @@ window.fhq.ui.loadQuest = function(id){
 			+ '</div>'
 		)
 
+		var converter = new showdown.Converter();
+		
+
 		el.append(
 			'<div class="newquestinfo_description">'
 			+ '<div class="newquestinfo_description_title">' + fhq.t('Description') + '</div>'
-			+ '<pre>' + q.text + '</pre>'
+			+ converter.makeHtml(q.text)
 			+ '</div>'
 		)
 
