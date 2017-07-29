@@ -148,14 +148,6 @@ window.fhq.games = new (function(t) {
 
 window.fhq.quests = new (function(t) {
 	this.p = t;
-	// return all information if you are admin
-	this.get_all = function(questid) {
-		var params = {};
-		params.questid = questid;
-		var obj = this.p.sendPostRequest_Sync('api/quests/get_all.php', params);
-		var bRes = obj.result == "ok";
-		return bRes ? obj.data : obj.error;
-	};
 	// update quest info if you are admin
 	this.user_answers = function(questid) {
 		var params = {};

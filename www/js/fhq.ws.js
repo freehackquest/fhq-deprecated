@@ -259,3 +259,15 @@ fhq.ws.deletequest = function(params){
 	params.cmd = 'deletequest';
 	return fhq.ws.send(params);
 }
+
+fhq.ws.updatequest = function(params){
+	params = params || {};
+	params.cmd = 'updatequest';
+	return fhq.ws.send(params);
+}
+
+fhq.ws.quest = function(params){
+	params = params || {};
+	params.cmd = 'quest';
+	return fhq.ws.send(params);
+}
