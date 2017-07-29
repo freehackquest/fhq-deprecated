@@ -2151,6 +2151,19 @@ fhq.ui.createQuest = function() {
 	});
 };
 
+fhq.ui.deleteQuest = function(id){
+	if (!confirm("Are you sure that wand remove this quest?"))
+		return;
+
+	var params = {};
+	params.questid = parseInt(id,10);
+	fhq.ws.deletequest(params).done(function(r){
+		fhq.ui.loadQuestsBySubject(r.subject);
+	}).fail(function(r){
+		fhq.ui.showError(r.error);
+	});
+}
+
 fhq.ui.importQuest = function() {
 	var files = document.getElementById('importquest_zip').files;
 	if (files.length == 0) {
@@ -2228,8 +2241,9 @@ fhq.ui.loadStatSubjectsQuests = function(){
 	});
 }
 
-
 fhq.ui.loadQuestsBySubject = function(subject){
+	fhq.changeLocationState({'subject':subject});
+	
 	$('#content_page').html('<div class="fhq0005">Loading...</div>');
 	var params = {};
 	params.subject = subject;
@@ -2262,26 +2276,6 @@ fhq.ui.loadQuestsBySubject = function(subject){
 	});
 }
 
-fhq.ui.deleteQuest = function(id){
-	if (!confirm("Are you sure that wand remove this quest?"))
-		return;
-
-	var params = {};
-	params.questid = id;
-	send_request_post(
-		'api/quests/delete.php',
-		createUrlFromObj(params),
-		function (obj) {
-			if (obj.result == "ok") {
-				closeModalDialog();
-				fhq.ui.updateQuests();
-				$('.fhqrightinfo').html('Quest removed');
-			} else {
-				alert(obj.error.message);
-			}
-		}
-	);
-}
 
 /* fhq_quests.js todo redesign */
 

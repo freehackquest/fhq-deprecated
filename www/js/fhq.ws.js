@@ -253,3 +253,9 @@ fhq.ws.createquest = function(params){
 	params.cmd = 'createquest';
 	return fhq.ws.send(params);
 }
+
+fhq.ws.deletequest = function(params){
+	params = params || {};
+	params.cmd = 'deletequest';
+	return fhq.ws.send(params);
+}
