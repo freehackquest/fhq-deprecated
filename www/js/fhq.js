@@ -162,23 +162,6 @@ window.fhq.quests = new (function(t) {
 	};
 })(window.fhq);
 
-window.fhq.api.quests.quest = function(id){
-	var params = {};
-	params.questid = id;
-	var d = $.Deferred();
-	$.ajax({
-		type: "POST",
-		url: 'api/v1/quests/get/',
-		contentType: "application/json",
-		data: JSON.stringify(params)
-	}).done(function(r){
-		d.resolve(r);
-	}).fail(function(r){
-		d.reject(r);
-	})
-	return d;
-}
-
 window.fhq.api.quests.insert = function(params){
 	params = params || {};
 	var d = $.Deferred();

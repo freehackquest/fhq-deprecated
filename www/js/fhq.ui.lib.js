@@ -2246,64 +2246,6 @@ fhq.ui.loadEditQuestForm = function(questid){
 	}).fail(function(r){
 		console.error(r);
 	});
-
-
-
-	/*fhq.ws.games().done(function(r){
-		for(var i in r.data){
-			$('#newquest_gameid').append('<option value="' + r.data[i]["id"] + '">' + r.data[i]["title"] + '</option>');
-		}
-	})
-	closeModalDialog();
-	var params = {};
-	params.questid = id;
-	send_request_post(
-		createUrlFromObj(params),
-		function (obj) {
-			if (obj.result == "fail") {
-				showModalDialog(obj.error.message);
-				return;
-			}
-			var content = '\n';
-			
-			if (!obj.quest) {
-				showModalDialog("error");
-				return;
-			}
-			content += '<div class="quest_info_table">\n';
-			
-			content += createQuestRow('Quest ID: ', obj.quest);
-			content += createQuestRow('Game: ', obj.data.game_title);
-			content += createQuestRow('Name:', '<input type="text" id="editquest_name" value="' + obj.data.name + '"/>');
-			content += createQuestRow('Text:', '<textarea id="editquest_text">' + obj.data.text + '</textarea>');
-			content += createQuestRow('Files:', '<div id="editquest_files"></div>');
-			content += createQuestRow('', '<input id="editquest_upload_files" multiple required="" type="file">' 
-				+ ' <div class="fhqbtn" onclick="uploadQuestFiles(' + obj.quest + ');">Upload files</div>');
-			content += createQuestRow('Score(+):', '<input type="text" id="editquest_score" value="' + obj.data.score + '"/>');
-			content += createQuestRow('Subject:', fhqgui.combobox('editquest_subject', obj.data.subject, fhq.getQuestTypes()));
-			// content += createQuestRow('Author Id:', '<input type="text" id="editquest_authorid" value="' + obj.data.authorid + '"/>');
-			content += createQuestRow('Author:', '<input type="text" id="editquest_author" value="' + obj.data.author + '"/>');
-			content += createQuestRow('Answer:', '<input type="text" id="editquest_answer" value="' + obj.data.answer + '"/>');
-			content += createQuestRow('State:', fhqgui.combobox('editquest_state', obj.data.state, fhq.getQuestStates()));
-			content += createQuestRow('Description State:', '<textarea id="editquest_description_state">' + obj.data.description_state + '</textarea>');
-			content += createQuestRow('', '<div class="fhqbtn" onclick="updateQuest(' + obj.quest + ');">Update</div>'
-				+ '<div class="fhqbtn" onclick="fhq.ui.loadQuest(' + obj.quest + ');">Cancel</div>'
-			);
-
-			content += '</div>';
-			content += '<div id="quest_error"><div>';
-			content += '\n';
-			showModalDialog(content);
-			for (var k in obj.data.files) {
-				var f = document.getElementById('editquest_files');
-				f.innerHTML += obj.data.files[k].filename + ' '
-				+ '<div class="fhqbtn" onclick="editQuestAddLink(\'' + obj.data.files[k].filepath + '\', \'' + obj.data.files[k].filename + '\', \'asfile\');">Add link as file</div> '
-				+ '<div class="fhqbtn" onclick="editQuestAddLink(\'' + obj.data.files[k].filepath + '\', \'' + obj.data.files[k].filename + '\', \'asimg\');">Add link as img</div> '
-				+ ' <a class="fhqbtn" target="_ablank" href="' + obj.data.files[k].filepath + '">Download</a>' 
-				+ ' <div class="fhqbtn" onclick="removeQuestFile(' + obj.data.files[k].id + ', ' + obj.quest + ');">Remove</div><br>';
-			}
-		}
-	);*/
 }
 
 fhq.ui.updateQuest = function(questid) {
@@ -2443,37 +2385,6 @@ fhq.ui.loadQuestsBySubject = function(subject){
 
 /* fhq_quests.js todo redesign */
 
-function updateQuest(id)
-{
-	var params = {};
-	params["questid"] = id;
-	params["name"] = document.getElementById("editquest_name").value;
-	params["text"] = document.getElementById("editquest_text").value;
-	params["score"] = document.getElementById("editquest_score").value;
-	params["subject"] = document.getElementById("editquest_subject").value;
-	params["idauthor"] = 0;
-	params["author"] = document.getElementById("editquest_author").value;
-	params["answer"] = document.getElementById("editquest_answer").value;
-	params["state"] = document.getElementById("editquest_state").value;
-	params["description_state"] = document.getElementById("editquest_description_state").value;
-
-	// alert(createUrlFromObj(params));
-
-	send_request_post(
-		'api/quests/update.php',
-		createUrlFromObj(params),
-		function (obj) {
-			if (obj.result == "ok") {
-				closeModalDialog();
-				fhq.ui.updateQuests();
-				fhq.ui.loadQuest(id);
-			} else {
-				alert(obj.error.message);
-			}
-		}
-	);
-}
-
 // http://stackoverflow.com/questions/11076975/insert-text-into-textarea-at-cursor-position-javascript
 function editQuestAddLink(filepath, filename, as) {
 	var t = document.getElementById('editquest_text');
@@ -2548,7 +2459,7 @@ window.fhq.ui.refreshHints = function(questid, hints, perm_edit){
 	var i = 1;
 	for(var h in hints){
 		var hint = hints[h];
-		result += '<div><b>Hint ' + i + ':</b> <pre style="display: inline-block;">' + $('<div/>').text(hint.text).html() + '</pre>' + (perm_edit ? ' <div class="fhqbtn deletehint" hintid="' + hint.hintid + '">' + fhq.t('Delete') + '</div>' : '') + '</div>';
+		result += '<div><b>Hint ' + i + ':</b> <pre style="display: inline-block;">' + $('<div/>').text(hint.text).html() + '</pre>' + (fhq.isAdmin() ? ' <div class="fhqbtn deletehint" hintid="' + hint.id + '">' + fhq.t('Delete') + '</div>' : '') + '</div>';
 		i++;
 	}
 	result += (perm_edit ? '<div><input type="text" id="quest_addhinttext"/> <div class="fhqbtn" id="quest_addhint">' + fhq.t('Add') + '</div></div>' : '');
@@ -2595,40 +2506,37 @@ window.fhq.ui.loadQuest = function(id){
 	$('#content_page').html('<div class="fhq0009"></div>')
 	var el = $('.fhq0009');
 	el.html('Loading...');
-	fhq.api.quests.quest(id).done(function(response){
-		var questid = parseInt(id,10);
-		var q = response.data;
-		var perm_edit = false;
-		var perm_delete = false;
-		if(response.permissions){
-			perm_edit = response.permissions.edit;
-			perm_delete = response.permissions['delete'];
-		}
+	var questid = parseInt(id,10);
+	fhq.ws.quest({'questid': questid}).done(function(response){
+		console.log(response);
+		var q = response.quest;
+		var g = response.game;
+		var fi = response.files;
+		var hi = response.hints;
 
-		fhq.changeLocationState({quest: q.questid});
+		fhq.changeLocationState({quest: q.id});
 		el.html('');
 		el.append(''
 			+ '<div class="fhq0010">'
 			+ '	<div class="fhq0012">'
 			+ '		<div class="fhq0011"></div>'
 			+ '		<div class="fhq0013">'
-			+ ' 		<a href="?subject=' + q.subject + '">' + fhq.ui.capitalizeFirstLetter(q.subject) + '</a> / <a href="?quest=' + q.questid + '">Quest ' + q.questid + '</a>' 
-			+ ' 		(' + fhq.t('Quest ' + q.status) + ')'
+			+ ' 		<a href="?subject=' + q.subject + '">' + fhq.ui.capitalizeFirstLetter(q.subject) + '</a> / <a href="?quest=' + q.id + '">Quest ' + q.id + '</a>' 
+			+ ' 		(' + (q.completed ? fhq.t('Quest completed') : fhq.t('Quest open')) + ')'
 			+ '			<div class="fhq0014">' + q.name + ' (+' + q.score + ')</div>'
 			+ '		</div>'
 			+ '	</div>'
 			+ '</div>');
 
 		$('.fhq0011').css({ // game logo
-			'background-image': 'url(' + q.game_logo + ')'
+			'background-image': 'url(' + g.logo + ')'
 		});
 		
 		var c = '<div class="fhq0051">';
-		if(response.permissions){
-			var p = response.permissions;
-			c += (p.edit ? '<div class="fhqbtn" id="quest_edit">' + fhq.t('Edit') + '</div>' : '');
-			c += (p['delete'] ? '<div class="fhqbtn" id="quest_delete">' + fhq.t('Delete') + '</div>' : '');
-			c += (p.edit ? '<div class="fhqbtn" id="quest_export">' + fhq.t('Export') + '</div>': '')
+		if(fhq.isAdmin()){
+			c += '<div class="fhqbtn" id="quest_edit">' + fhq.t('Edit') + '</div>';
+			c += '<div class="fhqbtn" id="quest_delete">' + fhq.t('Delete') + '</div>';
+			c += '<div class="fhqbtn" id="quest_export">' + fhq.t('Export') + '</div>';
 		}
 		c += '<div class="fhqbtn" id="quest_report">' + fhq.t('Report an error') + '</div>';
 		c += '</div>'
@@ -2645,15 +2553,15 @@ window.fhq.ui.loadQuest = function(id){
 		});
 
 		$('#quest_delete').unbind().bind('click', function(){
-			fhq.ui.deleteQuest(q.questid);
+			fhq.ui.deleteQuest(q.id);
 		});
 		
 		$('#quest_edit').unbind().bind('click', function(){
-			fhq.ui.loadEditQuestForm(q.questid);
+			fhq.ui.loadEditQuestForm(q.id);
 		})
 
 		$('#quest_export').unbind().bind('click', function(){
-			fhqgui.exportQuest(q.questid);
+			fhqgui.exportQuest(q.id);
 		})
 
 		el.append('<div class="fhq0051"><br>'
@@ -2677,7 +2585,7 @@ window.fhq.ui.loadQuest = function(id){
 			+ '		</div>'
 			+ '		<div class="newquestinfo-details-row">'
 			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Status') + ':</div>'
-			+ '			<div class="newquestinfo-details-cell">' + fhq.t('status_' + q.status) + (q.status == 'completed' ? ' (' + q.dt_passed + ')' : '') + '</div>'
+			+ '			<div class="newquestinfo-details-cell">' + (q.completed ? fhq.t('status_completed') + ' (' + q.dt_passed + ')' : fhq.t('status_open')) + '</div>'
 			+ '		</div>'
 			+ '	</div>'
 			+ '	<div class="newquestinfo-details-right"> '
@@ -2687,7 +2595,7 @@ window.fhq.ui.loadQuest = function(id){
 			+ '		</div>'
 			+ '		<div class="newquestinfo-details-row">'
 			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Solved') + ':</div>'
-			+ '			<div class="newquestinfo-details-cell">' + q.solved + ' ' + fhq.t('users_solved') + '</div>'
+			+ '			<div class="newquestinfo-details-cell">' + q.count_user_solved + ' ' + fhq.t('users_solved') + '</div>'
 			+ '		</div>'
 			+ '		<div class="newquestinfo-details-row">'
 			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Author') + ':</div>'
@@ -2695,7 +2603,7 @@ window.fhq.ui.loadQuest = function(id){
 			+ '		</div>'
 			+ '		<div class="newquestinfo-details-row">'
 			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Copyright') + ':</div>'
-			+ '			<div class="newquestinfo-details-cell"><a href="?game=' + q.gameid + '">' + q.game_title + '</a></div>'
+			+ '			<div class="newquestinfo-details-cell">' + q.copyright + '</div>'
 			+ '		</div>'			
 			+ '	</div>'
 			+ '</div>'
@@ -2711,10 +2619,10 @@ window.fhq.ui.loadQuest = function(id){
 			+ '</div>'
 		)
 
-		if(q.files && q.files.length > 0){
+		if(fi.length > 0){
 			var files1 = '';						
-			for (var k in q.files) {
-				files1 += '<a class="fhqbtn" href="' + q.files[k].filepath + '" target="_blank">'+ q.files[k].filename + '</a> ';
+			for (var k in fi) {
+				files1 += '<a class="fhqbtn" href="' + fi[k].filepath + '" target="_blank">'+ fi[k].filename + '</a> ';
 			}
 			
 			el.append(
@@ -2725,13 +2633,13 @@ window.fhq.ui.loadQuest = function(id){
 			)
 		}
 
-		if(q.hints && q.hints.length > 0 || fhq.isAdmin()){
+		if(hi.length > 0 || fhq.isAdmin()){
 			var hints = '<div class="fhq0051">'
 				+ '<div class="fhq0053 hide" id="quest_show_hints">' + fhq.t('Hints') + '</div>'
 				+ '<div id="newquestinfo_hints" style="display: none;">';
 			hints += '</div></div>';
 			el.append(hints);
-			fhq.ui.refreshHints(questid, q.hints, perm_edit);
+			fhq.ui.refreshHints(q.id, hi, fhq.isAdmin());
 			$('#quest_show_hints').unbind().bind('click', function(){
 				if($('#newquestinfo_hints').is(":visible")){
 					$('#newquestinfo_hints').hide();
@@ -2745,19 +2653,26 @@ window.fhq.ui.loadQuest = function(id){
 			});
 		}
 		
-		if(q.dt_passed == null){
+		if(!q.completed){
 			if(fhq.isAuth()){
 				el.append(
 					'<div class="newquestinfo_passquest">'
 					+ '<div class="newquestinfo_passquest_title">' + fhq.t('Answer') + '</div>'
-					+ '<input id="quest_answer" type="text" onkeydown="if (event.keyCode == 13) this.click();"/> '
-					+ '<div class="fhqbtn" id="newquestinfo_pass">' + fhq.t('Pass the quest') + '</div>'
-					+ '<div id="quest_pass_error"></div>'
+					+ '<div class="fhq0099">'
+					+ '		<input id="quest_answer" type="text" onkeydown="if (event.keyCode == 13) this.click();"/> '
+					+ '		<div class="fhq0100">' + fhq.t('Answer format') + ': ' + q.answer_format + '</div>'
+					+ '</div>'
+					+ '<div class="fhq0099">'
+					+ '		<div class="fhqbtn" id="newquestinfo_pass">' + fhq.t('Pass the quest') + '</div>'
+					+ '		<div id="quest_pass_error"></div>'
+					+ '</div>'
 					+ '</div>'
 				);
+				
 				$('#newquestinfo_pass').unbind().bind('click', function(){
 					var answer = $('#quest_answer').val();
-					fhq.api.quests.pass(q.questid, answer).done(function(response){
+					// TODO change to ws
+					fhq.api.quests.pass(q.id, answer).done(function(response){
 						fhq.ui.loadQuest(q.questid);
 					}).fail(function(r){
 						$('#quest_pass_error').html(r.responseJSON.error.message);

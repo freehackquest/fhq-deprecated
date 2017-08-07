@@ -650,6 +650,7 @@ select, input[type="text"], input[type="password"], input[type="datetime"], inpu
     -moz-border-radius: 4px;
     border-radius: 4px;
     vertical-align: middle;
+	margin: 3px 3px 3px 3px;
 }
 
 label, input, button, select {
@@ -2240,4 +2241,14 @@ body.dark
 	display: table-cell;
     width: 25%;
     padding: 10px;
+}
+
+.fhq0099{
+	display: inline-block;
+	top: 0px;
+    vertical-align: top;
+}
+
+.fhq0100{
+	margin-top: 10px;
 }
