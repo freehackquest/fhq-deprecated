@@ -268,7 +268,6 @@ function FHQGuiLib(api) {
 		})
 		
 		$('#btnmenu_scoreboard').unbind().bind('click', function(){
-			window.fhq.changeLocationState({'scoreboard':''});
 			fhq.ui.loadScoreboard();
 		})
 		
@@ -1559,7 +1558,7 @@ fhq.ui.editNews = function(id){
 }
 
 fhq.ui.loadScoreboard = function(){
-	
+
 	var onpage = 5;
 	if(fhq.containsPageParam("onpage")){
 		onpage = parseInt(fhq.pageParams['onpage'], 10);
@@ -1572,7 +1571,11 @@ fhq.ui.loadScoreboard = function(){
 	
 	window.fhq.changeLocationState({'scoreboard':'', 'onpage': onpage, 'page': page});
 
-	fhq.ws.scoreboard().done(function(r){
+	var params = {};
+	params.onpage = onpage;
+	params.page = page;
+
+	fhq.ws.scoreboard(params).done(function(r){
 			$("#content_page").html('<div class="fhq0087"></div>');
 			
 			for (var k in r.data) {
