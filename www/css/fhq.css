@@ -9,11 +9,11 @@
 	text-align: center;
 	overflow: auto;
 	vertical-align: middle;
-	-webkit-transition: transform 0.5s ease-out 0.5s;
-	-moz-transition: transform 0.5s ease-out 0.5s;
-	-o-transition: transform 0.5s ease-out 0.5s;
-	transition: transform 0.5s ease-out 0.5s;
-	transform: scale(0.05);
+	-webkit-transition: transform 0.1s ease-out 0.1s;
+	-moz-transition: transform 0.1s ease-out 0.1s;
+	-o-transition: transform 0.1s ease-out 0.1s;
+	transition: transform 0.1s ease-out 0.1s;
+	transform: translateX(-100%);
 }
 
 .fhqmodaldialog_table {
@@ -44,24 +44,7 @@
 	border-top: 1px solid #C8C8C8;
 }
 
-.fhqmodaldialog_content {
-	position: relative;
-	display: inline-block;
-	color: #000000;
-	padding: 15px;
-	margin: 15px;
-	background-color: #ffffff;
-	border: 5px solid #606060;
-	border-radius: 10px;
-	min-height: 50px;
-	min-width: 400px;
-	max-height: 100%;
-	max-width: 100%;
-	/*overflow: auto;*/
-	-moz-border-radius: 10px;  /* для firefox */
-	-webkit-border-radius: 10px;  /* для Safari и Chrome */
-	z-index: 1002;
-}
+
 
 .fhqmodaldialog_content2 {
 	padding: 10px;
@@ -69,31 +52,6 @@
 
 .fhqmodaldialog_btncancel {
 	display: none;
-}
-
-.fhqmodaldialog_iconclose{
-	position: absolute;
-	top: -8;
-	right: -8;
-	background-image: url(../images/close.svg);
-	width: 32px;
-	height: 32px;
-	-webkit-border-radius: 12px;
-	-moz-border-radius: 12px;
-	border-radius: 12px;
-}
-.fhqmodaldialog_iconclose:hover{
-	
-	cursor: pointer;
-}
-
-.fhqmodaldialog_iconfhq{
-	position: absolute;
-	top: -8;
-	left: -8;
-	background-image: url(../images/logo_32x32.png);
-	width: 32px;
-	height: 32px;
 }
 
 body {
@@ -104,7 +62,8 @@ body {
 	font: 12pt/10pt Arial;
 	color: #333333;	
 	text-align: center;
-	background: url(../images/background.png) no-repeat left top fixed;
+	background: url(../images/background.png) no-repeat center center fixed;
+	background-size: 100% 100%;
 }
 
 .fhqbtn {
@@ -116,8 +75,10 @@ body {
     color: #000000;
     margin:3px 3px 3px 3px;
     cursor: pointer;
-    text-shadow: 0px;
-    border-radius: 5px;
+    
+    -webkit-box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.75);
+	box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.75);
 }
 
 .fhqbtn:before, .fhqbtn:after{
@@ -131,6 +92,19 @@ body {
 	background: #606060;
 	color: #fff;
 	text-decoration: none;
+}
+
+.dark .fhqbtn {
+	color: #C8C8C8;
+	background: #383838;
+	-webkit-box-shadow: 0px 0px 1px 0px rgba(255,255,255,0.75);
+	-moz-box-shadow: 0px 0px 1px 0px rgba(255,255,255,0.75);
+	box-shadow: 0px 0px 1px 0px rgba(255,255,255,0.75);
+}
+
+.dark .fhqbtn:hover {
+	color: #C8C8C8;
+	background: #444;
 }
 
 .hide{
@@ -281,66 +255,6 @@ body {
 	width: 80%;
 }
 
-.fhq-quests-subject{
-	display: table;
-	width: 100%;
-	background-color: #eee;
-	border-radius: 10px;
-	cursor: pointer;
-}
-
-.fhq-quests-subject:hover{
-	background: #c8c8c8;
-    color: #333;
-}
-
-.dark .fhq-quests-subject:hover{
-	background: #606060;
-    color: #C8C8C8;
-}
-
-.dark .fhq-quests-subject{
-	background-color: #494949;
-}
-
-.fhq-quests-subject .descr{
-	font-size: 20px;
-    font-style: italic;
-}
-
-.fhq-quests-subject-skip{
-	height: 20px;
-}
-
-.fhq-quests-subject-row{
-	display: table-row;
-}
-
-.fhq-quests-subject-cell{
-	display: table-cell;	
-}
-
-.fhq-quests-subject-cell.logo{
-	width: 110px;
-	min-width: 110px;
-    height: 110px;
-    background-size: 100% 100%;
-}
-
-.fhq-quests-subject-cell.text{
-	vertical-align: middle;
-    font-size: 30px;
-    text-align: left;
-	padding-left: 20px;
-}
-
-.fhq-quests-subject-cell.count{
-	vertical-align: middle;
-    font-size: 30px;
-    text-align: center;
-    width: 300px;
-}
-
 .questslist, .toolslist, .fhqleftlist {
 	float: left;
 	display: inline-block;
@@ -386,60 +300,6 @@ body {
 
 .fhqleftlist .quests .icon{
 	background-image: url("../images/menu/quests_150x150.png");
-}
-
-.fhqleftlist .icon.admin {
-	background-image: url("../images/quests/admin.png");
-}
-
-.fhqleftlist .icon.crypto {
-	background-image: url("../images/quests/crypto.png");
-}
-
-.fhqleftlist .enjoy.icon{
-	background-image: url("../images/quests/enjoy.png");
-}
-
-.fhqleftlist .icon.forensics{
-	background-image: url("../images/quests/forensics.png");
-}
-
-.fhqleftlist .icon.hashes{
-	background-image: url("../images/quests/hashes.png");
-}
-
-.fhqleftlist .icon.network{
-	background-image: url("../images/quests/network.png");
-}
-
-.fhqleftlist .icon.ppc{
-	background-image: url("../images/quests/ppc.png");
-}
-
-.fhqleftlist .icon.recon{
-	background-image: url("../images/quests/recon.png");
-}
-
-.fhqleftlist .icon.reverse{
-	background-image: url("../images/quests/reverse.png");
-}
-
-.fhqleftlist .icon.stego{
-	background-image: url("../images/quests/stego.png");
-}
-
-.fhqleftlist .icon.trivia{
-	background-image: url("../images/quests/trivia.png");
-}
-
-.fhqleftlist .icon.web{
-	background-image: url("../images/quests/web.png");
-}
-
-.questslist.preloading{
-	background-image: url('../images/preloader.gif');
-	background-repeat: no-repeat;
-	background-position: center center;
 }
 
 .questitem, .toolitem, .fhqleftitem {
@@ -646,9 +506,6 @@ select, input[type="text"], input[type="password"], input[type="datetime"], inpu
     font-size: 14px;
     line-height: 20px;
     color: #555555;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
     vertical-align: middle;
 	margin: 3px 3px 3px 3px;
 }
@@ -671,9 +528,6 @@ textarea {
     height: 150px;
     padding: 4px 6px;
     margin-bottom: 0px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
     vertical-align: middle;
 }
 
@@ -1087,23 +941,6 @@ font.fhq_task {
 	text-align: left;
 }
 
-.newquestinfo_details{
-	text-align: left;
-}
-
-.newquestinfo_details_title{
-	font: 12pt/10pt Arial;
-	font-size: 20px;
-	line-height: 25px;
-	border-bottom: 1px dashed #3e3e3e;
-	margin-top: 15px;
-	margin-bottom: 15px;
-}
-
-.dark .newquestinfo_details_title{
-	border-color: #C8C8C8;
-}
-
 .newquestinfo-details-left{
 	display: inline-table;
 }
@@ -1121,23 +958,6 @@ font.fhq_task {
 	display: table-cell;
 	padding-right: 15px;
 	padding-bottom: 5px;
-}
-
-.newquestinfo_description{
-	text-align: left;
-}
-
-.newquestinfo_description_title{
-	font: 12pt/10pt Arial;
-	font-size: 20px;
-	line-height: 25px;
-	border-bottom: 1px dashed #3e3e3e;
-	margin-top: 15px;
-	margin-bottom: 15px;
-}
-
-.dark .newquestinfo_description_title{
-	border-color: #C8C8C8;
 }
 
 .newquestinfo_attachments{
@@ -1221,12 +1041,6 @@ body.dark
 	background: #383838;
 }
 
-.dark .fhqbtn {
-	background: #303030;
-	color: #C8C8C8;
-	background: #383838;
-}
-
 .dark .fhqparamtbl_param {
     background-color: #3b3b3b;
     color: #C8C8C8;
@@ -1270,25 +1084,6 @@ body.dark
 	background: #3e3e3e;
 }
 
-
-
-/* modal dialog */
-
-.dark .overlay {
-	background: rgba(0, 0, 0, 0.8);
-}
-
-.dark .overlay_content {
-	color: #C8C8C8;
-	background-color: #303030;
-	border-color: #3e3e3e;
-}
-
-.dark .fhqmodaldialog_content {
-	color: #C8C8C8;
-	background-color: #303030;
-	border-color: #3e3e3e;
-}
 
 /* tables */
 
@@ -1584,7 +1379,7 @@ body.dark
 	width: 100%;
 	text-align: left;
 	background-color: #eee;
-	border-radius: 10px;
+	border: 1px solid #999;
 }
 
 .dark .fhq0010 {
@@ -1602,7 +1397,6 @@ body.dark
     height: 110px;
     background-repeat: no-repeat;
 	background-size: 100% 100%;
-    border-radius: 10px;
 }
 
 .fhq0012{
@@ -1644,11 +1438,10 @@ body.dark
 	min-width: 200px;
 	width: 100%;
 	background-color: #eee;
-	opacity: 0.95;
 }
 
 .dark .fhq0017 {
-    background-color: #494949;
+    background-color: #3e3e3e;
     color: #C8C8C8;
 }
 
@@ -1917,16 +1710,18 @@ body.dark
     text-align: center;
 }
 
-.fhq0050{
-	display: inline-block;
-    width: 50px;
-    height: 15px;
-    background-image: url(../images/preloader.gif);
-}
-
 .fhq0051 {
 	text-align: left;
 	margin-top: 10px;
+	background-color: #eee;
+    color: #000;
+    padding: 10px;
+    border: 01px solid #999;
+}
+
+.dark .fhq0051{
+	background-color: #3e3e3e;
+	color: #C8C8C8;
 }
 
 .fhq0052 {
@@ -2178,7 +1973,7 @@ body.dark
 }
 
 .dark .fhq0088{
-	background-color: #494949;
+	background-color: #3e3e3e;
 }
 
 .fhq0089 {
@@ -2207,10 +2002,17 @@ body.dark
 
 .fhq0093 {
 	display: table;
+	background-color: #c8c8c8;
+	border: 1px solid #999;
+}
+
+.dark .fhq0093{
+	background-color: #3e3e3e;
 }
 
 .fhq0094 {
 	display: table-row;
+	
 }
 
 .fhq0095 {
@@ -2251,4 +2053,212 @@ body.dark
 
 .fhq0100{
 	margin-top: 10px;
+}
+
+.fhq0101{
+	text-align: left;
+	background-color: #eee;
+    color: #000;
+    padding: 10px;
+    margin-top: 10px;
+	border: 01px solid #999;
+}
+
+.dark .fhq0101{
+	background-color: #3e3e3e;
+	color: #C8C8C8;
+}
+
+.fhq0102{
+	font: 12pt/10pt Arial;
+	font-size: 20px;
+	line-height: 25px;
+	border-bottom: 1px dashed #3e3e3e;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.dark .fhq0102{
+	border-color: #C8C8C8;
+}
+
+.fhq0103{
+	text-align: left;
+}
+
+.fhq0104{
+	display: block;
+	position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+}
+
+.fhq0105{
+	display: table;
+	width: 100%;
+    height: 100%;
+}
+
+.fhq0106{
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.fhq0107 {
+	position: relative;
+	display: inline-block;
+	color: #000000;
+	padding: 15px;
+	margin: 15px;
+	background-color: #ffffff;
+	border: 2px solid #606060;
+	border-radius: 0px;
+	min-height: 50px;
+	min-width: 400px;
+	max-height: 100%;
+	max-width: 100%;
+	/*overflow: auto;*/
+	z-index: 1002;
+}
+
+/* modal dialog */
+
+.dark .overlay {
+	background: rgba(0, 0, 0, 0.8);
+}
+
+.dark .overlay_content {
+	color: #C8C8C8;
+	background-color: #303030;
+	border-color: #3e3e3e;
+}
+
+.dark .fhq0107 {
+	color: #C8C8C8;
+	background-color: #303030;
+	border-color: #3e3e3e;
+}
+
+.fhq0108{
+	position: absolute;
+	top: 0;
+	right: 0;
+	background-image: url(../images/close.svg);
+	width: 30px;
+	height: 30px;
+}
+
+.fhq0108:hover{
+	cursor: pointer;
+}
+
+
+.newquestinfo_description_title{
+	font: 12pt/10pt Arial;
+	font-size: 20px;
+	line-height: 25px;
+	border-bottom: 1px dashed #3e3e3e;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.dark .newquestinfo_description_title{
+	border-color: #C8C8C8;
+}
+
+.fhq0109{
+	display: none;
+	position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #e4e4e4;
+    text-align: left;
+    left: 0px;
+    top: 0px;
+    opacity: 0;
+    cursor: default;
+}
+
+.fhq0110{
+	display: none;
+    position: absolute;
+    background: #e4e4e4;
+    margin-top: 25px;
+    padding: 10px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5)
+    cursor: default;
+}
+
+.dark .fhq0110 {
+	background-color: #3e3e3e;
+	box-shadow: 0 0 5px rgba(250,250,250,0.5)
+}
+
+.fhq0111{
+	display: table;
+	width: 100%;
+	background-color: #eee;
+	cursor: pointer;
+	border: 1px solid #999;
+}
+
+.fhq0111:hover{
+	background: #c8c8c8;
+    color: #333;
+}
+
+.dark .fhq0111:hover{
+	background: #606060;
+    color: #C8C8C8;
+}
+
+.dark .fhq0111{
+	background-color: #3e3e3e;
+}
+
+.fhq0112{
+	font-size: 20px;
+    font-style: italic;
+}
+
+.fhq0113{
+	height: 20px;
+}
+
+.fhq0114{
+	display: table-row;
+}
+
+.fhq0115{
+	height: 50px;
+}
+
+.fhq-quests-subject-cell{
+	display: table-cell;	
+}
+
+.fhq-quests-subject-cell.logo{
+	width: 110px;
+	min-width: 110px;
+    height: 110px;
+    background-size: 100% 100%;
+}
+
+.fhq-quests-subject-cell.text{
+	vertical-align: middle;
+    font-size: 30px;
+    text-align: left;
+	padding-left: 20px;
+}
+
+.fhq-quests-subject-cell.count{
+	vertical-align: middle;
+    font-size: 30px;
+    text-align: center;
+    width: 300px;
 }

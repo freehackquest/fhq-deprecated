@@ -327,51 +327,6 @@ fhq.api.users.login = function (email, password) {
 	return d;
 };
 
-fhq.api.users.profile = function(userid){
-	var d = $.Deferred();
-	var params = {};
-	params.token = fhq.token;
-	if(userid){
-		params.userid = userid;
-	}
-	$.ajax({
-		type: "POST",
-		url: 'api/v1/users/profile/',
-		contentType: "application/json",
-		data: JSON.stringify(params)
-	}).done(function(r){
-		if (r.currentUser == true) {
-			fhq.profile.bInitUserProfile == true;
-			fhq.profile.lastEventId = r.profile.lasteventid;
-			fhq.profile.template = r.profile.template;
-			fhq.profile.university = r.profile.university;
-			fhq.profile.country = r.profile.country;
-			fhq.profile.city = r.profile.city;
-			fhq.profile.game = r.profile.game;
-			fhq.userinfo = {};
-			fhq.userinfo.id = r.data.userid;
-			fhq.userinfo.nick = r.data.nick;
-			fhq.userinfo.email = r.data.email;
-			fhq.userinfo.role = r.data.role;
-			fhq.userinfo.logo = r.data.logo;
-			if(fhq.profile.game && r.games){
-				for(var i in r.games){
-					if(r.games[i].gameid == fhq.profile.game.id){
-						fhq.userinfo.score = r.games[i].score
-					}
-				}
-			}
-		}
-		d.resolve(r);
-	}).fail(function(r){
-		if(r.status == 401){
-			fhq.api.cleanuptoken();
-		}
-		d.resolve(r);
-	})
-	return d;
-}
-
 fhq.api.users.getLastEventId = function(){
 	var d = $.Deferred();
 	var params = {};

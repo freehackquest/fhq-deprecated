@@ -25,7 +25,6 @@
 		<script type="text/javascript" src="js/libs/Chart-1.0.2.js"></script>
 		<script type="text/javascript" src="js/libs/showdown.min.js"></script>
 		<script type="text/javascript" src="js/fhq_send_request.js?ver=1"></script>
-		<script type="text/javascript" src="js/fhq_echo_head.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_modal_dialog.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_games.js?ver=1"></script>
 		<script type="text/javascript" src="js/fhq_users.js?ver=1"></script>
@@ -42,7 +41,6 @@
 			$(document).ready(function() {
 				fhqgui.applyColorScheme();
 				fhq.ws.setWSState(fhq.ws.getWSState()); // Update state of WS
-				fhq.ui.processParams();
 			});
 		</script>
 
@@ -78,7 +76,7 @@
 		<!-- /Yandex.Metrika counter -->
 
 	</head>
-	<body>
+	<body class="dark">
 
 			<!-- Modal dialog -->
 			<div id="modal_dialog" class="overlay">
@@ -100,9 +98,8 @@
 			<div id="fhqmodaldialog" class="fhqmodaldialog" onclick="fhq.ui.clickModalDialog_dialog();">
 				<div class="fhqmodaldialog_table">
 					<div class="fhqmodaldialog_cell">
-						<div class="fhqmodaldialog_content" onclick="fhq.ui.clickModalDialog_content();">
-							<div class="fhqmodaldialog_iconclose" onclick="fhq.ui.closeModalDialog();"></div>
-							<div class="fhqmodaldialog_iconfhq"></div>
+						<div class="fhq0107" onclick="fhq.ui.clickModalDialog_content();">
+							<div class="fhq0108" onclick="fhq.ui.closeModalDialog();"></div>
 							<div id="fhqmodaldialog_header" class="fhqmodaldialog_header"></div>
 							<div id="fhqmodaldialog_content" class="fhqmodaldialog_content2"></div>
 							<div id="fhqmodaldialog_buttons" class="fhqmodaldialog_buttons"></div>
@@ -137,6 +134,12 @@
 			</table>
 		</center>
 		<audio id="income_msg_sound" style="display: none"> <source src="income_msg.wav" type="audio/wav"> </audio>
+		<div class="fhq0104">
+			<div class="fhq0105">
+					<div class="fhq0106">
+						<img src="images/loader.gif"/>
+					</div>
+			</div>
 	</body>
 </html>
 	

@@ -7,27 +7,27 @@ window.fhq.ws.handlerReceivedChatMessage = function(response){
 	fhq.handlerReceivedChatMessage(response);
 };
 window.fhq.ws.listeners = {}
-window.fhq.ws.addListener = function(cmd, d){
-	if(!fhq.ws.listeners[cmd]){
-		fhq.ws.listeners[cmd] = [];
-	}
-	fhq.ws.listeners[cmd].push(d);
+window.fhq.ws.addListener = function(m, d){
+	fhq.ws.listeners[m] = d;
 }
+
 fhq.ws.handleCommand = function(response){
-	if(fhq.ws.listeners[response.cmd]){
-		for(var d in fhq.ws.listeners[response.cmd]){
-			if(response['error']){
-				fhq.ws.listeners[response.cmd][d].reject(response);
-			} else {
-				fhq.ws.listeners[response.cmd][d].resolve(response);
-			}
+	if(fhq.ws.listeners[response.m]){
+		if(response['error']){
+			setTimeout(function(){
+				fhq.ws.listeners[response.m].reject(response);
+				delete fhq.ws.listeners[response.m];
+			},1);
+		} else {
+			setTimeout(function(){
+				fhq.ws.listeners[response.m].resolve(response);
+				delete fhq.ws.listeners[response.m];
+			},1);
 		}
-		// clean listeners
-		fhq.ws.listeners.hello = [];
 	}else if(response.cmd == "chat"){
 		fhq.ws.handlerReceivedChatMessage(response);
 	}else{
-		console.error("Not found handler for '" + response.cmd + "'");
+		console.error("Not found handler for '" + response.cmd + "/" + response.m + "'");
 	}
 };
 
@@ -47,6 +47,7 @@ window.fhq.ws.setWSState = function(s){
 window.fhq.ws.onconnect = function(){
 	
 };
+fhq.ws.lastm = 0;
 
 window.fhq.ws.initWebsocket = function(){
 	var protocol = window.location.protocol == "https:" ? "wss:" : "ws:";
@@ -56,11 +57,9 @@ window.fhq.ws.initWebsocket = function(){
 	// fhq.ws.socket = new WebSocket("ws://192.168.1.5:1234/api");
 	window.fhq.ws.socket.onopen = function() {
 		console.log('WS Opened');
-		window.fhq.ws.onconnect();
+		setTimeout(window.fhq.ws.onconnect,1);
 		fhq.ws.setWSState("OK");
-		fhq.ws.send({'cmd': 'hello'}).done(function(){
-			fhq.ws.login();
-		});
+		fhq.ws.login();
 	};
 
 	window.fhq.ws.socket.onclose = function(event) {
@@ -101,11 +100,14 @@ fhq.ws.initWebsocket();
 
 window.fhq.ws.send = function(obj, def){
 	var d = def || $.Deferred();
+	fhq.ws.lastm++;
+	obj.m = "m" + fhq.ws.lastm;
+	fhq.ws.listeners[obj.m] = d;
 	try{
 		if(fhq.ws.socket.readyState == 0){
 			setTimeout(function(){
 				fhq.ws.send(obj, d);
-			}, 1000);
+			},1000);
 		}else{
 			// console.log("ReadyState " + fhq.ws.socket.readyState);
 			// console.log("Send " + JSON.stringify(obj));
@@ -114,7 +116,6 @@ window.fhq.ws.send = function(obj, def){
 	}catch(e){
 		console.error(e);
 	}
-	fhq.ws.addListener(obj.cmd, d);
 	return d;
 }
 
@@ -152,21 +153,40 @@ window.fhq.ws.sendLettersToSubscribers = function(message){
 }
 
 fhq.ws.login = function(){
-	return fhq.ws.send({
+	var d = $.Deferred();
+	fhq.ws.send({
 		'cmd': 'login',
 		'token': fhq.getTokenFromCookie()
+	}).done(function(r){
+		setTimeout(function(){
+			fhq.ws.user().done(function(r){
+				fhq.profile.bInitUserProfile == true;
+				fhq.profile.university = r.profile.university;
+				fhq.profile.country = r.profile.country;
+				fhq.profile.city = r.profile.city;
+				fhq.userinfo = {};
+				fhq.userinfo.id = r.data.id;
+				fhq.userinfo.nick = r.data.nick;
+				fhq.userinfo.email = r.data.email;
+				fhq.userinfo.role = r.data.role;
+				fhq.userinfo.logo = r.data.logo;
+				$(document).ready(function(){
+					fhq.ui.processParams();
+				});
+			});
+		},10);
+	}).fail(function(r){
+		fhq.api.cleanuptoken();
+		$(document).ready(function(){
+			fhq.ui.processParams();
+		});
 	});
+	return d;
 }
 
 fhq.ws.users = function(params){
 	params = params || {};
 	params.cmd = 'users';
-	return fhq.ws.send(params);
-}
-
-fhq.ws.user = function(params){
-	params = params || {};
-	params.cmd = 'user';
 	return fhq.ws.send(params);
 }
 
@@ -269,5 +289,11 @@ fhq.ws.updatequest = function(params){
 fhq.ws.quest = function(params){
 	params = params || {};
 	params.cmd = 'quest';
+	return fhq.ws.send(params);
+}
+
+fhq.ws.user = function(params){
+	params = params || {};
+	params.cmd = 'user';
 	return fhq.ws.send(params);
 }
