@@ -63,7 +63,8 @@ body {
 	color: #333333;	
 	text-align: center;
 	background: url(../images/background.png) no-repeat center center fixed;
-	background-size: 100% 100%;
+	background-size: 100%;
+	background-position: top;
 }
 
 .fhqbtn {
@@ -611,102 +612,6 @@ table {
 	background: none repeat scroll 0% 0% #CCC;
 	padding: 8px;
 	border-radius: 5px;
-}
-
-/* user panel by nitive */
-
-.fhqbody .userpanel {
-  text-align: left;
-}
-div.gamespanel__game,
-div.gamespanel__arrow {
-  margin: 0;
-  float: none;
-  min-height: auto;
-}
-.gamespanel svg,
-.gamespanel__games,
-.gamespanel__gameswrap {
-  margin-left: 0;
-}
-.userpanel {
-  height: 400px;
-  width: 500px;
-  border: 2px solid #424e4b;
-  border-radius: 5px;
-  /* fixed background color */
-  /*background-color: #fbfbfb;*/ 
-  margin: auto;
-}
-.userpanel__photo {
-  float: left;
-  margin: 25px 0 0 25px;
-  box-sizing: border-box;
-  border: 2px solid #50e3c2;
-  border-radius: 7px;
-  width: 100px;
-  height: 100px;
-}
-.userpanel__title {
-  font-weight: 500;
-  margin: 30px 0 0 10px;
-  display: inline-table;
-  width: 360px;
-}
-.userpanel__info {
-  display: inline-table;
-  margin: 10px 20px;
-}
-.userpanel__games {
-  height: 100px;
-  margin-left: 18px;
-  margin-top: 30px;
-}
-.gamespanel {
-  width: 465px;
-  font-size: 0;
-}
-.gamespanel__arrow {
-  width: 25px;
-  height: 100px;
-  cursor: pointer;
-}
-.gamespanel__gameswrap {
-  font-size: 0;
-  display: inline-block;
-  overflow: hidden;
-  height: 100px;
-}
-.gamespanel__games {
-  position: relative;
-  display: inline-block;
-  width: 415px;
-  height: 100px;
-  white-space: nowrap;
-}
-div.gamespanel__game {
-  display: inline-block;
-  background-size: cover;
-  width: 100px;
-  height: 100px;
-  letter-spacing: 0;
-  margin: 0 2px;
-  border-radius: 50%;
-}
-div.gamespanel__game svg {
-  cursor: default;
-}
-div.gamespanel__game p {
-  font-size: 29px;
-  cursor: default;
-}
-div.gamespanel__game p:before,
-div.gamespanel__game p:after {
-  content: '%';
-  font-size: 10px;
-}
-div.gamespanel__game p:before {
-  color: rgba(0,0,0,0);
 }
 
 .fhq_event_score {
@@ -1307,8 +1212,8 @@ body.dark
 	display: table;
 	width: 100%;
 	background-color: #eee;
-	border-radius: 10px;
     cursor: pointer;
+    border: 01px solid #999;
 }
 
 .fhq0001:hover {
@@ -1333,7 +1238,6 @@ body.dark
     max-height: 110px;
     background-image: url(../images/menu/quests_150x150.png);
 	background-size: 100% 100%;
-	border-radius: 10px;
 }
 
 .fhq0003{
@@ -1429,8 +1333,7 @@ body.dark
 
 .fhq0017 {
 	display: inline-table;
-	/* border: 1px solid black;*/
-	border-radius: 10px;
+	border: 1px solid #999;
 	margin-bottom: 24px;
 	font-family: arial;
 	padding: 10px;
@@ -1456,7 +1359,6 @@ body.dark
 	width: 110px;
 	height: 110px;
 	background-size: 100% 100%;
-	border-radius: 10px;
 }
 
 .fhq0020 {

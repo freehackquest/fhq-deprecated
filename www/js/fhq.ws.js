@@ -1,5 +1,6 @@
 if(!window.fhq) window.fhq = {};
 if(!window.fhq.ws) window.fhq.ws = {};
+fhq.ws.lastm = 0;
 
 // WebSocket protocol
 
@@ -47,7 +48,6 @@ window.fhq.ws.setWSState = function(s){
 window.fhq.ws.onconnect = function(){
 	
 };
-fhq.ws.lastm = 0;
 
 window.fhq.ws.initWebsocket = function(){
 	var protocol = window.location.protocol == "https:" ? "wss:" : "ws:";

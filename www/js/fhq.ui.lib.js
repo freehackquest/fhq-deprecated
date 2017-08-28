@@ -3104,7 +3104,7 @@ fhq.ui.templates.newsRow = function(ev){
 	else if (ev.type == 'info')
 		imgpath = 'images/menu/news.png';
 	else if (ev.type == 'games')
-		imgpath = 'images/menu/games.png';
+		imgpath = 'images/menu/games_150x150.png';
 	else
 		imgpath = 'images/menu/default.png'; // default
 
