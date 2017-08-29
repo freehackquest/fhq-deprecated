@@ -427,41 +427,7 @@ window.fhq.users = new (function(t) {
 		this.fhq.sendPostRequest_Async('api/users/update_lasteventid.php', params, function(obj) {});
 		this.fhq.profile.lastEventId = id;
 	};
-	this.skills = function(userid, callback) {
-		var obj = null;
-		var params = {};
-		params.userid = userid;
-		this.fhq.sendPostRequest_Async('api/statistics/skills.php', params, callback);
-	}
 })(window.fhq);
-
-/*fhq.users.initProfile = function(){
-	var params = {};
-	params.token = fhq.token;
-	var d = $.Deferred();
-	if(fhq.profile.bInitUserProfile){
-		d.resolve();
-		return d;
-	}
-	$.ajax({
-		type: "POST",
-		url: 'api/v1/users/profile/',
-		data: params
-	}).done(function(r){
-		if (r.result == 'ok') {
-			d.resolve(r);
-		}else{
-			fhq.token = "";
-			fhq.removeTokenFromCookie();
-			d.reject(r);
-		}
-	}).fail(function(r){
-		fhq.token = "";
-		fhq.removeTokenFromCookie();
-		d.reject(r);
-	})
-	return d;
-}*/
 
 window.fhq.statistics = new (function(t) {
 	this.p = t;

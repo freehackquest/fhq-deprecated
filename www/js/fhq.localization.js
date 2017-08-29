@@ -553,5 +553,9 @@ window.fhq.localization = {
 	'Answer format':{
 		'en': 'Answer format',
 		'ru': 'Формат ответа'
+	},
+	'About user':{
+		'en': 'About user',
+		'ru': 'О пользователе'
 	}
 };

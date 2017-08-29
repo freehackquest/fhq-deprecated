@@ -297,3 +297,15 @@ fhq.ws.user = function(params){
 	params.cmd = 'user';
 	return fhq.ws.send(params);
 }
+
+fhq.ws.user_answers = function(params){
+	params = params || {};
+	params.cmd = 'user_answers';
+	return fhq.ws.send(params);
+}
+
+fhq.ws.user_skills = function(params){
+	params = params || {};
+	params.cmd = 'user_skills';
+	return fhq.ws.send(params);
+}

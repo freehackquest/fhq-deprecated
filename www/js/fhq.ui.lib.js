@@ -168,7 +168,6 @@ fhq.ui.loadTopPanel = function(){
 	}else{
 		var game_id = 0;
 		$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadUserProfile();">' + fhq.t('Your Profile') + '</div>');
-		$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.createPageSkills(); fhqgui.updatePageSkills();">' + fhq.t('Skills') + '</div>');
 		$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.signout();">' + fhq.t('Sign-out') + '</div>');
 		
 		if(fhq.isAdmin()){
@@ -206,9 +205,9 @@ fhq.ui.loadTopPanel = function(){
 	
 	$('#btnmenu_colorscheme').unbind().bind('click', function(){
 		if ($('body').hasClass('dark')) {
-			self.setLightColorScheme();
+			fhq.ui.setLightColorScheme();
 		} else {
-			self.setDarkColorScheme();
+			fhq.ui.setDarkColorScheme();
 		}
 	})
 	
@@ -450,33 +449,6 @@ function FHQGuiLib(api) {
 		window.history.pushState(newPageParams, document.title, window.location.pathname + '?' + params.join("&"));
 		this.pageParams = this.parsePageParams();
 	}
-
-	if(localStorage.getItem('colorscheme') == null){
-		localStorage.setItem('colorscheme', 'light');
-	}
-
-	this.applyColorScheme = function(){
-		if(localStorage.getItem('colorscheme') == 'dark'){
-			self.setDarkColorScheme();
-		}else{
-			self.setLightColorScheme();
-		}
-	}
-	
-	this.setDarkColorScheme = function(){
-		$('body').addClass('dark');
-		localStorage.setItem('colorscheme', 'dark');
-		$('#jointothedarkside').html(fhq.t('You are on the dark side. Turn back?'));
-		$('#btnmenu_colorscheme img').attr({'src': 'images/menu/lightside_150x150.png'})
-	}
-	
-	this.setLightColorScheme = function(){
-		$('body').removeClass('dark');
-		localStorage.setItem('colorscheme', 'light');
-		$('#jointothedarkside').html(fhq.t('Join the dark side...'));
-		$('#btnmenu_colorscheme img').attr({'src': 'images/menu/darkside_150x150.png'})
-		
-	}
 	
 	this.userIcon = function(userid, logo, nick) {
 		return '<div class="fhqbtn" onclick="showUserInfo(' + userid + ')"> <img class="fhqmiddelinner" width=25px src="' + logo + '"/> ' + nick + '</div>'
@@ -537,131 +509,6 @@ function FHQGuiLib(api) {
 	this.openUserInNewTab = function(userid) {
 		var win = window.open('?userid=' + userid, '_blank');
 		win.focus();
-	}
-
-	this.showFullUserProfile = function(userid) {
-		/*content += '<div class="fhquser_table">';
-		content += '<div class="fhquser_row">';
-		content += '<div class="fhquser_nick" id="user_baseinfo">?</div>';
-		content += '</div>';
-		content += '<div class="fhquser_row_skip"></div>';
-		content += '<div class="fhquser_row">';
-		content += '<div class="fhquser_info">';
-		content += '<div class="fhquser_nick" ></div><br>';
-		content += '</div>';
-		content += '<div class="fhquser_row_skip"></div>';
-		content += '<div class="fhquser_row" id="user_games"></div>';
-		content += '<div class="fhquser_row_skip"></div>';
-		content += '<div class="fhquser_row" id="user_skills"></div>';
-		content += '<div class="fhquser_row_skip"></div>';
-		content += '</div>';
-		content += '</div>';*/
-		
-		var cp = new FHQContentPage();
-		cp.clear();
-		cp.append('\
-			<div class="userpanel"> \
-				<img src="files/users/0.png" id="user_logo" alt="photo" class="userpanel__photo"> \
-				<h3 class="userpanel__title" id="user_nick">[team] usernick</h3> \
-				<div class="userpanel__info" id="user_info">?</div> \
-				<div class="userpanel__games gamespanel"> \
-				<svg class="gamespanel__arrow gamespanel__arrow--left" viewBox="0 0 24 62"><path d="M17.27 31C17.27 21.04 24 0 24 0L.112 31 24 62s-6.73-20.292-6.73-31z" stroke="#50E3C2" fill="#212928" fill-rule="evenodd"/></svg> \
-				<div class="gamespanel__gameswrap"> \
-					<div class="gamespanel__games" id="user_games"> \
-					</div>\
-				</div> \
-				<svg class="gamespanel__arrow gamespanel__arrow--right" viewBox="0 0 24 62" xmlns="http://www.w3.org/2000/svg"><path d="M6.73 31C6.73 40.96 0 62 0 62l23.888-31L0 0s6.73 20.292 6.73 31z" stroke="#50E3C2" fill="#212928" fill-rule="evenodd"/></svg> \
-			</div> \
-			<div class="bg"></div> \
-		</div>');
-
-		// info
-		fhq.users.get(userid, function(obj) {
-			// document.getElementById("user_baseinfo").innerHTML = obj.data.status + ' ' + obj.data.role + ' #' + obj.data.userid + '<br>'
-			 // + 'UUID: ' + obj.data.uuid + '<br>'
-			// + 'Last visit: ' + obj.data.dt_last_login;
-			document.getElementById("user_nick").innerHTML = '#' + obj.data.userid + ' ' + obj.data.nick;
-			document.getElementById("user_logo").src = obj.data.logo;
-
-			document.getElementById("user_info").innerHTML = '';
-			var arrProfile = new Array();
-			if (obj.profile.country && obj.profile.country != '')
-				arrProfile.push(obj.profile.country);
-			if (obj.profile.city && obj.profile.city != '')
-				arrProfile.push(obj.profile.city);
-			if (obj.profile.university && obj.profile.university != '')
-				arrProfile.push(obj.profile.university);
-			if (obj.data.email)
-				arrProfile.push(obj.data.email);	
-			document.getElementById("user_info").innerHTML += arrProfile.join('</br>');
-			
-			for (var k in obj.games) {
-				var nProgress = Math.floor((obj.games[k].score * 100) / obj.games[k].maxscore);
-				// alert(obj.games[k].score + ' / ' + obj.games[k].maxscore + ' = ' + nProgress + '%');
-				document.getElementById("user_games").innerHTML += '\<div title="' + obj.games[k].title + '" data-progress="' + nProgress + '" style="background-image: url(' + obj.games[k].logo + ')" class="gamespanel__game"></div>';
-				// document.getElementById("user_games").innerHTML += 'Game "' +  + '" (' + obj.games[k].type_game + '): ' + obj.games[k].score + " / " + obj.games[k].maxscore
-				//	+ "<br>";
-			}
-			
-			// --- begin app.js ---
-			(function e(t,n,r) { function s(o,u) {  if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports) {
-				var $games, circle, element, gameWidth, i, len, ref;
-
-				gameWidth = 415 / 4;
-
-				$games = $('.gamespanel__games');
-
-				$games.css('left', 0);
-
-				$('.gamespanel__arrow--left').click(function() {
-				  var left;
-				  left = Math.min(0, parseFloat($games.css('left')) + gameWidth * 3);
-				  return $games.stop().animate({
-					'left': left
-				  }, 400);
-				});
-
-				$('.gamespanel__arrow--right').click(function() {
-				  var left;
-				  left = Math.max(-gameWidth * $games.length, parseFloat($games.css('left')) - gameWidth * 3);
-				  return $games.stop().animate({
-					'left': left
-				  }, 400);
-				});
-
-				ref = document.getElementsByClassName('gamespanel__game');
-				for (i = 0, len = ref.length; i < len; i++) {
-				  element = ref[i];
-				  circle = new ProgressBar.Circle(element, {
-					color: '#50e3c2',
-					strokeWidth: 4,
-					trailColor: 'black',
-					duration: 1500,
-					easing: 'elastic',
-					fill: 'rgba(0,0,0,.7)',
-					text: {
-					  value: '0'
-					},
-					step: function(state, bar) {
-					  return bar.setText((bar.value() * 100).toFixed(0));
-					},
-					click: function() {
-					  return alert('cat');
-					}
-				  });
-				  circle.progress = element.dataset.progress / 100;
-				  setTimeout((function() {
-					return this.animate(this.progress);
-				  }).bind(circle), 1000);
-				}
-			},{}]},{},[1]);
-			// --- end app.js ---
-		});
-		
-		// skills
-		fhq.users.skills(userid, function(obj) {
-
-		});	
 	}
 
 	this.loadSettings = function(idelem) {
@@ -814,88 +661,6 @@ function FHQGuiLib(api) {
 		this.filter.events.page = val;
 	}
 
-	this.resetSkillsPage = function() {
-		this.filter.skills.page = 0;
-	}
-	
-	this.setSkillsPage = function(p) {
-		this.filter.skills.page = p;
-	}
-	
-	this.createPageSkills = function() {
-		var el = document.getElementById("content_page");
-		el.innerHTML = '<h1>User\'s Skills</h1>Found:<font id="skills_found">0</font><hr><div id="skills_page"></div>';
-	}
-	
-	this.updatePageSkills = function() {
-		var el = document.getElementById("skills_page");
-		el.innerHTML = 'Loading...';
-		
-		var filter = createUrlFromObj(this.filter.skills.getParams());
-		
-		send_request_post(
-			'api/statistics/skills.php',
-			filter,
-			function (obj) {
-				if (obj.result == "fail") {
-					el.innerHTML = obj.error.message;
-					alert(obj.error.message);
-
-				} else {
-					document.getElementById('skills_found').innerHTML = obj.data.found;
-					var onpage = parseInt(obj.data.onpage, 10);
-					var page = parseInt(obj.data.page, 10);
-					el.innerHTML = fhq.ui.paginator(0, obj.data.found, onpage, page, 'fhqgui.setSkillsPage', 'fhqgui.updatePageSkills');
-
-					var tbl = new FHQTable();
-					tbl.openrow();
-					tbl.cell('User');
-					tbl.cell('Skills');
-					tbl.closerow();
-					
-					for (var userid in obj.data.skills) {
-						var sk = obj.data.skills[userid];
-						tbl.openrow();
-						var u = sk.user;
-						tbl.cell(fhqgui.userIcon(u.userid, u.logo, u.nick));
-						var h = fhqgui.filter.skills.subject == '' ? 170 : 25;
-						tbl.cell('<canvas id="skill' + u.userid + '" width="450" height="' + h + '"></canvas><br>');
-						tbl.closerow();
-					}
-					el.innerHTML += '<br>' + tbl.render();
-
-					// update charts
-					for (var userid in obj.data.skills) {
-						var sk = obj.data.skills[userid];
-						var u = sk.user;
-						var chartid = 'skill' + u.userid;
-						var ctx = document.getElementById(chartid).getContext("2d");
-						ctx.font = "12px Arial";
-						ctx.fillStyle = $('#content_page').css( "color" );
-						ctx.strokeStyle = $('#content_page').css( "color" );
-
-						// ctx.strokeRect(0,0,300,140);
-
-						var y = 10;
-						for (var sub in sk.subjects) {
-							// data.labels.push(sub);
-							var max = sk.subjects[sub].max;
-							var score = sk.subjects[sub].score;
-							var percent = 0;
-							if (max != 0) {
-								percent = Math.round((score/max)*100);
-							}
-							ctx.fillText(sub, 10, y);
-							ctx.fillText('' + percent + '% ', 80, y);
-							ctx.strokeRect(120, y-9, 200, 8);
-							ctx.fillRect (120, y-9, percent*2, 9);
-							y += 12;
-						}
-					}
-				}
-			}
-		);
-	}
 };
 
 function FHQParamTable() {
@@ -1018,6 +783,33 @@ function FHQTable() {
 
 fhq.ui.chatSoundOn = true;
 
+if(localStorage.getItem('colorscheme') == null){
+	localStorage.setItem('colorscheme', 'light');
+}
+
+fhq.ui.applyColorScheme = function(){
+	if(localStorage.getItem('colorscheme') == 'dark'){
+		fhq.ui.setDarkColorScheme();
+	}else{
+		fhq.ui.setLightColorScheme();
+	}
+}
+
+fhq.ui.setDarkColorScheme = function(){
+	$('body').addClass('dark');
+	localStorage.setItem('colorscheme', 'dark');
+	$('#jointothedarkside').html(fhq.t('You are on the dark side. Turn back?'));
+	$('#btnmenu_colorscheme img').attr({'src': 'images/menu/lightside_150x150.png'})
+}
+
+fhq.ui.setLightColorScheme = function(){
+	$('body').removeClass('dark');
+	localStorage.setItem('colorscheme', 'light');
+	$('#jointothedarkside').html(fhq.t('Join the dark side...'));
+	$('#btnmenu_colorscheme img').attr({'src': 'images/menu/darkside_150x150.png'})
+	
+}
+
 fhq.ui.closeMoreMenu = function(){
 	setTimeout(function(){
 		$('.fhq0109').hide();
@@ -1043,7 +835,6 @@ fhq.ui.processParams = function() {
 	fhq.ui.pageHandlers["scoreboard"] = fhq.ui.loadScoreboard;
 	fhq.ui.pageHandlers["news"] = fhq.ui.loadPageNews;
 	fhq.ui.pageHandlers["quest"] = fhq.ui.loadQuest;
-	fhq.ui.pageHandlers["userid"] = fhqgui.showFullUserProfile; // TODO redesign
 	fhq.ui.pageHandlers["subject"] = fhq.ui.loadQuestsBySubject;
 	fhq.ui.pageHandlers["new_feedback"] = fhq.ui.loadNewFeedback;
 	fhq.ui.pageHandlers["create_news"] = fhq.ui.loadCreateNews;
@@ -1071,17 +862,7 @@ fhq.ui.processParams = function() {
 		}
 		
 		if(!processed){
-			if(fhq.containsPageParam("skills")){
-				fhqgui.createPageSkills();
-				fhqgui.updatePageSkills();
-			} else if(fhq.containsPageParam("stats")){
-				// TODO
-				createPageStatistics('.$gameid.');
-				updateStatistics('.$gameid.');
-			}else{
-				// default
-				fhq.ui.loadStatSubjectsQuests();
-			}
+			fhq.ui.loadStatSubjectsQuests();
 		}
 	}
 
@@ -1330,7 +1111,7 @@ fhq.ui.loadPageAbout = function() {
 		$('#donate-form').html(result);
 	});
 	
-	fhqgui.applyColorScheme();
+	fhq.ui.applyColorScheme();
 }
 
 
@@ -1577,7 +1358,6 @@ fhq.ui.loadUserProfile = function(userid) {
 			'background-image': 'url(' + user.data.logo + ')'
 		});
 
-		
 		if(fhq.isAdmin()){
 			/*var c = '<div class="fhq0051">';
 			c += '<div class="fhqbtn" id="quest_edit">' + fhq.t('Edit') + '</div>';
@@ -1593,249 +1373,47 @@ fhq.ui.loadUserProfile = function(userid) {
 		el.append(
 			'<div class="fhq0101">'
 			+ '<div class="fhq0102">' + fhq.t('About user') + '</div>'
-			+ converter.makeHtml(user.data.about)
+			+ converter.makeHtml(user.data.about == '' ? fhq.t('Missing information') : user.data.about)
 			+ '</div>'
 		)
 
 		el.append(
 			'<div class="fhq0101">'
 			+ '<div class="fhq0102">' + fhq.t('Skills') + '</div>'
-			+ 'TODO'
+			+ '<div class="fhq0116">Loading...</div>'
 			+ '</div>'
 		);
 		
-		/*
 		
-		
-		$('#quest_report').unbind().bind('click', function(){
-			fhq.ui.showFeedbackDialog(
-				'error',
-				fhq.t('Report an error'),
-				'Game: "' + q.game_title + '"\n'
-				+ 'Quest: ' + q.name + ', ID: #' + q.questid + '\n'
-				+ 'Comment:\n'
-			);
-		});
-
-		$('#quest_delete').unbind().bind('click', function(){
-			fhq.ui.deleteQuest(q.id);
-		});
-		
-		$('#quest_edit').unbind().bind('click', function(){
-			fhq.ui.loadEditQuestForm(q.id);
-		})
-
-		$('#quest_export').unbind().bind('click', function(){
-			fhqgui.exportQuest(q.id);
-		})
-		
-		el.append(
-			'<div class="fhq0101">'
-			+ '<div class="fhq0102">' + fhq.t('Details') + '</div>'
-			+ '	<div class="newquestinfo-details-left"> '
-			+ '		<div class="newquestinfo-details-row">'
-			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Subject') + ':</div>'
-			+ '			<div class="newquestinfo-details-cell">' + q.subject + '</div>'
-			+ '		</div>'
-			+ '		<div class="newquestinfo-details-row">'
-			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Score') + ':</div>'
-			+ '			<div class="newquestinfo-details-cell">+' + q.score + '</div>'
-			+ '		</div>'
-			+ '		<div class="newquestinfo-details-row">'
-			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Status') + ':</div>'
-			+ '			<div class="newquestinfo-details-cell">' + (q.completed ? fhq.t('status_completed') + ' (' + q.dt_passed + ')' : fhq.t('status_open')) + '</div>'
-			+ '		</div>'
-			+ '	</div>'
-			+ '	<div class="newquestinfo-details-right"> '
-			+ '		<div class="newquestinfo-details-row">'
-			+ '			<div class="newquestinfo-details-cell">' + fhq.t('State') + ':</div>'
-			+ '			<div class="newquestinfo-details-cell">' + fhq.t('state_' + q.state) + '</div>'
-			+ '		</div>'
-			+ '		<div class="newquestinfo-details-row">'
-			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Solved') + ':</div>'
-			+ '			<div class="newquestinfo-details-cell">' + q.count_user_solved + ' ' + fhq.t('users_solved') + '</div>'
-			+ '		</div>'
-			+ '		<div class="newquestinfo-details-row">'
-			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Author') + ':</div>'
-			+ '			<div class="newquestinfo-details-cell">' + q.author + '</div>'
-			+ '		</div>'
-			+ '		<div class="newquestinfo-details-row">'
-			+ '			<div class="newquestinfo-details-cell">' + fhq.t('Copyright') + ':</div>'
-			+ '			<div class="newquestinfo-details-cell">' + q.copyright + '</div>'
-			+ '		</div>'			
-			+ '	</div>'
-			+ '</div>'
-		)
-
-		
-
-		if(fi.length > 0){
-			var files1 = '';						
-			for (var k in fi) {
-				files1 += '<a class="fhqbtn" href="' + fi[k].filepath + '" target="_blank">'+ fi[k].filename + '</a> ';
-			}
+		fhq.ws.user_skills({userid: user.data.id}).done(function(r){
 			
-			el.append(
-				'<div class="fhq0101">'
-				+ '<div class="newquestinfo_attachments_title">' + fhq.t('Attachments') + '</div>'
-				+ files1
-				+ '</div>'
-			)
-		}
-
-		if(hi.length > 0 || fhq.isAdmin()){
-			var hints = '<div class="fhq0051">'
-				+ '<div class="fhq0053 hide" id="quest_show_hints">' + fhq.t('Hints') + '</div>'
-				+ '<div id="newquestinfo_hints" style="display: none;">';
-			hints += '</div></div>';
-			el.append(hints);
-			fhq.ui.refreshHints(q.id, hi, fhq.isAdmin());
-			$('#quest_show_hints').unbind().bind('click', function(){
-				if($('#newquestinfo_hints').is(":visible")){
-					$('#newquestinfo_hints').hide();
-					$('#quest_show_hints').removeClass('show');
-					$('#quest_show_hints').addClass('hide');
-				}else{
-					$('#newquestinfo_hints').show();
-					$('#quest_show_hints').removeClass('hide');
-					$('#quest_show_hints').addClass('show');
+			$('.fhq0116').html('');
+			console.log(r);
+			var anim = {};
+			for(var subject in r.skills_max){
+				var user_s = r.skills_user[subject] ? r.skills_user[subject] : 0;
+				var max_s = r.skills_max[subject];
+				var procent = Math.floor((user_s / max_s)*100);
+				anim[subject] = procent;
+				$('.fhq0116').append('<div class="fhq0117">'
+					+ '	<div class="fhq0118">' + subject + ' </div>'
+					+ '	<div class="fhq0119 ' + subject + '">'
+					+ '		<div class="fhq0121"></div>'
+					+ '	</div>'
+					+ '	<div class="fhq0122">' + procent + '%</div>'
+					+ '</div>'
+					+ '<div class="fhq0120"></div>');
+			}
+			setTimeout(function(){
+				for(var subject in anim){
+					$('.fhq0119.' + subject + ' .fhq0121').css({'width': anim[subject] + '%' });
 				}
-			});
-		}
+			},1000);
 		
-		if(!q.completed){
-			if(fhq.isAuth()){
-				el.append(
-					'<div class="fhq0101">'
-					+ '<div class="newquestinfo_passquest_title">' + fhq.t('Answer') + '</div>'
-					+ '<div class="fhq0099">'
-					+ '		<input id="quest_answer" type="text" onkeydown="if (event.keyCode == 13) this.click();"/> '
-					+ '		<div class="fhq0100">' + fhq.t('Answer format') + ': ' + q.answer_format + '</div>'
-					+ '</div>'
-					+ '<div class="fhq0099">'
-					+ '		<div class="fhqbtn" id="newquestinfo_pass">' + fhq.t('Pass the quest') + '</div>'
-					+ '		<div id="quest_pass_error"></div>'
-					+ '</div>'
-					+ '</div>'
-				);
-				
-				$('#newquestinfo_pass').unbind().bind('click', function(){
-					var answer = $('#quest_answer').val();
-					// TODO change to ws
-					fhq.api.quests.pass(q.id, answer).done(function(response){
-						fhq.ui.loadQuest(q.questid);
-					}).fail(function(r){
-						$('#quest_pass_error').html(r.responseJSON.error.message);
-						if(fhq.ui.isShowMyAnswers()){
-							fhq.ui.updateMyAnswers(q.questid);
-						}
-					});
-				});
-				
-				el.append(
-					'<div class="fhq0051">'
-					+ '<div class="fhq0053 hide" id="quest_show_my_answers">' + fhq.t('My Answers') + '</div>'
-					+ '<pre id="newquestinfo_user_answers" style="display: none;"></pre>'
-					+ '</div>'
-				);
-				
-				$('#quest_show_my_answers').unbind().bind('click', function(){
-					fhq.ui.loadMyAnswers(q.questid);
-				});
-			}else{
-				el.append(
-					'<div class="fhq0101">'
-					+ '<div class="newquestinfo_passquest_title">' + fhq.t('Answer') + '</div>'
-					+ fhq.t('Please authorize for pass the quest')
-					+ '</div>'
-				);
-			}
-		}
-		
-		var writeups = ''
-			+ '<div class="fhq0051">'
-			+ '		<div class="fhq0053 hide" id="quest_show_writeups">' + fhq.t('Write Up') + '</div>'
-			+ '		<div class="fhq0052" style="display: none;"></div>'
-			+ '</div>'
-		el.append(writeups);
-
-		// fhq.ui.refreshHints(questid, q.hints, perm_edit);
-		$('#quest_show_writeups').unbind().bind('click', function(){
-			if($('.fhq0052').is(":visible")){
-				$('.fhq0052').hide();
-				$('#quest_show_writeups').removeClass('show');
-				$('#quest_show_writeups').addClass('hide');
-			}else{
-				$('.fhq0052').show();
-				$('#quest_show_writeups').removeClass('hide');
-				$('#quest_show_writeups').addClass('show');
-				fhq.ui.loadWriteUps(questid);
-			}
+		}).fail(function(r){
+			console.error(r);
 		});
-		
-		el.append(
-			'<div class="fhq0051">'
-			+ '<div class="fhq0053 hide" id="quest_show_statistics">' + fhq.t('Statistics') + '</div>'
-			+ '	<div id="statistics_content" style="display: none;">'
-			+ ' <table><tr><td valign=top><canvas id="quest_chart" width="300" height="300"></canvas></td>'
-			+ ' <td valign=top id="quest_stat_users"></td></tr></table>'
-			+ '	</div>'
-			+ '</div>'
-		);
 
-		if(q.solved != 0){
-			$('#quest_show_statistics').unbind().bind('click', function(){
-				if($('#statistics_content').is(":visible")){
-					$('#statistics_content').hide();
-					$('#quest_show_statistics').removeClass('show');
-					$('#quest_show_statistics').addClass('hide');
-				}else{
-					$('#statistics_content').show();
-					$('#quest_show_statistics').removeClass('hide');
-					$('#quest_show_statistics').addClass('show');
-					fhq.ui.updateQuestStatistics(q.questid);
-				}
-			});
-		}
-		el.append('<div class="fhq0115"></div>');
-		fhq.ui.hideLoading();
-	
-
-		var questid = parseInt(id,10);
-		
-		
-			var pt = new FHQParamTable();
-			pt.row('ID:', user.data.id);
-			pt.row('Your logo:', '<img id="user_logo" src="' + user.data.logo + '"/>');
-			pt.row('Your name:', '<div id="user_current_nick">' + user.data.nick + '</div>');
-			pt.row('Your role:', user.data.role);
-			for (var k in user.games) {
-				pt.row('Game "' + user.games[k].title + '" (' + user.games[k].type_game + '):', user.games[k].score);
-			}
-			pt.skip();
-			pt.row('Update logo:', 'PNG: <input id="user_new_logo" type="file" accept="image/png" required/>');
-			pt.row('', '<div class="fhqbtn" onclick="updateUserLogo(' + user.data.id + ');">Upload</div>');
-			
-			pt.skip();
-			pt.row('Update nick:', '<input id="user_new_nick" type="text" value="' + user.data.nick + '"/>');
-			pt.row('', '<div class="fhqbtn" onclick="changeUserNick(null);">Change nick</div>');
-			pt.skip();
-			pt.row('Country:', '<input id="edit_user_country" type="text" value="'+user.profile.country+'"/>');
-			pt.row('City:', '<input id="edit_user_city" type="text" value="'+user.profile.city+'"/>');
-			pt.row('University:', '<input id="edit_user_university" type="text" value="'+user.profile.university+'"/>');
-			pt.row('', '<div class="fhqbtn" onclick="update_profile_location();">Update</div>');
-			pt.skip();
-
-			// todo change password
-			pt.row('Old password:', '<input id="userpage_old_password" type="password" value=""/>');
-			pt.row('New password:', '<input id="userpage_new_password" type="password" value=""/>');
-			pt.row('New password(confirm):', '<input id="userpage_new_password_confirm" type="password" value=""/>');
-			pt.row('', '<div class="fhqbtn" onclick="userpage_changeUserPassword();">Change password</div>');
-			pt.skip();
-
-			cp.innerHTML = pt.render();
-			
-		}*/
 		fhq.ui.hideLoading();
 	}).fail(function(r){
 		el.html(r.error);
@@ -1916,6 +1494,7 @@ fhq.ui.confirmDialog = function(msg, onclick_yes){
 }
 
 fhq.ui.loadGames = function() {
+	fhq.ui.showLoading();
 	fhq.ui.closeMoreMenu();
 	window.fhq.changeLocationState({'games':''});
 
@@ -1929,8 +1508,11 @@ fhq.ui.loadGames = function() {
 				el.append(fhq.ui.gameView(r.data[k]));
 			}
 		}
+		fhq.ui.hideLoading();
 	}).fail(function(r){
+		console.error(r);
 		$('#content_page').html('fail');
+		fhq.ui.hideLoading();
 	});
 }
 
@@ -1967,6 +1549,7 @@ fhq.ui.gameView = function(game, currentGameId) {
 }
 
 fhq.ui.loadFeedback = function() {
+	fhq.ui.showLoading();
 	fhq.ui.closeMoreMenu();
 	window.fhq.changeLocationState({'feedback':''});
 	$('#content_page').html('<div class="fhq0021"></div>');
@@ -2024,9 +1607,11 @@ fhq.ui.loadFeedback = function() {
 			content += '';
 		}
 		el.html(content);
-		
+		fhq.ui.hideLoading();
 	}).fail(function(r){
+		console.error(r);
 		el.html(r.responseJSON.error.message);
+		fhq.ui.hideLoading();
 	});
 }
 
