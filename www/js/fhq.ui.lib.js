@@ -1331,7 +1331,12 @@ fhq.ui.loadApiPage = function() {
 }
 
 fhq.ui.loadUserProfile = function(userid) {
-	userid = userid | (fhq.userinfo ? fhq.userinfo.id : userid); 
+	if(!userid){
+		userid = fhq.userinfo ? fhq.userinfo.id : userid;
+	}else{
+		userid = parseInt(userid,10);
+	}
+
 	fhq.ui.showLoading();
 	window.fhq.changeLocationState({'user':userid});
 
