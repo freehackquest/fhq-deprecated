@@ -136,7 +136,7 @@ class APIHelpers {
 		if(APIHelpers::$TOKEN != null){
 			$conn = APIHelpers::createConnection();
 			try {
-				$stmt = $conn->prepare('SELECT data FROM users_tokens WHERE token = ? AND status = ? AND end_date > NOW()');
+				$stmt = $conn->prepare('SELECT data FROM users_tokens WHERE token = ? AND status = ?');
 				$stmt->execute(array(APIHelpers::$TOKEN,'active'));
 				if ($row = $stmt->fetch()){
 					APIHelpers::$FHQSESSION = json_decode($row['data'],true);
