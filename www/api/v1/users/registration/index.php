@@ -105,8 +105,6 @@ $new_user = array(
 if(!$stmt_insert->execute($new_user)){
 	APIHelpers::error(500, $stmt_insert->errorInfo());
 }
-$r = $stmt_insert->execute($new_user);
-$error = print_r($conn->errorInfo(),true);
 
 if( !APISecurity::login($conn, $email, $password_hash)) {
 	APIEvents::addPublicEvents($conn, 'errors', 'Alert! Admin, registration is broken!');
