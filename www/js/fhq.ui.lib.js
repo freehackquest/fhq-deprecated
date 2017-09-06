@@ -862,7 +862,13 @@ fhq.ui.processParams = function() {
 		}
 		
 		if(!processed){
-			fhq.ui.loadStatSubjectsQuests();
+			
+			if(fhq.containsPageParam("users")){
+				createPageUsers();
+				updateUsers();
+			}else{
+				fhq.ui.loadStatSubjectsQuests();
+			}
 		}
 	}
 

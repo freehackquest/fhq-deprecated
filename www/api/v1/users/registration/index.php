@@ -80,11 +80,12 @@ $query = '
                 nick,
                 role,
                 logo,
-		last_ip,
+                last_ip,
+                about,
                 dt_last_login,
                 dt_create
         )
-        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, NOW(),NOW());
+        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(),NOW());
 ';
 
 $stmt_insert = $conn->prepare($query);
@@ -97,9 +98,13 @@ $new_user = array(
         $nick,
         'user',
         'files/users/0.png',
-	''
+        '',
+        ''
 );
 
+if(!$stmt_insert->execute($new_user)){
+	APIHelpers::error(500, $stmt_insert->errorInfo());
+}
 $r = $stmt_insert->execute($new_user);
 $error = print_r($conn->errorInfo(),true);
 
@@ -139,13 +144,15 @@ $stmt_insert2 = $conn->prepare('
 	VALUES ( ?, ?, ?, ?, ?, NOW());
 ');
 
-$stmt_insert2->execute(array(
+if(!$stmt_insert2->execute(array(
 	$email,
 	$email_subject,
 	$email_message,
 	'high',
 	'sending',
-));
+))){
+	APIHelpers::error(500, $stmt_insert2->errorInfo());
+}
 
 
 // $nick

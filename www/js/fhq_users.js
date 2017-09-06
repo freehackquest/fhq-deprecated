@@ -180,11 +180,11 @@ function deleteUser(userid) {
 	);
 }
 
-function showUserInfo(id) {
+function showUserInfo(userid) {
 	showModalDialog('<div id="user_info"><center>Please wait...</div>');
 
 	// user info
-	fhq.api.users.profile(id).done(function (obj) {
+	fhq.ws.user({userid: userid}).done(function (obj) {
 			var ui = document.getElementById('user_info');
 			
 			
@@ -400,6 +400,7 @@ function formCreateUser() {
 }
 
 function createPageUsers() {
+
 	var pt = new FHQParamTable();
 	pt.row('',fhqgui.btn('Create User', 'formCreateUser();'));
 	pt.row('',fhqgui.btn('Prepare dump of users (export)', 'prepareDumpUsers();') + '<div id="usersdump"></div>');
