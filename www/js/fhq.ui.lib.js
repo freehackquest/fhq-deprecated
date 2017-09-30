@@ -119,130 +119,65 @@ fhq.ui.signout = function(){
 	});
 }
 
-fhq.ui.loadTopPanel = function(){
-	var toppanel = $('.fhqtopmenu_toppanel_container');
-	toppanel.html('');
-	// logo
-	toppanel.append('<a class="fhq-menu-logo" href="./?">'
-		+ '<img class="fhq_btn_menu_img" src="images/fhq2016_200x150.png"/> '
-		+ '</a>')
+fhq.ui.updateMenu = function(){
+	// localization
+	$('#btnmenu_quests .nav-link').html(fhq.t('Quests'));
+	$('#btnmenu_scoreboard .nav-link').html(fhq.t('Scoreboard'));
+	$('#btnmenu_news .nav-link').html(fhq.t('News'));
+	$('#btnmenu_about .nav-link').html(fhq.t('About'));
+	$('#btnmenu_other .nav-link').html(fhq.t('Other'));
+
+	$('#btnmenu_feedback').html(fhq.t('Feedback'));
+	$('#btnmenu_games').html(fhq.t('Games'));
+	$('#btnmenu_tools').html(fhq.t('Tools'));
+	$('#btnmenu_classbook').html(fhq.t('Classbook'));
+	$('#btnmenu_apidocs').html(fhq.t('API'));
 	
-	toppanel.append('<div id="btnmenu_quests" class="fhq0041">' + fhq.t('Quests') + '</div>')
-	toppanel.append('<div id="btnmenu_scoreboard" class="fhq0041">' + fhq.t('Scoreboard') + '</div>');
-	toppanel.append('<div id="btnmenu_news" class="fhq0041">' + fhq.t('News') + '</div>');
-	toppanel.append('<div id="btnmenu_more" class="fhq0041">' + fhq.t('Other')
-		+ '		<div class="fhq0109"></div>'
-		+ '		<div class="fhq0110"></div>'
-		+ '</div>');
+	// users/unauth menu
+	$('#btnmenu_newfeedback').html(fhq.t('New Feedback'));
+	
+	$('#btnmenu_creategame').html(fhq.t('Create Game'));
+	$('#btnmenu_importgame').html(fhq.t('Import Game'));
+	$('#btnmenu_createnews').html(fhq.t('Create News'));
+	$('#btnmenu_createquest').html(fhq.t('Create Quest'));
 
-	// more
-	$('.fhq0110').append('<div class="fhq0045" onclick="fhq.ui.loadFeedback();">' + fhq.t('Feedback') + '</div>');
-	$('.fhq0110').append('<div class="fhq0045" onclick="fhq.ui.loadGames();">' + fhq.t('Games') + '</div>');
-	$('.fhq0110').append('<div class="fhq0045" onclick="fhq.ui.loadTools();">' + fhq.t('Tools') + '</div>');
-	$('.fhq0110').append('<div class="fhq0045" onclick="fhq.ui.loadClassbook();">' + fhq.t('Classbook') + '</div>');
-	$('.fhq0110').append('<div class="fhq0045" onclick="fhq.ui.loadRatingOfUsers();">' + fhq.t('Users') + '</div>');
-	$('.fhq0110').append('<div class="fhq0045" onclick="fhq.ui.loadApiPage();">' + fhq.t('API') + '</div>');
-
-	toppanel.append('<div id="btnmenu_about" class="fhq0041">' + fhq.t('About') + '</div>');
-
-	toppanel.append('<div id="btnmenu_user" class="fhq0041">'
-		+ '<img class="fhq_btn_menu_img user-logo" src="' + (fhq.isAuth() && fhq.userinfo ? fhq.userinfo.logo : 'images/menu/user.png') + '"/>  '
-		+ (fhq.isAuth() && fhq.userinfo ? fhq.userinfo.nick : fhq.t('Account'))
-		+ '<div class="account-panel"></div>');
-
-	$('.account-panel').append(
-		'<img class="fhq_btn_menu_img user-logo" src="' + (fhq.isAuth() && fhq.userinfo ? fhq.userinfo.logo : 'images/menu/user.png') + '"/>  '
-		+ (fhq.isAuth() && fhq.userinfo ? fhq.userinfo.nick : fhq.t('Account'))
-	);
-	$('.account-panel').append('<div class="border"></div>');
-
-	if(!fhq.isAuth()){
-		$('.account-panel').append('<div id="btnmenu_signin" class="fhq-simple-btn" onclick="fhq.ui.showSignInForm();">' + fhq.t('Sign-in') + '</div>');
-		$('.account-panel').append('<div class="fhq-simple-btn" onclick="window.location=\'./google_auth.php\'">' + fhq.t('Sign-in with Google') + '</div>');
-		$('.account-panel').append('<div id="btnmenu_signup" class="fhq-simple-btn" onclick="fhqgui.showSignUpForm();">' + fhq.t('Sign-up') + '</div>');
-		$('.account-panel').append('<div id="btnmenu_restore_password" class="fhq-simple-btn" onclick="fhqgui.showResetPasswordForm();">' + fhq.t('Forgot password?') + '</div>');
+	$('#btnmenu_users').html(fhq.t('Users'));
+	$('#btnmenu_users2').html(fhq.t('Users') + "2");
+	$('#btnmenu_answerlist').html(fhq.t('Answer List'));
+	$('#btnmenu_serverinfo').html(fhq.t('Server Info'));
+	$('#btnmenu_serversettings').html(fhq.t('Server Settings'));
+	
+	$('#btnmenu_signin').html(fhq.t('Sign-in'));
+	$('#btnmenu_signin_with_google').html(fhq.t('Sign-in with Google'));
+	$('#btnmenu_signup').html(fhq.t('Sign-up'));
+	$('#btnmenu_restore_password').html(fhq.t('Forgot password?'));
+	
+	
+	$('#btnmenu_user_profile').html(fhq.t('Your Profile'));
+	$('#btnmenu_user_logout').html(fhq.t('Sign-out'));
+	
+	if (fhq.isAdmin()){
+		$('.admin-menu').show();
 	}else{
-		var game_id = 0;
-		$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadUserProfile();">' + fhq.t('Your Profile') + '</div>');
-		$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.signout();">' + fhq.t('Sign-out') + '</div>');
-		
-		if(fhq.isAdmin()){
-			$('.account-panel').append('<div class="border"></div>');
-			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadServerSettings();">' + fhq.t('Server Settings') + '</div>');
-			$('.account-panel').append('<div class="fhq-simple-btn" onclick="createPageUsers(); updateUsers();">' + fhq.t('Users') + '</div>');
-			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadUsers()">Users 2</div>');
-			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadAnswerList()">' + fhq.t('Answer List') + '</div>');
-			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadServerInfo()">' + fhq.t('Server Info') + '</div>');
+		$('.admin-menu').hide();
+	}
+	
+	if(!fhq.isAuth()){
+		$('.unauth-menu').show();
+		$('.auth-menu').hide();
+		$('#user_img').attr({'src' : 'images/menu/user.png'})
+		$('#user_nick').html(fhq.t('Account'));
+	}else{
+		$('.unauth-menu').hide();
+		$('.auth-menu').show();
+		if(fhq.userinfo){
+			$('#user_img').attr({'src' : fhq.userinfo.logo})
+			$('#user_nick').html(fhq.userinfo.nick);
+		}else{
+			$('#user_img').attr({'src' : 'images/menu/user.png'})
+			$('#user_nick').html(fhq.t('Account'));
 		}
 	}
-	
-	toppanel.append(''
-		+ '<div id="btnmenu_plus" class="fhq0041 fhq0042">'
-		+ '<div class="fhq0043"></div>'
-		+ '<div class="fhq0044"></div>'
-		+ '</div>');
-	// create menu
-	
-	$('.fhq0044').append('<div class="fhq0045" onclick="fhq.ui.loadNewFeedback()">' + fhq.t('New Feedback') + '</div>');
-
-	if (fhq.isAdmin()){
-		$('.fhq0044').append('<div class="fhq0045" onclick="formCreateGame();">' + fhq.t('Create Game') + '</div>');
-		$('.fhq0044').append('<div class="fhq0045" onclick="fhqgui.formImportGame();">' + fhq.t('Import Game') + '</div>');
-		$('.fhq0044').append('<div class="fhq0045" onclick="fhq.ui.loadCreateNews();">' + fhq.t('Create News') + '</div>');
-		$('.fhq0044').append('<div class="fhq0045" onclick="fhq.ui.loadCreateQuestForm();">' + fhq.t('Create Quest') + '</div>');
-	}else{
-		// TODO prepare quest
-	}
-	
-
-	$('#btnmenu_user').unbind().bind('click', function(e){
-		$('.accout-panel').show();
-	});
-	
-	$('#btnmenu_quests').unbind().bind('click', function(){
-		fhq.changeLocationState({'quests':''});
-		fhq.ui.loadStatSubjectsQuests();
-	})
-	
-	$('#btnmenu_scoreboard').unbind().bind('click', function(){
-		fhq.ui.loadScoreboard();
-	})
-	
-	
-	$('#btnmenu_news').unbind().bind('click', function(){
-		fhq.ui.loadPageNews();
-	})
-	
-	$('#btnmenu_more').unbind().bind('click', function(){
-		// window.fhq.changeLocationState({'more':''});
-		// fhq.ui.loadPageMore();
-		$('.fhq0109').show();
-		$('.fhq0110').show();
-		
-	});
-	
-	$('.fhq0109').unbind().bind('click', function(e){
-		e.stopPropagation();
-		e.preventDefault();
-		fhq.ui.closeMoreMenu();
-		return true;
-	})
-	
-	$('#btnmenu_about').unbind().bind('click', function(){
-		fhq.ui.loadPageAbout();
-	})
-	
-	$('#btnmenu_plus').unbind().bind('click', function(){
-		$('.fhq0043').show();
-		$('.fhq0044').show();
-	});
-
-	$('.fhq0043').unbind().bind('click', function(e){
-		e.stopPropagation();
-		e.preventDefault();
-		fhq.ui.closeAddMenu();
-		return true;
-	})
 }
 
 function FHQGuiLib(api) {
@@ -747,20 +682,6 @@ function FHQTable() {
 
 fhq.ui.chatSoundOn = true;
 
-fhq.ui.closeMoreMenu = function(){
-	setTimeout(function(){
-		$('.fhq0109').hide();
-		$('.fhq0110').hide();
-	},100);
-}
-
-fhq.ui.closeAddMenu = function(){
-	setTimeout(function(){
-		$('.fhq0044').hide();
-		$('.fhq0043').hide();
-	},100);
-}
-
 fhq.ui.pageHandlers = {};
 
 fhq.ui.processParams = function() {
@@ -787,7 +708,7 @@ fhq.ui.processParams = function() {
 
 
 	function renderPage(){
-		fhq.ui.loadTopPanel();
+		fhq.ui.updateMenu();
 		fhq.ui.initChatForm();
 		var processed = false;
 		for(var p in fhq.ui.pageHandlers){
@@ -935,7 +856,6 @@ fhq.ui.loadServerSettings = function(idelem) {
 
 fhq.ui.loadCreateNews = function(){
 	fhq.changeLocationState({'create_news':''});
-	fhq.ui.closeAddMenu();
 	
 	$('#content_page').html('<div class="fhq0046"></div>')
 	$('#content_page').append('<div class="fhq0049"></div>')
@@ -984,6 +904,7 @@ fhq.ui.insertNews = function(){
 
 fhq.ui.loadServerInfo = function(){
 	fhq.changeLocationState({'serverinfo':''});
+	fhq.ui.hideLoading();
 	$("#content_page").html('<div class="fhq0054"></div>');
 	fhq.ws.serverinfo().done(function(r){
 		$('.fhq0054').append('<div class="fhq0055"><h1>Request Statistics</h1></div>');
@@ -997,6 +918,7 @@ fhq.ui.loadServerInfo = function(){
 }
 
 fhq.ui.loadAnswerList = function(){
+	fhq.ui.hideLoading();
 	var onpage = 8;
 	if(fhq.containsPageParam("onpage")){
 		onpage = parseInt(fhq.pageParams['onpage'], 10);
@@ -1051,6 +973,8 @@ fhq.ui.loadAnswerList = function(){
 
 fhq.ui.loadPageAbout = function() {
 	window.fhq.changeLocationState({'about':''});
+	fhq.ui.hideLoading();
+	
 	$("#content_page").html('<div class="fhq0067"></div>');
 	var el = $('.fhq0067');
 
@@ -1319,12 +1243,12 @@ fhq.ui.loadScoreboard = function(){
 }
 
 fhq.ui.loadApiPage = function() {
-	fhq.ui.closeMoreMenu();
 	window.fhq.changeLocationState({'api':''});
 	$('#content_page').html('<h1>API</h1><div class="fhq0086"></div><div class="fhq0078"></div>');
 	var el = $('.fhq0078');
 	el.html("Loading...");
 	fhq.ws.api().done(function(r){
+		fhq.ui.hideLoading();
 		el.html("");
 		$('.fhq0086').html('<div class="fhq0097"><h3>Connect</h3>'
 			+ 'Connection string: ws://freehackquest.com:' + r.data.port + '/ <br> '
@@ -1382,6 +1306,7 @@ fhq.ui.loadApiPage = function() {
 		}
 		el.append('<div class="fhq0071"></div>');
 	}).fail(function(r){
+		fhq.ui.hideLoading();
 		console.error(r);
 	})
 }
@@ -1485,7 +1410,6 @@ fhq.ui.loadUserProfile = function(userid) {
 
 fhq.ui.loadNewFeedback = function() {
 	window.fhq.changeLocationState({'new_feedback':''});
-	fhq.ui.closeAddMenu();
 	
 	$('#content_page').html('<div class="fhq0046"></div>')
 	$('#content_page').append('<div class="fhq0049"></div></div>')
@@ -1556,7 +1480,6 @@ fhq.ui.confirmDialog = function(msg, onclick_yes){
 
 fhq.ui.loadGames = function() {
 	fhq.ui.showLoading();
-	fhq.ui.closeMoreMenu();
 	window.fhq.changeLocationState({'games':''});
 
 	$('#content_page').html('<div class="fhq0021"></div>');
@@ -1611,7 +1534,6 @@ fhq.ui.gameView = function(game, currentGameId) {
 
 fhq.ui.loadFeedback = function() {
 	fhq.ui.showLoading();
-	fhq.ui.closeMoreMenu();
 	window.fhq.changeLocationState({'feedback':''});
 	$('#content_page').html('<div class="fhq0021"></div>');
 	var el = $('.fhq0021');
@@ -1717,7 +1639,6 @@ window.fhq.ui.updateUsers = function(){
 }
 
 window.fhq.ui.loadUsers = function(){
-	fhq.ui.closeMoreMenu();
 	$('#content_page').html('<div class="fhqrightinfo center"></div><div class="fhqleftlist"></div>');
 	$('.fhqleftlist').html('');
 	var list = '<div class="users">'
@@ -2043,6 +1964,7 @@ fhq.ui.capitalizeFirstLetter = function(s) {
 }
 
 fhq.ui.loadStatSubjectsQuests = function(){
+	fhq.changeLocationState({'quests':''});
 	fhq.ui.showLoading();
 	$('#content_page').html('<div class="fhq0006">Loading...</div>');
 	fhq.api.quests.stats_subjects().done(function(r){
@@ -2705,7 +2627,8 @@ window.fhq.ui.classbookSearchLinkByID = function(cbid){
 window.fhq.classbookCache = {};
 
 window.fhq.ui.loadClassbook = function(){
-	fhq.ui.closeMoreMenu();
+	fhq.changeLocationState({'classbook':''});
+	fhq.ui.hideLoading();
 	$('#content_page').html(''
 		+ '<div class="fhqleftlist">'
 		+ '		<div class="classbook">'

@@ -2,6 +2,8 @@ if(!window.fhq) window.fhq = {};
 if(!window.fhq.ui) window.fhq.ui = {};
 
 fhq.ui.loadTools = function(){
+	fhq.changeLocationState({'tools':''});
+	fhq.ui.hideLoading();
 	$('#content_page').html('<div class="toolinfo"></div><div class="toolslist"></div>');
 	
 	var len = fhq.tools.length;
@@ -21,6 +23,7 @@ fhq.ui.loadTools = function(){
 }
 
 fhq.ui.loadTool = function(toolid){
+	fhq.ui.hideLoading();
 	fhq.ui.loadTools();
 	fhq.changeLocationState({'tool': toolid});
 	$('.toolinfo').html(fhq.t('Loading...'));
