@@ -6,9 +6,16 @@
 		<meta name="copyright" lang="ru" content="sea-kg" />
 		<meta name="description" content="competition information security" />
 		<meta name="keywords" content="security, fhq, fhq 2012, fhq 2013, fhq 2014, free, hack, quest, competition, information security, ctf, joepardy" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<link rel="shortcut icon" href="favicon.ico">
 		<script src="js/libs/jquery-3.1.0.min.js"></script>
+		<script src="js/libs/popper.min.js"></script>
+		<script src="js/libs/bootstrap.min.js"></script>
+		<script src="https://apis.google.com/js/api.js"></script>
+		<!-- script src="js/fhq.google.auth.js?ver=2"></script -->
+		
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css?ver=1"/>
 		<link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css?ver=1"/>
 		<link rel="stylesheet" type="text/css" href="css/fhq.css?ver=2"/>
 		<!-- link rel="stylesheet" type="text/css" href="css/fhq.min.css?ver=1"/-->
@@ -39,7 +46,6 @@
 				fhq.security.logout();*/
 
 			$(document).ready(function() {
-				fhq.ui.applyColorScheme();
 				fhq.ws.setWSState(fhq.ws.getWSState()); // Update state of WS
 			});
 		</script>
@@ -111,27 +117,10 @@
 			<div class="fhqtopmenu_toppanel">
 				<div class="fhqtopmenu_toppanel_container"></div>
 			</div>
-
-			<div class="sendchatmessage-form">
-				<div id="sendchatmessage_trigger" class="sendchatmessage-trigger"></div>
-				<input id="sendchatmessage_text" type="text">
-				<div id="sendchatmessage_submit" class="sendchatmessage-submit"></div>
+			
+			<div class="container fhq-content" id="content_page">
 			</div>
 			
-			<table cellspacing=10px cellpadding=10px width="100%" height="100%">
-				<tr>
-					<td colspan=2 align=left valign=top height=85px></td>
-				</tr>
-				<tr>
-					<td height="100%" valign="top">
-						<center>
-						<div id="content_page">
-							
-						</div>
-						</center>
-					</td>
-				</tr>
-			</table>
 		</center>
 		<audio id="income_msg_sound" style="display: none"> <source src="income_msg.wav" type="audio/wav"> </audio>
 		<div class="fhq0104">

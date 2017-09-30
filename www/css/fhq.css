@@ -1,4 +1,9 @@
 
+.fhq-content{
+	padding-top: 85px;
+	padding-bottom: 50px;
+}
+
 .fhqmodaldialog {
 	visibility: hidden;
 	position: fixed;
@@ -61,7 +66,6 @@ body {
 	line-height:40px;
 	font: 12pt/10pt Arial;
 	color: #333333;	
-	text-align: center;
 	background: url(../images/background.png) no-repeat center center fixed;
 	background-size: 100%;
 	background-position: top;
@@ -95,19 +99,6 @@ body {
 	text-decoration: none;
 }
 
-.dark .fhqbtn {
-	color: #C8C8C8;
-	background: #383838;
-	-webkit-box-shadow: 0px 0px 1px 0px rgba(255,255,255,0.75);
-	-moz-box-shadow: 0px 0px 1px 0px rgba(255,255,255,0.75);
-	box-shadow: 0px 0px 1px 0px rgba(255,255,255,0.75);
-}
-
-.dark .fhqbtn:hover {
-	color: #C8C8C8;
-	background: #444;
-}
-
 .hide{
 	display: none;
 }
@@ -123,12 +114,6 @@ body {
     cursor: pointer;
     text-align: center;
 }
-
-.dark .fhq-join-darkside{
-	color: #c8c8c8;
-}
-
-/* .dark .fhq-btn-menu-right, .dark .fhq-simple-btn, */
 
 #copyright {
     position: fixed;
@@ -500,30 +485,6 @@ select {
     line-height: 30px;
 }
 
-select, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
-    display: inline-block;
-    padding: 4px 6px;
-    margin-bottom: 0px;
-    font-size: 14px;
-    line-height: 20px;
-    color: #555555;
-    vertical-align: middle;
-	margin: 3px 3px 3px 3px;
-}
-
-label, input, button, select {
-    font-size: 14px;
-    font-weight: normal;
-    line-height: 25px;
-}
-
-button, input, select, textarea {
-    margin: 0;
-    font-size: 100%;
-    vertical-align: middle;
-    border: 1px solid #cccccc;
-}
-
 textarea {
     width: 550px;
     height: 150px;
@@ -878,10 +839,6 @@ font.fhq_task {
 	margin-bottom: 15px;
 }
 
-.dark .newquestinfo_attachments_title{
-	border-color: #C8C8C8;
-}
-
 .newquestinfo_passquest{
 	text-align: left;
 }
@@ -900,220 +857,9 @@ font.fhq_task {
 	padding-left: 15px;
 }
 
-.dark .newquestinfo_passquest_title{
-	border-color: #C8C8C8;
-}
-
 /*
 	darkstile
 */
-
-body.dark
-{
-	background-color: #303030;
-	color: #C8C8C8;
-}
-
-
-.dark .questitem:hover, .dark .toolitem:hover, .dark .fhqleftitem:hover{
-	background: #c8c8c8;
-	color: #333;
-	text-decoration: none;
-}
-
-.dark .account-panel {
-	background-color: #3E3E3E;
-	color: #C8C8C8;
-}
-
-.dark .account-panel .fhq-simple-btn {
-	background-color: #3E3E3E;
-	color: #C8C8C8;
-}
-
-.dark .account-panel .border {
-    border-top: 1px dashed #C8C8C8;
-}
-
-.dark .fhq_index_column {
-	background-color: #3E3E3E;
-	color: #C8C8C8;
-}
-
-.dark .button3 {
-	background: #303030;
-	color: #C8C8C8;
-	background: #383838;
-}
-
-.dark .fhqparamtbl_param {
-    background-color: #3b3b3b;
-    color: #C8C8C8;
-}
-
-.dark .fhqparamtbl_value {
-    background-color: #4f4f4f;
-    color: #C8C8C8;
-}
-
-.dark .fhq-topic{
-	color: #C8C8C8;
-}
-
-
-/* menu */
-.dark .fhq_btn_menu_splitter {
-	background-color: #303030;
-}
-
-.dark .fhq_btn_menu_img {
-}
-
-.dark .fhq_btn_menu_user_panel {
-	background-color: #303030;
-}
-
-.dark .fhqtopmenu:hover {
-    background-color: #3e3e3e;
-} 
-
-.dark .fhqleftmenu {
-	background: #3e3e3e;
-}
-
-.dark .fhqtopmenu_rightpanel {
-	background: #3e3e3e;
-}
-
-.dark .fhqtopmenu_toppanel {
-	background: #3e3e3e;
-}
-
-
-/* tables */
-
-.dark #customers th {
-    background-color: #3e3e3e;
-    color: #C8C8C8;
-}
-
-.dark #customers td, #customers th {
-    border-color: #000;
-}
-
-.dark #customers {
-    border-collapse: collapse;
-}
-
-.dark #customers tr.alt td {
-    color: #C8C8C8;
-    background-color: #3e3e3e;
-}
-
-.dark input[type="text"], .dark input[type="password"], .dark select, .dark textarea {
-  background-color: #9f9f9f;
-  color: #010101;
-}
-
-.dark .questslist, .dark .toolslist, .dark .fhqleftlist{
-	background-color: #3e3e3e;
-}
-
-.dark .questitem, .dark .toolitem, .dark .fhqleftitem {
-	background-color: #3e3e3e;
-}
-
-.dark .questslist .icon, .dark .toolslist .icon, .dark .fhqleftlist .icon{
-	border-color: #C8C8C8;
-}
-
-.dark .questblock{
-	background-color: #3e3e3e;
-}
-
-.dark textarea[readonly] {
-    background-color: #3e3e3e;
-	color: #C8C8C8;
-	border-color: #4e4e4e;
-}
-
-.dark .hint--bottom:before {
-    border-bottom-color: #6f3f3f;
-}
-
-.dark .hint:after, .dark [data-hint]:after {
-    background-color: #6f3f3f;
-    color: #C8C8C8;
-    border-color: #6f3f3f;
-}
-
-.dark hr {
-	background-color: #6f3f3f;
-	border-color: #6f3f3f;
-}
-
-.dark pre {
-    background-color: #4f3f3f;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-}
-.dark code, .dark pre {
-    color: #C8C8C8;
-}
-
-.dark .fhq_task_filters {
-    background-color: #3E3E3E;
-    color: #C8C8C8;
-}
-
-.dark .fhq_quest_info {
-    background-color: #494949;
-    color: #C8C8C8;
-}
-
-.dark .fhq_quest_info:hover{
-	background-color: #4f4f4f;
-}
-
-.dark .fhq_task_info {
-    background-color: #494949;
-    color: #C8C8C8;
-}
-
-.dark .fhq_task_info:hover{
-	background-color: #4f4f4f;
-}
-
-.dark font.fhq_task {
-    color: #C8C8C8;
-}
-
-
-.dark .quest_info_row_admin {
-    background-color: #494949;
-}
-
-.dark .fhq_scoreboard_row {
-	color: #C8C8C8;
-}
-
-.dark .users_cell {
-	color: #C8C8C8;
-	background-color: #494949;
-}
-
-.dark .selected_user_page {
-	color: #C8C8C8;
-	background-color: #494949;
-}
-
-.dark #copyright{
-	background-color: #3e3e3e;
-	
-}
-
-.dark .fhqtopmenu_leftpanel {
-    background: #3e3e3e;
-}
 
 .message_chat {
 	background-color: #e4e4e4;
@@ -1141,12 +887,6 @@ body.dark
 	width: 500px;
 }
 
-.dark .message_chat {
-	background-color: #3e3e3e;
-	cursor: url("../images/cursor/delete_light.png"), auto;
-	border: 1px solid #e4e4e4;
-}
-
 .message-chat-user{
 	display: block;
 	position: absolute;
@@ -1165,11 +905,6 @@ body.dark
 	border: 1px solid #3e3e3e;
 	padding: 10px;
 	width: 300px;
-}
-
-.dark .sendchatmessage-form{
-	background-color: #3e3e3e;
-	border: 1px solid #e4e4e4;
 }
 
 .sendchatmessage-form input {
@@ -1219,15 +954,6 @@ body.dark
 .fhq0001:hover {
     background: #c8c8c8;
     color: #333;
-}
-
-.dark .fhq0001 {
-    background-color: #494949;
-}
-
-.dark .fhq0001:hover {
-	background: #606060;
-    color: #C8C8C8;
 }
 
 .fhq0002{
@@ -1286,10 +1012,6 @@ body.dark
 	border: 1px solid #999;
 }
 
-.dark .fhq0010 {
-    background-color: #3e3e3e;
-}
-
 .fhq0010 a:hover{
 	text-decoration: inherit;
 	border-bottom: 1px solid #c83025;
@@ -1343,11 +1065,6 @@ body.dark
 	background-color: #eee;
 }
 
-.dark .fhq0017 {
-    background-color: #3e3e3e;
-    color: #C8C8C8;
-}
-
 .fhq0018 {
 	display: table-row;
 	padding: 10px;
@@ -1385,10 +1102,6 @@ body.dark
 	width: 100%;
 	background-color: #eee;
 	border: 1px solid #999;
-}
-
-.dark .fhq0023{
-	background-color: #494949;
 }
 
 .fhq0024 {
@@ -1447,10 +1160,6 @@ body.dark
 	border-radius: 10px;
 }
 
-.dark .fhq0034{
-	background-color: #494949;
-}
-
 .fhq0035{
 	display: table-row;
 }
@@ -1483,10 +1192,6 @@ body.dark
 	margin-top: 20px;
 }
 
-.dark .fhq0039{
-	background-color: #494949;
-}
-
 .fhq0040{
 	background-color: #494949;
 	height: 5px;
@@ -1494,10 +1199,6 @@ body.dark
 	margin-bottom: 10px;
 	border-radius: 10px;
 	opacity: 0.5;
-}
-
-.dark .fhq0040{
-	background-color: #eee;
 }
 
 .fhq0041 {
@@ -1522,14 +1223,6 @@ body.dark
 
 .fhq0041:focus{
 	text-decoration: none;
-}
-
-.dark .fhq0041 {
-	color: #c8c8c8;
-}
-
-.dark .fhq0041:hover {
-	color: #F8E8D8;
 }
 
 .fhq0042{
@@ -1564,11 +1257,6 @@ body.dark
     cursor: default;
 }
 
-.dark .fhq0044 {
-	background-color: #3e3e3e;
-	box-shadow: 0 0 5px rgba(250,250,250,0.5)
-}
-
 .fhq0045{
 	color: #333;
 	cursor: pointer;
@@ -1579,14 +1267,6 @@ body.dark
 
 .fhq0045:hover{
 	color: #373;
-}
-
-.dark .fhq0045{
-	color: #c8c8c8;
-}
-
-.dark .fhq0045:hover{
-	color: #F8E8D8;
 }
 
 .fhq0046{
@@ -1620,11 +1300,6 @@ body.dark
     border: 01px solid #999;
 }
 
-.dark .fhq0051{
-	background-color: #3e3e3e;
-	color: #C8C8C8;
-}
-
 .fhq0052 {
 }
 
@@ -1652,10 +1327,6 @@ body.dark
 	cursor: pointer;
 	padding-left: 25px;
 	background-position: 0px 5px;
-}
-
-.dark .fhq0053{
-	border-color: #C8C8C8;
 }
 
 .fhq0054{
@@ -1728,20 +1399,10 @@ body.dark
     text-align: center;
 }
 
-.dark .fhq0064{
-	color: #C8C8C8;
-    background: #383838;
-}
-
 .fhq0064.fhq0065{
 	background: none repeat scroll 0% 0% #CCC;
 	border: 1px solid;
 	cursor: default;
-}
-
-.dark .fhq0064.fhq0065 {
-    color: #C8C8C8;
-    background-color: #494949;
 }
 
 .fhq0065 {
@@ -1803,10 +1464,6 @@ body.dark
     padding: 10px;
 	background-color: #eee;
 	border-bottom: 1px solid;
-}
-
-.dark .fhq0075{
-	background-color: #494949;
 }
 
 .fhq0076{
@@ -1873,10 +1530,6 @@ body.dark
     border: 1px solid #999;
 }
 
-.dark .fhq0088{
-	background-color: #3e3e3e;
-}
-
 .fhq0089 {
 	display: table-row;
 }
@@ -1906,10 +1559,6 @@ body.dark
 	border: 1px solid #999;
 }
 
-.dark .fhq0093{
-	background-color: #3e3e3e;
-}
-
 .fhq0094 {
 	display: table-row;
 	
@@ -1933,10 +1582,6 @@ body.dark
 	text-align: left;
     padding: 10px;
     margin-bottom: 50px;
-}
-
-.dark .fhq0097{
-	background-color: #494949;
 }
 
 .fhq0098{
@@ -1964,11 +1609,6 @@ body.dark
 	border: 01px solid #999;
 }
 
-.dark .fhq0101{
-	background-color: #3e3e3e;
-	color: #C8C8C8;
-}
-
 .fhq0102{
 	font: 12pt/10pt Arial;
 	font-size: 20px;
@@ -1976,10 +1616,6 @@ body.dark
 	border-bottom: 1px dashed #3e3e3e;
 	margin-top: 15px;
 	margin-bottom: 15px;
-}
-
-.dark .fhq0102{
-	border-color: #C8C8C8;
 }
 
 .fhq0103{
@@ -2028,22 +1664,6 @@ body.dark
 
 /* modal dialog */
 
-.dark .overlay {
-	background: rgba(0, 0, 0, 0.8);
-}
-
-.dark .overlay_content {
-	color: #C8C8C8;
-	background-color: #303030;
-	border-color: #3e3e3e;
-}
-
-.dark .fhq0107 {
-	color: #C8C8C8;
-	background-color: #303030;
-	border-color: #3e3e3e;
-}
-
 .fhq0108{
 	position: absolute;
 	top: 0;
@@ -2065,10 +1685,6 @@ body.dark
 	border-bottom: 1px dashed #3e3e3e;
 	margin-top: 15px;
 	margin-bottom: 15px;
-}
-
-.dark .newquestinfo_description_title{
-	border-color: #C8C8C8;
 }
 
 .fhq0109{
@@ -2094,11 +1710,6 @@ body.dark
     cursor: default;
 }
 
-.dark .fhq0110 {
-	background-color: #3e3e3e;
-	box-shadow: 0 0 5px rgba(250,250,250,0.5)
-}
-
 .fhq0111{
 	display: table;
 	width: 100%;
@@ -2110,15 +1721,6 @@ body.dark
 .fhq0111:hover{
 	background: #c8c8c8;
     color: #333;
-}
-
-.dark .fhq0111:hover{
-	background: #606060;
-    color: #C8C8C8;
-}
-
-.dark .fhq0111{
-	background-color: #3e3e3e;
 }
 
 .fhq0112{

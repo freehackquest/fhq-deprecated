@@ -145,10 +145,6 @@ fhq.ui.loadTopPanel = function(){
 
 	toppanel.append('<div id="btnmenu_about" class="fhq0041">' + fhq.t('About') + '</div>');
 
-	toppanel.append('<div id="btnmenu_colorscheme" class="fhq0041">'
-		+ '<img class="fhq_btn_menu_img" src="images/menu/lightside_150x150.png"/> '
-		+ '</div>');
-
 	toppanel.append('<div id="btnmenu_user" class="fhq0041">'
 		+ '<img class="fhq_btn_menu_img user-logo" src="' + (fhq.isAuth() && fhq.userinfo ? fhq.userinfo.logo : 'images/menu/user.png') + '"/>  '
 		+ (fhq.isAuth() && fhq.userinfo ? fhq.userinfo.nick : fhq.t('Account'))
@@ -172,7 +168,7 @@ fhq.ui.loadTopPanel = function(){
 		
 		if(fhq.isAdmin()){
 			$('.account-panel').append('<div class="border"></div>');
-			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhqgui.loadSettings(\'content_page\');">Settings</div>');
+			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadServerSettings();">' + fhq.t('Server Settings') + '</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="createPageUsers(); updateUsers();">' + fhq.t('Users') + '</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadUsers()">Users 2</div>');
 			$('.account-panel').append('<div class="fhq-simple-btn" onclick="fhq.ui.loadAnswerList()">' + fhq.t('Answer List') + '</div>');
@@ -202,14 +198,6 @@ fhq.ui.loadTopPanel = function(){
 	$('#btnmenu_user').unbind().bind('click', function(e){
 		$('.accout-panel').show();
 	});
-	
-	$('#btnmenu_colorscheme').unbind().bind('click', function(){
-		if ($('body').hasClass('dark')) {
-			fhq.ui.setLightColorScheme();
-		} else {
-			fhq.ui.setDarkColorScheme();
-		}
-	})
 	
 	$('#btnmenu_quests').unbind().bind('click', function(){
 		fhq.changeLocationState({'quests':''});
@@ -511,30 +499,6 @@ function FHQGuiLib(api) {
 		win.focus();
 	}
 
-	this.loadSettings = function(idelem) {
-		var scp = new FHQDynamicContent(idelem);
-		send_request_post(
-			'api/admin/settings.php',
-			'',
-			function (obj) {
-				if (obj.result == "fail") {
-					scp.set(obj.error.message);
-					return;
-				}
-				var pt = new FHQParamTable();
-				for (var k in obj.data) {
-					for (var k1 in obj.data[k]) {
-						pt.row(k+'.'+k1, obj.data[k][k1]);
-					}
-					pt.skip();
-				}
-				pt.skip();
-				scp.clear();
-				scp.append(pt.render());
-			}
-		);
-	}
-	
 	this.loadRules = function(gameid) {
 		var el = document.getElementById("content_page");
 		el.innerHTML = 'Loading...';
@@ -783,33 +747,6 @@ function FHQTable() {
 
 fhq.ui.chatSoundOn = true;
 
-if(localStorage.getItem('colorscheme') == null){
-	localStorage.setItem('colorscheme', 'light');
-}
-
-fhq.ui.applyColorScheme = function(){
-	if(localStorage.getItem('colorscheme') == 'dark'){
-		fhq.ui.setDarkColorScheme();
-	}else{
-		fhq.ui.setLightColorScheme();
-	}
-}
-
-fhq.ui.setDarkColorScheme = function(){
-	$('body').addClass('dark');
-	localStorage.setItem('colorscheme', 'dark');
-	$('#jointothedarkside').html(fhq.t('You are on the dark side. Turn back?'));
-	$('#btnmenu_colorscheme img').attr({'src': 'images/menu/lightside_150x150.png'})
-}
-
-fhq.ui.setLightColorScheme = function(){
-	$('body').removeClass('dark');
-	localStorage.setItem('colorscheme', 'light');
-	$('#jointothedarkside').html(fhq.t('Join the dark side...'));
-	$('#btnmenu_colorscheme img').attr({'src': 'images/menu/darkside_150x150.png'})
-	
-}
-
 fhq.ui.closeMoreMenu = function(){
 	setTimeout(function(){
 		$('.fhq0109').hide();
@@ -846,6 +783,7 @@ fhq.ui.processParams = function() {
 	fhq.ui.pageHandlers["api"] = fhq.ui.loadApiPage;
 	fhq.ui.pageHandlers["new_quest"] = fhq.ui.loadCreateQuestForm;
 	fhq.ui.pageHandlers["edit_quest"] = fhq.ui.loadEditQuestForm;
+	fhq.ui.pageHandlers["server_settings"] = fhq.ui.loadServerSettings;
 
 
 	function renderPage(){
@@ -880,6 +818,120 @@ fhq.ui.onwsclose = function(){
 	$('.message_chat').remove();
 	fhq.ui.showLoading();
 }
+
+
+fhq.ui.loadServerSettings = function(idelem) {
+	fhq.changeLocationState({'server_settings':''});
+	var el = $('#content_page');
+	el.html('');
+	
+	fhq.ws.serversettings().done(function(r){
+		fhq.ui.hideLoading();
+		console.log(r);
+		for(var name in r.data){
+			var sett = r.data[name];
+			var groupid = 'settings_group_' + sett.group;
+			if($('#' + groupid).length == 0){
+				el.append(
+					'<h3>' + fhq.t(groupid) + '</h3>'
+					+ '<div id="' + groupid + '"></div>'
+				);
+			}
+			
+			var settid = 'setting_name_' + sett.name;
+			
+			var input_type = 'text';
+			if(sett.type == 'integer'){
+				$('#' + groupid).append('<div class="alert alert-info">'
+					+ '<p><strong>' + fhq.t(settid) + '</strong></p>'
+					+ '<div class="input-group">'
+					+ '		<input type="number" readonly class="form-control" id="' + settid + '">'
+					+ '		<span class="input-group-btn">'
+					+ '			<button class="btn btn-secondary" type="button">Edit</button>'
+					+ '		</span>'
+					+ '</div>'
+					+ '</div>'
+				);
+				$('#' + settid).val(sett.value);
+			}else if(sett.type == 'password'){
+				$('#' + groupid).append('<div class="alert alert-info">'
+					+ '<p><strong>' + fhq.t(settid) + '</strong></p>'
+					+ '<div class="input-group">'
+					+ '		<input type="password" readonly class="form-control" id="' + settid + '">'
+					+ '		<span class="input-group-btn">'
+					+ '			<button class="btn btn-secondary" type="button">Edit</button>'
+					+ '		</span>'
+					+ '</div>'
+					+ '</div>'
+				);
+				$('#' + settid).val(sett.value);
+			}else if(sett.type == 'string'){
+				$('#' + groupid).append('<div class="alert alert-info">'
+					+ '<p><strong>' + fhq.t(settid) + '</strong></p>'
+					+ '<div class="input-group">'
+					+ '		<input type="text" readonly class="form-control" id="' + settid + '">'
+					+ '		<span class="input-group-btn">'
+					+ '			<button class="btn btn-secondary" type="button">Edit</button>'
+					+ '		</span>'
+					+ '</div>'
+					+ '</div>'
+				);
+				$('#' + settid).val(sett.value);
+			}else if(sett.type == 'boolean'){
+				$('#' + groupid).append('<div class="alert alert-info">'
+					+ '<p><strong>' + fhq.t(settid) + '</strong></p>'
+					+ '<div class="input-group">'
+					+ '		<select disabled class="form-control" id="' + settid + '">'
+					+ '			<option name="no">no</option>'
+					+ '			<option name="yes">yes</option>'
+					+ '		<select class="form-control">'
+					+ '		<span class="input-group-btn">'
+					+ '			<button class="btn btn-secondary" type="button">Edit</button>'
+					+ '		</span>'
+					+ '</div>'
+					+ '</div>'
+				);
+				$('#' + settid).val(sett.value == true ? 'yes' : 'no');
+			}
+
+      /*<!-- input type="text" class="form-control" placeholder="Search for...">
+    </div -->*/
+    
+			
+			
+		}
+		
+	}).fail(function(err){
+		fhq.ui.hideLoading();
+		console.error(err);
+	})
+	
+	
+	// 
+	/*
+	var scp = new FHQDynamicContent(idelem);
+	send_request_post(
+		'api/admin/settings.php',
+		'',
+		function (obj) {
+			if (obj.result == "fail") {
+				scp.set(obj.error.message);
+				return;
+			}
+			var pt = new FHQParamTable();
+			for (var k in obj.data) {
+				for (var k1 in obj.data[k]) {
+					pt.row(k+'.'+k1, obj.data[k][k1]);
+				}
+				pt.skip();
+			}
+			pt.skip();
+			scp.clear();
+			scp.append(pt.render());
+		}
+	);*/
+}
+	
 
 fhq.ui.loadCreateNews = function(){
 	fhq.changeLocationState({'create_news':''});
@@ -1116,8 +1168,6 @@ fhq.ui.loadPageAbout = function() {
 	$.get('donate.html', function(result){
 		$('#donate-form').html(result);
 	});
-	
-	fhq.ui.applyColorScheme();
 }
 
 

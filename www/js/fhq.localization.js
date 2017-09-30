@@ -557,5 +557,61 @@ window.fhq.localization = {
 	'About user':{
 		'en': 'About user',
 		'ru': 'О пользователе'
+	},
+	'Server Settings':{
+		'en': 'Server Settings',
+		'ru': 'Настройки сервера'
+	},
+	'settings_group_google_map':{
+		'en': 'Google Map Settings',
+		'ru': 'Google Map Settings'
+	},
+	'settings_group_mail':{
+		'en': 'Mail Settings',
+		'ru': 'Mail Settings'
+	},
+	'settings_group_profile':{
+		'en': 'Profile Settings',
+		'ru': 'Profile Settings'
+	},
+	'setting_name_google_map_api_key':{
+		'en': 'API Key',
+		'ru': 'API Key'
+	},
+	'setting_name_mail_allow':{
+		'en': 'Allow sending',
+		'ru': 'Allow sending'
+	},
+	'setting_name_mail_auth':{
+		'en': 'Auth',
+		'ru': 'Auth'
+	},
+	'setting_name_mail_from':{
+		'en': 'From',
+		'ru': 'From'
+	},
+	'setting_name_mail_host':{
+		'en': 'Host',
+		'ru': 'Host'
+	},
+	'setting_name_mail_password':{
+		'en': 'Password',
+		'ru': 'Password'
+	},
+	'setting_name_mail_port':{
+		'en': 'Port',
+		'ru': 'Port'
+	},
+	'setting_name_mail_username':{
+		'en': 'Username',
+		'ru': 'Username'
+	},
+	'setting_name_mail_system_message_admin_email':{
+		'en': 'Admin mail',
+		'ru': 'Admin mail'
+	},
+	'setting_name_profile_change_nick':{
+		'en': 'Change nick',
+		'ru': 'Change nick'
 	}
 };
