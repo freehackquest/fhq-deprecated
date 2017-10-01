@@ -1966,46 +1966,48 @@ fhq.ui.capitalizeFirstLetter = function(s) {
 fhq.ui.loadStatSubjectsQuests = function(){
 	fhq.changeLocationState({'quests':''});
 	fhq.ui.showLoading();
-	$('#content_page').html('<div class="fhq0006">Loading...</div>');
+	var el = $('#content_page');
+	el.html('Loading...');
 	fhq.api.quests.stats_subjects().done(function(r){
 		console.log(r);
-		$('.fhq0006').html('');
-		var el = $('.fhq0006');
+		el.html('');
 		for(var i in r.data){
 			var o = r.data[i];
 			el.append(''
-				+ '<div class="fhq0111" subject="' + o.subject + '">'
-				+ ' <div class="fhq0114">'
-				+ ' 	<div class="fhq-quests-subject-cell logo" style="background-image: url(images/quests/' + o.subject + '_150x150.png)">'
-				+ ' 	</div>'
-				+ ' 	<div class="fhq-quests-subject-cell text">'
-				+ fhq.ui.capitalizeFirstLetter(o.subject) + '<br>'
-				+ '<div class="fhq0112">' + fhq.t(o.subject + '_description') + '</div>'
-				+ ' 	</div>'
-				+ ' 	<div class="fhq-quests-subject-cell count">'
-				+ '(' + o.count + ' quests)'
-				+ ' 	</div>'
-				+ ' </div>'
+				+ '<div class="card">'
+				+ '  <div class="card-body card-left-img ' + o.subject + '" style="background-image: url(images/quests/' + o.subject + '_150x150.png)">'
+				+ '    <h4 class="card-title">' + fhq.ui.capitalizeFirstLetter(o.subject) + '</h4>'
+				+ '    <h6 class="card-subtitle mb-2 text-muted">(' + o.count + ' quests)</h6>'
+				+ '    <p class="card-text">' + fhq.t(o.subject + '_description') + '</p>'
+				+ '	   <button subject="' + o.subject + '" type="button" class="open-subject btn btn-default">' + fhq.t('Open') + '</button>'
+				+ '	   <button subject="' + o.subject + '" type="button" class="best-subject-users btn btn-default">' + fhq.t('Best users') + '</button>'
+				+ '  </div>'
 				+ '</div>'
-				+ '<div class="fhq0113"></div>'
 			);
 		}
 		
-		$('.fhq0111').unbind().bind('click', function(){
+		$('.open-subject').unbind().bind('click', function(){
 			fhq.ui.loadQuestsBySubject($(this).attr('subject'));
+		})
+		
+		$('.best-subject-users').unbind().bind('click', function(){
+			// fhq.ui.loadQuestsBySubject($(this).attr('subject'));
+			alert("TODO");
 		})
 		fhq.ui.hideLoading();
 	}).fail(function(r){
+		fhq.ui.hideLoading();
 		console.error(r);
-		$('.fhq0006').html('Failed');
+		el.html('Failed');
 	});
 }
 
 fhq.ui.loadQuestsBySubject = function(subject){
 	fhq.ui.showLoading();
 	fhq.changeLocationState({'subject':subject});
-	
-	$('#content_page').html('<div class="fhq0005">Loading...</div>');
+	var el = $('#content_page');
+
+	el.html('<div class="fhq0005">Loading...</div>');
 	var params = {};
 	params.subject = subject;
 	fhq.api.quests.list(params).done(function(r){

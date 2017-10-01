@@ -613,5 +613,9 @@ window.fhq.localization = {
 	'setting_name_profile_change_nick':{
 		'en': 'Change nick',
 		'ru': 'Change nick'
+	},
+	'Open':{
+		'en': 'Open',
+		'ru': 'Открыть'
 	}
 };
