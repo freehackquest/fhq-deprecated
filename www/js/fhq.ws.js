@@ -244,6 +244,12 @@ fhq.ws.serversettings = function(params){
 	return fhq.ws.send(params);
 }
 
+fhq.ws.serversettings = function(params){
+	params = params || {};
+	params.cmd = 'serversettings';
+	return fhq.ws.send(params);
+}
+
 fhq.ws.publiceventslist = function(params){
 	params = params || {};
 	params.cmd = 'publiceventslist';

@@ -1244,67 +1244,69 @@ fhq.ui.loadScoreboard = function(){
 
 fhq.ui.loadApiPage = function() {
 	window.fhq.changeLocationState({'api':''});
-	$('#content_page').html('<h1>API</h1><div class="fhq0086"></div><div class="fhq0078"></div>');
-	var el = $('.fhq0078');
-	el.html("Loading...");
+	var el = $('#content_page');
+	
+	el.html('<h1>FreeHackQuest API</h1>Loading...');
 	fhq.ws.api().done(function(r){
+		el.html('<h1>FreeHackQuest API</h1>');
 		fhq.ui.hideLoading();
-		el.html("");
-		$('.fhq0086').html('<div class="fhq0097"><h3>Connect</h3>'
-			+ 'Connection string: ws://freehackquest.com:' + r.data.port + '/ <br> '
-			+ 'Or if enabled ssl: wss://freehackquest.com:' + r.data.ssl_port + '/ - with ssl</p>'
-			+ '<p>For example: <pre>var socket = new WebSocket("wss://freehackquest.com:' + r.data.ssl_port + '/");</pre></p>'
-			+ '<h3>Start communication with server</h3>'
-			+ '<p>Fisrt command must be hello and next login if you have api token'
-			+ '<p>For example: <pre>socket.send(JSON.stringify({cmd: "hello"}))</pre>'
-			+ '<h3>Implemnetation</h3>'
-			+ '<p>You can find this: <a href="https://freehackquest.com/js/fhq.ws.js" target="_blank">https://freehackquest.com/js/fhq.ws.js</a></p>'
-			+ '</div>'
+		
+		// <div class="card">  <div class="card-body">    <h4 class="card-title">Admin</h4>    <h6 class="card-subtitle mb-2 text-muted">(10 quests)</h6>    <p class="card-text">Администрирование</p>	   <button subject="admin" type="button" class="open-subject btn btn-default">Открыть</button>	   <button subject="admin" type="button" class="best-subject-users btn btn-default">Best users</button>  </div></div>
+		
+		el.append(''
+			+ '<div class="card">'
+			+ '	<div class="card-header">Connection</div>'
+			+ '	<div class="card-body">'
+			+ '		Connection string: ws://freehackquest.com:' + r.data.port + '/ <br> '
+			+ '		Or if enabled ssl: wss://freehackquest.com:' + r.data.ssl_port + '/ - with ssl</p>'
+			+ '		<p>For example: <br><code>var socket = new WebSocket("wss://freehackquest.com:' + r.data.ssl_port + '/");</code></p>'
+			+ '	</div>'
+			+ '</div><br>'
+			+ '<div class="card">'
+			+ '	<div class="card-header">Start communication with server</div>'
+			+ '	<div class="card-body">'
+			+ '		<p>Fisrt command must be hello and next login if you have api token'
+			+ '		<p>For example: <br><code>socket.send(JSON.stringify({cmd: "hello", "m": "m100"}))</code>'
+			+ '	</div>'
+			+ '</div><br>'
+			+ '<div class="card">'
+			+ '	<div class="card-header">Implemnetation</div>'
+			+ '	<div class="card-body">'
+			+ '		<p>You can find this: <a href="https://freehackquest.com/js/fhq.ws.js" target="_blank">https://freehackquest.com/js/fhq.ws.js</a></p>'
+			+ '	</div>'
+			+ '</div><br>'
 		);
 
 		for(var i in r.data.handlers){
 			var h = r.data.handlers[i];
-			var c = ''
-				+ '<div class="fhq0075">'
-				+ '	<div class="fhq0076">'
-				+ '		<div class="fhq0079">' + h.cmd + '</div>'
-				+ '		<div class="fhq0080">' + h.description + '</div>'
-				+ '	</div>'
-				
-			c +=  '	<div class="fhq0098">'
-				+ '		<div class="fhq0081">' + fhq.t('Access') + '</div>'
-				+ '		<div class="fhq0085">Unauthorized: ' + (h.access_unauthorized ? 'allow': 'deny') + '</div>'
-				+ '		<div class="fhq0085">User: ' + (h.access_user ? 'allow': 'deny') + '</div>'
-				+ '		<div class="fhq0085">Tester: ' + (h.access_tester ? 'allow': 'deny') + '</div>'
-				+ '		<div class="fhq0085">Admin: ' + (h.access_admin ? 'allow': 'deny') + '</div>'
-				+ '	</div>';
-				
-			c +=  '	<div class="fhq0077">';
 			
-			
+			var ins = '';
 			if(h.inputs.length != 0){
-				c += '		<div class="fhq0081">' + fhq.t('Input\'s parameters') + '</div>';
-						
+				ins += '<p>' + fhq.t('Input\'s parameters') + ':</p><ul>';
 				for(var i1 in h.inputs){
 					var inp = h.inputs[i1];
-					c += '<div class="fhq0085"><b>' + inp.type + '</b> "' + inp.name + '" (' + inp.restrict + ') - <i>' + inp.description + '</i></div>'
+					ins += '<li><strong>' + inp.type + '</strong> "' + inp.name + '" (' + inp.restrict + ') - <i>' + inp.description + '</i></li>'
 				}
+				ins += '</ul>';
 			}
-
-			c += '	</div>'
-				+ '	<div class="fhq0082">'
-				+ '		<div class="fhq0083">Errors</div>'
 			
-			for(var i1 in h.errors){
-				c += '<div class="fhq0084">' + h.errors[i1] + '</div>'
-			}
-				
-			c += '	</div>'
-				+ '</div>'
-			
-			el.append(c);
+			el.append(''
+				+ '<div class="card">'
+				+ '	<div class="card-header">' + h.cmd + '</div>'
+				+ '	<div class="card-body">'
+				+ '		<h4 class="card-title"><code>cmd: ' + h.cmd + '</code></h4>'
+				+ '		<p class="card-text">' + h.description + ' </p>'
+				+ '		<p>' + fhq.t('Access') + ':</p><ul>'
+				+ '			<li>' + fhq.t('Unauthorized') + ': ' + (h.access_unauthorized ? 'allow': 'deny') + '</li>'
+				+ '			<li>' + fhq.t('User') + ': ' + (h.access_user ? 'allow': 'deny') + '</li>'
+				+ '			<li>' + fhq.t('Tester') + ': ' + (h.access_tester ? 'allow': 'deny') + '</li>'
+				+ '			<li>' + fhq.t('Admin') + ': ' + (h.access_admin ? 'allow': 'deny') + '</li>'
+				+ '		</ul>'
+				+ ins
+				+ '	</div>'
+				+ '</div><br>'
+			);
 		}
-		el.append('<div class="fhq0071"></div>');
 	}).fail(function(r){
 		fhq.ui.hideLoading();
 		console.error(r);

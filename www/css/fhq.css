@@ -1261,10 +1261,6 @@ font.fhq_task {
     padding-top: 20px;
 }
 
-.fhq0071{
-	height: 60px;
-}
-
 .fhq0072{
 	display: inline-table;
 }
@@ -1293,13 +1289,6 @@ font.fhq_task {
 	padding: 10px;
 }
 
-.fhq0077{
-	display: table-cell;
-    width: 25%;
-    padding: 10px;
-    text-align: left;
-}
-
 .fhq0078{
 	width: 80%;
 	display: table;
@@ -1312,28 +1301,6 @@ font.fhq_task {
 
 .fhq0080{
 	font-style: italic;
-}
-
-.fhq0081{
-	
-}
-
-.fhq0082{
-	display: table-cell;
-	width: 25%;
-	padding: 10px;
-}
-
-.fhq0083{
-	
-}
-
-.fhq0084{
-	
-}
-
-.fhq0085{
-	
 }
 
 .fhq0086{
@@ -1394,20 +1361,6 @@ font.fhq_task {
 	display: table-cell;
     padding: 10px;
     text-align: left;
-}
-
-.fhq0097{
-	background-color: #eee;
-	width: 80%;
-	text-align: left;
-    padding: 10px;
-    margin-bottom: 50px;
-}
-
-.fhq0098{
-	display: table-cell;
-    width: 25%;
-    padding: 10px;
 }
 
 .fhq0099{
