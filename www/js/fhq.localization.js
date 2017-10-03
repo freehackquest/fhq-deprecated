@@ -621,5 +621,23 @@ window.fhq.localization = {
 	'Map':{
 		'en': 'Map',
 		'ru': 'Карта'
+	},
+	'Unauthorized': {
+		'en': 'Unauthorized',
+		'ru': 'Не авторизованный'
+	},
+	'Admin': {
+		'en': 'Admin',
+		'ru': 'Администратор'
+	},
+	'Tester': {
+		'en': 'Tester',
+		'ru': 'Тестировщик'
+	},
+	'FreeHackQuest API':{
+		'en': 'FreeHackQuest API',
+		'ru': 'FreeHackQuest API'
 	}
+	
+	
 };

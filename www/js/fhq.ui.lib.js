@@ -1323,7 +1323,7 @@ fhq.ui.loadApiPage = function() {
 	
 	el.html('<h1>FreeHackQuest API</h1>Loading...');
 	fhq.ws.api().done(function(r){
-		el.html('<h1>FreeHackQuest API</h1>');
+		el.html('<h1>FreeHackQuest API (version: ' + r.version + ')</h1>');
 		fhq.ui.hideLoading();
 		
 		// <div class="card">  <div class="card-body">    <h4 class="card-title">Admin</h4>    <h6 class="card-subtitle mb-2 text-muted">(10 quests)</h6>    <p class="card-text">Администрирование</p>	   <button subject="admin" type="button" class="open-subject btn btn-default">Открыть</button>	   <button subject="admin" type="button" class="best-subject-users btn btn-default">Best users</button>  </div></div>
