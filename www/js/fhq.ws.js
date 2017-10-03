@@ -244,9 +244,9 @@ fhq.ws.serversettings = function(params){
 	return fhq.ws.send(params);
 }
 
-fhq.ws.serversettings = function(params){
+fhq.ws.update_server_settings = function(params){
 	params = params || {};
-	params.cmd = 'serversettings';
+	params.cmd = 'update_server_settings';
 	return fhq.ws.send(params);
 }
 

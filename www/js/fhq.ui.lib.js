@@ -128,10 +128,11 @@ fhq.ui.updateMenu = function(){
 	$('#btnmenu_other .nav-link').html(fhq.t('Other'));
 
 	$('#btnmenu_feedback').html(fhq.t('Feedback'));
+	$('#btnmenu_map').html(fhq.t('Map'));
 	$('#btnmenu_games').html(fhq.t('Games'));
 	$('#btnmenu_tools').html(fhq.t('Tools'));
 	$('#btnmenu_classbook').html(fhq.t('Classbook'));
-	$('#btnmenu_apidocs').html(fhq.t('API'));
+	$('#btnmenu_apidocs').html(fhq.t('FreeHackQuest API'));
 	
 	// users/unauth menu
 	$('#btnmenu_newfeedback').html(fhq.t('New Feedback'));
@@ -691,6 +692,7 @@ fhq.ui.processParams = function() {
 	fhq.ui.pageHandlers["about"] = fhq.ui.loadPageAbout;
 	fhq.ui.pageHandlers["games"] = fhq.ui.loadGames;
 	fhq.ui.pageHandlers["scoreboard"] = fhq.ui.loadScoreboard;
+	fhq.ui.pageHandlers["map"] = fhq.ui.loadMapPage;
 	fhq.ui.pageHandlers["news"] = fhq.ui.loadPageNews;
 	fhq.ui.pageHandlers["quest"] = fhq.ui.loadQuest;
 	fhq.ui.pageHandlers["subject"] = fhq.ui.loadQuestsBySubject;
@@ -753,9 +755,14 @@ fhq.ui.loadServerSettings = function(idelem) {
 			var sett = r.data[name];
 			var groupid = 'settings_group_' + sett.group;
 			if($('#' + groupid).length == 0){
-				el.append(
-					'<h3>' + fhq.t(groupid) + '</h3>'
-					+ '<div id="' + groupid + '"></div>'
+				el.append(''
+					+ '<div class="card">'
+					+ '  <div class="card-header">' + fhq.t(groupid) + '</div>'
+					+ '  <div class="card-body">'
+					+ '   <form id="' + groupid + '">'
+					+ '   </form>'
+					+ '  </div>'
+					+ '</div><br>'
 				);
 			}
 			
@@ -763,64 +770,132 @@ fhq.ui.loadServerSettings = function(idelem) {
 			
 			var input_type = 'text';
 			if(sett.type == 'integer'){
-				$('#' + groupid).append('<div class="alert alert-info">'
-					+ '<p><strong>' + fhq.t(settid) + '</strong></p>'
-					+ '<div class="input-group">'
+				$('#' + groupid).append(''
+					+ '<div class="form-group row">'
+					+ '	<label for="' + settid + '" class="col-sm-2 col-form-label">' + fhq.t(settid) + '</label>'
+					+ '	<div class="col-sm-7">'
 					+ '		<input type="number" readonly class="form-control" id="' + settid + '">'
-					+ '		<span class="input-group-btn">'
-					+ '			<button class="btn btn-secondary" type="button">Edit</button>'
-					+ '		</span>'
-					+ '</div>'
+					+ '	</div>'
+					+ '	<div class="col-sm-2">'
+					+ '		<div class="btn btn-danger edit-settings" groupid="' + groupid + '" setttype="' + sett.type + '" settname="' + sett.name + '" settid="' + settid + '">Edit</div>'
+					+ '	</div>'
 					+ '</div>'
 				);
 				$('#' + settid).val(sett.value);
 			}else if(sett.type == 'password'){
-				$('#' + groupid).append('<div class="alert alert-info">'
-					+ '<p><strong>' + fhq.t(settid) + '</strong></p>'
-					+ '<div class="input-group">'
+				$('#' + groupid).append(''
+					+ '<div class="form-group row">'
+					+ '	<label for="' + settid + '" class="col-sm-2 col-form-label">' + fhq.t(settid) + '</label>'
+					+ '	<div class="col-sm-7">'
 					+ '		<input type="password" readonly class="form-control" id="' + settid + '">'
-					+ '		<span class="input-group-btn">'
-					+ '			<button class="btn btn-secondary" type="button">Edit</button>'
-					+ '		</span>'
-					+ '</div>'
+					+ '	</div>'
+					+ '	<div class="col-sm-2">'
+					+ '		<div class="btn btn-danger edit-settings" groupid="' + groupid + '" setttype="' + sett.type + '" settname="' + sett.name + '" settid="' + settid + '">Edit</div>'
+					+ '	</div>'
 					+ '</div>'
 				);
 				$('#' + settid).val(sett.value);
 			}else if(sett.type == 'string'){
-				$('#' + groupid).append('<div class="alert alert-info">'
-					+ '<p><strong>' + fhq.t(settid) + '</strong></p>'
-					+ '<div class="input-group">'
+				$('#' + groupid).append(''
+					+ '<div class="form-group row">'
+					+ '	<label for="' + settid + '" class="col-sm-2 col-form-label">' + fhq.t(settid) + '</label>'
+					+ '	<div class="col-sm-7">'
 					+ '		<input type="text" readonly class="form-control" id="' + settid + '">'
-					+ '		<span class="input-group-btn">'
-					+ '			<button class="btn btn-secondary" type="button">Edit</button>'
-					+ '		</span>'
-					+ '</div>'
+					+ '	</div>'
+					+ '	<div class="col-sm-2">'
+					+ '		<div class="btn btn-danger edit-settings" groupid="' + groupid + '" setttype="' + sett.type + '" settname="' + sett.name + '" settid="' + settid + '">Edit</div>'
+					+ '	</div>'
 					+ '</div>'
 				);
 				$('#' + settid).val(sett.value);
 			}else if(sett.type == 'boolean'){
-				$('#' + groupid).append('<div class="alert alert-info">'
-					+ '<p><strong>' + fhq.t(settid) + '</strong></p>'
-					+ '<div class="input-group">'
+				$('#' + groupid).append(''
+					+ '<div class="form-group row">'
+					+ '	<label for="' + settid + '" class="col-sm-2 col-form-label">' + fhq.t(settid) + '</label>'
+					+ '	<div class="col-sm-7">'
 					+ '		<select disabled class="form-control" id="' + settid + '">'
 					+ '			<option name="no">no</option>'
 					+ '			<option name="yes">yes</option>'
 					+ '		<select class="form-control">'
-					+ '		<span class="input-group-btn">'
-					+ '			<button class="btn btn-secondary" type="button">Edit</button>'
-					+ '		</span>'
-					+ '</div>'
+					+ '	</div>'
+					+ '	<div class="col-sm-2">'
+					+ '		<div class="btn btn-danger edit-settings" groupid="' + groupid + '" setttype="' + sett.type + '" settname="' + sett.name + '" settid="' + settid + '">Edit</div>'
+					+ '	</div>'
 					+ '</div>'
 				);
 				$('#' + settid).val(sett.value == true ? 'yes' : 'no');
 			}
-
-      /*<!-- input type="text" class="form-control" placeholder="Search for...">
-    </div -->*/
-    
-			
-			
 		}
+		
+		
+		$('.edit-settings').unbind().bind('click', function(){
+			$('#modalSettings').modal('show');
+			
+			var setttype = $(this).attr('setttype');
+			var settname = $(this).attr('settname');
+			var settid = $(this).attr('settid');
+			var groupid = $(this).attr('groupid');
+			
+			var val = $('#' + settid).val();
+			
+			$('#modalSettings .modal-body').html('');
+			$('#modalSettings .modal-body').append('<h3>' + fhq.t(groupid) + '/' + fhq.t(settid) + '</h3>')
+			
+			if(setttype == 'string'){
+				$('#modalSettings .modal-body').append(
+					'<input type="text" class="form-control" id="modalSettings_newval">'
+					+ '<p id="modalSettings_error"></p>'
+				);
+				$('#modalSettings_newval').val(val);
+			}else if(setttype == 'boolean'){
+				$('#modalSettings .modal-body').append(''
+					+ '		<select class="form-control" id="modalSettings_newval">'
+					+ '			<option name="no">no</option>'
+					+ '			<option name="yes">yes</option>'
+					+ '		<select class="form-control">'
+					+ '<p id="modalSettings_error"></p>'
+				);
+				$('#modalSettings_newval').val(val);
+				
+					
+			}else if(setttype == 'password'){
+				$('#modalSettings .modal-body').append(
+					'<input type="password" class="form-control" id="modalSettings_newval">'
+					+ '<p id="modalSettings_error"></p>'
+				);
+				$('#modalSettings_newval').val('');
+			}else if(setttype == 'integer'){
+				$('#modalSettings .modal-body').append(
+					'<input type="number" class="form-control" id="modalSettings_newval">'
+					+ '<p id="modalSettings_error"></p>'
+				);
+				$('#modalSettings_newval').val(val);
+			}
+			
+			$('#modalSettings .save-setting').unbind().bind('click', function(){
+				$('#modalSettings_newval').attr({'readonly': true});
+				$('#modalSettings_newval').attr({'disabled': true});
+				$('#modalSettings_error').html('');
+				var data = {};
+				data.name = settname;
+				data.value = $('#modalSettings_newval').val();
+
+				fhq.ws.update_server_settings(data).done(function(r){
+					if(setttype != 'password'){
+						$('#' + settid).val(data.value);
+					}
+					$('#modalSettings').modal('hide');
+				}).fail(function(err){
+					console.error(err);
+					$('#modalSettings_newval').removeAttr('readonly');
+					$('#modalSettings_newval').removeAttr('disabled');
+					$('#modalSettings_error').html(err.error);
+				})
+				
+			});
+			// modalSettings
+			
+		});
 		
 	}).fail(function(err){
 		fhq.ui.hideLoading();
@@ -1982,9 +2057,9 @@ fhq.ui.loadStatSubjectsQuests = function(){
 				+ '    <h6 class="card-subtitle mb-2 text-muted">(' + o.count + ' quests)</h6>'
 				+ '    <p class="card-text">' + fhq.t(o.subject + '_description') + '</p>'
 				+ '	   <button subject="' + o.subject + '" type="button" class="open-subject btn btn-default">' + fhq.t('Open') + '</button>'
-				+ '	   <button subject="' + o.subject + '" type="button" class="best-subject-users btn btn-default">' + fhq.t('Best users') + '</button>'
+				// + '	   <button subject="' + o.subject + '" type="button" class="best-subject-users btn btn-default">' + fhq.t('Best users') + '</button>'
 				+ '  </div>'
-				+ '</div>'
+				+ '</div><br>'
 			);
 		}
 		
@@ -2035,11 +2110,70 @@ fhq.ui.loadQuestsBySubject = function(subject){
 		});
 		fhq.ui.hideLoading();
 	}).fail(function(r){
+		fhq.ui.hideLoading();
 		console.error(r)
 		$('.fhq0005').html('Failed');
 	});
 }
 
+fhq.ui.map = null;
+fhq.ui.map_from_server = null;
+fhq.ui.map_markers = [];
+fhq.ui.map_init = function() {
+	console.log("fhq.ui.map_init begin");
+	fhq.ui.map_markers = [];
+	
+	var fhq_main_server = new google.maps.LatLng(50.7374, 7.09821);
+
+	fhq.ui.map = new google.maps.Map(document.getElementById('map'), {
+		center: fhq_main_server,
+		zoom: 3
+	});
+		
+	for(var i = 0; i < fhq.ui.map_from_server.data.length; i++){
+		var t = fhq.ui.map_from_server.data[i];
+		for(var y = 0; y < t.count; y++){
+			fhq.ui.map_markers.push(new google.maps.Marker({
+				position: new google.maps.LatLng(t.lat, t.lng),
+				map: fhq.ui.map
+			}));
+		}
+	}
+
+	fhq.ui.map_markers.push(new google.maps.Marker({
+		position: fhq_main_server,
+		map: fhq.ui.map,
+		label: 'fhq'
+	}));
+	var markerCluster = new MarkerClusterer(fhq.ui.map, fhq.ui.map_markers, 
+		{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+}
+
+fhq.ui.loadMapPage = function(subject){
+	fhq.ui.showLoading();
+	fhq.changeLocationState({'map':''});
+	var el = $('#content_page');
+
+	el.html('Loading...');
+
+	fhq.ws.getmap().done(function(r){
+		fhq.ui.hideLoading();
+		fhq.ui.map_from_server = r;
+		r.map_key
+		
+		el.html('<h1>' + fhq.t('Map') + '</h1><div id="map"></div>');
+		if($('#google_map_api').length == 0){
+			$('head').append('<script id="google_map_api" src="https://maps.googleapis.com/maps/api/js?key=' + r.google_map_api_key + '&callback=fhq.ui.map_init" async defer></script>');
+		}else{
+			fhq.ui.map_init();
+		}
+
+	}).fail(function(r){
+		fhq.ui.hideLoading();
+		console.error(r)
+		el.html('Failed');
+	});
+}
 
 /* fhq_quests.js todo redesign */
 

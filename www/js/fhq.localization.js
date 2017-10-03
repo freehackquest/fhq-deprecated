@@ -617,5 +617,9 @@ window.fhq.localization = {
 	'Open':{
 		'en': 'Open',
 		'ru': 'Открыть'
+	},
+	'Map':{
+		'en': 'Map',
+		'ru': 'Карта'
 	}
 };

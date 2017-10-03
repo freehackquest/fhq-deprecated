@@ -31,6 +31,14 @@
 	background-image: url(images/quests/admin_150x150.png);
 }
 
+#map {
+	height: calc(100% - 200px);
+}
+
+.btn{
+	cursor: pointer;
+}
+
 /* old styles */
 
 
