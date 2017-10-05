@@ -59,7 +59,7 @@ window.fhq.ws.initWebsocket = function(){
 		console.log('WS Opened');
 		setTimeout(window.fhq.ws.onconnect,1);
 		fhq.ws.setWSState("OK");
-		fhq.ws.login();
+		fhq.ws.token();
 	};
 
 	window.fhq.ws.socket.onclose = function(event) {
@@ -152,10 +152,10 @@ window.fhq.ws.sendLettersToSubscribers = function(message){
 	});
 }
 
-fhq.ws.login = function(){
+fhq.ws.token = function(){
 	var d = $.Deferred();
 	fhq.ws.send({
-		'cmd': 'login',
+		'cmd': 'token',
 		'token': fhq.getTokenFromCookie()
 	}).done(function(r){
 		setTimeout(function(){

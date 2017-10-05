@@ -637,6 +637,10 @@ window.fhq.localization = {
 	'FreeHackQuest API':{
 		'en': 'FreeHackQuest API',
 		'ru': 'FreeHackQuest API'
+	},
+	'Chat':{
+		'en': 'Chat',
+		'ru': 'Общение'
 	}
 	
 	

@@ -129,6 +129,7 @@ fhq.ui.updateMenu = function(){
 
 	$('#btnmenu_feedback').html(fhq.t('Feedback'));
 	$('#btnmenu_map').html(fhq.t('Map'));
+	$('#btnmenu_chat').html(fhq.t('Chat'));
 	$('#btnmenu_games').html(fhq.t('Games'));
 	$('#btnmenu_tools').html(fhq.t('Tools'));
 	$('#btnmenu_classbook').html(fhq.t('Classbook'));
@@ -707,7 +708,7 @@ fhq.ui.processParams = function() {
 	fhq.ui.pageHandlers["new_quest"] = fhq.ui.loadCreateQuestForm;
 	fhq.ui.pageHandlers["edit_quest"] = fhq.ui.loadEditQuestForm;
 	fhq.ui.pageHandlers["server_settings"] = fhq.ui.loadServerSettings;
-
+	fhq.ui.pageHandlers["chat"] = fhq.ui.loadChatPage;
 
 	function renderPage(){
 		fhq.ui.updateMenu();
@@ -927,7 +928,35 @@ fhq.ui.loadServerSettings = function(idelem) {
 		}
 	);*/
 }
+
+
+fhq.ui.loadChatPage = function(){
+	fhq.changeLocationState({'chat':''});
+	fhq.ui.hideLoading();
+	var el = $('#content_page');
+	el.html('<h1>' + fhq.t("Chat") + '</h1>');
 	
+	/*
+	$('#content_page').append('<div class="fhq0049"></div>')
+	var el = $('.fhq0046');
+	el.append();
+
+	el.append('<div class="fhq0048">' + fhq.t("Type") + ':</div>');
+	el.append(''
+		+ '<select class="fhq0047" id="create_news_type">'
+		+ '	<option value="info">' + fhq.t("Information") + '</option>'
+		+ '	<option value="users">' + fhq.t("Users") + '</option>'
+		+ '	<option value="games">' + fhq.t("Games") + '</option>'
+		+ '	<option value="quests">' + fhq.t("Quests") + '</option>'
+		+ '	<option value="warning">' + fhq.t("Warning") + '</option>'
+		+ '</select>');
+	
+	el.append('<div class="fhq0048">' + fhq.t("Message") + ':</div>');
+	el.append('<textarea id="create_news_text"></textarea><br><br>');
+	el.append('<div class="fhqbtn" onclick="fhq.ui.insertNews()">' + fhq.t("Create") + '</div>');*/
+	
+}
+
 
 fhq.ui.loadCreateNews = function(){
 	fhq.changeLocationState({'create_news':''});
