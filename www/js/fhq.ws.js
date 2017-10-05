@@ -152,35 +152,72 @@ window.fhq.ws.sendLettersToSubscribers = function(message){
 	});
 }
 
+fhq.ws.updateUserProfileAsync = function(){
+	setTimeout(function(){
+		fhq.ws.user().done(function(r){
+			fhq.profile.bInitUserProfile == true;
+			fhq.profile.university = r.profile.university;
+			fhq.profile.country = r.profile.country;
+			fhq.profile.city = r.profile.city;
+			fhq.userinfo = {};
+			fhq.userinfo.id = r.data.id;
+			fhq.userinfo.nick = r.data.nick;
+			fhq.userinfo.email = r.data.email;
+			fhq.userinfo.role = r.data.role;
+			fhq.userinfo.logo = r.data.logo;
+			$(document).ready(function(){
+				fhq.ui.processParams();
+			});
+		}).fail(function(){
+			fhq.api.cleanuptoken();
+			$(document).ready(function(){
+				fhq.ui.processParams();
+			});
+		});
+	},10);
+}
+
 fhq.ws.token = function(){
 	var d = $.Deferred();
 	fhq.ws.send({
 		'cmd': 'token',
 		'token': fhq.getTokenFromCookie()
 	}).done(function(r){
-		setTimeout(function(){
-			fhq.ws.user().done(function(r){
-				fhq.profile.bInitUserProfile == true;
-				fhq.profile.university = r.profile.university;
-				fhq.profile.country = r.profile.country;
-				fhq.profile.city = r.profile.city;
-				fhq.userinfo = {};
-				fhq.userinfo.id = r.data.id;
-				fhq.userinfo.nick = r.data.nick;
-				fhq.userinfo.email = r.data.email;
-				fhq.userinfo.role = r.data.role;
-				fhq.userinfo.logo = r.data.logo;
-				$(document).ready(function(){
-					fhq.ui.processParams();
-				});
-			});
-		},10);
+		$(document).ready(function(){
+			fhq.ui.processParams();
+		});
+		fhq.ws.updateUserProfileAsync();
 	}).fail(function(r){
 		fhq.api.cleanuptoken();
 		$(document).ready(function(){
 			fhq.ui.processParams();
 		});
 	});
+	return d;
+}
+
+fhq.ws.login = function(params){
+	var d = $.Deferred();
+	params = params || {};
+	params.cmd = 'login';
+	fhq.ws.send(params).done(function(r){
+		fhq.token = r.token;
+		console.log(fhq.token);
+		fhq.userinfo = r.user;
+		localStorage.setItem('userinfo', JSON.stringify(fhq.userinfo));
+		fhq.setTokenToCookie(r.token);
+		$(document).ready(function(){
+			fhq.ui.processParams();
+		});
+		fhq.ws.updateUserProfileAsync();	
+		d.resolve(r);
+		// try{fhq.ws.socket.close();fhq.ws.initWebsocket()}catch(e){console.error(e)};
+	}).fail(function(err){
+		fhq.api.cleanuptoken();
+		localStorage.removeItem('userinfo');
+		fhq.userinfo = {};
+		d.reject(err);
+	})
 	return d;
 }
 

@@ -93,7 +93,7 @@ fhq.ui.signin = function() {
 	var email = $("#signin-email").val();
 	var password = $("#signin-password").val();
 	
-	var obj = fhq.api.users.login(email,password).done(function(r){
+	fhq.ws.login({email: email,password: password}).done(function(r){
 		// TODO
 		// $('#signin-email').val('');
 		// $("#signin-password").val('');
@@ -104,7 +104,7 @@ fhq.ui.signin = function() {
 		}
 		fhq.ui.processParams();
 		fhq.ui.closeModalDialog();
-		window.location.reload();
+		//window.location.reload();
 	}).fail(function(r){
 		if(r.error && r.error.message){
 			$("#signin-error-message").html(r.error.message);
@@ -1432,6 +1432,8 @@ fhq.ui.loadUserProfile = function(userid) {
 	el.html('Loading...');
 	
 	fhq.ws.user({userid: userid}).done(function(user){
+		fhq.ui.hideLoading();
+		
 		el.html('');
 		el.append(''
 			+ '<div class="fhq0010">'
@@ -1508,8 +1510,8 @@ fhq.ui.loadUserProfile = function(userid) {
 
 		fhq.ui.hideLoading();
 	}).fail(function(r){
-		el.html(r.error);
 		fhq.ui.hideLoading();
+		el.html(r.error);
 		return;
 	});
 }

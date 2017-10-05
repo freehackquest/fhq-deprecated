@@ -298,6 +298,7 @@ fhq.api.cleanuptoken = function(){
 	fhq.removeTokenFromCookie();
 }
 
+/*
 fhq.api.users.login = function (email, password) {
 	var params = {};
 	params.email = email;
@@ -325,7 +326,7 @@ fhq.api.users.login = function (email, password) {
 		d.reject(r);
 	})
 	return d;
-};
+};*/
 
 fhq.api.users.getLastEventId = function(){
 	var d = $.Deferred();
