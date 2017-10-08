@@ -380,3 +380,9 @@ fhq.ws.quests = function(data){
 	data.cmd = 'quests';
 	return fhq.ws.send(data);
 }
+
+fhq.ws.user_change_password = function(data){
+	data = data || {};
+	data.cmd = 'user_change_password';
+	return fhq.ws.send(data);
+}

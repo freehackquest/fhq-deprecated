@@ -106,9 +106,7 @@ fhq.ui.signin = function() {
 		fhq.ui.closeModalDialog();
 		//window.location.reload();
 	}).fail(function(r){
-		if(r.error && r.error.message){
-			$("#signin-error-message").html(r.error.message);
-		}
+		$("#signin-error-message").html(r.error);
 	})
 }
 
@@ -728,21 +726,6 @@ fhq.ui.loadFormCreateGame = function() {
 	var el = $('#content_page');
 	el.html('');
 	fhq.ui.hideLoading();
-	
-	/*<div class="card">
-		<div class="card-header">Google Map Settings</div>
-		<div class="card-body">
-			<div id="settings_group_google_map">
-				<div class="form-group row">
-					<label for="setting_name_google_map_api_key" class="col-sm-2 col-form-label">API Key</label>
-					<div class="col-sm-7">
-					<input type="text" readonly="" class="form-control" id="setting_name_google_map_api_key">	</div>	<div class="col-sm-2">		<div class="btn btn-danger edit-settings" groupid="settings_group_google_map" setttype="string" settname="google_map_api_key" settid="setting_name_google_map_api_key">Edit</div>
-					* </div></div>
-					* </form>
-					* </div>
-		</div>
-	
-	*/
 	
 	el.html(''
 		+ '<div class="card">'
@@ -1673,10 +1656,10 @@ fhq.ui.loadUserProfile = function(userid) {
 			+ '<div class="card">'
 			+ '	<div class="card-header">' + fhq.t('Location') + '</div>'
 			+ '	<div class="card-body">'
-			+ '		<p>Country: ' + user.data.country + '</p>'
-			+ '		<p>Region: ' + user.data.region + '</p>'
-			+ '		<p>City: ' + user.data.city + '</p>'
-			+ '		<p>University: ' + user.data.university + '</p>'
+			+ '		<p>' + fhq.t('Country') + ': ' + user.data.country + '</p>'
+			+ '		<p>' + fhq.t('Region') + ': ' + user.data.region + '</p>'
+			+ '		<p>' + fhq.t('City') + ': ' + user.data.city + '</p>'
+			+ '		<p>' + fhq.t('University') + ': ' + user.data.university + '</p>'
 			+ '	</div>'
 			+ '</div><br>'
 			+ '<div class="card">'
@@ -1695,12 +1678,46 @@ fhq.ui.loadUserProfile = function(userid) {
 		if(user.access){
 			el.append(''
 				+ '<div class="card">'
-				+ '	<div class="card-header">' + fhq.t('Update password') + '</div>'
+				+ '	<div class="card-header">' + fhq.t('Change password') + '</div>'
 				+ '	<div class="card-body">'
-				
+				+ '		<div class="form-group row">'
+				+ '			<label for="old_password" class="col-sm-2 col-form-label">Old password</label>'
+				+ ' 		<div class="col-sm-10">'
+				+ '				<input type="password" class="form-control" value="" id="old_password">'
+				+ '			</div>'
+				+ '		</div>'
+				+ '		<div class="form-group row">'
+				+ '			<label for="new_password" class="col-sm-2 col-form-label">New password</label>'
+				+ ' 		<div class="col-sm-10">'
+				+ '				<input type="password" class="form-control" value="" id="new_password">'
+				+ '			</div>'
+				+ '		</div>'
+				+ '		<div class="form-group row">'
+				+ '			<label class="col-sm-2 col-form-label"></label>'
+				+ ' 		<div class="col-sm-10">'
+				+ '				<div class="btn btn-danger" id="change_password">Change password</div>'
+				+ '				<p id="change_password_info"></p>'
+				+ '			</div>'
+				+ '		</div>'
 				+ '	</div>'
 				+ '</div><br>'
 			);
+			
+			$('#change_password').unbind().bind('click', function(){
+				$('#change_password_info').html('Send request...');
+				var data = {};
+				data.password_old = $('#old_password').val();
+				data.password_new = $('#new_password').val();
+				fhq.ws.user_change_password(data).done(function(){
+					$('#old_password').val('');
+					$('#new_password').val('');
+					$('#change_password_info').html('Changed');
+				}).fail(function(err){
+					$('#old_password').val('');
+					$('#new_password').val('');
+					$('#change_password_info').html(err.error);
+				});
+			});
 		}
 
 			

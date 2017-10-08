@@ -641,7 +641,33 @@ window.fhq.localization = {
 	'Chat':{
 		'en': 'Chat',
 		'ru': 'Общение'
+	},
+	'Change password':{
+		'en': 'Change password',
+		'ru': 'Изменить пароль'
+	},
+	'Missing information':{
+		'en': 'Missing information',
+		'ru': 'Информация отсутсвует'
+	},
+	'Location':{
+		'en': 'Location',
+		'ru': 'Местонахождение'
+	},
+	'Country':{
+		'en': 'Country',
+		'ru': 'Страна',
+	},
+	'Region':{
+		'en': 'Region',
+		'ru': 'Регион',
+	},
+	'City':{
+		'en': 'City',
+		'ru': 'Город',
+	},
+	'University':{
+		'en': 'University',
+		'ru': 'Университет',
 	}
-	
-	
 };
