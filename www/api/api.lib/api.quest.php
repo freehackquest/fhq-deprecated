@@ -22,9 +22,5 @@ class APIQuest {
 		$params[] = intval($questid);
 		$stmt = $conn->prepare($query);
 		$stmt->execute($params);
-
-/*		$query = 'SELECT count_user_solved FROM quest WHERE idquest = ?;';
-		$stmt = $conn->prepare($query);
-		$stmt->execute($params);*/
 	}
 }

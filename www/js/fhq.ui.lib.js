@@ -2778,13 +2778,13 @@ window.fhq.ui.loadQuest = function(id){
 				$('#newquestinfo_pass').unbind().bind('click', function(){
 					var answer = $('#quest_answer').val();
 					// TODO change to ws
-					fhq.api.quests.pass(q.id, answer).done(function(response){
-						fhq.ui.loadQuest(q.questid);
+					fhq.ws.quest_pass({questid: q.id, answer: answer}).done(function(r){
+						fhq.ui.loadQuest(q.id);
 					}).fail(function(r){
-						$('#quest_pass_error').html(r.responseJSON.error.message);
-						if(fhq.ui.isShowMyAnswers()){
+						$('#quest_pass_error').html(r.error);
+						/*if(fhq.ui.isShowMyAnswers()){
 							fhq.ui.updateMyAnswers(q.questid);
-						}
+						}*/
 					});
 				});
 				

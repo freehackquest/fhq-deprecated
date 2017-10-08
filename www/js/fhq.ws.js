@@ -392,3 +392,9 @@ fhq.ws.feedback_add = function(data){
 	data.cmd = 'feedback_add';
 	return fhq.ws.send(data);
 }
+
+fhq.ws.quest_pass = function(data){
+	data = data || {};
+	data.cmd = 'quest_pass';
+	return fhq.ws.send(data);
+}
