@@ -1283,15 +1283,19 @@ fhq.ui.loadAnswerList = function(){
 fhq.ui.loadPageAbout = function() {
 	window.fhq.changeLocationState({'about':''});
 	fhq.ui.hideLoading();
+	var el = $('#content_page');
+	el.html('');
 	
-	$("#content_page").html('<div class="fhq0067"></div>');
-	var el = $('.fhq0067');
-
-	el.append('<h1>' + fhq.t('About') +  '</h1>');
-	el.append('<div class="fhq0069"><b>FreeHackQuest</b> - ' + fhq.t('This is an open source platform for competitions in computer security.') +  '</div>');
-	el.append('<div class="fhq0070">' + fhq.t('Statistics') +  '</div>');
-	
-	el.append('<div class="fhq0072">'
+	el.append(''
+		+ '<div class="card">'
+		+ '	<div class="card-header">' + fhq.t('About') + '</div>'
+		+ '	<div class="card-body">'
+		+ '		<strong>FreeHackQuest</strong> - ' + fhq.t('This is an open source platform for competitions in computer security.')
+		+ '	</div>'
+		+ '</div><br>'
+		+ '<div class="card">'
+		+ '	<div class="card-header">' + fhq.t('Statistics') + '</div>'
+		+ '	<div class="card-body">'
 		+ '<div class="fhq0073">'
 		+ '		<div class="fhq0074">' + fhq.t('Quests') + '</div>'
 		+ '		<div class="fhq0074">' + fhq.t('All attempts') + '</div>'
@@ -1304,16 +1308,23 @@ fhq.ui.loadPageAbout = function() {
 		+ '		<div class="fhq0074" id="statistics-already-solved">...</div>'
 		+ '		<div class="fhq0074" id="statistics-users-online">...</div>'
 		+ '</div>'
-		+ '</div><br><br><br>'
-		+ '<div>' + fhq.t('Playing with us') + '</div> <div id="statistics-playing-with-us">...</div>'
-	);
-
-	el.append('<div class="fhq0070">' + fhq.t('Top 10') +  '</div>');
-	el.append('<div id="winners"></div>');
-
-	
-	el.append('<div class="fhq0070">' + fhq.t('Contacts') +  '</div>');
-	el.append('<div id="contacts">'
+		+ '	</div>'
+		+ '</div><br>'
+		+ '<div class="card">'
+		+ '	<div class="card-header">' + fhq.t('Playing with us') + '</div>'
+		+ '	<div class="card-body">'
+		+ '		<div id="statistics-playing-with-us">...</div>'
+		+ '	</div>'
+		+ '</div><br>'
+		+ '<div class="card">'
+		+ '	<div class="card-header">' + fhq.t('Top 10') + '</div>'
+		+ '	<div class="card-body">'
+		+ '		<div id="winners"></div>'
+		+ '	</div>'
+		+ '</div><br>'
+		+ '<div class="card">'
+		+ '	<div class="card-header">' + fhq.t('Contacts') + '</div>'
+		+ '	<div class="card-body">'
 		+ '<br><br>'
 		+ '<a href="//plus.google.com/u/0/108776719447039644581?prsrc=3" rel="publisher" target="_top" style="text-decoration:none;">'
 		+ '<img src="//ssl.gstatic.com/images/icons/gplus-32.png" alt="Google+" style="border:0;width:32px;height:32px;"/>'
@@ -1326,10 +1337,12 @@ fhq.ui.loadPageAbout = function() {
 		+ 'Email: freehackquest@gmail.com'
 		+ '<br><br>'
 		+ '<a href="https://ctftime.org/team/16804" target="_blank"><img height=30px src="https://ctftime.org/static/images/CTFTIME-flat-logo-true.png"/></a>'
-		+ '</div>');
-	
-	el.append('<div class="fhq0070">' + fhq.t('Distribution') +  '</div>');
-	el.append('<div id="distribtion">'
+		+ '</div>'
+		+ '	</div>'
+		+ '</div><br>'
+		+ '<div class="card">'
+		+ '	<div class="card-header">' + fhq.t('Distribution') + '</div>'
+		+ '	<div class="card-body">'
 		+ '<h3>' + fhq.t('License') + '</h3>'
 		+ 'The MIT License (MIT)<br>'
 		+ '<br>'
@@ -1364,37 +1377,43 @@ fhq.ui.loadPageAbout = function() {
 		+ '<a href="http://github.com/freehackquest/backend/" target="_blank">http://github.com/freehackquest/backend</a><br>'
 		+ '<i>Backend</i>'
 		+ '<br><br>'
-		+ '</div>');
-	
-	el.append('<div class="fhq0070">' + fhq.t('Developers and designers') +  '</div>');
-	el.append('<div id="devs_disgns">'
-		+ 'Evgenii Sopov'
-		+ '</div>')
-
-	el.append('<div class="fhq0070">' + fhq.t('Thanks for') +  '</div>');
-	var thanks_for = [
-		'<a href="http://www.chartjs.org/docs/" target="_blank">Charts.js</a>',
-		'Sergey Belov (found xss!)',
-		'Igor Polyakov',
-		'Maxim Samoilov (Nitive)',
-		'Dmitrii Mukovkin',
-		'Team Keva',
-		'Alexey Gulyaev',
-		'Alexander Menschikov',
-		'Ilya Bokov',
-		'Extrim Code',
-		'Taisiya Lebedeva'
-	];
-	el.append('<div id="thanks_for">'
-		+ thanks_for.join(', ')
-		+ '</div>');
-
-
-	el.append('<div class="fhq0070">' + fhq.t('Donate') +  '</div>');
-	el.append('<div id="donate-form"></div>');
-	el.append('<div class="fhq0071"></div>');
-
-	$("#content_page").append('<div class="fhq0071"></div>');
+		+ '</div>'
+		+ '	</div>'
+		+ '</div><br>'
+		+ '<div class="card">'
+		+ '	<div class="card-header">' + fhq.t('Developers and designers') + '</div>'
+		+ '	<div class="card-body">'
+		+ '		<ul>'
+		+ '			<li>Evgenii Sopov</li>'
+		+ '			<li>Used bootstrap-4</li>'
+		+ '		<ul>'
+		+ '	</div>'
+		+ '</div><br>'
+		+ '<div class="card">'
+		+ '	<div class="card-header">' + fhq.t('Thanks for') + '</div>'
+		+ '	<div class="card-body">'
+		+ '		<ul>'
+		+ '			<li><a href="http://www.chartjs.org/docs/" target="_blank">Charts.js</a></li>'
+		+ '			<li>Sergey Belov (found xss!)</li>'
+		+ '			<li>Igor Polyakov</li>'
+		+ '			<li>Maxim Samoilov (Nitive)</li>'
+		+ '			<li>Dmitrii Mukovkin</li>'
+		+ '			<li>Team Keva</li>'
+		+ '			<li>Alexey Gulyaev</li>'
+		+ '			<li>Alexander Menschikov</li>'
+		+ '			<li>Ilya Bokov</li>'
+		+ '			<li>Extrim Code</li>'
+		+ '			<li>Taisiya Lebedeva</li>'
+		+ '		<ul>'
+		+ '	</div>'
+		+ '</div><br>'
+		+ '<div class="card">'
+		+ '	<div class="card-header">' + fhq.t('Donate') + '</div>'
+		+ '	<div class="card-body">'
+		+ '		<div id="donate-form"></div>'
+		+ '	</div>'
+		+ '</div><br>'
+	);
 
 	fhq.ui.loadCities();
 	
@@ -1632,30 +1651,59 @@ fhq.ui.loadUserProfile = function(userid) {
 	fhq.ui.showLoading();
 	window.fhq.changeLocationState({'user':userid});
 
-	$('#content_page').html('<div class="fhq0009"></div>')
-	var el = $('.fhq0009');
-	el.html('Loading...');
+	var el = $('#content_page');
+	el.html('Loading...')
 	
 	fhq.ws.user({userid: userid}).done(function(user){
 		fhq.ui.hideLoading();
 		
+		var converter = new showdown.Converter();
 		el.html('');
 		el.append(''
-			+ '<div class="fhq0010">'
-			+ '	<div class="fhq0012">'
-			+ '		<div class="fhq0011"></div>'
-			+ '		<div class="fhq0013">'
-			+ '			<div class="fhq0014">' + user.data.nick + ' (Rating: ' + user.data.rating + ')</div>'
-			+ ' 		User ' + user.data.status + '.'
-			+ ' 		User has ' + user.data.role + ' privileges.'
-			+ ' 		From ' + user.profile.city
-			+ '		</div>'
+			+ '<div class="card">'
+			+ '  <div class="card-body card-left-img " style="background-image: url(' + user.data.logo + ')">'
+			+ '    <h4 class="card-title">' + user.data.nick + ' (Rating: ' + user.data.rating + ')</h4>'
+			+ '    <h6 class="card-subtitle mb-2 text-muted">User ' + user.data.status + '. User has ' + user.data.role + ' privileges.</h6>'
+			+ '    <p class="card-text"> '
+			+ '		</p>'
+			+ '  </div>'
+			+ '</div><br>'
+			+ '<div class="card">'
+			+ '	<div class="card-header">' + fhq.t('Location') + '</div>'
+			+ '	<div class="card-body">'
+			+ '		<p>Country: ' + user.data.country + '</p>'
+			+ '		<p>Region: ' + user.data.region + '</p>'
+			+ '		<p>City: ' + user.data.city + '</p>'
+			+ '		<p>University: ' + user.data.university + '</p>'
 			+ '	</div>'
-			+ '</div>');
+			+ '</div><br>'
+			+ '<div class="card">'
+			+ '	<div class="card-header">' + fhq.t('About user') + '</div>'
+			+ '	<div class="card-body">'
+			+ '		<p>' + converter.makeHtml(user.data.about == '' ? fhq.t('Missing information') : user.data.about) + '</p>'
+			+ '	</div>'
+			+ '</div><br>'
+			+ '<div class="card">'
+			+ '	<div class="card-header">' + fhq.t('Skills') + '</div>'
+			+ '	<div class="card-body">'
+			+ '		<p id="user_skills">Loading...</p>'
+			+ '	</div>'
+			+ '</div><br>'
+		);
+		if(user.access){
+			el.append(''
+				+ '<div class="card">'
+				+ '	<div class="card-header">' + fhq.t('Update password') + '</div>'
+				+ '	<div class="card-body">'
+				
+				+ '	</div>'
+				+ '</div><br>'
+			);
+		}
 
-		$('.fhq0011').css({ // game logo
-			'background-image': 'url(' + user.data.logo + ')'
-		});
+			
+		
+
 
 		if(fhq.isAdmin()){
 			/*var c = '<div class="fhq0051">';
@@ -1666,27 +1714,10 @@ fhq.ui.loadUserProfile = function(userid) {
 			c += '</div>'
 			el.append(c);*/
 		}
-
-
-		var converter = new showdown.Converter();
-		el.append(
-			'<div class="fhq0101">'
-			+ '<div class="fhq0102">' + fhq.t('About user') + '</div>'
-			+ converter.makeHtml(user.data.about == '' ? fhq.t('Missing information') : user.data.about)
-			+ '</div>'
-		)
-
-		el.append(
-			'<div class="fhq0101">'
-			+ '<div class="fhq0102">' + fhq.t('Skills') + '</div>'
-			+ '<div class="fhq0116">Loading...</div>'
-			+ '</div>'
-		);
-		
 		
 		fhq.ws.user_skills({userid: user.data.id}).done(function(r){
 			
-			$('.fhq0116').html('');
+			$('#user_skills').html('');
 			console.log(r);
 			var anim = {};
 			for(var subject in r.skills_max){
@@ -1694,7 +1725,7 @@ fhq.ui.loadUserProfile = function(userid) {
 				var max_s = r.skills_max[subject];
 				var procent = Math.floor((user_s / max_s)*100);
 				anim[subject] = procent;
-				$('.fhq0116').append('<div class="fhq0117">'
+				$('#user_skills').append('<div class="fhq0117">'
 					+ '	<div class="fhq0118">' + subject + ' </div>'
 					+ '	<div class="fhq0119 ' + subject + '">'
 					+ '		<div class="fhq0121"></div>'
