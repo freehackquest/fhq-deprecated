@@ -358,10 +358,6 @@ fhq.api.users.logout = function () {
 		url: 'api/security/logout.php',
 		data: params
 	}).done(function(r){
-		fhq.token = "";
-		fhq.userinfo = null;
-		fhq.removeTokenFromCookie();
-		localStorage.removeItem('userinfo');
 		try{fhq.ws.socket.close();fhq.ws.initWebsocket()}catch(e){console.error(e)};
 		d.resolve(r);
 	}).fail(function(r){

@@ -370,3 +370,9 @@ fhq.ws.game_create = function(data){
 	data.cmd = 'game_create';
 	return fhq.ws.send(data);
 }
+
+fhq.ws.quests_subjects = function(data){
+	data = data || {};
+	data.cmd = 'quests_subjects';
+	return fhq.ws.send(data);
+}

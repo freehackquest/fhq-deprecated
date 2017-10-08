@@ -114,9 +114,11 @@ fhq.ui.signin = function() {
 
 fhq.ui.signout = function(){
 	$('.message_chat').remove();
-	fhq.api.users.logout().done(function(){
-		fhq.ui.processParams();
-	});
+	fhq.token = "";
+	fhq.userinfo = null;
+	fhq.removeTokenFromCookie();
+	localStorage.removeItem('userinfo');
+	fhq.ui.processParams();
 }
 
 fhq.ui.updateMenu = function(){
@@ -2326,7 +2328,7 @@ fhq.ui.loadStatSubjectsQuests = function(){
 	fhq.ui.showLoading();
 	var el = $('#content_page');
 	el.html('Loading...');
-	fhq.api.quests.stats_subjects().done(function(r){
+	fhq.ws.quests_subjects().done(function(r){
 		console.log(r);
 		el.html('');
 		for(var i in r.data){
