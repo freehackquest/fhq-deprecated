@@ -386,3 +386,9 @@ fhq.ws.user_change_password = function(data){
 	data.cmd = 'user_change_password';
 	return fhq.ws.send(data);
 }
+
+fhq.ws.feedback_add = function(data){
+	data = data || {};
+	data.cmd = 'feedback_add';
+	return fhq.ws.send(data);
+}

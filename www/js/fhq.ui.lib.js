@@ -643,7 +643,7 @@ fhq.ui.processParams = function() {
 	fhq.ui.pageHandlers["news"] = fhq.ui.loadPageNews;
 	fhq.ui.pageHandlers["quest"] = fhq.ui.loadQuest;
 	fhq.ui.pageHandlers["subject"] = fhq.ui.loadQuestsBySubject;
-	fhq.ui.pageHandlers["new_feedback"] = fhq.ui.loadNewFeedback;
+	fhq.ui.pageHandlers["feedback_add"] = fhq.ui.loadFeedbackAdd;
 	fhq.ui.pageHandlers["create_news"] = fhq.ui.loadCreateNews;
 	fhq.ui.pageHandlers["tools"] = fhq.ui.loadTools;
 	fhq.ui.pageHandlers["tool"] = fhq.ui.loadTool;
@@ -1570,8 +1570,8 @@ fhq.ui.loadApiPage = function() {
 			+ '<div class="card">'
 			+ '	<div class="card-header">Connection</div>'
 			+ '	<div class="card-body">'
-			+ '		Connection string: ws://freehackquest.com:' + r.data.port + '/ <br> '
-			+ '		Or if enabled ssl: wss://freehackquest.com:' + r.data.ssl_port + '/ - with ssl</p>'
+			+ '		Connection string: ws://' + fhq.ws.hostname + ':' + fhq.ws.port + '/ <br> '
+			+ '		Or if enabled ssl: wss://' + fhq.ws.hostname + ':' + r.data.ssl_port + '/ - with ssl</p>'
 			+ '		<p>For example: <br><code>var socket = new WebSocket("wss://freehackquest.com:' + r.data.ssl_port + '/");</code></p>'
 			+ '	</div>'
 			+ '</div><br>'
@@ -1583,9 +1583,11 @@ fhq.ui.loadApiPage = function() {
 			+ '	</div>'
 			+ '</div><br>'
 			+ '<div class="card">'
-			+ '	<div class="card-header">Implemnetation</div>'
+			+ '	<div class="card-header">' + fhq.t('Implementation') + '</div>'
 			+ '	<div class="card-body">'
-			+ '		<p>You can find this: <a href="https://freehackquest.com/js/fhq.ws.js" target="_blank">https://freehackquest.com/js/fhq.ws.js</a></p>'
+			+ '		<p>You can find this:</p>'
+			+ '		<p>Config: <a href="https://freehackquest.com/js/fhq.ws.js" target="_blank">https://freehackquest.com/js/fhq.ws.config.js</a></p>'
+			+ '		<p>Wrapper by api: <a href="https://freehackquest.com/js/fhq.ws.js" target="_blank">https://freehackquest.com/js/fhq.ws.js</a></p>'
 			+ '	</div>'
 			+ '</div><br>'
 		);
@@ -1771,67 +1773,75 @@ fhq.ui.loadUserProfile = function(userid) {
 	});
 }
 
-fhq.ui.loadNewFeedback = function() {
-	window.fhq.changeLocationState({'new_feedback':''});
-	
-	$('#content_page').html('<div class="fhq0046"></div>')
-	$('#content_page').append('<div class="fhq0049"></div></div>')
-	var el = $('.fhq0046');
-	el.append('<h1>' + fhq.t("Feedback") + '</h1>');
-	
-	el.append('<div class="fhq0048">' + fhq.t("Target") + ':</div>');
-	el.append(''
-		+ '<select class="fhq0047" id="newfeedback_type">'
-		+ '	<option value="question">' + fhq.t("question") + '</option>'
-		+ '	<option value="complaint">' + fhq.t("complaint") + '</option>'
-		+ '	<option value="defect">' + fhq.t("defect") + '</option>'
-		+ '	<option value="error">' + fhq.t("error") + '</option>'
-		+ '	<option value="approval">' + fhq.t("approval") + '</option>'
-		+ '	<option value="proposal">' + fhq.t("proposal") + '</option>'
-		+ '</select>');
+fhq.ui.loadFeedbackAdd = function() {
+	window.fhq.changeLocationState({'feedback_add':''});
+	fhq.ui.hideLoading();
+	var el = $('#content_page');
+	el.html(''
+		+ '<div class="card">'
+		+ '		<div class="card-header">' + fhq.t("Feedback") + '</div>'
+		+ '		<div class="card-body">'
+		+ '			<div class="form-group row">'
+		+ '				<label for="newfeedback_type" class="col-sm-2 col-form-label">' + fhq.t("Target") + '</label>'
+		+ ' 			<div class="col-sm-10">'
+		+ '					<select class="form-control" id="newfeedback_type">'
+		+ '						<option value="question">' + fhq.t("question") + '</option>'
+		+ '						<option value="complaint">' + fhq.t("complaint") + '</option>'
+		+ '						<option value="defect">' + fhq.t("defect") + '</option>'
+		+ '						<option value="error">' + fhq.t("error") + '</option>'
+		+ '						<option value="approval">' + fhq.t("approval") + '</option>'
+		+ '						<option value="proposal">' + fhq.t("proposal") + '</option>'
+		+ '					</select>'
+		+ '				</div>'
+		+ '			</div>'
+		+ '			<div class="form-group row" id="feedback_from_field">'
+		+ '				<label for="newfeedback_from" class="col-sm-2 col-form-label">' + fhq.t("From") + '</label>'
+		+ ' 			<div class="col-sm-10">'
+		+ '					<input type="email" placeholder="youmail@domain.com" class="form-control" value="" id="newfeedback_from">'
+		+ '				</div>'
+		+ '			</div>'
+		+ '			<div class="form-group row">'
+		+ '				<label for="newfeedback_text" class="col-sm-2 col-form-label">' + fhq.t("Message") + '</label>'
+		+ ' 			<div class="col-sm-10">'
+		+ '					<textarea type="text" placeholder="Message" class="form-control" style="height: 150px" value="" id="newfeedback_text"></textarea>'
+		+ '				</div>'
+		+ '			</div>'
+		+ '			<div class="form-group row">'
+		+ '				<label for="newgame_description" class="col-sm-2 col-form-label"></label>'
+		+ ' 			<div class="col-sm-10">'
+		+ '					<div class="btn btn-danger" id="newfeedback_send" >' + fhq.t("Send") +' </div>'
+		+ '				</div>'
+		+ '			</div>'
+		+ '		</div>'
+		+ '</div>'
+	);
 	
 	if(fhq.userinfo){
-		el.append('<input class="fhq0047" type="hidden" id="newfeedback_from" value="' + fhq.userinfo.email + '">');
-	}else{
-		el.append('<div class="fhq0048">' + fhq.t("From") + ':</div>');
-		el.append('<input class="fhq0047" type="text" id="newfeedback_from" placeholder="youmail@domain.com" value="">');
+		$('#newfeedback_from').attr({'readonly': ''});
+		$('#newfeedback_from').val(fhq.userinfo.email);
 	}
 	
-	el.append('<div class="fhq0048">' + fhq.t("Message") + ':</div>');
-	el.append('<textarea id="newfeedback_text"></textarea><br><br>');
-	el.append('<div class="fhqbtn" id="newfeedback_send" onclick="fhq.ui.insertFeedback()">' + fhq.t("Send") + '</div>');
-}
-
-fhq.ui.insertFeedback = function(){
-	var data = {};
-
-	data.type = $('#newfeedback_type').val();
-	data.from = $('#newfeedback_from').val();
-	data.text = $('#newfeedback_text').val();
-	$('.fhq0046').hide();
-	$('.fhq0049').show();
-
-	fhq.api.feedback.insert(data).done(function(){
-		fhq.ui.loadFeedback();
-	}).fail(function(r){
-		$('.fhq0046').show();
-		$('.fhq0049').hide();
-	
-		console.error(r);
-		var msg = '';
-		if(r && r.responseJSON){
-			msg = r.responseJSON.error.message;
-		}else{
-			msg += 'Error (' + r.status + ')';
-		}
+	$('#newfeedback_send').unbind().bind('click', function(){
+		fhq.ui.showLoading();
 		
-		fhq.ui.showModalDialog({
-			'header' : fhq.t('Error'),
-			'content' : msg,
-			'buttons' : ''
-		});
-	})
-};
+		var data = {};
+		data.type = $('#newfeedback_type').val();
+		data.from = $('#newfeedback_from').val();
+		data.text = $('#newfeedback_text').val();
+		
+		fhq.ws.feedback_add(data).done(function(r){
+			el.html('Thanks!');
+			fhq.ui.hideLoading();
+		}).fail(function(r){
+			fhq.ui.hideLoading();
+			fhq.ui.showModalDialog({
+				'header' : fhq.t('Error'),
+				'content' : r.error,
+				'buttons' : ''
+			});
+		})
+	});
+}
 
 fhq.ui.confirmDialog = function(msg, onclick_yes){
 	fhq.ui.showModalDialog({
@@ -2639,8 +2649,8 @@ window.fhq.ui.loadQuest = function(id){
 			fhq.ui.showFeedbackDialog(
 				'error',
 				fhq.t('Report an error'),
-				'Game: "' + q.game_title + '"\n'
-				+ 'Quest: ' + q.name + ', ID: #' + q.questid + '\n'
+				'GameID: "' + q.gameid + '"\n'
+				+ 'Quest: ' + q.name + ', ID: #' + q.id + '\n'
 				+ 'Comment:\n'
 			);
 		});
@@ -2944,22 +2954,28 @@ window.fhq.ui.updateQuestStatistics = function(questid){
 fhq.ui.showFeedbackDialog = function(type, title, text){
 	fhq.ui.showModalDialog(fhq.ui.templates.feedback_form(title));
 	$('#feedback-type').val(type);
+	if(fhq.userinfo){
+		$('#feedback-from').attr({'readonly': ''});
+		$('#feedback-from').val(fhq.userinfo.email);
+	}
 	$('#feedback-text').val(text);
 }
 
 fhq.ui.feedbackDialogSend = function(){
 	var text = $('#feedback-text').val();
+	var from = $('#feedback-from').val();
 	var type = $('#feedback-type').val();
 	var params = {};
 	params.type = type;
-	// params.from = from; // TODO
+	params.from = from;
 	params.text = text;
-	fhq.api.feedback.insert(params).done(function(){
+	fhq.ui.showLoading();
+	fhq.ws.feedback_add(params).done(function(){
 		fhq.ui.closeModalDialog();
-	}).fail(function(response){
-		if(response){
-			alert(response.error.message);
-		}
+		fhq.ui.hideLoading();
+	}).fail(function(r){
+		alert(r.error);
+		fhq.ui.hideLoading();
 	})
 }
 
@@ -3191,16 +3207,36 @@ fhq.ui.templates.dialog_btn_cancel = function(){
 
 fhq.ui.templates.feedback_form = function(title_text){
 	var content = ''
-		+ '<div id="feedback-form">'
-		+ '	<input type="hidden" id="feedback-type" value=""/>'
-		+ '	<textarea id="feedback-text" type="text"></textarea>'
-		+ '	<br><br>'
-		+ '	<font id="signin-error-message" color="#ff0000"></font>'
+		+ '<div class="card" id="feedback-form">'
+		+ '		<div class="card-header">' + fhq.t("Feedback") + '</div>'
+		+ '		<div class="card-body">'
+		+ '			<div class="form-group row hide">'
+		+ '				<label for="feedback-type" class="col-sm-2 col-form-label">' + fhq.t("Target") + '</label>'
+		+ ' 			<div class="col-sm-10">'
+		+ '					<select class="form-control" id="feedback-type">'
+		+ '						<option value="error">' + fhq.t("error") + '</option>'
+		+ '					</select>'
+		+ '				</div>'
+		+ '			</div>'
+		+ '			<div class="form-group row" id="feedback_from_field">'
+		+ '				<label for="feedback-from" class="col-sm-2 col-form-label">' + fhq.t("From") + '</label>'
+		+ ' 			<div class="col-sm-10">'
+		+ '					<input type="email" placeholder="youmail@domain.com" class="form-control" value="" id="feedback-from">'
+		+ '				</div>'
+		+ '			</div>'
+		+ '			<div class="form-group row">'
+		+ '				<label for="feedback-text" class="col-sm-2 col-form-label">' + fhq.t("Message") + '</label>'
+		+ ' 			<div class="col-sm-10">'
+		+ '					<textarea type="text" placeholder="Message" class="form-control" style="height: 150px" value="" id="feedback-text"></textarea>'
+		+ '				</div>'
+		+ '			</div>'
+		+ '		</div>'
 		+ '</div>'
+	
 	return {
 		'header' : title_text,
 		'content': content,
-		'buttons': '<div class="fhqbtn" onclick="fhq.ui.feedbackDialogSend();">' + fhq.t('Send') + '</div>'
+		'buttons': '<div class="btn btn-danger" onclick="fhq.ui.feedbackDialogSend();">' + fhq.t('Send') + '</div>'
 	};
 }
 
