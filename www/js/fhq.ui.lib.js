@@ -252,62 +252,6 @@ function FHQGuiLib(api) {
 		document.onkeydown = null;
 		document.getElementById('modal_dialog_content').innerHTML = "";
 	}
-
-	/* top menu */
-
-	
-	
-	/* Sign Up */
-	
-	this.showSignUpForm = function() {
-		fhq.ui.showModalDialog(fhq.ui.templates.singup());
-		this.refreshSignUpCaptcha();
-	}
-
-	this.refreshSignUpCaptcha = function() {
-		fhq.api.users.captcha().done(function(r){
-			$('#signup-captcha-image').attr({
-				'src': 'data:image/png;base64, ' + r.data.captcha,
-				'uuid': r.data.uuid
-			});
-		}).fail(function(r){
-			console.error(r)
-		})
-	}
-
-	this.cleanupSignUpMessages = function() {
-		$('#signup-error-message').html('');
-		$('#signup-info-message').html('');
-	}
-
-	this.signup = function() {
-		$('#signup-error-message').html('');
-		$('#signup-info-message').html('Please wait...');
-		var params = {};
-		params.email = $('#signup-email').val();
-		params.captcha = $('#signup-captcha').val();
-		params.captcha_uuid = $('#signup-captcha-image').attr('uuid');
-
-		fhq.api.users.registration(params).done(function(r){
-			console.log(r);
-			$('#signup-email').val('');
-			$('#signup-captcha').val('');
-			$('#signup-info-message').html('');
-			$('#signup-error-message').html('');
-			fhq.ui.updateModalDialog({
-				'header' : 'Sign Up',
-				'content': r.data.message,
-				'buttons': ''
-			});
-		}).fail(function(r){
-			console.error(r);
-			$('#signup-error-message').html(r.responseJSON.error.message);
-			$('#signup-info-message').html('');
-			self.refreshSignUpCaptcha();
-			$('#signup-captcha').val('');
-		})
-			
-	}
 	
 	/* Reset Password */
 
@@ -691,7 +635,9 @@ fhq.ui.processParams = function() {
 	fhq.ui.pageHandlers["user"] = fhq.ui.loadUserProfile;
 	fhq.ui.pageHandlers["classbook"] = fhq.ui.loadClassbook;
 	fhq.ui.pageHandlers["about"] = fhq.ui.loadPageAbout;
+	fhq.ui.pageHandlers["registration"] = fhq.ui.loadRegistrationPage;
 	fhq.ui.pageHandlers["games"] = fhq.ui.loadGames;
+	fhq.ui.pageHandlers["game_create"] = fhq.ui.loadFormCreateGame;
 	fhq.ui.pageHandlers["scoreboard"] = fhq.ui.loadScoreboard;
 	fhq.ui.pageHandlers["map"] = fhq.ui.loadMapPage;
 	fhq.ui.pageHandlers["news"] = fhq.ui.loadPageNews;
@@ -737,6 +683,265 @@ fhq.ui.processParams = function() {
 	fhq.ws.user().done(renderPage).fail(renderPage);
 }
 
+fhq.ui.createGame = function()  {
+	fhq.ui.showLoading();
+
+	var data = {};
+	data["uuid"] = $("#newgame_uuid").val();
+	data["logo"] = $("#newgame_logo").val();
+	data["name"] = $("#newgame_name").val();
+	data["state"] = $("#newgame_state").val();
+	data["form"] = $("#newgame_form").val();
+	data["type"] = $("#newgame_type").val();
+	data["date_start"] = $("#newgame_date_start").val();
+	data["date_stop"] = $("#newgame_date_stop").val();
+	data["date_restart"] = $("#newgame_date_restart").val();
+	data["description"] = $("#newgame_description").val();
+	data["organizators"] = $("#newgame_organizators").val();
+
+	fhq.ws.game_create(data).done(function(r){
+		fhq.ui.hideLoading();
+		fhq.ui.loadGames();
+	}).fail(function(err){
+		fhq.ui.hideLoading();
+		console.error(err);
+	})
+		
+	/*send_request_post(
+		'api/games/insert.php',
+		createUrlFromObj(params),
+		function (obj) {
+			if (obj.result == "ok") {
+				closeModalDialog();
+				fhqgui.loadGames();
+			} else {
+				alert(obj.error.message);
+			}
+		}
+	);*/
+};
+
+fhq.ui.loadFormCreateGame = function() {
+	fhq.changeLocationState({'game_create':''});
+	var el = $('#content_page');
+	el.html('');
+	fhq.ui.hideLoading();
+	
+	/*<div class="card">
+		<div class="card-header">Google Map Settings</div>
+		<div class="card-body">
+			<div id="settings_group_google_map">
+				<div class="form-group row">
+					<label for="setting_name_google_map_api_key" class="col-sm-2 col-form-label">API Key</label>
+					<div class="col-sm-7">
+					<input type="text" readonly="" class="form-control" id="setting_name_google_map_api_key">	</div>	<div class="col-sm-2">		<div class="btn btn-danger edit-settings" groupid="settings_group_google_map" setttype="string" settname="google_map_api_key" settid="setting_name_google_map_api_key">Edit</div>
+					* </div></div>
+					* </form>
+					* </div>
+		</div>
+	
+	*/
+	
+	el.html(''
+		+ '<div class="card">'
+		+ '		<div class="card-header">New Game</div>'
+		+ '		<div class="card-body">'
+		+ '			<div class="form-group row">'
+		+ '				<label for="newgame_uuid" class="col-sm-2 col-form-label">UUID</label>'
+		+ ' 			<div class="col-sm-10">'
+		+ '					<input type="text" class="form-control" value="' + guid() + '" id="newgame_uuid">'
+		+ '				</div>'
+		+ '			</div>'
+		+ '			<div class="form-group row">'
+		+ '				<label for="newgame_logo" class="col-sm-2 col-form-label">Logo</label>'
+		+ ' 			<div class="col-sm-10">'
+		+ '					<input type="text" class="form-control" value="" id="newgame_logo">'
+		+ '				</div>'
+		+ '			</div>'
+		+ '			<div class="form-group row">'
+		+ '				<label for="newgame_name" class="col-sm-2 col-form-label">Name</label>'
+		+ ' 			<div class="col-sm-10">'
+		+ '					<input type="text" class="form-control" value="" id="newgame_name">'
+		+ '				</div>'
+		+ '			</div>'
+		+ '			<div class="form-group row">'
+		+ '				<label for="newgame_state" class="col-sm-2 col-form-label">State</label>'
+		+ ' 			<div class="col-sm-10">'
+		+ '					<select class="form-control" value="" id="newgame_state">'
+		+ '						<option value="original">Original</option>'
+		+ '						<option value="copy">Copy</option>'
+		+ '						<option value="unlicensed-copy">Unlicensed Copy</option>'
+		+ '					</select>'
+		+ '				</div>'
+		+ '			</div>'
+		+ '			<div class="form-group row">'
+		+ '				<label for="newgame_form" class="col-sm-2 col-form-label">Form</label>'
+		+ ' 			<div class="col-sm-10">'
+		+ '					<select class="form-control" value="" id="newgame_form">'
+		+ '						<option value="online">Online</option>'
+		+ '						<option value="offline">Offline</option>'
+		+ '					</select>'
+		+ '				</div>'
+		+ '			</div>'
+		+ '			<div class="form-group row">'
+		+ '				<label for="newgame_type" class="col-sm-2 col-form-label">Type</label>'
+		+ ' 			<div class="col-sm-10">'
+		+ '					<select class="form-control" value="" id="newgame_type">'
+		+ '						<option value="jeopardy">Jeopardy</option>'
+		+ '					</select>'
+		+ '				</div>'
+		+ '			</div>'
+		+ '			<div class="form-group row">'
+		+ '				<label for="newgame_date_start" class="col-sm-2 col-form-label">Date Start</label>'
+		+ ' 			<div class="col-sm-10">'
+		+ '					<input type="text" class="form-control" id="newgame_date_start" value="0000-00-00 00:00:00">'
+		+ '				</div>'
+		+ '			</div>'
+		+ '			<div class="form-group row">'
+		+ '				<label for="newgame_date_stop" class="col-sm-2 col-form-label">Date Stop</label>'
+		+ ' 			<div class="col-sm-10">'
+		+ '					<input type="text" class="form-control" id="newgame_date_stop" value="0000-00-00 00:00:00">'
+		+ '				</div>'
+		+ '			</div>'
+		+ '			<div class="form-group row">'
+		+ '				<label for="newgame_date_restart" class="col-sm-2 col-form-label">Date Restart</label>'
+		+ ' 			<div class="col-sm-10">'
+		+ '					<input type="text" class="form-control" id="newgame_date_restart" value="0000-00-00 00:00:00">'
+		+ '				</div>'
+		+ '			</div>'
+		+ '			<div class="form-group row">'
+		+ '				<label for="newgame_description" class="col-sm-2 col-form-label">Description</label>'
+		+ ' 			<div class="col-sm-10">'
+		+ '					<textarea type="text" class="form-control" style="height: 150px" value="" id="newgame_description"></textarea>'
+		+ '				</div>'
+		+ '			</div>'
+		+ '			<div class="form-group row">'
+		+ '				<label for="newgame_organizators" class="col-sm-2 col-form-label">Organizators</label>'
+		+ ' 			<div class="col-sm-10">'
+		+ '					<input type="text" class="form-control" value="" id="newgame_organizators">'
+		+ '				</div>'
+		+ '			</div>'
+		+ '			<div class="form-group row">'
+		+ '				<label class="col-sm-2 col-form-label"></label>'
+		+ ' 			<div class="col-sm-10">'
+		+ '					<div class="btn btn-danger" onclick="fhq.ui.createGame();">Create</div>'
+		+ '				</div>'
+		+ '			</div>'
+		+ '		</div>'
+		+ '</div>'
+	);
+	
+	$('#newgame_date_start').datetimepicker({
+		format:'Y-m-d H:i:s',
+		inline:false
+	});
+	
+	$('#newgame_date_stop').datetimepicker({
+		format:'Y-m-d H:i:s',
+		inline:false
+	});
+	
+	$('#newgame_date_restart').datetimepicker({
+		format:'Y-m-d H:i:s',
+		inline:false
+	});
+}
+
+
+/* Registration */
+
+fhq.ui.registry = function() {
+	$('#registration_error').html('');
+	var data = {};
+	data.email = $('#registration_email').val();
+	data.country = $('#registration_country').val();
+	data.region = $('#registration_region').val();
+	data.city = $('#registration_city').val();
+	data.university = $('#registration_university').val();
+
+	fhq.ws.registration(data).done(function(r){
+		console.log(r);
+		
+		$('#signup-email').val('');
+		$('#signup-captcha').val('');
+		$('#signup-info-message').html('');
+		$('#signup-error-message').html('');
+	}).fail(function(r){
+		console.error(r);
+		$('#registration_error').html(fhq.t(r.error));
+	})
+		
+}
+
+fhq.ui.loadRegistrationPage = function() {
+	fhq.ui.hideLoading();
+	fhq.changeLocationState({'registration':''});
+	$('#content_page').html('');
+	
+	$('#content_page').append(''
+		+ '	<div class="form-group row">'
+		+ ' 	<div class="col-sm-4"></div>'
+		+ ' 	<div class="col-sm-4">'
+		+ '			<h1 class="text-center">Registration</h1>'
+		+ '		</div>'
+		+ ' 	<div class="col-sm-4"></div>'
+		+ '	</div>'
+		+ '	<div class="form-group row">'
+		+ ' 	<div class="col-sm-4"></div>'
+		+ ' 	<div class="col-sm-4">'
+		+ '			<label for="registration_email" class="col-form-label">E-mail (required):</label>'
+		+ '			<input type="email" placeholder="your@email.com" class="form-control" value="" id="registration_email"/>'
+		+ '		</div>'
+		+ ' 	<div class="col-sm-4"></div>'
+		+ '	</div>'
+		+ '	<div class="form-group row">'
+		+ ' 	<div class="col-sm-4"></div>'
+		+ ' 	<div class="col-sm-4">'
+		+ '			<label for="registration_country" class="col-form-label">Country:</label>'
+		+ '			<input type="text" placeholder="country" class="form-control" value="" id="registration_country"/>'
+		+ '		</div>'
+		+ ' 	<div class="col-sm-4"></div>'
+		+ '	</div>'
+		+ '	<div class="form-group row">'
+		+ ' 	<div class="col-sm-4"></div>'
+		+ ' 	<div class="col-sm-4">'
+		+ '			<label for="registration_region" class="col-form-label">Region:</label>'
+		+ '			<input type="text" placeholder="region" class="form-control" value="" id="registration_region"/>'
+		+ '		</div>'
+		+ ' 	<div class="col-sm-4"></div>'
+		+ '	</div>'
+		+ '	<div class="form-group row">'
+		+ ' 	<div class="col-sm-4"></div>'
+		+ ' 	<div class="col-sm-4">'
+		+ '			<label for="registration_city" class="col-form-label">City:</label>'
+		+ '			<input type="text" placeholder="city" class="form-control" value="" id="registration_city"/>'
+		+ '		</div>'
+		+ ' 	<div class="col-sm-4"></div>'
+		+ '	</div>'
+		+ '	<div class="form-group row">'
+		+ ' 	<div class="col-sm-4"></div>'
+		+ ' 	<div class="col-sm-4">'
+		+ '			<label for="registration_university" class="col-form-label">University:</label>'
+		+ '			<input type="text" placeholder="university" class="form-control" value="" id="registration_university"/>'
+		+ '		</div>'
+		+ ' 	<div class="col-sm-4"></div>'
+		+ '	</div>'
+		+ '	<div class="form-group row">'
+		+ ' 	<div class="col-sm-4"></div>'
+		+ ' 	<div class="col-sm-4 text-center">'
+		+ '			<div class="btn btn-success" onclick="fhq.ui.registry();">Registry</div>'
+		+ '		</div>'
+		+ ' 	<div class="col-sm-4"></div>'
+		+ '	</div>'
+		+ '	<div class="form-group row">'
+		+ ' 	<div class="col-sm-4"></div>'
+		+ ' 	<div class="col-sm-4 text-center" id="registration_error">'
+		+ '		</div>'
+		+ ' 	<div class="col-sm-4"></div>'
+		+ '	</div>'
+	);
+}
+
 
 fhq.ui.onwsclose = function(){
 	$('.message_chat').remove();
@@ -760,8 +965,8 @@ fhq.ui.loadServerSettings = function(idelem) {
 					+ '<div class="card">'
 					+ '  <div class="card-header">' + fhq.t(groupid) + '</div>'
 					+ '  <div class="card-body">'
-					+ '   <form id="' + groupid + '">'
-					+ '   </form>'
+					+ '   <div id="' + groupid + '">'
+					+ '   </div>'
 					+ '  </div>'
 					+ '</div><br>'
 				);
@@ -1294,8 +1499,8 @@ fhq.ui.editNews = function(id){
 fhq.ui.loadScoreboard = function(){
 
 	fhq.ui.showLoading();
-
-	$("#content_page").html('');
+	var el = $("#content_page");
+	el.html('Loading...');
 
 	var onpage = 5;
 	if(fhq.containsPageParam("onpage")){
@@ -1314,36 +1519,36 @@ fhq.ui.loadScoreboard = function(){
 	params.page = page;
 
 	fhq.ws.scoreboard(params).done(function(r){
-			$("#content_page").html('<div class="fhq0087"></div>');
-			
-			for (var k in r.data) {
-				var arr = [];
-				var row = r.data[k];
-				var first_user_logo = ''
-				for (var k2 in row.users) {
-					var u = row.users[k2];
-					first_user_logo = u.logo;
-					arr.push(fhqgui.userIcon(u.userid, u.logo, u.nick));
-				}
-				
-				$('.fhq0087').append(''
-					+ '<div class="fhq0088">'
-					+ '  <div class="fhq0090" id="place' + k + '"></div>'
-					+ '  <div class="fhq0090"><h1>' + row.place + '</h2> [' + row.rating + ' P]</div>'
-					+ '  <div class="fhq0091">' + arr.join(' ') + '</div>'
-					
-					+ '</div>');
-				
-				if(row.users.length == 1)	{
-					$('#place' + k).css({'background-image': 'url(' + u.logo + ')'});
-				}else{
-					$('#place' + k).css({'background-image': 'url(files/users/0.png)'});
-				}
-				$('.fhq0087').append('<div class="fhq0092"></div>');
+		el.html('<h1>' + fhq.t('Scoreboard') + '</h1>');
+		el.append('<div class="fhq0087"></div>');
+		
+		for (var k in r.data) {
+			var arr = [];
+			var row = r.data[k];
+			var first_user_logo = ''
+			for (var k2 in row.users) {
+				var u = row.users[k2];
+				first_user_logo = u.logo;
+				arr.push(fhqgui.userIcon(u.userid, u.logo, u.nick));
 			}
-			fhq.ui.hideLoading();
+			
+			$('.fhq0087').append(''
+				+ '<div class="fhq0088">'
+				+ '  <div class="fhq0090" id="place' + k + '"></div>'
+				+ '  <div class="fhq0090"><h1>' + row.place + '</h2> [' + row.rating + ' P]</div>'
+				+ '  <div class="fhq0091">' + arr.join(' ') + '</div>'
+				
+				+ '</div>');
+			
+			if(row.users.length == 1)	{
+				$('#place' + k).css({'background-image': 'url(' + u.logo + ')'});
+			}else{
+				$('#place' + k).css({'background-image': 'url(files/users/0.png)'});
+			}
+			$('.fhq0087').append('<div class="fhq0092"></div>');
 		}
-	);
+		fhq.ui.hideLoading();
+	});
 }
 
 fhq.ui.loadApiPage = function() {
@@ -1589,15 +1794,43 @@ fhq.ui.confirmDialog = function(msg, onclick_yes){
 fhq.ui.loadGames = function() {
 	fhq.ui.showLoading();
 	window.fhq.changeLocationState({'games':''});
-
-	$('#content_page').html('<div class="fhq0021"></div>');
+	var el = $('#content_page');
+	
+	el.html('');
 	fhq.ws.games().done(function(r){
 		console.log(r);
-		var el = $('.fhq0021');
-
 		for (var k in r.data) {
 			if (r.data.hasOwnProperty(k)) {
-				el.append(fhq.ui.gameView(r.data[k]));
+				var game = r.data[k];
+				var buttons = '';
+				var perms = game.permissions;
+	
+				if (fhq.isAdmin())
+					buttons += '<div class="btn btn-danger" onclick="formDeleteGame(' + game.id + ');">' + fhq.t('Delete') + '</div>';
+
+				if (fhq.isAdmin())
+					buttons += ' <div class="btn btn-danger" onclick="formEditGame(' + game.id + ');">' + fhq.t('Edit') + '</div>';
+					
+				if (fhq.isAdmin())
+					buttons += ' <div class="btn btn-danger" onclick="fhqgui.exportGame(' + game.id + ');">' + fhq.t('Export') + '</div>';
+				
+				el.append(''
+					+ '<div class="card">'
+					+ '		<div class="card-body card-left-img admin" style="background-image: url(' + game.logo + ')">'
+					+ '			<h4 class="card-title">' + game.title +' (' + fhq.t('Maximal score') + ': ' + game.maxscore + ')</h4>'
+					+ '			<h6 class="card-subtitle mb-2 text-muted">' + game.type_game + ', ' + game.date_start + ' - ' + game.date_stop + '</h6>'
+					+ '			<h6 class="card-subtitle mb-2 text-muted">' + fhq.t('Organizators') + ': ' + game.organizators + '</h6>'
+					+ '			<p class="card-text">' + game.description + '</p>'
+					+ '			<p class="card-text">' + buttons + '</p>'
+					+ '		</div>'
+					+ '</div>'
+				);
+				
+				  // <div class="card-body card-left-img admin" style="background-image: url(images/quests/admin_150x150.png)">    
+					// <h4 class="card-title">Admin</h4>    <h6 class="card-subtitle mb-2 text-muted">(10 quests)</h6>    <p class="card-text">Администрирование</p>	   <button subject="admin" type="button" class="open-subject btn btn-default">Открыть</button>  </div></div>
+				
+				
+				// el.append(fhq.ui.gameView(r.data[k]));
 			}
 		}
 		fhq.ui.hideLoading();
@@ -1615,22 +1848,8 @@ fhq.ui.gameView = function(game, currentGameId) {
 	+ '			<div class="fhq0025">'
 	+ '				<div class="fhq0030" style="background-image: url(' + game.logo + ')" ></div>'
 	+ '</div>';
-	content += '		<div class="fhq0026">\n';
-	content += '			<div class="fhq0029">' + game.title + ' (Maximal score: ' + game.maxscore + ')</div>';
-	content += '			<div class="fhq0027">' + game.type_game + ', ' + game.date_start + ' - ' + game.date_stop + '</div>';
-	content += '			<div class="fhq0027">' + fhq.t('Organizators') + ': ' + game.organizators + '</div>';
-	content += '			<div class="fhq0031">' + game.description + '</div>';
-	content += '			<div class="fhq0032">';
-	var perms = game.permissions;
 	
-	if (fhq.isAdmin())
-		content += '<div class="fhqbtn" onclick="formDeleteGame(' + game.id + ');">' + fhq.t('Delete') + '</div>';
-
-	if (fhq.isAdmin())
-		content += '<div class="fhqbtn" onclick="formEditGame(' + game.id + ');">' + fhq.t('Edit') + '</div>';
-		
-	if (fhq.isAdmin())
-		content += '<div class="fhqbtn" onclick="fhqgui.exportGame(' + game.id + ');">' + fhq.t('Export') + '</div>';
+	
 
 	content += '			</div>';
 	content += '		</div>';
@@ -2892,27 +3111,6 @@ fhq.ui.templates.singin = function(){
 		'header' : fhq.t('Sign-in'),
 		'content': content,
 		'buttons': '<div class="fhqbtn" onclick="fhq.ui.signin();">' + fhq.t('Sign-in') + '</div>'
-	};
-}
-
-fhq.ui.templates.singup = function(){
-	var content = ''
-		+ '<div id="signup-form">'
-		+ '		<input placeholder="your@email.com" id="signup-email" value="" type="text" onkeydown="if (event.keyCode == 13) fhqgui.signup(); else fhqgui.cleanupSignUpMessages();"/>'
-		+ '		<br><br>'
-		+ '		<img src="" id="signup-captcha-image"/>'
-		+ '		<div class="fhqbtn" onclick="fhqgui.refreshSignUpCaptcha();"><img src="images/refresh.svg"/></div>'
-		+ '		<br><br>'
-		+ '		<input placeholder="captcha" id="signup-captcha" value="" type="text" onkeydown="if (event.keyCode == 13) fhqgui.signup(); else fhqgui.cleanupSignUpMessages();"/>'
-		+ '		<br><br>'
-		+ '		<font id="signup-info-message"></font>'
-		+ '		<font id="signup-error-message" color="#ff0000"></font>'
-		+ '</div>'
-
-	return {
-		'header' : fhq.t('Sign-up'),
-		'content': content,
-		'buttons': '<div class="fhqbtn" onclick="fhqgui.signup();">' + fhq.t('Sign-up') + '</div>'
 	};
 }
 

@@ -129,7 +129,7 @@
 							<div class="dropdown-item" id="btnmenu_newfeedback" onclick="fhq.ui.loadNewFeedback()">New Feedback</div>
 							
 							<div class="dropdown-divider admin-menu"></div>
-							<div class="dropdown-item admin-menu" id="btnmenu_creategame" onclick="formCreateGame();">Create Game</div>
+							<div class="dropdown-item admin-menu" id="btnmenu_creategame" onclick="fhq.ui.loadFormCreateGame();">Create Game</div>
 							<div class="dropdown-item admin-menu" id="btnmenu_importgame" onclick="fhqgui.formImportGame();">Import Game</div>
 							<div class="dropdown-item admin-menu" id="btnmenu_createnews" onclick="fhq.ui.loadCreateNews();">Create News</div>
 							<div class="dropdown-item admin-menu" id="btnmenu_createquest" onclick="fhq.ui.loadCreateQuestForm();">Create Quest</div>
@@ -150,7 +150,7 @@
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="Preview">
 							<div class="dropdown-item unauth-menu" id="btnmenu_signin" onclick="fhq.ui.showSignInForm();">Sign-in</div>
 							<div class="dropdown-item unauth-menu" id="btnmenu_signin_with_google" onclick="window.location='./google_auth.php'">Sign-in with Google</div>
-							<div class="dropdown-item unauth-menu" id="btnmenu_signup" onclick="fhqgui.showSignUpForm();">Sign-up</div>
+							<div class="dropdown-item unauth-menu" id="btnmenu_signup" onclick="fhq.ui.loadRegistrationPage();">Sign-up</div>
 							<div class="dropdown-item unauth-menu" id="btnmenu_restore_password" onclick="fhqgui.showResetPasswordForm();">Forgot password?</div>
 
 							<div class="dropdown-item auth-menu" id="btnmenu_user_profile" onclick="fhq.ui.loadUserProfile();">Your Profile</div>

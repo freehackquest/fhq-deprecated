@@ -54,7 +54,7 @@ window.fhq.ws.initWebsocket = function(){
 	var port = window.location.protocol == "https:" ? "4613" : "1234";
 
 	fhq.ws.socket = new WebSocket(protocol + "//" + window.location.hostname + ":" + port + "/");
-	// fhq.ws.socket = new WebSocket("ws://192.168.1.5:1234/api");
+	// fhq.ws.socket = new WebSocket(protocol + "//freehackquest.com:" + port + "/");
 	window.fhq.ws.socket.onopen = function() {
 		console.log('WS Opened');
 		setTimeout(window.fhq.ws.onconnect,1);
@@ -347,6 +347,12 @@ fhq.ws.user = function(params){
 	return fhq.ws.send(params);
 }
 
+fhq.ws.registration = function(params){
+	params = params || {};
+	params.cmd = 'registration';
+	return fhq.ws.send(params);
+}
+
 fhq.ws.user_answers = function(params){
 	params = params || {};
 	params.cmd = 'user_answers';
@@ -357,4 +363,10 @@ fhq.ws.user_skills = function(params){
 	params = params || {};
 	params.cmd = 'user_skills';
 	return fhq.ws.send(params);
+}
+
+fhq.ws.game_create = function(data){
+	data = data || {};
+	data.cmd = 'game_create';
+	return fhq.ws.send(data);
 }
