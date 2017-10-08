@@ -843,7 +843,7 @@ fhq.ui.registry = function() {
 	data.region = $('#registration_region').val();
 	data.city = $('#registration_city').val();
 	data.university = $('#registration_university').val();
-
+	fhq.ui.showLoading();
 	fhq.ws.registration(data).done(function(r){
 		console.log(r);
 		
@@ -851,9 +851,12 @@ fhq.ui.registry = function() {
 		$('#signup-captcha').val('');
 		$('#signup-info-message').html('');
 		$('#signup-error-message').html('');
+		fhq.ui.hideLoading();
+		$('#content_page').html('Please check your mailbox (also look in spam)');
 	}).fail(function(r){
 		console.error(r);
 		$('#registration_error').html(fhq.t(r.error));
+		fhq.ui.hideLoading();
 	})
 		
 }
