@@ -2370,7 +2370,7 @@ fhq.ui.loadQuestsBySubject = function(subject){
 	el.html('<div class="fhq0005">Loading...</div>');
 	var params = {};
 	params.subject = subject;
-	fhq.api.quests.list(params).done(function(r){
+	fhq.ws.quests(params).done(function(r){
 		$('.fhq0005').html('');
 		for(var i in r.data){
 			var q = r.data[i];

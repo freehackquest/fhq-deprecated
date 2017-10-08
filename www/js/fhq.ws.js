@@ -376,3 +376,9 @@ fhq.ws.quests_subjects = function(data){
 	data.cmd = 'quests_subjects';
 	return fhq.ws.send(data);
 }
+
+fhq.ws.quests = function(data){
+	data = data || {};
+	data.cmd = 'quests';
+	return fhq.ws.send(data);
+}
