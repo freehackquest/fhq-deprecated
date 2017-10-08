@@ -50,10 +50,8 @@ window.fhq.ws.onconnect = function(){
 };
 
 window.fhq.ws.initWebsocket = function(){
-	var protocol = window.location.protocol == "https:" ? "wss:" : "ws:";
-	var port = window.location.protocol == "https:" ? "4613" : "1234";
 
-	fhq.ws.socket = new WebSocket(protocol + "//" + window.location.hostname + ":" + port + "/");
+	fhq.ws.socket = new WebSocket(fhq.ws.protocol + "//" + fhq.ws.hostname + ":" + fhq.ws.port + "/");
 	// fhq.ws.socket = new WebSocket(protocol + "//freehackquest.com:" + port + "/");
 	window.fhq.ws.socket.onopen = function() {
 		console.log('WS Opened');
