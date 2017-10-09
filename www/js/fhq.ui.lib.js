@@ -376,7 +376,7 @@ function FHQGuiLib(api) {
 	}
 
 	this.openUserInNewTab = function(userid) {
-		var win = window.open('?userid=' + userid, '_blank');
+		var win = window.open('?user=' + userid, '_blank');
 		win.focus();
 	}
 
