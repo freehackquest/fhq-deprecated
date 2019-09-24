@@ -2,6 +2,6 @@ Not supported anymore.
 
 Please use:
 
-* [Backend](https://github.com/freehackquest/backend)
+* [fhq-server](https://github.com/freehackquest/fhq-server)
 
-* [Frontend](https://github.com/freehackquest/frontend)
+You can use a docker image! ;)
